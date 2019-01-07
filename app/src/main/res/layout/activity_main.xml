@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.MainActivity">
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+   <include layout="@layout/actionbar_home_layout" />
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+    </LinearLayout>
+    <RadioGroup
+        android:layout_below="@id/fragment_container"
+        android:id="@+id/tabs_rg"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:background="#ffffff"
+        android:orientation="horizontal"
+        tools:ignore="NotSibling">
+
+        <RadioButton
+            android:id="@+id/workbench"
+            style="@style/Custom.TabRadioButton"
+            android:checked="true"
+            android:drawableTop="@drawable/tab_workbench_selector"
+            android:background="@color/transparent"
+
+            android:text="工作台" />
+
+
+        <RadioButton
+            android:id="@+id/message"
+            style="@style/Custom.TabRadioButton"
+            android:drawableTop="@drawable/tab_message_selector"
+            android:background="@color/transparent"
+            android:text="消息" />
+
+        <View style="@style/Custom.TabRadioButton" />
+
+        <RadioButton
+            android:id="@+id/accessories_shop"
+            style="@style/Custom.TabRadioButton"
+            android:drawableTop="@drawable/tab_accessories_shop_selector"
+            android:background="@color/transparent"
+            android:text="配件商城" />
+
+        <RadioButton
+            android:id="@+id/me"
+            style="@style/Custom.TabRadioButton"
+            android:drawableTop="@drawable/tab_me_selector"
+            android:background="@color/transparent"
+            android:text="我的" />
+    </RadioGroup>
+    <!-- 实现提醒信息用的 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:background="#00000000"
+        android:layout_alignTop="@+id/tabs_rg"
+
+        >
+        <!-- 显示提醒信息的button android:layout_weight=1  是3个butto，平分手机界面的宽度-->
+        <Button
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:visibility="invisible"
+            />
+        <!-- 占位置的button，以便适应不同分辨率手机 -->
+        <Button
+            android:id="@+id/btn_message_count"
+            android:visibility="invisible"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            />
+        <!-- 占位置的button，以便适应不同分辨率手机 -->
+        <Button
+            android:visibility="invisible"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            />
+        <!-- 占位置的button，以便适应不同分辨率手机 -->
+        <Button
+            android:visibility="invisible"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            />
+        <!-- 占位置的button，以便适应不同分辨率手机 -->
+        <Button
+            android:visibility="invisible"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/receiving"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="25dp"
+        android:clickable="true"
+        android:background="@android:color/transparent"
+        android:src="@mipmap/icon_receiving" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="5dp"
+        android:textSize="10sp"
+        android:text="接单"
+        android:textColor="#bfbfbf" />
+</RelativeLayout>
