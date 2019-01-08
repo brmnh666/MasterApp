@@ -13,8 +13,9 @@ import android.widget.Toast;
 import com.ying.administrator.masterappdemo.activity.BaseActivity.BaseActivity;
 import com.ying.administrator.masterappdemo.common.DefineView;
 import com.ying.administrator.masterappdemo.fragment.BlankFragment;
-import com.ying.administrator.masterappdemo.fragment.Workbench_Fragment;
+import com.ying.administrator.masterappdemo.fragment.Home_Fragment;
 import com.ying.administrator.masterappdemo.R;
+import com.ying.administrator.masterappdemo.fragment.Me_Fragment;
 import com.ying.administrator.masterappdemo.widget.BadgeView;
 
 public class MainActivity extends BaseActivity implements DefineView {
@@ -34,10 +35,10 @@ public class MainActivity extends BaseActivity implements DefineView {
     public void initView() {
         mTabRadioGroup = findViewById(R.id.tabs_rg);
         mFragmentSparseArray = new SparseArray<>();
-        mFragmentSparseArray.append(R.id.workbench, Workbench_Fragment.newInstance("工作台"));
+        mFragmentSparseArray.append(R.id.workbench, Home_Fragment.newInstance("工作台"));
         mFragmentSparseArray.append(R.id.message, BlankFragment.newInstance("消息"));
         mFragmentSparseArray.append(R.id.accessories_shop, BlankFragment.newInstance("配件商城"));
-        mFragmentSparseArray.append(R.id.me, BlankFragment.newInstance("我的"));
+        mFragmentSparseArray.append(R.id.me, Me_Fragment.newInstance("我的"));
         mTabRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {

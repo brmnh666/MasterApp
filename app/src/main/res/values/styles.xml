@@ -21,11 +21,11 @@
         <item name="android:textColor">@color/tab_text_color_selector</item>
     </style>
 
-    <!--首页状态栏为白色-->
+    <!--首页状态栏为蓝色-->
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:statusBarColor">@color/color_custom_02</item>
+        <item name="android:statusBarColor">#1690FF</item>
     </style>
     <!--接单也状态栏为蓝色-->
     <style name="AppTheme.Receicing">

@@ -11,25 +11,18 @@ import com.ying.administrator.masterappdemo.fragment.BaseFragment.BaseFragment;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.widget.BadgeView;
 
-public class Workbench_Fragment extends BaseFragment implements DefineView {
+public class Home_Fragment extends BaseFragment implements DefineView {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_SHOW_TEXT = "text";
 
      private String mContentText;
      private View view;
-    public Workbench_Fragment() {
+    public Home_Fragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @return A new instance of fragment BlankFragment.
-     */
-    public static Workbench_Fragment newInstance(String param1) {
-        Workbench_Fragment fragment = new Workbench_Fragment();
+    public static Home_Fragment newInstance(String param1) {
+        Home_Fragment fragment = new Home_Fragment();
         Bundle args = new Bundle();
         args.putString(ARG_SHOW_TEXT, param1);
         fragment.setArguments(args);
@@ -53,7 +46,6 @@ public class Workbench_Fragment extends BaseFragment implements DefineView {
             view = inflater.inflate(R.layout.fragment_home, container, false);
             Log.d("ying","调用了onCreateView");
             initView();
-
         }
 
         return view;
