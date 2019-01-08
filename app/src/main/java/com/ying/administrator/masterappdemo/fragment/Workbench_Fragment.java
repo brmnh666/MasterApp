@@ -10,10 +10,6 @@ import com.ying.administrator.masterappdemo.common.DefineView;
 import com.ying.administrator.masterappdemo.fragment.BaseFragment.BaseFragment;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.widget.BadgeView;
-import com.ying.administrator.masterappdemo.widget.GlideImageLoader;
-import com.youth.banner.Banner;
-
-import java.util.ArrayList;
 
 public class Workbench_Fragment extends BaseFragment implements DefineView {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -54,7 +50,7 @@ public class Workbench_Fragment extends BaseFragment implements DefineView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         if (view==null){
-            view = inflater.inflate(R.layout.fragment_workbench, container, false);
+            view = inflater.inflate(R.layout.fragment_home, container, false);
             Log.d("ying","调用了onCreateView");
             initView();
 
@@ -66,21 +62,7 @@ public class Workbench_Fragment extends BaseFragment implements DefineView {
     @Override
     public void initView() {
 
-        /*广告轮播*/
-        Banner banner = view.findViewById(R.id.banner);
-        //设置图片加载器
-        banner.setImageLoader(new GlideImageLoader());
-        ArrayList<String> images=new ArrayList();
-        images.add("https://img.zcool.cn/community/01f92b58b8dbd9a801219c77596518.jpg@1280w_1l_2o_100sh.jpg");
-        images.add("https://img.zcool.cn/community/0135d858b8dbeba801219c7775d498.jpg@1280w_1l_2o_100sh.jpg");
-        images.add("https://img.zcool.cn/community/01681658b8dbf8a801219c77ca9dff.jpg@1280w_1l_2o_100sh.jpg");
-        images.add("https://img.zcool.cn/community/01a58d58b8dc28a801219c77d19ff8.jpg@1280w_1l_2o_100sh.jpg");
-        //设置图片集合
-        banner.setImages(images);
-        //banner设置方法全部调用完毕时最后调用
-        banner.setDelayTime(3000); //
-        banner.start();
-        /*广告轮播*/
+
 
         //显示未读消息红点
         BadgeView badgeView =new BadgeView(getContext());

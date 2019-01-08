@@ -10,5 +10,9 @@
     <color name="color_custom_02">#F5F5F5</color>
     <color name="color_custom_03">#EEEEEE</color>
     <color name="color_custom_04">#FF0000</color>
-    
+    <color name="color_custom_05">#F5F6F8</color>
+    <color name="color_custom_06">#D5D7D6</color>
+    <color name="color_custom_07">#4768F3</color>
+    <color name="color_custom_08">#F0F0F0</color>
+
 </resources>

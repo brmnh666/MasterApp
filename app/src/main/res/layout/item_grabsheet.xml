@@ -113,13 +113,13 @@
                 android:id="@+id/tv_phone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_toLeftOf="@+id/tv_grabsheet_point"
                 android:textSize="10sp"
-                android:text="拨打电话"></TextView>
+                android:text="拨打电话">
+            </TextView>
 
             <ImageView
                 android:layout_width="20dp"

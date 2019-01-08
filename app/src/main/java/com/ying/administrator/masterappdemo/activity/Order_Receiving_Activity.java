@@ -5,7 +5,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
+import android.widget.LinearLayout;
 
 import com.ying.administrator.masterappdemo.common.DefineView;
 import com.ying.administrator.masterappdemo.fragment.ReceivingFragment.Appointedsheet_Fragement;
@@ -24,6 +26,7 @@ public class Order_Receiving_Activity extends AppCompatActivity implements Defin
      private TabLayout tab_Receiving_layout;
      private ViewPager receiving_viewpager;
      private ArrayList<Fragment> fragmentList =new ArrayList<>();
+     private LinearLayout ll_return;
      //tablout的内容
      private  ArrayList<String> title=new ArrayList<>();
      private Grabsheet_Fragement grabsheet_fragement;
@@ -48,6 +51,7 @@ public class Order_Receiving_Activity extends AppCompatActivity implements Defin
     public void initView() {
         tab_Receiving_layout=findViewById(R.id.tab_receiving_layout);
         receiving_viewpager=findViewById(R.id.receiving_viewpager);
+        ll_return=findViewById(R.id.ll_return);
 
     }
 
@@ -61,7 +65,7 @@ public class Order_Receiving_Activity extends AppCompatActivity implements Defin
 
     @Override
     public void initListener() {
-
+      ll_return.setOnClickListener(new CustomOnclickListner());
     }
 
     @Override
@@ -90,5 +94,17 @@ public class Order_Receiving_Activity extends AppCompatActivity implements Defin
         receiving_viewpager.setCurrentItem(0);//默认第一个
 
 
+    }
+
+    public class CustomOnclickListner implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.ll_return:
+                Order_Receiving_Activity.this.finish();
+                break;
+
+        }
+        }
     }
 }

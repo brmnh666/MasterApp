@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-<LinearLayout
 
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#f5f5f5"
     >
 
+<View
+    android:layout_width="match_parent"
+    android:layout_height="15dp"
+    android:background="@color/color_custom_08"/>
 
-    <include layout="@layout/fragment_workbench_action"/>
+<include layout="@layout/fragment_home_action"/>
 
     <!--用于填充布局-->
     <View
@@ -20,4 +21,3 @@
         android:layout_height="60dp"
         />
 </LinearLayout>
-    </ScrollView>

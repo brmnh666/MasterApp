@@ -111,14 +111,14 @@
 
     <ImageView
         android:id="@+id/receiving"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="37dp"
+        android:layout_height="37dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="25dp"
-        android:clickable="true"
+        android:layout_marginBottom="28dp"
         android:background="@android:color/transparent"
-        android:src="@mipmap/icon_receiving" />
+        android:clickable="true"
+        android:src="@mipmap/icon_jiedan" />
 
     <TextView
         android:layout_width="wrap_content"

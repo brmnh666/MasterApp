@@ -21,6 +21,10 @@
             android:theme="@style/AppTheme.Receicing">
 
         </activity>
+        <activity android:name=".activity.LoginActivity" android:theme="@style/Theme.AppCompat.NoActionBar">
+
+
+        </activity>
     </application>
 
 </manifest>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="180dp"
+    android:layout_height="150dp"
     android:orientation="vertical"
 
     >
@@ -20,8 +20,8 @@
         >
         <ImageView
             android:id="@+id/img_forservice"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:src="@mipmap/icon_forservice"
             android:clickable="true"
             />
@@ -30,6 +30,7 @@
             android:layout_height="wrap_content"
             android:text="待服务"
             android:gravity="center"
+            android:layout_marginTop="5dp"
             />
     </LinearLayout>
 
@@ -41,13 +42,14 @@
         android:gravity="center"
         >
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:src="@mipmap/icon_inservice"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="服务中"
+            android:layout_marginTop="5dp"
             android:gravity="center"
             />
     </LinearLayout>
@@ -61,13 +63,14 @@
 
         >
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:src="@mipmap/icon_appointment"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="待预约"
+            android:layout_marginTop="5dp"
             android:gravity="center"
             />
     </LinearLayout>
@@ -80,13 +83,14 @@
         android:gravity="center"
         >
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:src="@mipmap/icon_forcollection"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="待收款"
+            android:layout_marginTop="5dp"
             android:gravity="center"
             />
     </LinearLayout>
@@ -106,13 +110,14 @@
             android:gravity="center"
             >
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:src="@mipmap/icon_quality"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="质保单"
+                android:layout_marginTop="5dp"
                 android:gravity="center"
                 />
         </LinearLayout>
@@ -125,13 +130,14 @@
             android:gravity="center"
             >
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:src="@mipmap/icon_return"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="待返件"
+                android:layout_marginTop="5dp"
                 android:gravity="center"
                 />
         </LinearLayout>
@@ -145,13 +151,14 @@
 
             >
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:src="@mipmap/icon_finished"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="已完结"
+                android:layout_marginTop="5dp"
                 android:gravity="center"
                 />
         </LinearLayout>
@@ -164,13 +171,14 @@
             android:gravity="center"
             >
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:src="@mipmap/icon_take"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="完成待取机"
+                android:layout_marginTop="5dp"
                 android:gravity="center"
                 />
         </LinearLayout>
