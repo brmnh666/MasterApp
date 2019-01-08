@@ -45,7 +45,6 @@ public class Me_Fragment extends BaseFragment implements DefineView {
             view = inflater.inflate(R.layout.fragment_me, container, false);
             Log.d("ying","调用了onCreateView");
             initView();
-
         }
 
         return view;

@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout
 xmlns:android="http://schemas.android.com/apk/res/android"
 android:layout_width="match_parent"
 android:layout_height="100dp"
 android:layout_margin="10dp"
 android:background="@drawable/ll_me_edit_shape"
-android:orientation="horizontal">
+android:orientation="horizontal"
+android:layout_alignParentBottom="true"
+
+    >
 <LinearLayout
     android:id="@+id/normal_dfk_ll"
     android:layout_width="0dp"
@@ -15,9 +19,9 @@ android:orientation="horizontal">
     android:orientation="vertical">
 
     <ImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@mipmap/ic_launcher_round" />
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@mipmap/icon_me_all_orders" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -42,9 +46,9 @@ android:orientation="horizontal">
     android:orientation="vertical">
 
     <ImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@mipmap/ic_launcher_round" />
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@mipmap/icon_me_return_sheet" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -69,9 +73,9 @@ android:orientation="horizontal">
     android:orientation="vertical">
 
     <ImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@mipmap/ic_launcher_round" />
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@mipmap/icon_me_confirmed" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -96,9 +100,9 @@ android:orientation="horizontal">
     android:orientation="vertical">
 
     <ImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@mipmap/ic_launcher_round" />
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@mipmap/icon_me_finish" />
 
     <TextView
         android:layout_width="wrap_content"

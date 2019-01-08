@@ -13,11 +13,13 @@
     android:orientation="horizontal"
     >
     <LinearLayout
+        android:id="@+id/ll_home_forservice"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
         android:orientation="vertical"
        android:gravity="center"
+
         >
         <ImageView
             android:id="@+id/img_forservice"
@@ -41,6 +43,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center"
+        android:id="@+id/ll_home_inservice"
         >
         <ImageView
             android:layout_width="35dp"
@@ -56,6 +59,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ll_home_pending_appointment"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
@@ -77,6 +81,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ll_home_forcollection"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
@@ -99,11 +104,13 @@
 </LinearLayout>
 
     <LinearLayout
+
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         >
         <LinearLayout
+            android:id="@+id/ll_home_quality"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
@@ -124,6 +131,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_home_return"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
@@ -144,6 +152,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_home_finished"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
@@ -165,6 +174,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_home_take"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"

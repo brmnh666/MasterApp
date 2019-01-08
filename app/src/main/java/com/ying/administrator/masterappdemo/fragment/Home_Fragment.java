@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.ying.administrator.masterappdemo.common.DefineView;
 import com.ying.administrator.masterappdemo.fragment.BaseFragment.BaseFragment;
@@ -17,7 +18,15 @@ public class Home_Fragment extends BaseFragment implements DefineView {
 
      private String mContentText;
      private View view;
-    public Home_Fragment() {
+     private LinearLayout ll_home_forservice;
+     private LinearLayout ll_home_inservice;
+     private LinearLayout ll_home_pending_appointment;
+     private LinearLayout ll_home_forcollection;
+     private LinearLayout ll_home_quality;
+     private LinearLayout ll_home_return;
+     private LinearLayout ll_home_finished;
+     private LinearLayout ll_home_take;
+     public Home_Fragment() {
         // Required empty public constructor
     }
 
@@ -53,7 +62,14 @@ public class Home_Fragment extends BaseFragment implements DefineView {
 
     @Override
     public void initView() {
-
+        ll_home_forservice=view.findViewById(R.id.ll_home_forservice);
+        ll_home_inservice=view.findViewById(R.id.ll_home_inservice);
+        ll_home_pending_appointment=view.findViewById(R.id.ll_home_pending_appointment);
+        ll_home_forcollection=view.findViewById(R.id.ll_home_forcollection);
+        ll_home_quality=view.findViewById(R.id.ll_home_quality);
+        ll_home_return=view.findViewById(R.id.ll_home_return);
+        ll_home_finished=view.findViewById(R.id.ll_home_finished);
+        ll_home_take=view.findViewById(R.id.ll_home_take);
 
 
         //显示未读消息红点
@@ -75,5 +91,36 @@ public class Home_Fragment extends BaseFragment implements DefineView {
     @Override
     public void bindData() {
 
+    }
+
+    /*自定义监听*/
+    public class CustomListnear implements View.OnClickListener{
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()){
+                case R.id.ll_home_forservice:
+                    break;
+                case R.id.ll_home_inservice:
+                    break;
+                case R.id.ll_home_pending_appointment:
+                    break;
+                case R.id.ll_home_forcollection:
+                    break;
+                case R.id.ll_home_quality:
+                    break;
+                case R.id.ll_home_return:
+                    break;
+                case R.id.ll_home_finished:
+                    break;
+                case R.id.ll_home_take:
+                    break;
+                    default:
+                        break;
+
+
+            }
+
+
+        }
     }
 }

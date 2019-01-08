@@ -7,7 +7,7 @@
     tools:targetApi="lollipop"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/cv_grabsheet"
+    android:id="@+id/cv_appointment_failure"
     android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground"
     app:cardCornerRadius="5dp"
@@ -25,26 +25,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 <ImageView
-    android:id="@+id/img_pending_appointment"
+    android:id="@+id/img_appointment_failure"
     android:layout_width="15dp"
     android:layout_height="15dp"
-    android:src="@mipmap/icon_pending_appointment"
+    android:src="@mipmap/icon_appointment_failure"
     android:layout_margin="5dp"
     />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="待预约"
+            android:text="预约不成功 订单已作废"
             android:textSize="10sp"
-            android:layout_toRightOf="@+id/img_pending_appointment"
+            android:layout_toRightOf="@+id/img_appointment_failure"
             android:layout_centerVertical="true"
-            android:textColor="@color/color_custom_01"
+            android:textColor="#AEAEAE"
             />
     <TextView
+        android:id="@+id/tv_appointment_failure_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="工单号:12124124124"
         android:layout_alignParentRight="true"
+        android:textColor="@color/color_black"
         android:textSize="10sp"
         android:layout_centerVertical="true"
         android:layout_marginRight="5dp"
@@ -69,7 +71,7 @@
     android:layout_margin="5dp"
     />
         <TextView
-            android:id="@+id/tv_loaction_appointment"
+            android:id="@+id/tv_loaction_appointment_failure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="10sp"
@@ -79,12 +81,14 @@
 
             />
 <TextView
+    android:id="@+id/tv_appointment_failure_count"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="数量:2台"
     android:textSize="10sp"
-    android:layout_toRightOf="@+id/tv_loaction_appointment"
+    android:layout_toRightOf="@+id/tv_loaction_appointment_failure"
     android:layout_centerVertical="true"
+    android:textColor="@color/color_black"
     android:layout_marginLeft="80dp"
     />
 
@@ -95,11 +99,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
-            android:id="@+id/tv_pending_appointment_status_install"
+            android:id="@+id/tv_appointment_failure_status_install"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:background="@color/color_custom_01"
+            android:background="#AEAEAE"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
             android:textSize="10sp"
@@ -107,59 +111,42 @@
             android:textColor="@color/color_white" />
 
         <TextView
-            android:id="@+id/tv_pending_appointment_status_repair"
+            android:id="@+id/tv_appointment_failure_status_repair"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:background="@color/color_custom_04"
+            android:background="#AEAEAE"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
-            android:text="维修"
+
             android:textSize="10sp"
             android:textColor="@color/color_white"
             android:visibility="invisible"
             />
         <TextView
-            android:id="@+id/tv_reason_pending_appointment"
+            android:id="@+id/tv_reason_appointment_failure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="12sp"
             android:text="热水器不通电"
-            android:textColor="@color/color_custom_01"
-           android:layout_toRightOf="@+id/tv_pending_appointment_status_repair"
+            android:textColor="#AEAEAE"
+           android:layout_toRightOf="@+id/tv_appointment_failure_status_install"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="5dp"
             />
         <TextView
-            android:id="@+id/tv_address_pending_appointment"
+            android:id="@+id/tv_address_appointment_failure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="宁波市江北区长阳路人才公寓5栋1701室"
             android:textSize="8sp"
             android:layout_marginLeft="5dp"
-            android:layout_below="@+id/tv_pending_appointment_status_repair"
+            android:layout_marginBottom="5dp"
+            android:layout_below="@+id/tv_reason_appointment_failure"
             android:layout_marginTop="8dp"
             />
-        <TextView
-            android:id="@+id/tv_pending_appointment_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="工单将于59分39秒后取消,请及时联系客户"
-            android:textSize="8sp"
-            android:textColor="@color/color_black"
-            android:layout_below="@+id/tv_address_pending_appointment"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginBottom="5dp"
 
-            />
-        <Button
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:text="电话"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
-            />
+
     </RelativeLayout>
 
     <View
@@ -170,24 +157,18 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/tv_pending_appointment_success"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="预约成功"
-            android:layout_alignParentRight="true"
-            android:textColor="@color/color_custom_01"
-                 />
 
         <TextView
-            android:id="@+id/tv_pending_appointment_failure"
+            android:id="@+id/tv_appointment_failure_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="未预约成功"
-            android:layout_toLeftOf="@+id/tv_pending_appointment_success"
+            android:text="原因: 用户电话一直无法接通"
+            android:textSize="12sp"
             android:layout_marginTop="5dp"
-            android:layout_marginRight="20dp"/>
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/color_custom_04"/>
     </RelativeLayout>
 </LinearLayout>
 

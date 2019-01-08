@@ -20,11 +20,11 @@
         android:layout_height="match_parent">
         <ImageView
             android:id="@+id/img_home_head"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"
-            android:src="@mipmap/ic_launcher_round"/>
+            android:src="@mipmap/icon_user_head"/>
         <TextView
             android:id="@+id/tv_home_username"
             android:layout_width="wrap_content"
@@ -50,11 +50,11 @@
             />
         <ImageView
             android:id="@+id/img_certification"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:src="@mipmap/ic_launcher_round"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@mipmap/icon_name_authentication"
             android:layout_toLeftOf="@+id/tv_certification"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="15dp"
             />
 <TextView
     android:id="@+id/tv_home_authentication"
@@ -70,9 +70,10 @@
         android:id="@+id/img_home_authentication"
         android:layout_width="15dp"
         android:layout_height="15dp"
-        android:src="@mipmap/ic_launcher_round"
+        android:src="@mipmap/icon_skill_certification"
         android:layout_toRightOf="@+id/tv_home_authentication"
         android:layout_below="@id/tv_home_username"
+        android:layout_marginLeft="5dp"
         />
         <TextView
             android:id="@+id/tv_home_intro"
@@ -87,9 +88,9 @@
 
         <ImageView
             android:id="@+id/img_home_location"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:src="@mipmap/ic_launcher_round"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:src="@mipmap/icon_home_location"
             android:layout_alignParentLeft="true"
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="20dp"
@@ -121,9 +122,9 @@
             />
         <ImageView
             android:id="@+id/img_order_status"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:src="@mipmap/ic_launcher_round"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:src="@mipmap/icon_order_status"
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="20dp"
             android:layout_marginBottom="10dp"

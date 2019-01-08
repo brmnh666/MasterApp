@@ -1,28 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="200dp">
+    android:layout_height="200dp"
+    android:background="#2891F0">
 <ImageView
     android:id="@+id/img_me_message"
-    android:layout_width="20dp"
-    android:layout_height="20dp"
-    android:src="@mipmap/ic_launcher_round"
+    android:layout_width="25dp"
+    android:layout_height="25dp"
+    android:src="@mipmap/icon_me_message"
     android:layout_margin="20dp"
     />
     <ImageView
         android:id="@+id/img_me_setting"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:src="@mipmap/ic_launcher_round"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@mipmap/icon_setting"
         android:layout_alignParentRight="true"
         android:layout_margin="20dp"
         />
     <ImageView
         android:id="@+id/img_me_head"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@mipmap/ic_launcher_round"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@mipmap/icon_user_head"
         android:layout_centerHorizontal="true"
+
         android:layout_marginTop="30dp"
         />
 
@@ -32,6 +34,89 @@
         android:textSize="15sp"
         android:text="可用金额(元) 0.00"
         android:layout_alignParentLeft="true"
+        android:textColor="@color/color_white"
+        android:layout_below="@+id/img_me_head"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
         />
 
+    <TextView
+        android:id="@+id/tv_me_withdraw_deposit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_white"
+        android:text="提现"
+        android:textSize="15sp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/img_me_head"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/tv_me_recharge"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+
+        />
+
+    <TextView
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:textColor="@color/color_white"
+       android:text="充值"
+       android:textSize="15sp"
+       android:layout_toLeftOf="@+id/tv_me_withdraw_deposit"
+       android:layout_below="@+id/img_me_head"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/tv_me_recharge"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+
+       />
+<!--
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/img_me_setting"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/ll_me_recommend"
+        android:padding="5dp"
+        >
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:src="@mipmap/ic_launcher_round"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:textColor="@color/color_white"
+            android:text="推荐送礼"
+            />
+    </LinearLayout>-->
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:src="@mipmap/icon_me_recommend"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/img_me_setting"
+
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="推荐送礼"
+        android:textColor="@color/color_white"
+        android:layout_below="@+id/img_me_setting"
+        android:layout_alignParentRight="true"
+        android:textSize="12sp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="6dp"
+
+        />
 </RelativeLayout>
