@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--待预约item-->
+<!--待预约item--><!--指派订单item-->
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -41,6 +41,7 @@
             android:textColor="@color/color_custom_01"
             />
     <TextView
+        android:id="@+id/tv_pending_appointment_job_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="工单号:12124124124"

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?><!--工单详情-->
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#EEEEEE">
+
+    <include layout="@layout/actionbar_receiving_layout"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <include layout="@layout/activity_order_details_content"/>
+            <include layout="@layout/activity_order_details_select_time"/>
+            <include layout="@layout/activity_order_details_add_accessories"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                android:textSize="8sp"
+                android:text="提示：如无法判断是否需要配件可不选,待上门确认后添加"/>
+
+            <include layout="@layout/activity_order_details_add_service"/>
+
+            <include layout="@layout/activity_order_details_application_for_remote_fee"/>
+            <include layout="@layout/activity_order_details_add_back"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="60dp"/>
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>
+
+  <RelativeLayout
+      android:layout_alignParentBottom="true"
+      android:layout_width="match_parent"
+      android:layout_height="60dp"
+      android:background="@color/color_white">
+
+      <TextView
+          android:layout_centerVertical="true"
+          android:layout_marginLeft="20dp"
+          android:id="@+id/tv_order_details_money_txt"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textColor="@color/color_black"
+          android:textSize="15sp"
+          android:text="服务金额: "
+          />
+
+      <TextView
+          android:layout_centerVertical="true"
+          android:layout_marginLeft="10dp"
+          android:id="@+id/tv_order_details_money"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textColor="@color/color_custom_04"
+          android:layout_toRightOf="@+id/tv_order_details_money_txt"
+          android:textSize="15sp"
+          android:text="¥0.00"
+
+          />
+
+     <TextView
+
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="提  交"
+         android:textColor="@color/color_white"
+         android:textSize="15sp"
+         android:background="@color/color_custom_01"
+         android:layout_alignParentRight="true"
+         android:layout_centerVertical="true"
+         android:paddingRight="20dp"
+         android:paddingLeft="20dp"
+         android:paddingTop="5dp"
+         android:paddingBottom="5dp"
+         android:layout_marginRight="20dp"
+         />
+
+  </RelativeLayout>
+</RelativeLayout>

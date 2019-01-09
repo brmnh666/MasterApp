@@ -12,7 +12,7 @@
     android:orientation="horizontal"
     android:gravity="center"
     >
-    <TextView
+   <!-- <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="5dp"
@@ -33,7 +33,39 @@
         android:clickable="true"
         android:text="预约不成功"
         />
+-->
+    <RadioGroup
 
+        android:id="@+id/tabs_received_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="#ffffff"
+        android:orientation="horizontal"
+        >
+
+
+        <RadioButton
+            android:id="@+id/rb_pending_appointment"
+            style="@style/Custom.TabRadioButton"
+            android:background="@color/transparent"
+            android:checked="true"
+            android:text="待预约" />
+
+
+        <RadioButton
+            android:id="@+id/rb_have_appointment"
+            style="@style/Custom.TabRadioButton"
+            android:background="@color/transparent"
+            android:text="已预约" />
+
+        <RadioButton
+            android:id="@+id/rb_appointment_failure"
+            style="@style/Custom.TabRadioButton"
+            android:background="@color/transparent"
+            android:text="预约不成功" />
+
+    </RadioGroup>
 </LinearLayout>
 
     <!--接单-->

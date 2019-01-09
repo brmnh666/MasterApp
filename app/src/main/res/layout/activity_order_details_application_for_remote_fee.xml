@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?><!--申请远程费-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/ll_order_details_shape"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginTop="10dp"
+    android:orientation="vertical"
+    >
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+    <TextView
+android:layout_gravity="center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="申请远程费"
+        android:textColor="@color/color_black"
+        android:textSize="15sp"
+        android:layout_marginLeft="5dp"
+        />
+    <RadioGroup
+
+        android:gravity="right"
+        android:id="@+id/rg_order_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:layout_marginRight="5dp"
+
+        >
+
+        <RadioButton
+
+            android:id="@+id/rb_order_details_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_black"
+            android:text="否"
+            android:textSize="12sp"
+            />
+
+        <RadioButton
+            android:id="@+id/rb_order_details_yes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_black"
+            android:text="是"
+            android:textSize="12sp"/>
+    </RadioGroup>
+
+</LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_custom_08"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="5dp">
+         <TextView
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="已超出正常服务范围"
+             android:textColor="@color/color_black"
+             android:textSize="10sp"
+             />
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:src="@mipmap/icon_loaction"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12Km"
+            android:textSize="10sp"
+            android:textColor="@color/color_custom_04"
+            />
+<TextView
+    android:layout_weight="1"
+    android:gravity="right"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="距离有误"
+    android:textColor="@color/color_black"
+    android:textSize="10sp"
+    />
+        <TextView
+            android:layout_weight="1"
+            android:gravity="right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="确认"
+            android:textSize="10sp"
+            android:textColor="@color/color_black"
+            android:layout_marginRight="5dp"
+            />
+
+    </LinearLayout>
+<View
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="@color/color_custom_08"
+    />
+
+    <LinearLayout
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@mipmap/ic_launcher"/>
+        <ImageView
+            android:layout_marginLeft="10dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@mipmap/ic_launcher"/>
+        <LinearLayout
+            android:gravity="right"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="请输入超出公里数:"
+                android:textColor="@color/color_black"
+                android:textSize="10sp"
+                />
+            <EditText
+
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_black"
+                android:background="@null"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

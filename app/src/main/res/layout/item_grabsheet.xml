@@ -179,13 +179,23 @@
                />
      <TextView
          android:id="@+id/tv_loaction"
-         android:layout_width="match_parent"
+         android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:textSize="10sp"
          android:text="距离13.74Km"
          android:layout_marginTop="10dp"
          />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="数量:2台"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:textSize="10sp"
+                />
+
         </LinearLayout>
+
         <TextView
             android:id="@+id/tv_reason"
             android:layout_width="match_parent"
@@ -193,7 +203,7 @@
             android:textSize="15sp"
             android:text="热水器不通电"
             android:textColor="@color/color_custom_01"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:layout_marginLeft="20dp"
             />
       <TextView

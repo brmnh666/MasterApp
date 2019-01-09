@@ -34,7 +34,7 @@ public class Grabsheet_Fragement extends BaseFragment implements DefineView {
      view=inflater.inflate(R.layout.fragment_grabsheet,container,false);
      initView();
 
-        recyclerView=view.findViewById(R.id.recyclerview);
+        recyclerView=view.findViewById(R.id.recyclerview_grabsheet);
 
         list=new ArrayList<>();
         GrabSheet_Entity a =new GrabSheet_Entity();

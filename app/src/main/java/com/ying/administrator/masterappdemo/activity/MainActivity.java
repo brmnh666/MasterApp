@@ -45,6 +45,7 @@ public class MainActivity extends BaseActivity implements DefineView {
                 // 具体的fragment切换逻辑可以根据应用调整，例如使用show()/hide()
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         mFragmentSparseArray.get(checkedId)).commit();
+
             }
         });
         // 默认显示第一个
@@ -56,6 +57,7 @@ public class MainActivity extends BaseActivity implements DefineView {
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, Order_Receiving_Activity.class));
             }
+
         });
 
         //显示未读消息红点

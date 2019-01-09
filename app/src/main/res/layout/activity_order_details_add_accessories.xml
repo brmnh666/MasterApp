@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?><!--添加配件-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/ll_order_details_shape"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginTop="10dp"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center|top">
+        <RadioGroup
+            android:id="@+id/rg_order_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+
+            <RadioButton
+                android:id="@+id/rb_order_details_manufacturer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="厂家寄件申请"
+                android:textColor="@color/color_black"
+                android:textSize="12sp"
+                />
+
+            <RadioButton
+                android:id="@+id/rb_order_details_oneself"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_black"
+                android:text="自购件申请"
+                android:textSize="12sp"/>
+        </RadioGroup>
+
+    </LinearLayout>
+<View
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="@color/color_custom_08"/>
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.RecyclerView>
+    <TextView
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="添加配件"
+        android:textColor="@color/color_black"
+        android:textSize="15sp"
+        android:layout_margin="5dp"
+        />
+</LinearLayout>
