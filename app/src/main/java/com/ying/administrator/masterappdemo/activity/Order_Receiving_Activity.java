@@ -95,6 +95,7 @@ public class Order_Receiving_Activity extends AppCompatActivity implements Defin
         /*显示哪一个fragment*/
         String intent = getIntent().getStringExtra("intent");
         switch (intent){
+
             case "grab_sheet":
             receiving_viewpager.setCurrentItem(0); //抢单页面
                 break;
@@ -112,8 +113,8 @@ public class Order_Receiving_Activity extends AppCompatActivity implements Defin
             case "return"://待返件
                 receiving_viewpager.setCurrentItem(4);
              break;
-default:
-    break;
+            default:
+             break;
         }
 
 
