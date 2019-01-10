@@ -55,7 +55,9 @@ public class MainActivity extends BaseActivity implements DefineView {
         findViewById(R.id.receiving).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, Order_Receiving_Activity.class));
+                Intent intent=new Intent(MainActivity.this, Order_Receiving_Activity.class);
+                intent.putExtra("intent","grab_sheet");
+                startActivity(intent);
             }
 
         });

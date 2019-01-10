@@ -9,6 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.ying.administrator.masterappdemo.adapter.GrabsheetAdapter;
 import com.ying.administrator.masterappdemo.common.DefineView;
 import com.ying.administrator.masterappdemo.entity.GrabSheet_Entity;
@@ -27,6 +30,7 @@ public class Grabsheet_Fragement extends BaseFragment implements DefineView {
     private RecyclerView recyclerView;
     private GrabsheetAdapter grabsheetAdapter;
     private List<GrabSheet_Entity> list;
+    private RefreshLayout mRefreshLayout;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -37,33 +41,71 @@ public class Grabsheet_Fragement extends BaseFragment implements DefineView {
         recyclerView=view.findViewById(R.id.recyclerview_grabsheet);
 
         list=new ArrayList<>();
-        GrabSheet_Entity a =new GrabSheet_Entity();
-        a.setTime("40分钟前");
-        a.setUsername("余姚白衣电器");
-        a.setDistance("距离 37.85KM");
-        a.setReason("热水器不通电");
-        a.setAddress("宁波市江北区长阳路人才公寓5栋1702室");
-        GrabSheet_Entity b =new GrabSheet_Entity();
-        b.setTime("30分钟前");
-        b.setUsername("余姚电器");
-        b.setDistance("距离 31.85KM");
-        b.setReason("热水器不通电");
-        b.setAddress("宁波市江北区长阳路人才公寓5栋1701室");
 
-        GrabSheet_Entity c =new GrabSheet_Entity();
-        c.setTime("30分钟前");
-        c.setUsername("余姚电器");
-        c.setDistance("距离 31.85KM");
-        c.setReason("热水器不通电");
-        c.setAddress("宁波市江北区长阳路人才公寓5栋1701室");
-
-        list.add(a);
-        list.add(b);
-        list.add(c);
+        for (int i=0;i<2;i++){
+            GrabSheet_Entity a =new GrabSheet_Entity();
+            a.setTime("40分钟前");
+            a.setUsername("余姚白衣电器");
+            a.setDistance("距离 37.85KM");
+            a.setReason("热水器不通电");
+            a.setAddress("宁波市江北区长阳路人才公寓5栋1702室");
+            list.add(a);
+        }
         grabsheetAdapter=new GrabsheetAdapter(R.layout.item_grabsheet,list);
         recyclerView.setAdapter(grabsheetAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        mRefreshLayout=view.findViewById(R.id.refreshLayout);
+
+        //刷新
+        mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+
+                    GrabSheet_Entity a =new GrabSheet_Entity();
+                    a.setTime("10分钟前");
+                    a.setUsername("余姚白衣电器");
+                    a.setDistance("距离 37.85KM");
+                    a.setReason("热水器不通电");
+                    a.setAddress("宁波市江北区长阳路人才公寓5栋1702室");
+                GrabSheet_Entity b =new GrabSheet_Entity();
+                b.setTime("10分钟前");
+                b.setUsername("余姚白衣电器");
+                b.setDistance("距离 37.85KM");
+                b.setReason("热水器不通电");
+                b.setAddress("宁波市江北区长阳路人才公寓5栋1702室");
+                GrabSheet_Entity c =new GrabSheet_Entity();
+                c.setTime("10分钟前");
+                c.setUsername("余姚白衣电器");
+                c.setDistance("距离 37.85KM");
+                c.setReason("热水器不通电");
+                c.setAddress("宁波市江北区长阳路人才公寓5栋1702室");
+                list.add(0,a);
+                list.add(0,b);
+                list.add(0,c);
+
+             grabsheetAdapter.notifyDataSetChanged();
+             refreshlayout.finishRefresh();
+
+            }
+        });
+        //加载更多
+        mRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
+            @Override
+            public void onLoadmore(RefreshLayout refreshlayout) {
+                for (int i=0;i<2;i++){
+                    GrabSheet_Entity a =new GrabSheet_Entity();
+                    a.setTime("20分钟前");
+                    a.setUsername("余姚白衣电器");
+                    a.setDistance("距离 37.85KM");
+                    a.setReason("热水器不通电");
+                    a.setAddress("宁波市江北区长阳路人才公寓5栋1702室");
+                    list.add(a);
+                }
+                grabsheetAdapter.notifyDataSetChanged();
+                refreshlayout.finishLoadmore();
+            }
+        });
     }
     return view;
     }

@@ -12,8 +12,9 @@
     android:layout_weight="1"
     android:orientation="horizontal"
     >
+    <!--已预约-->
     <LinearLayout
-        android:id="@+id/ll_home_forservice"
+        android:id="@+id/ll_home_have_appointment"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
@@ -22,16 +23,15 @@
 
         >
         <ImageView
-            android:id="@+id/img_forservice"
+            android:id="@+id/img_home_have_appointment"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:src="@mipmap/icon_forservice"
-            android:clickable="true"
             />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="待服务"
+            android:text="已预约"
             android:gravity="center"
             android:layout_marginTop="5dp"
             />

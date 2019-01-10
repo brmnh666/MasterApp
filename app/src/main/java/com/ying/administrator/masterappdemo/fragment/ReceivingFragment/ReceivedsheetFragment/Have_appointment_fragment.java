@@ -27,7 +27,11 @@ public class Have_appointment_fragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 if (view==null){
     view=inflater.inflate(R.layout.fragment_have_appointment,container,false);
+
+
+
 }
 return view;
-    }
+
+ }
 }

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><!--第一次工单详情-->
+<?xml version="1.0" encoding="utf-8"?><!--第二次工单详情-->
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -19,7 +19,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
             <include layout="@layout/activity_order_details_content"/>
-            <include layout="@layout/activity_order_details_select_time"/>
             <include layout="@layout/activity_order_details_add_accessories"/>
             <TextView
                 android:layout_width="match_parent"
@@ -33,8 +32,8 @@
 
             <include layout="@layout/activity_order_details_add_service"/>
 
-            <include layout="@layout/activity_order_details_application_for_remote_fee"/>
-            <include layout="@layout/activity_order_details_add_back"/>
+<include layout="@layout/activity_order_details_leave_message"/>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="60dp"/>

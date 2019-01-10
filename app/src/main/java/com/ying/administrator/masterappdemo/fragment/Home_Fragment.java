@@ -1,15 +1,19 @@
 package com.ying.administrator.masterappdemo.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.ying.administrator.masterappdemo.activity.Order_Receiving_Activity;
 import com.ying.administrator.masterappdemo.common.DefineView;
 import com.ying.administrator.masterappdemo.fragment.BaseFragment.BaseFragment;
 import com.ying.administrator.masterappdemo.R;
+import com.ying.administrator.masterappdemo.fragment.ReceivingFragment.ReceivedsheetFragment.Pending_appointment_fragment;
 import com.ying.administrator.masterappdemo.widget.BadgeView;
 
 public class Home_Fragment extends BaseFragment implements DefineView {
@@ -18,7 +22,7 @@ public class Home_Fragment extends BaseFragment implements DefineView {
 
      private String mContentText;
      private View view;
-     private LinearLayout ll_home_forservice;
+     private LinearLayout ll_home_have_appointment;//已预约
      private LinearLayout ll_home_inservice;
      private LinearLayout ll_home_pending_appointment;
      private LinearLayout ll_home_forcollection;
@@ -55,6 +59,8 @@ public class Home_Fragment extends BaseFragment implements DefineView {
             view = inflater.inflate(R.layout.fragment_home, container, false);
             Log.d("ying","调用了onCreateView");
             initView();
+            initListener();
+
         }
 
         return view;
@@ -62,7 +68,7 @@ public class Home_Fragment extends BaseFragment implements DefineView {
 
     @Override
     public void initView() {
-        ll_home_forservice=view.findViewById(R.id.ll_home_forservice);
+        ll_home_have_appointment=view.findViewById(R.id.ll_home_have_appointment);
         ll_home_inservice=view.findViewById(R.id.ll_home_inservice);
         ll_home_pending_appointment=view.findViewById(R.id.ll_home_pending_appointment);
         ll_home_forcollection=view.findViewById(R.id.ll_home_forcollection);
@@ -72,10 +78,6 @@ public class Home_Fragment extends BaseFragment implements DefineView {
         ll_home_take=view.findViewById(R.id.ll_home_take);
 
 
-        //显示未读消息红点
-        BadgeView badgeView =new BadgeView(getContext());
-        badgeView.setTargetView(view.findViewById(R.id.img_forservice));
-        badgeView.setBadgeCount(8);
     }
 
     @Override
@@ -85,6 +87,15 @@ public class Home_Fragment extends BaseFragment implements DefineView {
 
     @Override
     public void initListener() {
+        ll_home_have_appointment.setOnClickListener(new CustomListnear());
+        ll_home_inservice.setOnClickListener(new CustomListnear());
+        ll_home_pending_appointment.setOnClickListener(new CustomListnear());
+        ll_home_forcollection.setOnClickListener(new CustomListnear());
+        ll_home_quality.setOnClickListener(new CustomListnear());
+        ll_home_return.setOnClickListener(new CustomListnear());
+        ll_home_finished.setOnClickListener(new CustomListnear());
+        ll_home_take.setOnClickListener(new CustomListnear());
+
 
     }
 
@@ -98,17 +109,30 @@ public class Home_Fragment extends BaseFragment implements DefineView {
         @Override
         public void onClick(View v) {
             switch (v.getId()){
-                case R.id.ll_home_forservice:
+                case R.id.ll_home_have_appointment://已预约
+                    Intent intent =new Intent(getActivity(),Order_Receiving_Activity.class);
+                    intent.putExtra("intent","have_appointment");
+                    startActivity(intent);
+
                     break;
-                case R.id.ll_home_inservice:
+                case R.id.ll_home_inservice:  //服务中
+                    Intent intent1=new Intent(getActivity(),Order_Receiving_Activity.class);
+                    intent1.putExtra("intent","in_service");
+                    startActivity(intent1);
                     break;
-                case R.id.ll_home_pending_appointment:
+                case R.id.ll_home_pending_appointment: //待预约
+                    Intent intent2=new Intent(getActivity(),Order_Receiving_Activity.class);
+                    intent2.putExtra("intent","pending_appointment");
+                    startActivity(intent2);
                     break;
                 case R.id.ll_home_forcollection:
                     break;
                 case R.id.ll_home_quality:
                     break;
-                case R.id.ll_home_return:
+                case R.id.ll_home_return://待返件
+                    Intent intent5=new Intent(getActivity(),Order_Receiving_Activity.class);
+                    intent5.putExtra("intent","return");
+                    startActivity(intent5);
                     break;
                 case R.id.ll_home_finished:
                     break;

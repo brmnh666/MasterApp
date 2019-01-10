@@ -92,6 +92,30 @@ public class Order_Receiving_Activity extends AppCompatActivity implements Defin
         tab_Receiving_layout.setupWithViewPager(receiving_viewpager);
 
         receiving_viewpager.setCurrentItem(0);//默认第一个
+        /*显示哪一个fragment*/
+        String intent = getIntent().getStringExtra("intent");
+        switch (intent){
+            case "grab_sheet":
+            receiving_viewpager.setCurrentItem(0); //抢单页面
+                break;
+            case "have_appointment":  //已预约界面
+            receiving_viewpager.setCurrentItem(1);//显示已接订单
+               break;
+            case "in_service":  //服务中
+               receiving_viewpager.setCurrentItem(2);
+            break;
+
+            case "pending_appointment"://待预约
+                receiving_viewpager.setCurrentItem(1); //显示已接订单
+                break;
+
+            case "return"://待返件
+                receiving_viewpager.setCurrentItem(4);
+             break;
+default:
+    break;
+        }
+
 
 
     }
