@@ -34,4 +34,10 @@
         <item name="android:statusBarColor">@color/color_custom_01</item>
     </style>
 
+    <style name="RadioButtonStyles">
+
+        <item name="android:button">@drawable/radio_button_selector</item>
+
+    </style>
+
 </resources>
