@@ -13,7 +13,7 @@
         app:srlEnablePreviewInEditMode="true"
         >
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerview_grabsheet"
+        android:id="@+id/recyclerview_order_receiving"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
