@@ -1,25 +1,32 @@
 package com.ying.administrator.masterappdemo.fragment;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ying.administrator.masterappdemo.activity.Order_Receiving_Activity;
+import com.ying.administrator.masterappdemo.activity.Verified_Activity;
 import com.ying.administrator.masterappdemo.common.DefineView;
 import com.ying.administrator.masterappdemo.fragment.BaseFragment.BaseFragment;
 import com.ying.administrator.masterappdemo.R;
-import com.ying.administrator.masterappdemo.fragment.ReceivingFragment.ReceivedsheetFragment.Pending_appointment_fragment;
-import com.ying.administrator.masterappdemo.widget.BadgeView;
+import com.ying.administrator.masterappdemo.widget.CustomDialog;
+
+import jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout;
 
 public class Home_Fragment extends BaseFragment implements DefineView {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_SHOW_TEXT = "text";
 
+    private WaveSwipeRefreshLayout mWaveSwipeRefreshLayout;
      private String mContentText;
      private View view;
      private LinearLayout ll_home_have_appointment;//已预约
@@ -30,6 +37,8 @@ public class Home_Fragment extends BaseFragment implements DefineView {
      private LinearLayout ll_home_return;
      private LinearLayout ll_home_finished;
      private LinearLayout ll_home_take;
+
+     private TextView tv_certification;
      public Home_Fragment() {
         // Required empty public constructor
     }
@@ -76,6 +85,8 @@ public class Home_Fragment extends BaseFragment implements DefineView {
         ll_home_return=view.findViewById(R.id.ll_home_return);
         ll_home_finished=view.findViewById(R.id.ll_home_finished);
         ll_home_take=view.findViewById(R.id.ll_home_take);
+        tv_certification=view.findViewById(R.id.tv_certification);
+        mWaveSwipeRefreshLayout=view.findViewById(R.id.home_swipe);
 
 
     }
@@ -95,6 +106,15 @@ public class Home_Fragment extends BaseFragment implements DefineView {
         ll_home_return.setOnClickListener(new CustomListnear());
         ll_home_finished.setOnClickListener(new CustomListnear());
         ll_home_take.setOnClickListener(new CustomListnear());
+       //实名认证
+        tv_certification.setOnClickListener(new CustomListnear());
+         //下拉刷新
+        mWaveSwipeRefreshLayout.setOnRefreshListener(new WaveSwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Task().execute();
+            }
+        });
 
 
     }
@@ -138,6 +158,40 @@ public class Home_Fragment extends BaseFragment implements DefineView {
                     break;
                 case R.id.ll_home_take:
                     break;
+
+                case R.id.tv_certification:
+
+                    final CustomDialog customDialog=new CustomDialog(getContext());
+
+                    customDialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+                    customDialog.setTitle("实名认证");
+                    customDialog.show();
+
+                    customDialog.setYesOnclickListener("确定", new CustomDialog.onYesOnclickListener() {
+                        @Override
+                        public void onYesClick() {
+                            //Toast.makeText(getContext(), "点击了--去认证--按钮", Toast.LENGTH_LONG).show();
+                            customDialog.dismiss();
+                            startActivity(new Intent(getActivity(),Verified_Activity.class));
+                        }
+                    });
+
+                    customDialog.setNoOnclickListener("取消", new CustomDialog.onNoOnclickListener() {
+                        @Override
+                        public void onNoClick() {
+                            //Toast.makeText(getContext(), "点击了--再想想--按钮", Toast.LENGTH_LONG).show();
+                            customDialog.dismiss();
+                        }
+                    });
+
+                    customDialog.setNoOnclickListener("取消", new CustomDialog.onNoOnclickListener() {
+                        @Override
+                        public void onNoClick() {
+                           // Toast.makeText(getContext(), "点击了--关闭-按钮", Toast.LENGTH_LONG).show();
+                            customDialog.dismiss();
+                        }
+                    });
+                    break;
                     default:
                         break;
 
@@ -145,6 +199,25 @@ public class Home_Fragment extends BaseFragment implements DefineView {
             }
 
 
+        }
+    }
+
+
+    private class Task extends AsyncTask<Void, Void, String[]> {
+        @Override
+        protected String[] doInBackground(Void... voids) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return new String[0];
+        }
+
+        @Override protected void onPostExecute(String[] result) {
+            // Call setRefreshing(false) when the list has been refreshed.
+            mWaveSwipeRefreshLayout.setRefreshing(false);
+            super.onPostExecute(result);
         }
     }
 }

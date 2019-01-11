@@ -14,7 +14,7 @@
     app:cardCornerRadius="5dp"
     app:cardUseCompatPadding="true"
     app:cardPreventCornerOverlap="false"
-    app:cardElevation="10dp"
+    app:cardElevation="5dp"
     >
 
         <LinearLayout
@@ -42,7 +42,7 @@
                 android:background="@color/color_custom_01"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
-                android:textSize="10sp"
+                android:textSize="12sp"
                 android:text="安装"
                 android:textColor="@color/color_white" />
 
@@ -56,77 +56,11 @@
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:text="维修"
-                android:textSize="10sp"
+                android:textSize="12sp"
                 android:textColor="@color/color_white"
                 android:visibility="invisible"
                 />
-            <TextView
-                android:id="@+id/tv_factory_online_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="10dp"
-                android:textSize="10sp"
-                android:text="工厂在线" />
 
-            <ImageView
-                android:id="@+id/img_factory_online_status"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_centerInParent="true"
-                android:layout_toLeftOf="@+id/tv_factory_online_status"
-                android:src="@mipmap/icon_kefu"
-                android:visibility="invisible"
-                />
-
-            <ImageView
-                android:id="@+id/img_factory_offline_status"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_centerInParent="true"
-                android:layout_toLeftOf="@+id/tv_factory_online_status"
-                android:src="@mipmap/icon_offline" />
-            <TextView
-                android:id="@+id/tv_authentication"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_toLeftOf="@+id/img_factory_online_status"
-                android:textSize="10sp"
-                android:text="已认证"
-                android:textColor="@color/color_black"
-                />
-
-            <TextView
-                android:id="@+id/tv_grabsheet_point"
-                android:layout_width="8dp"
-                android:layout_height="8dp"
-                android:layout_centerInParent="true"
-                android:layout_toLeftOf="@+id/tv_authentication"
-                android:background="@color/color_custom_01" />
-
-            <TextView
-                android:id="@+id/tv_phone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_toLeftOf="@+id/tv_grabsheet_point"
-                android:textSize="10sp"
-                android:text="拨打电话">
-            </TextView>
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_centerInParent="true"
-                android:layout_toLeftOf="@+id/tv_phone"
-                android:src="@mipmap/icon_phone" />
         </RelativeLayout>
             <View
                 android:layout_width="match_parent"
@@ -136,29 +70,7 @@
     android:layout_width="match_parent"
     android:layout_height="100dp"
     android:orientation="horizontal">
-<LinearLayout
-    android:layout_width="0dp"
-    android:layout_weight="2"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical">
 
-    <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@mipmap/ic_launcher_round"
-        />
-    <TextView
-       android:gravity="center"
-        android:id="@+id/tv_username"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="阿萨斯大所大多asdasdasfasfa"
-        android:textSize="10sp"
-
-        />
-
-</LinearLayout>
 
     <LinearLayout
         android:layout_width="0dp"
@@ -172,8 +84,8 @@
             android:orientation="horizontal">
             <ImageView
                 android:src="@mipmap/icon_loaction"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
                />
@@ -181,7 +93,7 @@
          android:id="@+id/tv_loaction"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:textSize="10sp"
+         android:textSize="12sp"
          android:text="距离13.74Km"
          android:layout_marginTop="10dp"
          />
@@ -190,8 +102,8 @@
                 android:layout_height="wrap_content"
                 android:text="数量:2台"
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:textSize="10sp"
+                android:layout_marginLeft="40dp"
+                android:textSize="12sp"
                 />
 
         </LinearLayout>
@@ -200,7 +112,7 @@
             android:id="@+id/tv_reason"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
+            android:textSize="18sp"
             android:text="热水器不通电"
             android:textColor="@color/color_custom_01"
             android:layout_marginTop="10dp"
@@ -210,8 +122,8 @@
     android:id="@+id/tv_address"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="宁波市江北区长阳路人才公寓5栋1701室asfasfasfasgagsahethttttttttttttttttttttt"
-    android:textSize="10sp"
+    android:text="宁波市江北区长阳路人才公寓5栋1701室asfasfattttttt"
+    android:textSize="12sp"
     android:layout_marginLeft="20dp"
     />
 
@@ -220,7 +132,7 @@
 
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_weight="2"
+        android:layout_weight="1"
         android:layout_height="match_parent"
         android:gravity="center">
 
@@ -232,6 +144,7 @@
             android:text="抢单"
             android:textSize="20sp"
             android:textColor="@color/color_white"
+            android:layout_marginRight="5dp"
             />
 
     </LinearLayout>
@@ -263,7 +176,7 @@
                 android:layout_centerInParent="true"
                 android:layout_toRightOf="@+id/img_share"
                 android:text="推荐师傅入驻接此单最低奖励20元"
-                android:textSize="10sp" />
+                android:textSize="12sp" />
         </RelativeLayout>
 
 

@@ -11,11 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activity.MainActivity"  android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".activity.Order_Receiving_Activity"
             android:theme="@style/AppTheme.Receicing">
@@ -28,6 +24,19 @@
 
         <!--工单详情-->
         <activity android:name=".activity.Order_details_Activity" android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+
+        <activity android:name=".activity.Verified_Activity" android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+        <!--引导页-->
+        <activity android:name=".activity.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
         </activity>
     </application>

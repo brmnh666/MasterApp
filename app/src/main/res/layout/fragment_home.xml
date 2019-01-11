@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout
+<jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/home_swipe"
+    >
+<LinearLayout
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -9,7 +14,7 @@
     >
 <RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="220dp">
+    android:layout_height="230dp">
 
     <include layout="@layout/actionbar_home_layout"/>
 
@@ -36,3 +41,4 @@
         android:layout_height="50dp"
         />
 </LinearLayout>
+</jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout>

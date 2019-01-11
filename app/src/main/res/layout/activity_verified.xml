@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F0F0F0"
     android:orientation="vertical">
+
 
     <ScrollView
         android:layout_width="match_parent"
@@ -331,16 +333,16 @@
 
                     <LinearLayout
                         android:id="@+id/positive_ll"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
                         android:layout_marginLeft="5dp"
                         android:background="@drawable/gray_shape"
                         android:gravity="center"
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="75dp"
-                            android:layout_height="65dp"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
                             android:src="@mipmap/photo" />
 
                         <TextView
@@ -353,16 +355,16 @@
 
                     <LinearLayout
                         android:id="@+id/negative_ll"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
                         android:layout_marginLeft="20dp"
                         android:background="@drawable/gray_shape"
                         android:gravity="center"
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="75dp"
-                            android:layout_height="65dp"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
                             android:src="@mipmap/photo" />
 
                         <TextView
@@ -375,16 +377,16 @@
 
                     <LinearLayout
                         android:id="@+id/handheld_ll"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
                         android:layout_marginLeft="20dp"
                         android:background="@drawable/gray_shape"
                         android:gravity="center"
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="75dp"
-                            android:layout_height="65dp"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
                             android:src="@mipmap/photo" />
 
                         <TextView
@@ -408,6 +410,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="35dp"
                 android:layout_marginRight="15dp"
+                android:layout_marginBottom="20dp"
                 android:background="@drawable/btn_verified"
                 android:text="提交申请"
                 android:textColor="@color/color_white"

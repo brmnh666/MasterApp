@@ -47,13 +47,13 @@ public class Pending_appointment_fragment extends BaseFragment implements Define
     recyclerView=view.findViewById(R.id.recyclerview_order_receiving);
 
     Pending_Appointment_Entity a=new Pending_Appointment_Entity();
-    a.setJob_number("12312412412");
-    a.setAddress("asadasfasf");
+    a.setJob_number("工单号:123124124112122");
+    a.setAddress("宁波市江北区长阳路人才公寓5栋1702室");
 
         list=new ArrayList<>();
         Pending_Appointment_Entity b=new Pending_Appointment_Entity();
-        b.setJob_number("24124124124");
-        b.setAddress("wqwrqwtqwegwe");
+        b.setJob_number("工单号:123124124112122");
+        b.setAddress("宁波市江北区长阳路人才公寓5栋1702室");
         list.add(a);
         list.add(b);
         pending_appointment_adapter=new Pending_Appointment_Adapter(R.layout.item_pending_appointment,list);
