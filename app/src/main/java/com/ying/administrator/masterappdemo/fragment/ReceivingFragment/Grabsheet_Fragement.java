@@ -35,10 +35,10 @@ public class Grabsheet_Fragement extends BaseFragment implements DefineView {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
     if (view==null){
-     view=inflater.inflate(R.layout.fragment_grabsheet,container,false);
+     view=inflater.inflate(R.layout.fragment_order_receiving,container,false);
      initView();
 
-        recyclerView=view.findViewById(R.id.recyclerview_grabsheet);
+        recyclerView=view.findViewById(R.id.recyclerview_order_receiving);
 
         list=new ArrayList<>();
 

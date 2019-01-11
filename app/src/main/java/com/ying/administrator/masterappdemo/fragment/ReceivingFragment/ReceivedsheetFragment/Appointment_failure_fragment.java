@@ -27,7 +27,7 @@ public class Appointment_failure_fragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
      if (view==null){
-       view=inflater.inflate(R.layout.fragment_appointment_failure,container,false);
+       view=inflater.inflate(R.layout.fragment_order_receiving,container,false);
 
      }
      return view;

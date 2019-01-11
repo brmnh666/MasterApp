@@ -35,7 +35,7 @@ public class Pending_appointment_fragment extends BaseFragment implements Define
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
        if (view==null){
-         view=inflater.inflate(R.layout.fragment_pending_appointment,container,false);
+         view=inflater.inflate(R.layout.fragment_order_receiving,container,false);
            initView();
 
        }
@@ -44,7 +44,7 @@ public class Pending_appointment_fragment extends BaseFragment implements Define
 
     @Override
     public void initView() {
-    recyclerView=view.findViewById(R.id.recyclerview_pending_appointment);
+    recyclerView=view.findViewById(R.id.recyclerview_order_receiving);
 
     Pending_Appointment_Entity a=new Pending_Appointment_Entity();
     a.setJob_number("12312412412");

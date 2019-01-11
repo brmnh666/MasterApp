@@ -68,7 +68,7 @@ public class Receivedsheet_Fragement extends BaseFragment implements DefineView 
                 rb_have_appointment.setChecked(true);
                 break;
             case "appointment_failure":
-                //显示失败
+                //显示预约失败
                 getChildFragmentManager().beginTransaction().add(R.id.fragment_received_container,mFragmentSparseArray.get(R.id.rb_appointment_failure)).commit();
                 break;
 
