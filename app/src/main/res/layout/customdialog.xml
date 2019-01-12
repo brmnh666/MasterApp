@@ -14,11 +14,10 @@
         android:background="@drawable/dialog_bg"
         >
 
-    <ImageView
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:background="@mipmap/icon_authentication_head"
-        />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/icon_authentication_head" />
 
 
         <TextView
@@ -31,13 +30,13 @@
             android:gravity="center"
             android:text="实名认证"
             android:textColor="#0088FF"
-            android:textSize="25sp" />
+            android:textSize="30sp" />
 
         <TextView
             android:id="@+id/message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
+            android:textSize="16sp"
             android:textColor="#808080"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
@@ -51,7 +50,7 @@
                  android:gravity="center"
                  android:text="好的,去认证"
                  android:textColor="#ffffff"
-                 android:textSize="20sp"
+                 android:textSize="18sp"
                  android:background="@drawable/tv_confirm_bg"
                  android:layout_marginLeft="20dp"
                  android:layout_marginRight="20dp"
@@ -67,7 +66,7 @@
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:text="再想想"
-                   android:textSize="18sp"
+                   android:textSize="15sp"
                    android:textColor="#A4A4A4"
                    />
     </LinearLayout>

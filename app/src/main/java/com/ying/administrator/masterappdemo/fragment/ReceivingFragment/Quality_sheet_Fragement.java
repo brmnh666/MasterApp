@@ -12,9 +12,9 @@ import com.ying.administrator.masterappdemo.fragment.BaseFragment.BaseFragment;
 import com.ying.administrator.masterappdemo.R;
 
 /*
-* 指派订单页面
+* 质保订单页面
 * */
-public class Appointedsheet_Fragement extends BaseFragment implements DefineView {
+public class Quality_sheet_Fragement extends BaseFragment implements DefineView {
     private View view;
 
     @Nullable

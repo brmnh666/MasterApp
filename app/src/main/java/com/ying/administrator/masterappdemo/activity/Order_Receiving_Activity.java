@@ -10,7 +10,7 @@ import android.view.Window;
 import android.widget.LinearLayout;
 
 import com.ying.administrator.masterappdemo.common.DefineView;
-import com.ying.administrator.masterappdemo.fragment.ReceivingFragment.Appointedsheet_Fragement;
+import com.ying.administrator.masterappdemo.fragment.ReceivingFragment.Quality_sheet_Fragement;
 import com.ying.administrator.masterappdemo.fragment.ReceivingFragment.Grabsheet_Fragement;
 import com.ying.administrator.masterappdemo.fragment.ReceivingFragment.InService_Fragement;
 import com.ying.administrator.masterappdemo.fragment.ReceivingFragment.Receivedsheet_Fragement;
@@ -32,7 +32,7 @@ public class Order_Receiving_Activity extends AppCompatActivity implements Defin
      private Grabsheet_Fragement grabsheet_fragement;
      private Receivedsheet_Fragement receivedsheet_fragement;
      private InService_Fragement inService_fragement;
-     private Appointedsheet_Fragement appointedsheet_fragement;
+     private InService_Fragement quality_sheet_fragement;  /*先用服务代替*/
      private Returnedparts_Fragement returnedparts_fragement;
 
 
@@ -74,17 +74,18 @@ public class Order_Receiving_Activity extends AppCompatActivity implements Defin
          title.add("抢单");
          title.add("已接订单");
          title.add("服务中");
-         title.add("指派订单");
+         title.add("质保单");
          title.add("待返件");
         grabsheet_fragement=new Grabsheet_Fragement();
         receivedsheet_fragement=new Receivedsheet_Fragement();
         inService_fragement=new InService_Fragement();
-        appointedsheet_fragement=new Appointedsheet_Fragement();
+        /*先用服务代替*/
+        quality_sheet_fragement=new InService_Fragement();
         returnedparts_fragement=new Returnedparts_Fragement();
         fragmentList.add(grabsheet_fragement);
         fragmentList.add(receivedsheet_fragement);
         fragmentList.add(inService_fragement);
-        fragmentList.add(appointedsheet_fragement);
+        fragmentList.add(quality_sheet_fragement);
         fragmentList.add(returnedparts_fragement);
         TabLayoutViewPagerAdapter tabLayoutViewPagerAdapter=new TabLayoutViewPagerAdapter(getSupportFragmentManager(),fragmentList,title);
         tab_Receiving_layout.setTabMode(TabLayout.MODE_FIXED);
@@ -108,6 +109,9 @@ public class Order_Receiving_Activity extends AppCompatActivity implements Defin
 
             case "pending_appointment"://待预约
                 receiving_viewpager.setCurrentItem(1); //显示已接订单
+                break;
+            case "quality"://质保单
+                receiving_viewpager.setCurrentItem(3);
                 break;
 
             case "return"://待返件

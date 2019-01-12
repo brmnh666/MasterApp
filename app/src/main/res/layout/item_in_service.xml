@@ -13,7 +13,7 @@
     app:cardCornerRadius="5dp"
     app:cardUseCompatPadding="true"
     app:cardPreventCornerOverlap="false"
-    app:cardElevation="10dp"
+    app:cardElevation="5dp"
     >
 <LinearLayout
     android:layout_width="match_parent"
@@ -36,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="服务中"
-            android:textSize="10sp"
+            android:textSize="12sp"
             android:layout_toRightOf="@+id/img_in_service"
             android:layout_centerVertical="true"
             android:textColor="@color/color_custom_04"
@@ -49,7 +49,7 @@
         android:layout_height="wrap_content"
         android:text="工单号:12124124124"
         android:layout_alignParentRight="true"
-        android:textSize="10sp"
+        android:textSize="12sp"
         android:textColor="@color/color_black"
         android:layout_centerVertical="true"
         android:layout_marginRight="5dp"
@@ -81,7 +81,7 @@
             android:background="@color/color_custom_01"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
-            android:textSize="10sp"
+            android:textSize="12sp"
             android:text="安装"
             android:textColor="@color/color_white" />
 
@@ -94,7 +94,7 @@
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
             android:text="维修"
-            android:textSize="10sp"
+            android:textSize="12sp"
             android:textColor="@color/color_white"
             android:visibility="invisible"
             />
@@ -102,7 +102,7 @@
             android:id="@+id/tv_reason_in_service"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
+            android:textSize="18sp"
             android:text="热水器不通电"
             android:textColor="@color/color_custom_01"
            android:layout_toRightOf="@+id/tv_in_service_status_repair"
@@ -116,10 +116,10 @@
             android:layout_height="wrap_content"
             android:textColor="@color/color_black"
             android:text="数量:2台"
-            android:textSize="10sp"
+            android:textSize="12sp"
             android:layout_toRightOf="@+id/tv_reason_in_service"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="80dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="5dp"
             />
 
         <TextView
@@ -127,7 +127,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="宁波市江北区长阳路人才公寓5栋1701室"
-            android:textSize="8sp"
+            android:textSize="10sp"
             android:layout_marginLeft="5dp"
             android:layout_below="@+id/tv_in_service_status_repair"
             android:layout_marginTop="8dp"
@@ -137,7 +137,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="提示:如果服务过程中需要申请配件，自购件或添加服务请点击申请服务"
-            android:textSize="8sp"
+            android:textSize="10sp"
             android:textColor="@color/color_black"
             android:layout_below="@+id/tv_address_in_service"
             android:layout_marginTop="5dp"
@@ -158,22 +158,22 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        >
+        android:gravity="center">
+
         <TextView
             android:id="@+id/tv_in_service_apply_for_service"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="申请服务"
             android:layout_centerInParent="true"
-            android:textColor="@color/color_white"
+            android:layout_margin="5dp"
             android:background="@color/color_custom_01"
             android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:textSize="10sp"
             android:paddingTop="2dp"
+            android:paddingRight="5dp"
             android:paddingBottom="2dp"
+            android:text="申请服务"
+            android:textColor="@color/color_white"
+            android:textSize="15sp"
 
             />
 
@@ -181,16 +181,16 @@
             android:id="@+id/tv_in_service_complete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="完成工单"
             android:layout_centerInParent="true"
-            android:textColor="@color/color_white"
+            android:layout_margin="5dp"
             android:background="@color/color_custom_01"
             android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:textSize="10sp"
             android:paddingTop="2dp"
+            android:paddingRight="5dp"
             android:paddingBottom="2dp"
+            android:text="完成工单"
+            android:textColor="@color/color_white"
+            android:textSize="15sp"
 
             />
     </LinearLayout>

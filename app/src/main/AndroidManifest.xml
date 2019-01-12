@@ -39,6 +39,12 @@
             </intent-filter>
 
         </activity>
+
+        <!--提现界面-->
+        <activity android:name=".activity.WithDrawActivity" android:theme="@style/AppTheme.WithDraw">
+
+
+        </activity>
     </application>
 
 </manifest>

@@ -432,6 +432,7 @@
                 android:background="@drawable/btn_verified"
                 android:text="提交申请"
                 android:textColor="@color/color_white"
+                android:layout_marginBottom="20dp"
                 android:textSize="20sp" />
         </LinearLayout>
     </ScrollView>
