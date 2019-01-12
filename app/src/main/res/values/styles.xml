@@ -37,6 +37,13 @@
         <item name="windowNoTitle">true</item>
         <item name="android:statusBarColor">#1690FF</item>
     </style>
+
+    <!--提现状态栏为蓝色-->
+    <style name="AppTheme.WithDraw">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:statusBarColor">@color/color_white</item>
+    </style>
     <!--接单也状态栏为蓝色-->
     <style name="AppTheme.Receicing">
         <item name="windowActionBar">false</item>

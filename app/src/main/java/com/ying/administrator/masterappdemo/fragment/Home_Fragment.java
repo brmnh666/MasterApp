@@ -147,7 +147,10 @@ public class Home_Fragment extends BaseFragment implements DefineView {
                     break;
                 case R.id.ll_home_forcollection:
                     break;
-                case R.id.ll_home_quality:
+                case R.id.ll_home_quality: //质保单
+                    Intent intent4=new Intent(getActivity(),Order_Receiving_Activity.class);
+                    intent4.putExtra("intent","quality");
+                    startActivity(intent4);
                     break;
                 case R.id.ll_home_return://待返件
                     Intent intent5=new Intent(getActivity(),Order_Receiving_Activity.class);
