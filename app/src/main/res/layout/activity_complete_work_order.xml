@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/actionbar_receiving_layout" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="29dp"
+        android:gravity="center"
+        android:text="事件已完成"
+        android:textColor="#454545"
+        android:textSize="23sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="请添加至少三张完工照片"
+        android:textColor="#454545"
+        android:textSize="13sp" />
+
+    <LinearLayout
+        android:id="@+id/dashLine"
+        android:layout_width="147dp"
+        android:layout_height="2dp"
+        android:layout_marginLeft="114dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/dash_line"
+        android:layerType="software"
+        android:orientation="horizontal" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="49dp"
+        android:layout_marginTop="55dp"
+        android:layout_marginRight="49dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <LinearLayout
+                android:id="@+id/ll_add_picture_one"
+                android:layout_width="77dp"
+                android:layout_height="77dp"
+                android:background="@drawable/bg_border_stroke"
+                android:layerType="software"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="29dp"
+                    android:layout_height="23dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="17dp"
+                    android:src="@mipmap/camera" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:text="添加图片"
+                    android:textColor="#BFBFBF"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <LinearLayout
+                android:id="@+id/ll_add_picture_two"
+                android:layout_width="77dp"
+                android:layout_height="77dp"
+                android:background="@drawable/bg_border_stroke"
+                android:layerType="software"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="29dp"
+                    android:layout_height="23dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="17dp"
+                    android:src="@mipmap/camera" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:text="添加图片"
+                    android:textColor="#BFBFBF"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <LinearLayout
+                android:id="@+id/ll_add_picture_three"
+                android:layout_width="77dp"
+                android:layout_height="77dp"
+                android:background="@drawable/bg_border_stroke"
+                android:layerType="software"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="29dp"
+                    android:layout_height="23dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="17dp"
+                    android:src="@mipmap/camera" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:text="添加图片"
+                    android:textColor="#BFBFBF"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_confirm_submission"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginLeft="26dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginRight="26dp"
+        android:background="@drawable/bule_shape"
+        android:text="确认提交"
+        android:textColor="@color/color_white"
+        android:textSize="15sp" />
+</LinearLayout>

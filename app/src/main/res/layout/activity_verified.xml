@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F0F0F0"
     android:orientation="vertical">
 
+    <include layout="@layout/actionbar_receiving_layout" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -16,7 +16,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <include layout="@layout/actionbar_receiving_layout" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -332,69 +331,89 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
-                        android:id="@+id/positive_ll"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:layout_marginLeft="5dp"
-                        android:background="@drawable/gray_shape"
-                        android:gravity="center"
-                        android:orientation="vertical">
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center">
 
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:src="@mipmap/photo" />
+                        <LinearLayout
+                            android:id="@+id/positive_ll"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_marginLeft="5dp"
+                            android:background="@drawable/gray_shape"
+                            android:gravity="center"
+                            android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text="身份证正面"
-                            android:textSize="13dp" />
+                            <ImageView
+                                android:layout_width="75dp"
+                                android:layout_height="65dp"
+                                android:src="@mipmap/photo" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:text="身份证正面"
+                                android:textSize="13dp" />
+                        </LinearLayout>
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/negative_ll"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:layout_marginLeft="20dp"
-                        android:background="@drawable/gray_shape"
-                        android:gravity="center"
-                        android:orientation="vertical">
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center">
 
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:src="@mipmap/photo" />
+                        <LinearLayout
+                            android:id="@+id/negative_ll"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:background="@drawable/gray_shape"
+                            android:gravity="center"
+                            android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text="身份证反面"
-                            android:textSize="13dp" />
+                            <ImageView
+                                android:layout_width="75dp"
+                                android:layout_height="65dp"
+                                android:src="@mipmap/photo" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:text="身份证反面"
+                                android:textSize="13dp" />
+                        </LinearLayout>
+
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/handheld_ll"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:layout_marginLeft="20dp"
-                        android:background="@drawable/gray_shape"
-                        android:gravity="center"
-                        android:orientation="vertical">
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center">
 
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:src="@mipmap/photo" />
+                        <LinearLayout
+                            android:id="@+id/handheld_ll"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:background="@drawable/gray_shape"
+                            android:gravity="center"
+                            android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text="手持身份证"
-                            android:textSize="13dp" />
+                            <ImageView
+                                android:layout_width="75dp"
+                                android:layout_height="65dp"
+                                android:src="@mipmap/photo" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:text="手持身份证"
+                                android:textSize="13dp" />
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -410,7 +429,6 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="35dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginBottom="20dp"
                 android:background="@drawable/btn_verified"
                 android:text="提交申请"
                 android:textColor="@color/color_white"
