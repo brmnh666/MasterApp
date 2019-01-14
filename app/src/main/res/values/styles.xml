@@ -38,7 +38,7 @@
         <item name="android:statusBarColor">#1690FF</item>
     </style>
 
-    <!--提现状态栏为蓝色-->
+    <!--提现状态栏为白色-->
     <style name="AppTheme.WithDraw">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

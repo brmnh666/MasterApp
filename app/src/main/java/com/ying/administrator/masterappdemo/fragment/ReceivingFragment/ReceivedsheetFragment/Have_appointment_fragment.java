@@ -11,10 +11,8 @@ import android.view.ViewGroup;
 
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.adapter.Have_Appointment_Adapter;
-import com.ying.administrator.masterappdemo.adapter.Pending_Appointment_Adapter;
 import com.ying.administrator.masterappdemo.common.DefineView;
-import com.ying.administrator.masterappdemo.entity.GrabSheet_Entity;
-import com.ying.administrator.masterappdemo.entity.Pending_Appointment_Entity;
+import com.ying.administrator.masterappdemo.model.GrabSheet_Entity;
 import com.ying.administrator.masterappdemo.fragment.BaseFragment.BaseFragment;
 
 import java.util.ArrayList;

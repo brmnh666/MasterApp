@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="120dp"
     android:orientation="horizontal"
     android:background="@color/color_white"
     >
@@ -19,20 +19,21 @@
     >
 
         <LinearLayout
+            android:id="@+id/ll_home_wallet"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="vertical">
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="46dp"
+                android:layout_height="46dp"
                 android:src="@mipmap/icon_total_assets"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="资产总额"
                 android:textColor="@color/color_black"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:gravity="center"
                 />
         </LinearLayout>
@@ -106,15 +107,15 @@
                 android:gravity="center"
                 android:orientation="vertical">
                 <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="46dp"
+                    android:layout_height="46dp"
                     android:src="@mipmap/icon_share_and_polite"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="分享有礼"
                     android:textColor="@color/color_black"
-                    android:textSize="10sp"
+                    android:textSize="14sp"
                     android:gravity="center"
                     />
             </LinearLayout>
@@ -185,15 +186,15 @@
                 android:gravity="center"
                 android:orientation="vertical">
                 <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="46dp"
+                    android:layout_height="46dp"
                     android:src="@mipmap/icon_view_account"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="账户查看"
                     android:textColor="@color/color_black"
-                    android:textSize="10sp"
+                    android:textSize="14sp"
                     android:gravity="center"
                     />
             </LinearLayout>

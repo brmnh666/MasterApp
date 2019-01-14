@@ -1,4 +1,4 @@
-package com.ying.administrator.masterappdemo.entity;
+package com.ying.administrator.masterappdemo.model;
 
 public class GrabSheet_Entity {
     private String time; //传来的时间

@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.ying.administrator.masterappdemo.activity.Order_Receiving_Activity;
 import com.ying.administrator.masterappdemo.activity.Verified_Activity;
+import com.ying.administrator.masterappdemo.activity.Wallet_Activity;
 import com.ying.administrator.masterappdemo.common.DefineView;
 import com.ying.administrator.masterappdemo.fragment.BaseFragment.BaseFragment;
 import com.ying.administrator.masterappdemo.R;
@@ -37,6 +38,8 @@ public class Home_Fragment extends BaseFragment implements DefineView {
      private LinearLayout ll_home_return;
      private LinearLayout ll_home_finished;
      private LinearLayout ll_home_take;
+
+     private LinearLayout ll_home_wallet; //资产总额
 
      private TextView tv_certification;
      public Home_Fragment() {
@@ -87,6 +90,7 @@ public class Home_Fragment extends BaseFragment implements DefineView {
         ll_home_take=view.findViewById(R.id.ll_home_take);
         tv_certification=view.findViewById(R.id.tv_certification);
         mWaveSwipeRefreshLayout=view.findViewById(R.id.home_swipe);
+        ll_home_wallet=view.findViewById(R.id.ll_home_wallet);//资产总额
 
 
     }
@@ -106,6 +110,7 @@ public class Home_Fragment extends BaseFragment implements DefineView {
         ll_home_return.setOnClickListener(new CustomListnear());
         ll_home_finished.setOnClickListener(new CustomListnear());
         ll_home_take.setOnClickListener(new CustomListnear());
+        ll_home_wallet.setOnClickListener(new CustomListnear());//资产总额
        //实名认证
         tv_certification.setOnClickListener(new CustomListnear());
          //下拉刷新
@@ -194,6 +199,11 @@ public class Home_Fragment extends BaseFragment implements DefineView {
                             customDialog.dismiss();
                         }
                     });
+                    break;
+
+                case R.id.ll_home_wallet:
+                   startActivity(new Intent(getActivity(),Wallet_Activity.class));
+
                     break;
                     default:
                         break;

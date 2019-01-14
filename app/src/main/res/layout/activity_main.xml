@@ -34,7 +34,6 @@
             android:checked="true"
             android:drawableTop="@drawable/tab_home_selector"
             android:background="@color/transparent"
-
             android:text="首页" />
 
 

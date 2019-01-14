@@ -1,4 +1,4 @@
-package com.ying.administrator.masterappdemo.entity;
+package com.ying.administrator.masterappdemo.model;
 
 public class Pending_Appointment_Entity {
     private String job_number; //工单号

@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.ying.administrator.masterappdemo.R;
-import com.ying.administrator.masterappdemo.entity.GrabSheet_Entity;
+import com.ying.administrator.masterappdemo.model.GrabSheet_Entity;
 
 import java.util.List;
 

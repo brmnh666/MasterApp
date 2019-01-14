@@ -14,7 +14,7 @@ import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.ying.administrator.masterappdemo.adapter.GrabsheetAdapter;
 import com.ying.administrator.masterappdemo.common.DefineView;
-import com.ying.administrator.masterappdemo.entity.GrabSheet_Entity;
+import com.ying.administrator.masterappdemo.model.GrabSheet_Entity;
 import com.ying.administrator.masterappdemo.fragment.BaseFragment.BaseFragment;
 import com.ying.administrator.masterappdemo.R;
 

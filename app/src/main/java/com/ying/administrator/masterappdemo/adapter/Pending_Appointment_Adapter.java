@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.ying.administrator.masterappdemo.R;
-import com.ying.administrator.masterappdemo.entity.Pending_Appointment_Entity;
+import com.ying.administrator.masterappdemo.model.Pending_Appointment_Entity;
 
 import java.util.List;
 

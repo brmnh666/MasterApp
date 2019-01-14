@@ -289,6 +289,7 @@
                 android:background="@drawable/bule_shape"
                 android:text="立刻提现"
                 android:textColor="#333333"
+                android:layout_marginBottom="20dp"
                 android:textSize="13sp" />
         </LinearLayout>
     </ScrollView>
