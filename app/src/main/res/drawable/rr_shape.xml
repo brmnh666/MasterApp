@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--抢单页面 item 外层 -->
+    <shape xmlns:android="http://schemas.android.com/apk/res/android">
+        <!-- 这里是设置为四周 也可以单独设置某个位置为圆角-->
+        <corners android:topLeftRadius="7dp"
+            android:topRightRadius="7dp"
+            android:bottomRightRadius="7dp"
+            android:bottomLeftRadius="7dp"/>
+    <solid android:color="@color/color_white"/>
+
+
+
+    </shape>
+

@@ -19,17 +19,19 @@
         <item name="android:button">@null</item>
         <item name="android:textSize">10sp</item>
         <item name="android:textColor">@color/tab_text_color_selector</item>
+
     </style>
 
     <style name="Custom.ReceivedButton">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:padding">5dp</item>
         <item name="android:gravity">center</item>
         <item name="android:button">@null</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/tab_text_color_selector</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/tab_receied_color_selector</item>
+
+        <item name="android:background"></item>
     </style>
     <!--首页状态栏为蓝色-->
     <style name="AppTheme.NoActionBar">
@@ -70,4 +72,13 @@
         <!--是否模糊-->
         <item name="android:backgroundDimEnabled">false</item>
     </style>
+
+    <!--tablayout 字体大小-->
+    <style name="MyCustomTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">true</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
 </resources>

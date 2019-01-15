@@ -5,20 +5,20 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".activity.Order_Receiving_Activity">
+    tools:context=".mvp.ui.activity.Order_Receiving_Activity">
 
   <include layout="@layout/actionbar_receiving_layout"/>
 
 <android.support.design.widget.TabLayout
     android:id="@+id/tab_receiving_layout"
     android:layout_width="match_parent"
-    android:layout_height="40dp"
-    android:background="@color/color_custom_02"
-    app:tabIndicatorColor="@color/color_custom_01"
-    app:tabSelectedTextColor="@color/color_custom_01"
+    android:layout_height="48dp"
+    android:background="@color/color_white"
+    app:tabIndicatorColor="#F25037"
+    app:tabSelectedTextColor="#F25037"
     app:tabTextColor="@color/color_black"
-    app:tabIndicatorHeight="2dp"
-
+    app:tabIndicatorHeight="1dp"
+ app:tabTextAppearance="@style/MyCustomTextAppearance"
 
     />
   <android.support.v4.view.ViewPager

@@ -10,28 +10,28 @@
         android:roundIcon="@mipmap/icon_app"
         android:theme="@style/AppTheme"
         >
-        <activity android:name=".activity.MainActivity"  android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".mvp.ui.activity.MainActivity"  android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
-        <activity android:name=".activity.Order_Receiving_Activity"
+        <activity android:name=".mvp.ui.activity.Order_Receiving_Activity"
             android:theme="@style/AppTheme.Receicing">
 
         </activity>
-        <activity android:name=".activity.LoginActivity" android:theme="@style/Theme.AppCompat.NoActionBar">
+        <activity android:name=".mvp.ui.activity.LoginActivity" android:theme="@style/Theme.AppCompat.NoActionBar">
 
 
         </activity>
 
         <!--工单详情-->
-        <activity android:name=".activity.Order_details_Activity" android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".mvp.ui.activity.Order_details_Activity" android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
 
-        <activity android:name=".activity.Verified_Activity" android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".mvp.ui.activity.Verified_Activity" android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
         <!--引导页-->
-        <activity android:name=".activity.SplashActivity">
+        <activity android:name=".mvp.ui.activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -41,12 +41,12 @@
         </activity>
 
         <!--提现界面-->
-        <activity android:name=".activity.WithDrawActivity" android:theme="@style/AppTheme.WithDraw">
+        <activity android:name=".mvp.ui.activity.WithDrawActivity" android:theme="@style/AppTheme.WithDraw">
 
 
         </activity>
         <!--我的钱包界面-->
-        <activity android:name=".activity.Wallet_Activity" android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".mvp.ui.activity.Wallet_Activity" android:theme="@style/AppTheme.NoActionBar" />
 
     </application>
 
