@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F7F4F8">
+    <include layout="@layout/actionbar_receiving_layout"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+        <LinearLayout
+            android:layout_width="180dp"
+            android:layout_height="225dp"
+            android:background="@mipmap/code_background"
+            android:orientation="vertical">
+            
+            <ImageView
+                android:id="@+id/iv_code_one"
+                android:layout_width="158dp"
+                android:layout_height="153dp"
+                android:src="@mipmap/cli_300px"
+                android:layout_gravity="center"
+                android:layout_marginTop="6dp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@drawable/dash_share"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="5dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="1.保存图片可分享"
+                android:textSize="9sp"
+                android:textColor="#7C838D"
+                android:layout_marginTop="10dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="2.底部按钮也可以分享"
+                android:textSize="9sp"
+                android:textColor="#7C838D"
+                android:layout_marginTop="2dp"/>
+        </LinearLayout>
+        
+        <LinearLayout
+            android:layout_width="195dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center">
+            <ImageView
+                android:id="@+id/iv_qq_one"
+                android:layout_width="43dp"
+                android:layout_height="43dp"
+                android:src="@mipmap/qq"
+                android:layout_weight="1"/>
+            <ImageView
+                android:id="@+id/iv_weixin_one"
+                android:layout_width="43dp"
+                android:layout_height="43dp"
+                android:src="@mipmap/weixin"
+                android:layout_weight="1"/>
+            <ImageView
+                android:id="@+id/iv_weibo_one"
+                android:layout_width="43dp"
+                android:layout_height="43dp"
+                android:src="@mipmap/xinlangweibo"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="180dp"
+            android:layout_height="225dp"
+            android:background="@mipmap/code_background"
+            android:orientation="vertical"
+            android:layout_marginTop="9dp">
+
+            <ImageView
+                android:id="@+id/iv_code_two"
+                android:layout_width="158dp"
+                android:layout_height="153dp"
+                android:src="@mipmap/cli_300px"
+                android:layout_gravity="center"
+                android:layout_marginTop="6dp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@drawable/dash_share"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="5dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="1.保存图片可分享"
+                android:textSize="9sp"
+                android:textColor="#7C838D"
+                android:layout_marginTop="10dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="2.底部按钮也可以分享"
+                android:textSize="9sp"
+                android:textColor="#7C838D"
+                android:layout_marginTop="2dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="195dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center">
+            <ImageView
+                android:id="@+id/iv_qq_two"
+                android:layout_width="43dp"
+                android:layout_height="43dp"
+                android:src="@mipmap/qq"
+                android:layout_weight="1"/>
+            <ImageView
+                android:id="@+id/iv_weixin_two"
+                android:layout_width="43dp"
+                android:layout_height="43dp"
+                android:src="@mipmap/weixin"
+                android:layout_weight="1"/>
+            <ImageView
+                android:id="@+id/iv_weibo_two"
+                android:layout_width="43dp"
+                android:layout_height="43dp"
+                android:src="@mipmap/xinlangweibo"
+                android:layout_weight="1"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>
