@@ -3,6 +3,7 @@
     package="com.ying.administrator.masterappdemo">
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/icon_app"
@@ -11,7 +12,11 @@
         android:theme="@style/AppTheme"
         >
         <activity android:name=".mvp.ui.activity.MainActivity"  android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".mvp.ui.activity.Order_Receiving_Activity"
             android:theme="@style/AppTheme.Receicing">
@@ -32,11 +37,7 @@
         </activity>
         <!--引导页-->
         <activity android:name=".mvp.ui.activity.SplashActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
         </activity>
 
@@ -48,6 +49,8 @@
         <!--我的钱包界面-->
         <activity android:name=".mvp.ui.activity.Wallet_Activity" android:theme="@style/AppTheme.NoActionBar" />
 
+        <!--实名认证成功界面-->
+        <activity android:name=".mvp.ui.activity.Certification_passed_Activity" android:theme="@style/AppTheme.Receicing" />
     </application>
 
 </manifest>

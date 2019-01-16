@@ -35,17 +35,19 @@
 
             <include layout="@layout/activity_order_details_application_for_remote_fee"/>
             <include layout="@layout/activity_order_details_add_back"/>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="60dp"/>
+
+           <include layout="@layout/activity_order_details_submit"/>
+
         </LinearLayout>
+
+
 
     </ScrollView>
 
 
 </LinearLayout>
 
-  <RelativeLayout
+  <!--<RelativeLayout
       android:layout_alignParentBottom="true"
       android:layout_width="match_parent"
       android:layout_height="60dp"
@@ -92,5 +94,5 @@
          android:layout_marginRight="20dp"
          />
 
-  </RelativeLayout>
+  </RelativeLayout>-->
 </RelativeLayout>

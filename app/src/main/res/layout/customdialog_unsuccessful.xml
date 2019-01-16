@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--不成功弹窗-->
+   <RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:tools="http://schemas.android.com/tools"
+       android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="20dp"
+    >
+
+       <LinearLayout
+        android:id="@+id/ll_unsuccessful"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/dialog_unsuccess_bg"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:background="@mipmap/icon_warning" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="未预约成功"
+                android:textColor="#7F7F7F"
+                android:textSize="24sp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_custom_02" />
+
+           <TextView
+               android:id="@+id/tv_cancle_order"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginLeft="15dp"
+               android:layout_marginTop="36dp"
+               android:layout_marginRight="15dp"
+               android:layout_marginBottom="27dp"
+               android:background="@drawable/tv_unsuccess_reason"
+               android:gravity="center"
+               android:paddingTop="10dp"
+               android:paddingBottom="10dp"
+               android:text="用户取消订单"
+               android:textColor="@color/color_white"
+               android:textSize="20sp"
+
+               />
+
+           <TextView
+               android:id="@+id/tv_phone_unconnect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="27dp"
+            android:background="@drawable/tv_unsuccess_reason"
+            android:gravity="center"
+               android:paddingTop="10dp"
+               android:paddingBottom="10dp"
+            android:text="电话无法接通"
+            android:textColor="@color/color_white"
+            android:textSize="20sp" />
+
+           <TextView
+               android:id="@+id/tv_other_reason"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="27dp"
+            android:background="@drawable/tv_unsuccess_reason"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="其  他"
+            android:textColor="@color/color_white"
+            android:textSize="20sp" />
+
+           <EditText
+               android:id="@+id/ed_unsuccess_reason"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/ed_unsuccess_reason"
+            android:gravity="left|top"
+            android:hint="此处可自由填写未预约成功原因"
+               android:layout_marginBottom="20dp"
+               android:textSize="12sp"
+            android:paddingLeft="10dp"
+            android:visibility="gone"
+            android:paddingTop="10dp" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#00FF00FF"
+        android:layout_below="@+id/ll_unsuccessful"
+        android:gravity="center"
+        >
+        <ImageView
+            android:id="@+id/img_unsuccess_cancle"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@mipmap/icon_fork"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+
+            />
+
+
+    </LinearLayout>
+
+ </RelativeLayout>
+
+
+

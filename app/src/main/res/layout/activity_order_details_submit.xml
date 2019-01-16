@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/ll_order_details_shape"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    >
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="服务金额:¥150.00"
+    android:textColor="#6A6A6A"
+    android:textSize="14sp"
+    android:layout_centerInParent="true"
+    android:layout_alignParentLeft="true"
+    android:layout_marginLeft="13dp"
+    />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="提  交"
+        android:textColor="@color/color_white"
+        android:background="@drawable/ed_order_detail_submit"
+        android:textSize="15sp"
+        android:layout_centerInParent="true"
+        android:layout_alignParentRight="true"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+
+        />
+</RelativeLayout>

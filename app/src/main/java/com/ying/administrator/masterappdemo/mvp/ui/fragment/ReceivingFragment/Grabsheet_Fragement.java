@@ -48,7 +48,7 @@ public class Grabsheet_Fragement extends BaseFragment implements DefineView {
 
         list=new ArrayList<>();
 
-        for (int i=0;i<2;i++){
+        for (int i=0;i<6;i++){
             GrabSheet_Entity a =new GrabSheet_Entity();
             a.setTime("40分钟前");
             a.setUsername("余姚白衣电器");

@@ -2,28 +2,36 @@ package com.ying.administrator.masterappdemo.widget;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ying.administrator.masterappdemo.R;
 
-public class CustomDialog extends Dialog {
+/*不成功*/
+public class CustomDialog_UnSuccess extends Dialog {
     private TextView yes;
     private TextView no;
     private TextView titleTv;
     private TextView messageTv;
     private String titleStr;
     private String messageStr;
-    private String yesStr, noStr;
-    private ImageView img_authentication_cancel;
+    private String yesStr, noStr ,otherreason ,cancleStr;
+
+    private TextView tv_other_reason;
+    private EditText ed_unsuccess_reason;//其他原因
+    private ImageView img_unsuccess_cancle;
 
     /*  -------------------------------- 接口监听 -------------------------------------  */
 
     private onNoOnclickListener noOnclickListener;
     private onYesOnclickListener yesOnclickListener;
+
+    private onOtherReasonListener onOtherReasonListener;
+
+    private onCancleOnclickListener  onCancleOnclickListener;
 
     public interface onYesOnclickListener {
         void onYesClick();
@@ -32,6 +40,16 @@ public class CustomDialog extends Dialog {
     public interface onNoOnclickListener {
         void onNoClick();
     }
+
+    public interface  onOtherReasonListener{
+        void onOtherReasonClick();
+
+    }
+
+    public interface onCancleOnclickListener{
+        void onCancleClick();
+    }
+
 
     public void setNoOnclickListener(String str, onNoOnclickListener onNoOnclickListener) {
         if (str != null) {
@@ -47,18 +65,33 @@ public class CustomDialog extends Dialog {
         this.yesOnclickListener = onYesOnclickListener;
     }
 
+    public void setOtherReasonOnclickListener(String str, onOtherReasonListener onOtherReasonListener) {
+        if (str != null) {
+            otherreason = str;
+        }
+        this.onOtherReasonListener = onOtherReasonListener;
+    }
+
+     public void setCancleOnclickListener(String str,onCancleOnclickListener onCancleOnclickListener){
+         if (str != null) {
+             cancleStr = str;
+         }
+         this.onCancleOnclickListener = onCancleOnclickListener;
+
+     }
+
 
 
     /*  ---------------------------------- 构造方法 -------------------------------------  */
-    public CustomDialog(Context context) {
+    public CustomDialog_UnSuccess(Context context) {
         super(context);
     }
 
-    public CustomDialog(Context context, int themeResId) {
+    public CustomDialog_UnSuccess(Context context, int themeResId) {
         super(context,R.style.MyDialog);
     }
 
-    protected CustomDialog(Context context, boolean cancelable, DialogInterface.OnCancelListener cancelListener) {
+    protected CustomDialog_UnSuccess(Context context, boolean cancelable, OnCancelListener cancelListener) {
         super(context, cancelable, cancelListener);
     }
 
@@ -67,7 +100,7 @@ public class CustomDialog extends Dialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.customdialog_authentication);//自定义布局
+        setContentView(R.layout.customdialog_unsuccessful);//自定义布局
 
         //按空白处不能取消动画
        setCanceledOnTouchOutside(false);
@@ -104,11 +137,21 @@ public class CustomDialog extends Dialog {
             }
         });
 
-        img_authentication_cancel.setOnClickListener(new View.OnClickListener() {
+        tv_other_reason.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (noOnclickListener != null) {
-                    noOnclickListener.onNoClick();
+                if (onOtherReasonListener!=null){
+                    onOtherReasonListener.onOtherReasonClick();
+                }
+
+            }
+        });
+
+        img_unsuccess_cancle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onCancleOnclickListener != null) {
+                    onCancleOnclickListener.onCancleClick();
                 }
             }
         });
@@ -142,11 +185,13 @@ public class CustomDialog extends Dialog {
      * 初始化界面控件
      */
     private void initView() {
-        yes =  findViewById(R.id.yes);
-        no = findViewById(R.id.no);
+        yes =  findViewById(R.id.tv_cancle_order); //用户取消订单
+        no = findViewById(R.id.tv_phone_unconnect);//电话无法接通
         titleTv = findViewById(R.id.title);
-        messageTv =  findViewById(R.id.message);
-        img_authentication_cancel=findViewById(R.id.img_authentication_cancel);
+
+        tv_other_reason=findViewById(R.id.tv_other_reason);  //其他原因点击其他原因edittext出现
+        ed_unsuccess_reason=findViewById(R.id.ed_unsuccess_reason); //其他原因
+        img_unsuccess_cancle=findViewById(R.id.img_unsuccess_cancle);
 
     }
     /*  ---------------------------------- set方法 传值-------------------------------------  */
