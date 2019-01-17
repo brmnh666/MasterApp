@@ -32,7 +32,7 @@
 
         </activity>
 
-        <activity android:name=".mvp.ui.activity.Verified_Activity" android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".mvp.ui.activity.Verified_Activity" android:theme="@style/AppTheme.NoActionBar" android:windowSoftInputMode="stateHidden">
 
         </activity>
         <!--引导页-->
@@ -42,12 +42,12 @@
         </activity>
 
         <!--提现界面-->
-        <activity android:name=".mvp.ui.activity.WithDrawActivity" android:theme="@style/AppTheme.WithDraw">
+        <activity android:name=".mvp.ui.activity.WithDrawActivity" android:theme="@style/AppTheme.WithDraw" android:windowSoftInputMode="stateHidden">
 
 
         </activity>
         <!--我的钱包界面-->
-        <activity android:name=".mvp.ui.activity.Wallet_Activity" android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".mvp.ui.activity.Wallet_Activity" android:theme="@style/AppTheme.NoActionBar" android:windowSoftInputMode="stateHidden" />
 
         <!--实名认证成功界面-->
         <activity android:name=".mvp.ui.activity.Certification_passed_Activity" android:theme="@style/AppTheme.Receicing" />
