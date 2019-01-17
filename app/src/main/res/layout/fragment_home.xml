@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--适配于1920*1080手机-->
-<jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout
+<!--<jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/home_swipe"
-    >
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-<LinearLayout
+    >-->
 
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -32,13 +30,46 @@
         android:layout_width="match_parent"
         android:layout_height="10dp"
         android:background="@color/color_custom_08"/>
-    <include layout="@layout/fragment_home_asset"/>
-<View
+
+    <!--实时订单-->
+    <android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        tools:targetApi="lollipop"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardUseCompatPadding="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center">
+<ImageView
+    android:layout_width="23dp"
+    android:layout_height="23dp"
+    android:src="@mipmap/icon_home_sheet"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="实时新订单"
+                android:textSize="17sp"/>
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+    <!--实时订单-->
+<!--<View
     android:layout_width="match_parent"
     android:layout_height="5dp"
-    android:background="@color/color_custom_08"/>
+    android:background="@color/color_custom_08"/>-->
 
-<include layout="@layout/fragment_home_action"/>
+<include layout="@layout/fragment_order_receiving"/>
 
     <!--用于填充布局-->
     <View
@@ -46,5 +77,6 @@
         android:layout_height="50dp"
         />
 </LinearLayout>
-    </ScrollView>
-</jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout>
+
+<!--
+</jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout>-->

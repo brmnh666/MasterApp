@@ -18,7 +18,7 @@ import com.ying.administrator.masterappdemo.R;
 import java.util.ArrayList;
 
 /*
-* 待返件页面
+* 返件单
 * */
 public class Returnedparts_Fragement extends BaseFragment implements DefineView {
     private View view;
@@ -44,7 +44,7 @@ public class Returnedparts_Fragement extends BaseFragment implements DefineView 
             a.setAddress("温州市");
             list.add(a);
         }
-        return_sheet_adapter=new Return_Sheet_Adapter(R.layout.item_returned_sheet,list);
+        return_sheet_adapter=new Return_Sheet_Adapter(R.layout.item_returnedparts,list);
         recyclerView.setAdapter(return_sheet_adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 

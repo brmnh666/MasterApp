@@ -136,7 +136,7 @@
             android:layout_marginRight="10dp"
             />-->
 
-    <ImageView
+   <!-- <ImageView
         android:id="@+id/img_pending_appointment_phone"
         android:layout_width="52dp"
         android:layout_height="52dp"
@@ -155,14 +155,25 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="22dp"
         />
+-->
+
+    <ImageView
+        android:id="@+id/img_pending_appointment_phone"
+        android:layout_width="51dp"
+        android:layout_height="51dp"
+        android:src="@mipmap/icon_telphone"
+        android:layout_marginTop="64dp"
+        android:layout_marginRight="16dp"
+        android:layout_alignParentRight="true"/>
 
     <View
         android:id="@+id/view_point"
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_marginTop="5dp"
         android:background="#DAD7DB"
-        android:layout_below="@+id/tv_pending_appointment_txt"
-        ></View>
+        android:layout_below="@+id/tv_pending_appointment_cancel"/>
+
         <TextView
             android:id="@+id/tv_pending_appointment_success"
             android:layout_below="@+id/view_point"

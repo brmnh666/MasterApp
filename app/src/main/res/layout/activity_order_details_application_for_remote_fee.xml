@@ -19,7 +19,9 @@ android:layout_gravity="center_vertical"
         android:text="申请远程费"
         android:textColor="#6A6A6A"
         android:textSize="16sp"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
         />
     <RadioGroup
         android:id="@+id/rg_order_details_for_remote_fee"
@@ -29,6 +31,7 @@ android:layout_gravity="center_vertical"
         android:layout_weight="1"
         android:orientation="horizontal"
         android:layout_marginRight="5dp"
+        android:layout_marginTop="10dp"
 
         >
 
@@ -65,13 +68,14 @@ android:layout_gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_margin="5dp"
+        android:visibility="gone"
         >
          <TextView
              android:gravity="left"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
              android:text="已超出正常服务范围"
+             android:layout_marginLeft="20dp"
              android:textColor="#6A6A6A"
              android:textSize="14sp"
              />
@@ -122,13 +126,16 @@ android:layout_gravity="center_vertical"
 
     <LinearLayout
       android:id="@+id/ll_Out_of_service_img"
-        android:layout_margin="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         >
         <ImageView
             android:layout_width="35dp"
             android:layout_height="35dp"
+            android:layout_marginLeft="20dp"
             android:src="@mipmap/icon_add"/>
         <ImageView
             android:layout_marginLeft="10dp"

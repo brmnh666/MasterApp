@@ -113,7 +113,7 @@
                 android:textSize="20sp"
                 />-->
 
-            <ImageView
+           <!-- <ImageView
                 android:id="@+id/img_grabsheet"
                 android:layout_width="52dp"
                 android:layout_height="52dp"
@@ -128,8 +128,18 @@
                 android:layout_marginTop="100dp"
                 android:layout_marginRight="25dp"
                 android:layout_alignParentRight="true"
-                android:text="抢  单"/>
+                android:text="抢  单"/>-->
+    <ImageView
+        android:id="@+id/img_grabsheet"
+        android:layout_width="51dp"
+        android:layout_height="51dp"
+        android:src="@mipmap/icon_home_grabsheet"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
 
+        />
 
 
             <ImageView

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Appointment_failure_Adapter;
 import com.ying.administrator.masterappdemo.common.DefineView;
@@ -59,6 +60,20 @@ public class Appointment_failure_fragment extends BaseFragment implements Define
         appointment_failure_adapter=new Appointment_failure_Adapter(R.layout.item_appointment_failure,list);
         recyclerView.setAdapter(appointment_failure_adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+
+        /*恢复订单*/
+        appointment_failure_adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                switch (view.getId()){
+                    case R.id.img_pending_appointment_failure_phone:
+                        appointment_failure_adapter.remove(position);
+                        break;
+
+                }
+            }
+        });
 
     }
 

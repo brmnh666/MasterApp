@@ -44,24 +44,12 @@
         android:textColor="#999999"
         android:textSize="13sp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+
+
+
 
         <TextView
-            android:id="@+id/tv_back_to_home"
-            android:layout_width="139dp"
-            android:layout_height="42dp"
-            android:layout_marginLeft="36dp"
-            android:layout_marginTop="33dp"
-            android:background="@drawable/gray_background_shape"
-            android:gravity="center"
-            android:text="返回首页"
-            android:textColor="@color/color_white"
-            android:textSize="14sp" />
-
-        <TextView
+            android:layout_gravity="center"
             android:id="@+id/tv_go_to_the_order"
             android:layout_width="139dp"
             android:layout_height="42dp"
@@ -72,6 +60,6 @@
             android:text="前往接单"
             android:textColor="@color/color_white"
             android:textSize="14sp" />
-    </LinearLayout>
+
 
 </LinearLayout>

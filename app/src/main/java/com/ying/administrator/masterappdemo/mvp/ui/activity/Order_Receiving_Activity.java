@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import com.ying.administrator.masterappdemo.common.DefineView;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment.Grabsheet_Fragement;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment.InService_Fragement;
+import com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment.Quality_sheet_Fragement;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment.Receivedsheet_Fragement;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment.Returnedparts_Fragement;
 import com.ying.administrator.masterappdemo.R;
@@ -28,10 +29,11 @@ public class Order_Receiving_Activity extends AppCompatActivity implements Defin
      private LinearLayout ll_return;
      //tablout的内容
      private  ArrayList<String> title=new ArrayList<>();
-     private Grabsheet_Fragement grabsheet_fragement;
-     private Receivedsheet_Fragement receivedsheet_fragement;
-     private InService_Fragement inService_fragement;
-     private InService_Fragement quality_sheet_fragement;  /*先用服务代替*/
+    // private Grabsheet_Fragement grabsheet_fragement;
+
+     private Receivedsheet_Fragement receivedsheet_fragement; //已接订单
+     private InService_Fragement inService_fragement; //服务中
+     private Quality_sheet_Fragement quality_sheet_fragement; //质保单
      private Returnedparts_Fragement returnedparts_fragement;
 
 
@@ -70,22 +72,23 @@ public class Order_Receiving_Activity extends AppCompatActivity implements Defin
     @Override
     public void bindData() {
          //为tablayout添加内容
-         title.add("抢  单");
          title.add("已接订单");
          title.add("服务中");
          title.add("质保单");
-         title.add("待返件");
-        grabsheet_fragement=new Grabsheet_Fragement();
-        receivedsheet_fragement=new Receivedsheet_Fragement();
-        inService_fragement=new InService_Fragement();
-        /*先用服务代替*/
-        quality_sheet_fragement=new InService_Fragement();
+         title.add("返件单");
+         /*title.add("已完结");
+         title.add("完成待取机");*/
+        //grabsheet_fragement=new Grabsheet_Fragement();
+        receivedsheet_fragement=new Receivedsheet_Fragement(); //已接订单
+        inService_fragement=new InService_Fragement(); //服务中
+        quality_sheet_fragement=new Quality_sheet_Fragement();//质保单
         returnedparts_fragement=new Returnedparts_Fragement();
-        fragmentList.add(grabsheet_fragement);
+        //fragmentList.add(grabsheet_fragement);
         fragmentList.add(receivedsheet_fragement);
         fragmentList.add(inService_fragement);
         fragmentList.add(quality_sheet_fragement);
         fragmentList.add(returnedparts_fragement);
+
         TabLayoutViewPagerAdapter tabLayoutViewPagerAdapter=new TabLayoutViewPagerAdapter(getSupportFragmentManager(),fragmentList,title);
         tab_Receiving_layout.setTabMode(TabLayout.MODE_SCROLLABLE);
         receiving_viewpager.setAdapter(tabLayoutViewPagerAdapter);
@@ -96,25 +99,21 @@ public class Order_Receiving_Activity extends AppCompatActivity implements Defin
         String intent = getIntent().getStringExtra("intent");
         switch (intent){
 
-            case "grab_sheet":
-            receiving_viewpager.setCurrentItem(0); //抢单页面
-                break;
-            case "have_appointment":  //已预约界面
-            receiving_viewpager.setCurrentItem(1);//显示已接订单
-               break;
-            case "in_service":  //服务中
-               receiving_viewpager.setCurrentItem(2);
-            break;
 
             case "pending_appointment"://待预约
-                receiving_viewpager.setCurrentItem(1); //显示已接订单
-                break;
-            case "quality"://质保单
-                receiving_viewpager.setCurrentItem(3);
+                receiving_viewpager.setCurrentItem(0); //显示已接订单
                 break;
 
-            case "return"://待返件
-                receiving_viewpager.setCurrentItem(4);
+            case "in_service":  //服务中
+               receiving_viewpager.setCurrentItem(1);
+            break;
+
+            case "quality"://质保单
+                receiving_viewpager.setCurrentItem(2);
+                break;
+
+            case "return"://返件单
+                receiving_viewpager.setCurrentItem(3);
              break;
             default:
              break;

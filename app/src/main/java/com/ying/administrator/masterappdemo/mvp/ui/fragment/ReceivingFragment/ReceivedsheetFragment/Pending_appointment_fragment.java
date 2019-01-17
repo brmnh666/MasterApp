@@ -160,7 +160,6 @@ public class Pending_appointment_fragment extends BaseFragment implements Define
 
                     /*电话预约*/
                     case R.id.img_pending_appointment_phone:
-                    case R.id.tv_pending_appointment_txt:
                         call("tel:"+"18892621501");
                         break;
                     /*电话预约*/

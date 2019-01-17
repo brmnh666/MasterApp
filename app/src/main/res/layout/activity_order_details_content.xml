@@ -156,14 +156,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="10sp"
+            android:textSize="14sp"
             android:textColor="#6A6A6A"
             android:text="服务地址: "
             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="10sp"
+            android:textSize="14sp"
             android:text="宁波市江北区长阳路人才公寓5栋1702室"
             android:textColor="#6A6A6A"
             />

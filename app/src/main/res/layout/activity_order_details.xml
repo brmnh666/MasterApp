@@ -21,15 +21,16 @@
             <include layout="@layout/activity_order_details_content"/>
             <include layout="@layout/activity_order_details_select_time"/>
             <include layout="@layout/activity_order_details_add_accessories"/>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
                 android:layout_marginTop="3dp"
+                android:layout_marginRight="20dp"
                 android:layout_marginBottom="3dp"
-                android:textSize="8sp"
-                android:text="提示：如无法判断是否需要配件可不选,待上门确认后添加"/>
+                android:text="提示：如无法判断是否需要配件可不选,待上门确认后添加"
+                android:textSize="12sp" />
 
             <include layout="@layout/activity_order_details_add_service"/>
 

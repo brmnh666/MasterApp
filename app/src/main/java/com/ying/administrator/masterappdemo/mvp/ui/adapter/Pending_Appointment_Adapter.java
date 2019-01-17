@@ -21,7 +21,7 @@ baseViewHolder.setText(R.id.tv_pending_appointment_job_number,item.getJob_number
         .setText(R.id.tv_address_pending_appointment,item.getAddress());
         baseViewHolder.addOnClickListener(R.id.tv_pending_appointment_success);//预约成功点击事件
         baseViewHolder.addOnClickListener(R.id.tv_pending_appointment_failure);//未预约成功点击事件
-        baseViewHolder.addOnClickListener(R.id.img_pending_appointment_phone).addOnClickListener(R.id.tv_pending_appointment_txt);//预约按键
+        baseViewHolder.addOnClickListener(R.id.img_pending_appointment_phone);//预约按键
 
     }
 }

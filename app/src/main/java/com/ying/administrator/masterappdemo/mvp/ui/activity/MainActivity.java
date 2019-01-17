@@ -35,7 +35,7 @@ public class MainActivity extends BaseActivity implements DefineView {
     public void initView() {
         mTabRadioGroup = findViewById(R.id.tabs_rg);
         mFragmentSparseArray = new SparseArray<>();
-        mFragmentSparseArray.append(R.id.workbench, Home_Fragment.newInstance("工作台"));
+        mFragmentSparseArray.append(R.id.workbench, Home_Fragment.newInstance("首页"));
         mFragmentSparseArray.append(R.id.message, BlankFragment.newInstance("消息"));
         mFragmentSparseArray.append(R.id.accessories_shop, BlankFragment.newInstance("配件商城"));
         mFragmentSparseArray.append(R.id.me, Me_Fragment.newInstance("我的"));
@@ -56,7 +56,7 @@ public class MainActivity extends BaseActivity implements DefineView {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(MainActivity.this, Order_Receiving_Activity.class);
-                intent.putExtra("intent","grab_sheet");
+                intent.putExtra("intent","pending_appointment");
                 startActivity(intent);
             }
 

@@ -20,12 +20,12 @@
         android:layout_height="match_parent">
         <ImageView
             android:id="@+id/img_home_head"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="74dp"
+            android:layout_height="74dp"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"
             android:src="@mipmap/icon_user_head"/>
-        <TextView
+     <!--   <TextView
             android:id="@+id/tv_home_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -35,28 +35,74 @@
             android:layout_toRightOf="@+id/img_home_head"
             android:layout_marginTop="20dp"
             android:layout_marginLeft="10dp"
+            />-->
+
+        <TextView
+            android:id="@+id/tv_home_available_balance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:text="可提现余额: 535.9元"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="23dp"
             />
+
+        <TextView
+            android:id="@+id/tv_home_outstanding_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:text="未完结金额: 1410.4元"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/tv_home_available_balance"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="20dp"
+            />
+
+        <TextView
+            android:id="@+id/tv_home_giving_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_home_outstanding_amount"
+            android:textSize="16dp"
+            android:text="赠 送 金额: 0.00 元"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="20dp"
+            />
+
+
+
+
+
+
+
 
         <TextView
             android:id="@+id/tv_certification"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="未实名认证"
-            android:textSize="16sp"
+            android:textSize="13sp"
             android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
             android:textColor="@color/color_custom_01"
-            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
             android:layout_marginRight="20dp"
+            android:layout_marginLeft="5dp"
             />
-        <ImageView
+      <ImageView
             android:id="@+id/img_certification"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
             android:src="@mipmap/icon_name_authentication"
             android:layout_toLeftOf="@+id/tv_certification"
-            android:layout_marginTop="18dp"
+             android:layout_alignParentBottom="true"
+            android:layout_marginBottom="15dp"
             />
-<TextView
+<!--<TextView
     android:id="@+id/tv_home_authentication"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -65,8 +111,8 @@
     android:layout_below="@+id/tv_home_username"
     android:layout_toRightOf="@+id/img_home_head"
     android:layout_marginLeft="10dp"
-    />
-    <ImageView
+    />-->
+   <!-- <ImageView
         android:id="@+id/img_home_authentication"
         android:layout_width="15dp"
         android:layout_height="15dp"
@@ -74,8 +120,8 @@
         android:layout_toRightOf="@+id/tv_home_authentication"
         android:layout_below="@id/tv_home_username"
         android:layout_marginLeft="5dp"
-        />
-        <TextView
+        />-->
+     <!--   <TextView
             android:id="@+id/tv_home_intro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -84,32 +130,32 @@
             android:layout_toRightOf="@+id/img_home_head"
             android:layout_marginLeft="10dp"
             android:textSize="12sp"
-            />
+            />-->
 
         <ImageView
             android:id="@+id/img_home_location"
-            android:layout_width="14dp"
-            android:layout_height="14dp"
+            android:layout_width="13dp"
+            android:layout_height="13dp"
             android:src="@mipmap/icon_home_location"
             android:layout_alignParentLeft="true"
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="20dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="12dp"
             />
         <TextView
             android:id="@+id/tv_home_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
+            android:textSize="11sp"
              android:text="宁波市.江北区"
             android:layout_toRightOf="@+id/img_home_location"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="12dp"
             android:layout_marginLeft="5dp"
             />
 
 
-        <TextView
+      <!--  <TextView
             android:id="@+id/tv_order_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -130,6 +176,6 @@
             android:layout_marginBottom="10dp"
             android:layout_toLeftOf="@+id/tv_order_status"
             android:layout_marginRight="5dp"
-            />
+            />-->
     </RelativeLayout>
 </android.support.v7.widget.CardView>

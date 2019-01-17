@@ -1,175 +1,174 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--待预约item-->
-<android.support.v7.widget.CardView
+<!--预约失败item-->
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:targetApi="lollipop"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/cv_appointment_failure"
-    android:clickable="true"
-    android:foreground="?android:attr/selectableItemBackground"
-    app:cardCornerRadius="5dp"
-    app:cardUseCompatPadding="true"
-    app:cardPreventCornerOverlap="false"
-    app:cardElevation="5dp"
-    >
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/rr_shape"
     >
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-<ImageView
-    android:id="@+id/img_appointment_failure"
-    android:layout_width="15dp"
-    android:layout_height="15dp"
-    android:src="@mipmap/icon_appointment_failure"
-    android:layout_margin="5dp"
-    />
         <TextView
+            android:id="@+id/tv_appointment_failure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="预约不成功 订单已作废"
+            android:text="预约不成功"
             android:textSize="12sp"
-            android:layout_toRightOf="@+id/img_appointment_failure"
-            android:layout_centerVertical="true"
-            android:textColor="#AEAEAE"
+            android:layout_marginLeft="13dp"
+            android:layout_marginTop="15dp"
             />
+
+
     <TextView
-        android:id="@+id/tv_appointment_failure_number"
+        android:id="@+id/tv_appointment_failure_status_install"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="工单号:12124124124"
+        android:background="@color/color_custom_01"
+        android:layout_toRightOf="@+id/tv_appointment_failure"
+        android:layout_marginTop="17dp"
+        android:layout_marginLeft="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:textSize="10sp"
+        android:text="安装"
+        android:textColor="@color/color_white" />
+
+    <TextView
+        android:id="@+id/tv_appointment_failure_status_repair"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/color_custom_04"
+        android:layout_toRightOf="@+id/tv_appointment_failure"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:layout_marginTop="17dp"
+        android:layout_marginLeft="5dp"
+        android:text="维修"
+        android:textSize="10sp"
+        android:textColor="@color/color_white"
+        android:visibility="invisible"
+        />
+
+
+
+    <TextView
+        android:id="@+id/tv_appointment_failure_job_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="工单号:1212412412412414124"
         android:layout_alignParentRight="true"
-        android:textColor="@color/color_black"
         android:textSize="12sp"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="5dp"
+        android:layout_marginRight="19dp"
+        android:layout_marginTop="15dp"
         />
 
-    </RelativeLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/color_custom_03"
+    <TextView
+        android:id="@+id/tv_reason_appointment_failure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:text="热水器不通电"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="41dp"
         />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 <ImageView
+    android:layout_below="@+id/tv_reason_appointment_failure"
     android:id="@+id/img_loaction"
-    android:layout_width="10dp"
-    android:layout_height="10dp"
+    android:layout_width="14dp"
+    android:layout_height="14dp"
     android:src="@mipmap/icon_loaction"
-    android:layout_margin="5dp"
+    android:layout_marginLeft="15dp"
+    android:layout_marginTop="5dp"
     />
         <TextView
             android:id="@+id/tv_loaction_appointment_failure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
+            android:textSize="14sp"
             android:text="距离 43.12KM"
             android:layout_toRightOf="@+id/img_loaction"
-            android:layout_centerVertical="true"
+            android:layout_below="@+id/tv_reason_appointment_failure"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
 
             />
 <TextView
-    android:id="@+id/tv_appointment_failure_count"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="数量:2台"
-    android:textSize="12sp"
+    android:textSize="14sp"
     android:layout_toRightOf="@+id/tv_loaction_appointment_failure"
-    android:layout_centerVertical="true"
-    android:textColor="@color/color_black"
-    android:layout_marginLeft="80dp"
+    android:layout_below="@+id/tv_reason_appointment_failure"
+    android:layout_marginTop="5dp"
+    android:layout_marginLeft="30dp"
     />
 
 
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/tv_appointment_failure_status_install"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:background="#AEAEAE"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:textSize="12sp"
-            android:text="安装"
-            android:textColor="@color/color_white" />
-
-        <TextView
-            android:id="@+id/tv_appointment_failure_status_repair"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:background="#AEAEAE"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-
-            android:textSize="12sp"
-            android:textColor="@color/color_white"
-            android:visibility="invisible"
-            />
-        <TextView
-            android:id="@+id/tv_reason_appointment_failure"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:text="热水器不通电"
-            android:textColor="#AEAEAE"
-           android:layout_toRightOf="@+id/tv_appointment_failure_status_install"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
-            />
         <TextView
             android:id="@+id/tv_address_appointment_failure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="宁波市江北区长阳路人才公寓5栋1701室"
-            android:textSize="12sp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginBottom="5dp"
-            android:layout_below="@+id/tv_reason_appointment_failure"
-            android:layout_marginTop="8dp"
+            android:textSize="14sp"
+            android:layout_below="@+id/tv_loaction_appointment_failure"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="5dp"
             />
 
+      <!--  <Button
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text="电话"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            />-->
 
-    </RelativeLayout>
+   <!-- <ImageView
+        android:id="@+id/img_pending_appointment_phone"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:src="@mipmap/icon_telphone"
+        android:layout_marginTop="64dp"
+        android:layout_marginRight="16dp"
+        android:layout_alignParentRight="true"/>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/color_custom_03"
+    <TextView
+        android:id="@+id/tv_pending_appointment_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="预约"
+        android:layout_below="@+id/img_pending_appointment_phone"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="22dp"
         />
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+-->
 
-        <TextView
-            android:id="@+id/tv_appointment_failure_content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="原因: 用户电话一直无法接通"
-            android:textSize="15sp"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginBottom="5dp"
-            android:textColor="@color/color_custom_04"/>
-    </RelativeLayout>
-</LinearLayout>
+    <ImageView
+        android:id="@+id/img_pending_appointment_failure_phone"
+        android:layout_width="51dp"
+        android:layout_height="51dp"
+        android:src="@mipmap/icon_recover"
+        android:layout_marginTop="64dp"
+        android:layout_marginRight="16dp"
+        android:layout_alignParentRight="true"/>
 
-</android.support.v7.widget.CardView>
+<TextView
+    android:id="@+id/tv_appointment_failure_reason"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="原因: 用户电话无法接通"
+    android:textSize="12sp"
+    android:layout_marginTop="16dp"
+    android:layout_below="@+id/tv_address_appointment_failure"
+      android:layout_marginLeft="14dp"
+    android:layout_marginBottom="12dp"
+    />
+
+
+
+
+</RelativeLayout>

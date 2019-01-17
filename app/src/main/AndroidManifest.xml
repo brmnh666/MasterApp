@@ -11,7 +11,9 @@
         android:roundIcon="@mipmap/icon_app"
         android:theme="@style/AppTheme"
         >
-        <activity android:name=".mvp.ui.activity.MainActivity"  android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".mvp.ui.activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

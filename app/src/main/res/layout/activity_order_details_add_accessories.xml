@@ -12,6 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
         android:gravity="center|top">
         <RadioGroup
             android:id="@+id/rg_order_details"
@@ -28,6 +30,7 @@
                 android:text="厂家寄件申请"
                 android:textColor="#6A6A6A"
                 android:textSize="16sp"
+
                 />
 
             <RadioButton
@@ -55,7 +58,7 @@
         android:layout_height="wrap_content"
         android:text="添加配件"
         android:textColor="#6A6A6A"
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/tv_order_detail_btn"

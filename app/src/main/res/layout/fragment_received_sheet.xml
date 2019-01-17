@@ -37,15 +37,6 @@
             android:text="待预约" />
 
 
-        <RadioButton
-            android:layout_marginTop="9dp"
-            android:layout_marginBottom="9dp"
-            android:id="@+id/rb_have_appointment"
-            style="@style/Custom.ReceivedButton"
-            android:background="@drawable/tab_received"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:text="已预约" />
 
         <RadioButton
             android:id="@+id/rb_appointment_failure"

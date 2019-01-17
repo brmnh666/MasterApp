@@ -15,7 +15,6 @@ import com.ying.administrator.masterappdemo.common.DefineView;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseFragment;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment.ReceivedsheetFragment.Appointment_failure_fragment;
-import com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment.ReceivedsheetFragment.Have_appointment_fragment;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment.ReceivedsheetFragment.Pending_appointment_fragment;
 
 /*
@@ -24,7 +23,6 @@ import com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment.Re
 public class Receivedsheet_Fragement extends BaseFragment implements DefineView {
     private View view;
     private RadioGroup mTabRadioGroup;
-    private RadioButton rb_have_appointment;
     private SparseArray<Fragment> mFragmentSparseArray;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -38,13 +36,12 @@ public class Receivedsheet_Fragement extends BaseFragment implements DefineView 
     @Override
     public void initView() {
         mTabRadioGroup=view.findViewById(R.id.tabs_received_sheet);
-        rb_have_appointment=view.findViewById(R.id.rb_have_appointment);
 
         mFragmentSparseArray=new SparseArray<>();
         //待预约
         mFragmentSparseArray.append(R.id.rb_pending_appointment,Pending_appointment_fragment.newInstance());
         //已预约
-        mFragmentSparseArray.append(R.id.rb_have_appointment,Have_appointment_fragment.newInstance());
+       // mFragmentSparseArray.append(R.id.rb_have_appointment,Have_appointment_fragment.newInstance());
         //预约失败
         mFragmentSparseArray.append(R.id.rb_appointment_failure,Appointment_failure_fragment.newInstance());
 
@@ -61,11 +58,11 @@ public class Receivedsheet_Fragement extends BaseFragment implements DefineView 
 
         String intent = getActivity().getIntent().getStringExtra("intent");
         switch (intent){
-            case "have_appointment":
+            /*case "have_appointment":
                 //显示已预约
                 getChildFragmentManager().beginTransaction().add(R.id.fragment_received_container,mFragmentSparseArray.get(R.id.rb_have_appointment)).commit();
                 rb_have_appointment.setChecked(true);
-                break;
+                break;*/
             case "appointment_failure":
                 //显示预约失败
                 getChildFragmentManager().beginTransaction().add(R.id.fragment_received_container,mFragmentSparseArray.get(R.id.rb_appointment_failure)).commit();

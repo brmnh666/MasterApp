@@ -25,6 +25,7 @@ public class GrabsheetAdapter extends BaseQuickAdapter<GrabSheet_Entity,BaseView
                    .setText(R.id.tv_reason,item.getReason())
                    .setText(R.id.tv_address,item.getAddress());
 
+     baseViewHolder.addOnClickListener(R.id.img_grabsheet);
 
     }
 }

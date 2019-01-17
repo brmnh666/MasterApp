@@ -28,6 +28,7 @@
         android:orientation="horizontal"
         tools:ignore="NotSibling">
 
+        <!--首页-->
         <RadioButton
             android:id="@+id/workbench"
             style="@style/Custom.TabRadioButton"
@@ -35,7 +36,7 @@
             android:drawableTop="@drawable/tab_home_selector"
             android:background="@color/transparent"
             android:text="首页" />
-
+        <!--首页-->
 
         <RadioButton
             android:id="@+id/message"
@@ -109,22 +110,22 @@
 
     <ImageView
         android:id="@+id/receiving"
-        android:layout_width="37dp"
-        android:layout_height="37dp"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
         android:background="@android:color/transparent"
         android:clickable="true"
-        android:src="@mipmap/icon_jiedan" />
+        android:src="@mipmap/icon_home_add" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
-        android:layout_marginBottom="6dp"
+        android:layout_marginBottom="7dp"
         android:textSize="10sp"
-        android:text="接单"
+        android:text="所有订单"
         android:textColor="#bfbfbf" />
 </RelativeLayout>
