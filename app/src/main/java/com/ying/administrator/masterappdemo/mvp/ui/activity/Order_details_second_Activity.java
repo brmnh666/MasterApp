@@ -2,14 +2,14 @@ package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.widget.TextView;
 
 import com.ying.administrator.masterappdemo.R;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.BaseActivity.BaseActivity;
 import com.ying.administrator.masterappdemo.common.DefineView;
 
-public class Order_details_second_Activity extends BaseActivity implements DefineView {
+public class Order_details_second_Activity extends AppCompatActivity implements DefineView {
     private TextView tv_actionbar_title;
 
     @Override

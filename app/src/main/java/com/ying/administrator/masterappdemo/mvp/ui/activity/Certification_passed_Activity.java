@@ -3,17 +3,17 @@ package com.ying.administrator.masterappdemo.mvp.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ying.administrator.masterappdemo.R;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.BaseActivity.BaseActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.Home_Fragment;
 
 /*认证通过activity*/
-public class Certification_passed_Activity extends BaseActivity {
+public class Certification_passed_Activity extends AppCompatActivity {
     private TextView tv_go_to_the_order;
     private LinearLayout ll_return;
     private TextView tv_actionbar_title;

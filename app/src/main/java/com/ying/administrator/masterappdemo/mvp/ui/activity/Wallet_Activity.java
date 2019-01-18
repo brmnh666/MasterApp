@@ -2,16 +2,16 @@ package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ying.administrator.masterappdemo.R;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.BaseActivity.BaseActivity;
 import com.ying.administrator.masterappdemo.common.DefineView;
 
-public class Wallet_Activity extends BaseActivity implements DefineView {
+public class Wallet_Activity extends AppCompatActivity implements DefineView {
 private LinearLayout ll_return;
 private TextView tv_actionbar_title;
 private ImageView img_actionbar_message;

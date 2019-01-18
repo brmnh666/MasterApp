@@ -14,9 +14,9 @@
             android:id="@+id/tv_pending_appointment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="待预约"
+            android:text="已接待预约"
             android:textSize="12sp"
-            android:layout_marginLeft="13dp"
+            android:layout_marginLeft="15dp"
             android:layout_marginTop="15dp"
             />
 

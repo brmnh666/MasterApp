@@ -5,14 +5,14 @@ package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.ying.administrator.masterappdemo.R;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.BaseActivity.BaseActivity;
 import com.ying.administrator.masterappdemo.common.DefineView;
 
-public class WithDrawActivity extends BaseActivity implements DefineView {
+public class WithDrawActivity extends AppCompatActivity implements DefineView {
     private ImageView img_actionbar_return;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

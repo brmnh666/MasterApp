@@ -8,6 +8,8 @@
     android:id="@+id/home_swipe"
     >-->
 
+
+
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -70,13 +72,16 @@
     android:background="@color/color_custom_08"/>-->
 
 <include layout="@layout/fragment_order_receiving"/>
-
-    <!--用于填充布局-->
     <View
+        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         />
 </LinearLayout>
+    <!--用于填充布局-->
+
+
+
 
 <!--
 </jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout>-->

@@ -94,6 +94,7 @@
                 android:textColor="#959295"
                 android:layout_marginLeft="13dp"
                 android:layout_marginTop="41dp"
+                android:layout_toLeftOf="@+id/img_grabsheet"
                 />
 
             <TextView
@@ -102,33 +103,10 @@
                 android:layout_height="wrap_content"
                 android:text="宁波市江北区长阳路人才公寓5栋1701室asfasfattttttt"
                 android:textSize="15sp"
+                android:layout_below="@+id/tv_reason"
                 android:layout_marginLeft="12dp"
-                android:layout_marginTop="67dp"
                 />
 
-           <!-- <Button
-                android:id="@+id/btn_grabsheet"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:textSize="20sp"
-                />-->
-
-           <!-- <ImageView
-                android:id="@+id/img_grabsheet"
-                android:layout_width="52dp"
-                android:layout_height="52dp"
-                android:src="@mipmap/icon_grab"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="32dp"
-                android:layout_alignParentRight="true"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="100dp"
-                android:layout_marginRight="25dp"
-                android:layout_alignParentRight="true"
-                android:text="抢  单"/>-->
     <ImageView
         android:id="@+id/img_grabsheet"
         android:layout_width="51dp"
@@ -169,55 +147,7 @@
 
 
 
-     <!--   <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <ImageView
-                android:src="@mipmap/icon_loaction"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
-               />
-     <TextView
-         android:id="@+id/tv_loaction"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:textSize="12sp"
-         android:text="距离13.74Km"
-         android:layout_marginTop="10dp"
-         />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="数量:2台"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="40dp"
-                android:textSize="12sp"
-                />
 
-        </LinearLayout>-->
-
-   <!--     <TextView
-            android:id="@+id/tv_reason"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:text="热水器不通电"
-            android:textColor="@color/color_custom_01"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="20dp"
-            />
-      <TextView
-    android:id="@+id/tv_address"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="宁波市江北区长阳路人才公寓5栋1701室asfasfattttttt"
-    android:textSize="12sp"
-    android:layout_marginLeft="20dp"
-    />
--->
 
 
 

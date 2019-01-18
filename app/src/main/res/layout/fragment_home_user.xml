@@ -36,7 +36,15 @@
             android:layout_marginTop="20dp"
             android:layout_marginLeft="10dp"
             />-->
-
+<ImageView
+    android:id="@+id/img_home_withdraw"
+    android:layout_width="16dp"
+    android:layout_height="16dp"
+    android:src="@mipmap/icon_home_withdraw"
+    android:layout_toLeftOf="@+id/tv_home_available_balance"
+    android:layout_marginTop="25dp"
+    android:layout_marginRight="5dp"
+    />
         <TextView
             android:id="@+id/tv_home_available_balance"
             android:layout_width="wrap_content"
@@ -49,6 +57,16 @@
             android:layout_marginTop="23dp"
             />
 
+        <ImageView
+            android:id="@+id/img_home_unfinished"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@mipmap/icon_home_unfinished"
+            android:layout_toLeftOf="@+id/tv_home_outstanding_amount"
+            android:layout_marginRight="5dp"
+            android:layout_below="@+id/img_home_withdraw"
+            android:layout_marginTop="10dp"
+            />
         <TextView
             android:id="@+id/tv_home_outstanding_amount"
             android:layout_width="wrap_content"
@@ -61,6 +79,15 @@
             android:layout_marginRight="20dp"
             />
 
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@mipmap/icon_home_free_gold"
+            android:layout_toLeftOf="@+id/tv_home_giving_money"
+            android:layout_below="@+id/img_home_unfinished"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="5dp"
+            />
         <TextView
             android:id="@+id/tv_home_giving_money"
             android:layout_width="wrap_content"

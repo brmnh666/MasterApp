@@ -14,27 +14,33 @@
         <activity android:name=".mvp.ui.activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTask">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".mvp.ui.activity.Order_Receiving_Activity"
             android:theme="@style/AppTheme.Receicing">
 
         </activity>
-        <activity android:name=".mvp.ui.activity.LoginActivity" android:theme="@style/Theme.AppCompat.NoActionBar">
 
+        <!--登录-->
+        <activity android:name=".mvp.ui.activity.LoginActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
         </activity>
 
         <!--工单详情-->
-        <activity android:name=".mvp.ui.activity.Order_details_Activity" android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".mvp.ui.activity.Order_details_Activity"
+            android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
 
-        <activity android:name=".mvp.ui.activity.Verified_Activity" android:theme="@style/AppTheme.NoActionBar" android:windowSoftInputMode="stateHidden">
+        <activity android:name=".mvp.ui.activity.Verified_Activity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden">
 
         </activity>
         <!--引导页-->
@@ -44,15 +50,23 @@
         </activity>
 
         <!--提现界面-->
-        <activity android:name=".mvp.ui.activity.WithDrawActivity" android:theme="@style/AppTheme.WithDraw" android:windowSoftInputMode="stateHidden">
+        <activity android:name=".mvp.ui.activity.WithDrawActivity"
+            android:theme="@style/AppTheme.WithDraw"
+            android:windowSoftInputMode="stateHidden">
 
 
         </activity>
         <!--我的钱包界面-->
-        <activity android:name=".mvp.ui.activity.Wallet_Activity" android:theme="@style/AppTheme.NoActionBar" android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".mvp.ui.activity.Wallet_Activity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
 
         <!--实名认证成功界面-->
-        <activity android:name=".mvp.ui.activity.Certification_passed_Activity" android:theme="@style/AppTheme.Receicing" />
+        <activity android:name=".mvp.ui.activity.Certification_passed_Activity"
+            android:theme="@style/AppTheme.Receicing" />
+
+
+
     </application>
 
 </manifest>

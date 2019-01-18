@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--已完成item-->
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/rr_shape"
+    >
+
+        <TextView
+            android:id="@+id/tv_complete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="已完成"
+            android:textSize="12sp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            />
+
+
+    <TextView
+        android:id="@+id/tv_tv_complete_status_install"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/color_custom_01"
+        android:layout_toRightOf="@+id/tv_complete"
+        android:layout_marginTop="17dp"
+        android:layout_marginLeft="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:textSize="10sp"
+        android:text="安装"
+        android:textColor="@color/color_white" />
+
+    <TextView
+        android:id="@+id/tv_complete_status_repair"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/color_custom_04"
+        android:layout_toRightOf="@+id/tv_complete"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:layout_marginTop="17dp"
+        android:layout_marginLeft="5dp"
+        android:text="维修"
+        android:textSize="10sp"
+        android:textColor="@color/color_white"
+        android:visibility="invisible"
+        />
+
+
+
+    <TextView
+        android:id="@+id/tv_complete_job_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="工单号:1212412412412414124"
+        android:layout_alignParentRight="true"
+        android:textSize="12sp"
+        android:layout_marginRight="19dp"
+        android:layout_marginTop="15dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_reason_complete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:text="热水器不通电"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="41dp"
+        />
+
+<ImageView
+    android:layout_below="@+id/tv_reason_complete"
+    android:id="@+id/img_loaction"
+    android:layout_width="14dp"
+    android:layout_height="14dp"
+    android:src="@mipmap/icon_loaction"
+    android:layout_marginLeft="15dp"
+    android:layout_marginTop="5dp"
+    />
+        <TextView
+            android:id="@+id/tv_loaction_complete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:text="距离 43.12KM"
+            android:layout_toRightOf="@+id/img_loaction"
+            android:layout_below="@+id/tv_reason_complete"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+
+            />
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="数量:2台"
+    android:textSize="14sp"
+    android:layout_toRightOf="@+id/tv_loaction_complete"
+    android:layout_below="@+id/tv_reason_complete"
+    android:layout_marginTop="5dp"
+    android:layout_marginLeft="30dp"
+    />
+
+
+        <TextView
+            android:id="@+id/tv_address_complete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="宁波市江北区长阳路人才公寓5栋1701室"
+            android:textSize="14sp"
+            android:layout_below="@+id/tv_loaction_complete"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="15dp"
+            />
+
+
+
+
+
+
+
+
+</RelativeLayout>

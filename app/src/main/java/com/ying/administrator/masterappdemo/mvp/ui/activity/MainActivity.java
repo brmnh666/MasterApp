@@ -3,6 +3,7 @@ package com.ying.administrator.masterappdemo.mvp.ui.activity;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.SparseArray;
 import android.view.KeyEvent;
 import android.view.View;
@@ -10,15 +11,14 @@ import android.view.Window;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.ying.administrator.masterappdemo.mvp.ui.activity.BaseActivity.BaseActivity;
-import com.ying.administrator.masterappdemo.common.DefineView;
+import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BlankFragment;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.Home_Fragment;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.Me_Fragment;
 import com.ying.administrator.masterappdemo.widget.BadgeView;
 
-public class MainActivity extends BaseActivity implements DefineView {
+public class MainActivity extends BaseActivity {
 
     private RadioGroup mTabRadioGroup;
     private SparseArray<Fragment> mFragmentSparseArray;
@@ -26,9 +26,19 @@ public class MainActivity extends BaseActivity implements DefineView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_main);
+       // requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //setContentView(R.layout.activity_main);
         initView();
+
+    }
+
+    @Override
+    protected int setLayoutId() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    protected void initData() {
 
     }
 
@@ -54,7 +64,8 @@ public class MainActivity extends BaseActivity implements DefineView {
 
         findViewById(R.id.receiving).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 Intent intent=new Intent(MainActivity.this, Order_Receiving_Activity.class);
                 intent.putExtra("intent","pending_appointment");
                 startActivity(intent);
@@ -70,16 +81,18 @@ public class MainActivity extends BaseActivity implements DefineView {
     }
 
     @Override
+    protected void setListener() {
+
+    }
+
     public void initValidata() {
 
     }
 
-    @Override
     public void initListener() {
 
     }
 
-    @Override
     public void bindData() {
 
     }
