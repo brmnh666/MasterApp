@@ -1,27 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-      xmlns:android="http://schemas.android.com/apk/res/android"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#F7F7F7"
         android:orientation="vertical">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="250dp">
 
             <include layout="@layout/actionbar_me_layout" />
 
-                <include layout="@layout/fragment_me_order_option"/>
+            <include layout="@layout/fragment_me_order_option" />
 
-         </RelativeLayout>
+        </RelativeLayout>
 
-        <include layout="@layout/fragment_me_option"/>
+        <include layout="@layout/fragment_me_option" />
+
         <View
             android:layout_width="wrap_content"
-            android:layout_height="50dp"/>
-</LinearLayout>
-     </ScrollView>
+            android:layout_height="50dp" />
+    </LinearLayout>
+</ScrollView>
 

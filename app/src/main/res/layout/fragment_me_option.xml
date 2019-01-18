@@ -9,80 +9,90 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:padding="20dp"
         android:background="@drawable/ll_me_edit_shape"
-
         android:orientation="horizontal"
-        >
+
+        android:padding="20dp">
+
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@mipmap/icon_me_study" />
+            android:src="@mipmap/study" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_weight="1"
             android:text="学习考试"
-            android:textSize="15sp"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            android:textColor="@color/color_black" />
+            android:textColor="@color/color_black"
+            android:textSize="15sp" />
+
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:src="@mipmap/icon_me_arrows" />
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#F7F7F7"/>
+        android:background="#F7F7F7" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:padding="20dp"
         android:background="@drawable/ll_me_edit_shape"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="20dp">
+
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@mipmap/icon_me_info" />
+            android:src="@mipmap/personal" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_weight="1"
             android:text="个人资料"
-            android:textSize="15sp"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            android:textColor="@color/color_black" />
+            android:textColor="@color/color_black"
+            android:textSize="15sp" />
 
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:src="@mipmap/icon_me_arrows" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:padding="20dp"
         android:background="@drawable/ll_me_edit_shape"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="20dp">
+
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@mipmap/icon_me_card"/>
+            android:src="@mipmap/bank" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_weight="1"
             android:text="银行卡管理"
-            android:textSize="15sp"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            android:textColor="@color/color_black" />
+            android:textColor="@color/color_black"
+            android:textSize="15sp" />
+
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
@@ -94,87 +104,99 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:padding="20dp"
         android:background="@drawable/ll_me_edit_shape"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="20dp">
+
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@mipmap/icon_customer_service" />
+            android:src="@mipmap/service" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="客服电话"
-            android:textSize="15sp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:textColor="@color/color_black" />
+            android:layout_weight="1"
+            android:text="客服电话"
+            android:textColor="@color/color_black"
+            android:textSize="15sp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="400-000-0000"
-            android:textSize="15sp"
             android:layout_marginRight="5dp"
+            android:text="400-000-0000"
+            android:textColor="#7B7A7A"
 
 
-            android:textColor="#7B7A7A" />
+            android:textSize="15sp" />
+
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@mipmap/icon_me_arrows"/>
+            android:src="@mipmap/icon_me_arrows" />
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#F7F7F7"/>
+        android:background="#F7F7F7" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:padding="20dp"
         android:background="@drawable/ll_me_edit_shape"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="20dp">
+
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@mipmap/icon_me_suggestion"/>
+            android:src="@mipmap/opinion" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_weight="1"
             android:text="意见反馈"
-            android:textSize="15sp"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            android:textColor="@color/color_black" />
+            android:textColor="@color/color_black"
+            android:textSize="15sp" />
 
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:src="@mipmap/icon_me_arrows" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:padding="20dp"
         android:background="@drawable/ll_me_edit_shape"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="20dp">
+
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@mipmap/icon_me_about"/>
+            android:src="@mipmap/about" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_weight="1"
             android:text="关于我们"
-            android:textSize="15sp"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            android:textColor="@color/color_black" />
+            android:textColor="@color/color_black"
+            android:textSize="15sp" />
+
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"

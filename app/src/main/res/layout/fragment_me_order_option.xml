@@ -1,115 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
-android:layout_width="match_parent"
-android:layout_height="100dp"
-android:layout_margin="10dp"
-android:background="@drawable/ll_me_edit_shape"
-android:orientation="horizontal"
-android:layout_alignParentBottom="true"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:layout_alignParentBottom="true"
+    android:layout_margin="10dp"
+    android:background="@drawable/ll_me_edit_shape"
+    android:elevation="5dp"
+    android:orientation="horizontal">
 
-    >
-<LinearLayout
-    android:id="@+id/normal_dfk_ll"
-    android:layout_width="0dp"
-    android:layout_height="match_parent"
-    android:layout_weight="1"
-    android:gravity="center"
-    android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/normal_dfk_ll"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
 
-    <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:src="@mipmap/icon_me_all_orders" />
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@mipmap/icon_me_all_orders" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="全部订单"
+            android:textColor="#808080"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
         android:layout_marginTop="10dp"
-        android:textSize="11sp"
-        android:text="全部订单"
-        android:textColor="#808080" />
-</LinearLayout>
-<View
-    android:layout_width="1dp"
-    android:layout_height="match_parent"
-    android:layout_marginTop="10dp"
-    android:layout_marginBottom="10dp"
-    android:background="@color/color_custom_08"/>
-<LinearLayout
-    android:id="@+id/normal_dfh_ll"
-    android:layout_width="0dp"
-    android:layout_height="match_parent"
-    android:layout_weight="1"
-    android:gravity="center"
-    android:orientation="vertical">
+        android:layout_marginBottom="10dp"
+        android:background="@color/color_custom_08" />
 
-    <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:src="@mipmap/icon_me_return_sheet" />
+    <LinearLayout
+        android:id="@+id/normal_dfh_ll"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@mipmap/icon_me_return_sheet" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="待返件"
+            android:textColor="#808080"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
         android:layout_marginTop="10dp"
-        android:textSize="11sp"
-        android:text="待返件"
-        android:textColor="#808080" />
-</LinearLayout>
-<View
-    android:layout_width="1dp"
-    android:layout_height="match_parent"
-    android:layout_marginTop="10dp"
-    android:layout_marginBottom="10dp"
-    android:background="@color/color_custom_08"/>
-<LinearLayout
-    android:id="@+id/normal_dsh_ll"
-    android:layout_width="0dp"
-    android:layout_height="match_parent"
-    android:layout_weight="1"
-    android:gravity="center"
-    android:orientation="vertical">
+        android:layout_marginBottom="10dp"
+        android:background="@color/color_custom_08" />
 
-    <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:src="@mipmap/icon_me_confirmed" />
+    <LinearLayout
+        android:id="@+id/normal_dsh_ll"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@mipmap/icon_me_confirmed" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="待确认"
+            android:textColor="#808080"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
         android:layout_marginTop="10dp"
-        android:textSize="11sp"
-        android:text="待确认"
-        android:textColor="#808080" />
-</LinearLayout>
-<View
-    android:layout_width="1dp"
-    android:layout_height="match_parent"
-    android:layout_marginTop="10dp"
-    android:layout_marginBottom="10dp"
-    android:background="@color/color_custom_08"/>
-<LinearLayout
-    android:id="@+id/normal_all_ll"
-    android:layout_width="0dp"
-    android:layout_height="match_parent"
-    android:layout_weight="1"
-    android:gravity="center"
-    android:orientation="vertical">
+        android:layout_marginBottom="10dp"
+        android:background="@color/color_custom_08" />
 
-    <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:src="@mipmap/icon_me_finish" />
+    <LinearLayout
+        android:id="@+id/normal_all_ll"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:textSize="11sp"
-        android:text="已完成"
-        android:textColor="#808080" />
-</LinearLayout>
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@mipmap/icon_me_finish" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="已完成"
+            android:textColor="#808080"
+            android:textSize="12sp" />
+    </LinearLayout>
 </LinearLayout>
