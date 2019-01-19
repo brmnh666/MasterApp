@@ -4,18 +4,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.ying.administrator.masterappdemo.R;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.BaseActivity.BaseActivity;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 /*引导页*/
-public class SplashActivity extends BaseActivity implements View.OnClickListener {
+public class SplashActivity extends AppCompatActivity implements View.OnClickListener {
 
     private int recLen=5; //倒计时5秒
     private TextView tv_splash_skin;

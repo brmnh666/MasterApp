@@ -1,16 +1,67 @@
 package com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
-public class BaseFragment extends Fragment {
+import com.ying.administrator.masterappdemo.base.BaseModel;
+import com.ying.administrator.masterappdemo.base.BasePresenter;
+import com.ying.administrator.masterappdemo.base.BaseView;
+import com.ying.administrator.masterappdemo.base.RxManager;
+import com.ying.administrator.masterappdemo.util.TUtil;
+
+public class BaseFragment<P extends BasePresenter, M extends BaseModel> extends Fragment {
+    public P mPresenter;
+    public M mModel;
+
+    public RxManager mRxManage;
+    protected Activity mActivity;
+    protected View mRootView;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mPresenter = obtainPresenter();
+        mModel = obtainModel();
+        if (mPresenter != null) {
+            mPresenter.mContext = this.getActivity();
+            if (this instanceof BaseView) {
+                mPresenter.setVM(this, mModel);
+            }
+            mPresenter.onCreate(savedInstanceState);
+        }
+
+        mRxManage = new RxManager();
+    }
+
+
+    protected P obtainPresenter() {
+        return TUtil.getT(this, 0);
+    }
+
+    protected M obtainModel() {
+        return TUtil.getT(this, 1);
+    }
+
+
+
+
+
+
+
+    /*电话*/
     public static final int REQUEST_CALL_PERMISSION = 10111; //拨号请求码
     /**
      * 判断是否有某项权限
@@ -57,6 +108,6 @@ public class BaseFragment extends Fragment {
             startActivity(intent);
         }
     }
-
+    /*电话*/
 
 }

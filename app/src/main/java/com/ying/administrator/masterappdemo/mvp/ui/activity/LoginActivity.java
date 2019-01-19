@@ -1,18 +1,128 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
+import android.view.View;
 import android.view.Window;
+import android.widget.Button;
+import android.widget.EditText;
 
+import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.ying.administrator.masterappdemo.R;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.BaseActivity.BaseActivity;
+import com.ying.administrator.masterappdemo.base.BaseActivity;
+import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.mvp.contract.LoginContract;
+import com.ying.administrator.masterappdemo.mvp.model.LoginModel;
+import com.ying.administrator.masterappdemo.mvp.presenter.LoginPresenter;
+import com.ying.administrator.masterappdemo.util.MyUtils;
 
-public class LoginActivity extends BaseActivity {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class LoginActivity extends BaseActivity<LoginPresenter, LoginModel> implements View.OnClickListener, LoginContract.View {
+      //用户名
+     @BindView(R.id.et_login_username)
+     EditText mEt_login_username;
+     //密码
+     @BindView(R.id.et_login_password)
+     EditText mEt_login_password;
+     //登录按钮
+     @BindView(R.id.btn_login)
+     Button mBtn_login;
+
+     private String userName;
+     private String passWord;
+     private String code;
+
+    @Override
+    protected int setLayoutId() {
+        return R.layout.activity_login;
+    }
+
+    @Override
+    protected void initData() {
+
+    }
+
+    @Override
+    protected void initView() {
+        mEt_login_username.setText("admin2");
+        mEt_login_password.setText("888888");
+    }
+
+    @Override
+    protected void setListener() {
+        mBtn_login.setOnClickListener(this);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_login);
+        //requestWindowFeature(Window.FEATURE_NO_TITLE);
+        ButterKnife.bind(this);
+    }
+
+
+    @Override
+    public void onClick(View v) {
+switch (v.getId()){
+    case R.id.btn_login:
+
+        userName = mEt_login_username.getText().toString();
+        passWord = mEt_login_password.getText().toString();
+
+        if ("".equals(userName)) {
+            ToastUtils.showShort("请输入手机号！");
+            return;
+        }
+                  //                if (!RegexUtils.isMobileExact(userName)){
+                    //                    ToastUtils.showShort("手机号格式不正确！");
+                      //                    return;
+                //                }
+        if ("".equals(passWord)) {
+            ToastUtils.showShort("请输入密码！");
+            return;
+        }
+        mPresenter.Login(userName,passWord);
+      break;
+}
+    }
+
+
+     @Override
+    public void Login(BaseResult<String> baseResult) {
+         switch (baseResult.getStatusCode()) {
+            case 200:
+                SPUtils spUtils = SPUtils.getInstance("token");
+                spUtils.put("adminToken", baseResult.getData());
+                spUtils.put("userName", userName);
+//                GetUserInfo getUserInfo=new GetUserInfo(userName,baseResult.getData(),"","");
+//                Gson gson=new Gson();
+//                RequestBody json=RequestBody.create(okhttp3.MediaType.parse("application/json;charset=UTF-8"),gson.toJson(getUserInfo));
+//                mPresenter.GetUserInfo(json);
+//                mPresenter.GetUserInfo(userName);
+                startActivity(new Intent(mActivity, MainActivity.class));
+                finish();
+                break;
+              case 401:
+                ToastUtils.showShort(baseResult.getData());
+                break;
+        }
+    }
+    /*获取用户消息*/
+    @Override
+    public void GetUserInfo(BaseResult<String> baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                MyUtils.e("userInfo", baseResult.getData());
+                ToastUtils.showShort(baseResult.getData());
+                break;
+            case 401:
+                ToastUtils.showShort(baseResult.getData());
+                break;
+        }
     }
 }

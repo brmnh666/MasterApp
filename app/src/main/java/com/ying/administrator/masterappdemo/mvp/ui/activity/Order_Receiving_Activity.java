@@ -8,12 +8,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
-
 import com.ying.administrator.masterappdemo.common.DefineView;
-import com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment.Grabsheet_Fragement;
+import com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment.Appointment_failure_fragment;
+import com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment.Complete_wait_fetch_Fragement;
+import com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment.Completed_Fragement;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment.InService_Fragement;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment.Quality_sheet_Fragement;
-import com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment.Receivedsheet_Fragement;
+import com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment.Pending_appointment_fragment;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment.Returnedparts_Fragement;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.TabLayoutViewPagerAdapter;
@@ -31,14 +32,18 @@ public class Order_Receiving_Activity extends AppCompatActivity implements Defin
      private  ArrayList<String> title=new ArrayList<>();
     // private Grabsheet_Fragement grabsheet_fragement;
 
-     private Receivedsheet_Fragement receivedsheet_fragement; //已接订单
+     private Pending_appointment_fragment pending_appointment_fragment; //已接订单待预约
      private InService_Fragement inService_fragement; //服务中
      private Quality_sheet_Fragement quality_sheet_fragement; //质保单
-     private Returnedparts_Fragement returnedparts_fragement;
+     private Returnedparts_Fragement returnedparts_fragement;//待返件
+     private Complete_wait_fetch_Fragement complete_wait_fetch_fragement;//完成待取机
+     private Completed_Fragement completed_fragement; //已完成
+     private Appointment_failure_fragment appointment_failure_fragment;//预约失败
+
 
 
      @Override
-    protected void onCreate(Bundle savedInstanceState) {
+     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_order_receiving);
@@ -72,22 +77,34 @@ public class Order_Receiving_Activity extends AppCompatActivity implements Defin
     @Override
     public void bindData() {
          //为tablayout添加内容
-         title.add("已接订单");
+         title.add("已接待预约");
          title.add("服务中");
-         title.add("质保单");
          title.add("返件单");
-         /*title.add("已完结");
-         title.add("完成待取机");*/
+         title.add("质保单");
+         title.add("完成待取机");
+         title.add("已完成");
+         title.add("预约不成功");
+
         //grabsheet_fragement=new Grabsheet_Fragement();
-        receivedsheet_fragement=new Receivedsheet_Fragement(); //已接订单
+        pending_appointment_fragment=new Pending_appointment_fragment(); //已接待预约
         inService_fragement=new InService_Fragement(); //服务中
+        returnedparts_fragement=new Returnedparts_Fragement();//返件单
         quality_sheet_fragement=new Quality_sheet_Fragement();//质保单
-        returnedparts_fragement=new Returnedparts_Fragement();
+        complete_wait_fetch_fragement=new Complete_wait_fetch_Fragement();//完成待取机
+        completed_fragement=new Completed_Fragement();//已完成
+        appointment_failure_fragment=new Appointment_failure_fragment();//预约不成功
+
+
+
         //fragmentList.add(grabsheet_fragement);
-        fragmentList.add(receivedsheet_fragement);
+        fragmentList.add(pending_appointment_fragment);
         fragmentList.add(inService_fragement);
-        fragmentList.add(quality_sheet_fragement);
         fragmentList.add(returnedparts_fragement);
+        fragmentList.add(quality_sheet_fragement);
+        fragmentList.add(complete_wait_fetch_fragement);
+        fragmentList.add(completed_fragement);
+        fragmentList.add(appointment_failure_fragment);
+
 
         TabLayoutViewPagerAdapter tabLayoutViewPagerAdapter=new TabLayoutViewPagerAdapter(getSupportFragmentManager(),fragmentList,title);
         tab_Receiving_layout.setTabMode(TabLayout.MODE_SCROLLABLE);
@@ -100,21 +117,35 @@ public class Order_Receiving_Activity extends AppCompatActivity implements Defin
         switch (intent){
 
 
-            case "pending_appointment"://待预约
-                receiving_viewpager.setCurrentItem(0); //显示已接订单
+            case "pending_appointment"://已接待预约
+                receiving_viewpager.setCurrentItem(0);
                 break;
 
             case "in_service":  //服务中
                receiving_viewpager.setCurrentItem(1);
             break;
 
-            case "quality"://质保单
+            case "return"://返件单
                 receiving_viewpager.setCurrentItem(2);
                 break;
 
-            case "return"://返件单
+            case "quality"://质保单
                 receiving_viewpager.setCurrentItem(3);
-             break;
+                break;
+
+            case "complete_wait_fetch"://完成待取机
+                receiving_viewpager.setCurrentItem(4);
+                break;
+
+            case "completed"://已完成
+                receiving_viewpager.setCurrentItem(5);
+                break;
+            case "appointment_failure"://预约失败
+                receiving_viewpager.setCurrentItem(6);
+                break;
+
+
+
             default:
              break;
         }

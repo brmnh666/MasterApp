@@ -3,6 +3,7 @@ package com.ying.administrator.masterappdemo.mvp.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -11,11 +12,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ying.administrator.masterappdemo.R;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.BaseActivity.BaseActivity;
 import com.ying.administrator.masterappdemo.common.DefineView;
 
 /*实名认证activity*/
-public class Verified_Activity extends BaseActivity implements DefineView {
+public class Verified_Activity extends AppCompatActivity implements DefineView {
 
     private LinearLayout ll_return;
     private TextView tv_actionbar_title;
