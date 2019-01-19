@@ -81,7 +81,7 @@
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@mipmap/bank" />
+            android:src="@mipmap/wallet" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -89,7 +89,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_weight="1"
-            android:text="银行卡管理"
+            android:text="我的钱包"
             android:textColor="@color/color_black"
             android:textSize="15sp" />
 

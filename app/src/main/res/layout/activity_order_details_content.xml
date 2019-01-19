@@ -111,7 +111,7 @@
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:text="热水器不通电"
-
+            android:textStyle="bold"
             android:textColor="#6A6A6A"
             />
         <TextView
@@ -155,13 +155,14 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/color_custom_08"
-        />
+        android:layout_marginTop="8dp"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="6dp">
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="@dimen/dp_10">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
