@@ -12,9 +12,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -25,6 +27,7 @@ import com.ying.administrator.masterappdemo.mvp.contract.AllWorkOrdersContract;
 import com.ying.administrator.masterappdemo.mvp.model.AllWorkOrdersModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.AllWorkOrdersPresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_Receiving_Activity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.Share_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Verified_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Wallet_Activity;
 import com.ying.administrator.masterappdemo.common.DefineView;
@@ -50,7 +53,9 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
     private GrabsheetAdapter grabsheetAdapter;
     private WorkOrder workOrder;
     private List<WorkOrder.DataBean> list;
+    private ImageView img_home_qr_code;
     private int pageIndex = 1;  //默认当前页数为1
+
     private RefreshLayout mRefreshLayout;
 
 
@@ -94,6 +99,9 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
     public void initView() {
         list=new ArrayList<>();
         tv_certification=view.findViewById(R.id.tv_certification); //实名认证
+        img_home_qr_code=view.findViewById(R.id.img_home_qr_code);//二维码
+        mRefreshLayout=view.findViewById(R.id.refreshLayout);//刷新页面
+
         /*模拟数据*/
         recyclerView=view.findViewById(R.id.recyclerview_order_receiving);
         recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
@@ -101,15 +109,8 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
        //?? grabsheetAdapter.setEmptyView(getEmptyView());
         recyclerView.setAdapter(grabsheetAdapter);
 
-        mPresenter.GetOrderInfoList("", Integer.toString(pageIndex), "100");
-        //加载更多
-      /*  mRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
-            @Override
-            public void onLoadmore(RefreshLayout refreshlayout) {
-                grabsheetAdapter.notifyDataSetChanged();
-                refreshlayout.finishLoadmore();
-            }
-        });*/
+        mPresenter.GetOrderInfoList("1", Integer.toString(pageIndex), "4");
+
 
               /*点击抢单按钮*/
         grabsheetAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
@@ -117,10 +118,13 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
              switch (view.getId()){
                     case R.id.img_grabsheet:
+                     mPresenter.AddGrabsheetapply(((WorkOrder.DataBean)adapter.getItem(position)).getOrderID(),"18892621501");
+
+                    Log.d("WorkOrder",((WorkOrder.DataBean)adapter.getItem(position)).getOrderID());
                      grabsheetAdapter.remove(position);
-                     Intent intent=new Intent(getActivity(),Order_Receiving_Activity.class);
-                     intent.putExtra("intent","pending_appointment");
-                     startActivity(intent);
+                     //Intent intent=new Intent(getActivity(),Order_Receiving_Activity.class);
+                     //intent.putExtra("intent","pending_appointment");
+                     //startActivity(intent);
                   break;
              }
 
@@ -138,15 +142,32 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
 
         //实名认证
         tv_certification.setOnClickListener(new CustomListnear());
-         //下拉刷新
-     /*   mWaveSwipeRefreshLayout.setOnRefreshListener(new WaveSwipeRefreshLayout.OnRefreshListener() {
+        //二维码
+        img_home_qr_code.setOnClickListener(new CustomListnear());
+
+
+        /*下拉刷新*/
+        mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
-            public void onRefresh() {
-                new Task().execute();
+            public void onRefresh(RefreshLayout refreshlayout) {
+                pageIndex=1;
+                list.clear();
+                mPresenter.GetOrderInfoList("1", Integer.toString(pageIndex), "4");
+                grabsheetAdapter.notifyDataSetChanged();
+                refreshlayout.finishRefresh();
             }
         });
-*/
 
+        //上拉加载更多
+        mRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
+            @Override
+            public void onLoadmore(RefreshLayout refreshlayout) {
+                pageIndex++; //页数加1
+                mPresenter.GetOrderInfoList("1", Integer.toString(pageIndex), "4");
+                grabsheetAdapter.notifyDataSetChanged();
+                refreshlayout.finishLoadmore();
+            }
+        });
 
     }
 
@@ -174,6 +195,19 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
                 ToastUtils.showShort(baseResult.getInfo());
                 break;
         }
+
+    }
+
+    @Override
+    public void AddGrabsheetapply(BaseResult<String> baseResult) {
+         switch (baseResult.getStatusCode()){
+             case 200://抢单成功
+                 Toast.makeText(getActivity(),"抢单成功",Toast.LENGTH_LONG);
+                 break;
+              default:
+                  Toast.makeText(getActivity(),"抢单失败",Toast.LENGTH_LONG);
+                  break;
+         }
 
     }
 
@@ -246,7 +280,9 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
                         }
                     });
                     break;
-
+                       case R.id.img_home_qr_code:
+                           startActivity(new Intent(getActivity(), Share_Activity.class));
+                           break;
 
 
                     default:

@@ -49,8 +49,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginModel> impl
 
     @Override
     protected void initView() {
-        mEt_login_username.setText("admin2");
-        mEt_login_password.setText("888888");
+        mEt_login_username.setText("18892621501");
+        mEt_login_password.setText("123");
     }
 
     @Override

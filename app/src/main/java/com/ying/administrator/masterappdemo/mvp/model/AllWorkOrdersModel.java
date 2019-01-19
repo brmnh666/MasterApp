@@ -18,4 +18,12 @@ public class AllWorkOrdersModel implements AllWorkOrdersContract.Model {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }
+
+    /*抢单操作*/
+    @Override
+    public Observable<BaseResult<String>> AddGrabsheetapply(String OrderID, String UserID) {
+        return ApiRetrofit.getDefault().AddGrabsheetapply(OrderID,UserID)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
 }

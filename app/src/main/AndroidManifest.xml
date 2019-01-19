@@ -66,8 +66,12 @@
         <activity android:name=".mvp.ui.activity.Certification_passed_Activity"
             android:theme="@style/AppTheme.Receicing" />
 
-        <!--关于我们界面-->
-        <activity android:name=".mvp.ui.activity.AboutUsActivity"  android:theme="@style/AppTheme.Receicing"></activity>
+
+        <!--分享界面-->
+              <activity android:name=".mvp.ui.activity.Share_Activity"
+    android:theme="@style/AppTheme.Receicing">
+
+               </activity>
 
     </application>
 

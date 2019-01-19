@@ -73,4 +73,16 @@ public interface ApiService {
     Observable<BaseResult<WorkOrder>> GetOrderInfoList(@Field("state") String state,
                                                        @Field("page") String page,
                                                        @Field("limit") String limit);
+
+
+
+    /**
+     * 提交抢单申请
+     */
+@FormUrlEncoded
+@POST("Order/GrabOrder")
+    Observable<BaseResult<String>> AddGrabsheetapply (@Field("OrderID") String OrderID,
+                                                      @Field("UserID") String UserID);
+
+
 }

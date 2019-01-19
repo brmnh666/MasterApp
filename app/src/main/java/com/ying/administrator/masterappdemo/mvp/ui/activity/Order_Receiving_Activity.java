@@ -64,9 +64,9 @@ public class Order_Receiving_Activity extends AppCompatActivity implements Defin
     @Override
     public void initValidata() {
         //显示未读消息红点
-        BadgeView badgeView =new BadgeView(this);
+    /*    BadgeView badgeView =new BadgeView(this);
         badgeView.setTargetView(findViewById(R.id.img_actionbar_message));
-        badgeView.setBadgeCount(8);
+        badgeView.setBadgeCount(8);*/
     }
 
     @Override

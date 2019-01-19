@@ -18,4 +18,15 @@ public class AllWorkOrdersPresenter extends AllWorkOrdersContract.Presenter {
                     }
                 });
     }
+
+    @Override
+    public void AddGrabsheetapply(String OrderID, String UserID) {
+        mModel.AddGrabsheetapply(OrderID,UserID)
+                .subscribe(new BaseObserver<String>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<String> value) {
+                        mView.AddGrabsheetapply(value);
+                    }
+                });
+    }
 }

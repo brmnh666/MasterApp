@@ -2,6 +2,8 @@ package com.ying.administrator.masterappdemo.mvp.ui.adapter;
 
 
 import android.support.annotation.Nullable;
+import android.view.View;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -9,6 +11,7 @@ import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.entity.GrabSheet_Entity;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 
+import java.util.IdentityHashMap;
 import java.util.List;
 
 public class GrabsheetAdapter extends BaseQuickAdapter<WorkOrder.DataBean,BaseViewHolder> {
@@ -20,7 +23,18 @@ public class GrabsheetAdapter extends BaseQuickAdapter<WorkOrder.DataBean,BaseVi
 
     @Override
     protected void convert(BaseViewHolder baseViewHolder, WorkOrder.DataBean item) {
-      baseViewHolder.setText(R.id.tv_reason,item.getMemo());
+      baseViewHolder.setText(R.id.tv_reason,item.getMemo()); //故障原因
+      if (item.getTypeID().equals("1")){ //维修
+            baseViewHolder.setVisible(R.id.tv_grabsheet_status_repair,true);
+          baseViewHolder.setVisible(R.id.tv_grabsheet_status_install,false);
+
+      }else{//安装
+          baseViewHolder.setVisible(R.id.tv_grabsheet_status_repair,false);
+          baseViewHolder.setVisible(R.id.tv_grabsheet_status_install,true);
+
+      }
+
+      baseViewHolder.setText(R.id.tv_address,item.getAddress()); //地址
       baseViewHolder.addOnClickListener(R.id.img_grabsheet);
     }
 }
