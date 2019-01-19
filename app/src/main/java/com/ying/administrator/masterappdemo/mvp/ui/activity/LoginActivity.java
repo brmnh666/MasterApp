@@ -3,6 +3,7 @@ package com.ying.administrator.masterappdemo.mvp.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -69,6 +70,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginModel> impl
     public void onClick(View v) {
 switch (v.getId()){
     case R.id.btn_login:
+
         userName = mEt_login_username.getText().toString();
         passWord = mEt_login_password.getText().toString();
 
@@ -110,6 +112,7 @@ switch (v.getId()){
                 break;
         }
     }
+    /*获取用户消息*/
     @Override
     public void GetUserInfo(BaseResult<String> baseResult) {
         switch (baseResult.getStatusCode()) {

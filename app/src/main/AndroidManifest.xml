@@ -10,6 +10,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/icon_app"
         android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
         >
         <activity android:name=".mvp.ui.activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar"
