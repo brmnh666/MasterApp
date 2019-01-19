@@ -43,7 +43,8 @@
                         android:layout_height="wrap_content"
                         android:text="累计提现"
                         android:textColor="#63ABF4"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
 
                     <TextView
                         android:id="@+id/all_withdraw_tv"
@@ -73,7 +74,8 @@
                         android:layout_height="wrap_content"
                         android:text="累计收入"
                         android:textColor="#63ABF4"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
 
                     <TextView
                         android:id="@+id/income_tv"
@@ -105,7 +107,7 @@
                     android:layout_marginTop="15dp"
                     android:text="保证金金额"
                     android:textColor="@color/color_black"
-                    android:textSize="13sp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -120,7 +122,7 @@
                     android:layout_marginRight="20dp"
                     android:text="0.00"
                     android:textColor="#63ABF4"
-                    android:textSize="13sp" />
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <View
@@ -143,7 +145,7 @@
                     android:layout_marginTop="15dp"
                     android:text="可提现金额"
                     android:textColor="@color/color_black"
-                    android:textSize="13sp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -158,7 +160,7 @@
                     android:layout_marginRight="20dp"
                     android:text="0.00"
                     android:textColor="#63ABF4"
-                    android:textSize="13sp" />
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <View
@@ -181,7 +183,7 @@
                     android:layout_marginTop="15dp"
                     android:text="提现中"
                     android:textColor="@color/color_black"
-                    android:textSize="13sp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -196,7 +198,7 @@
                     android:layout_marginRight="20dp"
                     android:text="0.00"
                     android:textColor="#63ABF4"
-                    android:textSize="13sp" />
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <View
@@ -219,7 +221,7 @@
                     android:layout_marginTop="15dp"
                     android:text="待确认金额"
                     android:textColor="@color/color_black"
-                    android:textSize="13sp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -234,7 +236,7 @@
                     android:layout_marginRight="20dp"
                     android:text="0.00"
                     android:textColor="#63ABF4"
-                    android:textSize="13sp" />
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <View
@@ -253,7 +255,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginLeft="25dp"
                     android:layout_marginTop="20dp"
                     android:text="提现金额"
                     android:textColor="@color/color_black"
@@ -274,7 +276,7 @@
                     android:gravity="right"
                     android:hint="单次最少提现100元"
                     android:textColor="@color/color_black"
-                    android:textSize="13sp" />
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <View
@@ -293,7 +295,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginLeft="25dp"
                     android:layout_marginTop="20dp"
                     android:text="提现至"
                     android:textColor="@color/color_black"
@@ -401,9 +403,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="25dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginRight="20dp"
+                android:layout_marginRight="25dp"
                 android:background="@drawable/bule_shape"
                 android:orientation="vertical">
 
@@ -471,7 +473,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
                 android:background="#C7C7C7" />
 
@@ -497,7 +499,8 @@
                     android:background="@null"
                     android:gravity="left"
                     android:hint="1000"
-                    android:textSize="25sp" />
+                    android:textSize="25sp"
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -529,7 +532,7 @@
             <Button
                 android:id="@+id/confirm_withdrawal_btn"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
+                android:layout_height="50dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:background="@drawable/btn_blue"

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_white">
+
+    <include layout="@layout/actionbar_receiving_layout"/>
+    
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="85dp"
+        android:src="@mipmap/icon_app"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="吉米人师傅端"
+        android:textColor="#333333"
+        android:textSize="19sp"
+        android:gravity="center"
+        android:layout_marginTop="18dp"/>
+
+    <TextView
+        android:id="@+id/tv_version_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:layout_marginTop="@dimen/dp_10"
+        android:text="V 1.1.0"
+        android:gravity="center"
+        android:textColor="#AFAFAF"/>
+    <TextView
+        android:id="@+id/tv_user_Agreement"
+        android:layout_width="109dp"
+        android:layout_height="33dp"
+        android:textSize="16sp"
+        android:layout_marginTop="46dp"
+        android:text="用户协议"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textColor="#AFAFAF"
+        android:background="@drawable/gray_shape"/>
+    <TextView
+        android:id="@+id/tv_about_app"
+        android:layout_width="109dp"
+        android:layout_height="33dp"
+        android:textSize="16sp"
+        android:layout_marginTop="17dp"
+        android:text="关于APP"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textColor="#AFAFAF"
+        android:background="@drawable/gray_shape"/>
+    <TextView
+        android:id="@+id/tv_opinion"
+        android:layout_width="109dp"
+        android:layout_height="33dp"
+        android:textSize="16sp"
+        android:layout_marginTop="17dp"
+        android:text="意见反馈"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textColor="#AFAFAF"
+        android:background="@drawable/gray_shape"/>
+
+    <TextView
+        android:id="@+id/tv_net"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="http://www.jmiren.com"
+        android:textSize="16sp"
+        android:textColor="#6A6A6A"
+        android:layout_gravity="center"
+        android:layout_marginTop="46dp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_marginTop="11dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="客服热线："
+            android:textColor="#AEAEAE"
+            android:textSize="16sp"/>
+        <TextView
+            android:id="@+id/tv_phone_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0574-88888888"
+            android:textColor="#747FFF"
+            android:textSize="16sp"/>
+    </LinearLayout>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="宁波正海科技有限公司版权所有"
+        android:gravity="center"
+        android:textColor="#B1B1B1"
+        android:textSize="10sp"
+        android:layout_marginTop="12dp"/>
+
+    <TextView
+        android:id="@+id/tv_company_english"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Copyright @ 2016 Ningbo Zhenghai Technology Co., Ltd."
+        android:layout_gravity="center"
+        android:textColor="#B1B1B1"
+        android:textSize="10sp"
+        android:layout_marginTop="8dp"/>
+
+
+</LinearLayout>
