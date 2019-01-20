@@ -1,6 +1,7 @@
 package com.ying.administrator.masterappdemo.mvp.model;
 
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.AllWorkOrdersContract;
 import com.ying.administrator.masterappdemo.mvp.service.ApiRetrofit;
@@ -19,11 +20,15 @@ public class AllWorkOrdersModel implements AllWorkOrdersContract.Model {
                 .subscribeOn(Schedulers.io());
     }
 
-    /*抢单操作*/
     @Override
-    public Observable<BaseResult<String>> AddGrabsheetapply(String OrderID, String UserID) {
-        return ApiRetrofit.getDefault().AddGrabsheetapply(OrderID,UserID)
+    public Observable<BaseResult<Data>> AddGrabsheetapply(String OrderID, String UserID) {
+        return  ApiRetrofit.getDefault().AddGrabsheetapply(OrderID,UserID)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }
+
+
+
+    /*抢单操作*/
+
 }

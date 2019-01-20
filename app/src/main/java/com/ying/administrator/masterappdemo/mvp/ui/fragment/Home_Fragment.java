@@ -21,6 +21,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.GrabSheet_Entity;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.AllWorkOrdersContract;
@@ -199,15 +200,17 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
     }
 
     @Override
-    public void AddGrabsheetapply(BaseResult<String> baseResult) {
-         switch (baseResult.getStatusCode()){
-             case 200://抢单成功
-                 Toast.makeText(getActivity(),"抢单成功",Toast.LENGTH_LONG);
-                 break;
-              default:
-                  Toast.makeText(getActivity(),"抢单失败",Toast.LENGTH_LONG);
-                  break;
-         }
+    public void AddGrabsheetapply(BaseResult<Data> baseResult) {
+        Data data = baseResult.getData();
+        Log.d("asas", (String) data.getItem2());
+
+        switch (baseResult.getStatusCode()){
+            case 200://200
+                break;
+            default:
+                break;
+    }
+
 
     }
 

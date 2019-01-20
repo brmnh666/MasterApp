@@ -1,6 +1,7 @@
 package com.ying.administrator.masterappdemo.mvp.service;
 
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 
 import io.reactivex.Observable;
@@ -81,8 +82,8 @@ public interface ApiService {
      */
 @FormUrlEncoded
 @POST("Order/GrabOrder")
-    Observable<BaseResult<String>> AddGrabsheetapply (@Field("OrderID") String OrderID,
-                                                      @Field("UserID") String UserID);
+    Observable<BaseResult<Data>> AddGrabsheetapply (@Field("OrderID") String OrderID,
+                                                    @Field("UserID") String UserID);
 
 
 }
