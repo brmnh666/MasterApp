@@ -5,28 +5,23 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!--<androidx.appcompat.widget.Toolbar-->
-        <!--android:id="@+id/toolbar_news"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="52dp"-->
-        <!--android:padding="10dp"-->
-        <!--android:background="@color/red">-->
-    <LinearLayout
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tab_new_layout"
         android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:background="#1690ff"
-        android:orientation="vertical"
-        android:gravity="center_horizontal|bottom">
-        <net.lucode.hackware.magicindicator.MagicIndicator
-            android:id="@+id/magic_news"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_gravity="center_horizontal" />
-    </LinearLayout>
-    <!--</androidx.appcompat.widget.Toolbar>-->
+        android:layout_height="48dp"
+        android:background="@color/color_custom_01"
+        app:tabIndicatorColor="@color/color_white"
+        app:tabSelectedTextColor="@color/color_white"
+        app:tabTextColor="@color/color_white"
+        app:tabIndicatorHeight="2dp"
+        app:tabTextAppearance="@style/MyCustomNewsTextAppearance"
 
+        />
     <android.support.v4.view.ViewPager
-        android:id="@+id/view_pager_news"
+        android:id="@+id/news_viewpager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/color_custom_02"
+        />
 </LinearLayout>

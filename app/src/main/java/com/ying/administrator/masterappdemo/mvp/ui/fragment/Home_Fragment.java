@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -49,14 +50,14 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
    // private WaveSwipeRefreshLayout mWaveSwipeRefreshLayout;
      private String mContentText;
      private View view;
-
+    String userID;//用户id
     private RecyclerView recyclerView;
     private GrabsheetAdapter grabsheetAdapter;
     private WorkOrder workOrder;
     private List<WorkOrder.DataBean> list;
     private ImageView img_home_qr_code;
     private int pageIndex = 1;  //默认当前页数为1
-
+    private LinearLayout ll_empty;//工单为空的状态
     private RefreshLayout mRefreshLayout;
 
 
@@ -91,6 +92,7 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
             Log.d("ying","调用了onCreateView");
             initView();
             initListener();
+          // Log.d("userID",userID+"13");
 
         }
 
@@ -102,7 +104,7 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
         tv_certification=view.findViewById(R.id.tv_certification); //实名认证
         img_home_qr_code=view.findViewById(R.id.img_home_qr_code);//二维码
         mRefreshLayout=view.findViewById(R.id.refreshLayout);//刷新页面
-
+        ll_empty=view.findViewById(R.id.ll_empty); //显示内容为空的界面
         /*模拟数据*/
         recyclerView=view.findViewById(R.id.recyclerview_order_receiving);
         recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
@@ -110,8 +112,11 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
        //?? grabsheetAdapter.setEmptyView(getEmptyView());
         recyclerView.setAdapter(grabsheetAdapter);
 
-        mPresenter.GetOrderInfoList("1", Integer.toString(pageIndex), "4");
+        mPresenter.GetOrderInfoList("1", Integer.toString(pageIndex), "100");
+       if (list.isEmpty()){ //没有数据显示空
+           contentLoadingEmpty();
 
+       }
 
               /*点击抢单按钮*/
         grabsheetAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
@@ -119,13 +124,20 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
              switch (view.getId()){
                     case R.id.img_grabsheet:
-                     mPresenter.AddGrabsheetapply(((WorkOrder.DataBean)adapter.getItem(position)).getOrderID(),"18892621501");
+                        SPUtils spUtils = SPUtils.getInstance("token");
+                        userID = spUtils.getString("userName"); //获取用户id
 
-                    Log.d("WorkOrder",((WorkOrder.DataBean)adapter.getItem(position)).getOrderID());
+                     mPresenter.AddGrabsheetapply(((WorkOrder.DataBean)adapter.getItem(position)).getOrderID(),userID);
+
+                    //Log.d("WorkOrder",((WorkOrder.DataBean)adapter.getItem(position)).getOrderID());
                      grabsheetAdapter.remove(position);
                      //Intent intent=new Intent(getActivity(),Order_Receiving_Activity.class);
                      //intent.putExtra("intent","pending_appointment");
                      //startActivity(intent);
+                        if (list.isEmpty()){  //判断订单是否为空
+                            contentLoadingEmpty();
+
+                        }
                   break;
              }
 
@@ -151,9 +163,12 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
+                if (!list.isEmpty()){ //当有数据的时候
+                 ll_empty.setVisibility(View.INVISIBLE);//隐藏空的界面
+                }
                 pageIndex=1;
                 list.clear();
-                mPresenter.GetOrderInfoList("1", Integer.toString(pageIndex), "4");
+                mPresenter.GetOrderInfoList("1", Integer.toString(pageIndex), "100");
                 grabsheetAdapter.notifyDataSetChanged();
                 refreshlayout.finishRefresh();
             }
@@ -206,13 +221,21 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
 
         switch (baseResult.getStatusCode()){
             case 200://200
+                if (data.isItem1()){//抢单成功
+                    Toast.makeText(getActivity(),"抢单成功",Toast.LENGTH_SHORT).show();
+                }else if (!data.isItem1()){
+                    Toast.makeText(getActivity(),"订单已经被抢",Toast.LENGTH_SHORT).show();
+                }
                 break;
+
             default:
                 break;
     }
 
 
     }
+
+
 
     @Override
     public void contentLoading() {
@@ -231,6 +254,8 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
 
     @Override
     public void contentLoadingEmpty() {
+       Log.d("empty","工单为空");
+        ll_empty.setVisibility(View.VISIBLE);
 
     }
 

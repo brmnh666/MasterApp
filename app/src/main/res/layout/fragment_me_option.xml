@@ -41,6 +41,7 @@
         android:background="#F7F7F7" />
 
     <LinearLayout
+        android:id="@+id/ll_me_information"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
@@ -71,6 +72,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ll_me_mywallet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -145,6 +147,7 @@
         android:background="#F7F7F7" />
 
     <LinearLayout
+        android:id="@+id/ll_me_opinion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
@@ -175,6 +178,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ll_me_about_us"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"

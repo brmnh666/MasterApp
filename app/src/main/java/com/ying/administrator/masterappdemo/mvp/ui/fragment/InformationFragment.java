@@ -19,7 +19,7 @@ import com.ying.administrator.masterappdemo.R;
 public class InformationFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_SHOW_TEXT = "text";
-
+    private View view;
     private String mContentText;
 
 
@@ -57,10 +57,13 @@ public class InformationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_information, container, false);
+        if (view==null){
 
-        return rootView;
+            view = inflater.inflate(R.layout.fragment_information, container, false);
+        }
+
+
+        return view;
     }
 
 }

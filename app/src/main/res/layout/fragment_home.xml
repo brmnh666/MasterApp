@@ -39,7 +39,13 @@
     android:layout_height="5dp"
     android:background="@color/color_custom_08"/>-->
 
-<include layout="@layout/fragment_order_receiving"/>
+
+
+        <include layout="@layout/fragment_order_receiving" />
+
+
+
+
     <View
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"

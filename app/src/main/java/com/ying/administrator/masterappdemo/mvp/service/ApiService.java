@@ -4,6 +4,8 @@ import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 
+import java.util.List;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
@@ -85,5 +87,14 @@ public interface ApiService {
     Observable<BaseResult<Data>> AddGrabsheetapply (@Field("OrderID") String OrderID,
                                                     @Field("UserID") String UserID);
 
+/**
+ * 获取其他状态的 获取已接的订单
+ * **/
+    @FormUrlEncoded
+    @POST("Order/GetOrderInfoList")
+    Observable<BaseResult<WorkOrder>> GetOrderInfoListForMe(@Field("state") String state,
+                                                            @Field("page") String page,
+                                                            @Field("limit") String limit,
+                                                            @Field("UserID") String UserID);
 
 }

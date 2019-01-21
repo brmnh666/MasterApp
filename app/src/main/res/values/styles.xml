@@ -80,5 +80,12 @@
         <item name="android:textSize">17sp</item>
         <item name="android:textColor">#7A777A</item>
     </style>
+    <!--tablayout 消息字体大小-->
+    <style name="MyCustomNewsTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">true</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@color/color_white</item>
+    </style>
 
 </resources>

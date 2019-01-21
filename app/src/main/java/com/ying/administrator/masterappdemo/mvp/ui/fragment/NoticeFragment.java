@@ -20,7 +20,7 @@ public class NoticeFragment extends Fragment {
     private static final String ARG_SHOW_TEXT = "text";
 
     private String mContentText;
-
+private View view;
 
     public NoticeFragment() {
         // Required empty public constructor
@@ -57,9 +57,13 @@ public class NoticeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_notice, container, false);
+        if (view==null){
 
-        return rootView;
+            view = inflater.inflate(R.layout.fragment_notice, container, false);
+        }
+
+
+        return view;
     }
 
 }

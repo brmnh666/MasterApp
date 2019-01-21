@@ -7,31 +7,43 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.ying.administrator.masterappdemo.R;
+import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.WorkOrder;
+import com.ying.administrator.masterappdemo.mvp.contract.GetOrderListForMeContract;
+import com.ying.administrator.masterappdemo.mvp.model.GetOrderListForMeModel;
+import com.ying.administrator.masterappdemo.mvp.presenter.GetOrderListForMePresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_details_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Pending_Appointment_Adapter;
-import com.ying.administrator.masterappdemo.common.DefineView;
-import com.ying.administrator.masterappdemo.entity.Pending_Appointment_Entity;
+
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseFragment;
 import com.ying.administrator.masterappdemo.widget.CustomDialog_UnSuccess;
 
 import java.util.ArrayList;
 
 /*待预约*/
-public class Pending_appointment_fragment extends BaseFragment implements DefineView {
+public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMePresenter, GetOrderListForMeModel> implements GetOrderListForMeContract.View {
     private View view;
     private RecyclerView recyclerView;
     private Pending_Appointment_Adapter pending_appointment_adapter;
-    private ArrayList<Pending_Appointment_Entity> list;
+    private ArrayList<WorkOrder.DataBean> list;
+    private WorkOrder workOrder;
     private String phoneNuber;
     private Context mContext;
+    private RefreshLayout mRefreshLayout;
+    private int pageIndex = 1;  //默认当前页数为1
     public Pending_appointment_fragment() {
         // Required empty public constructor
     }
@@ -46,40 +58,63 @@ public class Pending_appointment_fragment extends BaseFragment implements Define
        if (view==null){
          view=inflater.inflate(R.layout.fragment_order_receiving,container,false);
            initView();
-           initValidata();
            initListener();
 
        }
        return view;
     }
 
-    @Override
     public void initView() {
-    recyclerView=view.findViewById(R.id.recyclerview_order_receiving);
-
-    Pending_Appointment_Entity a=new Pending_Appointment_Entity();
-    a.setJob_number("工单号:123124124112122");
-    a.setAddress("宁波市江北区长阳路人才公寓5栋1702室");
-
+        recyclerView=view.findViewById(R.id.recyclerview_order_receiving);
+        mRefreshLayout=view.findViewById(R.id.refreshLayout);
         list=new ArrayList<>();
-        Pending_Appointment_Entity b=new Pending_Appointment_Entity();
-        b.setJob_number("工单号:123124124112122");
-        b.setAddress("宁波市江北区长阳路人才公寓5栋1702室");
-        list.add(a);
-        list.add(b);
+
+
         pending_appointment_adapter=new Pending_Appointment_Adapter(R.layout.item_pending_appointment,list);
         recyclerView.setAdapter(pending_appointment_adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-    }
+        mPresenter.GetOrderInfoListForMe("2",Integer.toString(pageIndex),"4","");
 
-    @Override
-    public void initValidata() {
 
     }
 
-    @Override
+
+
+
     public void initListener() {
+
+
+        /*下拉刷新*/
+        mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+          /*      if (!list.isEmpty()){ //当有数据的时候
+                    ll_empty.setVisibility(View.INVISIBLE);//隐藏空的界面
+                }*/
+                pageIndex=1;
+                list.clear();
+                mPresenter.GetOrderInfoListForMe("2", Integer.toString(pageIndex), "4","");
+                pending_appointment_adapter.notifyDataSetChanged();
+                refreshlayout.finishRefresh();
+            }
+        });
+
+        //上拉加载更多
+        mRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
+            @Override
+            public void onLoadmore(RefreshLayout refreshlayout) {
+                pageIndex++; //页数加1
+                mPresenter.GetOrderInfoListForMe("2", Integer.toString(pageIndex), "4","");
+                pending_appointment_adapter.notifyDataSetChanged();
+                refreshlayout.finishLoadmore();
+            }
+        });
+
+
+
+
+
         pending_appointment_adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
@@ -164,12 +199,44 @@ public class Pending_appointment_fragment extends BaseFragment implements Define
 
     }
 
-    @Override
-    public void bindData() {
 
+    /*获取 自己抢到的订单*/
+    @Override
+    public void GetOrderInfoListForMe(BaseResult<WorkOrder> baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                workOrder = baseResult.getData();
+                list.addAll(workOrder.getData());
+                pending_appointment_adapter.setNewData(list); //?
+
+                break;
+            case 401:
+                ToastUtils.showShort(baseResult.getInfo());
+                break;
+        }
     }
 
+    @Override
+    public void contentLoading() {
+    }
 
+    @Override
+    public void contentLoadingComplete() {
+    }
 
+    @Override
+    public void contentLoadingError() {
+    }
 
+    @Override
+    public void contentLoadingEmpty() {
+    }
+
+    @Override
+    public void showProgress() {
+    }
+
+    @Override
+    public void hideProgress() {
+    }
 }

@@ -16,17 +16,26 @@ public interface AllWorkOrdersContract {
         Observable<BaseResult<WorkOrder>> GetOrderInfoList(String state, String page, String limit);
        //抢单操作
         Observable<BaseResult<Data>> AddGrabsheetapply(String OrderID, String UserID);
+        //根据用户名获取已抢订单
+      //  Observable<BaseResult<WorkOrder>> GetOrderInfoListForMe(String state, String page, String limit,String UserID);
+
+
     }
 
     interface View extends BaseView {
         void GetOrderInfoList(BaseResult<WorkOrder> baseResult);
         //抢单操作
         void AddGrabsheetapply(BaseResult<Data> baseResult);
+        //根据用户名获取已抢订单
+       // void GetOrderInfoListForMe(BaseResult<WorkOrder> baseResult);
     }
 
     abstract class Presenter extends BasePresenter<View,Model> {
         public abstract void GetOrderInfoList(String state, String page,String limit);
         //抢单操作
         public abstract void AddGrabsheetapply(String OrderID,String UserID);
+        //根据用户名获取已抢订单
+        //public abstract void GetOrderInfoListForMe(String state, String page, String limit,String UserID);
+
     }
 }

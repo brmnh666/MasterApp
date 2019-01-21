@@ -52,7 +52,7 @@
 
         <!--提现界面-->
         <activity android:name=".mvp.ui.activity.WithDrawActivity"
-            android:theme="@style/AppTheme.WithDraw"
+            android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden">
 
 
@@ -69,10 +69,27 @@
 
         <!--分享界面-->
               <activity android:name=".mvp.ui.activity.Share_Activity"
-    android:theme="@style/AppTheme.Receicing">
+                        android:theme="@style/AppTheme.Receicing">
 
                </activity>
 
+        <!--设置界面-->
+        <activity
+            android:name=".mvp.ui.activity.SettingActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+        <!--关于我们-->
+        <activity android:name=".mvp.ui.activity.AboutUsActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+        <!--我的个人信息-->
+        <activity android:name=".mvp.ui.activity.Personal_Information_Activity"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+        <!--意见反馈-->
+        <activity android:name=".mvp.ui.activity.Opinion_Activity"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
     </application>
 
 </manifest>

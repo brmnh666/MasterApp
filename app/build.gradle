@@ -80,5 +80,4 @@ dependencies {
     implementation 'com.tencent.wup:wup:1.0.0.E-release'
     //mid包，minSdkVersion 14
     implementation 'com.tencent.mid:mid:4.0.7-Release'
-    implementation project(':magicindicator')
 }
