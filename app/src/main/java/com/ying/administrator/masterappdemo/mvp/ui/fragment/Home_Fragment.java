@@ -113,11 +113,13 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
         recyclerView.setAdapter(grabsheetAdapter);
 
         mPresenter.GetOrderInfoList("1", Integer.toString(pageIndex), "100");
-       if (list.isEmpty()){ //没有数据显示空
+      /* if (list.isEmpty()){ //没有数据显示空
            contentLoadingEmpty();
 
-       }
+       }else {
+           ll_empty.setVisibility(View.INVISIBLE);
 
+       }*/
               /*点击抢单按钮*/
         grabsheetAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
@@ -128,12 +130,11 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
                         userID = spUtils.getString("userName"); //获取用户id
 
                      mPresenter.AddGrabsheetapply(((WorkOrder.DataBean)adapter.getItem(position)).getOrderID(),userID);
-
                     //Log.d("WorkOrder",((WorkOrder.DataBean)adapter.getItem(position)).getOrderID());
                      grabsheetAdapter.remove(position);
-                     //Intent intent=new Intent(getActivity(),Order_Receiving_Activity.class);
-                     //intent.putExtra("intent","pending_appointment");
-                     //startActivity(intent);
+                     Intent intent=new Intent(getActivity(),Order_Receiving_Activity.class);
+                     intent.putExtra("intent","pending_appointment");
+                     startActivity(intent);
                         if (list.isEmpty()){  //判断订单是否为空
                             contentLoadingEmpty();
 
@@ -198,6 +199,13 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
                 workOrder = baseResult.getData();
                 list.addAll(workOrder.getData());
                 grabsheetAdapter.setNewData(list); //?
+                if (list.isEmpty()){
+                    contentLoadingEmpty();
+
+                }else {
+                    ll_empty.setVisibility(View.INVISIBLE);
+
+                }
                /* mRefreshLayout.finishRefresh();
 
                 if (pageIndex!=1&&"0".equals(workOrder.getCount())){

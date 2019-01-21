@@ -43,10 +43,10 @@
         android:textColor="#8A8A8A"
         />
 
-    <ImageView
-    android:layout_width="18dp"
-    android:layout_height="14dp"
-    android:src="@mipmap/icon_home_refresh"
+       <ImageView
+        android:layout_width="18dp"
+        android:layout_height="14dp"
+        android:src="@mipmap/icon_home_refresh"
         android:layout_toLeftOf="@+id/tv_home_refresh"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="10dp"
