@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F2F5">
+
+    <include layout="@layout/actionbar_receiving_layout"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/color_custom_01"
+        android:paddingTop="36dp"
+        android:paddingBottom="20dp"
+        android:gravity="center">
+        <TextView
+            android:id="@+id/tv_account_problem"
+            android:layout_width="82dp"
+            android:layout_height="33dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="@drawable/white_shape"
+            android:text="账号问题"
+            android:textSize="16sp"
+            android:textColor="#666666" />
+        <TextView
+            android:id="@+id/tv_payment_issues"
+            android:layout_width="82dp"
+            android:layout_height="33dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="@drawable/white_shape"
+            android:text="支付问题"
+            android:textSize="16sp"
+            android:textColor="#666666"
+            android:layout_marginLeft="24dp"/>
+        <TextView
+            android:id="@+id/tv_other_questions"
+            android:layout_width="82dp"
+            android:layout_height="33dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="@drawable/white_shape"
+            android:text="其它问题"
+            android:textSize="16sp"
+            android:textColor="#666666"
+            android:layout_marginLeft="24dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF"
+        android:layout_margin="@dimen/dp_10"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="192dp"
+            android:layout_margin="17dp"
+            android:background="@drawable/gray_rr_shape"
+            android:orientation="vertical">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dp_10"
+                android:background="@null"
+                android:hint="请描述您遇到的问题小鱼尽快为您处理"
+                android:textSize="14dp"
+                android:textColorHint="#B1B1B1"
+                android:textColor="#333333"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/tv_word_count"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="0/200"
+                android:textSize="12sp"
+                android:textColor="#666666"
+                android:layout_marginLeft="9dp"
+                android:layout_marginBottom="7dp"/>
+        </LinearLayout>
+        
+        <Button
+            android:id="@+id/btn_opinion"
+            android:layout_width="match_parent"
+            android:layout_height="43dp"
+            android:background="@drawable/btn_blue"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="18dp"
+            android:text="提交反馈"
+            android:textColor="@color/color_white"
+            android:textSize="16sp"/>
+
+    </LinearLayout>
+
+</LinearLayout>
