@@ -461,7 +461,8 @@
                     android:gravity="left"
                     android:hint="1000"
                     android:textSize="25sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    android:inputType="number"/>
 
                 <TextView
                     android:layout_width="match_parent"

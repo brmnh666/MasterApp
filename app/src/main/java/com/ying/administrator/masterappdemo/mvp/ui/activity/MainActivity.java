@@ -16,6 +16,7 @@ import com.ying.administrator.masterappdemo.mvp.ui.fragment.BlankFragment;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.Home_Fragment;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.Me_Fragment;
+import com.ying.administrator.masterappdemo.mvp.ui.fragment.NewsFragment;
 import com.ying.administrator.masterappdemo.widget.BadgeView;
 
 public class MainActivity extends BaseActivity {
@@ -46,7 +47,7 @@ public class MainActivity extends BaseActivity {
         mTabRadioGroup = findViewById(R.id.tabs_rg);
         mFragmentSparseArray = new SparseArray<>();
         mFragmentSparseArray.append(R.id.workbench, Home_Fragment.newInstance("首页"));
-        mFragmentSparseArray.append(R.id.message, BlankFragment.newInstance("消息"));
+        mFragmentSparseArray.append(R.id.message, NewsFragment.newInstance("消息"));
         mFragmentSparseArray.append(R.id.accessories_shop, BlankFragment.newInstance("配件商城"));
         mFragmentSparseArray.append(R.id.me, Me_Fragment.newInstance("我的"));
         mTabRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {

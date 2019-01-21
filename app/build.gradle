@@ -46,7 +46,7 @@ dependencies {
     implementation 'com.youth.banner:banner:1.4.9'
     implementation 'com.android.support:recyclerview-v7:28.0.0'
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.44'
-     implementation 'com.android.support:cardview-v7:28.0.0'
+    implementation 'com.android.support:cardview-v7:28.0.0'
     //SmartRefreshLayout
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.4-7'
     implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.4-7'
@@ -69,18 +69,16 @@ dependencies {
     //注解
     implementation 'com.jakewharton:butterknife:9.0.0-rc1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-rc1'
-
-
     //信鸽普通版本jar，不包含厂商通道
-    implementation  'com.tencent.xinge:xinge:4.0.5-release'
+    implementation 'com.tencent.xinge:xinge:4.0.5-release'
     //compile'com.tencent.xinge:xinge:4.3.0-beta'
     //信鸽及动态加载厂商通道jar(此版本已经集成厂商通道，无需依赖其它三个厂商依赖)
-
     //compile 'com.tencent.xinge:xinge:4.3.0-xgotherpush-beta'
     //jg包
-    implementation'com.tencent.jg:jg:1.1'
+    implementation 'com.tencent.jg:jg:1.1'
     //wup包
     implementation 'com.tencent.wup:wup:1.0.0.E-release'
     //mid包，minSdkVersion 14
     implementation 'com.tencent.mid:mid:4.0.7-Release'
+    implementation project(':magicindicator')
 }

@@ -11,18 +11,19 @@
         android:layout_height="1dp"
         android:background="@color/color_custom_06" />
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:gravity="center">
 
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+        <com.ying.administrator.masterappdemo.widget.CircleImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_centerInParent="true"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="50dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginBottom="60dp"
             android:src="@mipmap/icon" />
-    </RelativeLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -55,13 +56,13 @@
                 android:textColorHint="@color/color_custom_06" />
 
             <ImageView
-                android:visibility="gone"
                 android:id="@+id/img_login_username_cancel"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_alignParentRight="true"
                 android:layout_margin="10dp"
-                android:src="@mipmap/ic_launcher_round" />
+                android:src="@mipmap/ic_launcher_round"
+                android:visibility="gone" />
         </RelativeLayout>
 
         <View
@@ -93,13 +94,13 @@
                 android:textColorHint="@color/color_custom_06" />
 
             <ImageView
-                android:visibility="gone"
                 android:id="@+id/img_login_password_hide"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_alignParentRight="true"
                 android:layout_margin="10dp"
-                android:src="@mipmap/ic_launcher_round" />
+                android:src="@mipmap/ic_launcher_round"
+                android:visibility="gone" />
         </RelativeLayout>
 
     </LinearLayout>
@@ -115,30 +116,28 @@
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:background="@drawable/btn_login"
             android:text="登录"
             android:textColor="@color/color_white"
-            android:textSize="15sp"
-            android:layout_marginTop="10dp"
-
-            />
+            android:textSize="15sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/btn_login"
+            android:layout_marginTop="@dimen/dp_10"
             android:text="立即注册"
-            android:textColor="@color/color_custom_06"
-            android:layout_marginTop="@dimen/dp_10"/>
+            android:textColor="#333333" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/btn_login"
             android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/dp_10"
             android:text="忘记密码"
-            android:textColor="@color/color_custom_06"
-            android:layout_marginTop="@dimen/dp_10"/>
+            android:textColor="#333333" />
     </RelativeLayout>
 
     <LinearLayout
