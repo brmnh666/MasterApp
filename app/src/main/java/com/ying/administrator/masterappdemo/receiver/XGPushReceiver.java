@@ -69,7 +69,7 @@ public class XGPushReceiver extends XGPushBaseReceiver {
 
         try {
             //播放 assets/a2.mp3 音乐文件
-            AssetFileDescriptor fd = context.getAssets().openFd("repair_order.mp3");
+            AssetFileDescriptor fd = context.getAssets().openFd("new_order_voice.mp3");
             MediaPlayer mediaPlayer = new MediaPlayer();
             mediaPlayer.setDataSource(fd.getFileDescriptor(), fd.getStartOffset(), fd.getLength());
             mediaPlayer.prepare();
