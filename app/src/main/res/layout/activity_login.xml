@@ -53,7 +53,8 @@
                 android:background="@null"
                 android:hint="请输入手机号"
                 android:textColor="@color/color_black"
-                android:textColorHint="@color/color_custom_06" />
+                android:textColorHint="@color/color_custom_06"
+                android:singleLine="true"/>
 
             <ImageView
                 android:id="@+id/img_login_username_cancel"
@@ -91,7 +92,8 @@
                 android:hint="请输入密码"
                 android:inputType="textPassword"
                 android:textColor="@color/color_black"
-                android:textColorHint="@color/color_custom_06" />
+                android:textColorHint="@color/color_custom_06"
+                android:singleLine="true"/>
 
             <ImageView
                 android:id="@+id/img_login_password_hide"
