@@ -88,4 +88,10 @@
         <item name="android:textColor">@color/color_white</item>
     </style>
 
+
+    <!--选择框的样式-->
+    <style name="CustomCheckBoxTheme" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/check_kill_selector</item>
+    </style>
+
 </resources>
