@@ -92,7 +92,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:text="热水器不通电"
-                android:textColor="#959295"
+                android:textColor="#333333"
                 android:layout_marginLeft="13dp"
                 android:layout_marginTop="41dp"
                 android:layout_toLeftOf="@+id/img_grabsheet"
