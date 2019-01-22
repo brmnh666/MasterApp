@@ -70,88 +70,9 @@ public class MyUtils {
 
         return str + rannum;// 当前时间
     }
-    /**
-     * Get a file path from a Uri. This will get the the path for Storage Access
-     * Framework Documents, as well as the _data field for the MediaStore and
-     * other file-based ContentProviders.
-     *
-     * @param context The context.
-     * @param uri The Uri to query.
-     * @author paulburke
-     */
- /*   @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public static String getRealPathFromUri(final Context context, final Uri uri) {
 
-        final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
 
-        // DocumentProvider
-        if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
-            // ExternalStorageProvider
-            if (isExternalStorageDocument(uri)) {
-                final String docId = DocumentsContract.getDocumentId(uri);
-                final String[] split = docId.split(":");
-                final String type = split[0];
 
-                if ("primary".equalsIgnoreCase(type)) {
-                    return Environment.getExternalStorageDirectory() + "/" + split[1];
-                }
-
-                // TODO handle non-primary volumes
-            }
-            // DownloadsProvider
-            else if (isDownloadsDocument(uri)) {
-
-                final String id = DocumentsContract.getDocumentId(uri);
-                final Uri contentUri = ContentUris.withAppendedId(
-                        Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
-
-                return getDataColumn(context, contentUri, null, null);
-            }
-            // MediaProvider
-            else if (isMediaDocument(uri)) {
-                final String docId = DocumentsContract.getDocumentId(uri);
-                final String[] split = docId.split(":");
-                final String type = split[0];
-
-                Uri contentUri = null;
-                if ("image".equals(type)) {
-                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-                } else if ("video".equals(type)) {
-                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-                } else if ("audio".equals(type)) {
-                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-                }
-
-                final String selection = "_id=?";
-                final String[] selectionArgs = new String[] {
-                        split[1]
-                };
-
-                return getDataColumn(context, contentUri, selection, selectionArgs);
-            }
-        }
-        // MediaStore (and general)
-        else if ("content".equalsIgnoreCase(uri.getScheme())) {
-            return getDataColumn(context, uri, null, null);
-        }
-        // File
-        else if ("file".equalsIgnoreCase(uri.getScheme())) {
-            return uri.getPath();
-        }
-
-        return null;
-    }*/
-
-    /**
-     * Get the value of the data column for this Uri. This is useful for
-     * MediaStore Uris, and other file-based ContentProviders.
-     *
-     * @param context The context.
-     * @param uri The Uri to query.
-     * @param selection (Optional) Filter used in the query.
-     * @param selectionArgs (Optional) Selection arguments used in the query.
-     * @return The value of the _data column, which is typically a file path.
-     */
     public static String getDataColumn(Context context, Uri uri, String selection,
                                        String[] selectionArgs) {
 
@@ -601,4 +522,99 @@ public class MyUtils {
 
         return drawable ;
     }
+
+
+    /*获得系统当前时间*/
+
+
+    public static String getDateAndTime() {
+        SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String nowDateAndTime = sDateFormat.format(new Date());
+        return nowDateAndTime;
+    }
+
+          /*比较时间*/
+    public static String getTimebefore(String time) {
+        String dateAndTime = MyUtils.getDateAndTime();//获取当前时间
+
+        //判断的年月日 如果相等 显示 几小时前
+        if (time.substring(0, 10).equals(dateAndTime.substring(0, 10))) {
+
+
+            //判断小时数如果小时数相等则显示几分钟之前
+            //获取小时数
+            int berforehour = Integer.parseInt(time.substring(11, 13));
+            int afterhour = Integer.parseInt(dateAndTime.substring(11, 13));
+
+            //获取分钟数
+            int berforeminute = Integer.parseInt(time.substring(14, 16));
+            int afterminute = Integer.parseInt(dateAndTime.substring(14, 16));
+
+            //获取秒数
+            int berforesecond = Integer.parseInt(time.substring(17, 19));
+            int aftersecond = Integer.parseInt(dateAndTime.substring(17, 19));
+
+
+            int beforesecondtotal = berforehour * 3600 + berforeminute * 60 + berforesecond;
+            int aftersecondtotal = afterhour * 3600 + afterminute * 60 + aftersecond;
+
+            int hour = (aftersecondtotal - beforesecondtotal) / 3600;
+            int minuter = (aftersecondtotal - beforesecondtotal) % 3600 / 60;
+            int second = (aftersecondtotal - beforesecondtotal) % 60;
+
+            if (hour==0&&minuter!=0){
+                return minuter+"分"+second+"秒前";
+            }else if (hour!=0&&minuter!=0){
+                return hour+"小时" + minuter + "分" + second + "秒前";
+
+            }
+            else {
+
+                return second+"秒前";
+            }
+        }
+
+
+
+        //几天前
+        else if (time.substring(0, 7).equals(dateAndTime.substring(0, 7)) && !time.substring(8, 10).equals(dateAndTime.substring(8, 10))) {
+
+            int a = Integer.parseInt(dateAndTime.substring(8, 10));
+            int b = Integer.parseInt(time.substring(8, 10));
+
+            int c = a - b;
+            return String.valueOf(c) + "天前";
+
+            //几月前
+        } else if (time.substring(0, 4).equals(dateAndTime.substring(0, 4)) && !time.substring(5, 7).equals(dateAndTime.substring(5, 7))) {
+            int a = Integer.parseInt(dateAndTime.substring(5, 7));
+            int b = Integer.parseInt(time.substring(5, 7));
+
+            int c = a - b;
+            return String.valueOf(c) + "个月前";
+
+            //几年前
+        } else if (!time.substring(0, 4).equals(dateAndTime.substring(0, 4))) {
+            int a = Integer.parseInt(dateAndTime.substring(0, 4));
+            int b = Integer.parseInt(time.substring(0, 4));
+
+            int c = a - b;
+            return String.valueOf(c) + "年前";
+
+        }
+
+
+        return null;
+    }
+
+
+
+
+
+
+
+
+
+
+
 }

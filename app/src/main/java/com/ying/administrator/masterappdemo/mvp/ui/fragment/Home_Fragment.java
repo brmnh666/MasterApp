@@ -48,9 +48,9 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
     private static final String ARG_SHOW_TEXT = "text";
 
    // private WaveSwipeRefreshLayout mWaveSwipeRefreshLayout;
-     private String mContentText;
-     private View view;
-    String userID;//用户id
+    private String mContentText;
+    private View view;
+    private String userID;//用户id
     private RecyclerView recyclerView;
     private GrabsheetAdapter grabsheetAdapter;
     private WorkOrder workOrder;

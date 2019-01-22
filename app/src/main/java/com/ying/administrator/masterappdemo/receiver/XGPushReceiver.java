@@ -40,7 +40,7 @@ public class XGPushReceiver extends XGPushBaseReceiver {
      */
     @Override
     public void onTextMessage(Context context, XGPushTextMessage xgPushTextMessage) {
-        xgPushTextMessage.getCustomContent();
+        openAssetMusics(context,"new_message_voice.mp3");
     }
 
     /**
@@ -60,16 +60,16 @@ public class XGPushReceiver extends XGPushBaseReceiver {
      */
     @Override
     public void onNotifactionShowedResult(Context context, XGPushShowedResult xgPushShowedResult) {
-        openAssetMusics(context);
+        openAssetMusics(context,"new_order_voice.mp3");
     }
     /**
      * 打开assets下的音乐mp3文件
      */
-    private void openAssetMusics(Context context) {
+    private void openAssetMusics(Context context,String filename) {
 
         try {
             //播放 assets/a2.mp3 音乐文件
-            AssetFileDescriptor fd = context.getAssets().openFd("new_order_voice.mp3");
+            AssetFileDescriptor fd = context.getAssets().openFd(filename);
             MediaPlayer mediaPlayer = new MediaPlayer();
             mediaPlayer.setDataSource(fd.getFileDescriptor(), fd.getStartOffset(), fd.getLength());
             mediaPlayer.prepare();

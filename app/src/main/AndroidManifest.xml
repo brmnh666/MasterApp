@@ -13,6 +13,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         >
+           <!--广播接受者-->
         <!--推送接收-->
         <receiver android:name=".receiver.XGPushReceiver"
             android:exported="true" >
@@ -23,6 +24,7 @@
                 <action android:name="com.tencent.android.tpush.action.FEEDBACK" />
             </intent-filter>
         </receiver>
+
         <activity android:name=".mvp.ui.activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTask">

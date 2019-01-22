@@ -11,9 +11,14 @@ import android.widget.EditText;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.tencent.android.tpush.XGIOperateCallback;
+import com.tencent.android.tpush.XGPushConfig;
+import com.tencent.android.tpush.XGPushManager;
 import com.ying.administrator.masterappdemo.R;
+import com.ying.administrator.masterappdemo.app.MyApplication;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.mvp.contract.LoginContract;
 import com.ying.administrator.masterappdemo.mvp.model.LoginModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.LoginPresenter;
@@ -99,13 +104,33 @@ switch (v.getId()){
                 SPUtils spUtils = SPUtils.getInstance("token");
                 spUtils.put("adminToken", baseResult.getData());
                 spUtils.put("userName", userName);
+
+              //  Log.d("loginlogin",baseResult.getData());
 //                GetUserInfo getUserInfo=new GetUserInfo(userName,baseResult.getData(),"","");
 //                Gson gson=new Gson();
 //                RequestBody json=RequestBody.create(okhttp3.MediaType.parse("application/json;charset=UTF-8"),gson.toJson(getUserInfo));
 //                mPresenter.GetUserInfo(json);
 //                mPresenter.GetUserInfo(userName);
-                startActivity(new Intent(mActivity, MainActivity.class));
-                finish();
+                //Log.d("TokenTokenToken",Config.TOKEN);
+
+
+//token在设备卸载重装的时候有可能会变
+
+                        mPresenter.AddAndUpdatePushAccount(XGPushConfig.getToken(this),"7",userName);
+                        startActivity(new Intent(mActivity, MainActivity.class));
+                        finish();
+//                        Config.TOKEN= (String) data;
+                        //SPUtils spUtils = SPUtils.getInstance("token");
+                        //spUtils.put("Token", (String) data);
+//
+                        // String token = spUtils.getString("Token");
+
+                        // Log.d("Token",token);
+
+
+
+
+
                 break;
               case 401:
                 ToastUtils.showShort(baseResult.getData());
@@ -119,6 +144,18 @@ switch (v.getId()){
             case 200:
                 MyUtils.e("userInfo", baseResult.getData());
                 ToastUtils.showShort(baseResult.getData());
+                break;
+            case 401:
+                ToastUtils.showShort(baseResult.getData());
+                break;
+        }
+    }
+
+    @Override
+    public void AddAndUpdatePushAccount(BaseResult<String> baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                MyUtils.e("AddAndUpdatePushAccount", baseResult.getData());
                 break;
             case 401:
                 ToastUtils.showShort(baseResult.getData());

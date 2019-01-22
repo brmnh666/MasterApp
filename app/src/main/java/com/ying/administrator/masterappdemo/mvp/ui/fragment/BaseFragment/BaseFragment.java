@@ -30,6 +30,7 @@ public class BaseFragment<P extends BasePresenter, M extends BaseModel> extends 
     protected Activity mActivity;
     protected View mRootView;
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

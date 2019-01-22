@@ -40,4 +40,16 @@ public class LoginPresenter extends LoginContract.Presenter {
                     }
                 });
     }
+
+    @Override
+    public void AddAndUpdatePushAccount(String token, String type, String UserID) {
+
+        mModel.AddAndUpdatePushAccount(token,type,UserID)
+                .subscribe(new BaseObserver<String>() {
+            @Override
+            protected void onHandleSuccess(BaseResult<String> value) {
+                  mView.AddAndUpdatePushAccount(value);
+            }
+        });
+    }
 }

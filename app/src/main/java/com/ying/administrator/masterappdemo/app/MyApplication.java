@@ -3,11 +3,14 @@ package com.ying.administrator.masterappdemo.app;
 import android.app.Application;
 import android.util.Log;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
+import com.ying.administrator.masterappdemo.common.Config;
 
 public class MyApplication extends Application {
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -21,8 +24,17 @@ public class MyApplication extends Application {
         XGPushManager.registerPush(this, new XGIOperateCallback() {
             @Override
             public void onSuccess(Object data, int flag) {
+
 //token在设备卸载重装的时候有可能会变
                 Log.d("TPush", "注册成功，设备token为：" + data);
+
+                Config.TOKEN= (String) data;
+                //SPUtils spUtils = SPUtils.getInstance("token");
+                //spUtils.put("Token", (String) data);
+//
+               // String token = spUtils.getString("Token");
+
+               // Log.d("Token",token);
             }
             @Override
             public void onFail(Object data, int errCode, String msg) {

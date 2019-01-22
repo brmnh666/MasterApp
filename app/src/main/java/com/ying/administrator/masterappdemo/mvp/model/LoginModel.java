@@ -31,4 +31,12 @@ public class LoginModel implements LoginContract.Model {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }
+
+    /*向服务端推送token*/
+    @Override
+    public Observable<BaseResult<String>> AddAndUpdatePushAccount(String token, String type, String UserID) {
+        return ApiRetrofit.getDefault().AddAndUpdatePushAccount(token,type,UserID)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
 }

@@ -7,6 +7,7 @@ import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
@@ -67,6 +68,15 @@ public interface ApiService {
 
 
 
+      /*
+      *新增获取更新推送账户的token以及tags， 工厂的type是6 师傅的type是7 ， createtime可以不传 UserID为登录用户名
+      * */
+      @FormUrlEncoded
+      @POST("Message/AddAndUpdatePushAccount")
+      Observable<BaseResult<String>> AddAndUpdatePushAccount(@Field("token") String token,
+                                                             @Field("type") String type,
+                                                             @Field("UserID") String UserID);
+
     /**
      * 获取工单列表
      * 废除-1，待审核0，派单中1，服务中2，已完成3
@@ -95,6 +105,16 @@ public interface ApiService {
     Observable<BaseResult<WorkOrder>> GetOrderInfoListForMe(@Field("state") String state,
                                                             @Field("page") String page,
                                                             @Field("limit") String limit,
-                                                            @Field("UserID") String UserID);
+                                                            @Field("SendUser") String SendUser);
+/**
+ * 提交师傅预约失败的原因
+ * **/
+    @FormUrlEncoded
+    @POST("Order/UpdateSendOrderAppointmentState")
+    Observable<BaseResult<Data>> AddOrderfailureReason(@Field("OrderID") String OrderID,
+                                                         @Field("AppointmentState") String AppointmentState,
+                                                         @Field("AppointmentMessage") String AppointmentMessage);
+
+
 
 }
