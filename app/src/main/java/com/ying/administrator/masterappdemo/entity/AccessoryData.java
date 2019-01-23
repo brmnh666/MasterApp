@@ -6,6 +6,7 @@ public class AccessoryData<T> {
     private List<T> Item1;
     private String Item2;
 
+
     public List<T> getItem1() {
         return Item1;
     }
