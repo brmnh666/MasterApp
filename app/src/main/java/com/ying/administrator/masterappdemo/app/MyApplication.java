@@ -1,6 +1,7 @@
 package com.ying.administrator.masterappdemo.app;
 
 import android.app.Application;
+import android.content.Context;
 import android.util.Log;
 
 import com.blankj.utilcode.util.SPUtils;
@@ -17,8 +18,8 @@ public class MyApplication extends Application {
         XGPushConfig.enableDebug(this,true);
         XGPushConfig.enableOtherPush(getApplicationContext(), true);
         XGPushConfig.setHuaweiDebug(true);
-        XGPushConfig.setMiPushAppId(getApplicationContext(), "ed915472a691f");
-        XGPushConfig.setMiPushAppKey(getApplicationContext(), "c10d44005770d36ea1822e36748fe9ce");
+        XGPushConfig.setMiPushAppId(getApplicationContext(), "2882303761517939654");
+        XGPushConfig.setMiPushAppKey(getApplicationContext(), "5151793996654");
         XGPushConfig.setMzPushAppId(this, "ed915472a691f");
         XGPushConfig.setMzPushAppKey(this, "c10d44005770d36ea1822e36748fe9ce");
         XGPushManager.registerPush(this, new XGIOperateCallback() {
