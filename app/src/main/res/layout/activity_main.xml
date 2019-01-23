@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".mvp.ui.activity.MainActivity">
-
     <LinearLayout
 
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
 
-        <FrameLayout
-            android:id="@+id/fragment_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
     </LinearLayout>
-
     <RadioGroup
+        android:layout_below="@id/fragment_container"
         android:id="@+id/tabs_rg"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_below="@id/fragment_container"
         android:layout_alignParentBottom="true"
         android:background="#ffffff"
         android:orientation="horizontal"
@@ -31,17 +32,17 @@
         <RadioButton
             android:id="@+id/workbench"
             style="@style/Custom.TabRadioButton"
-            android:background="@color/transparent"
             android:checked="true"
             android:drawableTop="@drawable/tab_home_selector"
+            android:background="@color/transparent"
             android:text="首页" />
         <!--首页-->
 
         <RadioButton
             android:id="@+id/message"
             style="@style/Custom.TabRadioButton"
-            android:background="@color/transparent"
             android:drawableTop="@drawable/tab_message_selector"
+            android:background="@color/transparent"
             android:text="消息" />
 
         <View style="@style/Custom.TabRadioButton" />
@@ -49,15 +50,15 @@
         <RadioButton
             android:id="@+id/accessories_shop"
             style="@style/Custom.TabRadioButton"
-            android:background="@color/transparent"
             android:drawableTop="@drawable/tab_accessories_shop_selector"
+            android:background="@color/transparent"
             android:text="配件商城" />
 
         <RadioButton
             android:id="@+id/me"
             style="@style/Custom.TabRadioButton"
-            android:background="@color/transparent"
             android:drawableTop="@drawable/tab_me_selector"
+            android:background="@color/transparent"
             android:text="我的" />
     </RadioGroup>
     <!-- 实现提醒信息用的 -->
@@ -122,7 +123,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
         android:layout_marginBottom="7dp"
+        android:textSize="12sp"
         android:text="所有订单"
-        android:textColor="#333333"
-        android:textSize="12sp" />
+        android:textColor="#333333" />
 </RelativeLayout>
