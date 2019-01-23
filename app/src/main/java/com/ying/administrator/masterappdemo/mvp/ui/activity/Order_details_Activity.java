@@ -35,7 +35,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     private LinearLayout ll_Out_of_service_tv;
     private LinearLayout ll_Out_of_service_img;
     private LinearLayout ll_return;
-    private RelativeLayout rl_select_time; //选择时间
+    private LinearLayout rl_select_time; //选择时间
     private TextView tv_select_time; //显示时间
     private TextView tv_order_details_receiving_time; //工单接收时间
     private TextView tv_order_details_orderid; //工单号
