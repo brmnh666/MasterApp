@@ -2,6 +2,7 @@ package com.ying.administrator.masterappdemo.mvp.service;
 
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Accessory;
+import com.ying.administrator.masterappdemo.entity.AccessoryData;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 
@@ -131,7 +132,7 @@ Observable<BaseResult<WorkOrder.DataBean>> GetOrderInfo(@Field("OrderID") String
 * 获取工厂配件信息
 * */
 @POST("FactoryConfig/GetFactoryAccessory")
-Observable<BaseResult<Accessory>> GetFactoryAccessory();
+Observable<BaseResult<AccessoryData<Accessory>>> GetFactoryAccessory();
 
 
 }

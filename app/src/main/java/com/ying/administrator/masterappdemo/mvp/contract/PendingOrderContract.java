@@ -5,6 +5,8 @@ import com.ying.administrator.masterappdemo.base.BasePresenter;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.base.BaseView;
 import com.ying.administrator.masterappdemo.entity.Accessory;
+import com.ying.administrator.masterappdemo.entity.AccessoryData;
+import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 
 import io.reactivex.Observable;
@@ -16,7 +18,7 @@ public interface PendingOrderContract {
         Observable<BaseResult<WorkOrder.DataBean>> GetOrderInfo(String OrderID);
 
         //获取工厂配件信息
-        Observable<BaseResult<Accessory>> GetFactoryAccessory();
+        Observable<BaseResult<AccessoryData<Accessory>>> GetFactoryAccessory();
     }
 
     interface View extends BaseView{
@@ -24,7 +26,7 @@ public interface PendingOrderContract {
         void GetOrderInfo(BaseResult<WorkOrder.DataBean> baseResult);
 
         //获取工厂配件信息
-         void GetFactoryAccessory(BaseResult<Accessory> baseResult);
+         void GetFactoryAccessory(BaseResult<AccessoryData<Accessory>> baseResult);
     }
 
     abstract  class Presenter extends BasePresenter<View,Model>{

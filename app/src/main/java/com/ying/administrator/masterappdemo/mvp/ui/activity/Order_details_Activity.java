@@ -18,6 +18,8 @@ import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Accessory;
+import com.ying.administrator.masterappdemo.entity.AccessoryData;
+import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.PendingOrderContract;
 import com.ying.administrator.masterappdemo.mvp.model.PendingOrderModel;
@@ -188,13 +190,14 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     }
 
     @Override
-    public void GetFactoryAccessory(BaseResult<Accessory> baseResult) {
+    public void GetFactoryAccessory(BaseResult<AccessoryData<Accessory>> baseResult) {
         switch (baseResult.getStatusCode()){
             case 200:
-          //Log.d("200",baseResult.getData().getMsg());
-               // baseResult.getData().getData()
+
+
                 break;
         default:
+
             break;
 
         }
