@@ -1,12 +1,15 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -14,7 +17,7 @@ import android.widget.TextView;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
-import com.ying.administrator.masterappdemo.common.DefineView;
+import com.ying.administrator.masterappdemo.entity.Accessory;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.PendingOrderContract;
 import com.ying.administrator.masterappdemo.mvp.model.PendingOrderModel;
@@ -27,11 +30,11 @@ import java.util.Date;
 
 
 /*预接单详情页*/
-public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, PendingOrderModel> implements DefineView, PendingOrderContract.View {
+public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, PendingOrderModel> implements  PendingOrderContract.View {
     private TextView tv_actionbar_title;
     private RadioGroup rg_order_details_for_remote_fee;
 
-    private WorkOrder workOrder;
+    private WorkOrder.DataBean data=new WorkOrder.DataBean();
     private LinearLayout ll_Out_of_service_tv;
     private LinearLayout ll_Out_of_service_img;
     private LinearLayout ll_return;
@@ -41,6 +44,13 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     private TextView tv_order_details_orderid; //工单号
     private TextView tv_order_details_reason;//故障原因
     private TextView tv_order_details_product_name;//产品名称
+    private TextView tv_order_details_status; //安装维修状态
+    private TextView tv_order_details_adress; //地址
+    private RadioGroup rg_order_details_add_accessories; //添加配件
+    private RadioButton rb_order_details_manufacturer; //厂家寄件
+    private RadioButton rb_order_details_oneself; //自购件
+
+    private String ischeck;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +58,6 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
         //setContentView(R.layout.activity_order_details);
         initView();
         initValidata();
-        initListener();
         //mPresenter.GetOrderInfo();
     }
 
@@ -75,33 +84,47 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
         tv_order_details_orderid=findViewById(R.id.tv_order_details_orderid);//工单号
         tv_order_details_reason=findViewById(R.id.tv_order_details_reason);//故障原因
         tv_order_details_product_name=findViewById(R.id.tv_order_details_product_name);//产品名称
+        tv_order_details_status=findViewById(R.id.tv_order_details_status);//安装维修状态
+        tv_order_details_adress=findViewById(R.id.tv_order_details_adress); //地址
+        rg_order_details_add_accessories=findViewById(R.id.rg_order_details_add_accessories);//添加配件
+        rb_order_details_manufacturer=findViewById(R.id.rb_order_details_manufacturer);
+        rb_order_details_oneself=findViewById(R.id.rb_order_details_oneself);
+
+        //接收传来的OrderID
+        String orderID = getIntent().getStringExtra("OrderID");
+        mPresenter.GetOrderInfo(orderID);
+        mPresenter.GetFactoryAccessory();
+
     }
 
     @Override
     protected void setListener() {
-
-    }
-
-    @Override
-    public void initValidata() {
-        tv_actionbar_title.setText("预接单");
-        rl_select_time.setOnClickListener(new CustomOnclickListnaer());
-       // tv_select_time.setOnClickListener(new CustomOnclickListnaer());
-        //接收传来的OrderID
-        String orderID = getIntent().getStringExtra("OrderID");
-        mPresenter.GetOrderInfo(orderID);
-
- /*       tv_order_details_orderid.setText(workOrder.getData().get(0).getOrderID()); //工单号
-        tv_order_details_receiving_time.setText(workOrder.getData().get(0).getAudDate());//接单时间
-        tv_order_details_reason.setText(workOrder.getData().get(0).getMemo()); //故障原因
-        tv_order_details_product_name.setText(workOrder.getData().get(0).getCategoryName()+"/"+ //产品名称
-                workOrder.getData().get(0).getBrandName()+"/"+
-                workOrder.getData().get(0).getProductType());*/
-    }
-
-    @Override
-    public void initListener() {
         ll_return.setOnClickListener(new CustomOnclickListnaer());
+        rl_select_time.setOnClickListener(new CustomOnclickListnaer());
+
+/*添加配件*/
+        rg_order_details_add_accessories.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId){
+                    case R.id.rb_order_details_manufacturer: //厂家寄件申请
+
+                        break;
+
+                    case R.id.rb_order_details_oneself: //自购件申请
+
+                        break;
+
+                }
+
+
+
+            }
+        });
+
+
+
+        /*申请远程费*/
         rg_order_details_for_remote_fee.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -116,36 +139,67 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                         ll_Out_of_service_img.setVisibility(View.VISIBLE);
                         break;
 
-                        default:
-                            break;
+                    default:
+                        break;
                 }
 
             }
         });
     }
 
-    @Override
-    public void bindData() {
+
+    public void initValidata() {
+        tv_actionbar_title.setText("预接单");
+        rl_select_time.setOnClickListener(new CustomOnclickListnaer());
+       // tv_select_time.setOnClickListener(new CustomOnclickListnaer());
 
     }
 
     @Override
-    public void GetOrderInfo(BaseResult<WorkOrder> baseResult) {
+    public void GetOrderInfo(BaseResult<WorkOrder.DataBean> baseResult) {
 
         switch (baseResult.getStatusCode()){
 
             case 200:
-                Log.d("detail",baseResult.getData().toString());
-                workOrder= baseResult.getData();
-                //  Log.d("getOrderID",workOrder.getData().get(0).getOrderID());
+                data=baseResult.getData();
+               // Log.d("getOrderIDgetOrderID",data.getOrderID()+" "+data.getMemo()+" "+data.getBrandName());
+                tv_order_details_orderid.setText(data.getOrderID());
+                tv_order_details_receiving_time.setText(data.getAudDate().replace("T"," ")); //将T替换为空格
+                tv_order_details_reason.setText(data.getMemo());
+                tv_order_details_product_name.setText(data.getCategoryName()+"/"+data.getBrandName()+"/"+data.getProductType());
+
+                if (data.getTypeID().equals("1")){//维修
+                    tv_order_details_status.setText("维修");
+                    tv_order_details_status.setBackgroundResource(R.color.color_custom_01);
+                }else {
+                    tv_order_details_status.setText("安装");
+                    tv_order_details_status.setBackgroundResource(R.color.color_custom_04);
+                }
+                tv_order_details_adress.setText(data.getAddress());
+
                 break;
 
                 default:
                     Log.d("detail",baseResult.getData().toString());
+                  //  data=null;
                     break;
         }
 
     }
+
+    @Override
+    public void GetFactoryAccessory(BaseResult<Accessory> baseResult) {
+        switch (baseResult.getStatusCode()){
+            case 200:
+          //Log.d("200",baseResult.getData().getMsg());
+               // baseResult.getData().getData()
+                break;
+        default:
+            break;
+
+        }
+    }
+
 
     public class CustomOnclickListnaer implements View.OnClickListener{
         @Override

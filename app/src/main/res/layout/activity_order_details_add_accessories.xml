@@ -16,7 +16,7 @@
         android:layout_marginBottom="15dp"
         android:gravity="center|top">
         <RadioGroup
-            android:id="@+id/rg_order_details"
+            android:id="@+id/rg_order_details_add_accessories"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"

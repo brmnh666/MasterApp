@@ -1,6 +1,7 @@
 package com.ying.administrator.masterappdemo.mvp.service;
 
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.Accessory;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 
@@ -95,7 +96,7 @@ public interface ApiService {
 * */
 @FormUrlEncoded
 @POST("Order/GetOrderInfo")
-Observable<BaseResult<WorkOrder>> GetOrderInfo(@Field("OrderID") String OrderID);
+Observable<BaseResult<WorkOrder.DataBean>> GetOrderInfo(@Field("OrderID") String OrderID);
 
 
 
@@ -125,8 +126,12 @@ Observable<BaseResult<WorkOrder>> GetOrderInfo(@Field("OrderID") String OrderID)
                                                          @Field("AppointmentState") String AppointmentState,
                                                          @Field("AppointmentMessage") String AppointmentMessage);
 
-
-
+/*
+*
+* 获取工厂配件信息
+* */
+@POST("FactoryConfig/GetFactoryAccessory")
+Observable<BaseResult<Accessory>> GetFactoryAccessory();
 
 
 }

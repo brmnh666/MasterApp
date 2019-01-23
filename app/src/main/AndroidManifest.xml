@@ -25,6 +25,7 @@
                 <action android:name="com.tencent.android.tpush.action.FEEDBACK" />
             </intent-filter>
         </receiver>
+
         <receiver android:name=".receiver.HWReceiver" >
             <intent-filter>
 
