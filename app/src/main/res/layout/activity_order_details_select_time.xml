@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_select_time"
     android:layout_width="match_parent"
     android:layout_height="100dp"
     android:background="@drawable/ll_order_details_shape"
@@ -8,7 +9,7 @@
     android:layout_marginTop="10dp"
     >
 <TextView
-    android:id="@+id/tv_order_details_selecy_time"
+    android:id="@+id/tv_order_details_select_time"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="选择上门时间"
@@ -20,9 +21,20 @@
     android:layout_marginBottom="15dp"
     />
     <View
+        android:id="@+id/view_select_time_point"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/color_custom_08"
-        android:layout_below="@+id/tv_order_details_selecy_time"
+        android:layout_below="@+id/tv_order_details_select_time"
+        />
+    <TextView
+        android:layout_marginTop="5dp"
+        android:textColor="@color/color_custom_01"
+        android:textSize="20sp"
+        android:id="@+id/tv_select_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+      android:layout_below="@+id/view_select_time_point"
+        android:layout_centerHorizontal="true"
         />
 </RelativeLayout>

@@ -80,4 +80,8 @@ dependencies {
     implementation 'com.tencent.wup:wup:1.0.0.E-release'
     //mid包，minSdkVersion 14
     implementation 'com.tencent.mid:mid:4.0.7-Release'
+
+    //时间选择器
+   //implementation 'com.feezu.liuli:timeselector:+'
+    implementation 'com.feezu.liuli:timeselector:1.1.4'
 }

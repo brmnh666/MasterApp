@@ -88,6 +88,16 @@ public interface ApiService {
                                                        @Field("limit") String limit);
 
 
+/*
+*
+* 获取工单详情
+* 通过OrderID获取工单详情
+* */
+@FormUrlEncoded
+@POST("Order/GetOrderInfo")
+Observable<BaseResult<WorkOrder>> GetOrderInfo(@Field("OrderID") String OrderID);
+
+
 
     /**
      * 提交抢单申请
@@ -114,6 +124,8 @@ public interface ApiService {
     Observable<BaseResult<Data>> AddOrderfailureReason(@Field("OrderID") String OrderID,
                                                          @Field("AppointmentState") String AppointmentState,
                                                          @Field("AppointmentMessage") String AppointmentMessage);
+
+
 
 
 

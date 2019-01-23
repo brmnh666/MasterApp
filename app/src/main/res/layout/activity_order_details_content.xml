@@ -68,6 +68,7 @@
             android:textColor="#6A6A6A"
             />
         <TextView
+            android:id="@+id/tv_order_details_receiving_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
@@ -90,6 +91,7 @@
             android:textColor="#6A6A6A"
             />
         <TextView
+            android:id="@+id/tv_order_details_orderid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
@@ -107,6 +109,7 @@
         android:layout_marginTop="6dp"
         >
         <TextView
+            android:id="@+id/tv_order_details_reason"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
@@ -120,7 +123,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:text="数量:2台"
+            android:text="数量:1台"
             android:layout_marginRight="10dp"
             android:textColor="#6A6A6A"
             />
@@ -133,6 +136,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="6dp">
         <TextView
+            android:id="@+id/tv_order_details_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="12sp"
@@ -143,6 +147,7 @@
             android:text="维修"
             />
         <TextView
+            android:id="@+id/tv_order_details_product_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
@@ -151,11 +156,7 @@
             android:layout_marginLeft="5dp"
             />
     </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/color_custom_08"
-        android:layout_marginTop="8dp"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -178,5 +179,11 @@
             android:textColor="#6A6A6A"
             />
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/color_custom_08" />
 
 </LinearLayout>
