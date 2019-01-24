@@ -24,6 +24,8 @@ public class GrabsheetAdapter extends BaseQuickAdapter<WorkOrder.DataBean,BaseVi
 
     @Override
     protected void convert(BaseViewHolder baseViewHolder, WorkOrder.DataBean item) {
+
+        baseViewHolder.setText(R.id.tv_brand_name,item.getCategoryName()+" "+item.getBrandName()+" "+item.getProductType());
       baseViewHolder.setText(R.id.tv_reason,item.getMemo()); //故障原因
       if (item.getTypeID().equals("1")){ //维修
             baseViewHolder.setVisible(R.id.tv_grabsheet_status_repair,true);
@@ -37,7 +39,6 @@ public class GrabsheetAdapter extends BaseQuickAdapter<WorkOrder.DataBean,BaseVi
 
       baseViewHolder.setText(R.id.tv_address,item.getAddress()); //地址
       baseViewHolder.setText(R.id.tv_grabsheet_time, MyUtils.getTimebefore(item.getCreateDate()));//将订单生产的时间传入
-
 
       baseViewHolder.addOnClickListener(R.id.img_grabsheet);
     }

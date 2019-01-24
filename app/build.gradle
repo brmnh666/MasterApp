@@ -82,4 +82,6 @@ dependencies {
     //时间选择器
    //implementation 'com.feezu.liuli:timeselector:+'
     implementation 'com.feezu.liuli:timeselector:1.1.4'
+   //加减选择器
+    implementation 'com.mengfei:AddSubUtils:1.5.0'
 }

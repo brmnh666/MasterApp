@@ -131,6 +131,10 @@
         <activity android:name=".mvp.ui.activity.Opinion_Activity"
             android:theme="@style/AppTheme.NoActionBar"
             />
+
+        <activity android:name=".mvp.ui.activity.AddAccessoryActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>

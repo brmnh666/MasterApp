@@ -3,7 +3,7 @@ package com.ying.administrator.masterappdemo.entity;
 import java.util.List;
 
 public class Accessory {
-    private List<DataBean> data;
+   // private List<DataBean> data;
     /**
      * Id : 0
      * FAccessoryID : 0
@@ -22,15 +22,8 @@ public class Accessory {
 
 
 
-    public List<DataBean> getData() {
-        return data;
-    }
 
-    public void setData(List<DataBean> data) {
-        this.data = data;
-    }
 
-    public static class DataBean {
 
 
         private int Id;
@@ -133,5 +126,5 @@ public class Accessory {
         public void setVersion(int Version) {
             this.Version = Version;
         }
-    }
+
 }

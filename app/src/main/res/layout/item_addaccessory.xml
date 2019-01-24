@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_item_addaccessory"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/img_ac_unselect"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_centerVertical="true"
+        android:src="@mipmap/icon_ac_unselect"
+        android:layout_marginLeft="10dp"
+        />
+
+    <ImageView
+        android:visibility="invisible"
+        android:id="@+id/img_ac_select"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:layout_centerVertical="true"
+        android:src="@mipmap/icon_ac_select"
+        android:layout_marginLeft="10dp"
+        />
+<TextView
+    android:id="@+id/tv_accessory_name"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="电脑板"
+    android:layout_centerVertical="true"
+    android:layout_toRightOf="@+id/img_ac_unselect"
+    android:layout_marginLeft="5dp"
+    android:textColor="#6A6A6A"
+    android:textSize="16sp"
+    />
+
+
+    <com.jmf.addsubutils.AddSubUtils
+        android:visibility="invisible"
+        android:id="@+id/addaccessory_addsubutil"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+         android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="20dp"
+        >
+
+    </com.jmf.addsubutils.AddSubUtils>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/addsubutils_text"
+        android:layout_alignParentBottom="true"/>
+</RelativeLayout>

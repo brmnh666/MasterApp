@@ -1,5 +1,6 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -51,6 +52,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     private RadioGroup rg_order_details_add_accessories; //添加配件
     private RadioButton rb_order_details_manufacturer; //厂家寄件
     private RadioButton rb_order_details_oneself; //自购件
+    private TextView tv_order_details_add_accessories; //添加配件
 
     private String ischeck;
     @Override
@@ -91,6 +93,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
         rg_order_details_add_accessories=findViewById(R.id.rg_order_details_add_accessories);//添加配件
         rb_order_details_manufacturer=findViewById(R.id.rb_order_details_manufacturer);
         rb_order_details_oneself=findViewById(R.id.rb_order_details_oneself);
+        tv_order_details_add_accessories=findViewById(R.id.tv_order_details_add_accessories);//添加配件
 
         //接收传来的OrderID
         String orderID = getIntent().getStringExtra("OrderID");
@@ -103,7 +106,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     protected void setListener() {
         ll_return.setOnClickListener(new CustomOnclickListnaer());
         rl_select_time.setOnClickListener(new CustomOnclickListnaer());
-
+        tv_order_details_add_accessories.setOnClickListener(new CustomOnclickListnaer());
 /*添加配件*/
         rg_order_details_add_accessories.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -227,6 +230,10 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                     timeSelector.show();
 
                     break;
+                case R.id.tv_order_details_add_accessories: //添加配件
+                    startActivity(new Intent(Order_details_Activity.this,AddAccessoryActivity.class));
+                    break;
+
 
                     default:
                         break;
