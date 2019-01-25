@@ -76,7 +76,8 @@
 
         <!--工单详情-->
         <activity android:name=".mvp.ui.activity.Order_details_Activity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            >
 
         </activity>
 
@@ -133,7 +134,9 @@
             />
 
         <activity android:name=".mvp.ui.activity.AddAccessoryActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
+            >
         </activity>
     </application>
 

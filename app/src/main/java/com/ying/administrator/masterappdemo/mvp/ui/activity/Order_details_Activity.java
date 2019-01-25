@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -14,22 +16,32 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Accessory;
 import com.ying.administrator.masterappdemo.entity.AccessoryData;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.FAccessory;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.PendingOrderContract;
 import com.ying.administrator.masterappdemo.mvp.model.PendingOrderModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.PendingOrderPresenter;
+import com.ying.administrator.masterappdemo.mvp.ui.adapter.MyRecyclerAdapter;
+import com.ying.administrator.masterappdemo.mvp.ui.adapter.Pre_order_Add_Ac_Adapter;
+import com.ying.administrator.masterappdemo.widget.CustomDialog_Add_Accessory;
 
 import org.feezu.liuli.timeselector.TimeSelector;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /*预接单详情页*/
@@ -53,8 +65,20 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     private RadioButton rb_order_details_manufacturer; //厂家寄件
     private RadioButton rb_order_details_oneself; //自购件
     private TextView tv_order_details_add_accessories; //添加配件
+    private RecyclerView recyclerView_add_accessories;
+    private Pre_order_Add_Ac_Adapter mPre_order_add_ac_adapter;
+    private ArrayList<FAccessory> fList;
 
-    private String ischeck;
+    CustomDialog_Add_Accessory customDialog_add_accessory=new CustomDialog_Add_Accessory(mActivity);
+    private  Accessory accessory; //获取服务端 返回的数据 的model
+    private  FAccessory fAccessory;//提交选择结果提交数据到服务端的model
+
+    private List<Accessory> mList;   //存放返回的list
+    private Map<Integer,FAccessory> map; //同
+    private RecyclerView mrecyclerview; //添加配件弹窗的recyclerview
+  //  private MyRecyclerAdapter adapter ; //添加配件弹窗的适配器
+    private boolean[] ischeck; // 用于判断各个item是否被选择
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +87,12 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
         initView();
         initValidata();
         //mPresenter.GetOrderInfo();
+       // mPresenter.GetFactoryAccessory();
+
+     /*   mrecyclerview=customDialog_add_accessory.findViewById(R.id.recyclerView_custom_add_accessory);
+        adapter=new MyRecyclerAdapter(R.layout.item_addaccessory,mList);
+        mrecyclerview.setLayoutManager(new LinearLayoutManager(mActivity));
+        mrecyclerview.setAdapter(adapter);*/
     }
 
     @Override
@@ -72,6 +102,40 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
     @Override
     protected void initData() {
+
+       //mList= new ArrayList<>();
+       //map=new HashMap<>();
+
+
+        recyclerView_add_accessories=findViewById(R.id.recyclerView_add_accessories);
+        /*将添加配件获取的数据进行绑定*/
+        Intent intent = getIntent();
+        Bundle bundle = intent.getBundleExtra("BUNDLE");
+        //获取返回的bundle
+        if (bundle==null){
+            return;
+        }else {
+             fList = (ArrayList<FAccessory>) bundle.getSerializable("ARRAYLIST");
+            //数据不为空的时候
+            recyclerView_add_accessories.setLayoutManager(new LinearLayoutManager(mActivity));
+            mPre_order_add_ac_adapter=new Pre_order_Add_Ac_Adapter(R.layout.item_pre_order_add_accessories,fList);
+            recyclerView_add_accessories.setAdapter(mPre_order_add_ac_adapter);
+
+            mPre_order_add_ac_adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+                @Override
+                public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                    switch (view.getId()){
+                        case R.id.iv_accessories_delete:
+                            adapter.remove(position);
+                            break;
+
+
+                    }
+                }
+            });
+
+
+        }
 
     }
 
@@ -107,7 +171,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
         ll_return.setOnClickListener(new CustomOnclickListnaer());
         rl_select_time.setOnClickListener(new CustomOnclickListnaer());
         tv_order_details_add_accessories.setOnClickListener(new CustomOnclickListnaer());
-/*添加配件*/
+         /*添加配件*/
         rg_order_details_add_accessories.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -121,8 +185,6 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                         break;
 
                 }
-
-
 
             }
         });
@@ -150,6 +212,8 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
             }
         });
+
+
     }
 
 
@@ -194,16 +258,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
     @Override
     public void GetFactoryAccessory(BaseResult<AccessoryData<Accessory>> baseResult) {
-        switch (baseResult.getStatusCode()){
-            case 200:
 
-
-                break;
-        default:
-
-            break;
-
-        }
     }
 
 
@@ -232,6 +287,10 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                     break;
                 case R.id.tv_order_details_add_accessories: //添加配件
                     startActivity(new Intent(Order_details_Activity.this,AddAccessoryActivity.class));
+
+                    //customDialog_add_accessory.show();
+
+
                     break;
 
 

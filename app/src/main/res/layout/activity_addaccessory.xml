@@ -4,16 +4,43 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <TextView
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="请选择添加的配件"
+        android:textSize="17sp"
+        android:textColor="#6A6A6A"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        />
     <android.support.v7.widget.RecyclerView
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:id="@+id/addaccessory_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
     </android.support.v7.widget.RecyclerView>
-    <Button
+  <!--  <Button
         android:id="@+id/btn_addaccessory"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/color_custom_01"
         android:text="提交"/>
+-->
+    <TextView
+        android:gravity="center"
+        android:id="@+id/btn_addaccessory"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="17dp"
+        android:layout_marginBottom="10dp"
+        android:textSize="20sp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:textColor="@color/white"
+        android:text="添  加"
+        android:background="@drawable/add_accessory_submit"
+        />
 </LinearLayout>

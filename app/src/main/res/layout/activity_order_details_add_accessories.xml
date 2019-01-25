@@ -47,6 +47,7 @@
     android:layout_height="1dp"
     android:background="@color/color_custom_08"/>
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView_add_accessories"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

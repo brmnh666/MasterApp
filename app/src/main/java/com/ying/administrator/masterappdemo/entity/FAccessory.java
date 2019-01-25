@@ -1,6 +1,8 @@
 package com.ying.administrator.masterappdemo.entity;
 
-public class FAccessory {
+import java.io.Serializable;
+
+public class FAccessory implements Serializable {
     private String FAccessoryID;
     private String FAccessoryName;
     private String Quantity;
