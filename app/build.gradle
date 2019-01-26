@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.ying.administrator.masterappdemo"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -107,6 +107,12 @@ dependencies {
     implementation 'pub.devrel:easypermissions:2.0.1'
     implementation 'com.android.support:multidex:1.0.3'
     implementation project(':place_choose')
+    //图片选择
+    implementation 'me.iwf.photopicker:PhotoPicker:0.9.12@aar'
+    //图片视频选择器
+    implementation('com.dmcBig:mediapicker:+') {
+        exclude group: 'com.github.chrisbanes', module: 'PhotoView'
+    }
    //加减选择器
     //implementation 'com.mengfei:AddSubUtils:1.5.0'
 }

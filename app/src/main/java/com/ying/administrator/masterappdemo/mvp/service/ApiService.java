@@ -139,7 +139,6 @@ Observable<BaseResult<AccessoryData<Accessory>>> GetFactoryAccessory();
 * 上传图片
 * */
 @POST("Upload/UploadImg")
-Observable<BaseResult<String>> UploadImg(@Field("File")File file);
-
+Observable<BaseResult<String>> UploadImg(@Body RequestBody json);
 
 }
