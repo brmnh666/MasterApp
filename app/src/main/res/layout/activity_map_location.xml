@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/color_white"
+    android:orientation="vertical">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.Toolbar>
+    <TextView
+        android:id="@+id/tv_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dp_10"
+        android:text="搜索位置"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+        <com.amap.api.maps2d.MapView
+            android:id="@+id/mapview"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"/>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|bottom"
+            android:layout_margin="@dimen/dp_10"
+            android:clickable="true"
+            android:src="@mipmap/location"
+            app:backgroundTint="#FFFFFF"
+            app:borderWidth="0dp"
+            app:elevation="5dp"
+            app:fabSize="mini"
+            app:layout_anchorGravity="bottom|right|end"
+            app:pressedTranslationZ="10dp"
+            app:rippleColor="#a6a6a6"
+            />
+    </FrameLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_address"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>

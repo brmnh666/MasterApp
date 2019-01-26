@@ -2,6 +2,7 @@ package com.ying.administrator.masterappdemo.app;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDex;
 import android.util.Log;
 
 import com.blankj.utilcode.util.SPUtils;
@@ -15,6 +16,9 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        // 主要是添加下面这句代码
+        MultiDex.install(this);
+
         XGPushConfig.enableDebug(this,true);
         XGPushConfig.enableOtherPush(getApplicationContext(), true);
         XGPushConfig.setHuaweiDebug(true);

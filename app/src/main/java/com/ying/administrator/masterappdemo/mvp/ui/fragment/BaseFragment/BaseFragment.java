@@ -2,6 +2,7 @@ package com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -22,6 +23,9 @@ import com.ying.administrator.masterappdemo.base.BaseView;
 import com.ying.administrator.masterappdemo.base.RxManager;
 import com.ying.administrator.masterappdemo.util.TUtil;
 
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 public class BaseFragment<P extends BasePresenter, M extends BaseModel> extends Fragment {
     public P mPresenter;
     public M mModel;
@@ -29,7 +33,11 @@ public class BaseFragment<P extends BasePresenter, M extends BaseModel> extends 
     public RxManager mRxManage;
     protected Activity mActivity;
     protected View mRootView;
-
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mActivity = (Activity) context;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,7 +54,6 @@ public class BaseFragment<P extends BasePresenter, M extends BaseModel> extends 
 
         mRxManage = new RxManager();
     }
-
 
     protected P obtainPresenter() {
         return TUtil.getT(this, 0);

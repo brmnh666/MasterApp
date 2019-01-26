@@ -11,7 +11,8 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         applicationId "com.ying.administrator.masterappdemo"
-
+        //
+        multiDexEnabled true
         ndk {
             //根据需要 自行选择添加的对应cpu类型的.so库。
             abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'
@@ -25,6 +26,12 @@ android {
                 HW_APPID: "100604229",
                 PACKAGE_NAME:"com.ying.administrator.masterappdemo"
         ]
+
+        packagingOptions {
+            exclude 'assets/map_assets/icons_35_14_1521026482.data'
+            exclude 'assets/ap1.data'
+            exclude 'assets/marker_gps_no_sharing.png'
+        }
     }
 
 
@@ -34,6 +41,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+
 }
 
 dependencies {
@@ -78,10 +87,26 @@ dependencies {
     implementation 'com.tencent.xinge:mipush:4.3.0-xiaomi-beta'
     implementation 'com.tencent.xinge:xgmz:4.3.0-meizu-beta'
     implementation 'com.tencent.xinge:xghw:4.3.0-huawei-beta'
-
     //时间选择器
-   //implementation 'com.feezu.liuli:timeselector:+'
+    //implementation 'com.feezu.liuli:timeselector:+'
     implementation 'com.feezu.liuli:timeselector:1.1.4'
+    //加减选择器
+    implementation 'com.mengfei:AddSubUtils:1.5.0'
+    //高德地图定位sdk
+    //    3D地图
+//    implementation 'com.amap.api:3dmap:latest.integration'
+    //    2D地图
+//    implementation 'com.amap.api:map2d:latest.integration'
+    ////    导航
+//    implementation 'com.amap.api:navi-3dmap:latest.integration'
+//        搜索
+//    implementation 'com.amap.api:search:latest.integration'
+    //    定位
+    implementation 'com.amap.api:location:latest.integration'
+    // For developers using the Android Support Library动态权限
+    implementation 'pub.devrel:easypermissions:2.0.1'
+    implementation 'com.android.support:multidex:1.0.3'
+    implementation project(':place_choose')
    //加减选择器
     //implementation 'com.mengfei:AddSubUtils:1.5.0'
 }

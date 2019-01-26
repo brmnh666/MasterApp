@@ -6,6 +6,7 @@ import com.ying.administrator.masterappdemo.entity.AccessoryData;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 
+import java.io.File;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -133,6 +134,12 @@ Observable<BaseResult<WorkOrder.DataBean>> GetOrderInfo(@Field("OrderID") String
 * */
 @POST("FactoryConfig/GetFactoryAccessory")
 Observable<BaseResult<AccessoryData<Accessory>>> GetFactoryAccessory();
+/*
+*
+* 上传图片
+* */
+@POST("Upload/UploadImg")
+Observable<BaseResult<String>> UploadImg(@Field("File")File file);
 
 
 }

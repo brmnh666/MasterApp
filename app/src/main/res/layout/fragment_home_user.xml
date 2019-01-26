@@ -127,11 +127,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="11sp"
+            android:singleLine="true"
              android:text="宁波市.江北区"
             android:layout_toRightOf="@+id/img_home_location"
+            android:layout_toLeftOf="@+id/img_certification"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="12dp"
             android:layout_marginLeft="5dp"
+            android:layout_marginRight="25dp"
             />
 
 
