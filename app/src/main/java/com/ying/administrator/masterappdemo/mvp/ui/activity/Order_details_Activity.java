@@ -8,9 +8,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Display;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -30,9 +34,11 @@ import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.PendingOrderContract;
 import com.ying.administrator.masterappdemo.mvp.model.PendingOrderModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.PendingOrderPresenter;
+import com.ying.administrator.masterappdemo.mvp.ui.adapter.Add_Ac_Adapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.MyRecyclerAdapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Pre_order_Add_Ac_Adapter;
 import com.ying.administrator.masterappdemo.widget.CustomDialog_Add_Accessory;
+import com.ying.administrator.masterappdemo.widget.adderView;
 
 import org.feezu.liuli.timeselector.TimeSelector;
 
@@ -65,20 +71,23 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     private RadioButton rb_order_details_manufacturer; //厂家寄件
     private RadioButton rb_order_details_oneself; //自购件
     private TextView tv_order_details_add_accessories; //添加配件
-    private RecyclerView recyclerView_add_accessories;
-    private Pre_order_Add_Ac_Adapter mPre_order_add_ac_adapter;
-    private ArrayList<FAccessory> fList;
+    private RecyclerView recyclerView_Pre_add_accessories; //预接单的  RecyclerView
+    private Pre_order_Add_Ac_Adapter mPre_order_add_ac_adapter; //预接单 的adater
+    private CustomDialog_Add_Accessory customDialog_add_accessory;
+    private Accessory mAccessory;
+    private FAccessory mfAccessory;
 
-    CustomDialog_Add_Accessory customDialog_add_accessory=new CustomDialog_Add_Accessory(mActivity);
-    private  Accessory accessory; //获取服务端 返回的数据 的model
-    private  FAccessory fAccessory;//提交选择结果提交数据到服务端的model
+
 
     private List<Accessory> mList;   //存放返回的list
-    private Map<Integer,FAccessory> map; //同
-    private RecyclerView mrecyclerview; //添加配件弹窗的recyclerview
-  //  private MyRecyclerAdapter adapter ; //添加配件弹窗的适配器
+    private Map<Integer,FAccessory> map; //用于存放dialog里选择的配件
+    private List<FAccessory> fList;// 用于存放预接单页面显示的数据
     private boolean[] ischeck; // 用于判断各个item是否被选择
+    private RecyclerView recyclerView_custom_add_accessory;
+    private Add_Ac_Adapter mAdd_Ac_Adapter;
 
+    private ImageView img_ac_select;
+    private ImageView img_ac_unselect;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,12 +96,9 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
         initView();
         initValidata();
         //mPresenter.GetOrderInfo();
-       // mPresenter.GetFactoryAccessory();
 
-     /*   mrecyclerview=customDialog_add_accessory.findViewById(R.id.recyclerView_custom_add_accessory);
-        adapter=new MyRecyclerAdapter(R.layout.item_addaccessory,mList);
-        mrecyclerview.setLayoutManager(new LinearLayoutManager(mActivity));
-        mrecyclerview.setAdapter(adapter);*/
+
+
     }
 
     @Override
@@ -103,44 +109,16 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     @Override
     protected void initData() {
 
-       //mList= new ArrayList<>();
-       //map=new HashMap<>();
-
-
-        recyclerView_add_accessories=findViewById(R.id.recyclerView_add_accessories);
-        /*将添加配件获取的数据进行绑定*/
-        Intent intent = getIntent();
-        Bundle bundle = intent.getBundleExtra("BUNDLE");
-        //获取返回的bundle
-        if (bundle==null){
-            return;
-        }else {
-             fList = (ArrayList<FAccessory>) bundle.getSerializable("ARRAYLIST");
-            //数据不为空的时候
-            recyclerView_add_accessories.setLayoutManager(new LinearLayoutManager(mActivity));
-            mPre_order_add_ac_adapter=new Pre_order_Add_Ac_Adapter(R.layout.item_pre_order_add_accessories,fList);
-            recyclerView_add_accessories.setAdapter(mPre_order_add_ac_adapter);
-
-            mPre_order_add_ac_adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-                @Override
-                public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                    switch (view.getId()){
-                        case R.id.iv_accessories_delete:
-                            adapter.remove(position);
-                            break;
-
-
-                    }
-                }
-            });
-
-
-        }
-
     }
 
     @Override
     public void initView() {
+        mList=new ArrayList<>();
+        map=new HashMap<>();
+        //fList=new ArrayList<>();
+
+        customDialog_add_accessory=new CustomDialog_Add_Accessory(mActivity);
+
         tv_actionbar_title=findViewById(R.id.tv_actionbar_title);
         rg_order_details_for_remote_fee=findViewById(R.id.rg_order_details_for_remote_fee);
         ll_Out_of_service_tv=findViewById(R.id.ll_Out_of_service_tv);
@@ -158,7 +136,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
         rb_order_details_manufacturer=findViewById(R.id.rb_order_details_manufacturer);
         rb_order_details_oneself=findViewById(R.id.rb_order_details_oneself);
         tv_order_details_add_accessories=findViewById(R.id.tv_order_details_add_accessories);//添加配件
-
+        recyclerView_Pre_add_accessories=findViewById(R.id.recyclerView_add_accessories); //预接单recyclerview
         //接收传来的OrderID
         String orderID = getIntent().getStringExtra("OrderID");
         mPresenter.GetOrderInfo(orderID);
@@ -256,10 +234,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
     }
 
-    @Override
-    public void GetFactoryAccessory(BaseResult<AccessoryData<Accessory>> baseResult) {
 
-    }
 
 
     public class CustomOnclickListnaer implements View.OnClickListener{
@@ -285,12 +260,135 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                     timeSelector.show();
 
                     break;
+
+
                 case R.id.tv_order_details_add_accessories: //添加配件
-                    startActivity(new Intent(Order_details_Activity.this,AddAccessoryActivity.class));
 
-                    //customDialog_add_accessory.show();
+                    tv_order_details_add_accessories.setText("重新添加");
+                    //startActivity(new Intent(Order_details_Activity.this,AddAccessoryActivity.class));
+
+                  Log.d("mlistmlist", String.valueOf(mList.size()));
+                    customDialog_add_accessory.getWindow().setBackgroundDrawableResource(R.color.transparent);
+
+                    customDialog_add_accessory.show();
+                    // 设置宽度为屏宽、靠近屏幕底部。
+                       Window window=customDialog_add_accessory.getWindow();
+                       //最重要的一句话，一定要加上！要不然怎么设置都不行！
+                   // window.setBackgroundDrawableResource(android.R.color.transparent);
+                    WindowManager.LayoutParams wlp = window.getAttributes();
+                    Display d = window.getWindowManager().getDefaultDisplay();
+                    //获取屏幕宽
+                    wlp.height=(d.getHeight());
+                    wlp.width =(d.getWidth());
+                    //宽度按屏幕大小的百分比设置，这里我设置的是全屏显示
+                    wlp.gravity = Gravity.CENTER;
+/*
+                    if (wlp.gravity == Gravity.BOTTOM)
+                        wlp.y = 0;
+                    //如果是底部显示，则距离底部的距离是0*/
+                    window.setAttributes(wlp);
+
+                    /*选择配件*/
 
 
+                    recyclerView_custom_add_accessory=customDialog_add_accessory.findViewById(R.id.recyclerView_custom_add_accessory);
+                    recyclerView_custom_add_accessory.setLayoutManager(new LinearLayoutManager(mActivity));
+                    mAdd_Ac_Adapter=new Add_Ac_Adapter(R.layout.item_addaccessory,mList);
+                    recyclerView_custom_add_accessory.setAdapter(mAdd_Ac_Adapter);
+
+
+
+                    mAdd_Ac_Adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+                        @Override
+                        public void onItemChildClick(final BaseQuickAdapter adapter, View view, final int position) {
+                             img_ac_select = (ImageView)adapter.getViewByPosition(recyclerView_custom_add_accessory, position, R.id.img_ac_select); //选中图片
+                             img_ac_unselect = (ImageView)adapter.getViewByPosition(recyclerView_custom_add_accessory, position, R.id.img_ac_unselect);//未选中图片
+                            adderView adderView =(adderView)adapter.getViewByPosition(recyclerView_custom_add_accessory, position, R.id.adderView);
+
+
+
+                            //进入添加配件dialog 判断是否已经选了配件  有数据说明是第二次进入 没数据说明是第一次进入
+
+
+                            switch (view.getId()){
+                                case R.id.img_ac_unselect:
+                                case R.id.img_ac_select:
+                                case R.id.tv_accessory_name:
+
+
+                                    if (ischeck[position]==false){ //如果是为选中的状态点击  变为红色 选中状态 出现 数量选择器
+                                        //viewadd.setVisibility(View.VISIBLE); //数量选择器出现
+                                        adderView.setVisibility(View.VISIBLE);
+                                        img_ac_unselect.setVisibility(View.INVISIBLE);
+                                        img_ac_select.setVisibility(View.VISIBLE);
+                                        ischeck[position]=true;
+
+                                        //没选选择时间默认数量为1
+                                        mAccessory=(Accessory)adapter.getItem(position);
+                                        mfAccessory=new FAccessory();
+                                        mfAccessory.setFAccessoryName(mAccessory.getAccessoryName());
+                                        mfAccessory.setQuantity("1"); //默认数字为1
+                                        mfAccessory.setDiscountPrice(mAccessory.getAccessoryPrice());
+                                        map.put(position,mfAccessory);
+                                        //选择了时间数量根据输入框中的来
+                                        adderView.setOnValueChangeListene(new adderView.OnValueChangeListener() {
+                                            @Override
+                                            public void onValueChange(int value) {
+                                                //没选选择时间默认数量为1
+                                                mAccessory=(Accessory)adapter.getItem(position);
+                                                mfAccessory=new FAccessory();
+                                                mfAccessory.setFAccessoryName(mAccessory.getAccessoryName());
+                                                mfAccessory.setQuantity(String.valueOf(value));
+                                                mfAccessory.setDiscountPrice(mAccessory.getAccessoryPrice()*value);
+                                              map.put(position,mfAccessory);
+                                            }
+                                        });
+
+                                    }else {
+                                        //viewadd.setVisibility(View.INVISIBLE); //数量选择器消失
+                                        adderView.setVisibility(View.INVISIBLE);
+                                        img_ac_unselect.setVisibility(View.VISIBLE);
+                                        img_ac_select.setVisibility(View.INVISIBLE);
+                                        adderView.setValue(1); //但用户取消时将值设置为默认为1
+                                        ischeck[position]=false;
+                                        //map.remove(position);
+
+                                    }
+
+                                    break;
+
+
+                            }
+
+
+
+                        }
+                    });
+                    /*选择配件*/
+
+
+                    /*添加*/
+                    customDialog_add_accessory.setYesOnclickListener("添加", new CustomDialog_Add_Accessory.onYesOnclickListener() {
+                        @Override
+                        public void onYesClick() {
+
+                            fList=new ArrayList<>(map.values());
+                            recyclerView_Pre_add_accessories.setLayoutManager(new LinearLayoutManager(mActivity));
+                            mPre_order_add_ac_adapter=new Pre_order_Add_Ac_Adapter(R.layout.item_pre_order_add_accessories,fList);
+                            recyclerView_Pre_add_accessories.setAdapter(mPre_order_add_ac_adapter);
+                            customDialog_add_accessory.dismiss();
+
+                            for (int key : map.keySet()){
+                                System.out.println("选择了"+map.get(key).getFAccessoryName()+"配件"+"数量"+map.get(key).getQuantity()+"总价格"+map.get(key).getDiscountPrice());
+                                System.out.println("选择了-------------------------------------------");
+                            }
+
+
+                            Log.d("fListfListfList", String.valueOf(fList.size()));
+
+                        }
+                    });
+                    /*添加*/
                     break;
 
 
@@ -300,4 +398,31 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
             }
         }
     }
+
+              /*获取工厂配件*/
+    @Override
+    public void GetFactoryAccessory(BaseResult<AccessoryData<Accessory>> baseResult) {
+                 switch (baseResult.getStatusCode()){
+                     case 200:
+                          mList.clear();
+                         mList.addAll(baseResult.getData().getItem1());
+                         ischeck=new boolean[mList.size()];
+                         Log.d("mlist2", String.valueOf(mList.size()));
+                         break;
+
+
+
+                     default:
+                         break;
+
+
+                 }
+    }
+/*
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        customDialog_add_accessory.dismiss();
+
+    }*/
 }
