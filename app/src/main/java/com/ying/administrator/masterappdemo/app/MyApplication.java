@@ -9,6 +9,8 @@ import com.blankj.utilcode.util.SPUtils;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
+import com.tencent.bugly.Bugly;
+import com.tencent.bugly.beta.Beta;
 import com.ying.administrator.masterappdemo.common.Config;
 
 public class MyApplication extends Application {
@@ -48,5 +50,23 @@ public class MyApplication extends Application {
         });
         XGPushManager.bindAccount(getApplicationContext(), "XINGE");
         XGPushManager.setTag(this,"XINGE");
+
+
+        // 这里实现SDK初始化，appId替换成你的在Bugly平台申请的appId
+        // 调试时，将第三个参数改为true
+        Bugly.init(this, "de9b3cd02b", true);
     }
+
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        // you must install multiDex whatever tinker is installed!
+        MultiDex.install(base);
+
+
+        // 安装tinker
+        Beta.installTinker();
+    }
+
 }
