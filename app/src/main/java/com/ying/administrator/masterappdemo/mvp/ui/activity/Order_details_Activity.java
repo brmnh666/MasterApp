@@ -1,5 +1,6 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +11,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -17,6 +19,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
@@ -101,6 +105,9 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     private Add_Ac_Adapter mAdd_Ac_Adapter;
     private Add_Service_Adapter mAdd_Service_Adapter;
 
+     private EditText et_express_sweep_code;//输入的快递单号信息
+    private ImageView img_express_sweep_code;
+    private TextView tv_express_sweep_code;
 
 
 
@@ -162,6 +169,9 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
         recyclerView_Pre_add_accessories=findViewById(R.id.recyclerView_add_accessories); //预接单recyclerview
         tv_order_detail_add_service=findViewById(R.id.tv_order_detail_add_service);
         recyclerView_Pre_add_service=findViewById(R.id.tv_recyclerView_Pre_add_service);//预接单recyclerview
+        et_express_sweep_code=findViewById(R.id.et_express_sweep_code);
+        img_express_sweep_code=findViewById(R.id.img_express_sweep_code);
+        tv_express_sweep_code=findViewById(R.id.tv_express_sweep_code);
 
         //接收传来的OrderID
         String orderID = getIntent().getStringExtra("OrderID");
@@ -178,6 +188,9 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
         rl_select_time.setOnClickListener(new CustomOnclickListnaer());
         tv_order_details_add_accessories.setOnClickListener(new CustomOnclickListnaer());
         tv_order_detail_add_service.setOnClickListener(new CustomOnclickListnaer());
+        img_express_sweep_code.setOnClickListener(new CustomOnclickListnaer());
+        tv_express_sweep_code.setOnClickListener(new CustomOnclickListnaer());
+
          /*添加配件*/
         rg_order_details_add_accessories.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -549,18 +562,23 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                          });
 
 
-
-
-
-
-
-
-
-
-
-
-
                          break;
+
+
+
+                         case R.id.img_express_sweep_code:
+                         case R.id.tv_express_sweep_code:
+                             IntentIntegrator integrator = new IntentIntegrator(Order_details_Activity.this);
+                             // 设置要扫描的条码类型，ONE_D_CODE_TYPES：一维码，QR_CODE_TYPES-二维码
+                             integrator.setDesiredBarcodeFormats(IntentIntegrator.ONE_D_CODE_TYPES);
+                             integrator.setCaptureActivity(ScanActivity.class); //设置打开摄像头的Activity
+                             integrator.setPrompt("请扫描快递码"); //底部的提示文字，设为""可以置空
+                             integrator.setCameraId(0); //前置或者后置摄像头
+                             integrator.setBeepEnabled(true); //扫描成功的「哔哔」声，默认开启
+                             integrator.setBarcodeImageEnabled(true);
+                             integrator.initiateScan();
+                             break;
+
 
                     default:
                         break;
@@ -620,4 +638,12 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
         customDialog_add_accessory.dismiss();
 
     }*/
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (scanResult != null) {
+            String result = scanResult.getContents();
+            et_express_sweep_code.setText("快递单号:"+result);
+        }
+    }
 }

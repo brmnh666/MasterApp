@@ -32,6 +32,7 @@
         android:background="@drawable/ed_order_detail_scan">
 
         <EditText
+            android:id="@+id/et_express_sweep_code"
             android:background="@null"
             android:layout_width="0dp"
             android:layout_weight="3"
@@ -43,12 +44,14 @@
             android:textColorHint="#c3c3c3"
             android:layout_gravity="center"/>
         <ImageView
+            android:id="@+id/img_express_sweep_code"
             android:layout_weight="1"
             android:layout_gravity="center"
             android:layout_width="17dp"
             android:layout_height="30dp"
             android:src="@mipmap/icon_scan"/>
         <TextView
+            android:id="@+id/tv_express_sweep_code"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
