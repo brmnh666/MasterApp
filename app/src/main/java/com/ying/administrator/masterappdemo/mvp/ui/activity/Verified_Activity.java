@@ -91,18 +91,23 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter,VerifiedMo
 
     @Override
     protected void initView() {
+        mTvActionbarTitle.setText("实名认证");
     }
 
     @Override
     protected void setListener() {
         mIvPositive.setOnClickListener(this);
         mIvNegative.setOnClickListener(this);
+        mLlReturn.setOnClickListener(this);
     }
 
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.ll_return:
+                finish();
+                break;
             case R.id.iv_positive:
                 showPopupWindow(101,102);
                 break;
@@ -254,8 +259,11 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter,VerifiedMo
         switch (requestCode){
             //拍照
             case 101:
-                Glide.with(mActivity).load(FilePath).into(mIvPositive);
-                file=new File(FilePath);
+                if (resultCode==-1){
+                    Glide.with(mActivity).load(FilePath).into(mIvPositive);
+                    file=new File(FilePath);
+                }
+
                 break;
                 //相册
             case 102:
@@ -267,8 +275,10 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter,VerifiedMo
                 break;
             //拍照
             case 201:
-                Glide.with(mActivity).load(FilePath).into(mIvNegative);
-                file=new File(FilePath);
+                if (resultCode==-1){
+                    Glide.with(mActivity).load(FilePath).into(mIvNegative);
+                    file=new File(FilePath);
+                }
                 break;
             //相册
             case 202:

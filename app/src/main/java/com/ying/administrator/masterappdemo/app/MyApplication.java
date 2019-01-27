@@ -2,10 +2,20 @@ package com.ying.administrator.masterappdemo.app;
 
 import android.app.Application;
 import android.content.Context;
+import android.graphics.Color;
 import android.support.multidex.MultiDex;
 import android.util.Log;
 
 import com.blankj.utilcode.util.SPUtils;
+import com.scwang.smartrefresh.header.MaterialHeader;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreater;
+import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreater;
+import com.scwang.smartrefresh.layout.api.RefreshFooter;
+import com.scwang.smartrefresh.layout.api.RefreshHeader;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
+import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
@@ -14,7 +24,28 @@ import com.tencent.bugly.beta.Beta;
 import com.ying.administrator.masterappdemo.common.Config;
 
 public class MyApplication extends Application {
-
+    static {//static 代码段可以防止内存泄露
+        //设置全局的Header构建器
+        SmartRefreshLayout.setDefaultRefreshHeaderCreater(new DefaultRefreshHeaderCreater() {
+            @Override
+            public RefreshHeader createRefreshHeader(Context context, RefreshLayout layout) {
+                MaterialHeader header=new MaterialHeader(context);
+                header.setPrimaryColors(Color.parseColor("#00000000"));
+                header.setShowBezierWave(true);
+                layout.setEnableHeaderTranslationContent(false);
+                return header;//指定为经典Header，默认是 贝塞尔雷达Header
+//                return new ClassicsHeader(context).setSpinnerStyle(SpinnerStyle.Translate);//指定为经典Header，默认是 贝塞尔雷达Header
+            }
+        });
+        //设置全局的Footer构建器
+        SmartRefreshLayout.setDefaultRefreshFooterCreater(new DefaultRefreshFooterCreater() {
+            @Override
+            public RefreshFooter createRefreshFooter(Context context, RefreshLayout layout) {
+                //指定为经典Footer，默认是 BallPulseFooter
+                return new ClassicsFooter(context).setSpinnerStyle(SpinnerStyle.Translate);
+            }
+        });
+    }
     @Override
     public void onCreate() {
         super.onCreate();

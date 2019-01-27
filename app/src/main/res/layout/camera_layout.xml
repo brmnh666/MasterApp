@@ -18,18 +18,18 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@null"
-            android:textColor="#73DC7A"
+            android:textColor="@color/color_black"
             android:text="拍摄"/>
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="@color/color_custom_01"/>
+            android:background="@color/color_custom_06"/>
         <Button
             android:id="@+id/photo_btn"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@null"
-            android:textColor="#73DC7A"
+            android:textColor="@color/color_black"
             android:text="我的相册"/>
     </LinearLayout>
     <Button
@@ -40,7 +40,7 @@
         android:layout_marginRight="30dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/white_shape"
-        android:textColor="#73DC7A"
+        android:textColor="@color/color_black"
         android:textStyle="bold"
         android:text="取消"/>
 </LinearLayout>

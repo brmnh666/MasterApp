@@ -8,7 +8,7 @@
     android:layout_height="160dp"
     android:id="@+id/cv_home_user"
     android:layout_marginTop="40dp"
-    android:clickable="true"
+    android:clickable="false"
     android:foreground="?android:attr/selectableItemBackground"
     app:cardCornerRadius="5dp"
     app:cardUseCompatPadding="true"
@@ -98,7 +98,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             android:textColor="@color/color_custom_01"
-            android:layout_marginBottom="15dp"
+            android:padding="@dimen/dp_10"
             android:layout_marginRight="20dp"
             android:layout_marginLeft="5dp"
             />
@@ -109,7 +109,7 @@
             android:src="@mipmap/icon_name_authentication"
             android:layout_toLeftOf="@+id/tv_certification"
              android:layout_alignParentBottom="true"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="10dp"
             />
 
         <ImageView
@@ -120,7 +120,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="20dp"
-            android:layout_marginBottom="12dp"
+            android:layout_marginBottom="10dp"
             />
         <TextView
             android:id="@+id/tv_home_location"
@@ -129,10 +129,10 @@
             android:textSize="11sp"
             android:singleLine="true"
              android:text="宁波市.江北区"
+            android:padding="@dimen/dp_10"
             android:layout_toRightOf="@+id/img_home_location"
             android:layout_toLeftOf="@+id/img_certification"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="12dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="25dp"
             />
