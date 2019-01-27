@@ -2,7 +2,7 @@ package com.ying.administrator.masterappdemo.entity;
 
 import java.util.List;
 
-public class AccessoryData<T> {
+public class GetFactoryData<T> {
     private List<T> Item1;
     private String Item2;
 

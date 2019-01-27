@@ -2,15 +2,13 @@ package com.ying.administrator.masterappdemo.mvp.service;
 
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Accessory;
-import com.ying.administrator.masterappdemo.entity.AccessoryData;
+import com.ying.administrator.masterappdemo.entity.GetFactoryData;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.GetFactorySeviceData;
+import com.ying.administrator.masterappdemo.entity.Service;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 
-import java.io.File;
-import java.util.List;
-
 import io.reactivex.Observable;
-import io.reactivex.schedulers.Schedulers;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
@@ -133,7 +131,16 @@ Observable<BaseResult<WorkOrder.DataBean>> GetOrderInfo(@Field("OrderID") String
 * 获取工厂配件信息
 * */
 @POST("FactoryConfig/GetFactoryAccessory")
-Observable<BaseResult<AccessoryData<Accessory>>> GetFactoryAccessory();
+Observable<BaseResult<GetFactoryData<Accessory>>> GetFactoryAccessory();
+
+/*获取工厂服务信息*/
+
+@POST("FactoryConfig/GetFactoryService")
+Observable<BaseResult<GetFactorySeviceData<Service>>> GetFactoryService();
+
+
+
+
 /*
 *
 * 上传图片

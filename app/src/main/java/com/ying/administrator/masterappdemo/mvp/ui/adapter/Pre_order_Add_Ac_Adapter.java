@@ -19,8 +19,8 @@ public class Pre_order_Add_Ac_Adapter extends BaseQuickAdapter<FAccessory, BaseV
 
     @Override
     protected void convert(BaseViewHolder helper, FAccessory item) {
-helper.setText(R.id.tv_accessories_name,item.getFAccessoryName());
-helper.setText(R.id.tv_accessories_number,item.getQuantity());
-helper.addOnClickListener(R.id.iv_accessories_delete);
+     helper.setText(R.id.tv_accessories_name,item.getFAccessoryName());
+     helper.setText(R.id.tv_accessories_number,item.getQuantity());
+     helper.addOnClickListener(R.id.iv_accessories_delete);
     }
 }

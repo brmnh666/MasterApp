@@ -2,8 +2,10 @@ package com.ying.administrator.masterappdemo.mvp.model;
 
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Accessory;
-import com.ying.administrator.masterappdemo.entity.AccessoryData;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.GetFactoryData;
+import com.ying.administrator.masterappdemo.entity.GetFactorySeviceData;
+import com.ying.administrator.masterappdemo.entity.Service;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.PendingOrderContract;
 import com.ying.administrator.masterappdemo.mvp.service.ApiRetrofit;
@@ -21,8 +23,16 @@ public class PendingOrderModel implements PendingOrderContract.Model {
     }
 
     @Override
-    public Observable<BaseResult<AccessoryData<Accessory>>> GetFactoryAccessory() {
+    public Observable<BaseResult<GetFactoryData<Accessory>>> GetFactoryAccessory() {
         return ApiRetrofit.getDefault().GetFactoryAccessory()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<BaseResult<GetFactorySeviceData<Service>>> GetFactoryService() {
+
+        return ApiRetrofit.getDefault().GetFactoryService()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

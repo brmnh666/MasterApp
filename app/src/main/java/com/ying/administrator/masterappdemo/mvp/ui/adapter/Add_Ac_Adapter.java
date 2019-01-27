@@ -26,14 +26,9 @@ public class Add_Ac_Adapter extends BaseQuickAdapter<Accessory, BaseViewHolder> 
 
         helper.setText(R.id.tv_accessory_name,item.getAccessoryName());
 
-
-
-
-
         helper.addOnClickListener(R.id.tv_accessory_name);
         helper.addOnClickListener(R.id.rl_item_addaccessory);
         helper.addOnClickListener(R.id.img_ac_unselect);
         helper.addOnClickListener(R.id.img_ac_select);
-        helper.addOnClickListener(R.id.tv_accessory_name);
     }
 }

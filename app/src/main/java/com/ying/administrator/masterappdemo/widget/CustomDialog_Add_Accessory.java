@@ -33,6 +33,14 @@ public class CustomDialog_Add_Accessory extends AlertDialog {
 
     private onYesOnclickListener yesOnclickListener;
 
+    public String getTitleStr() {
+        return titleStr;
+    }
+
+    public void setTitleStr(String titleStr) {
+        this.titleStr = titleStr;
+    }
+
     public interface onYesOnclickListener {
         void onYesClick();
     }
@@ -200,5 +208,13 @@ public class CustomDialog_Add_Accessory extends AlertDialog {
 
 
 
+    }
+
+    public TextView getTitleTv() {
+        return titleTv;
+    }
+
+    public void setTitleTv(TextView titleTv) {
+        this.titleTv = titleTv;
     }
 }

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--不成功弹窗-->
+   <RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:tools="http://schemas.android.com/tools"
+       android:layout_width="match_parent"
+       android:layout_height="500dp"
+    >
+
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="450dp"
+           android:layout_alignParentStart="true"
+           android:layout_alignParentLeft="true"
+           android:layout_marginLeft="10dp"
+           android:layout_marginRight="10dp"
+           android:layout_marginBottom="60dp"
+           android:background="@drawable/dialog_unsuccess_bg"
+           android:orientation="vertical">
+
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_gravity="center"
+               android:layout_marginTop="15dp"
+               android:layout_marginBottom="15dp"
+               android:text="请选择服务"
+               android:textColor="#6A6A6A"
+               android:textSize="17sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_custom_02" />
+
+           <android.support.v7.widget.RecyclerView
+               android:id="@+id/recyclerView_custom_add_service"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+
+               >
+
+           </android.support.v7.widget.RecyclerView>
+
+
+       </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        >
+        <TextView
+
+            android:gravity="center"
+            android:id="@+id/tv_add_service_submit"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:textSize="20sp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:textColor="@color/white"
+            android:text="添  加"
+             android:background="@drawable/add_accessory_submit"
+            />
+
+
+    </LinearLayout>
+
+ </RelativeLayout>
+
+
+

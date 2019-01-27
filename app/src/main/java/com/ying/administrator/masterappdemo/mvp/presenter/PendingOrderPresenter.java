@@ -3,8 +3,10 @@ package com.ying.administrator.masterappdemo.mvp.presenter;
 import com.ying.administrator.masterappdemo.base.BaseObserver;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Accessory;
-import com.ying.administrator.masterappdemo.entity.AccessoryData;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.GetFactoryData;
+import com.ying.administrator.masterappdemo.entity.GetFactorySeviceData;
+import com.ying.administrator.masterappdemo.entity.Service;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.PendingOrderContract;
 
@@ -21,10 +23,21 @@ public class PendingOrderPresenter extends PendingOrderContract.Presenter {
 
     @Override
     public void GetFactoryAccessory() {
-        mModel.GetFactoryAccessory().subscribe(new BaseObserver<AccessoryData<Accessory>>() {
+        mModel.GetFactoryAccessory().subscribe(new BaseObserver<GetFactoryData<Accessory>>() {
             @Override
-            protected void onHandleSuccess(BaseResult<AccessoryData<Accessory>> value) {
+            protected void onHandleSuccess(BaseResult<GetFactoryData<Accessory>> value) {
                 mView.GetFactoryAccessory(value);
+            }
+        });
+    }
+
+    @Override
+    public void GetFactoryService() {
+
+        mModel.GetFactoryService().subscribe(new BaseObserver<GetFactorySeviceData<Service>>() {
+            @Override
+            protected void onHandleSuccess(BaseResult<GetFactorySeviceData<Service>> value) {
+                mView.GetFactoryService(value);
             }
         });
     }

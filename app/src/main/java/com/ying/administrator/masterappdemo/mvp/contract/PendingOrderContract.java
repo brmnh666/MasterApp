@@ -5,8 +5,10 @@ import com.ying.administrator.masterappdemo.base.BasePresenter;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.base.BaseView;
 import com.ying.administrator.masterappdemo.entity.Accessory;
-import com.ying.administrator.masterappdemo.entity.AccessoryData;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.GetFactoryData;
+import com.ying.administrator.masterappdemo.entity.GetFactorySeviceData;
+import com.ying.administrator.masterappdemo.entity.Service;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 
 import io.reactivex.Observable;
@@ -18,7 +20,10 @@ public interface PendingOrderContract {
         Observable<BaseResult<WorkOrder.DataBean>> GetOrderInfo(String OrderID);
 
         //获取工厂配件信息
-        Observable<BaseResult<AccessoryData<Accessory>>> GetFactoryAccessory();
+        Observable<BaseResult<GetFactoryData<Accessory>>> GetFactoryAccessory();
+
+        //获取工厂服务信息
+        Observable<BaseResult<GetFactorySeviceData<Service>>> GetFactoryService();
     }
 
     interface View extends BaseView{
@@ -26,7 +31,10 @@ public interface PendingOrderContract {
         void GetOrderInfo(BaseResult<WorkOrder.DataBean> baseResult);
 
         //获取工厂配件信息
-         void GetFactoryAccessory(BaseResult<AccessoryData<Accessory>> baseResult);
+         void GetFactoryAccessory(BaseResult<GetFactoryData<Accessory>> baseResult);
+
+        //获取工厂服务信息
+        void GetFactoryService(BaseResult<GetFactorySeviceData<Service>> baseResult);
     }
 
     abstract  class Presenter extends BasePresenter<View,Model>{
@@ -35,6 +43,9 @@ public interface PendingOrderContract {
 
         //获取工厂配件信息
         public abstract void GetFactoryAccessory();
+
+        //获取工厂服务信息
+        public abstract void GetFactoryService();
     }
 
 

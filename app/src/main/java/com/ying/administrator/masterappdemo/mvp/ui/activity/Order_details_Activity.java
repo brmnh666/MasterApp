@@ -1,10 +1,7 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,31 +10,33 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Accessory;
-import com.ying.administrator.masterappdemo.entity.AccessoryData;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.FService;
+import com.ying.administrator.masterappdemo.entity.GetFactoryData;
 import com.ying.administrator.masterappdemo.entity.FAccessory;
+import com.ying.administrator.masterappdemo.entity.GetFactorySeviceData;
+import com.ying.administrator.masterappdemo.entity.Service;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.PendingOrderContract;
 import com.ying.administrator.masterappdemo.mvp.model.PendingOrderModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.PendingOrderPresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Add_Ac_Adapter;
-import com.ying.administrator.masterappdemo.mvp.ui.adapter.MyRecyclerAdapter;
+import com.ying.administrator.masterappdemo.mvp.ui.adapter.Add_Service_Adapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Pre_order_Add_Ac_Adapter;
+import com.ying.administrator.masterappdemo.mvp.ui.adapter.Pre_order_Add_Service_Adapter;
 import com.ying.administrator.masterappdemo.widget.CustomDialog_Add_Accessory;
+import com.ying.administrator.masterappdemo.widget.CustomDialog_Add_Service;
 import com.ying.administrator.masterappdemo.widget.adderView;
 
 import org.feezu.liuli.timeselector.TimeSelector;
@@ -71,9 +70,13 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     private RadioButton rb_order_details_manufacturer; //厂家寄件
     private RadioButton rb_order_details_oneself; //自购件
     private TextView tv_order_details_add_accessories; //添加配件
+    private TextView tv_order_detail_add_service;//添加服务
     private RecyclerView recyclerView_Pre_add_accessories; //预接单的  RecyclerView
     private Pre_order_Add_Ac_Adapter mPre_order_add_ac_adapter; //预接单 的adater
+    private Pre_order_Add_Service_Adapter mPre_order_Add_Service_Adapter; //预接单的adpter
     private CustomDialog_Add_Accessory customDialog_add_accessory;
+
+    private CustomDialog_Add_Service customDialog_add_service;
     private Accessory mAccessory;
     private FAccessory mfAccessory;
 
@@ -84,10 +87,23 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     private List<FAccessory> fList;// 用于存放预接单页面显示的数据
     private boolean[] ischeck; // 用于判断各个item是否被选择
     private RecyclerView recyclerView_custom_add_accessory;
-    private Add_Ac_Adapter mAdd_Ac_Adapter;
 
-    private ImageView img_ac_select;
-    private ImageView img_ac_unselect;
+
+    private List<Service> mList_service;
+    private Map<Integer,FService> map_service;
+    private List<FService> fList_service;
+    private boolean[] ischeck_service;
+    private RecyclerView recyclerView_custom_add_service;
+    private RecyclerView recyclerView_Pre_add_service;
+    private Service mService;
+    private FService mfService;
+
+    private Add_Ac_Adapter mAdd_Ac_Adapter;
+    private Add_Service_Adapter mAdd_Service_Adapter;
+
+
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,10 +112,12 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
         initView();
         initValidata();
         //mPresenter.GetOrderInfo();
+        initdelete();
 
 
 
     }
+
 
     @Override
     protected int setLayoutId() {
@@ -116,8 +134,13 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
         mList=new ArrayList<>();
         map=new HashMap<>();
         //fList=new ArrayList<>();
+        mList_service=new ArrayList<>();
+        map_service=new HashMap<>();
+
 
         customDialog_add_accessory=new CustomDialog_Add_Accessory(mActivity);
+        customDialog_add_service=new CustomDialog_Add_Service(mActivity);
+
 
         tv_actionbar_title=findViewById(R.id.tv_actionbar_title);
         rg_order_details_for_remote_fee=findViewById(R.id.rg_order_details_for_remote_fee);
@@ -137,10 +160,15 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
         rb_order_details_oneself=findViewById(R.id.rb_order_details_oneself);
         tv_order_details_add_accessories=findViewById(R.id.tv_order_details_add_accessories);//添加配件
         recyclerView_Pre_add_accessories=findViewById(R.id.recyclerView_add_accessories); //预接单recyclerview
+        tv_order_detail_add_service=findViewById(R.id.tv_order_detail_add_service);
+        recyclerView_Pre_add_service=findViewById(R.id.tv_recyclerView_Pre_add_service);//预接单recyclerview
+
         //接收传来的OrderID
         String orderID = getIntent().getStringExtra("OrderID");
         mPresenter.GetOrderInfo(orderID);
+
         mPresenter.GetFactoryAccessory();
+        mPresenter.GetFactoryService();
 
     }
 
@@ -149,6 +177,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
         ll_return.setOnClickListener(new CustomOnclickListnaer());
         rl_select_time.setOnClickListener(new CustomOnclickListnaer());
         tv_order_details_add_accessories.setOnClickListener(new CustomOnclickListnaer());
+        tv_order_detail_add_service.setOnClickListener(new CustomOnclickListnaer());
          /*添加配件*/
         rg_order_details_add_accessories.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -264,6 +293,11 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
                 case R.id.tv_order_details_add_accessories: //添加配件
 
+                    if (!map.isEmpty()){
+                       fList.clear();
+                       map.clear();
+                    }
+
                     tv_order_details_add_accessories.setText("重新添加");
                     //startActivity(new Intent(Order_details_Activity.this,AddAccessoryActivity.class));
 
@@ -301,8 +335,8 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                     mAdd_Ac_Adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
                         @Override
                         public void onItemChildClick(final BaseQuickAdapter adapter, View view, final int position) {
-                             img_ac_select = (ImageView)adapter.getViewByPosition(recyclerView_custom_add_accessory, position, R.id.img_ac_select); //选中图片
-                             img_ac_unselect = (ImageView)adapter.getViewByPosition(recyclerView_custom_add_accessory, position, R.id.img_ac_unselect);//未选中图片
+                            ImageView img_ac_select = (ImageView)adapter.getViewByPosition(recyclerView_custom_add_accessory, position, R.id.img_ac_select); //选中图片
+                            ImageView img_ac_unselect = (ImageView)adapter.getViewByPosition(recyclerView_custom_add_accessory, position, R.id.img_ac_unselect);//未选中图片
                             adderView adderView =(adderView)adapter.getViewByPosition(recyclerView_custom_add_accessory, position, R.id.adderView);
 
 
@@ -374,9 +408,29 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
                             fList=new ArrayList<>(map.values());
                             recyclerView_Pre_add_accessories.setLayoutManager(new LinearLayoutManager(mActivity));
-                            mPre_order_add_ac_adapter=new Pre_order_Add_Ac_Adapter(R.layout.item_pre_order_add_accessories,fList);
+                             mPre_order_add_ac_adapter=new Pre_order_Add_Ac_Adapter(R.layout.item_pre_order_add_accessories,fList);
                             recyclerView_Pre_add_accessories.setAdapter(mPre_order_add_ac_adapter);
                             customDialog_add_accessory.dismiss();
+
+                            /*删除配件*/
+                            mPre_order_add_ac_adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+                                @Override
+                                public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                                    switch (view.getId()){
+                                        case R.id.iv_accessories_delete:
+
+                                            adapter.remove(position);
+                                            Log.d("positionposition", String.valueOf(position));
+                                            //fList.remove(position);
+
+                                            Log.d("flistflistflist", String.valueOf(fList.size()));
+                                            break;
+                                    }
+                                }
+                            });
+
+
+
 
                             for (int key : map.keySet()){
                                 System.out.println("选择了"+map.get(key).getFAccessoryName()+"配件"+"数量"+map.get(key).getQuantity()+"总价格"+map.get(key).getDiscountPrice());
@@ -384,13 +438,129 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                             }
 
 
-                            Log.d("fListfListfList", String.valueOf(fList.size()));
 
                         }
                     });
                     /*添加*/
                     break;
 
+
+
+
+                    /*添加服务*/
+                     case R.id.tv_order_detail_add_service:
+                         if (!map_service.isEmpty()){
+                             fList_service.clear();
+                             map_service.clear();
+                         }
+
+                         customDialog_add_service.getWindow().setBackgroundDrawableResource(R.color.transparent);
+                         customDialog_add_service.show();
+
+                         // 设置宽度为屏宽、靠近屏幕底部。
+                         Window window1=customDialog_add_service.getWindow();
+                         //最重要的一句话，一定要加上！要不然怎么设置都不行！
+                         // window.setBackgroundDrawableResource(android.R.color.transparent);
+                         WindowManager.LayoutParams wlp1 = window1.getAttributes();
+                         Display d1 = window1.getWindowManager().getDefaultDisplay();
+                         //获取屏幕宽
+                         wlp1.height=(d1.getHeight());
+                         wlp1.width =(d1.getWidth());
+                         //宽度按屏幕大小的百分比设置，这里我设置的是全屏显示
+                         wlp1.gravity = Gravity.CENTER;
+/*
+                    if (wlp.gravity == Gravity.BOTTOM)
+                        wlp.y = 0;
+                    //如果是底部显示，则距离底部的距离是0*/
+                         window1.setAttributes(wlp1);
+
+
+                         recyclerView_custom_add_service=customDialog_add_service.findViewById(R.id.recyclerView_custom_add_service);
+                         recyclerView_custom_add_service.setLayoutManager(new LinearLayoutManager(mActivity));
+                         mAdd_Service_Adapter=new Add_Service_Adapter(R.layout.item_addservice,mList_service);
+                         recyclerView_custom_add_service.setAdapter(mAdd_Service_Adapter);
+
+                        mAdd_Service_Adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+                            @Override
+                            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                                ImageView img_add_service_select = (ImageView)adapter.getViewByPosition(recyclerView_custom_add_service, position, R.id.img_add_service_select); //选中图片
+                                ImageView img_add_service_unselect = (ImageView)adapter.getViewByPosition(recyclerView_custom_add_service, position, R.id.img_add_service_unselect);//未选中图片
+
+                                switch (view.getId()){
+                                    case R.id.img_add_service_unselect:
+                                    case R.id.img_add_service_select:
+                                    case R.id.tv_add_service_name:
+
+
+                                        if (ischeck_service[position]==false){ //如果是为选中的状态点击  变为红色 选中状态 出现 数量选择器
+                                            //viewadd.setVisibility(View.VISIBLE); //数量选择器出现
+                                            img_add_service_unselect.setVisibility(View.INVISIBLE);
+                                            img_add_service_select.setVisibility(View.VISIBLE);
+                                            ischeck_service[position]=true;
+
+                                            mService=(Service)adapter.getItem(position);
+                                            mfService=new FService();
+                                            //服务 模拟
+                                            mfService.setOrderServiceStr(mService.getFServiceName());
+                                            map_service.put(position,mfService);
+
+
+                                        }else {
+                                            img_add_service_unselect.setVisibility(View.VISIBLE);
+                                            img_add_service_select.setVisibility(View.INVISIBLE);
+                                            ischeck_service[position]=false;
+
+                                        }
+
+                                        break;
+
+
+                                }
+
+
+
+                            }
+                        });
+
+                         /*添加*/
+                         customDialog_add_service.setYesOnclickListener("添加服务", new CustomDialog_Add_Service.onYesOnclickListener() {
+                             @Override
+                             public void onYesClick() {
+                                 fList_service=new ArrayList<>(map_service.values());
+                                 recyclerView_Pre_add_service.setLayoutManager(new LinearLayoutManager(mActivity));
+                                 mPre_order_Add_Service_Adapter=new Pre_order_Add_Service_Adapter(R.layout.item_add_service,fList_service);
+                                 recyclerView_Pre_add_service.setAdapter(mPre_order_Add_Service_Adapter);
+                                 customDialog_add_service.dismiss();
+
+                                 mPre_order_Add_Service_Adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+                                     @Override
+                                     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                                         switch (view.getId()){
+                                             case R.id.iv_service_delete:
+                                                 adapter.remove(position);
+                                                 break;
+
+                                         }
+
+                                     }
+                                 });
+
+                             }
+                         });
+
+
+
+
+
+
+
+
+
+
+
+
+
+                         break;
 
                     default:
                         break;
@@ -399,9 +569,14 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
         }
     }
 
-              /*获取工厂配件*/
+
+    private void initdelete() {
+
+    }
+
+    /*获取工厂配件*/
     @Override
-    public void GetFactoryAccessory(BaseResult<AccessoryData<Accessory>> baseResult) {
+    public void GetFactoryAccessory(BaseResult<GetFactoryData<Accessory>> baseResult) {
                  switch (baseResult.getStatusCode()){
                      case 200:
                           mList.clear();
@@ -417,6 +592,26 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
 
                  }
+    }
+
+    @Override
+    public void GetFactoryService(BaseResult<GetFactorySeviceData<Service>> baseResult) {
+        switch (baseResult.getStatusCode()){
+            case 200:
+                mList_service.clear();
+                Log.d("getitem1", String.valueOf(baseResult.getData().isItem1()));
+                mList_service.addAll(baseResult.getData().getItem2());
+                ischeck_service=new boolean[mList_service.size()];
+                Log.d("ischeck_service", String.valueOf(mList_service.size()));
+                break;
+
+
+
+            default:
+                break;
+
+
+        }
     }
 /*
     @Override

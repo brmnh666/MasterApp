@@ -6,9 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,8 +16,11 @@ import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Accessory;
-import com.ying.administrator.masterappdemo.entity.AccessoryData;
+import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.GetFactoryData;
 import com.ying.administrator.masterappdemo.entity.FAccessory;
+import com.ying.administrator.masterappdemo.entity.GetFactorySeviceData;
+import com.ying.administrator.masterappdemo.entity.Service;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.PendingOrderContract;
 import com.ying.administrator.masterappdemo.mvp.model.PendingOrderModel;
@@ -33,7 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AddAccessoryActivity extends BaseActivity<PendingOrderPresenter, PendingOrderModel> implements PendingOrderContract.View {
+public class AddAccessoryActivity extends BaseActivity<PendingOrderPresenter, PendingOrderModel> implements PendingOrderContract.View  {
 
       private  Accessory accessory;
       private  FAccessory fAccessory;
@@ -183,7 +184,7 @@ public class AddAccessoryActivity extends BaseActivity<PendingOrderPresenter, Pe
     }
 
     @Override
-    public void GetFactoryAccessory(BaseResult<AccessoryData<Accessory>> baseResult) {
+    public void GetFactoryAccessory(BaseResult<GetFactoryData<Accessory>> baseResult) {
        switch (baseResult.getStatusCode()){
            case 200:
 
@@ -201,6 +202,12 @@ public class AddAccessoryActivity extends BaseActivity<PendingOrderPresenter, Pe
 
 
     }
+
+    @Override
+    public void GetFactoryService(BaseResult<GetFactorySeviceData<Service>> baseResult) {
+
+    }
+
 
 
 
