@@ -1,6 +1,7 @@
 package com.ying.administrator.masterappdemo.mvp.ui.fragment;
 
 import android.Manifest;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -92,6 +93,8 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
     TextView mTvNewOrder;
     @BindView(R.id.tv_home_refresh)
     TextView mTvHomeRefresh;
+    @BindView(R.id.img_home_refresh)
+    ImageView mimg_home_refresh;
     @BindView(R.id.recyclerview_order_receiving)
     RecyclerView mRecyclerviewOrderReceiving;
     @BindView(R.id.tv_home_empty)
@@ -133,6 +136,7 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
     private String mFloor;
     private int mGpsAccuracyStatus;
     private String mTime;
+    private ObjectAnimator animator; //刷新图片属性动画
     //声明定位回调监听器
     public AMapLocationListener mLocationListener = new AMapLocationListener() {
         @Override
@@ -226,8 +230,6 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
     public void initView() {
         methodRequiresPermission();
 
-
-
         list = new ArrayList<>();
         /*模拟数据*/
         mRecyclerviewOrderReceiving.setLayoutManager(new LinearLayoutManager(mActivity));
@@ -288,6 +290,10 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
             }
         });
 
+        //点击刷新
+        mTvHomeRefresh.setOnClickListener(new CustomListnear());
+        mimg_home_refresh.setOnClickListener(new CustomListnear());
+
         /*下拉刷新*/
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -300,19 +306,30 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
                 mPresenter.GetOrderInfoList("1", Integer.toString(pageIndex), "100");
                 grabsheetAdapter.notifyDataSetChanged();
                 refreshlayout.finishRefresh();
+
+                animator=ObjectAnimator.ofFloat(mimg_home_refresh,"rotation",0f,360f);
+                animator.setDuration(2000);
+                animator.start();
             }
         });
 
-        //上拉加载更多
-        mRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
-            @Override
-            public void onLoadmore(RefreshLayout refreshlayout) {
-                pageIndex++; //页数加1
-                mPresenter.GetOrderInfoList("1", Integer.toString(pageIndex), "4");
-                grabsheetAdapter.notifyDataSetChanged();
-                refreshlayout.finishLoadmore();
-            }
-        });
+            //上拉加载更多
+            mRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
+
+                @Override
+                public void onLoadmore(RefreshLayout refreshlayout) {
+                    pageIndex++; //页数加1
+                    Log.d("当前的单数", String.valueOf(list.size()));
+                    mPresenter.GetOrderInfoList("1", Integer.toString(pageIndex), "4");
+                    grabsheetAdapter.notifyDataSetChanged();
+                    refreshlayout.finishLoadmore();
+                }
+            });
+
+
+
+
+
 
     }
 
@@ -334,13 +351,7 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
                     mLlEmpty.setVisibility(View.INVISIBLE);
 
                 }
-               /* mRefreshLayout.finishRefresh();
 
-                if (pageIndex!=1&&"0".equals(workOrder.getCount())){
-                    mRefreshLayout.finishLoadMoreWithNoMoreData();
-                }else{
-                    mRefreshLayout.finishLoadMore();
-                }*/
 
                 break;
             case 401:
@@ -417,9 +428,7 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
             switch (v.getId()) {
 
                 case R.id.tv_certification:
-
                     final CustomDialog customDialog = new CustomDialog(getContext());
-
                     customDialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
                     customDialog.setTitle("实名认证");
                     customDialog.show();
@@ -452,6 +461,11 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
                 case R.id.img_home_qr_code:
                     startActivity(new Intent(getActivity(), Share_Activity.class));
                     break;
+                case R.id.tv_home_refresh:
+                case R.id.img_home_refresh:
+                    mRefreshLayout.autoRefresh();
+
+                    break;
 
 
                 default:
@@ -470,6 +484,7 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
         // Forward results to EasyPermissions
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
+
     @AfterPermissionGranted(RC_LOCATION)
     private void methodRequiresPermission() {
         String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION};

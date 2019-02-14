@@ -44,6 +44,7 @@
         />
 
        <ImageView
+           android:id="@+id/img_home_refresh"
         android:layout_width="18dp"
         android:layout_height="14dp"
         android:src="@mipmap/icon_home_refresh"

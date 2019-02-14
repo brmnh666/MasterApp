@@ -1,5 +1,6 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -147,8 +149,6 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
         customDialog_add_accessory=new CustomDialog_Add_Accessory(mActivity);
         customDialog_add_service=new CustomDialog_Add_Service(mActivity);
-
-
         tv_actionbar_title=findViewById(R.id.tv_actionbar_title);
         rg_order_details_for_remote_fee=findViewById(R.id.rg_order_details_for_remote_fee);
         ll_Out_of_service_tv=findViewById(R.id.ll_Out_of_service_tv);
@@ -316,6 +316,19 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
                   Log.d("mlistmlist", String.valueOf(mList.size()));
                     customDialog_add_accessory.getWindow().setBackgroundDrawableResource(R.color.transparent);
+                    customDialog_add_accessory.setOnKeyListener(new DialogInterface.OnKeyListener() {
+                        @Override
+                        public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                       /*   if (keyCode==KeyEvent.KEYCODE_BACK){
+                              return false;
+                          }*/
+
+                       if (keyCode==KeyEvent.KEYCODE_BACK){
+                           return true;
+                        }
+                          return false;
+                        }
+                    });
 
                     customDialog_add_accessory.show();
                     // 设置宽度为屏宽、靠近屏幕底部。
@@ -351,9 +364,6 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                             ImageView img_ac_select = (ImageView)adapter.getViewByPosition(recyclerView_custom_add_accessory, position, R.id.img_ac_select); //选中图片
                             ImageView img_ac_unselect = (ImageView)adapter.getViewByPosition(recyclerView_custom_add_accessory, position, R.id.img_ac_unselect);//未选中图片
                             adderView adderView =(adderView)adapter.getViewByPosition(recyclerView_custom_add_accessory, position, R.id.adderView);
-
-
-
                             //进入添加配件dialog 判断是否已经选了配件  有数据说明是第二次进入 没数据说明是第一次进入
 
 
@@ -468,6 +478,16 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                          }
 
                          customDialog_add_service.getWindow().setBackgroundDrawableResource(R.color.transparent);
+                            //选择服务的时候禁止 返回
+                         customDialog_add_service.setOnKeyListener(new DialogInterface.OnKeyListener() {
+                             @Override
+                             public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                             if (keyCode==KeyEvent.KEYCODE_BACK){
+                              return true;
+                              }
+                                 return false;
+                             }
+                         });
                          customDialog_add_service.show();
 
                          // 设置宽度为屏宽、靠近屏幕底部。
@@ -503,8 +523,6 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                                     case R.id.img_add_service_unselect:
                                     case R.id.img_add_service_select:
                                     case R.id.tv_add_service_name:
-
-
                                         if (ischeck_service[position]==false){ //如果是为选中的状态点击  变为红色 选中状态 出现 数量选择器
                                             //viewadd.setVisibility(View.VISIBLE); //数量选择器出现
                                             img_add_service_unselect.setVisibility(View.INVISIBLE);
@@ -602,9 +620,6 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                          ischeck=new boolean[mList.size()];
                          Log.d("mlist2", String.valueOf(mList.size()));
                          break;
-
-
-
                      default:
                          break;
 
@@ -622,9 +637,6 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                 ischeck_service=new boolean[mList_service.size()];
                 Log.d("ischeck_service", String.valueOf(mList_service.size()));
                 break;
-
-
-
             default:
                 break;
 
