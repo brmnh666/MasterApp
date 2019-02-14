@@ -158,13 +158,19 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter,VerifiedMo
             }
         });
         photo_btn.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-                i.addCategory(Intent.CATEGORY_OPENABLE);
-                i.setType("image/*");
-                startActivityForResult(Intent.createChooser(i, "test"), code2);
-                mPopupWindow.dismiss();
+                if (requestPermissions()){
+                    Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+                    i.addCategory(Intent.CATEGORY_OPENABLE);
+                    i.setType("image/*");
+                    startActivityForResult(Intent.createChooser(i, "test"), code2);
+                    mPopupWindow.dismiss();
+                }else{
+                    requestPermissions(permissions.toArray(new String[permissions.size()]), 10002);
+                }
+
             }
         });
         cancel_btn.setOnClickListener(new View.OnClickListener() {
@@ -223,23 +229,34 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter,VerifiedMo
         switch (requestCode) {
             case 10001:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED&&grantResults[1]==PackageManager.PERMISSION_GRANTED&&grantResults[2]==PackageManager.PERMISSION_GRANTED) {//允许
-                    Intent intent = new Intent();
-                    // 指定开启系统相机的Action
-                    intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-                    intent.addCategory(Intent.CATEGORY_DEFAULT);
-                    String f = System.currentTimeMillis()+".jpg";
-                    FilePath=Environment.getExternalStorageDirectory().getAbsolutePath()+"/xgy/"+f;
-                    File file=new File(FilePath);
-                    if (!file.exists()){
-                        try {
-                            file.createNewFile();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    Uri fileUri = Uri.fromFile(file);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-                    startActivityForResult(intent, 0);
+//                    Intent intent = new Intent();
+//                    // 指定开启系统相机的Action
+//                    intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+//                    intent.addCategory(Intent.CATEGORY_DEFAULT);
+//                    String f = System.currentTimeMillis()+".jpg";
+//                    FilePath=Environment.getExternalStorageDirectory().getAbsolutePath()+"/xgy/"+f;
+//                    File file=new File(FilePath);
+//                    if (!file.exists()){
+//                        try {
+//                            file.createNewFile();
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                    Uri fileUri = Uri.fromFile(file);
+//                    intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+//                    startActivityForResult(intent, 0);
+                } else {//拒绝
+                    MyUtils.showToast(mActivity, "相关权限未开启");
+                }
+                break;
+            case 10002:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED&&grantResults[1]==PackageManager.PERMISSION_GRANTED&&grantResults[2]==PackageManager.PERMISSION_GRANTED) {//允许
+//                    Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+//                    i.addCategory(Intent.CATEGORY_OPENABLE);
+//                    i.setType("image/*");
+//                    startActivityForResult(Intent.createChooser(i, "test"), code2);
+//                    mPopupWindow.dismiss();
                 } else {//拒绝
                     MyUtils.showToast(mActivity, "相关权限未开启");
                 }
