@@ -44,6 +44,7 @@ import com.ying.administrator.masterappdemo.mvp.ui.activity.Verified_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.GrabsheetAdapter;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseFragment;
 import com.ying.administrator.masterappdemo.widget.CustomDialog;
+import com.ying.administrator.masterappdemo.widget.ShareDialog;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -459,7 +460,10 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
                     });
                     break;
                 case R.id.img_home_qr_code:
-                    startActivity(new Intent(getActivity(), Share_Activity.class));
+//                    startActivity(new Intent(getActivity(), Share_Activity.class));
+                    final ShareDialog shareDialog=new ShareDialog(getContext());
+                    shareDialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+                    shareDialog.show();
                     break;
                 case R.id.tv_home_refresh:
                 case R.id.img_home_refresh:
