@@ -254,7 +254,7 @@
                     android:layout_marginTop="10dp"/>
 
                 <TextView
-                    android:id="@+id/tv_address"
+                    android:id="@+id/tv_shop_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="17dp"
