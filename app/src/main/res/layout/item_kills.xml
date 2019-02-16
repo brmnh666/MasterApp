@@ -39,29 +39,48 @@
             android:layout_marginLeft="18dp"
             android:layout_marginRight="39dp"
             android:background="#E4E4E4"/>
-
-        <TextView
-            android:id="@+id/tv_kill_detail"
+        <FrameLayout
+            android:id="@+id/fl_drop_down"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="13dp"
-            android:layout_marginLeft="17dp"
-            android:layout_marginRight="23dp"
-            android:text="空调  /  空气能热水器（分体式）  /  空气能一体式
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tv_kill_detail_one"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:layout_marginLeft="17dp"
+                android:layout_marginRight="23dp"
+                android:text="空调 / 空气能热水器（分体式）/ 空气能一体式"
+                android:textSize="14dp"
+                android:textColor="#5A5A5B"
+                android:layout_marginBottom="15dp"
+                android:lineSpacingExtra="4dp" />
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv_kill_detail_two"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:layout_marginLeft="17dp"
+                android:layout_marginRight="23dp"
+                android:text="空调 / 空气能热水器（分体式）/ 空气能一体式
 电煮锅/多士炉，电热/取暖器,空调扇，豆
 浆机,破壁机/料理机，榨汁机，挂烫机,电饭煲/电压力锅，电磁
 炉/电陶炉,电风扇，榨油机,面包机/馒头"
-            android:textSize="14dp"
-            android:textColor="#5A5A5B"
-            android:layout_marginBottom="15dp"
-            android:lineSpacingExtra="4dp"
-            android:lines="1"/>
+                android:textSize="14dp"
+                android:textColor="#5A5A5B"
+                android:layout_marginBottom="15dp"
+                android:lineSpacingExtra="4dp" />
+        </FrameLayout>
+
     </LinearLayout>
+
     <ImageView
         android:id="@+id/iv_drop_down"
         android:layout_width="33dp"
-        android:layout_height="8dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:src="@mipmap/drop_down"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginBottom="20dp"
+        android:src="@mipmap/drop_down" />
 </LinearLayout>
