@@ -57,7 +57,7 @@ import butterknife.Unbinder;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkOrdersModel> implements AllWorkOrdersContract.View {
+public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkOrdersModel> implements AllWorkOrdersContract.View, View.OnClickListener {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_SHOW_TEXT = "text";
     @BindView(R.id.img_home_qr_code)
@@ -281,19 +281,14 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
     public void initListener() {
 
         //实名认证
-        mTvCertification.setOnClickListener(new CustomListnear());
+        mTvCertification.setOnClickListener(this);
         //二维码
-        mImgHomeQrCode.setOnClickListener(new CustomListnear());
-        mTvHomeLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivityForResult(new Intent(mActivity,MainActivity.class),100);
-            }
-        });
+        mImgHomeQrCode.setOnClickListener(this);
+        mTvHomeLocation.setOnClickListener(this);
 
         //点击刷新
-        mTvHomeRefresh.setOnClickListener(new CustomListnear());
-        mimg_home_refresh.setOnClickListener(new CustomListnear());
+        mTvHomeRefresh.setOnClickListener(this);
+        mimg_home_refresh.setOnClickListener(this);
 
         /*下拉刷新*/
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
@@ -307,6 +302,7 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
                 mPresenter.GetOrderInfoList("1", Integer.toString(pageIndex), "100");
                 grabsheetAdapter.notifyDataSetChanged();
                 refreshlayout.finishRefresh();
+                refreshlayout.setLoadmoreFinished(false);
 
                 animator=ObjectAnimator.ofFloat(mimg_home_refresh,"rotation",0f,360f);
                 animator.setDuration(2000);
@@ -352,7 +348,9 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
                     mLlEmpty.setVisibility(View.INVISIBLE);
 
                 }
-
+                if (pageIndex!=1&&workOrder.getData().size()==0){
+                    mRefreshLayout.finishLoadmoreWithNoMoreData();
+                }
 
                 break;
             case 401:
@@ -422,63 +420,56 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
         unbinder.unbind();
     }
 
-    /*自定义监听*/
-    public class CustomListnear implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
 
-                case R.id.tv_certification:
-                    final CustomDialog customDialog = new CustomDialog(getContext());
-                    customDialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
-                    customDialog.setTitle("实名认证");
-                    customDialog.show();
+            case R.id.tv_certification:
+                final CustomDialog customDialog = new CustomDialog(getContext());
+                customDialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+                customDialog.setTitle("实名认证");
+                customDialog.show();
 
-                    customDialog.setYesOnclickListener("确定", new CustomDialog.onYesOnclickListener() {
-                        @Override
-                        public void onYesClick() {
-                            //Toast.makeText(getContext(), "点击了--去认证--按钮", Toast.LENGTH_LONG).show();
-                            customDialog.dismiss();
-                            startActivity(new Intent(getActivity(), Verified_Activity.class));
-                        }
-                    });
+                customDialog.setYesOnclickListener("确定", new CustomDialog.onYesOnclickListener() {
+                    @Override
+                    public void onYesClick() {
+                        //Toast.makeText(getContext(), "点击了--去认证--按钮", Toast.LENGTH_LONG).show();
+                        customDialog.dismiss();
+                        startActivity(new Intent(getActivity(), Verified_Activity.class));
+                    }
+                });
 
-                    customDialog.setNoOnclickListener("取消", new CustomDialog.onNoOnclickListener() {
-                        @Override
-                        public void onNoClick() {
-                            //Toast.makeText(getContext(), "点击了--再想想--按钮", Toast.LENGTH_LONG).show();
-                            customDialog.dismiss();
-                        }
-                    });
+                customDialog.setNoOnclickListener("取消", new CustomDialog.onNoOnclickListener() {
+                    @Override
+                    public void onNoClick() {
+                        //Toast.makeText(getContext(), "点击了--再想想--按钮", Toast.LENGTH_LONG).show();
+                        customDialog.dismiss();
+                    }
+                });
 
-                    customDialog.setNoOnclickListener("取消", new CustomDialog.onNoOnclickListener() {
-                        @Override
-                        public void onNoClick() {
-                            // Toast.makeText(getContext(), "点击了--关闭-按钮", Toast.LENGTH_LONG).show();
-                            customDialog.dismiss();
-                        }
-                    });
-                    break;
-                case R.id.img_home_qr_code:
+                customDialog.setNoOnclickListener("取消", new CustomDialog.onNoOnclickListener() {
+                    @Override
+                    public void onNoClick() {
+                        // Toast.makeText(getContext(), "点击了--关闭-按钮", Toast.LENGTH_LONG).show();
+                        customDialog.dismiss();
+                    }
+                });
+                break;
+            case R.id.img_home_qr_code:
 //                    startActivity(new Intent(getActivity(), Share_Activity.class));
-                    final ShareDialog shareDialog=new ShareDialog(getContext());
-                    shareDialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
-                    shareDialog.show();
-                    break;
-                case R.id.tv_home_refresh:
-                case R.id.img_home_refresh:
-                    mRefreshLayout.autoRefresh();
-
-                    break;
-
-
-                default:
-                    break;
-
-
-            }
-
-
+                final ShareDialog shareDialog=new ShareDialog(getContext());
+                shareDialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+                shareDialog.show();
+                break;
+            case R.id.tv_home_refresh:
+            case R.id.img_home_refresh:
+                mRefreshLayout.autoRefresh();
+                break;
+            case R.id.tv_home_location:
+                startActivityForResult(new Intent(mActivity,MainActivity.class),100);
+                break;
+            default:
+                break;
         }
     }
     @Override

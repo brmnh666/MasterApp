@@ -42,7 +42,7 @@ public class MyApplication extends Application {
             @Override
             public RefreshFooter createRefreshFooter(Context context, RefreshLayout layout) {
                 //指定为经典Footer，默认是 BallPulseFooter
-                return new ClassicsFooter(context).setSpinnerStyle(SpinnerStyle.Translate);
+                return new ClassicsFooter(context).setSpinnerStyle(SpinnerStyle.Translate).setFinishDuration(0);
             }
         });
     }

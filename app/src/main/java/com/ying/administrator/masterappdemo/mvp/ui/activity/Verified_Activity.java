@@ -1,6 +1,7 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
 import android.Manifest;
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,6 +13,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.FileProvider;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +26,11 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
+import com.amap.searchdemo.MainActivity;
 import com.bumptech.glide.Glide;
 import com.dmcbig.mediapicker.entity.Media;
 import com.ying.administrator.masterappdemo.R;
@@ -35,7 +42,9 @@ import com.ying.administrator.masterappdemo.mvp.presenter.VerifiedPresenter;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -72,16 +81,83 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
     LinearLayout mLlShopAddress;
     @BindView(R.id.submit_application_bt)
     Button mSubmitApplicationBt;
-    @BindView(R.id.tv_address)
-    TextView mTvAddress;
     @BindView(R.id.ll_service_skill)
     LinearLayout mLlServiceSkill;
+    @BindView(R.id.tv_shop_address)
+    TextView mTvShopAddress;
     private View popupWindow_view;
     private String FilePath;
     private PopupWindow mPopupWindow;
     private ArrayList<String> permissions;
     ArrayList<Media> select = new ArrayList<>();
 
+    //声明AMapLocationClient类对象
+    public AMapLocationClient mLocationClient = null;
+    //声明AMapLocationClientOption对象
+    public AMapLocationClientOption mLocationOption = null;
+    private int mLocationType;
+    private double mLatitude;
+    private double mLongitude;
+    private float mAccuracy;
+    private String mAddress;
+    private String mCountry;
+    private String mProvince;
+    private String mCity;
+    private String mDistrict;
+    private String mStreet;
+    private String mStreetNum;
+    private String mCityCode;
+    private String mAdCode;
+    private String mAoiName;
+    private String mBuildingId;
+    private String mFloor;
+    private int mGpsAccuracyStatus;
+    private String mTime;
+    private ObjectAnimator animator; //刷新图片属性动画
+    //声明定位回调监听器
+    public AMapLocationListener mLocationListener = new AMapLocationListener() {
+        @Override
+        public void onLocationChanged(AMapLocation aMapLocation) {
+            //定位结果回调
+            if (aMapLocation != null) {
+                if (aMapLocation.getErrorCode() == 0) {
+//可在其中解析amapLocation获取相应内容。
+                    mLocationType = aMapLocation.getLocationType();//获取当前定位结果来源，如网络定位结果，详见定位类型表
+                    mLatitude = aMapLocation.getLatitude();//获取纬度
+                    mLongitude = aMapLocation.getLongitude();//获取经度
+                    mAccuracy = aMapLocation.getAccuracy();//获取精度信息
+//                    mAddress = aMapLocation.getAddress();//地址，如果option中设置isNeedAddress为false，则没有此结果，网络定位结果中会有地址信息，GPS定位不返回地址信息。
+                    mCountry = aMapLocation.getCountry();//国家信息
+                    mProvince = aMapLocation.getProvince();//省信息
+                    mCity = aMapLocation.getCity();//城市信息
+                    mDistrict = aMapLocation.getDistrict();//城区信息
+                    mStreet = aMapLocation.getStreet();//街道信息
+                    mStreetNum = aMapLocation.getStreetNum();//街道门牌号信息
+                    mCityCode = aMapLocation.getCityCode();//城市编码
+                    mAdCode = aMapLocation.getAdCode();//地区编码
+                    mAoiName = aMapLocation.getAoiName();//获取当前定位点的AOI信息
+                    mBuildingId = aMapLocation.getBuildingId();//获取当前室内定位的建筑物Id
+                    mFloor = aMapLocation.getFloor();//获取当前室内定位的楼层
+                    mGpsAccuracyStatus = aMapLocation.getGpsAccuracyStatus();//获取GPS的当前状态
+                    //获取定位时间
+                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    Date date = new Date(aMapLocation.getTime());
+                    mTime = df.format(date);
+                    if (mAddress!=null){
+                        mTvShopAddress.setText(mAddress);
+                    }else{
+                        mTvShopAddress.setText(aMapLocation.getAddress());
+                    }
+
+                } else {
+                    //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
+                    Log.e("AmapError", "location Error, ErrCode:"
+                            + aMapLocation.getErrorCode() + ", errInfo:"
+                            + aMapLocation.getErrorInfo());
+                }
+            }
+        }
+    };
     @Override
     protected int setLayoutId() {
         return R.layout.activity_verified;
@@ -89,7 +165,33 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
 
     @Override
     protected void initData() {
+        if (requestLocationPermissions()){
+            //初始化定位
+            mLocationClient = new AMapLocationClient(mActivity);
+            //设置定位回调监听
+            mLocationClient.setLocationListener(mLocationListener);
+            //初始化AMapLocationClientOption对象
+            mLocationOption = new AMapLocationClientOption();
+/**
+ * 设置定位场景，目前支持三种场景（签到、出行、运动，默认无场景）
+ */
+        /*mLocationOption.setLocationPurpose(AMapLocationClientOption.AMapLocationPurpose.SignIn);
+        if (null != mLocationClient) {
+            mLocationClient.setLocationOption(mLocationOption);
+            //设置场景模式后最好调用一次stop，再调用start以保证场景模式生效
+            mLocationClient.stopLocation();
+            mLocationClient.startLocation();
+        }*/
+            //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。
+            mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
 
+            //给定位客户端对象设置定位参数
+            mLocationClient.setLocationOption(mLocationOption);
+            //启动定位
+            mLocationClient.startLocation();
+        }else{
+            requestPermissions(permissions.toArray(new String[permissions.size()]), 20002);
+        }
     }
 
     @Override
@@ -102,6 +204,7 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
         mIvPositive.setOnClickListener(this);
         mIvNegative.setOnClickListener(this);
         mLlReturn.setOnClickListener(this);
+        mLlShopAddress.setOnClickListener(this);
         mLlServiceSkill.setOnClickListener(this);
     }
 
@@ -113,10 +216,13 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                 finish();
                 break;
             case R.id.iv_positive:
-                showPopupWindow(101, 102);
+                showPopupWindow(101,102);
                 break;
             case R.id.iv_negative:
-                showPopupWindow(201, 202);
+                showPopupWindow(201,202);
+                break;
+            case R.id.ll_shop_address:
+                startActivityForResult(new Intent(mActivity, MainActivity.class),100);
                 break;
             case R.id.ll_service_skill:
                 startActivity(new Intent(mActivity, MySkillsActivity.class));
@@ -204,7 +310,21 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
         }
         MyUtils.setWindowAlpa(mActivity, true);
     }
-
+    //请求定位权限
+    private boolean requestLocationPermissions() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            permissions = new ArrayList<>();
+            if (mActivity.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
+            }
+            if (permissions.size() == 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
     //请求权限
     private boolean requestPermissions() {
         if (Build.VERSION.SDK_INT >= 23) {
@@ -268,6 +388,36 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                     MyUtils.showToast(mActivity, "相关权限未开启");
                 }
                 break;
+            case 20002:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED ) {//允许
+                    //初始化定位
+                    mLocationClient = new AMapLocationClient(mActivity);
+                    //设置定位回调监听
+                    mLocationClient.setLocationListener(mLocationListener);
+                    //初始化AMapLocationClientOption对象
+                    mLocationOption = new AMapLocationClientOption();
+/**
+ * 设置定位场景，目前支持三种场景（签到、出行、运动，默认无场景）
+ */
+        /*mLocationOption.setLocationPurpose(AMapLocationClientOption.AMapLocationPurpose.SignIn);
+        if (null != mLocationClient) {
+            mLocationClient.setLocationOption(mLocationOption);
+            //设置场景模式后最好调用一次stop，再调用start以保证场景模式生效
+            mLocationClient.stopLocation();
+            mLocationClient.startLocation();
+        }*/
+                    //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。
+                    mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+
+                    //给定位客户端对象设置定位参数
+                    mLocationClient.setLocationOption(mLocationOption);
+                    //启动定位
+                    mLocationClient.startLocation();
+                } else {//拒绝
+                    MyUtils.showToast(mActivity, "相关权限未开启");
+                }
+
+                break;
             default:
                 break;
 
@@ -310,6 +460,14 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                     Uri uri = data.getData();
                     Glide.with(mActivity).load(uri).into(mIvNegative);
                     file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
+                }
+                break;
+            case 100:
+                if (data!=null){
+                    mAddress=data.getStringExtra("address");
+                    if (mAddress!=null){
+                        mTvShopAddress.setText(mAddress);
+                    }
                 }
                 break;
         }
