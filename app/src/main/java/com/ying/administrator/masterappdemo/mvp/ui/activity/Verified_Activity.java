@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
@@ -35,15 +34,18 @@ import com.ying.administrator.masterappdemo.mvp.presenter.VerifiedPresenter;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
-public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedModel> implements View.OnClickListener, VerifiedContract.View {
+/*实名认证*/
+public class Verified_Activity extends BaseActivity<VerifiedPresenter,VerifiedModel> implements View.OnClickListener,VerifiedContract.View {
 
 
     @BindView(R.id.img_actionbar_return)
@@ -72,15 +74,11 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
     LinearLayout mLlShopAddress;
     @BindView(R.id.submit_application_bt)
     Button mSubmitApplicationBt;
-    @BindView(R.id.tv_address)
-    TextView mTvAddress;
-    @BindView(R.id.ll_service_skill)
-    LinearLayout mLlServiceSkill;
     private View popupWindow_view;
     private String FilePath;
     private PopupWindow mPopupWindow;
     private ArrayList<String> permissions;
-    ArrayList<Media> select = new ArrayList<>();
+    ArrayList<Media> select=new ArrayList<>();
 
     @Override
     protected int setLayoutId() {
@@ -102,7 +100,6 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
         mIvPositive.setOnClickListener(this);
         mIvNegative.setOnClickListener(this);
         mLlReturn.setOnClickListener(this);
-        mLlServiceSkill.setOnClickListener(this);
     }
 
 
@@ -113,13 +110,10 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                 finish();
                 break;
             case R.id.iv_positive:
-                showPopupWindow(101, 102);
+                showPopupWindow(101,102);
                 break;
             case R.id.iv_negative:
-                showPopupWindow(201, 202);
-                break;
-            case R.id.ll_service_skill:
-                startActivity(new Intent(mActivity, MySkillsActivity.class));
+                showPopupWindow(201,202);
                 break;
         }
     }
@@ -127,38 +121,38 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
     /**
      * 弹出Popupwindow
      */
-    public void showPopupWindow(final int code1, final int code2) {
+    public void showPopupWindow(final int code1,final int code2) {
         popupWindow_view = LayoutInflater.from(mActivity).inflate(R.layout.camera_layout, null);
-        Button camera_btn = popupWindow_view.findViewById(R.id.camera_btn);
-        Button photo_btn = popupWindow_view.findViewById(R.id.photo_btn);
-        Button cancel_btn = popupWindow_view.findViewById(R.id.cancel_btn);
+        Button camera_btn= popupWindow_view.findViewById(R.id.camera_btn);
+        Button photo_btn= popupWindow_view.findViewById(R.id.photo_btn);
+        Button cancel_btn= popupWindow_view.findViewById(R.id.cancel_btn);
         camera_btn.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View view) {
-                if (requestPermissions()) {
+                if (requestPermissions()){
                     Intent intent = new Intent();
                     // 指定开启系统相机的Action
                     intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
                     intent.addCategory(Intent.CATEGORY_DEFAULT);
-                    String f = System.currentTimeMillis() + ".jpg";
-                    String fileDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy";
-                    FilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy/" + f;
-                    File dirfile = new File(fileDir);
-                    if (!dirfile.exists()) {
+                    String f = System.currentTimeMillis()+".jpg";
+                    String fileDir=Environment.getExternalStorageDirectory().getAbsolutePath()+"/xgy";
+                    FilePath =Environment.getExternalStorageDirectory().getAbsolutePath()+"/xgy/"+f;
+                    File dirfile=new File(fileDir);
+                    if (!dirfile.exists()){
                         dirfile.mkdirs();
                     }
-                    File file = new File(FilePath);
+                    File file=new File(FilePath);
                     Uri fileUri;
                     if (Build.VERSION.SDK_INT >= 24) {
-                        fileUri = FileProvider.getUriForFile(mActivity, "com.ying.administrator.masterappdemo.fileProvider", file);
+                        fileUri = FileProvider.getUriForFile(mActivity,"com.ying.administrator.masterappdemo.fileProvider", file);
                     } else {
                         fileUri = Uri.fromFile(file);
                     }
 
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
                     startActivityForResult(intent, code1);
-                } else {
+                }else{
                     requestPermissions(permissions.toArray(new String[permissions.size()]), 10001);
                 }
                 mPopupWindow.dismiss();
@@ -168,13 +162,13 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View view) {
-                if (requestPermissions()) {
+                if (requestPermissions()){
                     Intent i = new Intent(Intent.ACTION_GET_CONTENT);
                     i.addCategory(Intent.CATEGORY_OPENABLE);
                     i.setType("image/*");
                     startActivityForResult(Intent.createChooser(i, "test"), code2);
                     mPopupWindow.dismiss();
-                } else {
+                }else{
                     requestPermissions(permissions.toArray(new String[permissions.size()]), 10002);
                 }
 
@@ -194,7 +188,7 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
         mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                MyUtils.setWindowAlpa(mActivity, false);
+                MyUtils.setWindowAlpa(mActivity,false);
             }
         });
         if (mPopupWindow != null && !mPopupWindow.isShowing()) {
@@ -206,7 +200,7 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
     }
 
     //请求权限
-    private boolean requestPermissions() {
+    private boolean requestPermissions(){
         if (Build.VERSION.SDK_INT >= 23) {
             permissions = new ArrayList<>();
             if (mActivity.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -235,7 +229,7 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
 
         switch (requestCode) {
             case 10001:
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {//允许
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED&&grantResults[1]==PackageManager.PERMISSION_GRANTED&&grantResults[2]==PackageManager.PERMISSION_GRANTED) {//允许
 //                    Intent intent = new Intent();
 //                    // 指定开启系统相机的Action
 //                    intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -258,7 +252,7 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                 }
                 break;
             case 10002:
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {//允许
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED&&grantResults[1]==PackageManager.PERMISSION_GRANTED&&grantResults[2]==PackageManager.PERMISSION_GRANTED) {//允许
 //                    Intent i = new Intent(Intent.ACTION_GET_CONTENT);
 //                    i.addCategory(Intent.CATEGORY_OPENABLE);
 //                    i.setType("image/*");
@@ -280,28 +274,28 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         File file = null;
-        switch (requestCode) {
+        switch (requestCode){
             //拍照
             case 101:
-                if (resultCode == -1) {
+                if (resultCode==-1){
                     Glide.with(mActivity).load(FilePath).into(mIvPositive);
-                    file = new File(FilePath);
+                    file=new File(FilePath);
                 }
 
                 break;
-            //相册
+                //相册
             case 102:
                 if (data != null) {
                     Uri uri = data.getData();
                     Glide.with(mActivity).load(uri).into(mIvPositive);
-                    file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
+                    file=new File(MyUtils.getRealPathFromUri(mActivity,uri));
                 }
                 break;
             //拍照
             case 201:
-                if (resultCode == -1) {
+                if (resultCode==-1){
                     Glide.with(mActivity).load(FilePath).into(mIvNegative);
-                    file = new File(FilePath);
+                    file=new File(FilePath);
                 }
                 break;
             //相册
@@ -309,32 +303,24 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                 if (data != null) {
                     Uri uri = data.getData();
                     Glide.with(mActivity).load(uri).into(mIvNegative);
-                    file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
+                    file=new File(MyUtils.getRealPathFromUri(mActivity,uri));
                 }
                 break;
         }
-        if (file != null) {
+        if (file!=null){
             uploadImg(file);
         }
     }
-
-    public void uploadImg(File f) {
+    public void uploadImg(File f){
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("img", f.getName(), RequestBody.create(MediaType.parse("img/png"), f));
-        MultipartBody requestBody = builder.build();
+        MultipartBody requestBody=builder.build();
         mPresenter.UploadImg(requestBody);
     }
 
     @Override
     public void UploadImg(BaseResult<String> baseResult) {
-        MyUtils.showToast(mActivity, "上传成功！");
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
+        MyUtils.showToast(mActivity,"上传成功！");
     }
     /*@Override
     public void Login(BaseResult<String> baseResult) {

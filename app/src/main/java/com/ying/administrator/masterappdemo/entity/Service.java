@@ -20,7 +20,7 @@ public class Service {
     private String FServiceName;
     private int FBrandID;
     private int FCategoryID;
-    private int InitPrice;
+    private double InitPrice;
     private String IsUse;
     private int page;
     private int limit;
@@ -66,12 +66,12 @@ public class Service {
         this.FCategoryID = FCategoryID;
     }
 
-    public int getInitPrice() {
+    public double getInitPrice() {
         return InitPrice;
     }
 
-    public void setInitPrice(int InitPrice) {
-        this.InitPrice = InitPrice;
+    public void setInitPrice(double initPrice) {
+        InitPrice = initPrice;
     }
 
     public String getIsUse() {

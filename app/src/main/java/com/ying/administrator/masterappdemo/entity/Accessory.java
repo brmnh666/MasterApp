@@ -19,17 +19,10 @@ public class Accessory {
      */
 
 
-
-
-
-
-
-
-
         private int Id;
         private int FAccessoryID;
         private String AccessoryName;
-        private int AccessoryPrice;
+        private double AccessoryPrice;
         private int ServicePrice;
         private String Sate;
         private int FProductTypeID;
@@ -37,6 +30,8 @@ public class Accessory {
         private int page;
         private int limit;
         private int Version;
+        private boolean ischeck;
+
 
 
         public int getId() {
@@ -63,12 +58,12 @@ public class Accessory {
             this.AccessoryName = AccessoryName;
         }
 
-        public int getAccessoryPrice() {
+        public double getAccessoryPrice() {
             return AccessoryPrice;
         }
 
-        public void setAccessoryPrice(int AccessoryPrice) {
-            this.AccessoryPrice = AccessoryPrice;
+        public void setAccessoryPrice(double accessoryPrice) {
+            AccessoryPrice = accessoryPrice;
         }
 
         public int getServicePrice() {
@@ -127,4 +122,11 @@ public class Accessory {
             this.Version = Version;
         }
 
+        public boolean isIscheck() {
+            return ischeck;
+        }
+
+        public void setIscheck(boolean ischeck) {
+           this.ischeck = ischeck;
+        }
 }

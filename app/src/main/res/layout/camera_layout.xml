@@ -8,11 +8,21 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:orientation="vertical"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/white_shape">
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/popwindow_shape">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:textColor="@color/color_custom_01"
+            android:gravity="center"
+            android:text="请选择"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_custom_06"/>
         <Button
             android:id="@+id/camera_btn"
             android:layout_width="match_parent"
@@ -22,7 +32,7 @@
             android:text="拍摄"/>
         <View
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
+            android:layout_height="1dp"
             android:background="@color/color_custom_06"/>
         <Button
             android:id="@+id/photo_btn"
@@ -36,11 +46,10 @@
         android:id="@+id/cancel_btn"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/white_shape"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/popwindow_shape"
         android:textColor="@color/color_black"
-        android:textStyle="bold"
         android:text="取消"/>
 </LinearLayout>

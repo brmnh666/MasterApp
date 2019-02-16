@@ -195,11 +195,6 @@
             android:theme="@style/AppTheme.NoActionBar"
             />
 
-        <activity android:name=".mvp.ui.activity.AddAccessoryActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:launchMode="singleTask"
-            >
-        </activity>
         <activity android:name="com.amap.searchdemo.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>

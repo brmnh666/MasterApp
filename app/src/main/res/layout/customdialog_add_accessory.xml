@@ -62,7 +62,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:textColor="@color/white"
-            android:text="添  加"
+            android:text="确  定"
              android:background="@drawable/add_accessory_submit"
             />
 
