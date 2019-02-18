@@ -1,5 +1,6 @@
 package com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,6 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.Add_Accessories_Activity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.CompleteWorkOrderActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.In_Service_Adapter;
 import com.ying.administrator.masterappdemo.common.DefineView;
 import com.ying.administrator.masterappdemo.entity.GrabSheet_Entity;
@@ -49,11 +53,24 @@ public class InService_Fragement extends BaseFragment implements DefineView {
         recyclerView.setAdapter(in_service_adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-
+        in_service_adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                switch (view.getId()){
+                    case R.id.tv_in_service_finish:
+                        startActivity(new Intent(getActivity(), CompleteWorkOrderActivity.class));
+                        break;
+                    case R.id.tv_in_service_apply_parts:
+                        startActivity(new Intent(getActivity(), Add_Accessories_Activity.class));
+                        break;
+                }
+            }
+        });
     }
 
     @Override
     public void initValidata() {
+
 
     }
 

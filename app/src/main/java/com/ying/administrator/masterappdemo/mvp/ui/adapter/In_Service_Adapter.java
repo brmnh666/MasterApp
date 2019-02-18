@@ -18,5 +18,7 @@ public class In_Service_Adapter extends BaseQuickAdapter<GrabSheet_Entity,BaseVi
     protected void convert(BaseViewHolder baseViewHolder, GrabSheet_Entity item) {
 
          baseViewHolder.setText(R.id.tv_address_in_service,item.getAddress());
+         baseViewHolder.addOnClickListener(R.id.tv_in_service_apply_parts);
+         baseViewHolder.addOnClickListener(R.id.tv_in_service_finish);
     }
 }

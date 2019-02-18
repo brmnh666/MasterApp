@@ -16,6 +16,8 @@ public class Qulity_Adapter extends BaseQuickAdapter<GrabSheet_Entity, BaseViewH
 
     @Override
     protected void convert(BaseViewHolder helper, GrabSheet_Entity item) {
-helper.setText(R.id.tv_address_quality,item.getAddress());
+        helper.setText(R.id.tv_address_quality, item.getAddress());
+        helper.addOnClickListener(R.id.tv_quality_apply_parts);
+        helper.addOnClickListener(R.id.tv_quality_finish);
     }
 }
