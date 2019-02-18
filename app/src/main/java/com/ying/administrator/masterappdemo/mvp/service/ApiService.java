@@ -103,8 +103,8 @@ Observable<BaseResult<WorkOrder.DataBean>> GetOrderInfo(@Field("OrderID") String
     /**
      * 提交抢单申请
      */
-@FormUrlEncoded
-@POST("Order/GrabOrder")
+   @FormUrlEncoded
+   @POST("Order/GrabOrder")
     Observable<BaseResult<Data>> AddGrabsheetapply (@Field("OrderID") String OrderID,
                                                     @Field("UserID") String UserID);
 
@@ -147,5 +147,30 @@ Observable<BaseResult<GetFactorySeviceData<Service>>> GetFactoryService();
 * */
 @POST("Upload/UploadImg")
 Observable<BaseResult<String>> UploadImg(@Body RequestBody json);
+
+/*
+* 预接单提交配件信息  json
+*
+*
+* {
+"OrderID":"123",
+"AccessorySequency":"0",
+"OrderAccessoryStr":{
+"OrderAccessory":[
+{
+"FAccessoryID":"1",
+"FAccessoryName":"PC管",
+"Quantity":"2",
+"Price":"1",
+"DiscountPrice":"1"
+}
+]
+}
+}
+*
+* */
+@POST("Order/AddOrderAccessory")
+    Observable<BaseResult<String>> AddOrderAccessory(@Body RequestBody json);
+
 
 }

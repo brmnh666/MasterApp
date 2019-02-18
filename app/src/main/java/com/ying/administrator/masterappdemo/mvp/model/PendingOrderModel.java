@@ -13,6 +13,7 @@ import com.ying.administrator.masterappdemo.mvp.service.ApiRetrofit;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.RequestBody;
 
 public class PendingOrderModel implements PendingOrderContract.Model {
     @Override
@@ -33,6 +34,13 @@ public class PendingOrderModel implements PendingOrderContract.Model {
     public Observable<BaseResult<GetFactorySeviceData<Service>>> GetFactoryService() {
 
         return ApiRetrofit.getDefault().GetFactoryService()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<BaseResult<String>> AddOrderAccessory(RequestBody json) {
+        return ApiRetrofit.getDefault().AddOrderAccessory(json)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

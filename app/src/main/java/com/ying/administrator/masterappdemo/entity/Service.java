@@ -25,6 +25,7 @@ public class Service {
     private int page;
     private int limit;
     private int Version;
+    private boolean ischecked;
 
     public int getId() {
         return Id;
@@ -104,5 +105,13 @@ public class Service {
 
     public void setVersion(int Version) {
         this.Version = Version;
+    }
+
+    public boolean isIschecked() {
+        return ischecked;
+    }
+
+    public void setIschecked(boolean ischecked) {
+        this.ischecked = ischecked;
     }
 }

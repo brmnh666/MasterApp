@@ -9,6 +9,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.entity.Accessory;
 import com.ying.administrator.masterappdemo.entity.FAccessory;
+import com.ying.administrator.masterappdemo.widget.adderView;
 
 import java.util.IdentityHashMap;
 import java.util.List;
@@ -34,8 +35,15 @@ public class Add_Ac_Adapter extends BaseQuickAdapter<Accessory, BaseViewHolder> 
            helper.setVisible(R.id.img_ac_select,true);
            helper.setVisible(R.id.img_ac_unselect,false);
            helper.setVisible(R.id.adderView,true);
+           adderView adderView = helper.getView(R.id.adderView);
 
-        }else { //未选中状态
+           adderView.setValue(item.getCheckedcount());
+
+
+
+
+
+       }else { //未选中状态
            helper.setVisible(R.id.img_ac_select,false);
            helper.setVisible(R.id.img_ac_unselect,true);
            helper.setVisible(R.id.adderView,false);
@@ -43,9 +51,9 @@ public class Add_Ac_Adapter extends BaseQuickAdapter<Accessory, BaseViewHolder> 
        }
 
         helper.addOnClickListener(R.id.tv_accessory_name);
-        helper.addOnClickListener(R.id.rl_item_addaccessory);
         helper.addOnClickListener(R.id.img_ac_unselect);
         helper.addOnClickListener(R.id.img_ac_select);
-       helper.addOnClickListener(R.id.rl_item_addaccessory);
+
+
     }
 }

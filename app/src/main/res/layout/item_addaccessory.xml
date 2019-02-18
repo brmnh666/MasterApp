@@ -67,4 +67,12 @@
         android:layout_height="1dp"
         android:background="@color/color_custom_03"
         android:layout_alignParentBottom="true"/>
+  <View
+      android:id="@+id/view_add_reduce"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:background="@color/transparent"
+      >
+
+  </View>
 </RelativeLayout>

@@ -31,7 +31,7 @@ public class Accessory {
         private int limit;
         private int Version;
         private boolean ischeck;
-
+        private int checkedcount;
 
 
         public int getId() {
@@ -129,4 +129,12 @@ public class Accessory {
         public void setIscheck(boolean ischeck) {
            this.ischeck = ischeck;
         }
+
+    public int getCheckedcount() {
+        return checkedcount;
+    }
+
+    public void setCheckedcount(int checkedcount) {
+        this.checkedcount = checkedcount;
+    }
 }

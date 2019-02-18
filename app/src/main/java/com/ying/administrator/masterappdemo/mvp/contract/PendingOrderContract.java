@@ -12,6 +12,7 @@ import com.ying.administrator.masterappdemo.entity.Service;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 
 import io.reactivex.Observable;
+import okhttp3.RequestBody;
 
 /*预接单*/
 public interface PendingOrderContract {
@@ -24,6 +25,9 @@ public interface PendingOrderContract {
 
         //获取工厂服务信息
         Observable<BaseResult<GetFactorySeviceData<Service>>> GetFactoryService();
+
+        //提交需要的配件信息
+        Observable<BaseResult<String>> AddOrderAccessory(RequestBody json);
     }
 
     interface View extends BaseView{
@@ -35,6 +39,9 @@ public interface PendingOrderContract {
 
         //获取工厂服务信息
         void GetFactoryService(BaseResult<GetFactorySeviceData<Service>> baseResult);
+
+        //提交需要的配件信息
+        void AddOrderAccessory(BaseResult<String> baseResult);
     }
 
     abstract  class Presenter extends BasePresenter<View,Model>{
@@ -46,6 +53,9 @@ public interface PendingOrderContract {
 
         //获取工厂服务信息
         public abstract void GetFactoryService();
+
+        //提交需要的配件信息
+        public abstract void AddOrderAccessory(RequestBody json);
     }
 
 

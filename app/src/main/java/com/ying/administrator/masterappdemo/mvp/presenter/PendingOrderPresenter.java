@@ -10,6 +10,8 @@ import com.ying.administrator.masterappdemo.entity.Service;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.PendingOrderContract;
 
+import okhttp3.RequestBody;
+
 public class PendingOrderPresenter extends PendingOrderContract.Presenter {
     @Override
     public void GetOrderInfo(String OrderID) {
@@ -38,6 +40,16 @@ public class PendingOrderPresenter extends PendingOrderContract.Presenter {
             @Override
             protected void onHandleSuccess(BaseResult<GetFactorySeviceData<Service>> value) {
                 mView.GetFactoryService(value);
+            }
+        });
+    }
+
+    @Override
+    public void AddOrderAccessory(RequestBody json) {
+        mModel.AddOrderAccessory(json).subscribe(new BaseObserver<String>() {
+            @Override
+            protected void onHandleSuccess(BaseResult<String> value) {
+                mView.AddOrderAccessory(value);
             }
         });
     }

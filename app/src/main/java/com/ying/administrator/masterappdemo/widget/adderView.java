@@ -2,6 +2,7 @@ package com.ying.administrator.masterappdemo.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -127,4 +128,6 @@ public class adderView extends LinearLayout implements View.OnClickListener {
     public void setOnValueChangeListene(OnValueChangeListener onValueChangeListene) {
         this.onValueChangeListene = onValueChangeListene;
     }
+
+
 }
