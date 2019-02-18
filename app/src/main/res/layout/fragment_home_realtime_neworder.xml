@@ -2,60 +2,58 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="97dp"
-    android:background="@color/color_white"
     android:layout_alignParentBottom="true"
+    android:background="@color/color_white"
 
     >
     <!--实时新订单-->
 
 
+    <ImageView
+        android:id="@+id/img_new_order"
+        android:layout_width="23dp"
+        android:layout_height="23dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="30dp"
+        android:layout_marginBottom="12dp"
+        android:src="@mipmap/icon_home_sheet" />
 
-        <ImageView
-            android:id="@+id/img_new_order"
-            android:layout_width="23dp"
-            android:layout_height="23dp"
-            android:src="@mipmap/icon_home_sheet"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="30dp"
-            android:layout_marginBottom="12dp"/>
-        <TextView
+    <TextView
 
-            android:id="@+id/tv_new_order"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_alignParentBottom="true"
-            android:layout_toRightOf="@+id/img_new_order"
-            android:text="实时新订单"
-            android:layout_marginBottom="12dp"
-            android:textSize="17sp"/>
+        android:id="@+id/tv_new_order"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="12dp"
+        android:layout_toRightOf="@+id/img_new_order"
+        android:text="实时新订单"
+        android:textSize="17sp" />
 
     <TextView
         android:id="@+id/tv_home_refresh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="12sp"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:text="点击刷新工单"
-        android:layout_marginBottom="10dp"
+        android:layout_alignParentBottom="true"
         android:layout_marginRight="30dp"
+        android:layout_marginBottom="15dp"
+        android:text="点击刷新工单"
         android:textColor="#8A8A8A"
-        />
+        android:textSize="12sp" />
 
-       <ImageView
-           android:id="@+id/img_home_refresh"
+    <ImageView
+        android:id="@+id/img_home_refresh"
         android:layout_width="18dp"
         android:layout_height="14dp"
-        android:src="@mipmap/icon_home_refresh"
-        android:layout_toLeftOf="@+id/tv_home_refresh"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp"
         android:layout_marginRight="2dp"
+        android:layout_marginBottom="15dp"
+        android:layout_toLeftOf="@+id/tv_home_refresh"
+        android:src="@mipmap/icon_home_refresh"
 
 
-    />
-
+        />
 
 
 </RelativeLayout>

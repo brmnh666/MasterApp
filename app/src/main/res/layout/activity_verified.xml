@@ -60,6 +60,7 @@
                         android:background="#E4E4E4" />
 
                     <LinearLayout
+                        android:visibility="gone"
                         android:id="@+id/bank_card_ll"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -95,6 +96,7 @@
                             android:src="@mipmap/right_arrow" />
                     </LinearLayout>
                     <View
+                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginLeft="18dp"
