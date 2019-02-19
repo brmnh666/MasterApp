@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.Add_Accessories_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.CompleteWorkOrderActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Return_Sheet_Adapter;
 import com.ying.administrator.masterappdemo.common.DefineView;
@@ -60,7 +59,6 @@ public class Returnedparts_Fragement extends BaseFragment implements DefineView 
                         startActivity(new Intent(getActivity(), CompleteWorkOrderActivity.class));
                         break;
                     case R.id.tv_returnedparts_apply_parts:
-                        startActivity(new Intent(getActivity(), Add_Accessories_Activity.class));
                         break;
                 }
             }

@@ -20,8 +20,10 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.google.gson.Gson;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.ying.administrator.masterappdemo.R;
@@ -55,9 +57,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.RequestBody;
+
 
 /*预接单详情页*/
 public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, PendingOrderModel> implements  PendingOrderContract.View {
+    private String orderID;//工单号
     private TextView tv_actionbar_title; //title标题
     private RadioGroup rg_order_details_for_remote_fee;
 
@@ -95,8 +100,10 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     private List<Accessory> mList;   //存放返回的list
     private Map<Integer,FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> map; //用于存放dialog里选择的配件
     private List<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> fAcList;// 用于存放预接单页面显示的数据
-    private Accessory mAccessory;
+    private FAccessory fAccessory;
+    private FAccessory.OrderAccessoryStrBean orderAccessoryStrBean;
     private FAccessory.OrderAccessoryStrBean.OrderAccessoryBean mfAccessory;
+    private Accessory mAccessory;
     private RecyclerView recyclerView_custom_add_accessory;
     private RecyclerView recyclerView_Pre_add_accessories; //预接单的  RecyclerView
     private Pre_order_Add_Ac_Adapter mPre_order_add_ac_adapter; //预接单 的adater
@@ -188,7 +195,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
          vibrator = (Vibrator)this.getSystemService(this.VIBRATOR_SERVICE);
         //接收传来的OrderID
-        String orderID = getIntent().getStringExtra("OrderID");
+        orderID = getIntent().getStringExtra("OrderID");
         mPresenter.GetOrderInfo(orderID);
 
         mPresenter.GetFactoryAccessory();
@@ -420,7 +427,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                                                 mfAccessory=new FAccessory.OrderAccessoryStrBean.OrderAccessoryBean();
                                                 mfAccessory.setFAccessoryName(mAccessory.getAccessoryName());
                                                 mfAccessory.setQuantity(String.valueOf(value));
-                                                mfAccessory.setDiscountPrice(mAccessory.getAccessoryPrice()*value);
+                                                mfAccessory.setDiscountPrice(mAccessory.getAccessoryPrice());
                                                // Log.d("getQuantitys的个数00",mfAccessory.getQuantity());
                                                 mList.get(position).setCheckedcount(value);
                                                 map.put(position,mfAccessory);
@@ -679,19 +686,45 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                              integrator.setBarcodeImageEnabled(true);
                              integrator.initiateScan();
                              break;
+                             /*提交工单*/
+                             case R.id.tv_detail_submit:
+                                 String selecttime = tv_select_time.getText().toString();
+                                 if (selecttime==""){//未选择时间
+                                     Toast.makeText(getApplication(),"请选择时间",Toast.LENGTH_SHORT).show();
+                                     return;
 
-                          /*提交*/
-                case R.id.tv_detail_submit:
+                                 }else {
+                                     StringBuilder stringBuilder=new StringBuilder(selecttime);
+                                     String time =""+stringBuilder.replace(10, 11, "T"); //增加"T"
 
-                    break;
+                                     orderAccessoryStrBean=new FAccessory.OrderAccessoryStrBean();
+                                     orderAccessoryStrBean.setOrderAccessory(fAcList);
+
+                                     fAccessory=new FAccessory();
+                                     fAccessory.setOrderID(orderID);
+                                     fAccessory.setAccessorySequency("0");
+                                     fAccessory.setOrderAccessoryStr(orderAccessoryStrBean);
+
+                                     Gson gson=new Gson();
+                                     String s = gson.toJson(fAccessory);
+                                     Log.d("添加的配件有",s);
+
+                                     RequestBody body=RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),s);
+                                     mPresenter.AddOrderAccessory(body);
+                                     mPresenter.UpdateSendOrderUpdateTime(orderID,time);
+                                     Log.d("选择的时间是", time);
 
 
 
 
 
 
-                    default:
-                        break;
+                                 }
+
+
+                                 break;
+                         default:
+                          break;
 
             }
         }
@@ -746,7 +779,22 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
     }
 
+    @Override
+    public void UpdateSendOrderUpdateTime(BaseResult<Data> baseResult) {
+        switch (baseResult.getStatusCode()){
+            case 200:
+                if (baseResult.getData().isItem1()){//请求成功
 
+                    Order_details_Activity.this.finish();
+
+                }
+                break;
+            default:
+                break;
+
+
+        }
+    }
 
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -771,14 +819,14 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
         } else if (list != null && list2 == null)//有配件没服务
         {
             for (int i = 0; i < list.size(); i++) {
-                acprice = acprice + list.get(i).getDiscountPrice();
+                acprice = acprice + list.get(i).getDiscountPrice()*Double.parseDouble(list.get(i).getQuantity());
             }
             return acprice;
         }
         else if (list != null && list2 != null)//都有
         {
             for (int i = 0; i < list.size(); i++) {
-                acprice = acprice + list.get(i).getDiscountPrice();
+                acprice = acprice + list.get(i).getDiscountPrice()*Double.parseDouble(list.get(i).getQuantity());
             }
             for (int i = 0; i < list2.size(); i++) {
                 servicprice = servicprice + list2.get(i).getDiscountPrice();

@@ -28,6 +28,10 @@ public interface PendingOrderContract {
 
         //提交需要的配件信息
         Observable<BaseResult<String>> AddOrderAccessory(RequestBody json);
+
+
+        //更新时间
+        Observable<BaseResult<Data>> UpdateSendOrderUpdateTime(String OrderID,String UpdateDate);
     }
 
     interface View extends BaseView{
@@ -42,6 +46,9 @@ public interface PendingOrderContract {
 
         //提交需要的配件信息
         void AddOrderAccessory(BaseResult<String> baseResult);
+
+        //更新时间
+        void UpdateSendOrderUpdateTime(BaseResult<Data> baseResult);
     }
 
     abstract  class Presenter extends BasePresenter<View,Model>{
@@ -56,6 +63,9 @@ public interface PendingOrderContract {
 
         //提交需要的配件信息
         public abstract void AddOrderAccessory(RequestBody json);
+
+        //更新时间
+        public abstract void UpdateSendOrderUpdateTime(String OrderID,String UpdateDate);
     }
 
 

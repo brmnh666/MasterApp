@@ -17,6 +17,7 @@ public class Pending_Appointment_Adapter extends BaseQuickAdapter<WorkOrder.Data
 
     @Override
     protected void convert(BaseViewHolder helper, WorkOrder.DataBean item) {
+
         helper.setText(R.id.tv_reason_pending_appointment,item.getMemo());//原因
      helper.setText(R.id.tv_address_pending_appointment,item.getAddress()); //地址
         helper.setText(R.id.tv_pending_appointment_job_number,"工单号:"+item.getOrderID());

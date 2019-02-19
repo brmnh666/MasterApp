@@ -64,6 +64,7 @@
         android:layout_marginTop="15dp"
         />
 
+
     <TextView
         android:id="@+id/tv_reason_in_service"
         android:layout_width="wrap_content"

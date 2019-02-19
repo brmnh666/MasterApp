@@ -324,10 +324,6 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
             });
 
 
-
-
-
-
     }
 
     public void bindData() {

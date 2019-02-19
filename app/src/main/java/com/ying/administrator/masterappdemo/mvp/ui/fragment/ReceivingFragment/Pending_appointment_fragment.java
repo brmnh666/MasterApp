@@ -57,6 +57,12 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
         return fragment;
     }
 
+   /* @Override
+    public void onResume() {
+        super.onResume();
+        mRefreshLayout.autoRefresh();  //返回的时候刷新页面
+    }*/
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
        if (view==null){
@@ -67,6 +73,7 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
            initListener();
 
        }
+
        return view;
     }
 

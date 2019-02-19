@@ -173,4 +173,13 @@ Observable<BaseResult<String>> UploadImg(@Body RequestBody json);
     Observable<BaseResult<String>> AddOrderAccessory(@Body RequestBody json);
 
 
+
+
+
+@FormUrlEncoded
+@POST("Order/UpdateSendOrderUpdateTime")
+
+
+    Observable<BaseResult<Data>> UpdateSendOrderUpdateTime(@Field("OrderID") String OrderID,
+                                                             @Field("UpdateDate") String UpdateDate);
 }

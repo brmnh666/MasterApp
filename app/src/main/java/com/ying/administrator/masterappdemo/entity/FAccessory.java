@@ -84,8 +84,8 @@ public class FAccessory implements Serializable {
                 return Quantity;
             }
 
-            public void setQuantity(String Quantity) {
-                this.Quantity = Quantity;
+            public void setQuantity(String quantity) {
+                Quantity = quantity;
             }
 
             public String getPrice() {

@@ -45,5 +45,12 @@ public class PendingOrderModel implements PendingOrderContract.Model {
                 .subscribeOn(Schedulers.io());
     }
 
+     @Override
+     public Observable<BaseResult<Data>> UpdateSendOrderUpdateTime(String OrderID, String UpdateDate) {
+         return ApiRetrofit.getDefault().UpdateSendOrderUpdateTime(OrderID,UpdateDate)
+         .observeOn(AndroidSchedulers.mainThread())
+         .subscribeOn(Schedulers.io());
+     }
+
 
 }

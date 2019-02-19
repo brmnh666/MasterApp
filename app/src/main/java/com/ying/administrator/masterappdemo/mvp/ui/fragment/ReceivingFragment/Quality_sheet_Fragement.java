@@ -13,10 +13,8 @@ import android.view.ViewGroup;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ying.administrator.masterappdemo.common.DefineView;
 import com.ying.administrator.masterappdemo.entity.GrabSheet_Entity;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.Add_Accessories_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.CompleteWorkOrderActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Qulity_Adapter;
-import com.ying.administrator.masterappdemo.mvp.ui.adapter.Return_Sheet_Adapter;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseFragment;
 import com.ying.administrator.masterappdemo.R;
 
@@ -61,7 +59,6 @@ public class Quality_sheet_Fragement extends BaseFragment implements DefineView 
                         startActivity(new Intent(getActivity(), CompleteWorkOrderActivity.class));
                         break;
                     case R.id.tv_quality_apply_parts:
-                        startActivity(new Intent(getActivity(), Add_Accessories_Activity.class));
                         break;
                 }
             }
