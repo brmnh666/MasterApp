@@ -316,6 +316,7 @@
                 android:orientation="vertical"
                 android:gravity="center">
                 <ImageView
+                    android:id="@+id/iv_bar_code"
                     android:layout_width="69dp"
                     android:layout_height="69dp"
                     android:src="@mipmap/upload" />
@@ -335,6 +336,7 @@
                 android:orientation="vertical"
                 android:gravity="center">
                 <ImageView
+                    android:id="@+id/iv_machine"
                     android:layout_width="69dp"
                     android:layout_height="69dp"
                     android:src="@mipmap/upload" />
@@ -354,6 +356,7 @@
                 android:orientation="vertical"
                 android:gravity="center">
                 <ImageView
+                    android:id="@+id/iv_fault_location"
                     android:layout_width="69dp"
                     android:layout_height="69dp"
                     android:src="@mipmap/upload" />
@@ -373,6 +376,7 @@
                 android:orientation="vertical"
                 android:gravity="center">
                 <ImageView
+                    android:id="@+id/iv_new_and_old_accessories"
                     android:layout_width="69dp"
                     android:layout_height="69dp"
                     android:src="@mipmap/upload" />
