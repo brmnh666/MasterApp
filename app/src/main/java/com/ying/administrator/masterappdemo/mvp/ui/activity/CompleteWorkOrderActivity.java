@@ -14,6 +14,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -34,6 +35,10 @@ import com.google.zxing.integration.android.IntentResult;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.WorkOrder;
+import com.ying.administrator.masterappdemo.mvp.contract.CompleteWorkOrderContract;
+import com.ying.administrator.masterappdemo.mvp.model.CompleteWorkOrderModel;
+import com.ying.administrator.masterappdemo.mvp.presenter.CompleteWorkOrderPresenter;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.widget.CustomDialog;
 import com.ying.administrator.masterappdemo.widget.ShareDialog;
@@ -46,7 +51,8 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
-public class CompleteWorkOrderActivity extends BaseActivity {
+public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPresenter, CompleteWorkOrderModel> implements CompleteWorkOrderContract.View {
+    private String orderID;
     private LinearLayout ll_return;
     private TextView tv_actionbar_title;
     private ImageView img_actionbar_message;
@@ -56,6 +62,14 @@ public class CompleteWorkOrderActivity extends BaseActivity {
     private ImageView iv_fault_location;
     private ImageView iv_new_and_old_accessories;
 
+    /*工单详情*/
+    private TextView tv_order_time;//接单时间
+    private TextView tv_work_order_number;//工单编号
+    private TextView tv_reason_pending_appointment;//原因
+    private TextView tv_service;//维修或安装
+    private TextView tv_service_goods;//产品名称
+    private TextView tv_service_address;//服务地址
+    private WorkOrder.DataBean data=new WorkOrder.DataBean();
 
     private View popupWindow_view;
     private String FilePath;
@@ -87,10 +101,8 @@ public class CompleteWorkOrderActivity extends BaseActivity {
         ll_return=findViewById(R.id.ll_return);
         tv_actionbar_title=findViewById(R.id.tv_actionbar_title);
         img_actionbar_message=findViewById(R.id.img_actionbar_message);
-
         tv_actionbar_title.setText("完成工单");
         img_actionbar_message.setVisibility(View.INVISIBLE);
-
         ll_view_example = findViewById(R.id.ll_view_example);
         iv_bar_code = findViewById(R.id.iv_bar_code);
         iv_machine = findViewById(R.id.iv_machine);
@@ -98,6 +110,17 @@ public class CompleteWorkOrderActivity extends BaseActivity {
         iv_new_and_old_accessories = findViewById(R.id.iv_new_and_old_accessories);
         ll_scan = findViewById(R.id.ll_scan);
         et_single_number = findViewById(R.id.et_single_number);
+        tv_order_time=findViewById(R.id.tv_order_time);
+        tv_work_order_number=findViewById(R.id.tv_work_order_number);
+        tv_reason_pending_appointment=findViewById(R.id.tv_reason_pending_appointment);
+        tv_service=findViewById(R.id.tv_service);
+        tv_service_goods=findViewById(R.id.tv_service_goods);
+        tv_service_address=findViewById(R.id.tv_service_address);
+
+        //接收传进来的工单id
+        orderID = getIntent().getStringExtra("OrderID");
+
+        mPresenter.GetOrderInfo(orderID);
 
     }
 
@@ -110,6 +133,37 @@ public class CompleteWorkOrderActivity extends BaseActivity {
         iv_fault_location.setOnClickListener(new CustomOnclickLister());
         iv_new_and_old_accessories.setOnClickListener(new CustomOnclickLister());
         ll_scan.setOnClickListener(new CustomOnclickLister());
+    }
+
+    @Override
+    public void GetOrderInfo(BaseResult<WorkOrder.DataBean> baseResult) {
+        switch (baseResult.getStatusCode()){
+
+            case 200:
+                data=baseResult.getData();
+                tv_work_order_number.setText(data.getOrderID());
+                tv_order_time.setText(data.getAudDate().replace("T"," ")); //将T替换为空格
+                tv_reason_pending_appointment.setText(data.getMemo());
+                tv_service_goods.setText(data.getCategoryName()+"/"+data.getBrandName()+"/"+data.getProductType());
+
+                if (data.getTypeID().equals("1")){//维修
+                    tv_service.setText("维修");
+                    tv_service.setBackgroundResource(R.color.color_custom_01);
+                }else {
+                    tv_service.setText("安装");
+                    tv_service.setBackgroundResource(R.color.color_custom_04);
+                }
+                tv_service_address.setText(data.getAddress());
+
+                break;
+
+            default:
+                Log.d("detail",baseResult.getData().toString());
+                //  data=null;
+                break;
+        }
+
+
     }
 
     public class CustomOnclickLister implements View.OnClickListener{

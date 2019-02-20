@@ -208,6 +208,9 @@
         <!--添加配件-->
         <!--完成工单-->
         <activity android:name=".mvp.ui.activity.CompleteWorkOrderActivity" android:theme="@style/AppTheme.NoActionBar"/>
+        <!--添加配件-->
+        <activity android:name=".mvp.ui.activity.Order_Add_Accessories_Activity" android:theme="@style/AppTheme.NoActionBar" />
+
     </application>
 
 

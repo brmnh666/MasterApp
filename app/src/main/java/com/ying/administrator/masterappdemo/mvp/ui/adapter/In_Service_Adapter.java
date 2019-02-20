@@ -30,7 +30,8 @@ public class In_Service_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,Base
         helper.setText(R.id.tv_in_service_job_number,"工单号:"+item.getOrderID());
 
 
-
+      helper.addOnClickListener(R.id.tv_in_service_finish);//完成工单
+      helper.addOnClickListener(R.id.tv_in_service_apply_parts);//申请配件
     }
 
 

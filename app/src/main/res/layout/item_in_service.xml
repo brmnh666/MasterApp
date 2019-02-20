@@ -131,44 +131,7 @@
         android:text="提示:服务过程中需要申请配件请点击申请配件"
         android:layout_below="@+id/tv_address_in_service"
         />
-     <!--   <TextView
-            android:id="@+id/tv_pending_receipt_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="工单将于59分39秒后取消,请及时联系客户"
-            android:textSize="12sp"
-            android:layout_below="@+id/tv_address_pending_receipt"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="15sp"
 
-            />-->
-      <!--  <Button
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:text="电话"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
-            />-->
-
-<!--    <ImageView
-        android:id="@+id/img_pending_appointment_phone"
-        android:layout_width="52dp"
-        android:layout_height="52dp"
-        android:src="@mipmap/icon_telphone"
-        android:layout_marginTop="64dp"
-        android:layout_marginRight="16dp"
-        android:layout_alignParentRight="true"/>
-
-    <TextView
-        android:id="@+id/tv_pending_appointment_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:text="预约"
-        android:layout_below="@+id/img_pending_appointment_phone"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="22dp"
-        />-->
 
     <View
         android:id="@+id/view_point"
@@ -178,20 +141,6 @@
         android:layout_below="@+id/tv_hint_in_service"
         android:layout_marginTop="10dp"
         ></View>
-      <!--  <TextView
-            android:id="@+id/tv_pending_appointment_success"
-            android:layout_below="@+id/view_point"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="预约成功"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="79dp"
-            android:layout_marginBottom="11dp"
-            android:background="@drawable/tv_recevied"
-            android:layout_marginTop="10dp"
-            android:padding="5dp"
-            android:textSize="16sp"
-                 />-->
 
     <TextView
         android:id="@+id/tv_in_service_apply_parts"

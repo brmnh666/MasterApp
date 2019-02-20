@@ -1,6 +1,5 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -31,9 +30,9 @@ import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Accessory;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.FAccessory;
 import com.ying.administrator.masterappdemo.entity.FService;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
-import com.ying.administrator.masterappdemo.entity.FAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactorySeviceData;
 import com.ying.administrator.masterappdemo.entity.Service;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
@@ -61,7 +60,7 @@ import okhttp3.RequestBody;
 
 
 /*预接单详情页*/
-public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, PendingOrderModel> implements  PendingOrderContract.View {
+public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPresenter, PendingOrderModel> implements  PendingOrderContract.View {
     private String orderID;//工单号
     private TextView tv_actionbar_title; //title标题
     private RadioGroup rg_order_details_for_remote_fee;
@@ -73,8 +72,6 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     private TextView tv_detail_submit; //提交
 
     /*订单属性*/
-    private LinearLayout rl_select_time; //选择时间
-    private TextView tv_select_time; //显示时间
     private TextView tv_order_details_receiving_time; //工单接收时间
     private TextView tv_order_details_orderid; //工单号
     private TextView tv_order_details_reason;//故障原因
@@ -82,6 +79,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     private TextView tv_order_details_status; //安装维修状态
     private TextView tv_order_details_adress; //地址
     private TextView tv_total_price; // 配件和服务总价
+    private TextView tv_order_details_state;//订单状态
     /*订单属性*/
 
 
@@ -131,7 +129,6 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
        /*扫码*/
        /*震动*/
         Vibrator vibrator;
-          private double totalPrice; // 配件价格*数量+服务价格   fList_service+
 
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -148,7 +145,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
     @Override
     protected int setLayoutId() {
-        return R.layout.activity_order_details;
+        return R.layout.activity_add_accessories;
     }
 
     @Override
@@ -172,8 +169,6 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
         ll_Out_of_service_tv=findViewById(R.id.ll_Out_of_service_tv);
         ll_Out_of_service_img=findViewById(R.id.ll_Out_of_service_img);
         ll_return=findViewById(R.id.ll_return);
-        rl_select_time=findViewById(R.id.rl_select_time);
-        tv_select_time=findViewById(R.id.tv_select_time);
         tv_order_details_receiving_time=findViewById(R.id.tv_order_details_receiving_time);//接单时间
         tv_order_details_orderid=findViewById(R.id.tv_order_details_orderid);//工单号
         tv_order_details_reason=findViewById(R.id.tv_order_details_reason);//故障原因
@@ -192,7 +187,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
         tv_express_sweep_code=findViewById(R.id.tv_express_sweep_code);
         tv_total_price=findViewById(R.id.tv_total_price);
         tv_detail_submit=findViewById(R.id.tv_detail_submit);
-
+        tv_order_details_state=findViewById(R.id.tv_order_details_state);
          vibrator = (Vibrator)this.getSystemService(this.VIBRATOR_SERVICE);
         //接收传来的OrderID
         orderID = getIntent().getStringExtra("OrderID");
@@ -205,7 +200,6 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     @Override
     protected void setListener() {
         ll_return.setOnClickListener(new CustomOnclickListnaer());
-        rl_select_time.setOnClickListener(new CustomOnclickListnaer());
         tv_order_details_add_accessories.setOnClickListener(new CustomOnclickListnaer());
         tv_order_detail_add_service.setOnClickListener(new CustomOnclickListnaer());
         img_express_sweep_code.setOnClickListener(new CustomOnclickListnaer());
@@ -259,10 +253,8 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
 
     public void initValidata() {
-        tv_actionbar_title.setText("预接单");
-        rl_select_time.setOnClickListener(new CustomOnclickListnaer());
-        // tv_select_time.setOnClickListener(new CustomOnclickListnaer());
-        //tv_total_price.setText("服务金额:¥"+gettotalPrice(fAcList));
+        tv_actionbar_title.setText("服务中");
+        tv_order_details_state.setText("服 务 中");
 
 
     }
@@ -293,7 +285,6 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
                 default:
                     Log.d("detail",baseResult.getData().toString());
-                  //  data=null;
                     break;
         }
 
@@ -307,40 +298,17 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
         public void onClick(View v) {
             switch (v.getId()){
                 case R.id.ll_return:
-                    Intent intent = new Intent();
+                   /* Intent intent = new Intent();
                     intent.putExtra("result", "pending_appointment");  //按了返回键返回已接待预约
                     //设置返回数据
-                    Order_details_Activity.this.setResult(RESULT_OK,intent);
-                    Order_details_Activity.this.finish();
+                    Order_Add_Accessories_Activity.this.setResult(RESULT_OK,intent);*/
+                    Order_Add_Accessories_Activity.this.finish();
                     break;
-                case R.id.rl_select_time:
-                    Date date = new Date();
-                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm");
-                    String format1 = format.format(date);
 
-                    TimeSelector timeSelector = new TimeSelector(Order_details_Activity.this, new TimeSelector.ResultHandler() {
-                        @Override
-                        public void handle(String time) {
-                            tv_select_time.setText(time);
-
-                        }
-                    }, format1, "2022-1-1 24:00");
-
-                    timeSelector.setTitle("请选择上门时间");
-                    timeSelector.show();
-
-                    break;
 
 
                 case R.id.tv_order_details_add_accessories: //添加配件
 
-                    /*if (!map.isEmpty()){
-                       fAcList.clear();
-                       map.clear();
-                    }
-                          */
-                   // tv_order_details_add_accessories.setText("重新添加");
-                    //startActivity(new Intent(Order_details_Activity.this,AddAccessoryActivity.class));
 
                   Log.d("mlistmlist", String.valueOf(mList.size()));
                     customDialog_add_accessory.getWindow().setBackgroundDrawableResource(R.color.transparent);
@@ -651,7 +619,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
                          case R.id.img_express_sweep_code:
                          case R.id.tv_express_sweep_code:
-                             IntentIntegrator integrator = new IntentIntegrator(Order_details_Activity.this);
+                             IntentIntegrator integrator = new IntentIntegrator(Order_Add_Accessories_Activity.this);
                              // 设置要扫描的条码类型，ONE_D_CODE_TYPES：一维码，QR_CODE_TYPES-二维码
                              integrator.setDesiredBarcodeFormats(IntentIntegrator.ONE_D_CODE_TYPES);
                              integrator.setCaptureActivity(ScanActivity.class); //设置打开摄像头的Activity
@@ -663,13 +631,8 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                              break;
                              /*提交工单*/
                              case R.id.tv_detail_submit:
-                                 String selecttime = tv_select_time.getText().toString();
-                                 if (selecttime==""){//未选择时间
-                                     Toast.makeText(getApplication(),"请选择时间",Toast.LENGTH_SHORT).show();
-                                     return;
 
-                                 }else {
-                                     StringBuilder stringBuilder=new StringBuilder(selecttime);
+                                  /*   StringBuilder stringBuilder=new StringBuilder(selecttime);
                                      String time =""+stringBuilder.replace(10, 11, "T"); //增加"T"
 
                                      orderAccessoryStrBean=new FAccessory.OrderAccessoryStrBean();
@@ -689,12 +652,12 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                                      mPresenter.UpdateSendOrderUpdateTime(orderID,time);
                                      Log.d("选择的时间是", time);
 
+*/
 
 
 
 
 
-                                 }
 
 
                                  break;
@@ -712,7 +675,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                  switch (baseResult.getStatusCode()){
                      case 200:
                           mList.clear();
-                         mList.addAll(baseResult.getData().getItem1());
+                          mList.addAll(baseResult.getData().getItem1());
                          Log.d("mlist2", String.valueOf(mList.size()));
                          break;
                        default:
@@ -756,7 +719,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
     @Override
     public void UpdateSendOrderUpdateTime(BaseResult<Data> baseResult) {
-        switch (baseResult.getStatusCode()){
+       /* switch (baseResult.getStatusCode()){
             case 200:
                 if (baseResult.getData().isItem1()){//请求成功
                     //数据是使用Intent返回
@@ -764,15 +727,15 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                     //把返回数据存入Intent
                     intent.putExtra("result", "in_service");  //请求成功进入服务界面
                     //设置返回数据
-                    Order_details_Activity.this.setResult(RESULT_OK,intent);
-                    Order_details_Activity.this.finish();
+                    Order_Add_Accessories_Activity.this.setResult(RESULT_OK,intent);
+                    Order_Add_Accessories_Activity.this.finish();
                 }
                 break;
             default:
                 break;
 
 
-        }
+        }*/
     }
 
 
@@ -824,16 +787,15 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-        /*  两秒之内再按一下退出*/
-        //判断用户是否点击了返回键
+      /*  //判断用户是否点击了返回键
         if (keyCode==KeyEvent.KEYCODE_BACK){
             Intent intent = new Intent();
             intent.putExtra("result", "pending_appointment");  //按了返回键返回已接待预约
             //设置返回数据
-            Order_details_Activity.this.setResult(RESULT_OK,intent);
-            Order_details_Activity.this.finish();
+            Order_Add_Accessories_Activity.this.setResult(RESULT_OK,intent);
+            Order_Add_Accessories_Activity.this.finish();
             return true;
-        }
+        }*/
 
         return super.onKeyDown(keyCode, event);
     }

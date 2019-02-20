@@ -25,6 +25,7 @@
 
         />
     <ImageView
+        android:id="@+id/img_home_customer_service"
         android:layout_width="22dp"
         android:layout_height="23dp"
         android:layout_alignParentRight="true"

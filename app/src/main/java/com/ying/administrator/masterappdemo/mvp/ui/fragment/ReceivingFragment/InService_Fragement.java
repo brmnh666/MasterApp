@@ -1,5 +1,6 @@
 package com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -20,6 +22,9 @@ import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.GetOrderListForMeContract;
 import com.ying.administrator.masterappdemo.mvp.model.GetOrderListForMeModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.GetOrderListForMePresenter;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.CompleteWorkOrderActivity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_Add_Accessories_Activity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_details_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.In_Service_Adapter;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseFragment;
 import com.ying.administrator.masterappdemo.R;
@@ -84,6 +89,27 @@ import java.util.ArrayList;
                 mPresenter.GetOrderInfoListForMe("4", Integer.toString(pageIndex), "4",userID);
                 in_service_adapter.notifyDataSetChanged();
                 refreshlayout.finishLoadmore();
+            }
+        });
+
+        in_service_adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                switch (view.getId()){
+                    case R.id.tv_in_service_finish://完成服务
+                        Intent intent=new Intent(getActivity(),CompleteWorkOrderActivity.class);
+                        //传递工单号
+                        intent.putExtra("OrderID",((WorkOrder.DataBean)adapter.getItem(position)).getOrderID());
+                        startActivity(intent);
+                        break;
+                    case R.id.tv_in_service_apply_parts: //申请配件
+                        startActivity(new Intent(getActivity(), Order_Add_Accessories_Activity.class));
+                        break;
+                        default:
+                            break;
+
+                }
+
             }
         });
 

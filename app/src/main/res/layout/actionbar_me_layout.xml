@@ -6,17 +6,27 @@
 
     <ImageView
         android:id="@+id/img_me_message"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_margin="15dp"
+        android:layout_width="21dp"
+        android:layout_height="21dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="15dp"
         android:src="@mipmap/icon_me_message" />
-
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="消息"
+    android:textSize="10sp"
+    android:textColor="@color/white"
+    android:layout_marginLeft="24dp"
+    android:layout_below="@+id/img_me_message"/>
     <ImageView
         android:id="@+id/img_me_setting"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_alignParentRight="true"
-        android:layout_margin="15dp"
+        android:layout_marginRight="21dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
         android:src="@mipmap/icon_setting" />
 
     <ImageView

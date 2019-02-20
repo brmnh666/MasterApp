@@ -43,6 +43,7 @@ import com.ying.administrator.masterappdemo.mvp.ui.activity.Share_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Verified_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.GrabsheetAdapter;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseFragment;
+import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 import com.ying.administrator.masterappdemo.widget.CustomDialog;
 import com.ying.administrator.masterappdemo.widget.ShareDialog;
 
@@ -60,6 +61,8 @@ import pub.devrel.easypermissions.EasyPermissions;
 public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkOrdersModel> implements AllWorkOrdersContract.View, View.OnClickListener {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_SHOW_TEXT = "text";
+    @BindView(R.id.img_home_customer_service)
+    ImageView mImg_home_customer_service;
     @BindView(R.id.img_home_qr_code)
     ImageView mImgHomeQrCode;
     @BindView(R.id.actionbar_layout)
@@ -289,6 +292,8 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
         //点击刷新
         mTvHomeRefresh.setOnClickListener(this);
         mimg_home_refresh.setOnClickListener(this);
+        //客服
+        mImg_home_customer_service.setOnClickListener(this);
 
         /*下拉刷新*/
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
@@ -463,6 +468,26 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
                 break;
             case R.id.tv_home_location:
                 startActivityForResult(new Intent(mActivity,MainActivity.class),100);
+                break;
+            case R.id.img_home_customer_service://客服
+                final CommonDialog_Home dialog = new CommonDialog_Home(getActivity());
+                dialog.setMessage("是否拨打电话给客服")
+                        //.setImageResId(R.mipmap.ic_launcher)
+                        .setTitle("提示")
+                        .setSingle(false).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
+                    @Override
+                    public void onPositiveClick() {//拨打电话
+                        dialog.dismiss();
+                        call("tel:"+"18074208209");
+                    }
+
+                    @Override
+                    public void onNegtiveClick() {//取消
+                        dialog.dismiss();
+                       // Toast.makeText(MainActivity.this,"ssss",Toast.LENGTH_SHORT).show();
+                    }
+                }).show();
+
                 break;
             default:
                 break;
