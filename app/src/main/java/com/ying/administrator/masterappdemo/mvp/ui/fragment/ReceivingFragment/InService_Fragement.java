@@ -32,21 +32,20 @@ import java.util.ArrayList;
      private View view;
      private RecyclerView recyclerView;
      private In_Service_Adapter in_service_adapter;
-    // private ArrayList<GrabSheet_Entity> list;
-    private ArrayList<WorkOrder.DataBean> list;
-    private RefreshLayout mRefreshLayout;
-    private WorkOrder workOrder;
+     private ArrayList<WorkOrder.DataBean> list;
+     private RefreshLayout mRefreshLayout;
+     private WorkOrder workOrder;
      private String userID; //用户id
-    private int pageIndex = 1;  //默认当前页数为1
+     private int pageIndex = 1;  //默认当前页数为1
      @Nullable
      @Override
      public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
      if (view==null){
-     view=inflater.inflate(R.layout.fragment_order_receiving,container,false);
+       view=inflater.inflate(R.layout.fragment_order_receiving,container,false);
         SPUtils spUtils = SPUtils.getInstance("token");
         userID = spUtils.getString("userName"); //获取用户id
         initView();
-       initListener();
+        initListener();
     }
     return view;
     }
@@ -68,7 +67,6 @@ import java.util.ArrayList;
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-
                 pageIndex=1;
                 list.clear();
                 mPresenter.GetOrderInfoListForMe("4", Integer.toString(pageIndex), "4",userID);
@@ -83,7 +81,7 @@ import java.util.ArrayList;
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 pageIndex++; //页数加1
-                mPresenter.GetOrderInfoListForMe("2", Integer.toString(pageIndex), "4",userID);
+                mPresenter.GetOrderInfoListForMe("4", Integer.toString(pageIndex), "4",userID);
                 in_service_adapter.notifyDataSetChanged();
                 refreshlayout.finishLoadmore();
             }
@@ -98,7 +96,6 @@ import java.util.ArrayList;
                 workOrder = baseResult.getData();
                 list.addAll(workOrder.getData());
                 in_service_adapter.setNewData(list); //?
-
                 break;
             case 401:
                 ToastUtils.showShort(baseResult.getInfo());

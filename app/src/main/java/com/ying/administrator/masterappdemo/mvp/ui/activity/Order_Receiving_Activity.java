@@ -1,10 +1,12 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
@@ -163,6 +165,16 @@ public class Order_Receiving_Activity extends AppCompatActivity implements Defin
                 break;
 
         }
+        }
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        String result = data.getExtras().getString("result");//得到新Activity 关闭后返回的数据
+        Log.i("返回的结果为", result);
+        if (result.equals("in_service")){
+            receiving_viewpager.setCurrentItem(1); //跳转到服务中
+        }else if (result.equals("pending_appointment")){ //跳转到已接待预约
+            receiving_viewpager.setCurrentItem(0);
         }
     }
 }

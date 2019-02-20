@@ -53,8 +53,15 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginModel> impl
 
     @Override
     protected void initView() {
-        mEt_login_username.setText("18892621501");
-        mEt_login_password.setText("123");
+        SPUtils spUtils = SPUtils.getInstance("token");
+        String userName = spUtils.getString("userName");
+        String password = spUtils.getString("password");
+        if (userName!=null){
+            mEt_login_username.setText(userName);
+            mEt_login_password.setText(password);
+        }
+
+
     }
 
     @Override
@@ -111,7 +118,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginModel> impl
                 SPUtils spUtils = SPUtils.getInstance("token");
                 spUtils.put("adminToken", baseResult.getData());
                 spUtils.put("userName", userName);
-
+                spUtils.put("password",passWord);
                 //  Log.d("loginlogin",baseResult.getData());
 //                GetUserInfo getUserInfo=new GetUserInfo(userName,baseResult.getData(),"","");
 //                Gson gson=new Gson();

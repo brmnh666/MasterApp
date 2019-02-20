@@ -134,12 +134,12 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                 switch (view.getId()){
                     /*预约成功*/
                     case R.id.tv_pending_appointment_success:
-                      //  startActivity(new Intent(getActivity(), Order_details_Activity.class));
                         Intent intent=new Intent(getActivity(),Order_details_Activity.class);
                         //传递工单号
                         intent.putExtra("OrderID",((WorkOrder.DataBean)adapter.getItem(position)).getOrderID());
-                        startActivity(intent);
 
+                        //startActivity(intent);
+                           startActivityForResult(intent,1);
                         break;
                     case R.id.tv_pending_appointment_failure:
 
@@ -295,4 +295,6 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
     @Override
     public void hideProgress() {
     }
+
+
 }

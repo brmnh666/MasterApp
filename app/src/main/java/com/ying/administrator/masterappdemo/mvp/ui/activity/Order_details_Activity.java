@@ -308,6 +308,10 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
         public void onClick(View v) {
             switch (v.getId()){
                 case R.id.ll_return:
+                    Intent intent = new Intent();
+                    intent.putExtra("result", "pending_appointment");  //按了返回键返回已接待预约
+                    //设置返回数据
+                    Order_details_Activity.this.setResult(RESULT_OK,intent);
                     Order_details_Activity.this.finish();
                     break;
                 case R.id.rl_select_time:
@@ -341,20 +345,6 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
                   Log.d("mlistmlist", String.valueOf(mList.size()));
                     customDialog_add_accessory.getWindow().setBackgroundDrawableResource(R.color.transparent);
-                    customDialog_add_accessory.setOnKeyListener(new DialogInterface.OnKeyListener() {
-                        @Override
-                        public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                       /*   if (keyCode==KeyEvent.KEYCODE_BACK){
-                              return false;
-                          }*/
-
-                       if (keyCode==KeyEvent.KEYCODE_BACK){
-                           return true;
-                        }
-                          return false;
-                        }
-                    });
-
                     customDialog_add_accessory.show();
                     // 设置宽度为屏宽、靠近屏幕底部。
                        Window window=customDialog_add_accessory.getWindow();
@@ -436,8 +426,6 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
 
 
-                                           //Log.d("getQuantitys的个数",mfAccessory.getQuantity());
-                                           //adderView.setValue(Integer.parseInt(mfAccessory.getQuantity()));
 
                                     }else {
                                         //viewadd.setVisibility(View.INVISIBLE); //数量选择器消失
@@ -534,22 +522,10 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                     break;
                     /*添加服务*/
                      case R.id.tv_order_detail_add_service:
-                       /*  if (!map_service.isEmpty()){
-                             fList_service.clear();
-                             map_service.clear();
-                         }*/
+
 
                          customDialog_add_service.getWindow().setBackgroundDrawableResource(R.color.transparent);
-                            //选择服务的时候禁止 返回
-                         customDialog_add_service.setOnKeyListener(new DialogInterface.OnKeyListener() {
-                             @Override
-                             public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                             if (keyCode==KeyEvent.KEYCODE_BACK){
-                              return true;
-                              }
-                                 return false;
-                             }
-                         });
+
                          customDialog_add_service.show();
 
                          // 设置宽度为屏宽、靠近屏幕底部。
@@ -784,9 +760,13 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
         switch (baseResult.getStatusCode()){
             case 200:
                 if (baseResult.getData().isItem1()){//请求成功
-
+                    //数据是使用Intent返回
+                    Intent intent = new Intent();
+                    //把返回数据存入Intent
+                    intent.putExtra("result", "in_service");  //请求成功进入服务界面
+                    //设置返回数据
+                    Order_details_Activity.this.setResult(RESULT_OK,intent);
                     Order_details_Activity.this.finish();
-
                 }
                 break;
             default:
@@ -839,5 +819,23 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
         }
 
 
+    }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        /*  两秒之内再按一下退出*/
+        //判断用户是否点击了返回键
+        if (keyCode==KeyEvent.KEYCODE_BACK){
+            Intent intent = new Intent();
+            intent.putExtra("result", "pending_appointment");  //按了返回键返回已接待预约
+            //设置返回数据
+            Order_details_Activity.this.setResult(RESULT_OK,intent);
+            Order_details_Activity.this.finish();
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
     }
 }
