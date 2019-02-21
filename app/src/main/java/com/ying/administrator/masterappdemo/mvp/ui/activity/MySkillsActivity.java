@@ -1,5 +1,6 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,10 +11,16 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.blankj.utilcode.util.ToastUtils;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
+import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.Category;
+import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.MySkills;
+import com.ying.administrator.masterappdemo.mvp.contract.AddSkillsContract;
+import com.ying.administrator.masterappdemo.mvp.model.AddSkillsModel;
+import com.ying.administrator.masterappdemo.mvp.presenter.AddSkillsPresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.MySkillAdapter;
 
 import java.util.ArrayList;
@@ -22,7 +29,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MySkillsActivity extends BaseActivity {
+public class MySkillsActivity extends BaseActivity<AddSkillsPresenter, AddSkillsModel> implements View.OnClickListener, AddSkillsContract.View {
     @BindView(R.id.img_actionbar_return)
     ImageView mImgActionbarReturn;
     @BindView(R.id.tv_actionbar_return)
@@ -44,6 +51,9 @@ public class MySkillsActivity extends BaseActivity {
 
     private MySkillAdapter mySkillAdapter;
     private List<MySkills> mySkillsList=new ArrayList<>();
+    private List<Category> popularList;
+    private List<Category> subList;
+    private String skills;
 
 //    @Override
 //    protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,35 +70,19 @@ public class MySkillsActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        for(int i=0;i<10;i++){
-            mySkillsList.add(new MySkills());
-        }
-        mySkillAdapter=new MySkillAdapter(R.layout.item_kills,mySkillsList);
-        mRvKills.setLayoutManager(new LinearLayoutManager(mActivity));
-        mRvKills.setAdapter(mySkillAdapter);
-//        mySkillAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-//            @Override
-//            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-//                switch (view.getId()){
-//                    case R.id.iv_drop_down:
-//
-//                        break;
-//                }
-//            }
-//        });
+        mPresenter.GetFactoryCategory();
     }
-
     @Override
     protected void initView() {
         tv_actionbar_title = findViewById(R.id.tv_actionbar_title);
         ll_return = findViewById(R.id.ll_return);
         tv_actionbar_title.setText("我的技能");
-        ll_return.setOnClickListener(new CustomLister());
     }
 
     @Override
     protected void setListener() {
-
+        ll_return.setOnClickListener(this);
+        mBtnSkill.setOnClickListener(this);
     }
 
     @Override
@@ -98,14 +92,66 @@ public class MySkillsActivity extends BaseActivity {
         ButterKnife.bind(this);
     }
 
-    public class CustomLister implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.ll_return:
-                    MySkillsActivity.this.finish();
-                    break;
-            }
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.ll_return:
+                finish();
+                break;
+            case R.id.btn_skill:
+                skills ="";
+                for (int i = 0; i < mySkillAdapter.getData().size(); i++) {
+                    if (mySkillAdapter.getData().get(i).isSelected()){
+                        skills+=mySkillAdapter.getData().get(i).getCategory().getFCategoryName()+"/";
+                    }
+                }
+                if (skills.contains("/")){
+                    skills=skills.substring(0,skills.lastIndexOf("/"));
+                }
+                Intent intent=new Intent();
+                intent.putExtra("skills",skills);
+                setResult(1000,intent);
+                finish();
+                break;
         }
     }
+
+    @Override
+    public void GetFactoryCategory(BaseResult<Data<List<Category>>> baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                Data<List<Category>> data = baseResult.getData();
+                if (data.isItem1()) {
+                    popularList = data.getItem2();
+                    if (popularList.size() == 0) {
+                        ToastUtils.showShort("无分类，请联系管理员添加！");
+                    } else {
+                        for (int i = 0; i < popularList.size(); i++) {
+                            if ("999".equals(popularList.get(i).getParentID())){
+                                mySkillsList.add(new MySkills(false,popularList.get(i),popularList));
+                            }
+                        }
+                        for (int i = 0; i < mySkillsList.size(); i++) {
+                            subList=new ArrayList<>();
+                            for (int j = 0; j < popularList.size(); j++) {
+                                if (mySkillsList.get(i).getCategory().getId().equals(popularList.get(j).getParentID())){
+                                    subList.add(popularList.get(j));
+                                }
+                            }
+                            mySkillsList.get(i).setCategoryArrayList(subList);
+                        }
+                        mySkillAdapter=new MySkillAdapter(R.layout.item_kills,mySkillsList);
+                        mRvKills.setLayoutManager(new LinearLayoutManager(mActivity));
+                        mRvKills.setAdapter(mySkillAdapter);
+                    }
+                } else {
+                    ToastUtils.showShort("获取分类失败！");
+                }
+                break;
+            case 401:
+//                ToastUtils.showShort(baseResult.getData());
+                break;
+        }
+    }
+
 }

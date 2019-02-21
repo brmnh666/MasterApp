@@ -117,15 +117,13 @@
                             android:textColor="@color/color_black"
                             android:textSize="16sp" />
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1" />
-
                         <EditText
                             android:id="@+id/actual_name_et"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:padding="@dimen/dp_10"
+                            android:layout_weight="1"
+                            android:maxLength="10"
                             android:background="@null"
                             android:gravity="right"
                             android:hint="请输入真实姓名否则无法提现"
@@ -153,16 +151,14 @@
                             android:textColor="@color/color_black"
                             android:textSize="16sp" />
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1" />
-
                         <EditText
                             android:id="@+id/id_number_et"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@null"
+                            android:maxLength="18"
+                            android:padding="@dimen/dp_10"
+                            android:layout_weight="1"
                             android:gravity="right"
                             android:hint="请输入身份证号"
                             android:textColorHint="#D3D3D3"
@@ -209,6 +205,7 @@
             </FrameLayout>
 
             <LinearLayout
+                android:id="@+id/ll_shop_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/color_white"
@@ -217,7 +214,6 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp">
                 <LinearLayout
-                    android:id="@+id/ll_shop_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="22dp"
@@ -281,17 +277,19 @@
                 android:text="我的技能"
                 android:textSize="16dp"
                 android:textColor="#5A5A5B"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
 
             <TextView
+                android:id="@+id/tv_skills"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="请添加你的服务技能"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:gravity="right"
+                android:hint="请添加你的服务技能"
                 android:textSize="12sp"
-                android:textColor="#D3D3D3"/>
+                android:textColor="@color/color_black"
+                android:textColorHint="#D3D3D3"/>
 
             <ImageView
                 android:layout_width="7dp"

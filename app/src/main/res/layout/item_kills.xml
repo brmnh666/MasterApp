@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp">
 
     <LinearLayout
+        android:id="@+id/ll_skills_select"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -12,9 +14,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="19dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="37dp">
+            android:gravity="center_vertical"
+            android:padding="@dimen/dp_10">
 
             <TextView
                 android:id="@+id/tv_kill_name"
@@ -25,25 +26,24 @@
                 android:textSize="19dp"
                 android:textColor="#5A5A5B"/>
 
-            <CheckBox
-                android:id="@+id/checkbox_choose"
+            <ImageView
+                android:id="@+id/iv_choose"
                 android:layout_width="21dp"
                 android:layout_height="21dp"
-                style="@style/CustomCheckBoxTheme"/>
+                android:src="@drawable/check_kill_selector"/>
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="18dp"
-            android:layout_marginRight="39dp"
+            android:layout_margin="10dp"
             android:background="#E4E4E4"/>
         <FrameLayout
             android:id="@+id/fl_drop_down"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
+                android:visibility="gone"
                 android:id="@+id/tv_kill_detail_one"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -52,12 +52,13 @@
                 android:layout_marginRight="23dp"
                 android:text="空调 / 空气能热水器（分体式）/ 空气能一体式"
                 android:textSize="14dp"
+                android:singleLine="true"
                 android:textColor="#5A5A5B"
                 android:layout_marginBottom="15dp"
                 android:lineSpacingExtra="4dp" />
 
             <TextView
-                android:visibility="gone"
+                android:visibility="visible"
                 android:id="@+id/tv_kill_detail_two"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -81,6 +82,7 @@
         android:layout_width="33dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:visibility="gone"
         android:layout_marginBottom="20dp"
         android:src="@mipmap/drop_down" />
 </LinearLayout>

@@ -9,18 +9,15 @@
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/rv_kills"
-        android:layout_marginLeft="@dimen/dp_10"
-        android:layout_marginRight="@dimen/dp_10"/>
+        android:layout_weight="1"
+        android:id="@+id/rv_kills"/>
     
     <Button
         android:id="@+id/btn_skill"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="@drawable/btn_blue"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_margin="10dp"
         android:text="确    认"
         android:textColor="@color/color_white"
         android:textSize="20sp"/>

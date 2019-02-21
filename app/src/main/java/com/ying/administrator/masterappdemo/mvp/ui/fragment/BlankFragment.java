@@ -3,12 +3,19 @@ package com.ying.administrator.masterappdemo.mvp.ui.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ying.administrator.masterappdemo.R;
+import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseFragment;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 
 /**
@@ -16,9 +23,24 @@ import com.ying.administrator.masterappdemo.R;
  * Use the {@link BlankFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BlankFragment extends Fragment {
+public class BlankFragment extends BaseFragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_SHOW_TEXT = "text";
+    @BindView(R.id.ll_online_consultation)
+    LinearLayout mLlOnlineConsultation;
+    @BindView(R.id.ll_contact_customer_Service)
+    LinearLayout mLlContactCustomerService;
+    @BindView(R.id.tv_comprehensive)
+    TextView mTvComprehensive;
+    @BindView(R.id.tv_sales_volume)
+    TextView mTvSalesVolume;
+    @BindView(R.id.ll_price)
+    LinearLayout mLlPrice;
+    @BindView(R.id.tv_new_product)
+    TextView mTvNewProduct;
+    @BindView(R.id.rv_mall)
+    RecyclerView mRvMall;
+    Unbinder unbinder;
 
     private String mContentText;
 
@@ -55,9 +77,13 @@ public class BlankFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_blank, container, false);
-        TextView contentTv = rootView.findViewById(R.id.content_tv);
-        contentTv.setText(mContentText);
+        unbinder = ButterKnife.bind(this, rootView);
         return rootView;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
 }
