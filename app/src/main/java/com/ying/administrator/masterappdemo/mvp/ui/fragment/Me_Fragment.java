@@ -22,6 +22,7 @@ import com.ying.administrator.masterappdemo.mvp.ui.activity.SettingActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Wallet_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.WithDrawActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseFragment;
+import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,6 +38,7 @@ public class Me_Fragment extends BaseFragment implements DefineView {
     private LinearLayout ll_me_about_us;
     private LinearLayout ll_me_information;
     private LinearLayout ll_me_opinion;
+    private LinearLayout ll_me_customer_service;
 
     public Me_Fragment() {
         // Required empty public constructor
@@ -83,6 +85,7 @@ public class Me_Fragment extends BaseFragment implements DefineView {
         ll_me_about_us = view.findViewById(R.id.ll_me_about_us);
         ll_me_information = view.findViewById(R.id.ll_me_information);
         ll_me_opinion = view.findViewById(R.id.ll_me_opinion);
+        ll_me_customer_service=view.findViewById(R.id.ll_me_customer_service);
     }
 
     @Override
@@ -98,7 +101,7 @@ public class Me_Fragment extends BaseFragment implements DefineView {
         ll_me_about_us.setOnClickListener(new CustomOnclickListner());
         ll_me_information.setOnClickListener(new CustomOnclickListner());
         ll_me_opinion.setOnClickListener(new CustomOnclickListner());
-
+        ll_me_customer_service.setOnClickListener(new CustomOnclickListner());
     }
 
     @Override
@@ -133,6 +136,28 @@ public class Me_Fragment extends BaseFragment implements DefineView {
                     break;
                 case R.id.ll_me_opinion://意见反馈
                     startActivity(new Intent(getActivity(), Opinion_Activity.class));
+                    break;
+                case R.id.ll_me_customer_service: //客服电话
+                    final CommonDialog_Home dialog = new CommonDialog_Home(getActivity());
+                    dialog.setMessage("是否拨打电话给客服")
+                            //.setImageResId(R.mipmap.ic_launcher)
+                            .setTitle("提示")
+                            .setSingle(false).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
+                        @Override
+                        public void onPositiveClick() {//拨打电话
+                            dialog.dismiss();
+                            call("tel:"+"18074208209");
+                        }
+
+                        @Override
+                        public void onNegtiveClick() {//取消
+                            dialog.dismiss();
+                            // Toast.makeText(MainActivity.this,"ssss",Toast.LENGTH_SHORT).show();
+                        }
+                    }).show();
+
+                    break;
+
                 default:
                     break;
             }

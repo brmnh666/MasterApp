@@ -58,7 +58,7 @@ import java.util.ArrayList;
 
 
     public void initView() {
-         list=new ArrayList<>();
+        list=new ArrayList<>();
         recyclerView=view.findViewById(R.id.recyclerview_order_receiving);
         mRefreshLayout=view.findViewById(R.id.refreshLayout);
         in_service_adapter=new In_Service_Adapter(R.layout.item_in_service,list);

@@ -7,6 +7,7 @@ import com.ying.administrator.masterappdemo.entity.GetFactoryData;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.GetFactorySeviceData;
 import com.ying.administrator.masterappdemo.entity.Service;
+import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 
 import java.util.List;
@@ -63,6 +64,9 @@ public interface ApiService {
     @POST("Account/GetUserInfo")
     Observable<BaseResult<String>> GetUserInfo(@Body RequestBody json);
 
+
+
+
     /**
      * app获取用户信息
      */
@@ -70,6 +74,11 @@ public interface ApiService {
     @POST("Account/GetUserInfo")
     Observable<BaseResult<String>> GetUserInfo(@Field("userName") String userName);
 
+
+    /*获取用户信息*/
+    @FormUrlEncoded
+    @POST("Account/GetUserInfoList")
+    Observable<BaseResult<UserInfo>> GetUserInfoList(@Field("UserID") String UserID,@Field("limit") String limit);
 
 
     /*
@@ -217,4 +226,7 @@ public interface ApiService {
     Observable<BaseResult<Data<String>>> ApplyAuth(
             @Field("UserID") String UserID
     );
+    //@Field("UpdateDate") String UpdateDate);
+
+
 }

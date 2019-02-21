@@ -17,7 +17,6 @@ public interface GetOrderListForMeContract {
         //根据用户名获取已抢订单
         Observable<BaseResult<WorkOrder>> GetOrderInfoListForMe(String state, String page, String limit, String SendUser);
         //未预约成功
-
         Observable<BaseResult<Data>> AddOrderfailureReason(String OrderID, String AppointmentState, String AppointmentMessage);
 
     }

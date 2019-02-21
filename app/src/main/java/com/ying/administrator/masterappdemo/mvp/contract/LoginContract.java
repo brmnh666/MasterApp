@@ -16,7 +16,7 @@ public interface LoginContract {
         Observable<BaseResult<String>> Login(String userName, String passWord);
         Observable<BaseResult<String>> GetUserInfo(RequestBody json);
         Observable<BaseResult<String>> GetUserInfo(String userName);
-         Observable<BaseResult<String>> AddAndUpdatePushAccount(String token,String type,String UserID);
+        Observable<BaseResult<String>> AddAndUpdatePushAccount(String token,String type,String UserID);
 
 
     }
