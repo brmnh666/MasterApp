@@ -3,11 +3,9 @@
 
 
     <!-- 选中时效果 -->
-    <item android:drawable="@mipmap/choose_kills_yes"
-        android:state_checked="true"
-        android:state_enabled="true"/>
+    <item android:drawable="@drawable/choose_kills_yes"
+        android:state_selected="true"/>
     <!-- 未选中时效果 -->
-    <item android:drawable="@mipmap/choose_kills"
-        android:state_enabled="true"/>
+    <item android:drawable="@drawable/choose_kills"/>
 
 </selector>

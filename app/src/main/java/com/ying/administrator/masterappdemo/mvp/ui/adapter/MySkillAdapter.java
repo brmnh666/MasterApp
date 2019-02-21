@@ -19,29 +19,52 @@ public class MySkillAdapter extends BaseQuickAdapter<MySkills,BaseViewHolder> {
     }
 
     @Override
-    protected void convert(final BaseViewHolder helper, MySkills item) {
-        helper.setOnClickListener(R.id.fl_drop_down, new View.OnClickListener() {
+    protected void convert(final BaseViewHolder helper, final MySkills item) {
+        helper
+                .setText(R.id.tv_kill_name,item.getCategory().getFCategoryName())
+                .setText(R.id.tv_kill_detail_one,item.getSimple())
+                .setText(R.id.tv_kill_detail_two,item.getDetail());
+
+//        helper.setOnClickListener(R.id.fl_drop_down, new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (helper.getView(R.id.tv_kill_detail_one).getVisibility()==View.VISIBLE){
+//                    helper.getView(R.id.tv_kill_detail_one).setVisibility(View.GONE);
+//                    helper.getView(R.id.tv_kill_detail_two).setVisibility(View.VISIBLE);
+//                }else{
+//                    helper.getView(R.id.tv_kill_detail_one).setVisibility(View.VISIBLE);
+//                    helper.getView(R.id.tv_kill_detail_two).setVisibility(View.GONE);
+//                }
+//            }
+//        });
+//        helper.setOnClickListener(R.id.iv_drop_down, new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (helper.getView(R.id.tv_kill_detail_one).getVisibility()==View.VISIBLE){
+//                    helper.getView(R.id.tv_kill_detail_one).setVisibility(View.GONE);
+//                    helper.getView(R.id.tv_kill_detail_two).setVisibility(View.VISIBLE);
+//                }else{
+//                    helper.getView(R.id.tv_kill_detail_one).setVisibility(View.VISIBLE);
+//                    helper.getView(R.id.tv_kill_detail_two).setVisibility(View.GONE);
+//                }
+//            }
+//        });
+        if (item.isSelected()){
+            helper.getView(R.id.iv_choose).setSelected(true);
+        }else{
+            helper.getView(R.id.iv_choose).setSelected(false);
+        }
+        helper.setOnClickListener(R.id.ll_skills_select, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (helper.getView(R.id.tv_kill_detail_one).getVisibility()==View.VISIBLE){
-                    helper.getView(R.id.tv_kill_detail_one).setVisibility(View.GONE);
-                    helper.getView(R.id.tv_kill_detail_two).setVisibility(View.VISIBLE);
+                if (item.isSelected()){
+                    item.setSelected(false);
+                    helper.getView(R.id.iv_choose).setSelected(false);
                 }else{
-                    helper.getView(R.id.tv_kill_detail_one).setVisibility(View.VISIBLE);
-                    helper.getView(R.id.tv_kill_detail_two).setVisibility(View.GONE);
+                    item.setSelected(true);
+                    helper.getView(R.id.iv_choose).setSelected(true);
                 }
-            }
-        });
-        helper.setOnClickListener(R.id.iv_drop_down, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (helper.getView(R.id.tv_kill_detail_one).getVisibility()==View.VISIBLE){
-                    helper.getView(R.id.tv_kill_detail_one).setVisibility(View.GONE);
-                    helper.getView(R.id.tv_kill_detail_two).setVisibility(View.VISIBLE);
-                }else{
-                    helper.getView(R.id.tv_kill_detail_one).setVisibility(View.VISIBLE);
-                    helper.getView(R.id.tv_kill_detail_two).setVisibility(View.GONE);
-                }
+                notifyDataSetChanged();
             }
         });
     }
