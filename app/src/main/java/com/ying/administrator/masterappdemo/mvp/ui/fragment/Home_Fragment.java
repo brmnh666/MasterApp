@@ -534,7 +534,16 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
             case R.id.tv_certification:
                 if (userInfo!=null){
                     if (userInfo.getIfAuth().equals("1")){
-//                        mTvCertification.setText("已实名认证");
+                        under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_successful_review,null);
+                        btnConfirm = under_review.findViewById(R.id.btn_confirm);
+                        btnConfirm.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                underReviewDialog.dismiss();
+                            }
+                        });
+                        underReviewDialog =new AlertDialog.Builder(mActivity).setView(under_review).create();
+                        underReviewDialog.show();
                     }else if (userInfo.getIfAuth().equals("0")){
                         under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_under_review,null);
                         btnConfirm = under_review.findViewById(R.id.btn_confirm);
