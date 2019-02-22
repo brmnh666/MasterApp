@@ -8,8 +8,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginLeft="43dp"
-        android:layout_marginRight="46dp"
         android:background="@color/white">
         <FrameLayout
             android:layout_width="match_parent"
@@ -45,7 +43,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="请修改账户名称，不能包含标点符号！有疑问请咨询客服电话。"
+            android:text="请重新填写资料！有疑问请咨询客服电话。"
             android:textSize="15sp"
             android:textColor="#333333"
             android:layout_marginTop="21dp"
@@ -53,7 +51,7 @@
             android:layout_marginRight="25dp"/>
         
         <Button
-            android:id="@+id/btn_modify_data"
+            android:id="@+id/btn_confirm"
             android:layout_width="match_parent"
             android:layout_height="41dp"
             android:layout_marginLeft="41dp"
@@ -61,7 +59,7 @@
             android:layout_marginTop="28dp"
             android:layout_marginBottom="35dp"
             android:background="@drawable/red_shape"
-            android:text="修改资料"
+            android:text="重新认证"
             android:textColor="@color/white"
             android:textSize="15sp"/>
 

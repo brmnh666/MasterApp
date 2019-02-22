@@ -54,6 +54,7 @@ public class MySkillsActivity extends BaseActivity<AddSkillsPresenter, AddSkills
     private List<Category> popularList;
     private List<Category> subList;
     private String skills;
+    private String NodeIds="";
 
 //    @Override
 //    protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -103,13 +104,18 @@ public class MySkillsActivity extends BaseActivity<AddSkillsPresenter, AddSkills
                 for (int i = 0; i < mySkillAdapter.getData().size(); i++) {
                     if (mySkillAdapter.getData().get(i).isSelected()){
                         skills+=mySkillAdapter.getData().get(i).getCategory().getFCategoryName()+"/";
+                        NodeIds+=mySkillAdapter.getData().get(i).getNodeIds()+",";
                     }
                 }
                 if (skills.contains("/")){
                     skills=skills.substring(0,skills.lastIndexOf("/"));
                 }
+                if (NodeIds.contains(",")){
+                    NodeIds=NodeIds.substring(0,NodeIds.lastIndexOf(","));
+                }
                 Intent intent=new Intent();
                 intent.putExtra("skills",skills);
+                intent.putExtra("NodeIds",NodeIds);
                 setResult(1000,intent);
                 finish();
                 break;

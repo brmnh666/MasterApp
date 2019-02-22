@@ -16,22 +16,15 @@ public class VerifiedModel implements VerifiedContract.Model {
 
 
     @Override
-    public Observable<BaseResult<Data<String>>> UploadImg(RequestBody json,int code) {
-        return  ApiRetrofit.getDefault().UploadImg(json)
+    public Observable<BaseResult<Data<String>>> IDCardUpload(RequestBody json,int code) {
+        return  ApiRetrofit.getDefault().IDCardUpload(json)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }
 
     @Override
-    public Observable<BaseResult<Data<String>>> UpdateAccountModel(String UserID, String TrueName, String IDCard, String Address, String Skills) {
-        return  ApiRetrofit.getDefault().UpdateAccountModel(UserID, TrueName, IDCard, Address, Skills)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io());
-    }
-
-    @Override
-    public Observable<BaseResult<Data<String>>> ApplyAuth(String UserID) {
-        return  ApiRetrofit.getDefault().ApplyAuth(UserID)
+    public Observable<BaseResult<Data<String>>> ApplyAuthInfo(String UserID, String TrueName, String IDCard, String Address, String NodeIds) {
+        return  ApiRetrofit.getDefault().ApplyAuthInfo(UserID, TrueName, IDCard, Address, NodeIds)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

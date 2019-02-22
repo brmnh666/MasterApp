@@ -406,7 +406,8 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
         if (rCode == AMapException.CODE_AMAP_SUCCESS) {
             if (result != null && result.getRegeocodeAddress() != null
                     && result.getRegeocodeAddress().getFormatAddress() != null) {
-                String address = result.getRegeocodeAddress().getProvince() + result.getRegeocodeAddress().getCity() + result.getRegeocodeAddress().getDistrict() + result.getRegeocodeAddress().getTownship();
+                String address = result.getRegeocodeAddress().getFormatAddress();
+//                String address = result.getRegeocodeAddress().getProvince() + result.getRegeocodeAddress().getCity() + result.getRegeocodeAddress().getDistrict() + result.getRegeocodeAddress().getTownship();
                 firstItem = new PoiItem("regeo", searchLatlonPoint, address, address);
                 doSearchQuery();
             }

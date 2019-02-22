@@ -150,17 +150,13 @@ public interface ApiService {
     @POST("FactoryConfig/GetFactoryService")
     Observable<BaseResult<GetFactorySeviceData<Service>>> GetFactoryService();
 
-
-
-
-    /*
-     *
-     * 上传图片
+    /**
+     * 上传身份证以及清晰头像 UserID用户名Sort（1：正面，2：反面，3：清晰自拍照）
      * */
-    @POST("Upload/UploadImg")
-    Observable<BaseResult<Data<String>>> UploadImg(@Body RequestBody json);
+    @POST("Upload/IDCardUpload")
+    Observable<BaseResult<Data<String>>> IDCardUpload(@Body RequestBody json);
 
-    /*
+    /**
     * 预接单提交配件信息  json
     *
     *
@@ -207,26 +203,17 @@ public interface ApiService {
 //    @POST("FactoryConfig/GetFactoryCategory")
 //    Observable<BaseResult<Data<List<Category>>>> GetChildFactoryCategory(@Field("ParentID") String ParentID);
     /**
-     * 更新用户信息
+     * 提交认证申请
      */
     @FormUrlEncoded
-    @POST("Account/UpdateAccountModel")
-    Observable<BaseResult<Data<String>>> UpdateAccountModel(
+    @POST("Account/ApplyAuthInfo")
+    Observable<BaseResult<Data<String>>> ApplyAuthInfo(
             @Field("UserID") String UserID,
             @Field("TrueName") String TrueName,
             @Field("IDCard") String IDCard,
             @Field("Address") String Address,
-            @Field("Skills") String Skills
+            @Field("NodeIds") String NodeIds
     );
-    /**
-     * 提交认证申请
-     */
-    @FormUrlEncoded
-    @POST("Account/ApplyAuth")
-    Observable<BaseResult<Data<String>>> ApplyAuth(
-            @Field("UserID") String UserID
-    );
-    //@Field("UpdateDate") String UpdateDate);
 
 
 }

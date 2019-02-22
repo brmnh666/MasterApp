@@ -12,35 +12,25 @@ public class VerifiedPresenter extends VerifiedContract.Presenter {
 
 
     @Override
-    public void UploadImg(RequestBody json, final int code) {
-        mModel.UploadImg(json,code)
+    public void IDCardUpload(RequestBody json, final int code) {
+        mModel.IDCardUpload(json,code)
                 .subscribe(new BaseObserver<Data<String>>() {
                     @Override
                     protected void onHandleSuccess(BaseResult<Data<String>> value) {
-                        mView.UploadImg(value,code);
+                        mView.IDCardUpload(value,code);
                     }
                 });
     }
 
     @Override
-    public void UpdateAccountModel(String UserID, String TrueName, String IDCard, String Address, String Skills) {
-        mModel.UpdateAccountModel(UserID, TrueName, IDCard, Address, Skills)
+    public void ApplyAuthInfo(String UserID, String TrueName, String IDCard, String Address, String NodeIds) {
+        mModel.ApplyAuthInfo(UserID, TrueName, IDCard, Address, NodeIds)
                 .subscribe(new BaseObserver<Data<String>>() {
                     @Override
                     protected void onHandleSuccess(BaseResult<Data<String>> value) {
-                        mView.UpdateAccountModel(value);
+                        mView.ApplyAuthInfo(value);
                     }
                 });
     }
 
-    @Override
-    public void ApplyAuth(String UserID) {
-        mModel.ApplyAuth(UserID)
-                .subscribe(new BaseObserver<Data<String>>() {
-                    @Override
-                    protected void onHandleSuccess(BaseResult<Data<String>> value) {
-                        mView.ApplyAuth(value);
-                    }
-                });
-    }
 }

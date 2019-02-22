@@ -1,10 +1,12 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -23,6 +25,7 @@ import com.ying.administrator.masterappdemo.mvp.ui.fragment.Me_Fragment;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.NewsFragment;
 import com.ying.administrator.masterappdemo.widget.BadgeView;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
+import com.ying.administrator.masterappdemo.widget.CustomDialog;
 
 import io.reactivex.Observable;
 
@@ -35,6 +38,11 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
 
     private String userID;//用户id
     private long mExittime;//声明一个long类型的变量 用于存放上一次点击 返回键的时刻
+    private View under_review;
+    private View btnConfirm;
+    private AlertDialog underReviewDialog;
+    private CustomDialog customDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +63,37 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
         mPresenter.GetUserInfoList(userID,"1");
 
     }
+    public void showVerifiedDialog(){
+        customDialog = new CustomDialog(mActivity);
+        customDialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        customDialog.setTitle("实名认证");
+        customDialog.show();
 
+        customDialog.setYesOnclickListener("确定", new CustomDialog.onYesOnclickListener() {
+            @Override
+            public void onYesClick() {
+                //Toast.makeText(getContext(), "点击了--去认证--按钮", Toast.LENGTH_LONG).show();
+                customDialog.dismiss();
+                startActivity(new Intent(mActivity, Verified_Activity.class));
+            }
+        });
+
+        customDialog.setNoOnclickListener("取消", new CustomDialog.onNoOnclickListener() {
+            @Override
+            public void onNoClick() {
+                //Toast.makeText(getContext(), "点击了--再想想--按钮", Toast.LENGTH_LONG).show();
+                customDialog.dismiss();
+            }
+        });
+
+        customDialog.setNoOnclickListener("取消", new CustomDialog.onNoOnclickListener() {
+            @Override
+            public void onNoClick() {
+                // Toast.makeText(getContext(), "点击了--关闭-按钮", Toast.LENGTH_LONG).show();
+                customDialog.dismiss();
+            }
+        });
+    }
     public void initView() {
        final CommonDialog_Home dialog = new CommonDialog_Home(this); //弹出框
         mTabRadioGroup = findViewById(R.id.tabs_rg);
@@ -82,36 +120,38 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
             @Override
             public void onClick(View v)
             {
-
-                if (userInfo.getIfAuth()==null)//未实名认证
-                {
-
-                    dialog.setMessage("您暂未实名认证,是否进行认证")
-                            //.setImageResId(R.mipmap.ic_launcher)
-                            .setTitle("提示")
-                            .setSingle(false).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
-                        @Override
-                        public void onPositiveClick() {//进行实名认证
-                            startActivity(new Intent(MainActivity.this,Verified_Activity.class));
-                            dialog.dismiss();
-                        }
-
-                        @Override
-                        public void onNegtiveClick() {//取消
-                            dialog.dismiss();
-                            // Toast.makeText(MainActivity.this,"ssss",Toast.LENGTH_SHORT).show();
-                        }
-                    }).show();
-
-
+                if (userInfo!=null){
+                    if (userInfo.getIfAuth().equals("1")){
+                        Intent intent = new Intent(MainActivity.this, Order_Receiving_Activity.class);
+                        intent.putExtra("intent", "pending_appointment");
+                        startActivity(intent);
+                    }else if (userInfo.getIfAuth().equals("0")){
+                        under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_under_review,null);
+                        btnConfirm = under_review.findViewById(R.id.btn_confirm);
+                        btnConfirm.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                underReviewDialog.dismiss();
+                            }
+                        });
+                        underReviewDialog =new AlertDialog.Builder(mActivity).setView(under_review).create();
+                        underReviewDialog.show();
+                    }else if (userInfo.getIfAuth().equals("-1")){
+                        under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_audit_failure,null);
+                        btnConfirm = under_review.findViewById(R.id.btn_confirm);
+                        btnConfirm.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                underReviewDialog.dismiss();
+                                startActivity(new Intent(mActivity, Verified_Activity.class));
+                            }
+                        });
+                        underReviewDialog =new AlertDialog.Builder(mActivity).setView(under_review).create();
+                        underReviewDialog.show();
+                    }else {
+                        showVerifiedDialog();
+                    }
                 }
-                else {
-                    Intent intent = new Intent(MainActivity.this, Order_Receiving_Activity.class);
-                    intent.putExtra("intent", "pending_appointment");
-                    startActivity(intent);
-                }
-
-
             }
 
         });

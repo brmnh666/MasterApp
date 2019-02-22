@@ -2,6 +2,7 @@ package com.ying.administrator.masterappdemo.mvp.ui.fragment;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -56,9 +58,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkOrdersModel> implements AllWorkOrdersContract.View, View.OnClickListener {
+public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkOrdersModel> implements AllWorkOrdersContract.View, View.OnClickListener, EasyPermissions.PermissionCallbacks {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_SHOW_TEXT = "text";
     @BindView(R.id.img_home_customer_service)
@@ -187,6 +190,12 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
         }
     };
     private static final int RC_LOCATION =1;
+    private String[] params;
+    private CustomDialog customDialog;
+    private ShareDialog shareDialog;
+    private View under_review;
+    private Button btnConfirm;
+    private AlertDialog underReviewDialog;
 
 
     public Home_Fragment() {
@@ -237,16 +246,7 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
         userID = spUtils.getString("userName"); //获取用户id
 
         mPresenter.GetUserInfoList(userID,"1");//根据 手机号码获取用户详细信息
-         /*设置实名认证状态*/
-     /*   if (userInfo.getIfAuth().equals("1")){
-            mTvCertification.setText("已实名认证");
-        }else if (userInfo.getIfAuth().equals("0")){
-            mTvCertification.setText("审核中");
-        }else if (userInfo.getIfAuth().equals("-1")){
-            mTvCertification.setText("审核不通过");
-        }else {
-            mTvCertification.setText("未实名认证");
-        }*/
+
 
         methodRequiresPermission();
         list = new ArrayList<>();
@@ -272,47 +272,46 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 switch (view.getId()) {
                     case R.id.img_grabsheet:
+                        if (userInfo!=null){
+                            if (userInfo.getIfAuth().equals("1")){
+                                mPresenter.AddGrabsheetapply(((WorkOrder.DataBean) adapter.getItem(position)).getOrderID(), userID);
+                                //Log.d("WorkOrder",((WorkOrder.DataBean)adapter.getItem(position)).getOrderID());
+                                grabsheetAdapter.remove(position);
+                                Intent intent = new Intent(getActivity(), Order_Receiving_Activity.class);
+                                intent.putExtra("intent", "pending_appointment");
+                                startActivity(intent);
+                                if (list.isEmpty()) {  //判断订单是否为空
+                                    contentLoadingEmpty();
 
-
-                        if (userInfo.getIfAuth()==null)//未实名认证
-                        {
-
-                            dialog.setMessage("您暂未实名认证,是否进行认证")
-                                    //.setImageResId(R.mipmap.ic_launcher)
-                                    .setTitle("提示")
-                                    .setSingle(false).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
-                                @Override
-                                public void onPositiveClick() {//进行实名认证
-                                    startActivity(new Intent(getActivity(),Verified_Activity.class));
-                                    dialog.dismiss();
                                 }
-
-                                @Override
-                                public void onNegtiveClick() {//取消
-                                    dialog.dismiss();
-                                    // Toast.makeText(MainActivity.this,"ssss",Toast.LENGTH_SHORT).show();
-                                }
-                            }).show();
-
-
-                        }else {
-                            mPresenter.AddGrabsheetapply(((WorkOrder.DataBean) adapter.getItem(position)).getOrderID(), userID);
-                            //Log.d("WorkOrder",((WorkOrder.DataBean)adapter.getItem(position)).getOrderID());
-                            grabsheetAdapter.remove(position);
-                            Intent intent = new Intent(getActivity(), Order_Receiving_Activity.class);
-                            intent.putExtra("intent", "pending_appointment");
-                            startActivity(intent);
-                            if (list.isEmpty()) {  //判断订单是否为空
-                                contentLoadingEmpty();
-
+                            }else if (userInfo.getIfAuth().equals("0")){
+                                under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_under_review,null);
+                                btnConfirm = under_review.findViewById(R.id.btn_confirm);
+                                btnConfirm.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        underReviewDialog.dismiss();
+                                    }
+                                });
+                                underReviewDialog =new AlertDialog.Builder(mActivity).setView(under_review).create();
+                                underReviewDialog.show();
+                            }else if (userInfo.getIfAuth().equals("-1")){
+                                under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_audit_failure,null);
+                                btnConfirm = under_review.findViewById(R.id.btn_confirm);
+                                btnConfirm.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        underReviewDialog.dismiss();
+                                        startActivity(new Intent(mActivity, Verified_Activity.class));
+                                    }
+                                });
+                                underReviewDialog =new AlertDialog.Builder(mActivity).setView(under_review).create();
+                                underReviewDialog.show();
+                            }else {
+                                showVerifiedDialog();
                             }
-
                         }
-
-
                         break;
-
-
                 }
 
             }
@@ -439,6 +438,18 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
         switch (baseResult.getStatusCode()){
             case 200:
                 userInfo = baseResult.getData().getData().get(0);
+                /*设置实名认证状态*/
+                if (userInfo!=null){
+                    if (userInfo.getIfAuth().equals("1")){
+                        mTvCertification.setText("已实名认证");
+                    }else if (userInfo.getIfAuth().equals("0")){
+                        mTvCertification.setText("审核中");
+                    }else if (userInfo.getIfAuth().equals("-1")){
+                        mTvCertification.setText("审核不通过");
+                    }else {
+                        mTvCertification.setText("未实名认证");
+                    }
+                }
                 break;
 
             default:
@@ -485,49 +496,75 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
         super.onDestroyView();
         unbinder.unbind();
     }
+    public void showVerifiedDialog(){
+        customDialog = new CustomDialog(getContext());
+        customDialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        customDialog.setTitle("实名认证");
+        customDialog.show();
 
+        customDialog.setYesOnclickListener("确定", new CustomDialog.onYesOnclickListener() {
+            @Override
+            public void onYesClick() {
+                //Toast.makeText(getContext(), "点击了--去认证--按钮", Toast.LENGTH_LONG).show();
+                customDialog.dismiss();
+                startActivity(new Intent(getActivity(), Verified_Activity.class));
+            }
+        });
+
+        customDialog.setNoOnclickListener("取消", new CustomDialog.onNoOnclickListener() {
+            @Override
+            public void onNoClick() {
+                //Toast.makeText(getContext(), "点击了--再想想--按钮", Toast.LENGTH_LONG).show();
+                customDialog.dismiss();
+            }
+        });
+
+        customDialog.setNoOnclickListener("取消", new CustomDialog.onNoOnclickListener() {
+            @Override
+            public void onNoClick() {
+                // Toast.makeText(getContext(), "点击了--关闭-按钮", Toast.LENGTH_LONG).show();
+                customDialog.dismiss();
+            }
+        });
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
 
             case R.id.tv_certification:
-
-                if (userInfo==null){
-
-                    final CustomDialog customDialog = new CustomDialog(getContext());
-                    customDialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
-                    customDialog.setTitle("实名认证");
-                    customDialog.show();
-
-                    customDialog.setYesOnclickListener("确定", new CustomDialog.onYesOnclickListener() {
-                        @Override
-                        public void onYesClick() {
-                            //Toast.makeText(getContext(), "点击了--去认证--按钮", Toast.LENGTH_LONG).show();
-                            customDialog.dismiss();
-                            startActivity(new Intent(getActivity(), Verified_Activity.class));
-                        }
-                    });
-
-                    customDialog.setNoOnclickListener("取消", new CustomDialog.onNoOnclickListener() {
-                        @Override
-                        public void onNoClick() {
-                            //Toast.makeText(getContext(), "点击了--再想想--按钮", Toast.LENGTH_LONG).show();
-                            customDialog.dismiss();
-                        }
-                    });
-
-                    customDialog.setNoOnclickListener("取消", new CustomDialog.onNoOnclickListener() {
-                        @Override
-                        public void onNoClick() {
-                            // Toast.makeText(getContext(), "点击了--关闭-按钮", Toast.LENGTH_LONG).show();
-                            customDialog.dismiss();
-                        }
-                    });
+                if (userInfo!=null){
+                    if (userInfo.getIfAuth().equals("1")){
+//                        mTvCertification.setText("已实名认证");
+                    }else if (userInfo.getIfAuth().equals("0")){
+                        under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_under_review,null);
+                        btnConfirm = under_review.findViewById(R.id.btn_confirm);
+                        btnConfirm.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                underReviewDialog.dismiss();
+                            }
+                        });
+                        underReviewDialog =new AlertDialog.Builder(mActivity).setView(under_review).create();
+                        underReviewDialog.show();
+                    }else if (userInfo.getIfAuth().equals("-1")){
+                        under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_audit_failure,null);
+                        btnConfirm = under_review.findViewById(R.id.btn_confirm);
+                        btnConfirm.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                underReviewDialog.dismiss();
+                                startActivity(new Intent(mActivity, Verified_Activity.class));
+                            }
+                        });
+                        underReviewDialog =new AlertDialog.Builder(mActivity).setView(under_review).create();
+                        underReviewDialog.show();
+                    }else {
+                        showVerifiedDialog();
+                    }
                 }
                 break;
             case R.id.img_home_qr_code:
-//                    startActivity(new Intent(getActivity(), Share_Activity.class));
-                final ShareDialog shareDialog=new ShareDialog(getContext());
+                shareDialog = new ShareDialog(getContext());
                 shareDialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
                 shareDialog.show();
                 break;
@@ -570,19 +607,13 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
-    @AfterPermissionGranted(RC_LOCATION)
-    private void methodRequiresPermission() {
-        String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION};
-        if (EasyPermissions.hasPermissions(mActivity, perms)) {
-            // Already have permission, do the thing
-            // ...
-
-            //初始化定位
-            mLocationClient = new AMapLocationClient(mActivity);
-            //设置定位回调监听
-            mLocationClient.setLocationListener(mLocationListener);
-            //初始化AMapLocationClientOption对象
-            mLocationOption = new AMapLocationClientOption();
+    public void Location(){
+        //初始化定位
+        mLocationClient = new AMapLocationClient(mActivity);
+        //设置定位回调监听
+        mLocationClient.setLocationListener(mLocationListener);
+        //初始化AMapLocationClientOption对象
+        mLocationOption = new AMapLocationClientOption();
 /**
  * 设置定位场景，目前支持三种场景（签到、出行、运动，默认无场景）
  */
@@ -593,17 +624,27 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
             mLocationClient.stopLocation();
             mLocationClient.startLocation();
         }*/
-            //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。
-            mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+        //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
 
-            //给定位客户端对象设置定位参数
-            mLocationClient.setLocationOption(mLocationOption);
-            //启动定位
-            mLocationClient.startLocation();
+        //给定位客户端对象设置定位参数
+        mLocationClient.setLocationOption(mLocationOption);
+        //启动定位
+        mLocationClient.startLocation();
+    }
+
+    @AfterPermissionGranted(RC_LOCATION)
+    private void methodRequiresPermission() {
+        params = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
+        if (EasyPermissions.hasPermissions(mActivity, params)) {
+            // Already have permission, do the thing
+            // ...
+            Location();
+
         } else {
             // Do not have permissions, request them now
             EasyPermissions.requestPermissions(this, "需要获取定位权限",
-                    RC_LOCATION, perms);
+                    RC_LOCATION, params);
         }
     }
 
@@ -627,6 +668,26 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
                     }
                 }
                 break;
+        }
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
+        Location();
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
+        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
+            //这个方法有个前提是，用户点击了“不再询问”后，才判断权限没有被获取到
+            new AppSettingsDialog.Builder(this)
+                    .setRationale("没有该权限，此应用程序可能无法正常工作。打开应用设置界面以修改应用权限")
+                    .setTitle("必需权限")
+                    .build()
+                    .show();
+        } else if (!EasyPermissions.hasPermissions(mActivity, params)) {
+            //这里响应的是除了AppSettingsDialog这个弹出框，剩下的两个弹出框被拒绝或者取消的效果
+//            finish();
         }
     }
 }

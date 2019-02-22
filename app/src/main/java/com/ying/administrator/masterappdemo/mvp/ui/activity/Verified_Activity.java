@@ -31,6 +31,7 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.searchdemo.MainActivity;
+import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
@@ -45,6 +46,7 @@ import com.ying.administrator.masterappdemo.mvp.presenter.VerifiedPresenter;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -105,7 +107,7 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
     private double mLatitude;
     private double mLongitude;
     private float mAccuracy;
-    private String mAddress;
+    private String mAddress="";
     private String mCountry;
     private String mProvince;
     private String mCity;
@@ -132,7 +134,7 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                     mLatitude = aMapLocation.getLatitude();//获取纬度
                     mLongitude = aMapLocation.getLongitude();//获取经度
                     mAccuracy = aMapLocation.getAccuracy();//获取精度信息
-//                    mAddress = aMapLocation.getAddress();//地址，如果option中设置isNeedAddress为false，则没有此结果，网络定位结果中会有地址信息，GPS定位不返回地址信息。
+                    mAddress = aMapLocation.getAddress();//地址，如果option中设置isNeedAddress为false，则没有此结果，网络定位结果中会有地址信息，GPS定位不返回地址信息。
                     mCountry = aMapLocation.getCountry();//国家信息
                     mProvince = aMapLocation.getProvince();//省信息
                     mCity = aMapLocation.getCity();//城市信息
@@ -169,23 +171,22 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
     private String mActualName;
     private String mIdNumber;
     private String mSkills = "";
+    private String NodeIds = "";
     private String mPositiveCard = "";
     private String mNegativeCard = "";
+    private Uri uri;
 
     @Override
     protected int setLayoutId() {
         return R.layout.activity_verified;
     }
-
-    @Override
-    protected void initData() {
-        if (requestLocationPermissions()) {
-            //初始化定位
-            mLocationClient = new AMapLocationClient(mActivity);
-            //设置定位回调监听
-            mLocationClient.setLocationListener(mLocationListener);
-            //初始化AMapLocationClientOption对象
-            mLocationOption = new AMapLocationClientOption();
+    public  void  Location(){
+        //初始化定位
+        mLocationClient = new AMapLocationClient(mActivity);
+        //设置定位回调监听
+        mLocationClient.setLocationListener(mLocationListener);
+        //初始化AMapLocationClientOption对象
+        mLocationOption = new AMapLocationClientOption();
 /**
  * 设置定位场景，目前支持三种场景（签到、出行、运动，默认无场景）
  */
@@ -196,13 +197,19 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
             mLocationClient.stopLocation();
             mLocationClient.startLocation();
         }*/
-            //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。
-            mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+        //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
 
-            //给定位客户端对象设置定位参数
-            mLocationClient.setLocationOption(mLocationOption);
-            //启动定位
-            mLocationClient.startLocation();
+        //给定位客户端对象设置定位参数
+        mLocationClient.setLocationOption(mLocationOption);
+        //启动定位
+        mLocationClient.startLocation();
+    }
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    protected void initData() {
+        if (requestLocationPermissions()) {
+            Location();
         } else {
             requestPermissions(permissions.toArray(new String[permissions.size()]), 20002);
         }
@@ -226,6 +233,7 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -233,10 +241,18 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                 finish();
                 break;
             case R.id.iv_positive:
-                showPopupWindow(101, 102);
+                if (requestPermissions()){
+                    showPopupWindow(101, 102);
+                }else{
+                    requestPermissions(permissions.toArray(new String[permissions.size()]), 10001);
+                }
                 break;
             case R.id.iv_negative:
-                showPopupWindow(201, 202);
+                if (requestPermissions()){
+                    showPopupWindow(201, 202);
+                }else{
+                    requestPermissions(permissions.toArray(new String[permissions.size()]), 10002);
+                }
                 break;
             case R.id.ll_shop_address:
                 startActivityForResult(new Intent(mActivity, MainActivity.class), 100);
@@ -256,6 +272,10 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                     ToastUtils.showShort("请输入身份证号码！");
                     return;
                 }
+                if (!RegexUtils.isIDCard18Exact(mIdNumber)) {
+                    ToastUtils.showShort("身份证号码格式错误！");
+                    return;
+                }
                 if ("".equals(mPositiveCard)) {
                     ToastUtils.showShort("请添加正面身份证照片！");
                     return;
@@ -272,7 +292,7 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                     ToastUtils.showShort("未定位到店铺地址！");
                     return;
                 }
-                mPresenter.UpdateAccountModel(UserID, mActualName, mIdNumber, mAddress, mSkills);
+                mPresenter.ApplyAuthInfo(UserID, mActualName, mIdNumber, mAddress, NodeIds);
                 break;
         }
     }
@@ -405,63 +425,21 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
         switch (requestCode) {
             case 10001:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {//允许
-//                    Intent intent = new Intent();
-//                    // 指定开启系统相机的Action
-//                    intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-//                    intent.addCategory(Intent.CATEGORY_DEFAULT);
-//                    String f = System.currentTimeMillis()+".jpg";
-//                    FilePath=Environment.getExternalStorageDirectory().getAbsolutePath()+"/xgy/"+f;
-//                    File file=new File(FilePath);
-//                    if (!file.exists()){
-//                        try {
-//                            file.createNewFile();
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                    Uri fileUri = Uri.fromFile(file);
-//                    intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-//                    startActivityForResult(intent, 0);
+                    showPopupWindow(101, 102);
                 } else {//拒绝
                     MyUtils.showToast(mActivity, "相关权限未开启");
                 }
                 break;
             case 10002:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {//允许
-//                    Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-//                    i.addCategory(Intent.CATEGORY_OPENABLE);
-//                    i.setType("image/*");
-//                    startActivityForResult(Intent.createChooser(i, "test"), code2);
-//                    mPopupWindow.dismiss();
+                    showPopupWindow(201, 202);
                 } else {//拒绝
                     MyUtils.showToast(mActivity, "相关权限未开启");
                 }
                 break;
             case 20002:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {//允许
-                    //初始化定位
-                    mLocationClient = new AMapLocationClient(mActivity);
-                    //设置定位回调监听
-                    mLocationClient.setLocationListener(mLocationListener);
-                    //初始化AMapLocationClientOption对象
-                    mLocationOption = new AMapLocationClientOption();
-/**
- * 设置定位场景，目前支持三种场景（签到、出行、运动，默认无场景）
- */
-        /*mLocationOption.setLocationPurpose(AMapLocationClientOption.AMapLocationPurpose.SignIn);
-        if (null != mLocationClient) {
-            mLocationClient.setLocationOption(mLocationOption);
-            //设置场景模式后最好调用一次stop，再调用start以保证场景模式生效
-            mLocationClient.stopLocation();
-            mLocationClient.startLocation();
-        }*/
-                    //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。
-                    mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-
-                    //给定位客户端对象设置定位参数
-                    mLocationClient.setLocationOption(mLocationOption);
-                    //启动定位
-                    mLocationClient.startLocation();
+                    Location();
                 } else {//拒绝
                     MyUtils.showToast(mActivity, "相关权限未开启");
                 }
@@ -493,7 +471,7 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
             //相册
             case 102:
                 if (data != null) {
-                    Uri uri = data.getData();
+                    uri = data.getData();
                     Glide.with(mActivity).load(uri).into(mIvPositive);
                     file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
                 }
@@ -533,6 +511,7 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
             case 1000:
                 if (data != null) {
                     mSkills = data.getStringExtra("skills");
+                    NodeIds = data.getStringExtra("NodeIds");
                     if (mSkills != null) {
                         mTvSkills.setText(mSkills);
                     }
@@ -545,12 +524,14 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
     public void uploadImg(File f,int code) {
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("img", f.getName(), RequestBody.create(MediaType.parse("img/png"), f));
+        builder.addFormDataPart("UserID", UserID);
+        builder.addFormDataPart("Sort", (code+1)+"");
         MultipartBody requestBody = builder.build();
-        mPresenter.UploadImg(requestBody,code);
+        mPresenter.IDCardUpload(requestBody,code);
     }
 
     @Override
-    public void UploadImg(BaseResult<Data<String>> baseResult,int code) {
+    public void IDCardUpload(BaseResult<Data<String>> baseResult,int code) {
         switch (code){
             case 0:
                 switch (baseResult.getStatusCode()) {
@@ -558,6 +539,9 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                         if (baseResult.getData().isItem1()) {
                             mPositiveCard = baseResult.getData().getItem2();
                         }
+                        break;
+                    default:
+                        ToastUtils.showShort("图片上传失败");
                         break;
                 }
                 break;
@@ -568,21 +552,27 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                             mNegativeCard = baseResult.getData().getItem2();
                         }
                         break;
+                    default:
+                        ToastUtils.showShort("图片上传失败");
+                        break;
                 }
                 break;
         }
-//        MyUtils.showToast(mActivity, "上传成功！");
     }
 
     @Override
-    public void UpdateAccountModel(BaseResult<Data<String>> baseResult) {
-//        MyUtils.showToast(mActivity,"上传成功！");
-        mPresenter.ApplyAuth(UserID);
-    }
-
-    @Override
-    public void ApplyAuth(BaseResult<Data<String>> baseResult) {
-        MyUtils.showToast(mActivity, "提交成功！");
+    public void ApplyAuthInfo(BaseResult<Data<String>> baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                if (baseResult.getData().isItem1()) {
+                    ToastUtils.showShort("提交成功");
+                    finish();
+                }
+                break;
+            default:
+                ToastUtils.showShort("提交失败");
+                break;
+        }
     }
 
     @Override

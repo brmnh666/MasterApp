@@ -408,7 +408,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 //        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
 //        builder.addFormDataPart("img", f.getName(), RequestBody.create(MediaType.parse("img/png"), f));
 //        MultipartBody requestBody=builder.build();
-//        mPresenter.UploadImg(requestBody);
+//        mPresenter.IDCardUpload(requestBody);
 //    }
 //
 }

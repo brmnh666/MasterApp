@@ -9,12 +9,21 @@ public class MySkills implements Serializable {
     private List<Category> categoryArrayList;
     private String simple="";
     private String detail="";
+    private String NodeIds="";
 
     public MySkills(boolean selected, Category category, List<Category> categoryArrayList) {
         this.selected = selected;
         Category = category;
         this.categoryArrayList = categoryArrayList;
 
+    }
+
+    public String getNodeIds() {
+        return NodeIds;
+    }
+
+    public void setNodeIds(String nodeIds) {
+        NodeIds = nodeIds;
     }
 
     public boolean isSelected() {
@@ -41,11 +50,14 @@ public class MySkills implements Serializable {
         this.categoryArrayList = categoryArrayList;
         for (int i = 0; i < categoryArrayList.size(); i++) {
             detail+=categoryArrayList.get(i).getFCategoryName()+"/";
+            NodeIds+=categoryArrayList.get(i).getFCategoryID()+",";
         }
         if (detail.contains("/")){
             detail=detail.substring(0,detail.lastIndexOf("/"));
         }
-
+        if (NodeIds.contains(",")){
+            NodeIds=NodeIds.substring(0,NodeIds.lastIndexOf(","));
+        }
         if (detail.length()>50){
             simple=detail.substring(0,50);
         }else{
