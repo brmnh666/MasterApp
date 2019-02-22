@@ -1,6 +1,7 @@
 package com.ying.administrator.masterappdemo.mvp.ui.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ying.administrator.masterappdemo.R;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.IntelligentCustomerServiceActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseFragment;
 
 import butterknife.BindView;
@@ -23,7 +25,7 @@ import butterknife.Unbinder;
  * Use the {@link BlankFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BlankFragment extends BaseFragment {
+public class BlankFragment extends BaseFragment implements View.OnClickListener {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_SHOW_TEXT = "text";
     @BindView(R.id.ll_online_consultation)
@@ -78,12 +80,26 @@ public class BlankFragment extends BaseFragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_blank, container, false);
         unbinder = ButterKnife.bind(this, rootView);
+        initListener();
         return rootView;
+    }
+
+    private void initListener() {
+        mLlOnlineConsultation.setOnClickListener(this);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.ll_online_consultation:
+                startActivity(new Intent(getContext(), IntelligentCustomerServiceActivity.class));
+        }
+
     }
 }

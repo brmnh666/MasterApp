@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F3F3F3">
+
+    <include layout="@layout/actionbar_receiving_layout"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@color/color_custom_01"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/white_shape"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <FrameLayout
+                        android:id="@+id/fl_logo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="14dp"
+                        android:layout_marginTop="21dp">
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@mipmap/logo_bg"/>
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="25dp"
+                            android:src="@mipmap/logo"
+                            android:layout_gravity="center"/>
+                    </FrameLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginLeft="@dimen/dp_10">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="智能客服-小鱼"
+                            android:textSize="15sp"
+                            android:textColor="#0088FF"
+                            android:layout_marginTop="25dp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="客服西瓜鱼欢迎来撩哦~"
+                            android:textColor="#666666"
+                            android:textSize="10sp"
+                            android:layout_marginTop="6dp"/>
+                    </LinearLayout>
+                </LinearLayout>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_chat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10"></android.support.v7.widget.RecyclerView>
+            </LinearLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="17dp"
+            android:layout_marginBottom="@dimen/dp_10">
+            
+            <ImageView
+                android:id="@+id/iv_speak"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@mipmap/chat_hua"
+                android:layout_gravity="center"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="31dp"
+                android:orientation="horizontal"
+                android:background="@mipmap/chat_bg"
+                android:layout_marginLeft="13dp">
+                <EditText
+                    android:id="@+id/et_question"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:hint="请输入你想要咨询的问题"
+                    android:textColor="#696969"
+                    android:textSize="13sp"
+                    android:background="@null"
+                    android:layout_gravity="center"
+                    android:paddingLeft="15dp"/>
+                
+                <ImageView
+                    android:id="@+id/iv_smiley_face"
+                    android:layout_width="22dp"
+                    android:layout_height="24dp"
+                    android:src="@mipmap/chat_smail"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="12dp"/>
+
+            </LinearLayout>
+            
+            <ImageView
+                android:id="@+id/iv_choose"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:src="@mipmap/chat_add"
+                android:layout_marginLeft="13dp"/>
+
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</LinearLayout>

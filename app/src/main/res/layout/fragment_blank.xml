@@ -26,11 +26,11 @@
         <LinearLayout
             android:id="@+id/ll_online_consultation"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="horizontal"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="13dp">
+            android:gravity="bottom"
+            android:paddingBottom="13dp">
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="23dp"
@@ -53,11 +53,11 @@
         <LinearLayout
             android:id="@+id/ll_contact_customer_Service"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="horizontal"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="13dp">
+            android:gravity="bottom"
+            android:paddingBottom="13dp">
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="23dp"
@@ -84,8 +84,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="14dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="14dp"
             android:text="综合"
             android:textSize="16sp"
             android:textColor="@drawable/tab_mall_text"/>
@@ -95,8 +95,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="14dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="14dp"
             android:text="销量"
             android:textSize="16sp"
             android:textColor="@drawable/tab_mall_text"/>
@@ -106,8 +106,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="14dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="14dp"
             android:orientation="horizontal">
             <TextView
                 android:layout_width="wrap_content"
@@ -137,8 +137,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="14dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="14dp"
             android:text="新品"
             android:textSize="16sp"
             android:textColor="@drawable/tab_mall_text"/>
