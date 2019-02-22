@@ -19,6 +19,7 @@ import com.ying.administrator.masterappdemo.mvp.ui.activity.Opinion_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_Receiving_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Personal_Information_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.SettingActivity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.SubAccountManagementActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Wallet_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.WithDrawActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseFragment;
@@ -39,6 +40,7 @@ public class Me_Fragment extends BaseFragment implements DefineView {
     private LinearLayout ll_me_information;
     private LinearLayout ll_me_opinion;
     private LinearLayout ll_me_customer_service;
+    private LinearLayout ll_sub_account_management;
 
     public Me_Fragment() {
         // Required empty public constructor
@@ -86,6 +88,7 @@ public class Me_Fragment extends BaseFragment implements DefineView {
         ll_me_information = view.findViewById(R.id.ll_me_information);
         ll_me_opinion = view.findViewById(R.id.ll_me_opinion);
         ll_me_customer_service=view.findViewById(R.id.ll_me_customer_service);
+        ll_sub_account_management = view.findViewById(R.id.ll_sub_account_management);
     }
 
     @Override
@@ -102,6 +105,7 @@ public class Me_Fragment extends BaseFragment implements DefineView {
         ll_me_information.setOnClickListener(new CustomOnclickListner());
         ll_me_opinion.setOnClickListener(new CustomOnclickListner());
         ll_me_customer_service.setOnClickListener(new CustomOnclickListner());
+        ll_sub_account_management.setOnClickListener(new CustomOnclickListner());
     }
 
     @Override
@@ -157,7 +161,9 @@ public class Me_Fragment extends BaseFragment implements DefineView {
                     }).show();
 
                     break;
-
+                case R.id.ll_sub_account_management://子账号管理
+                    startActivity(new Intent(getActivity(), SubAccountManagementActivity.class));
+                    break;
                 default:
                     break;
             }

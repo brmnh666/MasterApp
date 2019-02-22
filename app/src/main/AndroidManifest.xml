@@ -210,6 +210,8 @@
         <activity android:name=".mvp.ui.activity.CompleteWorkOrderActivity" android:theme="@style/AppTheme.NoActionBar"/>
         <!--添加配件-->
         <activity android:name=".mvp.ui.activity.Order_Add_Accessories_Activity" android:theme="@style/AppTheme.NoActionBar" />
+        <!--子账号管理-->
+        <activity android:name=".mvp.ui.activity.SubAccountManagementActivity" android:theme="@style/AppTheme.NoActionBar"/>
 
     </application>
 

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="43dp"
+        android:layout_marginRight="46dp"
+        android:background="@color/white">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="186dp"
+            android:background="@mipmap/in">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="91dp"
+                android:gravity="center"
+                android:src="@mipmap/in_circle"
+                android:layout_marginTop="23dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="审核中..."
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:gravity="center"
+                    android:layout_marginTop="80dp"/>
+        </FrameLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="提交成功,等待管理员审核"
+            android:textSize="15sp"
+            android:textColor="#333333"
+            android:gravity="center"
+            android:layout_marginTop="21dp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="预计1个工作日内审核完毕，审核
+结果会短信通知到您的手机上。"
+            android:textSize="15sp"
+            android:textColor="#333333"
+            android:layout_marginTop="21dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"/>
+        
+        <Button
+            android:id="@+id/btn_modify_data"
+            android:layout_width="match_parent"
+            android:layout_height="41dp"
+            android:layout_marginLeft="41dp"
+            android:layout_marginRight="41dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginBottom="35dp"
+            android:background="@drawable/blue_shape"
+            android:text="好的"
+            android:textColor="@color/white"
+            android:textSize="15sp"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>
