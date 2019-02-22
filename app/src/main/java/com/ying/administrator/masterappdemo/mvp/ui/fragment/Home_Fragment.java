@@ -4,6 +4,7 @@ import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -28,6 +29,10 @@ import com.amap.api.location.AMapLocationListener;
 import com.amap.searchdemo.MainActivity;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -35,6 +40,7 @@ import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
@@ -86,8 +92,10 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
     TextView mTvHomeGivingMoney;
     @BindView(R.id.tv_certification) //实名认证
     TextView mTvCertification;
-    @BindView(R.id.img_certification)
+    @BindView(R.id.img_certification)//实名认证图片
     ImageView mImgCertification;
+    @BindView(R.id.img_un_certification) //未实名认证图片
+    ImageView mImg_un_certification;
     @BindView(R.id.img_home_location)
     ImageView mImgHomeLocation;
     @BindView(R.id.tv_home_location)
@@ -115,11 +123,12 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
     // private WaveSwipeRefreshLayout mWaveSwipeRefreshLayout;
     private String mContentText;
     private View mRootView;
-    private String userID;//用户id
+
     private GrabsheetAdapter grabsheetAdapter;
     private WorkOrder workOrder;
     private List<WorkOrder.DataBean> list;
     private int pageIndex = 1;  //默认当前页数为1
+    private String userID;//用户id
     SPUtils spUtils = SPUtils.getInstance("token");
     private UserInfo.UserInfoDean userInfo=new UserInfo.UserInfoDean();
     //声明AMapLocationClient类对象
@@ -225,9 +234,7 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
         // Inflate the layout for this fragment
         if (mRootView == null) {
             mRootView = inflater.inflate(R.layout.fragment_home, container, false);
-            Log.d("ying", "调用了onCreateView");
 
-            // Log.d("userID",userID+"13");
 
         }
         return mRootView;
@@ -244,8 +251,9 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
     public void initView() {
         final CommonDialog_Home dialog = new CommonDialog_Home(getActivity()); //弹出框
         userID = spUtils.getString("userName"); //获取用户id
-
         mPresenter.GetUserInfoList(userID,"1");//根据 手机号码获取用户详细信息
+
+
 
 
         methodRequiresPermission();
@@ -320,14 +328,16 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
 
     }
 
-    public void initValidata() {
 
-    }
 
     public void initListener() {
 
         //实名认证
         mTvCertification.setOnClickListener(this);
+        //实名认证图片
+        mImgCertification.setOnClickListener(this);
+        mImg_un_certification.setOnClickListener(this);
+
         //二维码
         mImgHomeQrCode.setOnClickListener(this);
         mTvHomeLocation.setOnClickListener(this);
@@ -450,6 +460,45 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
                         mTvCertification.setText("未实名认证");
                     }
                 }
+                /*设置实名认证状态*/
+                if (userInfo.getIfAuth()==null){
+                    mTvCertification.setText("未实名认证");
+                    mImg_un_certification.setVisibility(View.VISIBLE);
+                    mImgCertification.setVisibility(View.INVISIBLE);
+                    mTvCertification.setTextColor(Color.rgb(92,92,92));
+
+                }else if (userInfo.getIfAuth().equals("0")){
+                    mTvCertification.setText("审核中");
+                    mTvCertification.setTextColor(Color.RED);
+                    mImg_un_certification.setVisibility(View.VISIBLE);
+                    mImgCertification.setVisibility(View.INVISIBLE);
+
+                }else if (userInfo.getIfAuth().equals("-1")){
+                    mTvCertification.setText("审核不通过");
+                    mTvCertification.setTextColor(Color.RED);
+                    mImg_un_certification.setVisibility(View.VISIBLE);
+                    mImgCertification.setVisibility(View.INVISIBLE);
+
+                }else if (userInfo.getIfAuth().equals("1")){
+                    mTvCertification.setText("已实名认证");
+                    mImg_un_certification.setVisibility(View.INVISIBLE);
+                    mImgCertification.setVisibility(View.VISIBLE);
+                }else {
+                    return;
+                }
+
+                /*设置头像*/
+                if (userInfo.getAvator()==null){//显示默认头像
+                      return;
+                }else {
+                    Glide.with(this)
+                            .load(Config.HEAD_URL+userInfo.getAvator())
+                            .apply(RequestOptions.bitmapTransform(new CircleCrop()))
+                            .into(mImgHomeHead);
+
+                }
+
+
                 break;
 
             default:
@@ -501,6 +550,21 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
         customDialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
         customDialog.setTitle("实名认证");
         customDialog.show();
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+
+            case R.id.tv_certification:
+            case R.id.img_certification:
+            case R.id.img_un_certification:
+
+                if (userInfo.getIfAuth()==null){ //未实名认证可以点击
+
+                    final CustomDialog customDialog = new CustomDialog(getContext());
+                    customDialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+                    customDialog.setTitle("实名认证");
+                    customDialog.show();
 
         customDialog.setYesOnclickListener("确定", new CustomDialog.onYesOnclickListener() {
             @Override
@@ -572,6 +636,18 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
                     }
                 }
                 break;
+                    customDialog.setNoOnclickListener("取消", new CustomDialog.onNoOnclickListener() {
+                        @Override
+                        public void onNoClick() {
+                            // Toast.makeText(getContext(), "点击了--关闭-按钮", Toast.LENGTH_LONG).show();
+                            customDialog.dismiss();
+                        }
+                    });
+                    break;
+                }else {
+                    break;
+                }
+
             case R.id.img_home_qr_code:
                 shareDialog = new ShareDialog(getContext());
                 shareDialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
