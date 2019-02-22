@@ -108,7 +108,7 @@
         android:background="#F7F7F7" />
 
     <LinearLayout
-        android:id="@+id/ll_me_customer_service"
+        android:id="@+id/ll_sub_account_management"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
@@ -139,6 +139,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ll_me_customer_service"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
