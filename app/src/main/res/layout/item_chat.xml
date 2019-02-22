@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bule_shape"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="47dp"
+        android:layout_marginTop="@dimen/dp_10"
+        android:padding="8dp">
+        <TextView
+            android:id="@+id/tv_answer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="亲，小鱼猜你想咨询以下问题？你也可以描述你的问题，小鱼来帮你解答，比如“金融的基本知识是什么？”"
+            android:textSize="13sp"
+            android:textColor="@color/white" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/gray_background_shape"
+        android:layout_gravity="right"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginLeft="47dp"
+        android:padding="8dp">
+        <TextView
+            android:id="@+id/tv_ask"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="如何申请退款？"
+            android:textSize="13sp"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+</LinearLayout>
