@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 public class SubAccountManagementActivity extends BaseActivity implements View.OnClickListener {
     @BindView(R.id.img_actionbar_return)
@@ -77,10 +78,13 @@ public class SubAccountManagementActivity extends BaseActivity implements View.O
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.ll_return:
-                finish();
+                SubAccountManagementActivity.this.finish();
                 break;
         }
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }

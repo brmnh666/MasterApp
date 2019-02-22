@@ -16,8 +16,11 @@ import okhttp3.logging.HttpLoggingInterceptor;
 * */
 public class Config {
     public static final String BASE_URL = "http://47.96.126.145:8001/api/";//服务端地址
+   public static final String HEAD_URL="http://47.96.126.145:8820/Pics/Avator/";//头像地址
+
     public static boolean IS_DEBUG = true;
     public static String TOKEN = null;
+
 
     static HttpLoggingInterceptor loggingInterceptor;
     private static SPUtils spUtils;

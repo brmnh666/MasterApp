@@ -1,18 +1,22 @@
 package com.ying.administrator.masterappdemo.mvp.ui.adapter;
 
 import android.support.annotation.Nullable;
+import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.entity.Pending_Appointment_Entity;
+import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 
 import java.util.List;
 
 public class Pending_Appointment_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,BaseViewHolder> {
-    public Pending_Appointment_Adapter(int layoutResId, @Nullable List<WorkOrder.DataBean> data) {
+    private UserInfo.UserInfoDean userInfo=new UserInfo.UserInfoDean();
+    public Pending_Appointment_Adapter(int layoutResId, @Nullable List<WorkOrder.DataBean> data,UserInfo.UserInfoDean userInfo) {
         super(layoutResId, data);
+        this.userInfo=userInfo;
     }
 
     @Override
@@ -31,9 +35,16 @@ public class Pending_Appointment_Adapter extends BaseQuickAdapter<WorkOrder.Data
 
         }
 
+        if (userInfo.getParentUserID()==null){//如果没有父账号说明自己是父账号 显示 转派
+            helper.setGone(R.id.tv_pending_appointment_redeploy,true);
+
+        }else {
+            helper.setGone(R.id.tv_pending_appointment_redeploy,false);
+        }
         helper.addOnClickListener(R.id.img_pending_appointment_phone);//拨打电话事件
         helper.addOnClickListener(R.id.tv_pending_appointment_success); //预约成功
         helper.addOnClickListener(R.id.tv_pending_appointment_failure);//预约不成功
+        helper.addOnClickListener(R.id.tv_pending_appointment_redeploy);//转派
     }
 
 

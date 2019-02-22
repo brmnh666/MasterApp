@@ -215,5 +215,9 @@ public interface ApiService {
             @Field("NodeIds") String NodeIds
     );
 
-
+/*
+    获取子账号*/
+    @FormUrlEncoded
+    @POST("Account/GetChildAccountByParentUserID")
+    Observable<BaseResult<String>> GetChildAccountByParentUserID(@Field("UserID") String UserID);
 }

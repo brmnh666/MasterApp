@@ -24,6 +24,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.GetOrderListForMeContract;
 import com.ying.administrator.masterappdemo.mvp.model.GetOrderListForMeModel;
@@ -42,12 +43,14 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
     private RecyclerView recyclerView;
     private Pending_Appointment_Adapter pending_appointment_adapter;
     private ArrayList<WorkOrder.DataBean> list;
+    private UserInfo.UserInfoDean userInfo=new UserInfo.UserInfoDean();
     private WorkOrder workOrder;
     private String phoneNuber;
     private Context mContext;
     private RefreshLayout mRefreshLayout;
     private String userID; //用户id
     private int pageIndex = 1;  //默认当前页数为1
+    private TextView tv_pending_appointment_redeploy;//转派
     public Pending_appointment_fragment() {
         // Required empty public constructor
     }
@@ -79,14 +82,14 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
 
     public void initView() {
         recyclerView=view.findViewById(R.id.recyclerview_order_receiving);
+        tv_pending_appointment_redeploy=view.findViewById(R.id.tv_pending_appointment_redeploy);
         mRefreshLayout=view.findViewById(R.id.refreshLayout);
+
         list=new ArrayList<>();
-
-
-        pending_appointment_adapter=new Pending_Appointment_Adapter(R.layout.item_pending_appointment,list);
+        mPresenter.GetUserInfoList(userID,"1"); //获取关于自己的信息
+        pending_appointment_adapter=new Pending_Appointment_Adapter(R.layout.item_pending_appointment,list,userInfo);
         recyclerView.setAdapter(pending_appointment_adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
         mPresenter.GetOrderInfoListForMe("2",Integer.toString(pageIndex),"4",userID);
 
 
@@ -231,6 +234,15 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                         break;
                     /*电话预约*/
 
+
+                    /*转派订单*/
+
+                    case R.id.tv_pending_appointment_redeploy:
+                        mPresenter.GetChildAccountByParentUserID(userID);
+
+                        break;
+                    /*转派订单*/
+
                         default:
                             break;
 
@@ -270,6 +282,25 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                 break;
 
         }
+    }
+
+    @Override
+    public void GetUserInfoList(BaseResult<UserInfo> baseResult) {
+        switch (baseResult.getStatusCode()){
+            case 200:
+                userInfo = baseResult.getData().getData().get(0);
+
+                break;
+            default:
+                break;
+
+        }
+    }
+
+    @Override
+    public void GetChildAccountByParentUserID(BaseResult<String> baseResult) {
+
+
     }
 
     @Override

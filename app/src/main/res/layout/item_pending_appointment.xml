@@ -175,36 +175,52 @@
         android:layout_marginTop="5dp"
         android:background="#DAD7DB"
         android:layout_below="@id/tv_pending_appointment_cancel"/>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+     android:orientation="horizontal"
+    android:layout_below="@id/view_point"
 
-        <TextView
-            android:id="@+id/tv_pending_appointment_success"
-            android:layout_below="@id/view_point"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="预约成功"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="79dp"
-            android:layout_marginBottom="11dp"
-            android:background="@drawable/tv_recevied"
-            android:layout_marginTop="10dp"
-            android:padding="10dp"
-            android:textSize="16sp"
-                 />
+    android:gravity="center"
 
-        <TextView
-            android:id="@+id/tv_pending_appointment_failure"
-            android:layout_below="@+id/view_point"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="未预约成功"
-            android:textSize="16sp"
-            android:layout_marginLeft="76dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="11dp"
-            android:background="@drawable/tv_recevied"
-            android:padding="10dp"
+    >
 
-           />
+
+    <TextView
+        android:id="@+id/tv_pending_appointment_failure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="未预约成功"
+        android:textSize="16sp"
+        android:background="@drawable/tv_recevied"
+        android:padding="10dp"
+        android:layout_margin="10dp"
+
+        />
+    <TextView
+        android:id="@+id/tv_pending_appointment_success"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="预约成功"
+        android:background="@drawable/tv_recevied"
+        android:padding="10dp"
+        android:textSize="16sp"
+        android:layout_margin="10dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_pending_appointment_redeploy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="转派"
+        android:textSize="16sp"
+        android:background="@drawable/tv_recevied"
+        android:padding="10dp"
+        android:layout_margin="10dp"
+
+        />
+
+</LinearLayout>
 
 
 

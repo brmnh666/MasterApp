@@ -113,6 +113,17 @@
             />
 
         <ImageView
+            android:id="@+id/img_un_certification"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:src="@mipmap/icon_home_un_certification"
+            android:layout_toLeftOf="@+id/tv_certification"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:visibility="invisible"
+            />
+
+        <ImageView
             android:id="@+id/img_home_location"
             android:layout_width="13dp"
             android:layout_height="13dp"

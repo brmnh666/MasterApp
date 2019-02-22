@@ -6,6 +6,7 @@ import com.ying.administrator.masterappdemo.base.BasePresenter;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.base.BaseView;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 
 import io.reactivex.Observable;
@@ -18,6 +19,11 @@ public interface GetOrderListForMeContract {
         Observable<BaseResult<WorkOrder>> GetOrderInfoListForMe(String state, String page, String limit, String SendUser);
         //未预约成功
         Observable<BaseResult<Data>> AddOrderfailureReason(String OrderID, String AppointmentState, String AppointmentMessage);
+        //获取自己的信息
+        Observable<BaseResult<UserInfo>> GetUserInfoList(String UserID, String limit);
+
+        //获取子账号
+        Observable<BaseResult<String>> GetChildAccountByParentUserID(String UserID);
 
     }
 
@@ -27,6 +33,12 @@ public interface GetOrderListForMeContract {
 
         //未预约成功
         void AddOrderfailureReason(BaseResult<Data> baseResult);
+
+        //获取自己的信息
+        void GetUserInfoList(BaseResult<UserInfo> baseResult);
+
+        //获取子账号
+        void GetChildAccountByParentUserID(BaseResult<String> baseResult);
     }
 
     abstract class Presenter extends BasePresenter<View,Model> {
@@ -34,5 +46,9 @@ public interface GetOrderListForMeContract {
         public abstract void GetOrderInfoListForMe(String state, String page, String limit,String SendUser);
         //未预约成功
         public abstract void AddOrderfailureReason(String OrderID,String AppointmentState,String AppointmentMessage);
+        //获取自己的信息
+        public abstract void GetUserInfoList(String UserID,String limit);
+        //获取子账号
+        public abstract void GetChildAccountByParentUserID(String UserID);
     }
 }

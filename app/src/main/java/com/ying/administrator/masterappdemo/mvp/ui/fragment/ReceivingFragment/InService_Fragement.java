@@ -18,6 +18,7 @@ import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.GetOrderListForMeContract;
 import com.ying.administrator.masterappdemo.mvp.model.GetOrderListForMeModel;
@@ -131,6 +132,16 @@ import java.util.ArrayList;
 
     @Override
     public void AddOrderfailureReason(BaseResult<Data> baseResult) {
+
+    }
+
+    @Override
+    public void GetUserInfoList(BaseResult<UserInfo> baseResult) {
+
+    }
+
+    @Override
+    public void GetChildAccountByParentUserID(BaseResult<String> baseResult) {
 
     }
 
