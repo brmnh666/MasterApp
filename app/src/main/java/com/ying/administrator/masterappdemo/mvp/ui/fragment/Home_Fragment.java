@@ -280,7 +280,7 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 switch (view.getId()) {
                     case R.id.img_grabsheet:
-                        if (userInfo!=null){
+                        if (userInfo.getIfAuth()!=null){
                             if (userInfo.getIfAuth().equals("1")){
                                 mPresenter.AddGrabsheetapply(((WorkOrder.DataBean) adapter.getItem(position)).getOrderID(), userID);
                                 //Log.d("WorkOrder",((WorkOrder.DataBean)adapter.getItem(position)).getOrderID());
@@ -318,6 +318,8 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
                             }else {
                                 showVerifiedDialog();
                             }
+                        }else{
+                            showVerifiedDialog();
                         }
                         break;
                 }
@@ -448,18 +450,7 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
         switch (baseResult.getStatusCode()){
             case 200:
                 userInfo = baseResult.getData().getData().get(0);
-                /*设置实名认证状态*/
-                if (userInfo!=null){
-                    if (userInfo.getIfAuth().equals("1")){
-                        mTvCertification.setText("已实名认证");
-                    }else if (userInfo.getIfAuth().equals("0")){
-                        mTvCertification.setText("审核中");
-                    }else if (userInfo.getIfAuth().equals("-1")){
-                        mTvCertification.setText("审核不通过");
-                    }else {
-                        mTvCertification.setText("未实名认证");
-                    }
-                }
+
                 /*设置实名认证状态*/
                 if (userInfo.getIfAuth()==null){
                     mTvCertification.setText("未实名认证");
@@ -545,51 +536,11 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
         super.onDestroyView();
         unbinder.unbind();
     }
-    public void showVerifiedDialog(){
+    public void showVerifiedDialog() {
         customDialog = new CustomDialog(getContext());
         customDialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
         customDialog.setTitle("实名认证");
         customDialog.show();
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-
-            case R.id.tv_certification:
-            case R.id.img_certification:
-            case R.id.img_un_certification:
-
-                if (userInfo.getIfAuth()==null){ //未实名认证可以点击
-
-                    final CustomDialog customDialog = new CustomDialog(getContext());
-                    customDialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
-                    customDialog.setTitle("实名认证");
-                    customDialog.show();
-
-        customDialog.setYesOnclickListener("确定", new CustomDialog.onYesOnclickListener() {
-            @Override
-            public void onYesClick() {
-                //Toast.makeText(getContext(), "点击了--去认证--按钮", Toast.LENGTH_LONG).show();
-                customDialog.dismiss();
-                startActivity(new Intent(getActivity(), Verified_Activity.class));
-            }
-        });
-
-        customDialog.setNoOnclickListener("取消", new CustomDialog.onNoOnclickListener() {
-            @Override
-            public void onNoClick() {
-                //Toast.makeText(getContext(), "点击了--再想想--按钮", Toast.LENGTH_LONG).show();
-                customDialog.dismiss();
-            }
-        });
-
-        customDialog.setNoOnclickListener("取消", new CustomDialog.onNoOnclickListener() {
-            @Override
-            public void onNoClick() {
-                // Toast.makeText(getContext(), "点击了--关闭-按钮", Toast.LENGTH_LONG).show();
-                customDialog.dismiss();
-            }
-        });
     }
     @Override
     public void onClick(View v) {
@@ -636,17 +587,6 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
                     }
                 }
                 break;
-                    customDialog.setNoOnclickListener("取消", new CustomDialog.onNoOnclickListener() {
-                        @Override
-                        public void onNoClick() {
-                            // Toast.makeText(getContext(), "点击了--关闭-按钮", Toast.LENGTH_LONG).show();
-                            customDialog.dismiss();
-                        }
-                    });
-                    break;
-                }else {
-                    break;
-                }
 
             case R.id.img_home_qr_code:
                 shareDialog = new ShareDialog(getContext());

@@ -151,6 +151,8 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
                     }else {
                         showVerifiedDialog();
                     }
+                }else{
+                    showVerifiedDialog();
                 }
             }
 
