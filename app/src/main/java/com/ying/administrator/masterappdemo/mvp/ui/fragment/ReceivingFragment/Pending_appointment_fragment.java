@@ -24,6 +24,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.SubUserInfo;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.GetOrderListForMeContract;
@@ -36,6 +37,7 @@ import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseFra
 import com.ying.administrator.masterappdemo.widget.CustomDialog_UnSuccess;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /*待预约*/
 public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMePresenter, GetOrderListForMeModel> implements GetOrderListForMeContract.View {
@@ -43,7 +45,9 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
     private RecyclerView recyclerView;
     private Pending_Appointment_Adapter pending_appointment_adapter;
     private ArrayList<WorkOrder.DataBean> list;
-    private UserInfo.UserInfoDean userInfo=new UserInfo.UserInfoDean();
+    private UserInfo.UserInfoDean userInfo=new UserInfo.UserInfoDean(); //获取当前账号详情
+    private ArrayList<SubUserInfo.SubUserInfoDean> subuserlist;//获取子账号列表
+
     private WorkOrder workOrder;
     private String phoneNuber;
     private Context mContext;
@@ -84,10 +88,16 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
         recyclerView=view.findViewById(R.id.recyclerview_order_receiving);
         tv_pending_appointment_redeploy=view.findViewById(R.id.tv_pending_appointment_redeploy);
         mRefreshLayout=view.findViewById(R.id.refreshLayout);
-
         list=new ArrayList<>();
-        mPresenter.GetUserInfoList(userID,"1"); //获取关于自己的信息
-        pending_appointment_adapter=new Pending_Appointment_Adapter(R.layout.item_pending_appointment,list,userInfo);
+        subuserlist=new ArrayList<>();//获取子账号列表
+
+
+          mPresenter.GetUserInfoList(userID,"1"); //获取关于自己的信息
+          mPresenter.GetChildAccountByParentUserID(userID);//获取自己的子账号 如果没有返回空
+
+
+
+        pending_appointment_adapter=new Pending_Appointment_Adapter(R.layout.item_pending_appointment,list,userInfo,subuserlist);
         recyclerView.setAdapter(pending_appointment_adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mPresenter.GetOrderInfoListForMe("2",Integer.toString(pageIndex),"4",userID);
@@ -238,7 +248,6 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                     /*转派订单*/
 
                     case R.id.tv_pending_appointment_redeploy:
-                        mPresenter.GetChildAccountByParentUserID(userID);
 
                         break;
                     /*转派订单*/
@@ -270,6 +279,9 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
         }
     }
 
+
+
+
     /**/
     @Override
     public void AddOrderfailureReason(BaseResult<Data> baseResult) {
@@ -289,7 +301,6 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
         switch (baseResult.getStatusCode()){
             case 200:
                 userInfo = baseResult.getData().getData().get(0);
-
                 break;
             default:
                 break;
@@ -298,10 +309,16 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
     }
 
     @Override
-    public void GetChildAccountByParentUserID(BaseResult<String> baseResult) {
-
-
+    public void GetChildAccountByParentUserID(BaseResult<List<SubUserInfo.SubUserInfoDean>> baseResult) {
+              switch (baseResult.getStatusCode()){
+                  case 200:
+                      subuserlist.addAll(baseResult.getData());
+                      break;
+                      default:
+                          break;
+              }
     }
+
 
     @Override
     public void contentLoading() {
@@ -325,6 +342,7 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
 
     @Override
     public void hideProgress() {
+
     }
 
 

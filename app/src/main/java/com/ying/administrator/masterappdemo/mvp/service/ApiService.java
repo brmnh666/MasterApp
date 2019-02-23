@@ -7,6 +7,7 @@ import com.ying.administrator.masterappdemo.entity.GetFactoryData;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.GetFactorySeviceData;
 import com.ying.administrator.masterappdemo.entity.Service;
+import com.ying.administrator.masterappdemo.entity.SubUserInfo;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 
@@ -225,5 +226,6 @@ public interface ApiService {
     获取子账号*/
     @FormUrlEncoded
     @POST("Account/GetChildAccountByParentUserID")
-    Observable<BaseResult<String>> GetChildAccountByParentUserID(@Field("UserID") String UserID);
+    Observable<BaseResult<List<SubUserInfo.SubUserInfoDean>>>
+    GetChildAccountByParentUserID(@Field("ParentUserID") String ParentUserID);
 }

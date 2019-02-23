@@ -18,6 +18,7 @@ import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.SubUserInfo;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.GetOrderListForMeContract;
@@ -30,6 +31,7 @@ import com.ying.administrator.masterappdemo.mvp.ui.adapter.In_Service_Adapter;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseFragment;
 import com.ying.administrator.masterappdemo.R;
 import java.util.ArrayList;
+import java.util.List;
 
 /*
 * 服务中页面
@@ -141,7 +143,7 @@ import java.util.ArrayList;
     }
 
     @Override
-    public void GetChildAccountByParentUserID(BaseResult<String> baseResult) {
+    public void GetChildAccountByParentUserID(BaseResult<List<SubUserInfo.SubUserInfoDean>> baseResult) {
 
     }
 

@@ -1,22 +1,27 @@
 package com.ying.administrator.masterappdemo.mvp.ui.adapter;
 
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.entity.Pending_Appointment_Entity;
+import com.ying.administrator.masterappdemo.entity.SubUserInfo;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Pending_Appointment_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,BaseViewHolder> {
-    private UserInfo.UserInfoDean userInfo=new UserInfo.UserInfoDean();
-    public Pending_Appointment_Adapter(int layoutResId, @Nullable List<WorkOrder.DataBean> data,UserInfo.UserInfoDean userInfo) {
+    private UserInfo.UserInfoDean userInfo;
+    private ArrayList<SubUserInfo.SubUserInfoDean> subuserlist;
+    public Pending_Appointment_Adapter(int layoutResId, @Nullable List<WorkOrder.DataBean> data, UserInfo.UserInfoDean userInfo,ArrayList subuserlist) {
         super(layoutResId, data);
         this.userInfo=userInfo;
+        this.subuserlist=subuserlist;
     }
 
     @Override
@@ -25,6 +30,8 @@ public class Pending_Appointment_Adapter extends BaseQuickAdapter<WorkOrder.Data
         helper.setText(R.id.tv_reason_pending_appointment,item.getMemo());//原因
      helper.setText(R.id.tv_address_pending_appointment,item.getAddress()); //地址
         helper.setText(R.id.tv_pending_appointment_job_number,"工单号:"+item.getOrderID());
+
+
         if (item.getTypeID().equals("1")){//维修
           helper.setVisible(R.id.tv_pending_appointment_status_repair,true);
           helper.setVisible(R.id.tv_pending_appointment_status_install,false);
@@ -36,7 +43,17 @@ public class Pending_Appointment_Adapter extends BaseQuickAdapter<WorkOrder.Data
         }
 
         if (userInfo.getParentUserID()==null){//如果没有父账号说明自己是父账号 显示 转派
-            helper.setGone(R.id.tv_pending_appointment_redeploy,true);
+            //helper.setGone(R.id.tv_pending_appointment_redeploy,true);
+
+
+                if (subuserlist.size()!=0){ //有子账号
+                    helper.setGone(R.id.tv_pending_appointment_redeploy,true);
+
+                }else {//没有子账号
+                    helper.setGone(R.id.tv_pending_appointment_redeploy,false);
+                }
+
+
 
         }else {
             helper.setGone(R.id.tv_pending_appointment_redeploy,false);

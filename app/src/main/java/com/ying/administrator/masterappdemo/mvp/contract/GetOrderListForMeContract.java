@@ -6,8 +6,11 @@ import com.ying.administrator.masterappdemo.base.BasePresenter;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.base.BaseView;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.SubUserInfo;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 
@@ -23,7 +26,7 @@ public interface GetOrderListForMeContract {
         Observable<BaseResult<UserInfo>> GetUserInfoList(String UserID, String limit);
 
         //获取子账号
-        Observable<BaseResult<String>> GetChildAccountByParentUserID(String UserID);
+        Observable<BaseResult<List<SubUserInfo.SubUserInfoDean>>> GetChildAccountByParentUserID(String ParentUserID);
 
     }
 
@@ -38,7 +41,7 @@ public interface GetOrderListForMeContract {
         void GetUserInfoList(BaseResult<UserInfo> baseResult);
 
         //获取子账号
-        void GetChildAccountByParentUserID(BaseResult<String> baseResult);
+        void GetChildAccountByParentUserID(BaseResult<List<SubUserInfo.SubUserInfoDean>> baseResult);
     }
 
     abstract class Presenter extends BasePresenter<View,Model> {
@@ -49,6 +52,6 @@ public interface GetOrderListForMeContract {
         //获取自己的信息
         public abstract void GetUserInfoList(String UserID,String limit);
         //获取子账号
-        public abstract void GetChildAccountByParentUserID(String UserID);
+        public abstract void GetChildAccountByParentUserID(String ParentUserID);
     }
 }

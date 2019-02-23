@@ -4,9 +4,12 @@ package com.ying.administrator.masterappdemo.mvp.presenter;
 import com.ying.administrator.masterappdemo.base.BaseObserver;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.SubUserInfo;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.GetOrderListForMeContract;
+
+import java.util.List;
 
 public class GetOrderListForMePresenter extends GetOrderListForMeContract.Presenter {
 
@@ -44,12 +47,12 @@ public class GetOrderListForMePresenter extends GetOrderListForMeContract.Presen
     }
 
     @Override
-    public void GetChildAccountByParentUserID(String UserID) {
+    public void GetChildAccountByParentUserID(String ParentUserID) {
 
-        mModel.GetChildAccountByParentUserID(UserID)
-                .subscribe(new BaseObserver<String>() {
+        mModel.GetChildAccountByParentUserID(ParentUserID)
+                .subscribe(new BaseObserver<List<SubUserInfo.SubUserInfoDean>>() {
                     @Override
-                    protected void onHandleSuccess(BaseResult<String> value) {
+                    protected void onHandleSuccess(BaseResult<List<SubUserInfo.SubUserInfoDean>> value) {
                         mView.GetChildAccountByParentUserID(value);
                     }
                 });
