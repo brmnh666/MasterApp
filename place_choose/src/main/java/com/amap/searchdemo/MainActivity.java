@@ -97,6 +97,12 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
     private PoiItem firstItem;
 
     private String address;
+    private String Province;
+    private String City;
+    private String Area;
+    private String District;
+    private double Longitude;
+    private double Dimension;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,9 +140,23 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
                     }else{
                         address=poiItem.getCityName() + poiItem.getAdName() + poiItem.getSnippet();
                     }
+                    Province=poiItem.getProvinceName();
+                    City=poiItem.getCityName();
+                    Area=poiItem.getAdName();
+                    District=poiItem.getSnippet();
+                    Longitude=poiItem.getLatLonPoint().getLongitude();
+                    Dimension=poiItem.getLatLonPoint().getLatitude();
                 }
                 Intent intent=new Intent();
-                intent.putExtra("address",address);
+                if (searchResultAdapter.getSelectedPosition()!=0){
+                    intent.putExtra("address",address);
+                    intent.putExtra("Province",Province);
+                    intent.putExtra("City",City);
+                    intent.putExtra("Area",Area);
+                    intent.putExtra("District",District);
+                    intent.putExtra("Longitude",Longitude);
+                    intent.putExtra("Dimension",Dimension);
+                }
                 setResult(100,intent);
                 finish();
             }
@@ -408,7 +428,8 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
                     && result.getRegeocodeAddress().getFormatAddress() != null) {
                 String address = result.getRegeocodeAddress().getFormatAddress();
 //                String address = result.getRegeocodeAddress().getProvince() + result.getRegeocodeAddress().getCity() + result.getRegeocodeAddress().getDistrict() + result.getRegeocodeAddress().getTownship();
-                firstItem = new PoiItem("regeo", searchLatlonPoint, address, address);
+//                firstItem = new PoiItem("regeo", searchLatlonPoint, address, address);
+                firstItem=result.getRegeocodeAddress().getPois().get(0);
                 doSearchQuery();
             }
         } else {

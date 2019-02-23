@@ -212,7 +212,13 @@ public interface ApiService {
             @Field("TrueName") String TrueName,
             @Field("IDCard") String IDCard,
             @Field("Address") String Address,
-            @Field("NodeIds") String NodeIds
+            @Field("NodeIds") String NodeIds,
+            @Field("Province") String Province,
+            @Field("City") String City,
+            @Field("Area") String Area,
+            @Field("District") String District,
+            @Field("Longitude") String Longitude,
+            @Field("Dimension") String Dimension
     );
 
 /*

@@ -165,6 +165,7 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                             + aMapLocation.getErrorCode() + ", errInfo:"
                             + aMapLocation.getErrorInfo());
                 }
+                mLocationClient.stopLocation();
             }
         }
     };
@@ -177,6 +178,7 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
     private String mPositiveCard = "";
     private String mNegativeCard = "";
     private Uri uri;
+    private int size;
 
     @Override
     protected int setLayoutId() {
@@ -294,7 +296,7 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                     ToastUtils.showShort("未定位到店铺地址！");
                     return;
                 }
-                mPresenter.ApplyAuthInfo(UserID, mActualName, mIdNumber, mAddress, NodeIds);
+                mPresenter.ApplyAuthInfo(UserID, mActualName, mIdNumber, mAddress, NodeIds,mProvince,mCity,mDistrict,mStreet,Double.toString(mLongitude),Double.toString(mLatitude));
                 break;
         }
     }
@@ -423,24 +425,29 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
+        size = 0;
+        for (int i = 0; i < grantResults.length; i++) {
+            if (grantResults[i]==PackageManager.PERMISSION_GRANTED){
+                size++;
+            }
+        }
         switch (requestCode) {
             case 10001:
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {//允许
+                if (size ==grantResults.length) {//允许
                     showPopupWindow(101, 102);
                 } else {//拒绝
                     MyUtils.showToast(mActivity, "相关权限未开启");
                 }
                 break;
             case 10002:
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {//允许
+                if (size ==grantResults.length) {//允许
                     showPopupWindow(201, 202);
                 } else {//拒绝
                     MyUtils.showToast(mActivity, "相关权限未开启");
                 }
                 break;
             case 20002:
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {//允许
+                if (size ==grantResults.length) {//允许
                     Location();
                 } else {//拒绝
                     MyUtils.showToast(mActivity, "相关权限未开启");
@@ -505,6 +512,12 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
             case 100:
                 if (data != null) {
                     mAddress = data.getStringExtra("address");
+                    mProvince = data.getStringExtra("Province");
+                    mCity = data.getStringExtra("City");
+                    mDistrict = data.getStringExtra("Area");
+                    mStreet = data.getStringExtra("District");
+                    mLongitude = data.getDoubleExtra("Longitude",-1);
+                    mLatitude = data.getDoubleExtra("Dimension",-1);
                     if (mAddress != null) {
                         mTvShopAddress.setText(mAddress);
                     }

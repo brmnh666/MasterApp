@@ -18,7 +18,14 @@ public interface VerifiedContract {
                                                                 String TrueName,
                                                                 String IDCard,
                                                                 String Address,
-                                                                String NodeIds);
+                                                           String NodeIds,
+                                                            String Province,
+                                                            String City,
+                                                            String Area,
+                                                          String District,
+                                                           String Longitude,
+                                                           String Dimension
+        );
     }
 
     interface View extends BaseView {
@@ -32,6 +39,12 @@ public interface VerifiedContract {
                                                 String TrueName,
                                                 String IDCard,
                                                 String Address,
-                                                String NodeIds);
+                                           String NodeIds,
+                                           String Province,
+                                           String City,
+                                           String Area,
+                                           String District,
+                                           String Longitude,
+                                           String Dimension);
     }
 }
