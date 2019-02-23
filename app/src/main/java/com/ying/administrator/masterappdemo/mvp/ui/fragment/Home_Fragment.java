@@ -55,6 +55,10 @@ import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 import com.ying.administrator.masterappdemo.widget.CustomDialog;
 import com.ying.administrator.masterappdemo.widget.ShareDialog;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -246,6 +250,7 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
         unbinder = ButterKnife.bind(this, mRootView);
         initView();
         initListener();
+        EventBus.getDefault().register(this);
     }
 
     public void initView() {
@@ -541,13 +546,37 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
         customDialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
         customDialog.setTitle("实名认证");
         customDialog.show();
+        customDialog.setYesOnclickListener("确定", new CustomDialog.onYesOnclickListener() {
+            @Override
+            public void onYesClick() {
+                //Toast.makeText(getContext(), "点击了--去认证--按钮", Toast.LENGTH_LONG).show();
+                customDialog.dismiss();
+                startActivity(new Intent(mActivity, Verified_Activity.class));
+            }
+        });
+
+        customDialog.setNoOnclickListener("取消", new CustomDialog.onNoOnclickListener() {
+            @Override
+            public void onNoClick() {
+                //Toast.makeText(getContext(), "点击了--再想想--按钮", Toast.LENGTH_LONG).show();
+                customDialog.dismiss();
+            }
+        });
+
+        customDialog.setNoOnclickListener("取消", new CustomDialog.onNoOnclickListener() {
+            @Override
+            public void onNoClick() {
+                // Toast.makeText(getContext(), "点击了--关闭-按钮", Toast.LENGTH_LONG).show();
+                customDialog.dismiss();
+            }
+        });
     }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
 
             case R.id.tv_certification:
-                if (userInfo!=null){
+                if (userInfo.getIfAuth()!=null){
                     if (userInfo.getIfAuth().equals("1")){
                         under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_successful_review,null);
                         btnConfirm = under_review.findViewById(R.id.btn_confirm);
@@ -585,6 +614,8 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
                     }else {
                         showVerifiedDialog();
                     }
+                }else {
+                    showVerifiedDialog();
                 }
                 break;
 
@@ -679,6 +710,7 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
         if (mLocationClient!=null){
             mLocationClient.stopLocation();
         }
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -715,4 +747,9 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
 //            finish();
         }
     }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(String message) {
+        mPresenter.GetUserInfoList(userID,"1");
+    }
+
 }

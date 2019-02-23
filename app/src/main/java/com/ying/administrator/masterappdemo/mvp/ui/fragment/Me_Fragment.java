@@ -36,6 +36,10 @@ import com.ying.administrator.masterappdemo.mvp.ui.activity.WithDrawActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseFragment;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -106,7 +110,7 @@ public class Me_Fragment extends BaseFragment<MainPresenter, MainModel> implemen
         initView();
         initValidata();
         initListener();
-
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -176,6 +180,7 @@ public class Me_Fragment extends BaseFragment<MainPresenter, MainModel> implemen
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();//解除绑定
+        EventBus.getDefault().unregister(this);
     }
 
 
@@ -281,4 +286,9 @@ public class Me_Fragment extends BaseFragment<MainPresenter, MainModel> implemen
             }
         }
     }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(String message) {
+        mPresenter.GetUserInfoList(userID,"1");
+    }
+
 }

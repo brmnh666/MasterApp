@@ -45,6 +45,8 @@ import com.ying.administrator.masterappdemo.mvp.model.VerifiedModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.VerifiedPresenter;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -566,6 +568,8 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
             case 200:
                 if (baseResult.getData().isItem1()) {
                     ToastUtils.showShort("提交成功");
+
+                    EventBus.getDefault().post("");
                     finish();
                 }
                 break;

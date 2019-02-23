@@ -141,5 +141,7 @@ dependencies {
 
    //扫描条形码
     implementation 'com.journeyapps:zxing-android-embedded:3.5.0'
+    //通信
+    implementation 'org.greenrobot:eventbus:3.0.0'
 
 }

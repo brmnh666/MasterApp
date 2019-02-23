@@ -27,6 +27,10 @@ import com.ying.administrator.masterappdemo.widget.BadgeView;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 import com.ying.administrator.masterappdemo.widget.CustomDialog;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import io.reactivex.Observable;
 
 public class MainActivity extends BaseActivity<MainPresenter, MainModel> implements MainContract.View {
@@ -49,7 +53,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
        // requestWindowFeature(Window.FEATURE_NO_TITLE);
         //setContentView(R.layout.activity_main);
         initView();
-
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -120,7 +124,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
             @Override
             public void onClick(View v)
             {
-                if (userInfo!=null){
+                if (userInfo.getIfAuth()!=null){
                     if (userInfo.getIfAuth().equals("1")){
                         Intent intent = new Intent(MainActivity.this, Order_Receiving_Activity.class);
                         intent.putExtra("intent", "pending_appointment");
@@ -215,12 +219,20 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
             case 200:
                 userInfo = baseResult.getData().getData().get(0);
 
-
                 break;
 
                 default:
                     break;
 
         }
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(String message) {
+        mPresenter.GetUserInfoList(userID,"1");
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }
