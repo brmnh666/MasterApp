@@ -1,29 +1,209 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import android.os.CountDownTimer;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.RegexUtils;
+import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.ying.administrator.masterappdemo.R;
+import com.ying.administrator.masterappdemo.base.BaseActivity;
+import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.mvp.contract.RegisterContract;
+import com.ying.administrator.masterappdemo.mvp.model.RegisterModel;
+import com.ying.administrator.masterappdemo.mvp.presenter.RegisterPresenter;
+import com.ying.administrator.masterappdemo.util.MyUtils;
 
-public class RegisterActivity extends AppCompatActivity {
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
+public class RegisterActivity extends BaseActivity<RegisterPresenter, RegisterModel> implements RegisterContract.View,View.OnClickListener {
+
+
+    private static final String TAG = "RegisterActivity";
+    @BindView(R.id.img_login_username)
+    ImageView mImgLoginUsername;
+    @BindView(R.id.et_register_username)
+    EditText mEtRegisterUsername;
+    @BindView(R.id.img_login_username_cancel)
+    ImageView mImgLoginUsernameCancel;
+    @BindView(R.id.img_login_password)
+    ImageView mImgLoginPassword;
+    @BindView(R.id.et_register_code)
+    EditText mEtRegisterCode;
+    @BindView(R.id.tv_get_verification_code)
+    TextView mTvGetVerificationCode;
+    @BindView(R.id.img_login_password_hide)
+    ImageView mImgLoginPasswordHide;
+    @BindView(R.id.btn_register)
+    Button mBtnRegister;
+    @BindView(R.id.tv_can_not_receive)
+    TextView mTvCanNotReceive;
+    private String userName;
+    private String code;
+
+    @Override
+    protected int setLayoutId() {
+        return R.layout.activity_register;
+    }
+
+    @Override
+    protected void initData() {
+
+    }
+
+    @Override
+    protected void initView() {
+
+    }
+
+    @Override
+    protected void setListener() {
+        mTvGetVerificationCode.setOnClickListener(this);
+        mBtnRegister.setOnClickListener(this);
+    }
 
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
-    }
-    public class CustomOnclickLister implements View.OnClickListener{
-        @Override
-        public void onClick(View v) {
-
-
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.tv_get_verification_code:
+                userName = mEtRegisterUsername.getText().toString();
+                if (userName.isEmpty()){
+                    ToastUtils.showShort("请输入手机号");
+                    return;
+                }
+                if (!RegexUtils.isMobileExact(userName)){
+                    ToastUtils.showShort("手机格式不正确！");
+                    return;
+                }
+                mPresenter.ValidateUserName(userName);
+                break;
+            case R.id.btn_register:
+                userName =mEtRegisterUsername.getText().toString();
+                code = mEtRegisterCode.getText().toString();
+                if (userName.isEmpty()){
+                    ToastUtils.showShort("请输入手机号！");
+                    return;
+                }
+                if (code.isEmpty()){
+                    ToastUtils.showShort("请输入验证码！");
+                    return;
+                }
+                mPresenter.Reg(userName,code);
+//                ToastUtils.showShort("注册成功");
+                finish();
+                mPresenter.Login(userName,"888888");
+                break;
         }
     }
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
+
+    @Override
+    public void Reg(BaseResult<String> baseResult) {
+        switch (baseResult.getStatusCode()){
+            case 200:
+
+                MyUtils.e(TAG,baseResult.getData());
+                ToastUtils.showShort(baseResult.getData());
+                if ("true".equals(baseResult.getData())){
+                    mPresenter.Login(userName,"888888");
+//                    MyUtils.showToast(mActivity,"注册成功");
+                }
+                break;
+            case 401:
+                ToastUtils.showShort(baseResult.getData());
+                break;
+        }
+    }
+
+    @Override
+    public void GetCode(BaseResult<String> baseResult) {
+        switch (baseResult.getStatusCode()){
+            case 200:
+                MyUtils.e(TAG,baseResult.getData());
+                ToastUtils.showShort(baseResult.getData());
+                if ("true".equals(baseResult.getData())){
+                    MyUtils.showToast(mActivity,"验证码已发送，请注意查收！");
+                }
+                break;
+            case 401:
+                ToastUtils.showShort(baseResult.getData());
+                break;
+        }
+    }
+
+    @Override
+    public void Login(BaseResult<String> baseResult) {
+        switch (baseResult.getStatusCode()){
+            case 200:
+                SPUtils spUtils=SPUtils.getInstance("token");
+                spUtils.put("adminToken",baseResult.getData());
+                spUtils.put("useName",userName);
+                startActivity(new Intent(mActivity,MainActivity.class));
+                finish();
+                break;
+            case 401:
+                ToastUtils.showShort(baseResult.getData());
+                break;
+        }
+    }
+
+    @Override
+    public void ValidateUserName(BaseResult<String> baseResult) {
+        switch (baseResult.getStatusCode()){
+            case 200:
+                MyUtils.e(TAG,baseResult.getData());
+                if ("true".equals(baseResult.getData())){
+                    TimeCount timeCount=new TimeCount(60000,1000);
+                    timeCount.start();
+                    mPresenter.GetCode(userName);
+                }else {
+                    ToastUtils.showShort("手机号已经注册！");
+                }
+                break;
+            case 401:
+                ToastUtils.showShort(baseResult.getData());
+                break;
+        }
+    }
+
+    class TimeCount extends CountDownTimer{
+        public TimeCount(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {
+            if (mTvGetVerificationCode==null){
+                return;
+            }
+            mTvGetVerificationCode.setClickable(false);
+            mTvGetVerificationCode.setText(millisUntilFinished/1000+"s");
+        }
+
+        @Override
+        public void onFinish() {
+            if (mTvGetVerificationCode==null){
+                return;
+            }
+            mTvGetVerificationCode.setText("重新获取验证码");
+            mTvGetVerificationCode.setClickable(true);
+        }
+    }
+
+
 }

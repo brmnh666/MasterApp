@@ -137,7 +137,8 @@
         android:text="注册"
         android:textColor="@color/color_white"
         android:textSize="15sp"
-
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         />
 
     <TextView
