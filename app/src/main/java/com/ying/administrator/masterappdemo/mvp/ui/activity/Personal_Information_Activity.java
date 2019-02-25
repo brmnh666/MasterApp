@@ -1,8 +1,6 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -42,6 +40,8 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
 
     SPUtils spUtils = SPUtils.getInstance("token");
     private UserInfo.UserInfoDean userInfo=new UserInfo.UserInfoDean();
+    private LinearLayout ll_nickname;
+    private LinearLayout ll_password;
 
     @Override
     protected int setLayoutId() {
@@ -74,12 +74,16 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
         img_male_unselect=findViewById(R.id.img_male_unselect);
         img_female_select=findViewById(R.id.img_female_select);
         img_female_unselect=findViewById(R.id.img_female_unselect);
+        ll_nickname = findViewById(R.id.ll_nickname);
+        ll_password = findViewById(R.id.ll_password);
 
     }
 
     @Override
     protected void setListener() {
         ll_return.setOnClickListener(new CustomOnclickListnear());
+        ll_nickname.setOnClickListener(new CustomOnclickListnear());
+        ll_password.setOnClickListener(new CustomOnclickListnear());
     }
 
     @Override
@@ -169,6 +173,11 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
                 case R.id.ll_return:
                     Personal_Information_Activity.this.finish();
                     break;
+                case R.id.ll_nickname:
+                    startActivity(new Intent(mActivity,ChageUserNameActivity.class));
+                    break;
+                case R.id.ll_password:
+                    startActivity(new Intent(mActivity, ChagePasswordActivity.class));
             }
         }
     }

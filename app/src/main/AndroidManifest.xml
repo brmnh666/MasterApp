@@ -214,7 +214,11 @@
         <activity android:name=".mvp.ui.activity.SubAccountManagementActivity" android:theme="@style/AppTheme.NoActionBar"/>
         <!--智能客服-->
         <activity android:name=".mvp.ui.activity.IntelligentCustomerServiceActivity" android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="adjustResize"/>
+        <!--修改昵称-->
+        <activity android:name=".mvp.ui.activity.ChageUserNameActivity" android:theme="@style/AppTheme.NoActionBar"/>
+        <!--修改密码-->
+        <activity android:name=".mvp.ui.activity.ChagePasswordActivity" android:theme="@style/AppTheme.NoActionBar"/>
 
     </application>
 
