@@ -2,6 +2,7 @@ package com.ying.administrator.masterappdemo.entity;
 
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 public class WorkOrder implements Serializable {
@@ -172,7 +173,16 @@ public class WorkOrder implements Serializable {
         private String page;
         private String limit;
         private String Version;
+        private String Num;
         private List<SendOrderBean> SendOrder;
+
+        public String getNum() {
+            return Num;
+        }
+
+        public void setNum(String num) {
+            Num = num;
+        }
 
         public String getId() {
             return Id;
@@ -359,7 +369,7 @@ public class WorkOrder implements Serializable {
         }
 
         public String getAudDate() {
-            return AudDate;
+            return AudDate.replace("T", " ");
         }
 
         public void setAudDate(String AudDate) {

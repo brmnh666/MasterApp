@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
                     if (poiItem.getCityName()==null||poiItem.getAdName()==null){
                         address=poiItem.getSnippet();
                     }else{
-                        address=poiItem.getCityName() + poiItem.getAdName() + poiItem.getSnippet();
+                        address=poiItem.getProvinceName()+poiItem.getCityName() + poiItem.getAdName() + poiItem.getSnippet()+poiItem.getTitle();
                     }
                     Province=poiItem.getProvinceName();
                     City=poiItem.getCityName();

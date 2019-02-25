@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--待预约item--><!--指派订单item-->
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
     android:layout_marginTop="10dp"
-    android:background="@drawable/rr_shape"
-    >
+    android:background="@drawable/rr_shape">
 
         <TextView
             android:id="@+id/tv_pending_appointment"
@@ -98,6 +97,7 @@
 
             />
 <TextView
+    android:id="@+id/tv_num"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="数量:1台"
@@ -119,17 +119,54 @@
             android:layout_marginLeft="15dp"
             android:layout_marginTop="5dp"
             />
+    <LinearLayout
+        android:id="@+id/ll_pending_appointment_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="10dp"
+        android:layout_below="@id/tv_address_pending_appointment"
+        android:orientation="horizontal">
         <TextView
-            android:id="@+id/tv_pending_appointment_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="工单将于59分39秒后取消,请及时联系客户"
+            android:text="工单将于"
             android:textSize="12sp"
-            android:layout_below="@id/tv_address_pending_appointment"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="15sp"
-
             />
+        <cn.iwgang.countdownview.CountdownView
+            android:id="@+id/countdownview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            app:isHideTimeBackground="false"
+            app:isShowTimeBgDivisionLine="false"
+            app:isShowDay="false"
+            app:isShowHour="false"
+            app:isShowMinute="true"
+            app:isShowSecond="true"
+            app:isShowMillisecond="false"
+            app:timeTextColor="#FF5656"
+            app:timeTextSize="11sp"
+            app:isTimeTextBold="true"
+            app:suffixTextColor="#FF5656"
+            app:suffixDay="天"
+            app:suffixMinute="分"
+            app:suffixSecond="秒"
+            app:suffix="："
+            app:suffixGravity="center"
+            app:timeBgRadius="3dp"
+            app:timeBgColor="#ffffff"
+            app:suffixTextSize="11sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="后取消,请及时联系客户"
+            android:textSize="12sp"
+            />
+    </LinearLayout>
+
       <!--  <Button
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -174,7 +211,7 @@
         android:layout_height="1dp"
         android:layout_marginTop="5dp"
         android:background="#DAD7DB"
-        android:layout_below="@id/tv_pending_appointment_cancel"/>
+        android:layout_below="@id/ll_pending_appointment_cancel"/>
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"

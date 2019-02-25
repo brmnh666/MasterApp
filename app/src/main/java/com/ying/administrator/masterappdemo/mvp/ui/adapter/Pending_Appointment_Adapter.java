@@ -4,6 +4,8 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 
+import com.blankj.utilcode.constant.TimeConstants;
+import com.blankj.utilcode.util.TimeUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.ying.administrator.masterappdemo.R;
@@ -15,8 +17,14 @@ import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.iwgang.countdownview.CountdownView;
+
 public class Pending_Appointment_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,BaseViewHolder> {
-    private UserInfo.UserInfoDean userInfo;
+    private UserInfo.UserInfoDean userInfo=new UserInfo.UserInfoDean();
+    private CountdownView countdownView;
+
+//    public Pending_Appointment_Adapter(int layoutResId, @Nullable List<WorkOrder.DataBean> data,UserInfo.UserInfoDean userInfo) {
+//    private UserInfo.UserInfoDean userInfo;
     private ArrayList<SubUserInfo.SubUserInfoDean> subuserlist;
     public Pending_Appointment_Adapter(int layoutResId, @Nullable List<WorkOrder.DataBean> data, UserInfo.UserInfoDean userInfo,ArrayList subuserlist) {
         super(layoutResId, data);
@@ -29,7 +37,10 @@ public class Pending_Appointment_Adapter extends BaseQuickAdapter<WorkOrder.Data
 
         helper.setText(R.id.tv_reason_pending_appointment,item.getMemo());//原因
      helper.setText(R.id.tv_address_pending_appointment,item.getAddress()); //地址
+        helper.setText(R.id.tv_num,"数量:"+item.getNum()+"台");
         helper.setText(R.id.tv_pending_appointment_job_number,"工单号:"+item.getOrderID());
+        countdownView =helper.getView(R.id.countdownview);
+        countdownView.start(TimeUtils.getMillisByNow(TimeUtils.string2Millis(item.getAudDate())+TimeConstants.HOUR, TimeConstants.SEC));
 
 
         if (item.getTypeID().equals("1")){//维修

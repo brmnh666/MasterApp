@@ -143,5 +143,6 @@ dependencies {
     implementation 'com.journeyapps:zxing-android-embedded:3.5.0'
     //通信
     implementation 'org.greenrobot:eventbus:3.0.0'
-
+    //倒计时
+    implementation 'com.github.iwgang:countdownview:2.1.6'
 }
