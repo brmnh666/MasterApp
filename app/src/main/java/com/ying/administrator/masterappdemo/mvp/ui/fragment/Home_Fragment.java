@@ -2,9 +2,12 @@ package com.ying.administrator.masterappdemo.mvp.ui.fragment;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,9 +15,12 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -38,6 +44,15 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareConfig;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
+import com.umeng.socialize.shareboard.SnsPlatform;
+import com.umeng.socialize.utils.ShareBoardlistener;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.common.Config;
@@ -59,6 +74,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -209,6 +225,11 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
     private View under_review;
     private Button btnConfirm;
     private AlertDialog underReviewDialog;
+    private ShareAction mShareAction;
+    private CustomShareListener mShareListener;
+    private View btn_share_one;
+    private View btn_share_two;
+    private Window window;
 
 
     public Home_Fragment() {
@@ -254,6 +275,37 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
     }
 
     public void initView() {
+        UMShareConfig config = new UMShareConfig();
+        config.isNeedAuthOnGetUserInfo(true);
+        UMShareAPI.get(mActivity).setShareConfig(config);
+        mShareListener = new CustomShareListener(mActivity);
+        /*增加自定义按钮的分享面板*/
+        mShareAction = new ShareAction(mActivity).setDisplayList(
+                SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN_FAVORITE,
+                SHARE_MEDIA.SINA, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE, SHARE_MEDIA.MORE)
+                .addButton("复制文本", "复制文本", "umeng_socialize_copy", "umeng_socialize_copy")
+                .addButton("复制链接", "复制链接", "umeng_socialize_copyurl", "umeng_socialize_copyurl")
+                .setShareboardclickCallback(new ShareBoardlistener() {
+                    @Override
+                    public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
+                        if (snsPlatform.mShowWord.equals("复制文本")) {
+                            Toast.makeText(mActivity, "已复制", Toast.LENGTH_LONG).show();
+                        } else if (snsPlatform.mShowWord.equals("复制链接")) {
+                            Toast.makeText(mActivity, "已复制", Toast.LENGTH_LONG).show();
+
+                        } else {
+                            UMWeb web = new UMWeb("https://h5.youzan.com/wscshop/feature/ihODHu0rwF?redirect_count=1");
+                            web.setTitle("西瓜鱼");
+                            web.setDescription("分享测试测试测试");
+                            web.setThumb(new UMImage(mActivity,R.mipmap.icon_app));
+                            new ShareAction(mActivity).withMedia(web)
+                                    .setPlatform(share_media)
+                                    .setCallback(mShareListener)
+                                    .share();
+                        }
+                    }
+                });
+
         final CommonDialog_Home dialog = new CommonDialog_Home(getActivity()); //弹出框
         userID = spUtils.getString("userName"); //获取用户id
         mPresenter.GetUserInfoList(userID,"1");//根据 手机号码获取用户详细信息
@@ -571,6 +623,7 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
             }
         });
     }
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -620,9 +673,41 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
                 break;
 
             case R.id.img_home_qr_code:
-                shareDialog = new ShareDialog(getContext());
-                shareDialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
-                shareDialog.show();
+                under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_share,null);
+                btn_share_one = under_review.findViewById(R.id.btn_share_one);
+                btn_share_two = under_review.findViewById(R.id.btn_share_two);
+                btn_share_one.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        underReviewDialog.dismiss();
+                        mShareAction.open();
+                    }
+                });
+                btn_share_two.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        underReviewDialog.dismiss();
+                        mShareAction.open();
+                    }
+                });
+                underReviewDialog =new AlertDialog.Builder(mActivity).setView(under_review)
+                        .create();
+                underReviewDialog.show();
+                window =underReviewDialog.getWindow();
+//                window.setContentView(under_review);
+                WindowManager.LayoutParams lp=window.getAttributes();
+//                lp.alpha = 0.5f;
+                // 也可按屏幕宽高比例进行设置宽高
+                Display display = mActivity.getWindowManager().getDefaultDisplay();
+                lp.width = (int) (display.getWidth() * 0.6);
+//                lp.height = under_review.getHeight();
+//                lp.width = 300;
+//                lp.height = 400;
+
+                window.setAttributes(lp);
+//                window.setDimAmount(0.1f);
+                window.setBackgroundDrawable(new ColorDrawable());
+
                 break;
             case R.id.tv_home_refresh:
             case R.id.img_home_refresh:
@@ -653,6 +738,69 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
                 break;
             default:
                 break;
+        }
+    }
+
+    private static class CustomShareListener implements UMShareListener {
+        private Context mContext;
+
+        private CustomShareListener(Context context) {
+            mContext=context;
+        }
+
+        @Override
+        public void onStart(SHARE_MEDIA platform) {
+
+        }
+
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+
+            if (platform.name().equals("WEIXIN_FAVORITE")) {
+                Toast.makeText(mContext, platform + " 收藏成功啦", Toast.LENGTH_SHORT).show();
+            } else {
+                if (platform != SHARE_MEDIA.MORE && platform != SHARE_MEDIA.SMS
+                        && platform != SHARE_MEDIA.EMAIL
+                        && platform != SHARE_MEDIA.FLICKR
+                        && platform != SHARE_MEDIA.FOURSQUARE
+                        && platform != SHARE_MEDIA.TUMBLR
+                        && platform != SHARE_MEDIA.POCKET
+                        && platform != SHARE_MEDIA.PINTEREST
+
+                        && platform != SHARE_MEDIA.INSTAGRAM
+                        && platform != SHARE_MEDIA.GOOGLEPLUS
+                        && platform != SHARE_MEDIA.YNOTE
+                        && platform != SHARE_MEDIA.EVERNOTE) {
+                    Toast.makeText(mContext, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, Throwable t) {
+            if (platform != SHARE_MEDIA.MORE && platform != SHARE_MEDIA.SMS
+                    && platform != SHARE_MEDIA.EMAIL
+                    && platform != SHARE_MEDIA.FLICKR
+                    && platform != SHARE_MEDIA.FOURSQUARE
+                    && platform != SHARE_MEDIA.TUMBLR
+                    && platform != SHARE_MEDIA.POCKET
+                    && platform != SHARE_MEDIA.PINTEREST
+
+                    && platform != SHARE_MEDIA.INSTAGRAM
+                    && platform != SHARE_MEDIA.GOOGLEPLUS
+                    && platform != SHARE_MEDIA.YNOTE
+                    && platform != SHARE_MEDIA.EVERNOTE) {
+                Toast.makeText(mContext, platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+
+            }
+
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform) {
+
+            Toast.makeText(mContext, platform + " 分享取消了", Toast.LENGTH_SHORT).show();
         }
     }
     @Override

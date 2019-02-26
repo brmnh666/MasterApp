@@ -12,6 +12,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.SPUtils;
+import com.umeng.socialize.UMShareAPI;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
@@ -234,5 +235,6 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        UMShareAPI.get(this).release();
     }
 }
