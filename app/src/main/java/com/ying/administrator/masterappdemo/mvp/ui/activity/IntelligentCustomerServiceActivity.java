@@ -98,13 +98,27 @@ public class IntelligentCustomerServiceActivity extends BaseActivity implements 
         mRvChat.setLayoutManager(new LinearLayoutManager(mActivity));
         mRvChat.setAdapter(chatAdapter);
 
-//        mLlMian.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-//                return imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-//            }
-//        });
+        mLlMian.setOnTouchListener(new View.OnTouchListener()
+        {
+
+            public boolean onTouch(View arg0, MotionEvent arg1)
+            {
+                mLlFeatures.setVisibility(View.GONE);
+                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                return imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+            }
+        });
+
+        mRvChat.setOnTouchListener(new View.OnTouchListener()
+        {
+
+            public boolean onTouch(View arg0, MotionEvent arg1)
+            {
+                mLlFeatures.setVisibility(View.GONE);
+                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                return imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+            }
+        });
 
     }
 
@@ -114,6 +128,8 @@ public class IntelligentCustomerServiceActivity extends BaseActivity implements 
         mImgActionbarMessage.setVisibility(View.INVISIBLE);
         mIvChoose.setOnClickListener(this);
         mEtQuestion.setOnClickListener(this);
+        mRvChat.setOnClickListener(this);
+        mLlMian.setOnClickListener(this);
 
 
     }
@@ -141,6 +157,7 @@ public class IntelligentCustomerServiceActivity extends BaseActivity implements 
                 if (mLlFeatures.getVisibility() == View.GONE) {
                     InputMethodManager imm = ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE));
                     imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0); //强制隐藏键盘
+
                     mLlFeatures.setVisibility(View.VISIBLE);
 
 //                    if (isKeyboardVisible==false){
@@ -167,7 +184,7 @@ public class IntelligentCustomerServiceActivity extends BaseActivity implements 
 
                     }
 
-//                    imm.showSoftInput(getWindow().getDecorView(),InputMethodManager.SHOW_FORCED);
+//                    im.showSoftInput(getWindow().getDecorView(),InputMethodManager.SHOW_FORCED);
                 }
 
                 break;
@@ -176,6 +193,12 @@ public class IntelligentCustomerServiceActivity extends BaseActivity implements 
                 InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                 imm.showSoftInput(getWindow().getDecorView(),InputMethodManager.SHOW_FORCED);
                 break;
+//            case R.id.rv_chat:
+//                mLlFeatures.setVisibility(View.GONE);
+//                break;
+//            case R.id.ll_mian:
+//                mLlFeatures.setVisibility(View.GONE);
+//                break;
         }
     }
 

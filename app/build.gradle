@@ -145,4 +145,7 @@ dependencies {
     implementation 'org.greenrobot:eventbus:3.0.0'
     //倒计时
     implementation 'com.github.iwgang:countdownview:2.1.6'
+
+    //表情键盘
+    implementation 'com.github.w446108264:XhsEmoticonsKeyboard:2.0.4'
 }

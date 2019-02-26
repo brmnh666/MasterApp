@@ -35,6 +35,7 @@ import com.ying.administrator.masterappdemo.mvp.ui.activity.Wallet_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.WithDrawActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseFragment;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
+import com.ying.administrator.masterappdemo.widget.ShareDialog;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -66,8 +67,8 @@ public class Me_Fragment extends BaseFragment<MainPresenter, MainModel> implemen
     @BindView(R.id.tv_me_withdraw_deposit)
      TextView mTv_me_withdraw_deposit;
     Unbinder unbinder;
-
-
+    private LinearLayout ll_recommended_gift;
+    private ShareDialog shareDialog;
 
 
     public Me_Fragment() {
@@ -124,6 +125,7 @@ public class Me_Fragment extends BaseFragment<MainPresenter, MainModel> implemen
         ll_me_opinion = mRootView.findViewById(R.id.ll_me_opinion);
         ll_me_customer_service=mRootView.findViewById(R.id.ll_me_customer_service);
         ll_sub_account_management=mRootView.findViewById(R.id.ll_sub_account_management);
+        ll_recommended_gift = mRootView.findViewById(R.id.ll_recommended_gift);
     }
 
     @Override
@@ -142,6 +144,7 @@ public class Me_Fragment extends BaseFragment<MainPresenter, MainModel> implemen
         ll_me_opinion.setOnClickListener(new CustomOnclickListner());
         ll_me_customer_service.setOnClickListener(new CustomOnclickListner());
         ll_sub_account_management.setOnClickListener(new CustomOnclickListner());
+        ll_recommended_gift.setOnClickListener(new CustomOnclickListner());
     }
 
     @Override
@@ -279,6 +282,11 @@ public class Me_Fragment extends BaseFragment<MainPresenter, MainModel> implemen
                     break;
                 case R.id.ll_sub_account_management:
                     startActivity(new Intent(getActivity(), SubAccountManagementActivity.class));
+                    break;
+                case R.id.ll_recommended_gift:
+                    shareDialog = new ShareDialog(getContext());
+                    shareDialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+                    shareDialog.show();
                     break;
 
                 default:

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.IntelligentCustomerServiceActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseFragment;
+import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -86,6 +87,7 @@ public class BlankFragment extends BaseFragment implements View.OnClickListener 
 
     private void initListener() {
         mLlOnlineConsultation.setOnClickListener(this);
+        mLlContactCustomerService.setOnClickListener(this);
     }
 
     @Override
@@ -99,6 +101,26 @@ public class BlankFragment extends BaseFragment implements View.OnClickListener 
         switch (v.getId()){
             case R.id.ll_online_consultation:
                 startActivity(new Intent(getContext(), IntelligentCustomerServiceActivity.class));
+                break;
+            case R.id.ll_contact_customer_Service:
+                final CommonDialog_Home dialog = new CommonDialog_Home(getActivity());
+                dialog.setMessage("是否拨打电话给客服")
+                        //.setImageResId(R.mipmap.ic_launcher)
+                        .setTitle("提示")
+                        .setSingle(false).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
+                    @Override
+                    public void onPositiveClick() {//拨打电话
+                        dialog.dismiss();
+                        call("tel:"+"18074208209");
+                    }
+
+                    @Override
+                    public void onNegtiveClick() {//取消
+                        dialog.dismiss();
+                        // Toast.makeText(MainActivity.this,"ssss",Toast.LENGTH_SHORT).show();
+                    }
+                }).show();
+                break;
         }
 
     }
