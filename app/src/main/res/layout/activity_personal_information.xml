@@ -481,12 +481,12 @@
                             android:src="@mipmap/right_arrow" />
                     </LinearLayout>
 
-                    <View
+                   <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginLeft="14dp"
                         android:layout_marginTop="14dp"
-                        android:background="#E4E4E4" />
+                        />
 <!--
                     <LinearLayout
                         android:id="@+id/ll_recipient_address"

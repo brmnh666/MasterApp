@@ -19,7 +19,10 @@ import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public interface ApiService {
     /**
@@ -202,6 +205,13 @@ public interface ApiService {
 //    @FormUrlEncoded
 //    @POST("FactoryConfig/GetFactoryCategory")
 //    Observable<BaseResult<Data<List<Category>>>> GetChildFactoryCategory(@Field("ParentID") String ParentID);
+
+   /*获取账户的技能*/
+    @FormUrlEncoded
+    @POST("Account/GetAccountSkill")
+    Observable<BaseResult<String>> GetAccountSkill(@Field("UserID") String UserID);
+
+
     /**
      * 提交认证申请
      */
@@ -221,12 +231,13 @@ public interface ApiService {
             @Field("Dimension") String Dimension
     );
 
-/*
+    /*
     获取子账号*/
     @FormUrlEncoded
     @POST("Account/GetChildAccountByParentUserID")
     Observable<BaseResult<List<SubUserInfo.SubUserInfoDean>>>
     GetChildAccountByParentUserID(@Field("ParentUserID") String ParentUserID);
+
 
 
     /*
@@ -257,6 +268,7 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("Account/UpdateSex")
     Observable<BaseResult<Data>> UpdateSex(@Field("UserID") String UserID,
-                                         @Field("Sex") String Sex);
+                                           @Field("Sex") String Sex);
+
 
 }

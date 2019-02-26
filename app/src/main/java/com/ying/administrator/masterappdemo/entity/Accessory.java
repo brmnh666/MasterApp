@@ -19,8 +19,8 @@ public class Accessory {
      */
 
 
-        private int Id;
-        private int FAccessoryID;
+        private String Id;
+        private String FAccessoryID;
         private String AccessoryName;
         private double AccessoryPrice;
         private int ServicePrice;
@@ -34,23 +34,41 @@ public class Accessory {
         private int checkedcount;
 
 
-        public int getId() {
+     /*   public int getId() {
             return Id;
         }
 
         public void setId(int Id) {
             this.Id = Id;
         }
+*/
 
-        public int getFAccessoryID() {
+    public String getId() {
+        return Id;
+    }
+
+    public void setId(String id) {
+        Id = id;
+    }
+
+  /*  public int getFAccessoryID() {
             return FAccessoryID;
         }
 
         public void setFAccessoryID(int FAccessoryID) {
             this.FAccessoryID = FAccessoryID;
         }
+*/
 
-        public String getAccessoryName() {
+    public String getFAccessoryID() {
+        return FAccessoryID;
+    }
+
+    public void setFAccessoryID(String FAccessoryID) {
+        this.FAccessoryID = FAccessoryID;
+    }
+
+    public String getAccessoryName() {
             return AccessoryName;
         }
 

@@ -23,4 +23,11 @@ public class AddSkillsModel implements AddSkillsContract.Model {
                 .subscribeOn(Schedulers.io());
     }
 
+    @Override
+    public Observable<BaseResult<String>> GetAccountSkill(String UserID) {
+        return  ApiRetrofit.getDefault().GetAccountSkill(UserID)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
 }

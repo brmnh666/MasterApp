@@ -39,6 +39,7 @@ public class FAccessory implements Serializable {
     }
 
     public static class OrderAccessoryStrBean {
+
         private List<OrderAccessoryBean> OrderAccessory;
 
         public List<OrderAccessoryBean> getOrderAccessory() {
@@ -61,7 +62,7 @@ public class FAccessory implements Serializable {
             private String FAccessoryID;
             private String FAccessoryName;
             private String Quantity;
-            private String Price;
+            private double Price;
             private double DiscountPrice;
 
             public String getFAccessoryID() {
@@ -88,12 +89,20 @@ public class FAccessory implements Serializable {
                 Quantity = quantity;
             }
 
-            public String getPrice() {
+            /*public String getPrice() {
                 return Price;
             }
 
             public void setPrice(String Price) {
                 this.Price = Price;
+            }*/
+
+            public double getPrice() {
+                return Price;
+            }
+
+            public void setPrice(double price) {
+                Price = price;
             }
 
             public double getDiscountPrice() {

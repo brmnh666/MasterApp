@@ -271,6 +271,9 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:configChanges="orientation|keyboardHidden|screenSize"/>
         <!--QQend-->
+        <!--我的消息页面技能-->
+        <activity android:name=".mvp.ui.activity.MyInfoSkillsActivity" android:theme="@style/AppTheme.NoActionBar"/>
+
     </application>
 
 

@@ -179,7 +179,7 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
                 startActivity(new Intent(this,ChagePasswordActivity.class));
                 break;
             case R.id.ll_my_skills:
-                startActivity(new Intent(this,MySkillsActivity.class));
+                startActivity(new Intent(this,MyInfoSkillsActivity.class));
                 break;
             case R.id.ll_male: //选择了男性
                 if (userInfo.getSex()==null){//调用接口

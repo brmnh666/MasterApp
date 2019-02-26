@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
@@ -18,6 +19,7 @@ import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Category;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.MySkills;
+import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.mvp.contract.AddSkillsContract;
 import com.ying.administrator.masterappdemo.mvp.model.AddSkillsModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.AddSkillsPresenter;
@@ -29,7 +31,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MySkillsActivity extends BaseActivity<AddSkillsPresenter, AddSkillsModel> implements View.OnClickListener, AddSkillsContract.View {
+public class MyInfoSkillsActivity extends BaseActivity<AddSkillsPresenter, AddSkillsModel> implements View.OnClickListener, AddSkillsContract.View {
     @BindView(R.id.img_actionbar_return)
     ImageView mImgActionbarReturn;
     @BindView(R.id.tv_actionbar_return)
@@ -48,13 +50,15 @@ public class MySkillsActivity extends BaseActivity<AddSkillsPresenter, AddSkills
     Button mBtnSkill;
     private TextView tv_actionbar_title;
     private LinearLayout ll_return;
-
+    SPUtils spUtils = SPUtils.getInstance("token");
+    private String userID;//用户id
+/*
     private MySkillAdapter mySkillAdapter;
     private List<MySkills> mySkillsList=new ArrayList<>();
     private List<Category> popularList;
     private List<Category> subList;
     private String skills;
-    private String NodeIds="";
+    private String NodeIds="";*/
 
 //    @Override
 //    protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,7 +75,9 @@ public class MySkillsActivity extends BaseActivity<AddSkillsPresenter, AddSkills
 
     @Override
     protected void initData() {
+        userID = spUtils.getString("userName"); //获取用户id
         mPresenter.GetFactoryCategory();
+        mPresenter.GetAccountSkill(userID);
     }
     @Override
     protected void initView() {
@@ -100,7 +106,7 @@ public class MySkillsActivity extends BaseActivity<AddSkillsPresenter, AddSkills
                 finish();
                 break;
             case R.id.btn_skill:
-                skills ="";
+            /*    skills ="";
                 for (int i = 0; i < mySkillAdapter.getData().size(); i++) {
                     if (mySkillAdapter.getData().get(i).isSelected()){
                         skills+=mySkillAdapter.getData().get(i).getCategory().getFCategoryName()+"/";
@@ -117,7 +123,7 @@ public class MySkillsActivity extends BaseActivity<AddSkillsPresenter, AddSkills
                 intent.putExtra("skills",skills);
                 intent.putExtra("NodeIds",NodeIds);
                 setResult(1000,intent);
-                finish();
+                finish();*/
                 break;
         }
     }
@@ -126,7 +132,7 @@ public class MySkillsActivity extends BaseActivity<AddSkillsPresenter, AddSkills
     public void GetFactoryCategory(BaseResult<Data<List<Category>>> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-                Data<List<Category>> data = baseResult.getData();
+         /*       Data<List<Category>> data = baseResult.getData();
                 if (data.isItem1()) {
                     popularList = data.getItem2();
                     if (popularList.size() == 0) {
@@ -156,7 +162,7 @@ public class MySkillsActivity extends BaseActivity<AddSkillsPresenter, AddSkills
                 break;
             case 401:
 //                ToastUtils.showShort(baseResult.getData());
-                break;
+                break;*/
         }
     }
 

@@ -47,7 +47,9 @@ import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.FAccessory;
 import com.ying.administrator.masterappdemo.entity.FService;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
+import com.ying.administrator.masterappdemo.entity.FAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactorySeviceData;
+import com.ying.administrator.masterappdemo.entity.SAccessory;
 import com.ying.administrator.masterappdemo.entity.Service;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.PendingOrderContract;
@@ -116,6 +118,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     /*订单属性*/
 
 
+
     /*服务和配件自定义dialog*/
     private CustomDialog_Add_Accessory customDialog_add_accessory;
     private CustomDialog_Add_Service customDialog_add_service;
@@ -131,6 +134,8 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     private Map<Integer, FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> map; //用于存放dialog里选择的配件
     private List<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> fAcList;// 用于存放预接单页面显示的数据
     private FAccessory fAccessory;
+    private SAccessory sAccessory;
+
     private FAccessory.OrderAccessoryStrBean orderAccessoryStrBean;
     private FAccessory.OrderAccessoryStrBean.OrderAccessoryBean mfAccessory;
     private Accessory mAccessory;
@@ -381,6 +386,9 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                 // tv_order_details_add_accessories.setText("重新添加");
                 //startActivity(new Intent(Order_details_Activity.this,AddAccessoryActivity.class));
 
+                   // tv_order_details_add_accessories.setText("重新添加");
+                    //startActivity(new Intent(Order_details_Activity.this,AddAccessoryActivity.class));
+
                 Log.d("mlistmlist", String.valueOf(mList.size()));
                 customDialog_add_accessory.getWindow().setBackgroundDrawableResource(R.color.transparent);
                 customDialog_add_accessory.show();
@@ -441,38 +449,60 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                                     mfAccessory.setDiscountPrice(mAccessory.getAccessoryPrice());
                                     mList.get(position).setCheckedcount(1);
                                     map.put(position, mfAccessory);
+                                        //viewadd.setVisibility(View.VISIBLE); //数量选择器出现
+                                        adderView.setVisibility(View.VISIBLE);
+                                        img_ac_unselect.setVisibility(View.INVISIBLE);
+                                        img_ac_select.setVisibility(View.VISIBLE);
+                                        //ischeck[position]=true;
+                                        mList.get(position).setIscheck(true);
+                                      //没选选择默认数量为1
+                                        mAccessory=(Accessory)adapter.getItem(position);
+                                        mfAccessory=new FAccessory.OrderAccessoryStrBean.OrderAccessoryBean();
+                                        mfAccessory.setFAccessoryID(mAccessory.getFAccessoryID());//获取id
+                                        mfAccessory.setFAccessoryName(mAccessory.getAccessoryName()); //获取名字
+                                        mfAccessory.setQuantity("1"); //默认数字为1
+                                        mfAccessory.setPrice(mAccessory.getAccessoryPrice());//原价
+                                        mfAccessory.setDiscountPrice(mAccessory.getAccessoryPrice());//折扣价
+                                        mList.get(position).setCheckedcount(1);
+                                        map.put(position,mfAccessory);
 
                                     //选择了数量根据输入框中的来
-                                    vibrator.vibrate(50);
+                                    //vibrator.vibrate(50);
+                                        //选择了数量根据输入框中的来
+                                       //vibrator.vibrate(50);
 
                                     adderView.setOnValueChangeListene(new adderView.OnValueChangeListener() {
                                         @Override
                                         public void onValueChange(int value) {
                                             //没选选择时间默认数量为1
 
-                                            mAccessory = (Accessory) adapter.getItem(position);
-                                            mfAccessory = new FAccessory.OrderAccessoryStrBean.OrderAccessoryBean();
-                                            mfAccessory.setFAccessoryName(mAccessory.getAccessoryName());
-                                            mfAccessory.setQuantity(String.valueOf(value));
-                                            mfAccessory.setDiscountPrice(mAccessory.getAccessoryPrice());
-                                            // Log.d("getQuantitys的个数00",mfAccessory.getQuantity());
-                                            mList.get(position).setCheckedcount(value);
-                                            map.put(position, mfAccessory);
-                                        }
-                                    });
+                                                mAccessory=(Accessory)adapter.getItem(position);
+                                                mfAccessory=new FAccessory.OrderAccessoryStrBean.OrderAccessoryBean();
+                                                mfAccessory.setFAccessoryID(mAccessory.getFAccessoryID());
+                                                mfAccessory.setFAccessoryName(mAccessory.getAccessoryName());
+                                                mfAccessory.setQuantity(String.valueOf(value));
+                                                mfAccessory.setPrice(mAccessory.getAccessoryPrice());//原价
+                                                mfAccessory.setDiscountPrice(mAccessory.getAccessoryPrice());
+                                               // Log.d("getQuantitys的个数00",mfAccessory.getQuantity());
+                                                mList.get(position).setCheckedcount(value);
+                                                map.put(position,mfAccessory);
+                                            }
+                                        });
 
 
-                                } else {
-                                    //viewadd.setVisibility(View.INVISIBLE); //数量选择器消失
-                                    adderView.setVisibility(View.INVISIBLE);
-                                    img_ac_unselect.setVisibility(View.VISIBLE);
-                                    img_ac_select.setVisibility(View.INVISIBLE);
-                                    adderView.setValue(1); //但用户取消时将值设置为默认为1
-                                    mList.get(position).setIscheck(false);
-                                    mList.get(position).setCheckedcount(1);
-                                    map.remove(position);
-                                    vibrator.vibrate(50);
-                                }
+
+
+                                    }else {
+                                        //viewadd.setVisibility(View.INVISIBLE); //数量选择器消失
+                                        adderView.setVisibility(View.INVISIBLE);
+                                        img_ac_unselect.setVisibility(View.VISIBLE);
+                                        img_ac_select.setVisibility(View.INVISIBLE);
+                                        adderView.setValue(1); //但用户取消时将值设置为默认为1
+                                        mList.get(position).setIscheck(false);
+                                        mList.get(position).setCheckedcount(1);
+                                        map.remove(position);
+                                        //vibrator.vibrate(50);
+                                    }
 
                                 break;
 
@@ -590,28 +620,27 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                         ImageView img_add_service_select = (ImageView) adapter.getViewByPosition(recyclerView_custom_add_service, position, R.id.img_add_service_select); //选中图片
                         ImageView img_add_service_unselect = (ImageView) adapter.getViewByPosition(recyclerView_custom_add_service, position, R.id.img_add_service_unselect);//未选中图片
 
-                        switch (view.getId()) {
-                            case R.id.img_add_service_unselect:
-                            case R.id.img_add_service_select:
-                            case R.id.tv_add_service_name:
-                                if (((Service) (adapter.getData().get(position))).isIschecked() == false) { //如果是为选中的状态点击  变为红色 选中状态 出现 数量选择器
-                                    //viewadd.setVisibility(View.VISIBLE); //数量选择器出现
-                                    img_add_service_unselect.setVisibility(View.INVISIBLE);
-                                    img_add_service_select.setVisibility(View.VISIBLE);
-                                    mList_service.get(position).setIschecked(true);
-                                    mService = (Service) adapter.getItem(position);
-                                    mfService = new FService.OrderServiceStrBean.OrderServiceBean();
-                                    mfService.setServiceName(mService.getFServiceName());
-                                    mfService.setDiscountPrice(mService.getInitPrice());
-                                    map_service.put(position, mfService);
-                                    vibrator.vibrate(50);
-                                } else {
-                                    img_add_service_unselect.setVisibility(View.VISIBLE);
-                                    img_add_service_select.setVisibility(View.INVISIBLE);
-                                    mList_service.get(position).setIschecked(false);
-                                    map_service.remove(position);
-                                    vibrator.vibrate(50);
-                                }
+                                switch (view.getId()){
+                                    case R.id.img_add_service_unselect:
+                                    case R.id.img_add_service_select:
+                                    case R.id.tv_add_service_name:
+                                        if (((Service)(adapter.getData().get(position))).isIschecked()==false){ //如果是为选中的状态点击  变为红色 选中状态 出现 数量选择器
+                                            img_add_service_unselect.setVisibility(View.INVISIBLE);
+                                            img_add_service_select.setVisibility(View.VISIBLE);
+                                            mList_service.get(position).setIschecked(true);
+                                            mService=(Service)adapter.getItem(position);
+                                            mfService=new FService.OrderServiceStrBean.OrderServiceBean();
+                                            mfService.setServiceName(mService.getFServiceName());
+                                            mfService.setDiscountPrice(mService.getInitPrice());
+                                            map_service.put(position,mfService);
+                                            //vibrator.vibrate(50);
+                                        }else {
+                                            img_add_service_unselect.setVisibility(View.VISIBLE);
+                                            img_add_service_select.setVisibility(View.INVISIBLE);
+                                            mList_service.get(position).setIschecked(false);
+                                            map_service.remove(position);
+                                            //vibrator.vibrate(50);
+                                        }
 
                                 break;
 
@@ -707,62 +736,39 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                     orderAccessoryStrBean = new FAccessory.OrderAccessoryStrBean();
                     orderAccessoryStrBean.setOrderAccessory(fAcList);
 
-                    fAccessory = new FAccessory();
-                    fAccessory.setOrderID(orderID);
-                    fAccessory.setAccessorySequency("0");
-                    fAccessory.setOrderAccessoryStr(orderAccessoryStrBean);
+                                     Gson gson1=new Gson();
+                                     String s1 = gson1.toJson(orderAccessoryStrBean);
 
-                    Gson gson = new Gson();
-                    String s = gson.toJson(fAccessory);
-                    Log.d("添加的配件有", s);
-
-                    RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), s);
-                    mPresenter.AddOrderAccessory(body);
-                    mPresenter.UpdateSendOrderUpdateTime(orderID, time);
-                    Log.d("选择的时间是", time);
+                                     Log.d("s1的值为",s1);
 
 
-                }
+                                     sAccessory=new SAccessory();
+                                     sAccessory.setOrderID(orderID);
+                                     sAccessory.setAccessorySequency("0");
+                                     sAccessory.setOrderAccessoryStr(s1);
+
+                                     /*fAccessory=new FAccessory();
+                                     fAccessory.setOrderID(orderID);
+                                     fAccessory.setAccessorySequency("0");
+                                     fAccessory.setOrderAccessoryStr(orderAccessoryStrBean);*/
+
+                                     Gson gson=new Gson();
+                                     String s = gson.toJson(sAccessory);
+                                     Log.d("添加的配件有",s);
+
+                                     RequestBody body=RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),s);
+                                     mPresenter.AddOrderAccessory(body);
+
+                                     //mPresenter.UpdateSendOrderUpdateTime(orderID,time);
+                                     Log.d("选择的时间是", time);
 
 
-                break;
-            case R.id.iv_item1:
-                if (requestPermissions()) {
-                    showPopupWindow(101, 102);
-                } else {
-                    requestPermissions(permissions.toArray(new String[permissions.size()]), 10001);
-                }
-                break;
-            case R.id.iv_item2:
-                if (requestPermissions()) {
-                    showPopupWindow(201, 202);
-                } else {
-                    requestPermissions(permissions.toArray(new String[permissions.size()]), 10002);
-                }
-                break;
-            case R.id.iv_item3:
-                if (requestPermissions()) {
-                    showPopupWindow(301, 302);
-                } else {
-                    requestPermissions(permissions.toArray(new String[permissions.size()]), 10003);
-                }
-                break;
-            case R.id.iv_map1:
-                if (requestPermissions()) {
-                    showPopupWindow(401, 402);
-                } else {
-                    requestPermissions(permissions.toArray(new String[permissions.size()]), 10004);
-                }
-                break;
-            case R.id.iv_map2:
-                if (requestPermissions()) {
-                    showPopupWindow(501, 502);
-                } else {
-                    requestPermissions(permissions.toArray(new String[permissions.size()]), 10005);
-                }
-                break;
-            default:
-                break;
+                                 }
+
+
+                                 break;
+                         default:
+                          break;
 
         }
     }

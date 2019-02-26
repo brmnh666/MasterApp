@@ -23,4 +23,15 @@ public class AddSkillsPresenter extends AddSkillsContract.Presenter {
                 });
     }
 
+    @Override
+    public void GetAccountSkill(String UserID) {
+        mModel.GetAccountSkill(UserID)
+                .subscribe(new BaseObserver<String>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<String> value) {
+                        mView.GetAccountSkill(value);
+                    }
+                });
+    }
+
 }
