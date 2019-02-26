@@ -170,6 +170,7 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
             }
         }
     };
+
     private SPUtils spUtils;
     private String UserID;
     private String mActualName;
@@ -391,12 +392,13 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
             }
         });
         if (mPopupWindow != null && !mPopupWindow.isShowing()) {
-//            popupWindow.showAsDropDown(tv, 0, 10);
             mPopupWindow.showAtLocation(popupWindow_view, Gravity.BOTTOM, 0, 0);
-//            MyUtils.backgroundAlpha(mActivity,0.5f);
         }
         MyUtils.setWindowAlpa(mActivity, true);
     }
+
+
+
 
     //请求定位权限
     private boolean requestLocationPermissions() {

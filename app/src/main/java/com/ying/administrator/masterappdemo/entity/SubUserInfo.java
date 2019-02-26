@@ -5,9 +5,6 @@ import java.util.List;
 
 public class SubUserInfo implements Serializable {
 
-
-
-
     private List<SubUserInfoDean> data;
 
     public List<SubUserInfoDean> getData() {

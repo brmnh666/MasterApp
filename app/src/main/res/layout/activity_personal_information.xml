@@ -276,7 +276,7 @@
                         android:layout_height="1dp"
                         android:layout_marginLeft="14dp"
                         android:layout_marginTop="14dp"
-                        android:background="#E4E4E4" />
+                        />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -285,7 +285,9 @@
                         android:layout_marginBottom="15dp"
                         android:orientation="horizontal"
                         android:paddingLeft="14dp"
-                        android:paddingRight="14dp">
+                        android:paddingRight="14dp"
+                        android:visibility="gone"
+                        >
 
                         <TextView
                             android:layout_width="match_parent"
@@ -300,15 +302,14 @@
                             android:id="@+id/iv_id_card_one"
                             android:layout_width="60dp"
                             android:layout_height="60dp"
-                            android:src="@mipmap/add" />
+                            />
 
                         <ImageView
                             android:id="@+id/iv_id_card_two"
                             android:layout_width="60dp"
                             android:layout_height="60dp"
                             android:layout_marginLeft="14dp"
-                            android:layout_marginRight="14dp"
-                            android:src="@mipmap/add" />
+                            android:layout_marginRight="14dp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -387,7 +388,7 @@
                                 android:layout_width="14dp"
                                 android:layout_height="14dp"
                                 android:layout_gravity="center"
-                                android:visibility="gone"
+                                android:visibility="visible"
                                 android:src="@mipmap/male" />
                             <ImageView
                                 android:id="@+id/img_male_select"
@@ -427,7 +428,7 @@
                                 android:layout_width="14dp"
                                 android:layout_height="14dp"
                                 android:layout_gravity="center"
-                                android:visibility="gone"
+                                android:visibility="visible"
                                 android:src="@mipmap/female2" />
                             <TextView
                                 android:layout_width="wrap_content"
@@ -486,7 +487,7 @@
                         android:layout_marginLeft="14dp"
                         android:layout_marginTop="14dp"
                         android:background="#E4E4E4" />
-
+<!--
                     <LinearLayout
                         android:id="@+id/ll_recipient_address"
                         android:layout_width="match_parent"
@@ -520,7 +521,7 @@
                             android:layout_gravity="center"
                             android:layout_marginLeft="6dp"
                             android:src="@mipmap/right_arrow" />
-                    </LinearLayout>
+                    </LinearLayout>-->
                 </LinearLayout>
             </FrameLayout>
 

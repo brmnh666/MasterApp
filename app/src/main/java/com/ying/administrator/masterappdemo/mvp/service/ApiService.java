@@ -6,6 +6,7 @@ import com.ying.administrator.masterappdemo.entity.Category;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.GetFactorySeviceData;
+import com.ying.administrator.masterappdemo.entity.IDCard;
 import com.ying.administrator.masterappdemo.entity.Service;
 import com.ying.administrator.masterappdemo.entity.SubUserInfo;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
@@ -187,8 +188,6 @@ public interface ApiService {
 
     @FormUrlEncoded
     @POST("Order/UpdateSendOrderUpdateTime")
-
-
     Observable<BaseResult<Data>> UpdateSendOrderUpdateTime(@Field("OrderID") String OrderID,
                                                            @Field("UpdateDate") String UpdateDate);
 
@@ -228,4 +227,36 @@ public interface ApiService {
     @POST("Account/GetChildAccountByParentUserID")
     Observable<BaseResult<List<SubUserInfo.SubUserInfoDean>>>
     GetChildAccountByParentUserID(@Field("ParentUserID") String ParentUserID);
+
+
+    /*
+    修改个人信息页面
+    */
+
+    /*个人信息页面修改头像*/
+    @POST("Upload/UploadAvator")
+    Observable<BaseResult<Data<String>>> UploadAvator(@Body RequestBody json);
+
+    /*获取身份证的图片*/
+    @FormUrlEncoded
+    @POST("Account/GetIDCardImg")
+    Observable<BaseResult<List<IDCard.IDCardBean>>> GetIDCardImg(@Field("UserID") String UserID);
+
+    /*修改昵称*/
+    @FormUrlEncoded
+    @POST("Account/UpdateAccountNickName")
+    Observable<BaseResult<Data>> UpdateAccountNickName(@Field("UserID") String UserID,
+                                                       @Field("NickName") String NickName);
+    /*修改密码*/
+
+    @FormUrlEncoded
+    @POST("Account/UpdatePassword")
+    Observable<BaseResult<Data>> UpdatePassword(@Field("UserID") String UserID,
+                                                @Field("Password") String Password);
+    /*修改性别*/
+    @FormUrlEncoded
+    @POST("Account/UpdateSex")
+    Observable<BaseResult<Data>> UpdateSex(@Field("UserID") String UserID,
+                                         @Field("Sex") String Sex);
+
 }

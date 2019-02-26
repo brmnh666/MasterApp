@@ -47,4 +47,6 @@ public interface VerifiedContract {
                                            String Longitude,
                                            String Dimension);
     }
+
+
 }

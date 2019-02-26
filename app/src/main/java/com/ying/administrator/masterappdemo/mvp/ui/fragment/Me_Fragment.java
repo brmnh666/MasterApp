@@ -80,8 +80,6 @@ public class Me_Fragment extends BaseFragment<MainPresenter, MainModel> implemen
         if (getArguments() != null) {
             mContentText = getArguments().getString(ARG_SHOW_TEXT);
         }
-
-
     }
 
     public static Me_Fragment newInstance(String param1) {
@@ -97,6 +95,7 @@ public class Me_Fragment extends BaseFragment<MainPresenter, MainModel> implemen
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         if (mRootView == null) {
+
             mRootView = inflater.inflate(R.layout.fragment_me, container, false);
         }
 
@@ -107,10 +106,11 @@ public class Me_Fragment extends BaseFragment<MainPresenter, MainModel> implemen
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         unbinder = ButterKnife.bind(this, mRootView);
+        EventBus.getDefault().register(this);
         initView();
         initValidata();
         initListener();
-        EventBus.getDefault().register(this);
+
     }
 
     @Override
