@@ -135,11 +135,13 @@ android:layout_gravity="center_vertical"
         android:visibility="gone"
         >
         <ImageView
+            android:id="@+id/iv_map1"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_marginLeft="20dp"
             android:src="@mipmap/icon_add"/>
         <ImageView
+            android:id="@+id/iv_map2"
             android:layout_marginLeft="10dp"
             android:layout_width="45dp"
             android:layout_height="45dp"

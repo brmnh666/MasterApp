@@ -119,6 +119,7 @@
             android:textColor="#6A6A6A"
             />
         <TextView
+            android:id="@id/tv_num"
             android:layout_weight="1"
             android:gravity="right"
             android:layout_width="wrap_content"

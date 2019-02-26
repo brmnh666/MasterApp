@@ -26,6 +26,9 @@ public class Pending_Appointment_Adapter extends BaseQuickAdapter<WorkOrder.Data
 //    public Pending_Appointment_Adapter(int layoutResId, @Nullable List<WorkOrder.DataBean> data,UserInfo.UserInfoDean userInfo) {
 //    private UserInfo.UserInfoDean userInfo;
     private ArrayList<SubUserInfo.SubUserInfoDean> subuserlist;
+    private long now;
+    private long cancel;
+
     public Pending_Appointment_Adapter(int layoutResId, @Nullable List<WorkOrder.DataBean> data, UserInfo.UserInfoDean userInfo,ArrayList subuserlist) {
         super(layoutResId, data);
         this.userInfo=userInfo;
@@ -40,7 +43,9 @@ public class Pending_Appointment_Adapter extends BaseQuickAdapter<WorkOrder.Data
         helper.setText(R.id.tv_num,"数量:"+item.getNum()+"台");
         helper.setText(R.id.tv_pending_appointment_job_number,"工单号:"+item.getOrderID());
         countdownView =helper.getView(R.id.countdownview);
-        countdownView.start(TimeUtils.getMillisByNow(TimeUtils.string2Millis(item.getAudDate())+TimeConstants.HOUR, TimeConstants.SEC));
+        now =TimeUtils.getNowMills();
+        cancel =TimeUtils.string2Millis(item.getAudDate())+3600000;
+        countdownView.start(cancel-now);
 
 
         if (item.getTypeID().equals("1")){//维修

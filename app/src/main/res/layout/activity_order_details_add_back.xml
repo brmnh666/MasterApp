@@ -72,17 +72,20 @@
         android:orientation="horizontal"
         android:layout_margin="10dp">
         <ImageView
+            android:id="@+id/iv_item1"
             android:layout_width="55dp"
             android:layout_height="55dp"
             android:src="@mipmap/icon_add"
             android:layout_marginRight="5dp"
             />
         <ImageView
+            android:id="@+id/iv_item2"
             android:layout_width="55dp"
             android:layout_height="55dp"
             android:layout_marginRight="5dp"
             android:src="@mipmap/icon_add"/>
         <ImageView
+            android:id="@+id/iv_item3"
             android:layout_width="55dp"
             android:layout_height="55dp"
             android:layout_marginRight="5dp"
