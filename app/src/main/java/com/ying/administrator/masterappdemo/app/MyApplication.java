@@ -95,7 +95,7 @@ public class MyApplication extends Application {
         //微信
         PlatformConfig.setWeixin("wxdc1e388c3822c80b", "3baf1193c85774b3fd9d18447d76cab0");
         //新浪
-        PlatformConfig.setSinaWeibo("3921700954", "04b48b094faeb16683c32669824ebdad","http://sns.whalecloud.com");
+        PlatformConfig.setSinaWeibo("2062370017", "ed8cf0cbbdb756f002777c3f648e3818","http://sns.whalecloud.com");
         //QQ
         PlatformConfig.setQQZone("1108047427", "LLqcMP1nxKVS18gr");
     }
