@@ -97,7 +97,7 @@ public class MyApplication extends Application {
         //新浪
         PlatformConfig.setSinaWeibo("3921700954", "04b48b094faeb16683c32669824ebdad","http://sns.whalecloud.com");
         //QQ
-        PlatformConfig.setQQZone("100424468", "c7394704798a158208a74ab60104f0ba");
+        PlatformConfig.setQQZone("1108047427", "LLqcMP1nxKVS18gr");
     }
 
 
