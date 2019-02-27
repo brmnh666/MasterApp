@@ -327,10 +327,9 @@
                         android:paddingRight="14dp">
 
                         <TextView
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_weight="1"
                             android:text="店铺地址"
                             android:textColor="#858585"
                             android:textSize="14sp" />
@@ -339,8 +338,11 @@
                             android:id="@+id/tv_shop_address"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:layout_weight="1"
                             android:text="宁波市江北区金山路企协大厦1901室"
                             android:textColor="#858585"
+                            android:singleLine="true"
                             android:textSize="14sp" />
 
                         <ImageView

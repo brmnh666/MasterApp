@@ -60,13 +60,15 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="11dp"
+        android:layout_marginTop="@dimen/dp_10"
+        android:background="@drawable/red_half_shape"/>
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@color/white">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="11dp"
-            android:background="@drawable/red_half_shape"/>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
