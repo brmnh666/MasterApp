@@ -146,7 +146,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                 tv_reason_pending_appointment.setText(data.getMemo());
                 tv_service_goods.setText(data.getCategoryName()+"/"+data.getBrandName()+"/"+data.getProductType());
 
-                if (data.getTypeID().equals("1")){//维修
+                if (data.getTypeID()==1){//维修
                     tv_service.setText("维修");
                     tv_service.setBackgroundResource(R.color.color_custom_01);
                 }else {

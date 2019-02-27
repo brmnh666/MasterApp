@@ -27,8 +27,10 @@ public interface PendingOrderContract {
         Observable<BaseResult<GetFactorySeviceData<Service>>> GetFactoryService();
 
         //提交需要的配件信息
-        Observable<BaseResult<String>> AddOrderAccessory(RequestBody json);
+        Observable<BaseResult<Data>> AddOrderAccessory(RequestBody json);
 
+        //提交需要的服务信息
+        Observable<BaseResult<Data>> AddOrderService(RequestBody json);
 
 
         //更新时间
@@ -46,8 +48,9 @@ public interface PendingOrderContract {
         void GetFactoryService(BaseResult<GetFactorySeviceData<Service>> baseResult);
 
         //提交需要的配件信息
-        void AddOrderAccessory(BaseResult<String> baseResult);
-
+        void AddOrderAccessory(BaseResult<Data> baseResult);
+        //提交需要的服务信息
+        void AddOrderService(BaseResult<Data> baseResult);
         //更新时间
         void UpdateSendOrderUpdateTime(BaseResult<Data> baseResult);
     }
@@ -64,6 +67,9 @@ public interface PendingOrderContract {
 
         //提交需要的配件信息
         public abstract void AddOrderAccessory(RequestBody json);
+        //提交需要的服务信息
+        public abstract void AddOrderService(RequestBody json);
+
 
         //更新时间
         public abstract void UpdateSendOrderUpdateTime(String OrderID,String UpdateDate);

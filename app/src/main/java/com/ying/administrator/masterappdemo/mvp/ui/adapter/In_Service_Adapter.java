@@ -17,7 +17,7 @@ public class In_Service_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,Base
 
     @Override
     protected void convert(BaseViewHolder helper, WorkOrder.DataBean item) {
-        if (item.getTypeID().equals("1")){//维修
+        if (item.getTypeID()==1){//维修
             helper.setVisible(R.id.tv_in_service_status_repair,true);
             helper.setVisible(R.id.tv_in_service_status_install,false);
 

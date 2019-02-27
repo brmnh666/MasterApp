@@ -48,7 +48,7 @@ public class Pending_Appointment_Adapter extends BaseQuickAdapter<WorkOrder.Data
         countdownView.start(cancel-now);
 
 
-        if (item.getTypeID().equals("1")){//维修
+        if (item.getTypeID()==1){//维修
           helper.setVisible(R.id.tv_pending_appointment_status_repair,true);
           helper.setVisible(R.id.tv_pending_appointment_status_install,false);
 

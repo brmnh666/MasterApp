@@ -11,6 +11,7 @@ public class FService {
     private String OrderID;
     private OrderServiceStrBean OrderServiceStr;
 
+
     public String getOrderID() {
         return OrderID;
     }
@@ -48,7 +49,7 @@ public class FService {
 
             private String ServiceID;
             private String ServiceName;
-            private String Price;
+            private double Price;
             private double DiscountPrice;
 
             public String getServiceID() {
@@ -67,12 +68,12 @@ public class FService {
                 this.ServiceName = ServiceName;
             }
 
-            public String getPrice() {
+            public double getPrice() {
                 return Price;
             }
 
-            public void setPrice(String Price) {
-                this.Price = Price;
+            public void setPrice(double price) {
+                Price = price;
             }
 
             public double getDiscountPrice() {

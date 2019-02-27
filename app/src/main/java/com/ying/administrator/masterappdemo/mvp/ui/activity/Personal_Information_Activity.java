@@ -179,7 +179,13 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
                 startActivity(new Intent(this,ChagePasswordActivity.class));
                 break;
             case R.id.ll_my_skills:
-                startActivity(new Intent(this,MyInfoSkillsActivity.class));
+
+                if (userInfo.getIfAuth()==null){//未实名认证
+                 return;
+                }else {
+                    startActivity(new Intent(this,MyInfoSkillsActivity.class));
+                }
+
                 break;
             case R.id.ll_male: //选择了男性
                 if (userInfo.getSex()==null){//调用接口

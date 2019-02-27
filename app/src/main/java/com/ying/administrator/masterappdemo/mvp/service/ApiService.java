@@ -184,10 +184,10 @@ public interface ApiService {
     *
     * */
     @POST("Order/AddOrderAccessory")
-    Observable<BaseResult<String>> AddOrderAccessory(@Body RequestBody json);
-
-
-
+    Observable<BaseResult<Data>> AddOrderAccessory(@Body RequestBody json);
+     /*添加服务*/
+    @POST("Order/AddOrderService")
+    Observable<BaseResult<Data>> AddOrderService(@Body RequestBody json);
 
 
     @FormUrlEncoded

@@ -1,34 +1,26 @@
 package com.ying.administrator.masterappdemo.widget;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.entity.Accessory;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Add_Ac_Adapter;
-import com.ying.administrator.masterappdemo.mvp.ui.adapter.MyRecyclerAdapter;
 
 import java.util.List;
 
-/*添加配件dialog*/
-public class CustomDialog_Add_Accessory extends AlertDialog {
+/*转派dialog*/
+public class CustomDialog_Redeploy extends AlertDialog {
     private TextView yes;
     private TextView titleTv;
     private String titleStr;
     private String yesStr;
     private Context context;
-    private RecyclerView recyclerView_custom_add_accessory;
-    private Add_Ac_Adapter mAdd_Ac_Adapter;
-    private boolean[] ischeck;
-    List<Accessory> mList;
+
     /*  -------------------------------- 接口监听 -------------------------------------  */
 
     private onYesOnclickListener yesOnclickListener;
@@ -56,16 +48,16 @@ public class CustomDialog_Add_Accessory extends AlertDialog {
 
 
     /*  ---------------------------------- 构造方法 -------------------------------------  */
-    public CustomDialog_Add_Accessory(Context context) {
+    public CustomDialog_Redeploy(Context context) {
         super(context);
         this.context=context;
     }
 
-    public CustomDialog_Add_Accessory(Context context, int themeResId) {
+    public CustomDialog_Redeploy(Context context, int themeResId) {
         super(context,R.style.MyDialog);
     }
 
-    protected CustomDialog_Add_Accessory(Context context, boolean cancelable, OnCancelListener cancelListener) {
+    protected CustomDialog_Redeploy(Context context, boolean cancelable, OnCancelListener cancelListener) {
         super(context, cancelable, cancelListener);
     }
 
@@ -74,7 +66,7 @@ public class CustomDialog_Add_Accessory extends AlertDialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.customdialog_add_accessory);//自定义布局
+        setContentView(R.layout.customdialog_redeploy);//自定义布局
 
         //按空白处不能取消动画
          setCanceledOnTouchOutside(false);
@@ -117,8 +109,7 @@ public class CustomDialog_Add_Accessory extends AlertDialog {
      * 初始化界面控件
      */
     private void initView(){
-        yes = findViewById(R.id.tv_add_accessory_submit);
-        titleTv = findViewById(R.id.add_accessory_title);
+        yes = findViewById(R.id.tv_redeploy_submit);
 
     }
     /**

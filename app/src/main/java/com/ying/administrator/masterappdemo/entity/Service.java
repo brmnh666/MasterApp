@@ -16,7 +16,7 @@ public class Service {
      */
 
     private int Id;
-    private int FServiceID;
+    private String FServiceID;
     private String FServiceName;
     private int FBrandID;
     private int FCategoryID;
@@ -35,11 +35,11 @@ public class Service {
         this.Id = Id;
     }
 
-    public int getFServiceID() {
+    public String getFServiceID() {
         return FServiceID;
     }
 
-    public void setFServiceID(int FServiceID) {
+    public void setFServiceID(String FServiceID) {
         this.FServiceID = FServiceID;
     }
 

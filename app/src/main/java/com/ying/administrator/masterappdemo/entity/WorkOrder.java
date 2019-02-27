@@ -2,7 +2,6 @@ package com.ying.administrator.masterappdemo.entity;
 
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 public class WorkOrder implements Serializable {
@@ -53,86 +52,100 @@ public class WorkOrder implements Serializable {
     }
 
     public static class DataBean {
+
         /**
-         * Id : 1
-         * OrderID : 1
-         * TypeID : 2
-         * TypeName : 上门安装
-         * SubTypeID : 11
-         * SubTypeName : 电视机
-         * CategoryID : 1
-         * CategoryName : 大家电
-         * SubCategoryID : 1
-         * SubCategoryName : 电视机
-         * Memo : 123
-         * BrandID : 1
-         * BrandName : 松下
-         * ProductType : TV02
-         * ProvinceCode : 330000
-         * CityCode : 330200
-         * AreaCode : 330205
-         * Address : 奔腾科技园
-         * UserID : admin
-         * Guarantee : N
-         * UserName : 邰振江
-         * Phone : 17681886869
-         * CreateDate : 2019-01-11T16:21:37
-         * AudDate : 2019-01-11T16:21:37
-         * RepairCompleteDate : 2019-01-11T16:21:37
-         * AppraiseDate : 2019-01-11T16:21:37
-         * State : 0
-         * Extra : Y
-         * ExtraTime : null
-         * ExtraFee : 0.0
-         * IsUse : Y
-         * SendUser : admin
-         * LoginUser : system
-         * IsPay : Y
-         * OrderMoney : 0.0
-         * BeyondMoney : 0.0
+         * Id : 0
+         * OrderID : 0
+         * TypeID : 0
+         * TypeName : string
+         * SubTypeID : 0
+         * SubTypeName : string
+         * CategoryID : 0
+         * CategoryName : string
+         * SubCategoryID : 0
+         * SubCategoryName : string
+         * Memo : string
+         * BrandID : 0
+         * BrandName : string
+         * ProductType : string
+         * Num : string
+         * ProvinceCode : string
+         * CityCode : string
+         * AreaCode : string
+         * DistrictCode : string
+         * Address : string
+         * Longitude : string
+         * Dimension : string
+         * UserID : string
+         * Guarantee : string
+         * UserName : string
+         * Phone : string
+         * CreateDate : 2019-02-27T01:45:22.583Z
+         * AudDate : 2019-02-27T01:45:22.583Z
+         * RepairCompleteDate : 2019-02-27T01:45:22.583Z
+         * AppraiseDate : 2019-02-27T01:45:22.583Z
+         * State : string
+         * StateHtml : string
+         * Extra : string
+         * ExtraTime : string
+         * ExtraFee : 0
+         * IsUse : string
+         * SendUser : string
+         * OrgSendUser : string
+         * LoginUser : string
+         * IsPay : string
+         * OrderMoney : 0
+         * InitMoney : 0
+         * BeyondMoney : 0
          * BeyondID : 0
-         * BeyondState : 0
-         * BeyondDistance : null
-         * Accessory : null
-         * AccessorySequency : null
-         * AccessoryState : null
-         * AccessorySendState : null
-         * AccessoryMoney : 0.0
-         * Service : null
-         * ServiceMoney : 0.0
-         * ReturnAccessory : null
-         * ReturnAccessoryMsg : null
-         * ApplyCancel : null
-         * UpdateTime : 2019-01-11T16:21:37
-         * SendOrder : [{"Id":2,"SendID":2,"CreateDate":"2018-12-27T16:19:33","UserID":"admin","OrderID":1,"State":"1","UpdateDate":null,"LoginUser":"system","IsUse":"Y","CategoryID":0,"CategoryName":null,"SubTypeID":0,"SubTypeName":null,"Memo":null,"BrandID":0,"BrandName":null,"ProductType":null,"ProvinceCode":null,"CityCode":null,"AreaCode":null,"Address":null,"Guarantee":null,"UserName":null,"Phone":null,"page":1,"limit":10,"Version":0}]
-         * OrderPayStr : null
-         * ThirdPartyNo : null
-         * ExpressNo : null
+         * BeyondState : string
+         * BeyondDistance : string
+         * Accessory : string
+         * AccessorySequency : string
+         * AccessoryApplyState : string
+         * AccessoryState : string
+         * AccessorySendState : string
+         * AccessoryMoney : 0
+         * Service : string
+         * ServiceMoney : 0
+         * ReturnAccessory : string
+         * ReturnAccessoryMsg : string
+         * ApplyCancel : string
+         * UpdateTime : 2019-02-27T01:45:22.583Z
+         * OrderPayStr : string
+         * ThirdPartyNo : string
+         * ExpressNo : string
          * RecycleOrderHour : 0
-         * IsRecevieGoods : null
+         * IsRecevieGoods : string
+         * AppointmentMessage : string
+         * AppointmentState : string
          * page : 0
          * limit : 0
          * Version : 0
          */
 
-        private String Id;
+        private int Id;
         private String OrderID;
-        private String TypeID;
+        private int TypeID;
         private String TypeName;
-        private String SubTypeID;
+        private int SubTypeID;
         private String SubTypeName;
-        private String CategoryID;
+        private int CategoryID;
         private String CategoryName;
-        private String SubCategoryID;
+        private int SubCategoryID;
         private String SubCategoryName;
         private String Memo;
-        private String BrandID;
+        private int BrandID;
         private String BrandName;
         private String ProductType;
+        private String Num;
         private String ProvinceCode;
         private String CityCode;
         private String AreaCode;
+        private String DistrictCode;
         private String Address;
+        private String Longitude;
+        private String Dimension;
         private String UserID;
         private String Guarantee;
         private String UserName;
@@ -142,25 +155,29 @@ public class WorkOrder implements Serializable {
         private String RepairCompleteDate;
         private String AppraiseDate;
         private String State;
+        private String StateHtml;
         private String Extra;
         private String ExtraTime;
-        private String ExtraFee;
+        private double ExtraFee;
         private String IsUse;
         private String SendUser;
+        private String OrgSendUser;
         private String LoginUser;
         private String IsPay;
-        private String OrderMoney;
-        private String BeyondMoney;
-        private String BeyondID;
+        private double OrderMoney;
+        private double InitMoney;
+        private double BeyondMoney;
+        private int BeyondID;
         private String BeyondState;
         private String BeyondDistance;
         private String Accessory;
         private String AccessorySequency;
+        private String AccessoryApplyState;
         private String AccessoryState;
         private String AccessorySendState;
-        private String AccessoryMoney;
+        private int AccessoryMoney;
         private String Service;
-        private String ServiceMoney;
+        private int ServiceMoney;
         private String ReturnAccessory;
         private String ReturnAccessoryMsg;
         private String ApplyCancel;
@@ -168,27 +185,19 @@ public class WorkOrder implements Serializable {
         private String OrderPayStr;
         private String ThirdPartyNo;
         private String ExpressNo;
-        private String RecycleOrderHour;
+        private int RecycleOrderHour;
         private String IsRecevieGoods;
-        private String page;
-        private String limit;
-        private String Version;
-        private String Num;
-        private List<SendOrderBean> SendOrder;
+        private String AppointmentMessage;
+        private String AppointmentState;
+        private int page;
+        private int limit;
+        private int Version;
 
-        public String getNum() {
-            return Num;
-        }
-
-        public void setNum(String num) {
-            Num = num;
-        }
-
-        public String getId() {
+        public int getId() {
             return Id;
         }
 
-        public void setId(String Id) {
+        public void setId(int Id) {
             this.Id = Id;
         }
 
@@ -200,11 +209,11 @@ public class WorkOrder implements Serializable {
             this.OrderID = OrderID;
         }
 
-        public String getTypeID() {
+        public int getTypeID() {
             return TypeID;
         }
 
-        public void setTypeID(String TypeID) {
+        public void setTypeID(int TypeID) {
             this.TypeID = TypeID;
         }
 
@@ -216,11 +225,11 @@ public class WorkOrder implements Serializable {
             this.TypeName = TypeName;
         }
 
-        public String getSubTypeID() {
+        public int getSubTypeID() {
             return SubTypeID;
         }
 
-        public void setSubTypeID(String SubTypeID) {
+        public void setSubTypeID(int SubTypeID) {
             this.SubTypeID = SubTypeID;
         }
 
@@ -232,11 +241,11 @@ public class WorkOrder implements Serializable {
             this.SubTypeName = SubTypeName;
         }
 
-        public String getCategoryID() {
+        public int getCategoryID() {
             return CategoryID;
         }
 
-        public void setCategoryID(String CategoryID) {
+        public void setCategoryID(int CategoryID) {
             this.CategoryID = CategoryID;
         }
 
@@ -248,11 +257,11 @@ public class WorkOrder implements Serializable {
             this.CategoryName = CategoryName;
         }
 
-        public String getSubCategoryID() {
+        public int getSubCategoryID() {
             return SubCategoryID;
         }
 
-        public void setSubCategoryID(String SubCategoryID) {
+        public void setSubCategoryID(int SubCategoryID) {
             this.SubCategoryID = SubCategoryID;
         }
 
@@ -272,11 +281,11 @@ public class WorkOrder implements Serializable {
             this.Memo = Memo;
         }
 
-        public String getBrandID() {
+        public int getBrandID() {
             return BrandID;
         }
 
-        public void setBrandID(String BrandID) {
+        public void setBrandID(int BrandID) {
             this.BrandID = BrandID;
         }
 
@@ -294,6 +303,14 @@ public class WorkOrder implements Serializable {
 
         public void setProductType(String ProductType) {
             this.ProductType = ProductType;
+        }
+
+        public String getNum() {
+            return Num;
+        }
+
+        public void setNum(String Num) {
+            this.Num = Num;
         }
 
         public String getProvinceCode() {
@@ -320,12 +337,36 @@ public class WorkOrder implements Serializable {
             this.AreaCode = AreaCode;
         }
 
+        public String getDistrictCode() {
+            return DistrictCode;
+        }
+
+        public void setDistrictCode(String DistrictCode) {
+            this.DistrictCode = DistrictCode;
+        }
+
         public String getAddress() {
             return Address;
         }
 
         public void setAddress(String Address) {
             this.Address = Address;
+        }
+
+        public String getLongitude() {
+            return Longitude;
+        }
+
+        public void setLongitude(String Longitude) {
+            this.Longitude = Longitude;
+        }
+
+        public String getDimension() {
+            return Dimension;
+        }
+
+        public void setDimension(String Dimension) {
+            this.Dimension = Dimension;
         }
 
         public String getUserID() {
@@ -369,7 +410,7 @@ public class WorkOrder implements Serializable {
         }
 
         public String getAudDate() {
-            return AudDate.replace("T", " ");
+            return AudDate;
         }
 
         public void setAudDate(String AudDate) {
@@ -400,6 +441,14 @@ public class WorkOrder implements Serializable {
             this.State = State;
         }
 
+        public String getStateHtml() {
+            return StateHtml;
+        }
+
+        public void setStateHtml(String StateHtml) {
+            this.StateHtml = StateHtml;
+        }
+
         public String getExtra() {
             return Extra;
         }
@@ -416,11 +465,11 @@ public class WorkOrder implements Serializable {
             this.ExtraTime = ExtraTime;
         }
 
-        public String getExtraFee() {
+        public double getExtraFee() {
             return ExtraFee;
         }
 
-        public void setExtraFee(String ExtraFee) {
+        public void setExtraFee(double ExtraFee) {
             this.ExtraFee = ExtraFee;
         }
 
@@ -440,6 +489,14 @@ public class WorkOrder implements Serializable {
             this.SendUser = SendUser;
         }
 
+        public String getOrgSendUser() {
+            return OrgSendUser;
+        }
+
+        public void setOrgSendUser(String OrgSendUser) {
+            this.OrgSendUser = OrgSendUser;
+        }
+
         public String getLoginUser() {
             return LoginUser;
         }
@@ -449,38 +506,42 @@ public class WorkOrder implements Serializable {
         }
 
         public String getIsPay() {
-            if ("Y".equals(IsPay)){
-                return "已支付";
-            }else{
-                return "未支付";
-            }
+            return IsPay;
         }
 
         public void setIsPay(String IsPay) {
             this.IsPay = IsPay;
         }
 
-        public String getOrderMoney() {
+        public double getOrderMoney() {
             return OrderMoney;
         }
 
-        public void setOrderMoney(String OrderMoney) {
+        public void setOrderMoney(double OrderMoney) {
             this.OrderMoney = OrderMoney;
         }
 
-        public String getBeyondMoney() {
+        public double getInitMoney() {
+            return InitMoney;
+        }
+
+        public void setInitMoney(double InitMoney) {
+            this.InitMoney = InitMoney;
+        }
+
+        public double getBeyondMoney() {
             return BeyondMoney;
         }
 
-        public void setBeyondMoney(String BeyondMoney) {
+        public void setBeyondMoney(double BeyondMoney) {
             this.BeyondMoney = BeyondMoney;
         }
 
-        public String getBeyondID() {
+        public int getBeyondID() {
             return BeyondID;
         }
 
-        public void setBeyondID(String BeyondID) {
+        public void setBeyondID(int BeyondID) {
             this.BeyondID = BeyondID;
         }
 
@@ -516,6 +577,14 @@ public class WorkOrder implements Serializable {
             this.AccessorySequency = AccessorySequency;
         }
 
+        public String getAccessoryApplyState() {
+            return AccessoryApplyState;
+        }
+
+        public void setAccessoryApplyState(String AccessoryApplyState) {
+            this.AccessoryApplyState = AccessoryApplyState;
+        }
+
         public String getAccessoryState() {
             return AccessoryState;
         }
@@ -532,11 +601,11 @@ public class WorkOrder implements Serializable {
             this.AccessorySendState = AccessorySendState;
         }
 
-        public String getAccessoryMoney() {
+        public int getAccessoryMoney() {
             return AccessoryMoney;
         }
 
-        public void setAccessoryMoney(String AccessoryMoney) {
+        public void setAccessoryMoney(int AccessoryMoney) {
             this.AccessoryMoney = AccessoryMoney;
         }
 
@@ -548,11 +617,11 @@ public class WorkOrder implements Serializable {
             this.Service = Service;
         }
 
-        public String getServiceMoney() {
+        public int getServiceMoney() {
             return ServiceMoney;
         }
 
-        public void setServiceMoney(String ServiceMoney) {
+        public void setServiceMoney(int ServiceMoney) {
             this.ServiceMoney = ServiceMoney;
         }
 
@@ -612,11 +681,11 @@ public class WorkOrder implements Serializable {
             this.ExpressNo = ExpressNo;
         }
 
-        public String getRecycleOrderHour() {
+        public int getRecycleOrderHour() {
             return RecycleOrderHour;
         }
 
-        public void setRecycleOrderHour(String RecycleOrderHour) {
+        public void setRecycleOrderHour(int RecycleOrderHour) {
             this.RecycleOrderHour = RecycleOrderHour;
         }
 
@@ -628,312 +697,44 @@ public class WorkOrder implements Serializable {
             this.IsRecevieGoods = IsRecevieGoods;
         }
 
-        public String getPage() {
+        public String getAppointmentMessage() {
+            return AppointmentMessage;
+        }
+
+        public void setAppointmentMessage(String AppointmentMessage) {
+            this.AppointmentMessage = AppointmentMessage;
+        }
+
+        public String getAppointmentState() {
+            return AppointmentState;
+        }
+
+        public void setAppointmentState(String AppointmentState) {
+            this.AppointmentState = AppointmentState;
+        }
+
+        public int getPage() {
             return page;
         }
 
-        public void setPage(String page) {
+        public void setPage(int page) {
             this.page = page;
         }
 
-        public String getLimit() {
+        public int getLimit() {
             return limit;
         }
 
-        public void setLimit(String limit) {
+        public void setLimit(int limit) {
             this.limit = limit;
         }
 
-        public String getVersion() {
+        public int getVersion() {
             return Version;
         }
 
-        public void setVersion(String Version) {
+        public void setVersion(int Version) {
             this.Version = Version;
-        }
-
-        public List<SendOrderBean> getSendOrder() {
-            return SendOrder;
-        }
-
-        public void setSendOrder(List<SendOrderBean> SendOrder) {
-            this.SendOrder = SendOrder;
-        }
-
-        public static class SendOrderBean {
-            /**
-             * Id : 2
-             * SendID : 2
-             * CreateDate : 2018-12-27T16:19:33
-             * UserID : admin
-             * OrderID : 1
-             * State : 1
-             * UpdateDate : null
-             * LoginUser : system
-             * IsUse : Y
-             * CategoryID : 0
-             * CategoryName : null
-             * SubTypeID : 0
-             * SubTypeName : null
-             * Memo : null
-             * BrandID : 0
-             * BrandName : null
-             * ProductType : null
-             * ProvinceCode : null
-             * CityCode : null
-             * AreaCode : null
-             * Address : null
-             * Guarantee : null
-             * UserName : null
-             * Phone : null
-             * page : 1
-             * limit : 10
-             * Version : 0
-             */
-
-            private String Id;
-            private String SendID;
-            private String CreateDate;
-            private String UserID;
-            private String OrderID;
-            private String State;
-            private String UpdateDate;
-            private String LoginUser;
-            private String IsUse;
-            private String CategoryID;
-            private String CategoryName;
-            private String SubTypeID;
-            private String SubTypeName;
-            private String Memo;
-            private String BrandID;
-            private String BrandName;
-            private String ProductType;
-            private String ProvinceCode;
-            private String CityCode;
-            private String AreaCode;
-            private String Address;
-            private String Guarantee;
-            private String UserName;
-            private String Phone;
-            private String page;
-            private String limit;
-            private String Version;
-
-            public String getId() {
-                return Id;
-            }
-
-            public void setId(String Id) {
-                this.Id = Id;
-            }
-
-            public String getSendID() {
-                return SendID;
-            }
-
-            public void setSendID(String SendID) {
-                this.SendID = SendID;
-            }
-
-            public String getCreateDate() {
-                return CreateDate;
-            }
-
-            public void setCreateDate(String CreateDate) {
-                this.CreateDate = CreateDate;
-            }
-
-            public String getUserID() {
-                return UserID;
-            }
-
-            public void setUserID(String UserID) {
-                this.UserID = UserID;
-            }
-
-            public String getOrderID() {
-                return OrderID;
-            }
-
-            public void setOrderID(String OrderID) {
-                this.OrderID = OrderID;
-            }
-
-            public String getState() {
-                return State;
-            }
-
-            public void setState(String State) {
-                this.State = State;
-            }
-
-            public String getUpdateDate() {
-                return UpdateDate;
-            }
-
-            public void setUpdateDate(String UpdateDate) {
-                this.UpdateDate = UpdateDate;
-            }
-
-            public String getLoginUser() {
-                return LoginUser;
-            }
-
-            public void setLoginUser(String LoginUser) {
-                this.LoginUser = LoginUser;
-            }
-
-            public String getIsUse() {
-                return IsUse;
-            }
-
-            public void setIsUse(String IsUse) {
-                this.IsUse = IsUse;
-            }
-
-            public String getCategoryID() {
-                return CategoryID;
-            }
-
-            public void setCategoryID(String CategoryID) {
-                this.CategoryID = CategoryID;
-            }
-
-            public String getCategoryName() {
-                return CategoryName;
-            }
-
-            public void setCategoryName(String CategoryName) {
-                this.CategoryName = CategoryName;
-            }
-
-            public String getSubTypeID() {
-                return SubTypeID;
-            }
-
-            public void setSubTypeID(String SubTypeID) {
-                this.SubTypeID = SubTypeID;
-            }
-
-            public String getSubTypeName() {
-                return SubTypeName;
-            }
-
-            public void setSubTypeName(String SubTypeName) {
-                this.SubTypeName = SubTypeName;
-            }
-
-            public String getMemo() {
-                return Memo;
-            }
-
-            public void setMemo(String Memo) {
-                this.Memo = Memo;
-            }
-
-            public String getBrandID() {
-                return BrandID;
-            }
-
-            public void setBrandID(String BrandID) {
-                this.BrandID = BrandID;
-            }
-
-            public String getBrandName() {
-                return BrandName;
-            }
-
-            public void setBrandName(String BrandName) {
-                this.BrandName = BrandName;
-            }
-
-            public String getProductType() {
-                return ProductType;
-            }
-
-            public void setProductType(String ProductType) {
-                this.ProductType = ProductType;
-            }
-
-            public String getProvinceCode() {
-                return ProvinceCode;
-            }
-
-            public void setProvinceCode(String ProvinceCode) {
-                this.ProvinceCode = ProvinceCode;
-            }
-
-            public String getCityCode() {
-                return CityCode;
-            }
-
-            public void setCityCode(String CityCode) {
-                this.CityCode = CityCode;
-            }
-
-            public String getAreaCode() {
-                return AreaCode;
-            }
-
-            public void setAreaCode(String AreaCode) {
-                this.AreaCode = AreaCode;
-            }
-
-            public String getAddress() {
-                return Address;
-            }
-
-            public void setAddress(String Address) {
-                this.Address = Address;
-            }
-
-            public String getGuarantee() {
-                return Guarantee;
-            }
-
-            public void setGuarantee(String Guarantee) {
-                this.Guarantee = Guarantee;
-            }
-
-            public String getUserName() {
-                return UserName;
-            }
-
-            public void setUserName(String UserName) {
-                this.UserName = UserName;
-            }
-
-            public String getPhone() {
-                return Phone;
-            }
-
-            public void setPhone(String Phone) {
-                this.Phone = Phone;
-            }
-
-            public String getPage() {
-                return page;
-            }
-
-            public void setPage(String page) {
-                this.page = page;
-            }
-
-            public String getLimit() {
-                return limit;
-            }
-
-            public void setLimit(String limit) {
-                this.limit = limit;
-            }
-
-            public String getVersion() {
-                return Version;
-            }
-
-            public void setVersion(String Version) {
-                this.Version = Version;
-            }
         }
     }
 }

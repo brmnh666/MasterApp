@@ -65,6 +65,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
     private TextView tv_actionbar_title; //title标题
     private RadioGroup rg_order_details_for_remote_fee;
 
+
     private WorkOrder.DataBean data=new WorkOrder.DataBean();
     private LinearLayout ll_Out_of_service_tv;
     private LinearLayout ll_Out_of_service_img;
@@ -272,7 +273,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                 tv_order_details_reason.setText(data.getMemo());
                 tv_order_details_product_name.setText(data.getCategoryName()+"/"+data.getBrandName()+"/"+data.getProductType());
 
-                if (data.getTypeID().equals("1")){//维修
+                if (data.getTypeID()==1){//维修
                     tv_order_details_status.setText("维修");
                     tv_order_details_status.setBackgroundResource(R.color.color_custom_01);
                 }else {
@@ -703,10 +704,9 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
 
     /*提交配件信息*/
     @Override
-    public void AddOrderAccessory(BaseResult<String> baseResult) {
+    public void AddOrderAccessory(BaseResult<Data> baseResult) {
         switch (baseResult.getStatusCode()){
             case 200:
-                Log.d("提交配件信息的结果为",baseResult.getData());
                 break;
             default:
                 break;
@@ -714,6 +714,11 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
 
         }
 
+
+    }
+
+    @Override
+    public void AddOrderService(BaseResult<Data> baseResult) {
 
     }
 

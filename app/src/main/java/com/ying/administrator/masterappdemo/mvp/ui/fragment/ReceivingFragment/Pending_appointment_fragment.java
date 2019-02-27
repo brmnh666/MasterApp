@@ -8,9 +8,13 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,7 +37,9 @@ import com.ying.administrator.masterappdemo.mvp.presenter.GetOrderListForMePrese
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_details_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Pending_Appointment_Adapter;
 
+import com.ying.administrator.masterappdemo.mvp.ui.adapter.Redeploy_Adapter;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseFragment;
+import com.ying.administrator.masterappdemo.widget.CustomDialog_Redeploy;
 import com.ying.administrator.masterappdemo.widget.CustomDialog_UnSuccess;
 
 import java.util.ArrayList;
@@ -55,6 +61,9 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
     private String userID; //用户id
     private int pageIndex = 1;  //默认当前页数为1
     private TextView tv_pending_appointment_redeploy;//转派
+    private CustomDialog_Redeploy customDialog_redeploy;//转派dialog
+    private RecyclerView recyclerView_custom_redeploy;//显示子账号的RecyclerView
+    private Redeploy_Adapter redeploy_adapter; //转派的adapter
     public Pending_appointment_fragment() {
         // Required empty public constructor
     }
@@ -85,6 +94,7 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
     }
 
     public void initView() {
+        customDialog_redeploy=new CustomDialog_Redeploy(mActivity);
         recyclerView=view.findViewById(R.id.recyclerview_order_receiving);
         tv_pending_appointment_redeploy=view.findViewById(R.id.tv_pending_appointment_redeploy);
         mRefreshLayout=view.findViewById(R.id.refreshLayout);
@@ -249,6 +259,23 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
 
                     case R.id.tv_pending_appointment_redeploy:
 
+
+                        customDialog_redeploy.getWindow().setBackgroundDrawableResource(R.color.transparent);
+                        customDialog_redeploy.show();
+                        Window window = customDialog_redeploy.getWindow();
+                        WindowManager.LayoutParams wlp = window.getAttributes();
+                        Display d = window.getWindowManager().getDefaultDisplay();
+                        wlp.height = (d.getHeight());
+                        wlp.width = (d.getWidth());
+                        wlp.gravity = Gravity.CENTER;
+                        window.setAttributes(wlp);
+
+                        recyclerView_custom_redeploy=customDialog_redeploy.findViewById(R.id.recyclerView_custom_redeploy);
+                        recyclerView_custom_redeploy.setLayoutManager(new LinearLayoutManager(mActivity));
+                        redeploy_adapter=new Redeploy_Adapter(R.layout.item_redeploy,subuserlist,mActivity);
+                        recyclerView_custom_redeploy.setAdapter(redeploy_adapter);
+
+
                         break;
                     /*转派订单*/
 
@@ -308,6 +335,7 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
         }
     }
 
+    /*获取子账号*/
     @Override
     public void GetChildAccountByParentUserID(BaseResult<List<SubUserInfo.SubUserInfoDean>> baseResult) {
               switch (baseResult.getStatusCode()){

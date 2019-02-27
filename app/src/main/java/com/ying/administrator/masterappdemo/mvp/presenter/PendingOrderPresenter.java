@@ -46,10 +46,20 @@ public class PendingOrderPresenter extends PendingOrderContract.Presenter {
 
     @Override
     public void AddOrderAccessory(RequestBody json) {
-        mModel.AddOrderAccessory(json).subscribe(new BaseObserver<String>() {
+        mModel.AddOrderAccessory(json).subscribe(new BaseObserver<Data>() {
             @Override
-            protected void onHandleSuccess(BaseResult<String> value) {
+            protected void onHandleSuccess(BaseResult<Data> value) {
                 mView.AddOrderAccessory(value);
+            }
+        });
+    }
+
+    @Override
+    public void AddOrderService(RequestBody json) {
+        mModel.AddOrderService(json).subscribe(new BaseObserver<Data>() {
+            @Override
+            protected void onHandleSuccess(BaseResult<Data> value) {
+                mView.AddOrderService(value);
             }
         });
     }
