@@ -19,6 +19,7 @@ import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Category;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.MySkills;
+import com.ying.administrator.masterappdemo.entity.Skill;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.mvp.contract.AddSkillsContract;
 import com.ying.administrator.masterappdemo.mvp.model.AddSkillsModel;
@@ -52,13 +53,13 @@ public class MyInfoSkillsActivity extends BaseActivity<AddSkillsPresenter, AddSk
     private LinearLayout ll_return;
     SPUtils spUtils = SPUtils.getInstance("token");
     private String userID;//用户id
-/*
     private MySkillAdapter mySkillAdapter;
     private List<MySkills> mySkillsList=new ArrayList<>();
+    private List<Skill> mSkillList=new ArrayList<>();
     private List<Category> popularList;
     private List<Category> subList;
     private String skills;
-    private String NodeIds="";*/
+    private String NodeIds="";
 
 //    @Override
 //    protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,7 +78,7 @@ public class MyInfoSkillsActivity extends BaseActivity<AddSkillsPresenter, AddSk
     protected void initData() {
         userID = spUtils.getString("userName"); //获取用户id
         mPresenter.GetFactoryCategory();
-        mPresenter.GetAccountSkill(userID);
+
     }
     @Override
     protected void initView() {
@@ -106,7 +107,7 @@ public class MyInfoSkillsActivity extends BaseActivity<AddSkillsPresenter, AddSk
                 finish();
                 break;
             case R.id.btn_skill:
-            /*    skills ="";
+                skills ="";
                 for (int i = 0; i < mySkillAdapter.getData().size(); i++) {
                     if (mySkillAdapter.getData().get(i).isSelected()){
                         skills+=mySkillAdapter.getData().get(i).getCategory().getFCategoryName()+"/";
@@ -119,11 +120,8 @@ public class MyInfoSkillsActivity extends BaseActivity<AddSkillsPresenter, AddSk
                 if (NodeIds.contains(",")){
                     NodeIds=NodeIds.substring(0,NodeIds.lastIndexOf(","));
                 }
-                Intent intent=new Intent();
-                intent.putExtra("skills",skills);
-                intent.putExtra("NodeIds",NodeIds);
-                setResult(1000,intent);
-                finish();*/
+                mPresenter.UpdateAccountSkillData(userID,NodeIds);
+
                 break;
         }
     }
@@ -132,7 +130,7 @@ public class MyInfoSkillsActivity extends BaseActivity<AddSkillsPresenter, AddSk
     public void GetFactoryCategory(BaseResult<Data<List<Category>>> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-         /*       Data<List<Category>> data = baseResult.getData();
+                Data<List<Category>> data = baseResult.getData();
                 if (data.isItem1()) {
                     popularList = data.getItem2();
                     if (popularList.size() == 0) {
@@ -156,19 +154,55 @@ public class MyInfoSkillsActivity extends BaseActivity<AddSkillsPresenter, AddSk
                         mRvKills.setLayoutManager(new LinearLayoutManager(mActivity));
                         mRvKills.setAdapter(mySkillAdapter);
                     }
+                    mPresenter.GetAccountSkill(userID);
                 } else {
                     ToastUtils.showShort("获取分类失败！");
                 }
                 break;
             case 401:
 //                ToastUtils.showShort(baseResult.getData());
-                break;*/
+                break;
         }
     }
 
     @Override
-    public void GetAccountSkill(BaseResult<String> baseResult) {
+    public void GetAccountSkill(BaseResult<List<Skill>> baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                mSkillList = baseResult.getData();
+                if (mSkillList.size() == 0) {
+                        ToastUtils.showShort("获取技能失败！");
+                } else {
+                    for (int i = 0; i < mSkillList.size(); i++) {
+                        for (int j = 0; j < mySkillsList.size(); j++) {
+                            if (mSkillList.get(i).getParentID().equals(mySkillsList.get(j).getCategory().getId())){
+                                mySkillsList.get(j).setSelected(true);
+                            }
+                        }
+                        mySkillAdapter.notifyDataSetChanged();
+                    }
+                }
+                break;
+            case 401:
+//                ToastUtils.showShort(baseResult.getData());
+                break;
+        }
+    }
 
+    @Override
+    public void UpdateAccountSkillData(BaseResult<String> baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                Intent intent=new Intent();
+                intent.putExtra("skills",skills);
+                intent.putExtra("NodeIds",NodeIds);
+                setResult(1000,intent);
+                finish();
+                break;
+            case 401:
+//                ToastUtils.showShort(baseResult.getData());
+                break;
+        }
     }
 
 }

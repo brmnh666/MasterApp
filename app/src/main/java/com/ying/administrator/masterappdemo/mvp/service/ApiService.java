@@ -8,6 +8,7 @@ import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.GetFactorySeviceData;
 import com.ying.administrator.masterappdemo.entity.IDCard;
 import com.ying.administrator.masterappdemo.entity.Service;
+import com.ying.administrator.masterappdemo.entity.Skill;
 import com.ying.administrator.masterappdemo.entity.SubUserInfo;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
@@ -209,7 +210,16 @@ public interface ApiService {
    /*获取账户的技能*/
     @FormUrlEncoded
     @POST("Account/GetAccountSkill")
-    Observable<BaseResult<String>> GetAccountSkill(@Field("UserID") String UserID);
+    Observable<BaseResult<List<Skill>>> GetAccountSkill(@Field("UserID") String UserID);
+
+    /**
+     * 添加技能
+     * @param UserID
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("Account/UpdateAccountSkillData")
+    Observable<BaseResult<String>> UpdateAccountSkillData(@Field("UserID") String UserID,@Field("NodeIds") String NodeIds);
 
 
     /**

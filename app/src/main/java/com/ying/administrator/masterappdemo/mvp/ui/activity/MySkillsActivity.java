@@ -18,6 +18,7 @@ import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Category;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.MySkills;
+import com.ying.administrator.masterappdemo.entity.Skill;
 import com.ying.administrator.masterappdemo.mvp.contract.AddSkillsContract;
 import com.ying.administrator.masterappdemo.mvp.model.AddSkillsModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.AddSkillsPresenter;
@@ -161,8 +162,12 @@ public class MySkillsActivity extends BaseActivity<AddSkillsPresenter, AddSkills
     }
 
     @Override
-    public void GetAccountSkill(BaseResult<String> baseResult) {
+    public void GetAccountSkill(BaseResult<List<Skill>> baseResult) {
 
     }
 
+    @Override
+    public void UpdateAccountSkillData(BaseResult<String> baseResult) {
+
+    }
 }

@@ -7,6 +7,7 @@ import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.base.BaseView;
 import com.ying.administrator.masterappdemo.entity.Category;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.Skill;
 
 import java.util.List;
 
@@ -18,7 +19,8 @@ public interface AddSkillsContract {
         Observable<BaseResult<Data<List<Category>>>> GetFactoryCategory();
        //  Observable<BaseResult<Data<List<Category>>>> GetChildFactoryCategory(String ParentID);
         //获取该账号下的技能
-        Observable<BaseResult<String>> GetAccountSkill(String UserID);
+        Observable<BaseResult<List<Skill>>> GetAccountSkill(String UserID);
+        Observable<BaseResult<String>> UpdateAccountSkillData(String UserID,String NodeIds);
 
     }
 
@@ -26,7 +28,8 @@ public interface AddSkillsContract {
         void GetFactoryCategory(BaseResult<Data<List<Category>>> baseResult);
 //        void GetChildFactoryCategory(BaseResult<Data<List<Category>>> baseResult);
         //获取该账号下的技能
-        void GetAccountSkill(BaseResult<String> baseResult);
+        void GetAccountSkill(BaseResult<List<Skill>> baseResult);
+        void UpdateAccountSkillData(BaseResult<String> baseResult);
     }
 
     abstract class Presenter extends BasePresenter<View,Model> {
@@ -34,5 +37,6 @@ public interface AddSkillsContract {
 //        public abstract void GetChildFactoryCategory(String ParentID);
         //获取该账号下的技能
         public abstract void GetAccountSkill(String UserID);
+        public abstract void UpdateAccountSkillData(String UserID,String NodeIds);
     }
 }
