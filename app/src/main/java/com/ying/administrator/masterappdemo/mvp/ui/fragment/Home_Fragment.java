@@ -741,10 +741,10 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
         }
     }
 
-    private static class CustomShareListener implements UMShareListener {
+    public static class CustomShareListener implements UMShareListener {
         private Context mContext;
 
-        private CustomShareListener(Context context) {
+        public CustomShareListener(Context context) {
             mContext=context;
         }
 
