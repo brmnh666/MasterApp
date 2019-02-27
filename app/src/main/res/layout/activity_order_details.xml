@@ -36,7 +36,290 @@
 
             <include layout="@layout/activity_order_details_application_for_remote_fee"/>
             <include layout="@layout/activity_order_details_add_back"/>
+            <LinearLayout
+                android:id="@+id/ll_return_information"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/white_shape"
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/dp_10">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="13dp"
+                    android:text="添加返件信息"
+                    android:textColor="#000000"
+                    android:textSize="16sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="43dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/gray_shape"
+                    android:orientation="horizontal"
+                    android:paddingLeft="7dp"
+                    android:paddingTop="13dp"
+                    android:paddingBottom="13dp">
+
+                    <EditText
+                        android:id="@+id/et_single_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:hint="单号:640114527166"
+                        android:textColor="#ABABAB"
+                        android:textSize="12dp" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="#B5B5B5" />
+
+                    <EditText
+                        android:id="@+id/et_express_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_10"
+                        android:background="@null"
+                        android:hint="中通快递"
+                        android:textColor="#ABABAB"
+                        android:textSize="12dp" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="20dp"
+                        android:background="#B5B5B5" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_scan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="17dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dp_10"
+                            android:src="@mipmap/icon_scan" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="@dimen/dp_10"
+                            android:text="扫描条码"
+                            android:textColor="#6A6A6A"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/ll_view_example"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="right"
+                    android:layout_marginTop="14dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="查看示例"
+                        android:textSize="12sp"
+                        android:textColor="#8B8B8B"
+                        android:layout_gravity="center"/>
+
+                    <ImageView
+                        android:layout_width="13dp"
+                        android:layout_height="13dp"
+                        android:src="@mipmap/question"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="18dp"
+                    android:layout_marginRight="21dp"
+                    android:paddingBottom="15dp">
+                    <LinearLayout
+                        android:id="@+id/ll_bar_code"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                        <ImageView
+                            android:id="@+id/iv_bar_code"
+                            android:layout_width="69dp"
+                            android:layout_height="69dp"
+                            android:src="@mipmap/upload" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="条形码"
+                            android:textColor="#353535"
+                            android:textSize="10dp"
+                            android:layout_marginTop="13dp"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/ll_machine"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                        <ImageView
+                            android:id="@+id/iv_machine"
+                            android:layout_width="69dp"
+                            android:layout_height="69dp"
+                            android:src="@mipmap/upload" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="整机"
+                            android:textColor="#353535"
+                            android:textSize="10dp"
+                            android:layout_marginTop="13dp"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/ll_fault_location"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                        <ImageView
+                            android:id="@+id/iv_fault_location"
+                            android:layout_width="69dp"
+                            android:layout_height="69dp"
+                            android:src="@mipmap/upload" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="故障位置"
+                            android:textColor="#353535"
+                            android:textSize="10dp"
+                            android:layout_marginTop="13dp"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/ll_new_and_old_accessories"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                        <ImageView
+                            android:id="@+id/iv_new_and_old_accessories"
+                            android:layout_width="69dp"
+                            android:layout_height="69dp"
+                            android:src="@mipmap/upload" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="新旧配件"
+                            android:textColor="#353535"
+                            android:textSize="10dp"
+                            android:layout_marginTop="13dp"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_service_process"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/white_shape"
+                android:layout_margin="10dp"
+                android:orientation="vertical"
+                android:paddingBottom="17dp"
+                android:visibility="gone">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="11dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="15dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="添加服务过程图片"
+                        android:textSize="16sp"
+                        android:textColor="#505050"/>
+
+                    <LinearLayout
+                        android:id="@+id/ll_view_example_two"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_gravity="center">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="查看示例"
+                            android:textSize="12sp"
+                            android:textColor="#8B8B8B"
+                            android:layout_gravity="center"/>
+
+                        <ImageView
+                            android:layout_width="13dp"
+                            android:layout_height="13dp"
+                            android:src="@mipmap/question"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_gravity="center"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginLeft="18dp"
+                    android:layout_marginRight="21dp">
+                    <ImageView
+                        android:id="@+id/iv_one"
+                        android:layout_width="match_parent"
+                        android:layout_height="69dp"
+                        android:layout_weight="1"
+                        android:layout_gravity="center"
+                        android:src="@mipmap/upload"/>
+                    <ImageView
+                        android:id="@+id/iv_two"
+                        android:layout_width="match_parent"
+                        android:layout_height="69dp"
+                        android:layout_weight="1"
+                        android:layout_gravity="center"
+                        android:src="@mipmap/upload"/>
+                    <ImageView
+                        android:id="@+id/iv_three"
+                        android:layout_width="match_parent"
+                        android:layout_height="69dp"
+                        android:layout_weight="1"
+                        android:layout_gravity="center"
+                        android:src="@mipmap/upload"/>
+                    <ImageView
+                        android:id="@+id/iv_four"
+                        android:layout_width="match_parent"
+                        android:layout_height="69dp"
+                        android:layout_weight="1"
+                        android:layout_gravity="center"
+                        android:src="@mipmap/upload"/>
+                </LinearLayout>
+            </LinearLayout>
            <include layout="@layout/activity_order_details_submit"/>
 
         </LinearLayout>
