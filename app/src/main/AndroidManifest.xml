@@ -273,6 +273,8 @@
         <!--QQend-->
         <!--我的消息页面技能-->
         <activity android:name=".mvp.ui.activity.MyInfoSkillsActivity" android:theme="@style/AppTheme.NoActionBar"/>
+        <!--添加服务技能-->
+        <activity android:name=".mvp.ui.activity.AddServiceAreaActivity" android:theme="@style/AppTheme.NoActionBar"/>
 
     </application>
 

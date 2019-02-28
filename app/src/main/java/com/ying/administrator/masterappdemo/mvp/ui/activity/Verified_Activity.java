@@ -23,6 +23,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -96,6 +98,14 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
     TextView mTvSkills;
     @BindView(R.id.iv_selfie)
     ImageView mIvSelfie;
+    @BindView(R.id.ll_select_service_area)
+    LinearLayout mLlSelectServiceArea;
+    @BindView(R.id.rb_shop_address)
+    RadioButton mRbShopAddress;
+    @BindView(R.id.rb_government_center)
+    RadioButton mRbGovernmentCenter;
+    @BindView(R.id.rg_service_starting_point)
+    RadioGroup mRgServiceStartingPoint;
     private View popupWindow_view;
     private String FilePath;
     private PopupWindow mPopupWindow;
@@ -240,6 +250,7 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
         mLlShopAddress.setOnClickListener(this);
         mLlServiceSkill.setOnClickListener(this);
         mSubmitApplicationBt.setOnClickListener(this);
+        mLlSelectServiceArea.setOnClickListener(this);
     }
 
 
@@ -315,6 +326,9 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                 }
                 mPresenter.ApplyAuthInfo(UserID, mActualName, mIdNumber, mAddress, NodeIds, mProvince, mCity, mDistrict, mStreet, Double.toString(mLongitude), Double.toString(mLatitude));
                 break;
+            case R.id.ll_select_service_area:
+                startActivity(new Intent(mActivity,AddServiceAreaActivity.class));
+                break;
         }
     }
 
@@ -331,27 +345,27 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
             @Override
             public void onClick(View view) {
 //                if (requestPermissions()) {
-                    Intent intent = new Intent();
-                    // 指定开启系统相机的Action
-                    intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-                    intent.addCategory(Intent.CATEGORY_DEFAULT);
-                    String f = System.currentTimeMillis() + ".jpg";
-                    String fileDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy";
-                    FilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy/" + f;
-                    File dirfile = new File(fileDir);
-                    if (!dirfile.exists()) {
-                        dirfile.mkdirs();
-                    }
-                    File file = new File(FilePath);
-                    Uri fileUri;
-                    if (Build.VERSION.SDK_INT >= 24) {
-                        fileUri = FileProvider.getUriForFile(mActivity, "com.ying.administrator.masterappdemo.fileProvider", file);
-                    } else {
-                        fileUri = Uri.fromFile(file);
-                    }
+                Intent intent = new Intent();
+                // 指定开启系统相机的Action
+                intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+                intent.addCategory(Intent.CATEGORY_DEFAULT);
+                String f = System.currentTimeMillis() + ".jpg";
+                String fileDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy";
+                FilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy/" + f;
+                File dirfile = new File(fileDir);
+                if (!dirfile.exists()) {
+                    dirfile.mkdirs();
+                }
+                File file = new File(FilePath);
+                Uri fileUri;
+                if (Build.VERSION.SDK_INT >= 24) {
+                    fileUri = FileProvider.getUriForFile(mActivity, "com.ying.administrator.masterappdemo.fileProvider", file);
+                } else {
+                    fileUri = Uri.fromFile(file);
+                }
 
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-                    startActivityForResult(intent, code1);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+                startActivityForResult(intent, code1);
 //                } else {
 //                    requestPermissions(permissions.toArray(new String[permissions.size()]), 10001);
 //                }
@@ -363,11 +377,11 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
             @Override
             public void onClick(View view) {
 //                if (requestPermissions()) {
-                    Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-                    i.addCategory(Intent.CATEGORY_OPENABLE);
-                    i.setType("image/*");
-                    startActivityForResult(Intent.createChooser(i, "test"), code2);
-                    mPopupWindow.dismiss();
+                Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+                i.addCategory(Intent.CATEGORY_OPENABLE);
+                i.setType("image/*");
+                startActivityForResult(Intent.createChooser(i, "test"), code2);
+                mPopupWindow.dismiss();
 //                } else {
 //                    requestPermissions(permissions.toArray(new String[permissions.size()]), 10002);
 //                }
@@ -396,8 +410,6 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
         }
         MyUtils.setWindowAlpa(mActivity, true);
     }
-
-
 
 
     //请求定位权限

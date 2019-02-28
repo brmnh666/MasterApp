@@ -114,7 +114,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="真实姓名"
-                            android:textColor="@color/color_black"
+                            android:textColor="#5A5A5B"
                             android:textSize="16sp" />
 
                         <EditText
@@ -148,7 +148,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="身份证号码"
-                            android:textColor="@color/color_black"
+                            android:textColor="#5A5A5B"
                             android:textSize="16sp" />
 
                         <EditText
@@ -183,7 +183,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="身份证照"
-                        android:textColor="@color/color_black"
+                        android:textColor="#5A5A5B"
                         android:textSize="16sp"
                         android:layout_gravity="center"/>
                     <LinearLayout
@@ -215,6 +215,77 @@
                 </LinearLayout>
                 </LinearLayout>
             </FrameLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_select_service_area"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="7dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/color_white">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="选择服务区域"
+                    android:textColor="#5A5A5B"
+                    android:textSize="16sp"
+                    android:layout_marginLeft="17dp"
+                    android:layout_marginTop="19dp"
+                    android:layout_marginBottom="15dp" />
+                <ImageView
+                    android:layout_width="7dp"
+                    android:layout_height="12dp"
+                    android:src="@mipmap/right_arrow"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="32dp"/>
+            </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="7dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@color/color_white">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="选择服务起点"
+                android:textColor="#5A5A5B"
+                android:textSize="16sp"
+                android:layout_marginLeft="17dp"
+                android:layout_marginTop="19dp"
+                android:layout_marginBottom="15dp" />
+
+            <RadioGroup
+                android:id="@+id/rg_service_starting_point"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center">
+                <RadioButton
+                    android:id="@+id/rb_shop_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="店铺地址"
+                    android:textSize="16sp"
+                    android:textColor="#5A5A5B"/>
+                <RadioButton
+                    android:id="@+id/rb_government_center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="政府中心"
+                    android:textSize="16sp"
+                    android:textColor="#5A5A5B"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="16dp"/>
+            </RadioGroup>
+        </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/ll_shop_address"

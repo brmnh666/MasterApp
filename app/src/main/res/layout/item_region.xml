@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="13dp"
+            android:layout_height="16dp"
+            android:src="@mipmap/quyu"
+            android:layout_marginTop="15dp"/>
+
+        <TextView
+            android:id="@+id/tv_region"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="#5A5A5B"
+            android:textSize="14sp"
+            android:text="浙江省  宁波市  江北区  洪塘镇"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="14dp"/>
+
+        <ImageView
+            android:id="@+id/iv_delete"
+            android:layout_width="14dp"
+            android:layout_height="16dp"
+            android:src="@mipmap/shanchu"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="34dp"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginRight="34dp"
+        android:background="#E4E4E4"
+        android:layout_marginTop="15dp"/>
+</LinearLayout>
