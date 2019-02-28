@@ -157,7 +157,7 @@ public class Me_Fragment extends BaseFragment<MainPresenter, MainModel> implemen
                             Toast.makeText(mActivity, "已复制", Toast.LENGTH_LONG).show();
 
                         } else {
-                            UMWeb web = new UMWeb("https://h5.youzan.com/wscshop/feature/ihODHu0rwF?redirect_count=1");
+                            UMWeb web = new UMWeb("http://www.jmiren.com/");
                             web.setTitle("西瓜鱼");
                             web.setDescription("分享测试测试测试");
                             web.setThumb(new UMImage(mActivity,R.mipmap.icon_app));

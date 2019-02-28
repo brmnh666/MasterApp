@@ -94,6 +94,7 @@ public class AddServiceAreaActivity extends BaseActivity<AddServicePresenter, Ad
     private DistrictAdapter districtAdapter;
     private PopupWindow popupWindow;
     private String codestr="";
+    private String name;
 
     @Override
     protected int setLayoutId() {
@@ -108,10 +109,10 @@ public class AddServiceAreaActivity extends BaseActivity<AddServicePresenter, Ad
     @Override
     public void initView() {
         mTvActionbarTitle.setText("添加服务区域");
-        mTvProvince.setText("请选择省");
-        mTvCity.setText("请选择市");
-        mTvArea.setText("请选择区");
-        mTvDistrict.setText("请选择街道");
+        mTvProvince.setText("省");
+        mTvCity.setText("市");
+        mTvArea.setText("区");
+        mTvDistrict.setText("街道");
         serviceAddressAdapter=new ServiceAddressAdapter(R.layout.item_region,serviceAddressList);
         mRvRegion.setLayoutManager(new LinearLayoutManager(mActivity));
         mRvRegion.setAdapter(serviceAddressAdapter);
@@ -190,19 +191,31 @@ public class AddServiceAreaActivity extends BaseActivity<AddServicePresenter, Ad
                     return;
                 }
                 if (mDistrict == null) {
-                    ToastUtils.showShort("请选择街道！");
-                    return;
+                    name =mProvince.getName()+mCity.getName()+mArea.getName();
+                    for (int i = 0; i < serviceAddressList.size(); i++) {
+                        if (serviceAddressList.get(i).getName().contains(name)){
+                            serviceAddressList.remove(i);
+                        }
+                    }
+                }else{
+                    name =mProvince.getName()+mCity.getName()+mArea.getName()+mDistrict.getName();
+                    for (int i = 0; i < serviceAddressList.size(); i++) {
+                        if (name.contains(serviceAddressList.get(i).getName())){
+                            serviceAddressList.remove(i);
+                        }
+                    }
                 }
+
                 serviceAddressList.add(new ServiceAddress(mProvince,mCity,mArea,mDistrict));
                 serviceAddressAdapter.notifyDataSetChanged();
                 mProvince=null;
                 mCity=null;
                 mArea=null;
                 mDistrict=null;
-                mTvProvince.setText("请选择省");
-                mTvCity.setText("请选择市");
-                mTvArea.setText("请选择区");
-                mTvDistrict.setText("请选择街道");
+                mTvProvince.setText("省");
+                mTvCity.setText("市");
+                mTvArea.setText("区");
+                mTvDistrict.setText("街道");
                 break;
             case R.id.btn_save:
                 for (int i = 0; i < serviceAddressList.size(); i++) {
@@ -210,6 +223,10 @@ public class AddServiceAreaActivity extends BaseActivity<AddServicePresenter, Ad
                 }
                 if (codestr.contains(",")){
                     codestr=codestr.substring(0,codestr.lastIndexOf(","));
+                }
+                if ("".equals(codestr)){
+                    ToastUtils.showShort("请添加至少一个服务区域");
+                    return;
                 }
                 Intent intent=new Intent();
                 intent.putExtra("codestr",codestr);
@@ -304,14 +321,26 @@ public class AddServiceAreaActivity extends BaseActivity<AddServicePresenter, Ad
                 if (list.get(position) instanceof Province) {
                     mProvince = ((Province) list.get(position));
                     tv.setText(mProvince.getName());
+                    mCity=null;
+                    mArea=null;
+                    mDistrict=null;
+                    mTvCity.setText("市");
+                    mTvArea.setText("区");
+                    mTvDistrict.setText("街道");
                 }
                 if (list.get(position) instanceof City) {
                     mCity = ((City) list.get(position));
                     tv.setText(mCity.getName());
+                    mArea=null;
+                    mDistrict=null;
+                    mTvArea.setText("区");
+                    mTvDistrict.setText("街道");
                 }
                 if (list.get(position) instanceof Area) {
                     mArea = ((Area) list.get(position));
                     tv.setText(mArea.getName());
+                    mDistrict=null;
+                    mTvDistrict.setText("街道");
                 }
                 if (list.get(position) instanceof District) {
                     mDistrict = ((District) list.get(position));

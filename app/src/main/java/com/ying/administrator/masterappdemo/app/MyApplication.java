@@ -93,7 +93,7 @@ public class MyApplication extends Application {
         UMConfigure.init(this,"5c74d740f1f55636a80003a6"
                 ,"umeng", UMConfigure.DEVICE_TYPE_PHONE,"");//58edcfeb310c93091c000be2 5965ee00734be40b580001a0
         //微信
-        PlatformConfig.setWeixin("wxdc1e388c3822c80b", "3baf1193c85774b3fd9d18447d76cab0");
+        PlatformConfig.setWeixin("wxd22da3eb42259071", "dac072c98881a324665bfbaa7f7e7c76");
         //新浪
         PlatformConfig.setSinaWeibo("2062370017", "ed8cf0cbbdb756f002777c3f648e3818","http://sns.whalecloud.com");
         //QQ

@@ -16,8 +16,13 @@ public class ServiceAddress implements Serializable {
         this.city = city;
         this.area = area;
         this.district = district;
-        this.name=province.getName()+city.getName()+area.getName()+district.getName();
-        this.codestr=province.getCode()+"-"+city.getCode()+"-"+area.getCode()+"-"+district.getCode();
+        if (district==null){
+            this.name=province.getName()+city.getName()+area.getName();
+            this.codestr=province.getCode()+"-"+city.getCode()+"-"+area.getCode();
+        }else{
+            this.name=province.getName()+city.getName()+area.getName()+district.getName();
+            this.codestr=province.getCode()+"-"+city.getCode()+"-"+area.getCode()+"-"+district.getCode();
+        }
     }
 
     public String getCodestr() {
