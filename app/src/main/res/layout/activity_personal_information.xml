@@ -527,15 +527,7 @@
                 </LinearLayout>
             </FrameLayout>
 
-            <Button
-                android:id="@+id/btn_sign_out_of_your_account"
-                android:layout_width="match_parent"
-                android:layout_height="43dp"
-                android:layout_margin="10dp"
-                android:background="@drawable/btn_blue"
-                android:text="退出帐号"
-                android:textColor="@color/color_white"
-                android:textSize="16sp" />
+
         </LinearLayout>
     </ScrollView>
 

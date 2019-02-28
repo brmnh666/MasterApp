@@ -39,6 +39,7 @@ import com.ying.administrator.masterappdemo.mvp.contract.MainContract;
 import com.ying.administrator.masterappdemo.mvp.model.MainModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.MainPresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.AboutUsActivity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.IntelligentCustomerServiceActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Opinion_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_Receiving_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Personal_Information_Activity;
@@ -90,6 +91,7 @@ public class Me_Fragment extends BaseFragment<MainPresenter, MainModel> implemen
     private View btn_share_two;
     private AlertDialog dialogShare;
     private Window window;
+    private LinearLayout ll_online_consultation;
 
 
     public Me_Fragment() {
@@ -178,6 +180,7 @@ public class Me_Fragment extends BaseFragment<MainPresenter, MainModel> implemen
         ll_me_customer_service=mRootView.findViewById(R.id.ll_me_customer_service);
         ll_sub_account_management=mRootView.findViewById(R.id.ll_sub_account_management);
         ll_recommended_gift = mRootView.findViewById(R.id.ll_recommended_gift);
+        ll_online_consultation = mRootView.findViewById(R.id.ll_online_consultation);
     }
 
     @Override
@@ -197,6 +200,7 @@ public class Me_Fragment extends BaseFragment<MainPresenter, MainModel> implemen
         ll_me_customer_service.setOnClickListener(new CustomOnclickListner());
         ll_sub_account_management.setOnClickListener(new CustomOnclickListner());
         ll_recommended_gift.setOnClickListener(new CustomOnclickListner());
+        ll_online_consultation.setOnClickListener(new CustomOnclickListner());
     }
 
     @Override
@@ -321,7 +325,7 @@ public class Me_Fragment extends BaseFragment<MainPresenter, MainModel> implemen
                         @Override
                         public void onPositiveClick() {//拨打电话
                             dialog.dismiss();
-                            call("tel:"+"18074208209");
+                            call("tel:"+"4006262365");
                         }
 
                         @Override
@@ -371,6 +375,8 @@ public class Me_Fragment extends BaseFragment<MainPresenter, MainModel> implemen
 //                window.setDimAmount(0.1f);
                     window.setBackgroundDrawable(new ColorDrawable());
                     break;
+                case R.id.ll_online_consultation:
+                    startActivity(new Intent(getActivity(), IntelligentCustomerServiceActivity.class));
 
                 default:
                     break;

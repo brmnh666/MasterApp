@@ -7,295 +7,317 @@
 
     <include layout="@layout/actionbar_receiving_layout" />
 
-    <FrameLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:background="@color/color_custom_01" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="@dimen/dp_10"
-            android:background="@drawable/white_half_shape"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:background="@color/color_custom_01" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:background="@drawable/white_half_shape"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="22dp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="14dp"
+                        android:paddingRight="28dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:text="安装工单"
+                            android:textColor="#858585"
+                            android:textSize="14sp" />
+
+                        <Switch
+                            android:id="@+id/switcher_installation_work_order"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:checked="true"
+                            android:switchMinWidth="2dp"
+                            android:thumb="@drawable/thumb"
+                            android:track="@drawable/track" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="14dp"
+                        android:layout_marginTop="15dp"
+                        android:background="#E4E4E4" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="14dp"
+                        android:paddingRight="28dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:text="维修工单"
+                            android:textColor="#858585"
+                            android:textSize="14sp" />
+
+                        <Switch
+                            android:id="@+id/switcher_repair_work_order"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:checked="true"
+                            android:switchMinWidth="2dp"
+                            android:thumb="@drawable/thumb"
+                            android:track="@drawable/track" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="14dp"
+                        android:layout_marginTop="15dp"
+                        android:background="#E4E4E4" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="14dp"
+                        android:paddingRight="28dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:text="是否接受送修工单"
+                            android:textColor="#858585"
+                            android:textSize="14sp" />
+
+                        <Switch
+                            android:id="@+id/switcher_accept_the_repair_work_order"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:checked="true"
+                            android:switchMinWidth="2dp"
+                            android:thumb="@drawable/thumb"
+                            android:track="@drawable/track" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="14dp"
+                        android:layout_marginTop="15dp"
+                        android:background="#E4E4E4" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="14dp"
+                        android:paddingRight="28dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:text="接收送修工单"
+                            android:textColor="#858585"
+                            android:textSize="14sp" />
+
+                        <Switch
+                            android:id="@+id/switcher_receiving_repair_work_order"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:checked="true"
+                            android:switchMinWidth="2dp"
+                            android:thumb="@drawable/thumb"
+                            android:track="@drawable/track" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="14dp"
+                        android:layout_marginTop="15dp"
+                        android:background="#E4E4E4" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="14dp"
+                        android:paddingRight="28dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:text="是否允许派单"
+                            android:textColor="#858585"
+                            android:textSize="14sp" />
+
+                        <Switch
+                            android:id="@+id/switcher_whether_to_allow_the_order"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:checked="true"
+                            android:switchMinWidth="2dp"
+                            android:thumb="@drawable/thumb"
+                            android:track="@drawable/track" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="14dp"
+                        android:layout_marginTop="15dp"
+                        android:background="#E4E4E4" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="14dp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="14dp"
+                        android:paddingRight="28dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:text="允许派单"
+                            android:textColor="#858585"
+                            android:textSize="14sp" />
+
+                        <Switch
+                            android:id="@+id/switcher_allow_order"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:checked="true"
+                            android:switchMinWidth="2dp"
+                            android:thumb="@drawable/thumb"
+                            android:track="@drawable/track" />
+                    </LinearLayout>
+                </LinearLayout>
+            </FrameLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="22dp"
-                android:orientation="horizontal"
-                android:paddingLeft="14dp"
-                android:paddingRight="28dp">
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginTop="13dp"
+                android:layout_marginRight="@dimen/dp_10"
+                android:background="@color/color_white"
+                android:orientation="vertical">
 
-                <TextView
+                <LinearLayout
+                    android:id="@+id/ll_clean"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:text="安装工单"
-                    android:textColor="#858585"
-                    android:textSize="14sp" />
+                    android:orientation="horizontal"
+                    android:paddingLeft="14dp"
+                    android:paddingTop="25dp"
+                    android:paddingRight="28dp">
 
-                <Switch
-                    android:id="@+id/switcher_installation_work_order"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:switchMinWidth="2dp"
-                    android:background="@null"
-                    android:thumb="@drawable/thumb"
-                    android:track="@drawable/track" />
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:text="清除缓存"
+                        android:textColor="#858585"
+                        android:textSize="14sp" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginLeft="14dp"
-                android:layout_marginTop="15dp"
-                android:background="#E4E4E4" />
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@mipmap/clean" />
+                </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal"
-                android:paddingLeft="14dp"
-                android:paddingRight="28dp">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginTop="12dp"
+                    android:background="#E4E4E4" />
 
-                <TextView
+                <LinearLayout
+                    android:id="@+id/ll_update"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:text="维修工单"
-                    android:textColor="#858585"
-                    android:textSize="14sp" />
+                    android:layout_marginBottom="12dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="14dp"
+                    android:paddingTop="20dp"
+                    android:paddingRight="28dp">
 
-                <Switch
-                    android:id="@+id/switcher_repair_work_order"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:switchMinWidth="2dp"
-                    android:background="@null"
-                    android:thumb="@drawable/thumb"
-                    android:track="@drawable/track" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:text="检查更新"
+                        android:textColor="#858585"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@mipmap/update" />
+                </LinearLayout>
             </LinearLayout>
 
-            <View
+            <Button
+                android:id="@+id/btn_sign_out_of_your_account"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginLeft="14dp"
-                android:layout_marginTop="15dp"
-                android:background="#E4E4E4" />
+                android:layout_height="43dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/btn_blue"
+                android:text="退出帐号"
+                android:textColor="@color/color_white"
+                android:textSize="16sp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal"
-                android:paddingLeft="14dp"
-                android:paddingRight="28dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:text="是否接受送修工单"
-                    android:textColor="#858585"
-                    android:textSize="14sp" />
-
-                <Switch
-                    android:id="@+id/switcher_accept_the_repair_work_order"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:switchMinWidth="2dp"
-                    android:background="@null"
-                    android:thumb="@drawable/thumb"
-                    android:track="@drawable/track" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginLeft="14dp"
-                android:layout_marginTop="15dp"
-                android:background="#E4E4E4" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal"
-                android:paddingLeft="14dp"
-                android:paddingRight="28dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:text="接收送修工单"
-                    android:textColor="#858585"
-                    android:textSize="14sp" />
-
-                <Switch
-                    android:id="@+id/switcher_receiving_repair_work_order"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:switchMinWidth="2dp"
-                    android:background="@null"
-                    android:thumb="@drawable/thumb"
-                    android:track="@drawable/track" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginLeft="14dp"
-                android:layout_marginTop="15dp"
-                android:background="#E4E4E4" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal"
-                android:paddingLeft="14dp"
-                android:paddingRight="28dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:text="是否允许派单"
-                    android:textColor="#858585"
-                    android:textSize="14sp" />
-
-                <Switch
-                    android:id="@+id/switcher_whether_to_allow_the_order"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:switchMinWidth="2dp"
-                    android:background="@null"
-                    android:thumb="@drawable/thumb"
-                    android:track="@drawable/track" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginLeft="14dp"
-                android:layout_marginTop="15dp"
-                android:background="#E4E4E4" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="14dp"
-                android:orientation="horizontal"
-                android:paddingLeft="14dp"
-                android:paddingRight="28dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:text="允许派单"
-                    android:textColor="#858585"
-                    android:textSize="14sp" />
-
-                <Switch
-                    android:id="@+id/switcher_allow_order"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:switchMinWidth="2dp"
-                    android:background="@null"
-                    android:thumb="@drawable/thumb"
-                    android:track="@drawable/track" />
-            </LinearLayout>
         </LinearLayout>
-    </FrameLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dp_10"
-        android:layout_marginTop="13dp"
-        android:layout_marginRight="@dimen/dp_10"
-        android:background="@color/color_white"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:id="@+id/ll_clean"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingLeft="14dp"
-            android:paddingTop="25dp"
-            android:paddingRight="28dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:text="清除缓存"
-                android:textColor="#858585"
-                android:textSize="14sp" />
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@mipmap/clean" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="14dp"
-            android:layout_marginTop="12dp"
-            android:background="#E4E4E4" />
-
-        <LinearLayout
-            android:id="@+id/ll_update"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:orientation="horizontal"
-            android:paddingLeft="14dp"
-            android:paddingTop="20dp"
-            android:paddingRight="28dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:text="检查更新"
-                android:textColor="#858585"
-                android:textSize="14sp" />
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@mipmap/update" />
-        </LinearLayout>
-    </LinearLayout>
-
+    </ScrollView>
 
 </LinearLayout>
