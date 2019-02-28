@@ -16,14 +16,17 @@ import java.util.List;
 /*转派dialog*/
 public class CustomDialog_Redeploy extends AlertDialog {
     private TextView yes;
+    private TextView no;
     private TextView titleTv;
     private String titleStr;
     private String yesStr;
+    private String noStr;
     private Context context;
 
     /*  -------------------------------- 接口监听 -------------------------------------  */
 
     private onYesOnclickListener yesOnclickListener;
+    private onNoOnclickListener onNoOnclickListener;
 
     public String getTitleStr() {
         return titleStr;
@@ -37,6 +40,10 @@ public class CustomDialog_Redeploy extends AlertDialog {
         void onYesClick();
     }
 
+    public interface onNoOnclickListener{
+        void onNoOnclick();
+    }
+
 
     public void setYesOnclickListener(String str, onYesOnclickListener onYesOnclickListener) {
         if (str != null) {
@@ -44,6 +51,16 @@ public class CustomDialog_Redeploy extends AlertDialog {
         }
         this.yesOnclickListener = onYesOnclickListener;
     }
+
+    public void setNoOnclickListener(String str, onNoOnclickListener onNoOnclickListener) {
+        if (str != null) {
+            noStr = str;
+        }
+        this.onNoOnclickListener = onNoOnclickListener;
+    }
+
+
+
 
 
 
@@ -100,7 +117,15 @@ public class CustomDialog_Redeploy extends AlertDialog {
                 }
             }
         });
+      no.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+              if (onNoOnclickListener!=null){
+                  onNoOnclickListener.onNoOnclick();
+              }
 
+          }
+      });
 
 
     }
@@ -110,6 +135,7 @@ public class CustomDialog_Redeploy extends AlertDialog {
      */
     private void initView(){
         yes = findViewById(R.id.tv_redeploy_submit);
+        no=findViewById(R.id.tv_redeploy_cancle);
 
     }
     /**
@@ -131,11 +157,5 @@ public class CustomDialog_Redeploy extends AlertDialog {
 
     }
 
-    public TextView getTitleTv() {
-        return titleTv;
-    }
 
-    public void setTitleTv(TextView titleTv) {
-        this.titleTv = titleTv;
-    }
 }

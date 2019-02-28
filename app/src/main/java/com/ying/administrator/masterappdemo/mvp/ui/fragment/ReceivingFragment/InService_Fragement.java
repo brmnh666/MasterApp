@@ -148,6 +148,11 @@ import java.util.List;
     }
 
     @Override
+    public void ChangeSendOrder(BaseResult<Data> baseResult) {
+
+    }
+
+    @Override
     public void contentLoading() {
 
     }

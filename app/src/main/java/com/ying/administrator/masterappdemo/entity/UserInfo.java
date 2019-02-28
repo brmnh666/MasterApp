@@ -95,7 +95,7 @@ public class UserInfo implements Serializable {
         private int LoginCount;
         private int RemainMoney;
         private Double TotalMoney;
-        private int FrozenMoney;
+        private Double FrozenMoney;
         private String Type;
         private String TopRank;
         private String IsUse;
@@ -197,12 +197,12 @@ public class UserInfo implements Serializable {
             TotalMoney = totalMoney;
         }
 
-        public int getFrozenMoney() {
+        public Double getFrozenMoney() {
             return FrozenMoney;
         }
 
-        public void setFrozenMoney(int FrozenMoney) {
-            this.FrozenMoney = FrozenMoney;
+        public void setFrozenMoney(Double frozenMoney) {
+            FrozenMoney = frozenMoney;
         }
 
         public String getType() {

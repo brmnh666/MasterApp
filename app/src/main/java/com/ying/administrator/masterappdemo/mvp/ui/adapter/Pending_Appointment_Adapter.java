@@ -74,6 +74,8 @@ public class Pending_Appointment_Adapter extends BaseQuickAdapter<WorkOrder.Data
         }else {
             helper.setGone(R.id.tv_pending_appointment_redeploy,false);
         }
+
+
         helper.addOnClickListener(R.id.img_pending_appointment_phone);//拨打电话事件
         helper.addOnClickListener(R.id.tv_pending_appointment_success); //预约成功
         helper.addOnClickListener(R.id.tv_pending_appointment_failure);//预约不成功

@@ -130,6 +130,21 @@ public interface ApiService {
     Observable<BaseResult<Data>> AddGrabsheetapply (@Field("OrderID") String OrderID,
                                                     @Field("UserID") String UserID);
 
+
+    /*主账号转派订单操作*/
+
+    @FormUrlEncoded
+    @POST("Order/ChangeSendOrder")
+    Observable<BaseResult<Data>> ChangeSendOrder(@Field("OrderID") String OrderID,
+                                          @Field("UserID") String UserID);
+
+  /*  *//*获取派单列表*//*
+    @FormUrlEncoded
+    @POST("Order/GetSendOrderList")
+    Observable<BaseResult<SendOrder>> GetSendOrderList(@Field())
+
+
+*/
     /**
      * 获取其他状态的 获取已接的订单
      * **/

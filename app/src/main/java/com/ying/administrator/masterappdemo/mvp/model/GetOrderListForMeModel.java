@@ -46,7 +46,12 @@ public class GetOrderListForMeModel implements GetOrderListForMeContract.Model {
 
     }
 
-
+    @Override
+    public Observable<BaseResult<Data>> ChangeSendOrder(String OrderID, String UserID) {
+        return ApiRetrofit.getDefault().ChangeSendOrder(OrderID,UserID)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
 
 
 }

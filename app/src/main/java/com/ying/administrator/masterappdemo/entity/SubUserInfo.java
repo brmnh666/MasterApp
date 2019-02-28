@@ -97,8 +97,18 @@ public class SubUserInfo implements Serializable {
         private int page;
         private int limit;
         private int Version;
+        private boolean ischeck;//判断账号是否被选中
+
         private List<?> AccountDetail;
         private List<?> AccountServiceArea;
+
+        public boolean isIscheck() {
+            return ischeck;
+        }
+
+        public void setIscheck(boolean ischeck) {
+            this.ischeck = ischeck;
+        }
 
         public int getId() {
             return Id;

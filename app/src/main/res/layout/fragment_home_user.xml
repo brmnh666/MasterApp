@@ -86,7 +86,7 @@
             android:layout_below="@+id/tv_home_outstanding_amount"
             android:layout_toRightOf="@+id/img_home_free_gold"
             android:layout_marginTop="5dp"
-            android:text="赠 送 金额: 0.00 元"
+            android:text="赠 送 金 额: 0.00 元"
             android:textSize="16dp" />
 
         <TextView

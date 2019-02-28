@@ -101,15 +101,15 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
     @BindView(R.id.img_home_withdraw)
     ImageView mImgHomeWithdraw;
     @BindView(R.id.tv_home_available_balance)
-    TextView mTvHomeAvailableBalance;
+    TextView mTvHomeAvailableBalance;     //可提现余额 = TotalMoney-FrozenMoney
     @BindView(R.id.img_home_unfinished)
     ImageView mImgHomeUnfinished;
     @BindView(R.id.tv_home_outstanding_amount)
-    TextView mTvHomeOutstandingAmount;
+    TextView mTvHomeOutstandingAmount;    //冻结金额   = FrozenMoney
     @BindView(R.id.img_home_free_gold)
     ImageView mImgHomeFreeGold;
     @BindView(R.id.tv_home_giving_money)
-    TextView mTvHomeGivingMoney;
+    TextView mTvHomeGivingMoney;         //赠送金额
     @BindView(R.id.tv_certification) //实名认证
     TextView mTvCertification;
     @BindView(R.id.img_certification)//实名认证图片
@@ -118,6 +118,7 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
     ImageView mImg_un_certification;
     @BindView(R.id.img_home_location)
     ImageView mImgHomeLocation;
+
     @BindView(R.id.tv_home_location)
     TextView mTvHomeLocation;
     @BindView(R.id.cv_home_user)
@@ -138,6 +139,7 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
     LinearLayout mLlEmpty;
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout mRefreshLayout;
+
     Unbinder unbinder;
 
     // private WaveSwipeRefreshLayout mWaveSwipeRefreshLayout;
@@ -532,6 +534,7 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
                     mImg_un_certification.setVisibility(View.INVISIBLE);
                     mImgCertification.setVisibility(View.VISIBLE);
                 }else {
+
                     return;
                 }
 
@@ -545,8 +548,13 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
                             .into(mImgHomeHead);
 
                 }
-
-
+              /*设置金额*/
+                String TotalMoney= String.valueOf(userInfo.getTotalMoney());
+                String FrozenMoney= String.valueOf(userInfo.getFrozenMoney());//冻结金额
+                String can_withdraw= String.valueOf(userInfo.getTotalMoney()-userInfo.getFrozenMoney());//可提现余额=总金额-冻结金额
+                mTvHomeAvailableBalance.setText("可提现余额: "+can_withdraw+"元");
+                mTvHomeOutstandingAmount.setText("未完结金额: "+FrozenMoney+"元");
+                mTvHomeGivingMoney.setText("赠 送 金 额: 暂无");
                 break;
 
             default:
@@ -725,7 +733,7 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
                     @Override
                     public void onPositiveClick() {//拨打电话
                         dialog.dismiss();
-                        call("tel:"+"18074208209");
+                        call("tel:"+"4006262365");
                     }
 
                     @Override

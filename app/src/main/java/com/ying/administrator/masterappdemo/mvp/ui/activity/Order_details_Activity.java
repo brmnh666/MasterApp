@@ -177,6 +177,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     private int size;
     private double Money; //默认的钱为（OrderMoney-InitMoney）
     private String time;//最后传递的时间
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -738,7 +739,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                        String s1 = gson1.toJson(orderAccessoryStrBean);
                        sAccessory=new SAccessory();
                        sAccessory.setOrderID(orderID);
-                       sAccessory.setAccessorySequency("0");
+                       sAccessory.setAccessorySequency("0");//自购件 和工厂配件默认
                        sAccessory.setOrderAccessoryStr(s1);
                        Gson gson=new Gson();
                        String s = gson.toJson(sAccessory);
@@ -759,16 +760,42 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                        Gson gson4=new Gson();
                        String s = gson4.toJson(sService);
                        Log.d("添加的服务有",s);
-                       RequestBody body=RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),s);
-                       mPresenter.AddOrderService(body);
+                       RequestBody body1=RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),s);
+                       mPresenter.AddOrderService(body1);
 
 
                    }else {//都有
 
-
+                 /*   *//*配件*//*
+                    orderAccessoryStrBean = new FAccessory.OrderAccessoryStrBean();
+                    orderAccessoryStrBean.setOrderAccessory(fAcList);
+                    Gson gson1=new Gson();
+                    String s1 = gson1.toJson(orderAccessoryStrBean);
+                    sAccessory=new SAccessory();
+                    sAccessory.setOrderID(orderID);
+                    sAccessory.setAccessorySequency("0");//自购件 和工厂配件默认
+                    sAccessory.setOrderAccessoryStr(s1);
+                    Gson gson=new Gson();
+                    String s2 = gson.toJson(sAccessory);
+                    Log.d("添加的配件有",s2);
+                    RequestBody body=RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),s2);
+                    mPresenter.AddOrderAccessory(body);
+                    *//*配件*//*
+                    *//*服务*//*
+                    orderServiceStrBean=new FService.OrderServiceStrBean();
+                    orderServiceStrBean.setOrderService(fList_service);
+                    Gson gson3=new Gson();
+                    String s3 = gson3.toJson(orderServiceStrBean);
+                    sService=new SService();
+                    sService.setOrderID(orderID);
+                    sService.setOrderServiceStr(s3);
+                    Gson gson4=new Gson();
+                    String s = gson4.toJson(sService);
+                    Log.d("添加的服务有",s);
+                    RequestBody body1=RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),s);
+                    mPresenter.AddOrderService(body1);
+                    *//*服务*/
                    }
-
-
                                  }
 
 
@@ -826,11 +853,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                 break;
             default:
                 break;
-
-
         }
-
-
     }
 
     /*提交服务信息*/
@@ -840,7 +863,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
         switch (baseResult.getStatusCode()){
             case 200:
                 if (!baseResult.getData().isItem1()){
-                    Toast.makeText(this,"未知错误请检查",Toast.LENGTH_LONG).show();
+                    Toast.makeText(this,"服务添加失败工厂端余额不足",Toast.LENGTH_LONG).show();
                 }else {
 
                     mPresenter.UpdateSendOrderUpdateTime(orderID,time);

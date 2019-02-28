@@ -58,5 +58,16 @@ public class GetOrderListForMePresenter extends GetOrderListForMeContract.Presen
                 });
     }
 
+    @Override
+    public void ChangeSendOrder(String OrderID, String UserID) {
+        mModel.ChangeSendOrder(OrderID,UserID)
+                .subscribe(new BaseObserver<Data>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<Data> value) {
+                        mView.ChangeSendOrder(value);
+                    }
+                });
+    }
+
 
 }

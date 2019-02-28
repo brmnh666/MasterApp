@@ -16,6 +16,7 @@ import com.ying.administrator.masterappdemo.entity.SubUserInfo;
 
 import java.util.List;
 
+/*选择子账号的adapter*/
 public class Redeploy_Adapter extends BaseQuickAdapter<SubUserInfo.SubUserInfoDean,BaseViewHolder> {
 private Context context;
 
@@ -55,7 +56,20 @@ private Context context;
             helper.setText(R.id.tv_subaccount_phone,item.getPhone());
         }
 
+        if (item.isIscheck()==false){//未选中
+          helper.setVisible(R.id.img_redeploy_unselect,true);
+          helper.setVisible(R.id.img_redeploy_select,false);
 
+        }else {//选中
+            helper.setVisible(R.id.img_redeploy_unselect,false);
+            helper.setVisible(R.id.img_redeploy_select,true);
+
+        }
+
+
+        //helper.addOnClickListener(R.id.img_redeploy_unselect);
+        //helper.addOnClickListener(R.id.img_redeploy_select);
+       helper.addOnClickListener(R.id.rl_item_redeploy);
 
     }
 }

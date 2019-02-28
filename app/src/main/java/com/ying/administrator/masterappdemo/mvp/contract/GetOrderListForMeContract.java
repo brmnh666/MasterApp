@@ -28,6 +28,9 @@ public interface GetOrderListForMeContract {
         //获取子账号
         Observable<BaseResult<List<SubUserInfo.SubUserInfoDean>>> GetChildAccountByParentUserID(String ParentUserID);
 
+        //主账号派单操作
+        Observable<BaseResult<Data>> ChangeSendOrder(String OrderID,String UserID);
+
     }
 
     interface View extends BaseView {
@@ -42,6 +45,9 @@ public interface GetOrderListForMeContract {
 
         //获取子账号
         void GetChildAccountByParentUserID(BaseResult<List<SubUserInfo.SubUserInfoDean>> baseResult);
+
+        //主账号派单操作
+        void ChangeSendOrder(BaseResult<Data> baseResult);
     }
 
     abstract class Presenter extends BasePresenter<View,Model> {
@@ -53,5 +59,7 @@ public interface GetOrderListForMeContract {
         public abstract void GetUserInfoList(String UserID,String limit);
         //获取子账号
         public abstract void GetChildAccountByParentUserID(String ParentUserID);
+        //主账号派单操作
+        public abstract void ChangeSendOrder(String OrderID,String UserID);
     }
 }

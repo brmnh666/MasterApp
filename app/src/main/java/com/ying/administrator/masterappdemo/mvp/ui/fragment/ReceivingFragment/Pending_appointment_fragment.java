@@ -10,12 +10,15 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,6 +67,10 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
     private CustomDialog_Redeploy customDialog_redeploy;//转派dialog
     private RecyclerView recyclerView_custom_redeploy;//显示子账号的RecyclerView
     private Redeploy_Adapter redeploy_adapter; //转派的adapter
+
+    private LinearLayout mLlEmpty;
+    private String SubUserID; //用于存放主账号将要发送子账号的userid
+    private String OrderId;//用于记录当前 工单的id
     public Pending_appointment_fragment() {
         // Required empty public constructor
     }
@@ -98,7 +105,11 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
         recyclerView=view.findViewById(R.id.recyclerview_order_receiving);
         tv_pending_appointment_redeploy=view.findViewById(R.id.tv_pending_appointment_redeploy);
         mRefreshLayout=view.findViewById(R.id.refreshLayout);
+        mLlEmpty = view.findViewById(R.id.ll_empty);
+
         list=new ArrayList<>();
+
+
         subuserlist=new ArrayList<>();//获取子账号列表
 
 
@@ -258,7 +269,7 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                     /*转派订单*/
 
                     case R.id.tv_pending_appointment_redeploy:
-
+                        OrderId=((WorkOrder.DataBean)adapter.getData().get(position)).getOrderID();//获取工单号
 
                         customDialog_redeploy.getWindow().setBackgroundDrawableResource(R.color.transparent);
                         customDialog_redeploy.show();
@@ -270,10 +281,86 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                         wlp.gravity = Gravity.CENTER;
                         window.setAttributes(wlp);
 
+
                         recyclerView_custom_redeploy=customDialog_redeploy.findViewById(R.id.recyclerView_custom_redeploy);
                         recyclerView_custom_redeploy.setLayoutManager(new LinearLayoutManager(mActivity));
                         redeploy_adapter=new Redeploy_Adapter(R.layout.item_redeploy,subuserlist,mActivity);
                         recyclerView_custom_redeploy.setAdapter(redeploy_adapter);
+
+
+
+                        /*选择子账号进行转派*/
+                        redeploy_adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+                            @Override
+                            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+
+                                switch (view.getId()){
+                                    case R.id.rl_item_redeploy:
+                                   // case R.id.img_redeploy_unselect:
+                                   // case R.id.img_redeploy_select:
+                                        if (((SubUserInfo.SubUserInfoDean)adapter.getData().get(position)).isIscheck()==false){//当前选中选中
+
+                                            for (int i=0;i<subuserlist.size();i++)
+                                            {
+                                                subuserlist.get(i).setIscheck(false);
+                                            }
+                                            subuserlist.get(position).setIscheck(true); //点击的为选中状态
+                                            SubUserID=subuserlist.get(position).getUserID();
+
+                                            redeploy_adapter.notifyDataSetChanged();
+
+                                        }else { //点击的为已选中
+
+                                            for (int i=0;i<subuserlist.size();i++)
+                                            {
+                                                subuserlist.get(i).setIscheck(false);
+                                            }
+                                            SubUserID=null;
+                                            redeploy_adapter.notifyDataSetChanged();
+
+                                        }
+
+
+                                        break;
+                                       default:
+                                           break;
+                                }
+                            }
+                        });
+
+                        customDialog_redeploy.setYesOnclickListener("转派订单", new CustomDialog_Redeploy.onYesOnclickListener() {
+                            @Override
+                            public void onYesClick() {
+                              if (SubUserID==null){
+
+                              Toast.makeText(getActivity(),"您还没选择子账号进行转派",Toast.LENGTH_SHORT).show();
+                                //  customDialog_redeploy.dismiss(); //没选择人进行选派
+                              return;
+                              }
+
+                              else {  //转派成功 刷新当前页面
+                                  mPresenter.ChangeSendOrder(OrderId,SubUserID);
+                                  customDialog_redeploy.dismiss();
+                                  mRefreshLayout.autoRefresh();
+                              }
+
+                            }
+                        });
+
+                        customDialog_redeploy.setNoOnclickListener("取消转派", new CustomDialog_Redeploy.onNoOnclickListener() {
+                            @Override
+                            public void onNoOnclick() {
+                                //点击了取消所谓状态恢复原状
+                                SubUserID=null;
+                                for (int i=0;i<subuserlist.size();i++){
+                                    subuserlist.get(i).setIscheck(false);
+                                }
+                              customDialog_redeploy.dismiss();
+                            }
+                        });
+
+
+
 
 
                         break;
@@ -298,6 +385,15 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                 workOrder = baseResult.getData();
                 list.addAll(workOrder.getData());
                 pending_appointment_adapter.setNewData(list); //?
+
+
+                if (list.isEmpty()){//如果数据为空
+                    contentLoadingEmpty();
+
+                }else {
+                    mLlEmpty.setVisibility(View.INVISIBLE);
+                }
+
                 break;
             case 401:
                 ToastUtils.showShort(baseResult.getInfo());
@@ -327,6 +423,7 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
         switch (baseResult.getStatusCode()){
             case 200:
                 userInfo = baseResult.getData().getData().get(0);
+                pending_appointment_adapter.notifyDataSetChanged();
                 break;
             default:
                 break;
@@ -340,11 +437,26 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
               switch (baseResult.getStatusCode()){
                   case 200:
                       subuserlist.addAll(baseResult.getData());
+                      pending_appointment_adapter.notifyDataSetChanged();
 
                       break;
                       default:
                           break;
               }
+    }
+
+    /*派单操作*/
+    @Override
+    public void ChangeSendOrder(BaseResult<Data> baseResult) {
+     switch (baseResult.getStatusCode()){
+         case 200:
+        Toast.makeText(getActivity(),"转派成功",Toast.LENGTH_SHORT).show();
+             break;
+             default:
+                 break;
+     }
+
+
     }
 
 
@@ -353,7 +465,7 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
     }
 
     @Override
-    public void contentLoadingComplete() {
+    public void contentLoadingComplete(){
     }
 
     @Override
@@ -362,6 +474,7 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
 
     @Override
     public void contentLoadingEmpty() {
+        mLlEmpty.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -372,6 +485,8 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
     public void hideProgress() {
 
     }
+
+
 
 
 }
