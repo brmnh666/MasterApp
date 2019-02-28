@@ -84,7 +84,8 @@ public interface ApiService {
     /*获取用户信息*/
     @FormUrlEncoded
     @POST("Account/GetUserInfoList")
-    Observable<BaseResult<UserInfo>> GetUserInfoList(@Field("UserID") String UserID,@Field("limit") String limit);
+    Observable<BaseResult<UserInfo>> GetUserInfoList(@Field("UserID") String UserID,
+                                                     @Field("limit") String limit);
 
 
     /*
@@ -99,10 +100,12 @@ public interface ApiService {
     /**
      * 获取工单列表
      * 废除-1，待审核0，派单中1，服务中2，已完成3
+     * 获取首页 的单子
      */
     @FormUrlEncoded
     @POST("Order/GetOrderInfoList")
-    Observable<BaseResult<WorkOrder>> GetOrderInfoList(@Field("state") String state,
+    Observable<BaseResult<WorkOrder>> GetOrderInfoList(@Field("UserID") String UserID,
+                                                       @Field("state") String state,
                                                        @Field("page") String page,
                                                        @Field("limit") String limit);
 

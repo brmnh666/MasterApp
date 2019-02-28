@@ -11,8 +11,8 @@ import com.ying.administrator.masterappdemo.mvp.contract.AllWorkOrdersContract;
 public class AllWorkOrdersPresenter extends AllWorkOrdersContract.Presenter {
 
     @Override
-    public void GetOrderInfoList(String state, String page, String limit) {
-        mModel.GetOrderInfoList(state, page, limit)
+    public void GetOrderInfoList(String UserID,String state, String page, String limit) {
+        mModel.GetOrderInfoList(UserID,state, page, limit)
                 .subscribe(new BaseObserver<WorkOrder>() {
                     @Override
                     protected void onHandleSuccess(BaseResult<WorkOrder> value) {

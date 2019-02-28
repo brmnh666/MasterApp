@@ -321,7 +321,7 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
         //?? grabsheetAdapter.setEmptyView(getEmptyView());
         mRecyclerviewOrderReceiving.setAdapter(grabsheetAdapter);
 
-        mPresenter.GetOrderInfoList("1", Integer.toString(pageIndex), "100");
+        mPresenter.GetOrderInfoList(userID,"1",Integer.toString(pageIndex), "100");
       /* if (list.isEmpty()){ //没有数据显示空
            contentLoadingEmpty();
 
@@ -416,7 +416,7 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
                 }
                 pageIndex = 1;
                 list.clear();
-                mPresenter.GetOrderInfoList("1", Integer.toString(pageIndex), "100");
+                mPresenter.GetOrderInfoList(userID,"1", Integer.toString(pageIndex), "100");
                 grabsheetAdapter.notifyDataSetChanged();
                 refreshlayout.finishRefresh();
                 refreshlayout.setLoadmoreFinished(false);
@@ -434,7 +434,7 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
                 public void onLoadmore(RefreshLayout refreshlayout) {
                     pageIndex++; //页数加1
                     Log.d("当前的单数", String.valueOf(list.size()));
-                    mPresenter.GetOrderInfoList("1", Integer.toString(pageIndex), "4");
+                    mPresenter.GetOrderInfoList(userID,"1", Integer.toString(pageIndex), "4");
                     grabsheetAdapter.notifyDataSetChanged();
                     refreshlayout.finishLoadmore();
                 }

@@ -298,7 +298,6 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                 workOrder = baseResult.getData();
                 list.addAll(workOrder.getData());
                 pending_appointment_adapter.setNewData(list); //?
-
                 break;
             case 401:
                 ToastUtils.showShort(baseResult.getInfo());
