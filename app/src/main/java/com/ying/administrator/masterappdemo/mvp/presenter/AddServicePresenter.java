@@ -49,12 +49,12 @@ public class AddServicePresenter extends AddServiceContract.Presenter {
     }
 
     @Override
-    public void GetDistrict(String parentcode) {
-        mModel.GetDistrict(parentcode)
+    public void GetDistrict(String parentcode, final int code) {
+        mModel.GetDistrict(parentcode,code)
                 .subscribe(new BaseObserver<Data<List<District>>>() {
                     @Override
                     protected void onHandleSuccess(BaseResult<Data<List<District>>> value) {
-                        mView.GetDistrict(value);
+                        mView.GetDistrict(value,code);
                     }
                 });
     }

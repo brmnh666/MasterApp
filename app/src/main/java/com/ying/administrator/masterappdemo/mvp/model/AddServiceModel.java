@@ -41,7 +41,7 @@ public class AddServiceModel implements AddServiceContract.Model {
     }
 
     @Override
-    public Observable<BaseResult<Data<List<District>>>> GetDistrict(String parentcode) {
+    public Observable<BaseResult<Data<List<District>>>> GetDistrict(String parentcode,int code) {
         return  ApiRetrofit.getDefault().GetDistrict(parentcode)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());

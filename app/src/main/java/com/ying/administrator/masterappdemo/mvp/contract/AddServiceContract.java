@@ -21,14 +21,14 @@ public interface AddServiceContract {
         Observable<BaseResult<List<Province>>> GetProvince();
         Observable<BaseResult<Data<List<City>>>> GetCity(String parentcode);
         Observable<BaseResult<Data<List<Area>>>> GetArea(String parentcode);
-        Observable<BaseResult<Data<List<District>>>> GetDistrict(String parentcode);
+        Observable<BaseResult<Data<List<District>>>> GetDistrict(String parentcode,int code);
     }
 
     interface View extends BaseView {
         void GetProvince(BaseResult<List<Province>> baseResult);
         void GetCity(BaseResult<Data<List<City>>> baseResult);
         void GetArea(BaseResult<Data<List<Area>>> baseResult);
-        void GetDistrict(BaseResult<Data<List<District>>> baseResult);
+        void GetDistrict(BaseResult<Data<List<District>>> baseResult,int code);
     }
 
     abstract class Presenter extends BasePresenter<View,Model> {
@@ -37,7 +37,7 @@ public interface AddServiceContract {
         public abstract void GetCity(String parentcode);
 
         public abstract void GetArea(String parentcode);
-        public abstract void GetDistrict(String parentcode);
+        public abstract void GetDistrict(String parentcode,int code);
     }
 
 

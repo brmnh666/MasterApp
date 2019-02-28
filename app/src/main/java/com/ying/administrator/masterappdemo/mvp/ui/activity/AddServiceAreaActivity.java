@@ -175,7 +175,7 @@ public class AddServiceAreaActivity extends BaseActivity<AddServicePresenter, Ad
                     ToastUtils.showShort("请选择区！");
                     return;
                 }
-                mPresenter.GetDistrict(mArea.getCode());
+                mPresenter.GetDistrict(mArea.getCode(),0);
                 break;
             case R.id.iv_add:
                 if (mProvince == null) {
@@ -191,31 +191,28 @@ public class AddServiceAreaActivity extends BaseActivity<AddServicePresenter, Ad
                     return;
                 }
                 if (mDistrict == null) {
-                    name =mProvince.getName()+mCity.getName()+mArea.getName();
-                    for (int i = 0; i < serviceAddressList.size(); i++) {
-                        if (serviceAddressList.get(i).getName().contains(name)){
-                            serviceAddressList.remove(i);
-                        }
-                    }
+                    mPresenter.GetDistrict(mArea.getCode(),1);
                 }else{
-                    name =mProvince.getName()+mCity.getName()+mArea.getName()+mDistrict.getName();
-                    for (int i = 0; i < serviceAddressList.size(); i++) {
-                        if (name.contains(serviceAddressList.get(i).getName())){
-                            serviceAddressList.remove(i);
+                    if (serviceAddressList.size()>0){
+                        for (int i = 0; i < serviceAddressList.size(); i++) {
+                            if (mDistrict.getCode().equals(serviceAddressList.get(i).getDistrict().getCode())){
+                                serviceAddressList.remove(i);
+                            }
                         }
+                        serviceAddressList.add(new ServiceAddress(mProvince,mCity,mArea,mDistrict));
+                    }else{
+                        serviceAddressList.add(new ServiceAddress(mProvince,mCity,mArea,mDistrict));
                     }
+                    serviceAddressAdapter.notifyDataSetChanged();
+                    mProvince=null;
+                    mCity=null;
+                    mArea=null;
+                    mDistrict=null;
+                    mTvProvince.setText("省");
+                    mTvCity.setText("市");
+                    mTvArea.setText("区");
+                    mTvDistrict.setText("街道");
                 }
-
-                serviceAddressList.add(new ServiceAddress(mProvince,mCity,mArea,mDistrict));
-                serviceAddressAdapter.notifyDataSetChanged();
-                mProvince=null;
-                mCity=null;
-                mArea=null;
-                mDistrict=null;
-                mTvProvince.setText("省");
-                mTvCity.setText("市");
-                mTvArea.setText("区");
-                mTvDistrict.setText("街道");
                 break;
             case R.id.btn_save:
                 for (int i = 0; i < serviceAddressList.size(); i++) {
@@ -290,22 +287,64 @@ public class AddServiceAreaActivity extends BaseActivity<AddServicePresenter, Ad
     }
 
     @Override
-    public void GetDistrict(BaseResult<Data<List<District>>> baseResult) {
-        switch (baseResult.getStatusCode()) {
-            case 200:
-                Data<List<District>> data = baseResult.getData();
-                if (data.isItem1()) {
-                    districtList = data.getItem2();
-                    districtAdapter = new DistrictAdapter(R.layout.category_item, districtList);
-                    showPopWindow(mTvDistrict, districtAdapter, districtList);
-                } else {
-                    ToastUtils.showShort("获取街道失败！");
+    public void GetDistrict(BaseResult<Data<List<District>>> baseResult,int code) {
+        switch (code){
+            case 0:
+                switch (baseResult.getStatusCode()) {
+                    case 200:
+                        Data<List<District>> data = baseResult.getData();
+                        if (data.isItem1()) {
+                            districtList = data.getItem2();
+                            districtAdapter = new DistrictAdapter(R.layout.category_item, districtList);
+                            showPopWindow(mTvDistrict, districtAdapter, districtList);
+                        } else {
+                            ToastUtils.showShort("获取街道失败！");
+                        }
+                        break;
+                    case 401:
+//                ToastUtils.showShort(baseResult.getData());
+                        break;
                 }
                 break;
-            case 401:
+            case 1:
+                switch (baseResult.getStatusCode()) {
+                    case 200:
+                        Data<List<District>> data = baseResult.getData();
+                        if (data.isItem1()) {
+                            districtList = data.getItem2();
+                            if (serviceAddressList.size()>0){
+                                for (int i = 0; i < serviceAddressList.size(); i++) {
+                                    for (int j = 0; j < districtList.size(); j++) {
+                                        if (!serviceAddressList.get(i).getDistrict().getCode().equals(districtList.get(j).getCode())){
+                                            serviceAddressList.add(new ServiceAddress(mProvince,mCity,mArea,districtList.get(j)));
+                                        }
+                                    }
+                                }
+                            }else{
+                                for (int j = 0; j < districtList.size(); j++) {
+                                  serviceAddressList.add(new ServiceAddress(mProvince,mCity,mArea,districtList.get(j)));
+                                }
+                            }
+                            serviceAddressAdapter.notifyDataSetChanged();
+                            mProvince=null;
+                            mCity=null;
+                            mArea=null;
+                            mDistrict=null;
+                            mTvProvince.setText("省");
+                            mTvCity.setText("市");
+                            mTvArea.setText("区");
+                            mTvDistrict.setText("街道");
+                        } else {
+                            ToastUtils.showShort("获取街道失败！");
+                        }
+                        break;
+                    case 401:
 //                ToastUtils.showShort(baseResult.getData());
+                        break;
+                }
                 break;
         }
+
     }
 
     public void showPopWindow(final TextView tv, BaseQuickAdapter adapter, final List list) {
