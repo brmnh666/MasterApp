@@ -19,12 +19,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -100,12 +99,16 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
     ImageView mIvSelfie;
     @BindView(R.id.ll_select_service_area)
     LinearLayout mLlSelectServiceArea;
-    @BindView(R.id.rb_shop_address)
-    RadioButton mRbShopAddress;
-    @BindView(R.id.rb_government_center)
-    RadioButton mRbGovernmentCenter;
-    @BindView(R.id.rg_service_starting_point)
-    RadioGroup mRgServiceStartingPoint;
+    @BindView(R.id.tv_codestr)
+    TextView mTvCodestr;
+    @BindView(R.id.cb_under_warranty)
+    CheckBox mCbUnderWarranty;
+    @BindView(R.id.ll_under_warranty)
+    LinearLayout mLlUnderWarranty;
+    @BindView(R.id.cb_outside_the_warranty)
+    CheckBox mCbOutsideTheWarranty;
+    @BindView(R.id.ll_outside_the_warranty)
+    LinearLayout mLlOutsideTheWarranty;
     private View popupWindow_view;
     private String FilePath;
     private PopupWindow mPopupWindow;
@@ -192,6 +195,8 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
     private String mSelfie = "";
     private Uri uri;
     private int size;
+    private String codestr = "";
+    private String Guarantee="";
 
     @Override
     protected int setLayoutId() {
@@ -251,6 +256,9 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
         mLlServiceSkill.setOnClickListener(this);
         mSubmitApplicationBt.setOnClickListener(this);
         mLlSelectServiceArea.setOnClickListener(this);
+
+        mLlUnderWarranty.setOnClickListener(this);
+        mLlOutsideTheWarranty.setOnClickListener(this);
     }
 
 
@@ -258,6 +266,16 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.ll_under_warranty:
+                mCbUnderWarranty.setChecked(true);
+                mCbOutsideTheWarranty.setChecked(false);
+                Guarantee = "Y";
+                break;
+            case R.id.ll_outside_the_warranty:
+                mCbUnderWarranty.setChecked(false);
+                mCbOutsideTheWarranty.setChecked(true);
+                Guarantee = "N";
+                break;
             case R.id.ll_return:
                 finish();
                 break;
@@ -324,10 +342,22 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                     ToastUtils.showShort("未定位到店铺地址！");
                     return;
                 }
-                mPresenter.ApplyAuthInfo(UserID, mActualName, mIdNumber, mAddress, NodeIds, mProvince, mCity, mDistrict, mStreet, Double.toString(mLongitude), Double.toString(mLatitude));
+                if ("".equals(codestr)) {
+                    ToastUtils.showShort("请添加服务区域！");
+                    return;
+                }
+                if ("".equals(Guarantee)) {
+                    ToastUtils.showShort("请选择服务起点！");
+                    return;
+                }
+                if ("Y".equals(Guarantee)) {
+                    mPresenter.ApplyAuthInfo(UserID, mActualName, mIdNumber, mAddress, NodeIds, mProvince, mCity, mDistrict, mStreet, Double.toString(mLongitude), Double.toString(mLatitude), codestr);
+                }else{
+                    mPresenter.ApplyAuthInfo(UserID, mActualName, mIdNumber, mAddress, NodeIds, mProvince, mCity, mDistrict, mStreet, "", "", codestr);
+                }
                 break;
             case R.id.ll_select_service_area:
-                startActivity(new Intent(mActivity,AddServiceAreaActivity.class));
+                startActivityForResult(new Intent(mActivity, AddServiceAreaActivity.class), 317);
                 break;
         }
     }
@@ -589,6 +619,14 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                     NodeIds = data.getStringExtra("NodeIds");
                     if (mSkills != null) {
                         mTvSkills.setText(mSkills);
+                    }
+                }
+                break;
+            case 317:
+                if (data != null) {
+                    codestr = data.getStringExtra("codestr");
+                    if (codestr != null) {
+                        mTvCodestr.setText("已添加服务区域");
                     }
                 }
                 break;

@@ -134,7 +134,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight=".33"
-            android:text="商场" />
+            android:text="政府" />
 
     </com.amap.searchdemo.SegmentedGroup>
 

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:ignore="MissingDefaultResource">
 
     <include layout="@layout/actionbar_receiving_layout" />
     <FrameLayout
@@ -41,14 +43,19 @@
                     android:id="@+id/ll_province"
                     android:layout_width="wrap_content"
                     android:layout_height="33dp"
+                    android:padding="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/gray_radius_shape"
                     android:gravity="center">
 
                     <TextView
+                        android:id="@+id/tv_province"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="浙江"
+                        android:gravity="center"
+                        android:singleLine="true"
+                        android:layout_weight="1"
                         android:textSize="14sp"
                         android:textColor="#5A5A5B"/>
                     
@@ -65,14 +72,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="33dp"
                     android:layout_weight="1"
+                    android:padding="5dp"
                     android:background="@drawable/gray_radius_shape"
                     android:gravity="center"
                     android:layout_marginLeft="9dp">
 
                     <TextView
+                        android:id="@+id/tv_city"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="宁波"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:singleLine="true"
                         android:textSize="14sp"
                         android:textColor="#5A5A5B"/>
 
@@ -85,6 +97,7 @@
 
                 </LinearLayout>
                 <LinearLayout
+                    android:padding="5dp"
                     android:id="@+id/ll_area"
                     android:layout_width="wrap_content"
                     android:layout_height="33dp"
@@ -95,9 +108,13 @@
 
 
                     <TextView
+                        android:id="@+id/tv_area"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="江北区"
+                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:singleLine="true"
                         android:textSize="14sp"
                         android:textColor="#5A5A5B"/>
 
@@ -110,6 +127,7 @@
 
                 </LinearLayout>
                 <LinearLayout
+                    android:padding="5dp"
                     android:id="@+id/ll_town"
                     android:layout_width="wrap_content"
                     android:layout_height="33dp"
@@ -119,9 +137,13 @@
                     android:layout_marginLeft="9dp">
 
                     <TextView
+                        android:id="@+id/tv_district"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="洪塘镇"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:singleLine="true"
                         android:textSize="14sp"
                         android:textColor="#5A5A5B"/>
 

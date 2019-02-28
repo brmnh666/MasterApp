@@ -24,7 +24,8 @@ public interface VerifiedContract {
                                                             String Area,
                                                           String District,
                                                            String Longitude,
-                                                           String Dimension
+                                                           String Dimension,
+                                                           String ServiceAreaJsonStr
         );
     }
 
@@ -45,7 +46,8 @@ public interface VerifiedContract {
                                            String Area,
                                            String District,
                                            String Longitude,
-                                           String Dimension);
+                                           String Dimension,
+                                           String ServiceAreaJsonStr);
     }
 
 

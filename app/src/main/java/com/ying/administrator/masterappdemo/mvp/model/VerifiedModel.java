@@ -23,8 +23,8 @@ public class VerifiedModel implements VerifiedContract.Model {
     }
 
     @Override
-    public Observable<BaseResult<Data<String>>> ApplyAuthInfo(String UserID, String TrueName, String IDCard, String Address, String NodeIds, String Province, String City, String Area, String District, String Longitude, String Dimension) {
-        return  ApiRetrofit.getDefault().ApplyAuthInfo(UserID, TrueName, IDCard, Address, NodeIds, Province, City, Area, District, Longitude, Dimension)
+    public Observable<BaseResult<Data<String>>> ApplyAuthInfo(String UserID, String TrueName, String IDCard, String Address, String NodeIds, String Province, String City, String Area, String District, String Longitude, String Dimension,String ServiceAreaJsonStr) {
+        return  ApiRetrofit.getDefault().ApplyAuthInfo(UserID, TrueName, IDCard, Address, NodeIds, Province, City, Area, District, Longitude, Dimension,ServiceAreaJsonStr)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

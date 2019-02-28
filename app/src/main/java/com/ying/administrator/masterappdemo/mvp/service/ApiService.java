@@ -2,11 +2,15 @@ package com.ying.administrator.masterappdemo.mvp.service;
 
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Accessory;
+import com.ying.administrator.masterappdemo.entity.Area;
 import com.ying.administrator.masterappdemo.entity.Category;
-import com.ying.administrator.masterappdemo.entity.GetFactoryData;
+import com.ying.administrator.masterappdemo.entity.City;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.District;
+import com.ying.administrator.masterappdemo.entity.GetFactoryData;
 import com.ying.administrator.masterappdemo.entity.GetFactorySeviceData;
 import com.ying.administrator.masterappdemo.entity.IDCard;
+import com.ying.administrator.masterappdemo.entity.Province;
 import com.ying.administrator.masterappdemo.entity.Service;
 import com.ying.administrator.masterappdemo.entity.Skill;
 import com.ying.administrator.masterappdemo.entity.SubUserInfo;
@@ -20,10 +24,7 @@ import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.GET;
-import retrofit2.http.Headers;
 import retrofit2.http.POST;
-import retrofit2.http.Query;
 
 public interface ApiService {
     /**
@@ -224,7 +225,30 @@ public interface ApiService {
     @POST("Account/UpdateAccountSkillData")
     Observable<BaseResult<String>> UpdateAccountSkillData(@Field("UserID") String UserID,@Field("NodeIds") String NodeIds);
 
+    /**
+     * 获取省
+     */
+    @POST("Config/GetProvince")
+    Observable<BaseResult<List<Province>>> GetProvince();
+    /**
+     * 获取市
+     */
+    @FormUrlEncoded
+    @POST("Config/GetCity")
+    Observable<BaseResult<Data<List<City>>>> GetCity(@Field("parentcode") String parentcode);
+    /**
+     * 获取区
+     */
+    @FormUrlEncoded
+    @POST("Config/GetArea")
+    Observable<BaseResult<Data<List<Area>>>> GetArea(@Field("parentcode") String parentcode);
 
+    /**
+     * 获取区
+     */
+    @FormUrlEncoded
+    @POST("Config/GetDistrict")
+    Observable<BaseResult<Data<List<District>>>> GetDistrict(@Field("parentcode") String parentcode);
     /**
      * 提交认证申请
      */
@@ -241,7 +265,8 @@ public interface ApiService {
             @Field("Area") String Area,
             @Field("District") String District,
             @Field("Longitude") String Longitude,
-            @Field("Dimension") String Dimension
+            @Field("Dimension") String Dimension,
+            @Field("ServiceAreaJsonStr") String ServiceAreaJsonStr
     );
 
     /*

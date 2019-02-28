@@ -183,7 +183,8 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
                     searchType = items[2];
 
                 } else if (checkedId == R.id.radio3) {
-                    searchType = items[3];
+//                    searchType = items[3];
+                    searchType = "130103";
 
                 }
                 geoAddress();
