@@ -114,7 +114,8 @@
         <activity
             android:name="com.tencent.bugly.beta.ui.BetaActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|locale"
-            android:theme="@android:style/Theme.Translucent" />
+            android:theme="@android:style/Theme.Translucent"
+            android:launchMode="singleTask"/>
 
 
         <activity android:name=".mvp.ui.activity.MainActivity"
@@ -123,13 +124,15 @@
 
         </activity>
         <activity android:name=".mvp.ui.activity.Order_Receiving_Activity"
-            android:theme="@style/AppTheme.Receicing">
+            android:theme="@style/AppTheme.Receicing"
+            android:launchMode="singleTask">
 
         </activity>
 
         <!--登录-->
         <activity android:name=".mvp.ui.activity.LoginActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -141,17 +144,18 @@
         <!--工单详情-->
         <activity android:name=".mvp.ui.activity.Order_details_Activity"
             android:theme="@style/AppTheme.NoActionBar"
-            >
+            android:launchMode="singleTask">
 
         </activity>
 
         <activity android:name=".mvp.ui.activity.Verified_Activity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden">
+            android:windowSoftInputMode="stateHidden"
+            android:launchMode="singleTask">
 
         </activity>
         <!--引导页-->
-        <activity android:name=".mvp.ui.activity.SplashActivity">
+        <activity android:name=".mvp.ui.activity.SplashActivity" android:launchMode="singleTask">
 
 
         </activity>
@@ -159,23 +163,26 @@
         <!--提现界面-->
         <activity android:name=".mvp.ui.activity.WithDrawActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden">
+            android:windowSoftInputMode="stateHidden" android:launchMode="singleTask">
 
 
         </activity>
         <!--我的钱包界面-->
         <activity android:name=".mvp.ui.activity.Wallet_Activity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden"
+            android:launchMode="singleTask"/>
 
         <!--实名认证成功界面-->
         <activity android:name=".mvp.ui.activity.Certification_passed_Activity"
-            android:theme="@style/AppTheme.Receicing" />
+            android:theme="@style/AppTheme.Receicing"
+            android:launchMode="singleTask"/>
 
 
         <!--分享界面-->
               <activity android:name=".mvp.ui.activity.Share_Activity"
-                        android:theme="@style/AppTheme.Receicing">
+                        android:theme="@style/AppTheme.Receicing"
+                  android:launchMode="singleTask">
 
                </activity>
 
@@ -183,61 +190,63 @@
         <activity
             android:name=".mvp.ui.activity.SettingActivity"
             android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
             />
         <!--关于我们-->
         <activity android:name=".mvp.ui.activity.AboutUsActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:launchMode="singleTask"/>
         <!--我的个人信息-->
         <activity android:name=".mvp.ui.activity.Personal_Information_Activity"
             android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:launchMode="singleTask"/>
         <!--意见反馈-->
         <activity android:name=".mvp.ui.activity.Opinion_Activity"
             android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:launchMode="singleTask"/>
 
         <activity android:name="com.amap.searchdemo.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask">
         </activity>
-        <activity android:name=".mvp.ui.activity.ScanActivity"/>
+        <activity android:name=".mvp.ui.activity.ScanActivity" android:launchMode="singleTask"/>
         <!--我的技能-->
-        <activity android:name=".mvp.ui.activity.MySkillsActivity" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".mvp.ui.activity.MySkillsActivity" android:theme="@style/AppTheme.NoActionBar" android:launchMode="singleTask"/>
         <!--注册界面-->
-        <activity android:name=".mvp.ui.activity.RegisterActivity" android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity android:name=".mvp.ui.activity.RegisterActivity" android:theme="@style/Theme.AppCompat.NoActionBar" android:launchMode="singleTask"/>
         <!--添加配件-->
         <!--完成工单-->
-        <activity android:name=".mvp.ui.activity.CompleteWorkOrderActivity" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".mvp.ui.activity.CompleteWorkOrderActivity" android:theme="@style/AppTheme.NoActionBar" android:launchMode="singleTask"/>
         <!--添加配件-->
-        <activity android:name=".mvp.ui.activity.Order_Add_Accessories_Activity" android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".mvp.ui.activity.Order_Add_Accessories_Activity" android:theme="@style/AppTheme.NoActionBar" android:launchMode="singleTask"/>
         <!--子账号管理-->
-        <activity android:name=".mvp.ui.activity.SubAccountManagementActivity" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".mvp.ui.activity.SubAccountManagementActivity" android:theme="@style/AppTheme.NoActionBar" android:launchMode="singleTask"/>
         <!--智能客服-->
         <activity android:name=".mvp.ui.activity.IntelligentCustomerServiceActivity" android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" android:launchMode="singleTask"/>
         <!--修改昵称-->
-        <activity android:name=".mvp.ui.activity.ChageUserNameActivity" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".mvp.ui.activity.ChageUserNameActivity" android:theme="@style/AppTheme.NoActionBar" android:launchMode="singleTask"/>
         <!--修改密码-->
-        <activity android:name=".mvp.ui.activity.ChagePasswordActivity" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".mvp.ui.activity.ChagePasswordActivity" android:theme="@style/AppTheme.NoActionBar" android:launchMode="singleTask"/>
         <!--新浪start-->
         <activity
             android:name="com.umeng.socialize.media.WBShareCallBackActivity"
             android:configChanges="keyboardHidden|orientation"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:exported="false"
-            >
+            android:launchMode="singleTask">
         </activity>
         <activity android:name="com.sina.weibo.sdk.web.WeiboSdkWebActivity"
             android:configChanges="keyboardHidden|orientation"
             android:exported="false"
             android:windowSoftInputMode="adjustResize"
-            >
+            android:launchMode="singleTask">
 
         </activity>
         <activity
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
             android:launchMode="singleTask"
-            android:name="com.sina.weibo.sdk.share.WbShareTransActivity">
+            android:name="com.sina.weibo.sdk.share.WbShareTransActivity" >
             <intent-filter>
                 <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -250,7 +259,7 @@
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" android:launchMode="singleTask"/>
         <!--微信end-->
         <!--QQstart-->
         <activity
@@ -269,12 +278,12 @@
         <activity
             android:name="com.tencent.connect.common.AssistActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:configChanges="orientation|keyboardHidden|screenSize"/>
+            android:configChanges="orientation|keyboardHidden|screenSize" android:launchMode="singleTask"/>
         <!--QQend-->
         <!--我的消息页面技能-->
-        <activity android:name=".mvp.ui.activity.MyInfoSkillsActivity" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".mvp.ui.activity.MyInfoSkillsActivity" android:theme="@style/AppTheme.NoActionBar" android:launchMode="singleTask"/>
         <!--添加服务技能-->
-        <activity android:name=".mvp.ui.activity.AddServiceAreaActivity" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".mvp.ui.activity.AddServiceAreaActivity" android:theme="@style/AppTheme.NoActionBar" android:launchMode="singleTask"/>
 
     </application>
 

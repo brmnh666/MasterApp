@@ -7,6 +7,7 @@ import android.support.multidex.MultiDex;
 import android.util.Log;
 
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.Utils;
 import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreater;
@@ -53,6 +54,7 @@ public class MyApplication extends Application {
         super.onCreate();
         // 主要是添加下面这句代码
         MultiDex.install(this);
+        Utils.init(this);
 
         XGPushConfig.enableDebug(this,true);
         XGPushConfig.enableOtherPush(getApplicationContext(), true);

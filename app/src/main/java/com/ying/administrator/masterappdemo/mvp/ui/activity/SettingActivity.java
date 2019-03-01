@@ -1,6 +1,10 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -38,11 +42,7 @@ public class SettingActivity extends BaseActivity {
     Switch mSwitcherRepairWorkOrder;
     @BindView(R.id.switcher_accept_the_repair_work_order)
     Switch mSwitcherAcceptTheRepairWorkOrder;
-    @BindView(R.id.switcher_receiving_repair_work_order)
-    Switch mSwitcherReceivingRepairWorkOrder;
     @BindView(R.id.switcher_whether_to_allow_the_order)
-    Switch mSwitcherWhetherToAllowTheOrder;
-    @BindView(R.id.switcher_allow_order)
     Switch mSwitcherAllowOrder;
     @BindView(R.id.ll_clean)
     LinearLayout mLlClean;
@@ -50,6 +50,8 @@ public class SettingActivity extends BaseActivity {
     LinearLayout mLlUpdate;
     @BindView(R.id.btn_sign_out_of_your_account)
     Button mBtnSignOutOfYourAccount;
+    @BindView(R.id.switcher_allow_notification)
+    Switch mSwitcherAllowNotification;
     private SPUtils spUtils;
 
 
@@ -69,6 +71,7 @@ public class SettingActivity extends BaseActivity {
         mTvActionbarTitle.setText("设置");
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     protected void initView() {
         spUtils = SPUtils.getInstance("token");
@@ -78,6 +81,7 @@ public class SettingActivity extends BaseActivity {
     protected void setListener() {
         mLlReturn.setOnClickListener(new CustomOnclickLister());
         mBtnSignOutOfYourAccount.setOnClickListener(new CustomOnclickLister());
+        mSwitcherAllowNotification.setOnClickListener(new CustomOnclickLister());
     }
 
     @Override
@@ -104,7 +108,7 @@ public class SettingActivity extends BaseActivity {
                         @Override
                         public void onPositiveClick() {
                             dialog.dismiss();
-                            spUtils.put("isLogin",false);
+                            spUtils.put("isLogin", false);
                             startActivity(new Intent(mActivity, LoginActivity.class));
                             ActivityUtils.finishAllActivities();
                         }
@@ -116,8 +120,64 @@ public class SettingActivity extends BaseActivity {
                         }
                     }).show();
                     break;
+                case R.id.switcher_allow_notification:
+                    toSelfSetting(mActivity);
+                    break;
             }
 
         }
+    }
+
+
+    /**
+     * 跳转到权限设置界面
+     */
+//    private void getAppDetailSettingIntent(Context context){
+//
+//        // vivo 点击设置图标>加速白名单>我的app
+//        //      点击软件管理>软件管理权限>软件>我的app>信任该软件
+//        Intent appIntent = context.getPackageManager().getLaunchIntentForPackage("com.iqoo.secure");
+//        if(appIntent != null){
+//            context.startActivity(appIntent);
+//            SettingFloatingView floatingView = new SettingFloatingView(this, "SETTING", getApplication(), 0);
+//            floatingView.createFloatingView();
+//            return;
+//        }
+//
+//        // oppo 点击设置图标>应用权限管理>按应用程序管理>我的app>我信任该应用
+//        //      点击权限隐私>自启动管理>我的app
+//        appIntent = context.getPackageManager().getLaunchIntentForPackage("com.oppo.safe");
+//        if(appIntent != null){
+//            context.startActivity(appIntent);
+//            floatingView = new SettingFloatingView(this, "SETTING", getApplication(), 1);
+//            floatingView.createFloatingView();
+//            return;
+//        }
+//
+//        Intent intent = new Intent();
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        if(Build.VERSION.SDK_INT >= 9){
+//            intent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
+//            intent.setData(Uri.fromParts("package", getPackageName(), null));
+//        } else if(Build.VERSION.SDK_INT <= 8){
+//            intent.setAction(Intent.ACTION_VIEW);
+//            intent.setClassName("com.android.settings","com.android.settings.InstalledAppDetails");
+//            intent.putExtra("com.android.settings.ApplicationPkgName", getPackageName());
+//        }
+//        startActivity(intent);
+//    }
+
+    public static void toSelfSetting(Context context) {
+        Intent mIntent = new Intent();
+        mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (Build.VERSION.SDK_INT >= 9) {
+            mIntent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
+            mIntent.setData(Uri.fromParts("package", context.getPackageName(), null));
+        } else if (Build.VERSION.SDK_INT <= 8) {
+            mIntent.setAction(Intent.ACTION_VIEW);
+            mIntent.setClassName("com.android.settings", "com.android.setting.InstalledAppDetails");
+            mIntent.putExtra("com.android.settings.ApplicationPkgName", context.getPackageName());
+        }
+        context.startActivity(mIntent);
     }
 }

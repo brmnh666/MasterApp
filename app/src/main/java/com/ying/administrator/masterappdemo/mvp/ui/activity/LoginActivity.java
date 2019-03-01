@@ -40,6 +40,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginModel> impl
     private String userName;
     private String passWord;
     private String code;
+    private boolean isLogin;
 
     @Override
     protected int setLayoutId() {
@@ -56,6 +57,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginModel> impl
         SPUtils spUtils = SPUtils.getInstance("token");
         String userName = spUtils.getString("userName");
         String password = spUtils.getString("password");
+        isLogin =spUtils.getBoolean("isLogin");
         if (userName!=null){
             mEt_login_username.setText(userName);
             mEt_login_password.setText(password);
@@ -119,6 +121,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginModel> impl
                 spUtils.put("adminToken", baseResult.getData());
                 spUtils.put("userName", userName);
                 spUtils.put("password",passWord);
+                spUtils.put("isLogin",true);
                 //  Log.d("loginlogin",baseResult.getData());
 //                GetUserInfo getUserInfo=new GetUserInfo(userName,baseResult.getData(),"","");
 //                Gson gson=new Gson();
