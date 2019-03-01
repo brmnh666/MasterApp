@@ -102,10 +102,13 @@ public class SearchResultAdapter extends BaseAdapter {
             PoiItem poiItem = data.get(position);
 
             textTitle.setText(poiItem.getTitle());
-            textSubTitle.setText(poiItem.getProvinceName()+poiItem.getCityName()+ poiItem.getAdName() + poiItem.getSnippet());
-
+            if (poiItem.getProvinceName()==null){
+                textSubTitle.setText(poiItem.getCityName()+poiItem.getSnippet());
+            }else{
+                textSubTitle.setText(poiItem.getProvinceName()+poiItem.getCityName()+ poiItem.getAdName() + poiItem.getSnippet());
+            }
             imageCheck.setVisibility(position == selectedPosition ? View.VISIBLE : View.INVISIBLE);
-            textSubTitle.setVisibility((position == 0 && poiItem.getPoiId().equals("regeo")) ? View.GONE : View.VISIBLE);
+//            textSubTitle.setVisibility((position == 0 && poiItem.getPoiId().equals("regeo")) ? View.GONE : View.VISIBLE);
         }
     }
 }

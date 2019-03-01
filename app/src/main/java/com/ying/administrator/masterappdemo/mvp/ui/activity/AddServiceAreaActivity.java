@@ -87,6 +87,7 @@ public class AddServiceAreaActivity extends BaseActivity<AddServicePresenter, Ad
     private List<Area> areaList;
     private List<District> districtList;
     private List<ServiceAddress> serviceAddressList=new ArrayList<>();
+    private List<ServiceAddress> tempServiceAddressList=new ArrayList<>();
     private ServiceAddressAdapter serviceAddressAdapter;
     private ProvinceAdapter provinceAdapter;
     private CityAdapter cityAdapter;
@@ -315,15 +316,14 @@ public class AddServiceAreaActivity extends BaseActivity<AddServicePresenter, Ad
                             if (serviceAddressList.size()>0){
                                 for (int i = 0; i < serviceAddressList.size(); i++) {
                                     for (int j = 0; j < districtList.size(); j++) {
-                                        if (!serviceAddressList.get(i).getDistrict().getCode().equals(districtList.get(j).getCode())){
-                                            serviceAddressList.add(new ServiceAddress(mProvince,mCity,mArea,districtList.get(j)));
+                                        if (serviceAddressList.get(i).getDistrict().getCode().equals(districtList.get(j).getCode())){
+                                            serviceAddressList.remove(i);
                                         }
                                     }
                                 }
-                            }else{
-                                for (int j = 0; j < districtList.size(); j++) {
-                                  serviceAddressList.add(new ServiceAddress(mProvince,mCity,mArea,districtList.get(j)));
-                                }
+                            }
+                            for (int j = 0; j < districtList.size(); j++) {
+                                serviceAddressList.add(new ServiceAddress(mProvince, mCity, mArea, districtList.get(j)));
                             }
                             serviceAddressAdapter.notifyDataSetChanged();
                             mProvince=null;

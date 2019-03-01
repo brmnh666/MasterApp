@@ -135,11 +135,11 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
             public void onClick(View v) {
                 if (searchResultAdapter!=null){
                     PoiItem poiItem=((PoiItem)(searchResultAdapter.getItem(searchResultAdapter.getSelectedPosition())));
-                    if (poiItem.getCityName()==null||poiItem.getAdName()==null){
-                        address=poiItem.getSnippet();
-                    }else{
+//                    if (poiItem.getPoiId().equals("regeo")){
+//                        address=poiItem.getSnippet();
+//                    }else{
                         address=poiItem.getProvinceName()+poiItem.getCityName() + poiItem.getAdName() + poiItem.getSnippet()+poiItem.getTitle();
-                    }
+//                    }
                     Province=poiItem.getProvinceName();
                     City=poiItem.getCityName();
                     Area=poiItem.getAdName();
@@ -148,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
                     Dimension=poiItem.getLatLonPoint().getLatitude();
                 }
                 Intent intent=new Intent();
-                if (searchResultAdapter.getSelectedPosition()!=0){
+//                if (searchResultAdapter.getSelectedPosition()!=0){
                     intent.putExtra("address",address);
                     intent.putExtra("Province",Province);
                     intent.putExtra("City",City);
@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
                     intent.putExtra("District",District);
                     intent.putExtra("Longitude",Longitude);
                     intent.putExtra("Dimension",Dimension);
-                }
+//                }
                 setResult(100,intent);
                 finish();
             }
@@ -394,7 +394,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
         showDialog();
         searchText.setText("");
         if (searchLatlonPoint != null){
-            RegeocodeQuery query = new RegeocodeQuery(searchLatlonPoint, 200, GeocodeSearch.AMAP);// 第一个参数表示一个Latlng，第二参数表示范围多少米，第三个参数表示是火系坐标系还是GPS原生坐标系
+            RegeocodeQuery query = new RegeocodeQuery(searchLatlonPoint, 10000, GeocodeSearch.AMAP);// 第一个参数表示一个Latlng，第二参数表示范围多少米，第三个参数表示是火系坐标系还是GPS原生坐标系
             geocoderSearch.getFromLocationAsyn(query);
         }
     }
@@ -408,15 +408,16 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
     protected void doSearchQuery() {
 //        Log.i("MY", "doSearchQuery");
         currentPage = 0;
-        query = new PoiSearch.Query(searchKey, searchType, "");// 第一个参数表示搜索字符串，第二个参数表示poi搜索类型，第三个参数表示poi搜索区域（空字符串代表全国）
+//        query = new PoiSearch.Query(searchKey, searchType, "");// 第一个参数表示搜索字符串，第二个参数表示poi搜索类型，第三个参数表示poi搜索区域（空字符串代表全国）
+        query = new PoiSearch.Query(searchKey, "", "");// 第一个参数表示搜索字符串，第二个参数表示poi搜索类型，第三个参数表示poi搜索区域（空字符串代表全国）
         query.setCityLimit(true);
-        query.setPageSize(20);
+        query.setPageSize(50);
         query.setPageNum(currentPage);
 
         if (searchLatlonPoint != null) {
             poiSearch = new PoiSearch(this, query);
             poiSearch.setOnPoiSearchListener(this);
-            poiSearch.setBound(new PoiSearch.SearchBound(searchLatlonPoint, 1000, true));//
+            poiSearch.setBound(new PoiSearch.SearchBound(searchLatlonPoint, 10000, true));//
             poiSearch.searchPOIAsyn();
         }
     }
@@ -429,8 +430,11 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
                     && result.getRegeocodeAddress().getFormatAddress() != null) {
                 String address = result.getRegeocodeAddress().getFormatAddress();
 //                String address = result.getRegeocodeAddress().getProvince() + result.getRegeocodeAddress().getCity() + result.getRegeocodeAddress().getDistrict() + result.getRegeocodeAddress().getTownship();
-//                firstItem = new PoiItem("regeo", searchLatlonPoint, address, address);
-                firstItem=result.getRegeocodeAddress().getPois().get(0);
+                firstItem = new PoiItem("regeo", searchLatlonPoint, result.getRegeocodeAddress().getPois().get(1).getTitle(), result.getRegeocodeAddress().getTownship());
+                firstItem.setProvinceName(result.getRegeocodeAddress().getProvince());
+                firstItem.setCityName(result.getRegeocodeAddress().getCity());
+                firstItem.setAdName(result.getRegeocodeAddress().getDistrict());
+//                firstItem=result.getRegeocodeAddress().getPois().get(0);
                 doSearchQuery();
             }
         } else {
@@ -473,7 +477,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
     private void updateListview(List<PoiItem> poiItems) {
         resultData.clear();
         searchResultAdapter.setSelectedPosition(0);
-        resultData.add(firstItem);
+//        resultData.add(firstItem);
         resultData.addAll(poiItems);
 
         searchResultAdapter.setData(resultData);
@@ -603,8 +607,13 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
     private void searchPoi(Tip result) {
         isInputKeySearch = true;
         inputSearchKey = result.getName();//getAddress(); // + result.getRegeocodeAddress().getCity() + result.getRegeocodeAddress().getDistrict() + result.getRegeocodeAddress().getTownship();
+        if (result.getPoint()==null){
+            Toast.makeText(MainActivity.this, "无搜索结果", Toast.LENGTH_SHORT).show();
+            return;
+        }
         searchLatlonPoint = result.getPoint();
         firstItem = new PoiItem("tip", searchLatlonPoint, inputSearchKey, result.getAddress());
+//        firstItem.setProvinceName(result.getAddress());
         firstItem.setCityName(result.getDistrict());
         firstItem.setAdName("");
         resultData.clear();
