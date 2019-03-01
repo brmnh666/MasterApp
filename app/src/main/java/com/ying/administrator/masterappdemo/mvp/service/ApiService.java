@@ -105,7 +105,7 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST("Order/GetOrderInfoList")
-    Observable<BaseResult<WorkOrder>> GetOrderInfoList(@Field("UserID") String UserID,
+    Observable<BaseResult<WorkOrder>> GetOrderInfoList(@Field("SendUser") String SendUser,
                                                        @Field("state") String state,
                                                        @Field("page") String page,
                                                        @Field("limit") String limit);

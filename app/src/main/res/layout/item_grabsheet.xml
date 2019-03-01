@@ -57,7 +57,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginTop="14dp"
         android:layout_marginRight="17dp"
-        android:text="距离13.74Km"
+        android:text="距离xx.xxKm"
         android:textSize="12sp"
 
         />

@@ -189,6 +189,8 @@ public class WorkOrder implements Serializable {
         private String IsRecevieGoods;
         private String AppointmentMessage;
         private String AppointmentState;
+
+        private String Distance;//返回距离
         private int page;
         private int limit;
         private int Version;
@@ -711,6 +713,14 @@ public class WorkOrder implements Serializable {
 
         public void setAppointmentState(String AppointmentState) {
             this.AppointmentState = AppointmentState;
+        }
+
+        public String getDistance() {
+            return Distance;
+        }
+
+        public void setDistance(String distance) {
+            Distance = distance;
         }
 
         public int getPage() {

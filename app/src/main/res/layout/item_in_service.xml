@@ -89,7 +89,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:text="距离 43.12KM"
+            android:text="距离 xx.xxKM"
             android:layout_toRightOf="@+id/img_loaction"
             android:layout_below="@+id/tv_reason_in_service"
             android:layout_marginTop="5dp"
