@@ -1,176 +1,177 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--待预约item-->
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?><!--待预约item-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
     android:layout_marginTop="10dp"
-    android:background="@drawable/rr_shape"
-    >
+    android:layout_marginRight="10dp"
+    android:background="@drawable/rr_shape">
 
-        <TextView
-            android:id="@+id/tv_in_service"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="服务中"
-            android:textSize="12sp"
-            android:layout_marginLeft="13dp"
-            android:layout_marginTop="15dp"
-            />
+    <TextView
+        android:id="@+id/tv_in_service"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="13dp"
+        android:layout_marginTop="15dp"
+        android:text="服务中"
+        android:textSize="12sp" />
 
 
     <TextView
         android:id="@+id/tv_in_service_status_install"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/color_custom_01"
-        android:layout_toRightOf="@+id/tv_in_service"
-        android:layout_marginTop="17dp"
         android:layout_marginLeft="5dp"
+        android:layout_marginTop="17dp"
+        android:layout_toRightOf="@+id/tv_in_service"
+        android:background="@color/color_custom_01"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
-        android:textSize="10sp"
         android:text="安装"
-        android:textColor="@color/color_white" />
+        android:textColor="@color/color_white"
+        android:textSize="10sp" />
 
     <TextView
         android:id="@+id/tv_in_service_status_repair"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/color_custom_04"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="17dp"
         android:layout_toRightOf="@+id/tv_in_service"
+        android:background="@color/color_custom_04"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
-        android:layout_marginTop="17dp"
-        android:layout_marginLeft="5dp"
         android:text="维修"
-        android:textSize="10sp"
         android:textColor="@color/color_white"
-        android:visibility="invisible"
-        />
-
+        android:textSize="10sp"
+        android:visibility="invisible" />
 
 
     <TextView
         android:id="@+id/tv_in_service_job_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="工单号:1212412412412414124"
         android:layout_alignParentRight="true"
-        android:textSize="12sp"
-        android:layout_marginRight="19dp"
         android:layout_marginTop="15dp"
-        />
+        android:layout_marginRight="19dp"
+        android:text="工单号:1212412412412414124"
+        android:textSize="12sp" />
 
 
     <TextView
         android:id="@+id/tv_reason_in_service"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:text="热水器不通电"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="41dp"
-        android:textColor="#333333"/>
+        android:text="热水器不通电"
+        android:textColor="#333333"
+        android:textSize="18sp" />
 
-<ImageView
-    android:layout_below="@+id/tv_reason_in_service"
-    android:id="@+id/img_loaction"
-    android:layout_width="14dp"
-    android:layout_height="14dp"
-    android:src="@mipmap/icon_loaction"
-    android:layout_marginLeft="15dp"
-    android:layout_marginTop="5dp"
-    />
-        <TextView
-            android:id="@+id/tv_loaction_in_service"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:text="距离 xx.xxKM"
-            android:layout_toRightOf="@+id/img_loaction"
-            android:layout_below="@+id/tv_reason_in_service"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="5dp"
+    <ImageView
+        android:id="@+id/img_loaction"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_below="@+id/tv_reason_in_service"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="5dp"
+        android:src="@mipmap/icon_loaction" />
 
-            />
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="数量:2台"
-    android:textSize="14sp"
-    android:layout_toRightOf="@+id/tv_loaction_in_service"
-    android:layout_below="@+id/tv_reason_in_service"
-    android:layout_marginTop="5dp"
-    android:layout_marginLeft="30dp"
-    />
+    <TextView
+        android:id="@+id/tv_loaction_in_service"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_reason_in_service"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@+id/img_loaction"
+        android:text="距离 xx.xxKM"
+        android:textSize="14sp"
+
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_reason_in_service"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@+id/tv_loaction_in_service"
+        android:text="数量:2台"
+        android:textSize="14sp" />
 
 
-        <TextView
-            android:id="@+id/tv_address_in_service"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="宁波市江北区长阳路人才公寓5栋1701室"
-            android:textSize="14sp"
-            android:layout_below="@+id/tv_loaction_in_service"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="5dp"
-            />
+    <TextView
+        android:id="@+id/tv_address_in_service"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_loaction_in_service"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="5dp"
+        android:text="宁波市江北区长阳路人才公寓5栋1701室"
+        android:textSize="14sp" />
 
 
     <TextView
         android:id="@+id/tv_hint_in_service"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="11sp"
+        android:layout_below="@+id/tv_address_in_service"
         android:layout_marginLeft="13dp"
         android:layout_marginTop="20dp"
-        android:textColor="@color/color_custom_04"
         android:text="提示:服务过程中需要申请配件请点击申请配件"
-        android:layout_below="@+id/tv_address_in_service"
-        />
+        android:textColor="@color/color_custom_04"
+        android:textSize="11sp" />
 
 
     <View
         android:id="@+id/view_point"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#DAD7DB"
         android:layout_below="@+id/tv_hint_in_service"
         android:layout_marginTop="10dp"
-        ></View>
+        android:background="#DAD7DB"></View>
 
     <TextView
         android:id="@+id/tv_in_service_apply_parts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="申请配件"
-        android:textSize="16sp"
+        android:layout_below="@+id/view_point"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/tv_recevied"
         android:padding="10dp"
+        android:text="申请配件"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_in_service_finish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/view_point"
-        android:layout_marginBottom="10dp"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:layout_marginLeft="70dp"
-        />
+        android:layout_marginRight="70dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/tv_recevied"
+        android:padding="10dp"
+        android:text="完成工单"
+        android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/tv_in_service_finish"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="完成工单"
-            android:textSize="16sp"
-            android:background="@drawable/tv_recevied"
-            android:padding="10dp"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/view_point"
-            android:layout_marginRight="70dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-           />
-
+    <TextView
+        android:id="@+id/tv_cancel_work_order"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view_point"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/tv_recevied"
+        android:padding="10dp"
+        android:text="取消工单"
+        android:textSize="16sp" />
 
 
 </RelativeLayout>

@@ -6,6 +6,9 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.SPUtils;
@@ -18,6 +21,7 @@ import com.ying.administrator.masterappdemo.mvp.contract.LoginContract;
 import com.ying.administrator.masterappdemo.mvp.model.LoginModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.LoginPresenter;
 import com.ying.administrator.masterappdemo.util.MyUtils;
+import com.ying.administrator.masterappdemo.widget.ClearEditText;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,8 +38,24 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginModel> impl
     Button mBtn_login;
     @BindView(R.id.tv_register)
     TextView mTvRegister;
-    @BindView(R.id.tv_forget_password)
-    TextView mTvForgetPassword;
+    @BindView(R.id.img_login_username)
+    ImageView mImgLoginUsername;
+    @BindView(R.id.img_login_username_cancel)
+    ImageView mImgLoginUsernameCancel;
+    @BindView(R.id.img_login_password)
+    ImageView mImgLoginPassword;
+    @BindView(R.id.img_login_password_hide)
+    ImageView mImgLoginPasswordHide;
+    @BindView(R.id.rl_input_password)
+    RelativeLayout mRlInputPassword;
+    @BindView(R.id.et_verification_code)
+    EditText mEtVerificationCode;
+    @BindView(R.id.tv_get_verification_code)
+    TextView mTvGetVerificationCode;
+    @BindView(R.id.ll_code)
+    LinearLayout mLlCode;
+    @BindView(R.id.tv_change)
+    TextView mTvChange;
 
     private String userName;
     private String passWord;
@@ -57,8 +77,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginModel> impl
         SPUtils spUtils = SPUtils.getInstance("token");
         String userName = spUtils.getString("userName");
         String password = spUtils.getString("password");
-        isLogin =spUtils.getBoolean("isLogin");
-        if (userName!=null){
+        isLogin = spUtils.getBoolean("isLogin");
+        if (userName != null) {
             mEt_login_username.setText(userName);
             mEt_login_password.setText(password);
         }
@@ -70,7 +90,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginModel> impl
     protected void setListener() {
         mBtn_login.setOnClickListener(this);
         mTvRegister.setOnClickListener(this);
-        mTvForgetPassword.setOnClickListener(this);
+        mTvChange.setOnClickListener(this);
+
     }
 
     @Override
@@ -85,11 +106,9 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginModel> impl
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_register:
-                startActivity(new Intent(mActivity,RegisterActivity.class));
+                startActivity(new Intent(mActivity, RegisterActivity.class));
                 break;
-            case R.id.tv_forget_password:
 
-                break;
             case R.id.btn_login:
 
                 userName = mEt_login_username.getText().toString();
@@ -109,6 +128,17 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginModel> impl
                 }
                 mPresenter.Login(userName, passWord);
                 break;
+            case R.id.tv_change:
+                if (mLlCode.getVisibility()==View.GONE){
+                    mLlCode.setVisibility(View.VISIBLE);
+                    mRlInputPassword.setVisibility(View.GONE);
+                    mTvChange.setText("密码登录>");
+                }else{
+                    mLlCode.setVisibility(View.GONE);
+                    mRlInputPassword.setVisibility(View.VISIBLE);
+                    mTvChange.setText("短信验证码登录>");
+                }
+                break;
         }
     }
 
@@ -120,8 +150,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginModel> impl
                 SPUtils spUtils = SPUtils.getInstance("token");
                 spUtils.put("adminToken", baseResult.getData());
                 spUtils.put("userName", userName);
-                spUtils.put("password",passWord);
-                spUtils.put("isLogin",true);
+                spUtils.put("password", passWord);
+                spUtils.put("isLogin", true);
                 //  Log.d("loginlogin",baseResult.getData());
 //                GetUserInfo getUserInfo=new GetUserInfo(userName,baseResult.getData(),"","");
 //                Gson gson=new Gson();
