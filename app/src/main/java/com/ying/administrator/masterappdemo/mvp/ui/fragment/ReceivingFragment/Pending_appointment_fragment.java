@@ -68,7 +68,6 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
     private RecyclerView recyclerView_custom_redeploy;//显示子账号的RecyclerView
     private Redeploy_Adapter redeploy_adapter; //转派的adapter
 
-    private LinearLayout mLlEmpty;
     private String SubUserID; //用于存放主账号将要发送子账号的userid
     private String OrderId;//用于记录当前 工单的id
     public Pending_appointment_fragment() {
@@ -105,7 +104,6 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
         recyclerView=view.findViewById(R.id.recyclerview_order_receiving);
         tv_pending_appointment_redeploy=view.findViewById(R.id.tv_pending_appointment_redeploy);
         mRefreshLayout=view.findViewById(R.id.refreshLayout);
-        mLlEmpty = view.findViewById(R.id.ll_empty);
 
         list=new ArrayList<>();
 
@@ -120,6 +118,7 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
 
         pending_appointment_adapter=new Pending_Appointment_Adapter(R.layout.item_pending_appointment,list,userInfo,subuserlist);
         recyclerView.setAdapter(pending_appointment_adapter);
+        pending_appointment_adapter.setEmptyView(getEmptyView());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mPresenter.GetOrderInfoListForMe("2",Integer.toString(pageIndex),"4",userID);
 
@@ -387,12 +386,6 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                 pending_appointment_adapter.setNewData(list); //?
 
 
-                if (list.isEmpty()){//如果数据为空
-                    contentLoadingEmpty();
-
-                }else {
-                    mLlEmpty.setVisibility(View.INVISIBLE);
-                }
 
                 break;
             case 401:
@@ -474,7 +467,6 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
 
     @Override
     public void contentLoadingEmpty() {
-        mLlEmpty.setVisibility(View.VISIBLE);
     }
 
     @Override
