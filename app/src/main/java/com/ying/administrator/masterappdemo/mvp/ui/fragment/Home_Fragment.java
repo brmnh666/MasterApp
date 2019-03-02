@@ -109,7 +109,7 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
     @BindView(R.id.img_home_free_gold)
     ImageView mImgHomeFreeGold;
     @BindView(R.id.tv_home_giving_money)
-    TextView mTvHomeGivingMoney;         //赠送金额
+    TextView mTvHomeGivingMoney;      //赠送金额
     @BindView(R.id.tv_certification) //实名认证
     TextView mTvCertification;
     @BindView(R.id.img_certification)//实名认证图片
@@ -246,6 +246,7 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
         return fragment;
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -253,6 +254,15 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
             mContentText = getArguments().getString(ARG_SHOW_TEXT);
         }
 
+
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("===》","页面重新刷新");
+        mRefreshLayout.autoRefresh();
 
     }
 
@@ -311,7 +321,6 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
         final CommonDialog_Home dialog = new CommonDialog_Home(getActivity()); //弹出框
         userID = spUtils.getString("userName"); //获取用户id
         mPresenter.GetUserInfoList(userID,"1");//根据 手机号码获取用户详细信息
-
 
 
 
@@ -392,7 +401,6 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
 
 
     public void initListener() {
-
         //实名认证
         mTvCertification.setOnClickListener(this);
         //实名认证图片
@@ -422,6 +430,8 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
                 grabsheetAdapter.notifyDataSetChanged();
                 refreshlayout.finishRefresh();
                 refreshlayout.setLoadmoreFinished(false);
+
+                mPresenter.GetUserInfoList(userID,"1");//根据 手机号码获取用户详细信息
 
                 animator=ObjectAnimator.ofFloat(mimg_home_refresh,"rotation",0f,360f);
                 animator.setDuration(2000);

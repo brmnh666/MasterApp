@@ -51,6 +51,7 @@ import com.ying.administrator.masterappdemo.entity.FAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactorySeviceData;
 import com.ying.administrator.masterappdemo.entity.SAccessory;
 import com.ying.administrator.masterappdemo.entity.SService;
+import com.ying.administrator.masterappdemo.entity.STotalAS;
 import com.ying.administrator.masterappdemo.entity.Service;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.PendingOrderContract;
@@ -161,7 +162,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     private SService sService;
     /*服务*/
 
-
+     private STotalAS sTotalAS; //服务配件一起提交
     /*扫码*/
     private EditText et_express_sweep_code;//输入的快递单号信息
     private ImageView img_express_sweep_code;
@@ -177,7 +178,6 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     private int size;
     private double Money; //默认的钱为（OrderMoney-InitMoney）
     private String time;//最后传递的时间
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -725,14 +725,18 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                 } else {
                     StringBuilder stringBuilder = new StringBuilder(selecttime);
                      time = "" + stringBuilder.replace(10, 11, "T"); //增加"T"
-
+                   //  time=selecttime;
 
                    // Log.d("fAcList的长度为", String.valueOf(fAcList.size()));
 
                 if (fAcList.size()==0&&fList_service.size()==0){ //都没有添加只提交上门时间
+
+
                        mPresenter.UpdateSendOrderUpdateTime(orderID,time);
 
+
                    }else if (fAcList.size()!=0&&fList_service.size()==0){//只有配件
+
                        orderAccessoryStrBean = new FAccessory.OrderAccessoryStrBean();
                        orderAccessoryStrBean.setOrderAccessory(fAcList);
                        Gson gson1=new Gson();
@@ -765,39 +769,29 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
 
                    }else {//都有
-
-                 /*   *//*配件*//*
+                    //*配件*//
+                    sTotalAS=new STotalAS();
                     orderAccessoryStrBean = new FAccessory.OrderAccessoryStrBean();
                     orderAccessoryStrBean.setOrderAccessory(fAcList);
-                    Gson gson1=new Gson();
-                    String s1 = gson1.toJson(orderAccessoryStrBean);
-                    sAccessory=new SAccessory();
-                    sAccessory.setOrderID(orderID);
-                    sAccessory.setAccessorySequency("0");//自购件 和工厂配件默认
-                    sAccessory.setOrderAccessoryStr(s1);
                     Gson gson=new Gson();
-                    String s2 = gson.toJson(sAccessory);
-                    Log.d("添加的配件有",s2);
-                    RequestBody body=RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),s2);
-                    mPresenter.AddOrderAccessory(body);
-                    *//*配件*//*
-                    *//*服务*//*
+                    String s1 = gson.toJson(orderAccessoryStrBean);
+
+                    //*服务*//*
                     orderServiceStrBean=new FService.OrderServiceStrBean();
                     orderServiceStrBean.setOrderService(fList_service);
-                    Gson gson3=new Gson();
-                    String s3 = gson3.toJson(orderServiceStrBean);
-                    sService=new SService();
-                    sService.setOrderID(orderID);
-                    sService.setOrderServiceStr(s3);
-                    Gson gson4=new Gson();
-                    String s = gson4.toJson(sService);
-                    Log.d("添加的服务有",s);
-                    RequestBody body1=RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),s);
-                    mPresenter.AddOrderService(body1);
-                    *//*服务*/
-                   }
-                   }
+                    String s2 = gson.toJson(orderServiceStrBean);
+                    sTotalAS.setOrderID(orderID);
+                    sTotalAS.setAccessorySequency("0");//自购件 和工厂配件默认
+                    sTotalAS.setOrderAccessoryStr(s1);
+                    sTotalAS.setOrderServiceStr(s2);
+                    sTotalAS.setReturnAccessoryMsg("1214124125125韵达快递");//模拟数据
+                    String s3 = gson.toJson(sTotalAS);
+                    Log.d("配件和服务有",s3);
+                    RequestBody body=RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),s3);
+                    mPresenter.AddOrUpdateAccessoryServiceReturn(body);
 
+                   }
+                   }
 
                                  break;
                          default:
@@ -847,8 +841,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                  Toast.makeText(this,"余额不足请检查",Toast.LENGTH_LONG).show();
                  return;
              }else {
-                 mPresenter.UpdateSendOrderUpdateTime(orderID,time);
-
+                   mPresenter.UpdateSendOrderUpdateTime(orderID,time);
              }
                 break;
             default:
@@ -866,13 +859,31 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                     Toast.makeText(this,"服务添加失败工厂端余额不足",Toast.LENGTH_LONG).show();
                 }else {
 
-                    mPresenter.UpdateSendOrderUpdateTime(orderID,time);
+                 mPresenter.UpdateSendOrderUpdateTime(orderID,time);
                 }
 
                 break;
                 default:
                     break;
         }
+    }
+
+    @Override
+    public void AddOrUpdateAccessoryServiceReturn(BaseResult<Data> baseResult) {
+     switch (baseResult.getStatusCode()){
+    case 200:
+        if (!baseResult.getData().isItem1()){
+
+            Toast.makeText(this,"提交失败",Toast.LENGTH_LONG).show();
+        }else {
+            mPresenter.UpdateSendOrderUpdateTime(orderID,time);
+        }
+        break;
+        default:
+            break;
+}
+
+
     }
 
     @Override
@@ -943,20 +954,5 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     }
 
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-        /*  两秒之内再按一下退出*/
-        //判断用户是否点击了返回键
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-     /*       Intent intent = new Intent();
-            intent.putExtra("result", "pending_appointment");  //按了返回键返回已接待预约
-            //设置返回数据
-            Order_details_Activity.this.setResult(RESULT_OK, intent);
-            Order_details_Activity.this.finish();*/
-            return true;
-        }
-
-        return super.onKeyDown(keyCode, event);
-    }
 }

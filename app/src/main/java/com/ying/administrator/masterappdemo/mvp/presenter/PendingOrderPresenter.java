@@ -65,6 +65,16 @@ public class PendingOrderPresenter extends PendingOrderContract.Presenter {
     }
 
     @Override
+    public void AddOrUpdateAccessoryServiceReturn(RequestBody json) {
+        mModel.AddOrUpdateAccessoryServiceReturn(json).subscribe(new BaseObserver<Data>() {
+            @Override
+            protected void onHandleSuccess(BaseResult<Data> value) {
+                mView.AddOrUpdateAccessoryServiceReturn(value);
+            }
+        });
+    }
+
+    @Override
     public void UpdateSendOrderUpdateTime(String OrderID, String UpdateDate) {
         mModel.UpdateSendOrderUpdateTime(OrderID,UpdateDate).subscribe(new BaseObserver<Data>() {
             @Override

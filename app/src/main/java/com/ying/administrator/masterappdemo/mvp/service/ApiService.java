@@ -209,6 +209,10 @@ public interface ApiService {
     Observable<BaseResult<Data>> AddOrderService(@Body RequestBody json);
 
 
+    @POST("Order/AddOrUpdateAccessoryServiceReturn")
+    Observable<BaseResult<Data>> AddOrUpdateAccessoryServiceReturn(@Body RequestBody json);
+
+
     @FormUrlEncoded
     @POST("Order/UpdateSendOrderUpdateTime")
     Observable<BaseResult<Data>> UpdateSendOrderUpdateTime(@Field("OrderID") String OrderID,

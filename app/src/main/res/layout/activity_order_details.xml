@@ -243,7 +243,7 @@
                 android:layout_margin="10dp"
                 android:orientation="vertical"
                 android:paddingBottom="17dp"
-                android:visibility="gone">
+                android:visibility="visible">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -258,7 +258,6 @@
                         android:text="添加服务过程图片"
                         android:textSize="16sp"
                         android:textColor="#505050"/>
-
                     <LinearLayout
                         android:id="@+id/ll_view_example_two"
                         android:layout_width="wrap_content"
@@ -297,13 +296,14 @@
                         android:layout_weight="1"
                         android:layout_gravity="center"
                         android:src="@mipmap/upload"/>
+
                     <ImageView
                         android:id="@+id/iv_two"
                         android:layout_width="match_parent"
                         android:layout_height="69dp"
-                        android:layout_weight="1"
                         android:layout_gravity="center"
-                        android:src="@mipmap/upload"/>
+                        android:layout_weight="1"
+                        android:src="@mipmap/upload" />
                     <ImageView
                         android:id="@+id/iv_three"
                         android:layout_width="match_parent"
@@ -328,55 +328,6 @@
 
     </ScrollView>
 
-
 </LinearLayout>
 
-  <!--<RelativeLayout
-      android:layout_alignParentBottom="true"
-      android:layout_width="match_parent"
-      android:layout_height="60dp"
-      android:background="@color/color_white">
-
-      <TextView
-          android:layout_centerVertical="true"
-          android:layout_marginLeft="20dp"
-          android:id="@+id/tv_order_details_money_txt"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:textColor="@color/color_black"
-          android:textSize="15sp"
-          android:text="服务金额: "
-          />
-
-      <TextView
-          android:layout_centerVertical="true"
-          android:layout_marginLeft="10dp"
-          android:id="@+id/tv_order_details_money"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:textColor="@color/color_custom_04"
-          android:layout_toRightOf="@+id/tv_order_details_money_txt"
-          android:textSize="15sp"
-          android:text="¥0.00"
-
-          />
-
-     <TextView
-
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:text="提  交"
-         android:textColor="@color/color_white"
-         android:textSize="15sp"
-         android:background="@color/color_custom_01"
-         android:layout_alignParentRight="true"
-         android:layout_centerVertical="true"
-         android:paddingRight="20dp"
-         android:paddingLeft="20dp"
-         android:paddingTop="5dp"
-         android:paddingBottom="5dp"
-         android:layout_marginRight="20dp"
-         />
-
-  </RelativeLayout>-->
 </RelativeLayout>

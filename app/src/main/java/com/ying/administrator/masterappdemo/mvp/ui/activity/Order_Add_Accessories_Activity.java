@@ -723,6 +723,11 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
     }
 
     @Override
+    public void AddOrUpdateAccessoryServiceReturn(BaseResult<Data> baseResult) {
+
+    }
+
+    @Override
     public void UpdateSendOrderUpdateTime(BaseResult<Data> baseResult) {
        /* switch (baseResult.getStatusCode()){
             case 200:
