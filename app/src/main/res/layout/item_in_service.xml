@@ -30,6 +30,19 @@
         android:text="安装"
         android:textColor="@color/color_white"
         android:textSize="10sp" />
+    <TextView
+        android:id="@+id/tv_remote_fee"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="17dp"
+        android:layout_toRightOf="@id/tv_in_service_status_install"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:text="远程费被拒"
+        android:textColor="@color/color_custom_04"
+        android:textSize="10sp"
+        />
 
     <TextView
         android:id="@+id/tv_in_service_status_repair"
