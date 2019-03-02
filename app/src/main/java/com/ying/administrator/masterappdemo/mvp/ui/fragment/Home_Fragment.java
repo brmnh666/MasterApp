@@ -259,29 +259,10 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
     public void onResume() {
         super.onResume();
         Log.d("===》","页面重新刷新");
-//        mRefreshLayout.autoRefresh();
+        mRefreshLayout.autoRefresh();
 
     }
 
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        // Inflate the layout for this fragment
-//        if (mRootView == null) {
-//            mRootView = inflater.inflate(R.layout.fragment_home, container, false);
-//
-//
-//        }
-//        return mRootView;
-//    }
-
-//    @Override
-//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-//        unbinder = ButterKnife.bind(this, mRootView);
-//        initView();
-//        initListener();
-//        EventBus.getDefault().register(this);
-//    }
 
 
     @Override

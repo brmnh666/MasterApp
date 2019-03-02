@@ -97,6 +97,11 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     ImageView mIvMap1;
     @BindView(R.id.iv_map2)
     ImageView mIvMap2;
+    @BindView(R.id.ll_return_information)
+    LinearLayout mll_return_information;
+
+    @BindView(R.id.ll_service_process)
+    LinearLayout mll_service_process;
 
     private String orderID;//工单号
     private TextView tv_actionbar_title; //title标题
@@ -335,9 +340,13 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                 if (data.getTypeID()==1) {//维修
                     tv_order_details_status.setText("维修");
                     tv_order_details_status.setBackgroundResource(R.color.color_custom_01);
+                    mll_return_information.setVisibility(View.VISIBLE);
+                    mll_service_process.setVisibility(View.GONE);
                 } else {
                     tv_order_details_status.setText("安装");
                     tv_order_details_status.setBackgroundResource(R.color.color_custom_04);
+                    mll_return_information.setVisibility(View.GONE);
+                    mll_service_process.setVisibility(View.VISIBLE);
                 }
                 tv_order_details_adress.setText(data.getAddress());
                 mTvNum.setText("数量：" + data.getNum() + "台");
@@ -407,7 +416,6 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
                 /*选择配件*/
 
-
                 recyclerView_custom_add_accessory = customDialog_add_accessory.findViewById(R.id.recyclerView_custom_add_accessory);
                 recyclerView_custom_add_accessory.setLayoutManager(new LinearLayoutManager(mActivity));
                 mAdd_Ac_Adapter = new Add_Ac_Adapter(R.layout.item_addaccessory, mList);
@@ -460,6 +468,12 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                                         mfAccessory.setDiscountPrice(mAccessory.getAccessoryPrice());//折扣价
                                         mList.get(position).setCheckedcount(1);
                                         map.put(position,mfAccessory);
+                                        //fAcList = new ArrayList<>(map.values());
+
+
+
+
+
 
                                         //选择了数量根据输入框中的来
                                         //vibrator.vibrate(50);
@@ -527,6 +541,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                         mPre_order_add_ac_adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
                             @Override
                             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+
                                 switch (view.getId()) {
                                     case R.id.iv_accessories_delete:
                                         String AccessoryName = null; //用于保存配件名称
@@ -606,15 +621,17 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                 recyclerView_custom_add_service.setAdapter(mAdd_Service_Adapter);
 
                 mAdd_Service_Adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+                    @SuppressLint("MissingPermission")
                     @Override
                     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+
                         ImageView img_add_service_select = (ImageView) adapter.getViewByPosition(recyclerView_custom_add_service, position, R.id.img_add_service_select); //选中图片
                         ImageView img_add_service_unselect = (ImageView) adapter.getViewByPosition(recyclerView_custom_add_service, position, R.id.img_add_service_unselect);//未选中图片
-                        vibrator.vibrate(50);
                                 switch (view.getId()){
                                     case R.id.img_add_service_unselect:
                                     case R.id.img_add_service_select:
                                     case R.id.tv_add_service_name:
+                                        vibrator.vibrate(50);
                                         if (((Service)(adapter.getData().get(position))).isIschecked()==false){ //如果是为选中的状态点击  变为红色 选中状态 出现 数量选择器
                                             img_add_service_unselect.setVisibility(View.INVISIBLE);
                                             img_add_service_select.setVisibility(View.VISIBLE);

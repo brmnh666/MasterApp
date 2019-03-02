@@ -65,20 +65,16 @@ public interface PendingOrderContract {
     abstract  class Presenter extends BasePresenter<View,Model>{
         //根据工单号获取工单详情
         public abstract void GetOrderInfo(String OrderID);
-
         //获取工厂配件信息
         public abstract void GetFactoryAccessory();
-
         //获取工厂服务信息
         public abstract void GetFactoryService();
-
         //提交需要的配件信息
         public abstract void AddOrderAccessory(RequestBody json);
         //提交需要的服务信息
         public abstract void AddOrderService(RequestBody json);
          //提交配件服务和返件信息
         public abstract void AddOrUpdateAccessoryServiceReturn(RequestBody json);
-
         //更新时间
         public abstract void UpdateSendOrderUpdateTime(String OrderID,String UpdateDate);
     }
