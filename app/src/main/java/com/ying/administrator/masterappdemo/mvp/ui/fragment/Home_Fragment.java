@@ -118,7 +118,8 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
     ImageView mImg_un_certification;
     @BindView(R.id.img_home_location)
     ImageView mImgHomeLocation;
-
+    @BindView(R.id.ll_empty)
+    LinearLayout mLlEmpty;
     @BindView(R.id.tv_home_location)
     TextView mTvHomeLocation;
     @BindView(R.id.cv_home_user)
@@ -135,8 +136,7 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
     RecyclerView mRecyclerviewOrderReceiving;
     @BindView(R.id.tv_home_empty)
     TextView mTvHomeEmpty;
-    @BindView(R.id.ll_empty)
-    LinearLayout mLlEmpty;
+
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout mRefreshLayout;
 

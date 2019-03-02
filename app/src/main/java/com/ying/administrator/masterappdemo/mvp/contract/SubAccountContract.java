@@ -17,6 +17,8 @@ public interface SubAccountContract {
         /*获取账号信息列表*/
         Observable <BaseResult<UserInfo>> GetUserInfoList(String UserID, String limit);
 
+        //获取子账号
+        Observable<BaseResult<List<SubUserInfo.SubUserInfoDean>>> GetChildAccountByParentUserID(String ParentUserID);
 
     }
 
@@ -24,11 +26,17 @@ public interface SubAccountContract {
         /*获取账号信息列表*/
         void GetUserInfoList(BaseResult<UserInfo> baseResult);
 
+        /*获取子账号*/
+        void GetChildAccountByParentUserID(BaseResult<List<SubUserInfo.SubUserInfoDean>> baseResult);
+
     }
 
     abstract class Presenter extends BasePresenter<SubAccountContract.View,SubAccountContract.Model> {
         /*获取账号信息列表*/
         public abstract void GetUserInfoList(String UserID, String limit);
+
+        /*获取子账号*/
+        public abstract void GetChildAccountByParentUserID(String ParentUserID);
 
     }
 

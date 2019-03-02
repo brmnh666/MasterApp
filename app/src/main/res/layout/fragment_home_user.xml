@@ -39,8 +39,8 @@
             android:id="@+id/tv_home_available_balance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:text="可提现余额: 535.9元"
+            android:textSize="15sp"
+            android:text="可提现余额: "
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/img_home_withdraw"
             android:layout_marginTop="23dp"
@@ -60,8 +60,8 @@
             android:id="@+id/tv_home_outstanding_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:text="未完结金额: 1410.4元"
+            android:textSize="15sp"
+            android:text="未完结金额: "
             android:layout_alignParentRight="true"
             android:layout_below="@+id/tv_home_available_balance"
             android:layout_toRightOf="@+id/img_home_unfinished"
@@ -87,7 +87,8 @@
             android:layout_toRightOf="@+id/img_home_free_gold"
             android:layout_marginTop="5dp"
             android:text="赠 送 金 额: 0.00 元"
-            android:textSize="16dp" />
+            android:textSize="15sp"
+            />
 
         <TextView
             android:id="@+id/tv_certification"

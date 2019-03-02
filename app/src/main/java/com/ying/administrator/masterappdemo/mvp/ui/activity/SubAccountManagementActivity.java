@@ -64,6 +64,8 @@ public class SubAccountManagementActivity extends BaseActivity<SubAccountPresent
     private String userID;//用户id
     private QRCodeDialog qrCodeDialog;
     private UserInfo.UserInfoDean userInfoDean=new UserInfo.UserInfoDean();
+    private List<SubUserInfo.SubUserInfoDean> subUserInfolist=new ArrayList<>();
+    private SubAccountAdapter subAccountAdapter;
     @Override
     protected int setLayoutId() {
         return R.layout.activtity_sub_account_management;
@@ -76,12 +78,17 @@ public class SubAccountManagementActivity extends BaseActivity<SubAccountPresent
        /* subAccountArrayList = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             subAccountArrayList.add(new SubAccount());
-        }
-        SubAccountAdapter subAccountAdapter = new SubAccountAdapter(R.layout.item_sub_account, subAccountArrayList);
-        mRvSubAccount.setLayoutManager(new LinearLayoutManager(mActivity));
-        mRvSubAccount.setAdapter(subAccountAdapter);*/
+        }*/
+         mPresenter.GetUserInfoList(userID,"1");
+         mPresenter.GetChildAccountByParentUserID(userID);
 
-       mPresenter.GetUserInfoList(userID,"1");
+
+
+         subAccountAdapter = new SubAccountAdapter(R.layout.item_sub_account, subUserInfolist,mActivity);
+         mRvSubAccount.setLayoutManager(new LinearLayoutManager(mActivity));
+         mRvSubAccount.setAdapter(subAccountAdapter);
+
+
 
 
     }
@@ -155,11 +162,28 @@ public class SubAccountManagementActivity extends BaseActivity<SubAccountPresent
         switch (baseResult.getStatusCode()){
             case 200:
                 userInfoDean=baseResult.getData().getData().get(0);
+
                 break;
                 default:
 
                     break;
 
         }
+    }
+
+    @Override
+    public void GetChildAccountByParentUserID(BaseResult<List<SubUserInfo.SubUserInfoDean>> baseResult) {
+
+       switch (baseResult.getStatusCode()){
+           case 200:
+               subUserInfolist.addAll(baseResult.getData());
+               subAccountAdapter.notifyDataSetChanged();
+               break;
+               default:
+                   break;
+
+         }
+
+
     }
 }

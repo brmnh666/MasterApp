@@ -1,6 +1,7 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.BitmapDrawable;
@@ -169,7 +170,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     private TextView tv_express_sweep_code;
     /*扫码*/
     /*震动*/
-    Vibrator vibrator;
+    private Vibrator vibrator;
     private double totalPrice; // 配件价格*数量+服务价格   fList_service+
     private View popupWindow_view;
     private String FilePath;
@@ -414,6 +415,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
 
                 mAdd_Ac_Adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+                    @SuppressLint("MissingPermission")
                     @Override
                     public void onItemChildClick(final BaseQuickAdapter adapter, View view, final int position) {
                         ImageView img_ac_select = (ImageView) adapter.getViewByPosition(recyclerView_custom_add_accessory, position, R.id.img_ac_select); //选中图片
@@ -426,7 +428,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                             case R.id.img_ac_unselect:
                             case R.id.img_ac_select:
                             case R.id.tv_accessory_name:
-
+                                vibrator.vibrate(50);
 
                                 if (((Accessory) (adapter.getData().get(position))).isIscheck() == false) { //如果是为选中的状态点击  变为红色 选中状态 出现 数量选择器
 
@@ -444,11 +446,9 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                                     mfAccessory.setDiscountPrice(mAccessory.getAccessoryPrice());
                                     mList.get(position).setCheckedcount(1);
                                     map.put(position, mfAccessory);
-                                        //viewadd.setVisibility(View.VISIBLE); //数量选择器出现
                                         adderView.setVisibility(View.VISIBLE);
                                         img_ac_unselect.setVisibility(View.INVISIBLE);
                                         img_ac_select.setVisibility(View.VISIBLE);
-                                        //ischeck[position]=true;
                                         mList.get(position).setIscheck(true);
                                       //没选选择默认数量为1
                                         mAccessory=(Accessory)adapter.getItem(position);
@@ -461,8 +461,8 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                                         mList.get(position).setCheckedcount(1);
                                         map.put(position,mfAccessory);
 
-                                    //选择了数量根据输入框中的来
-                                    //vibrator.vibrate(50);
+                                        //选择了数量根据输入框中的来
+                                        //vibrator.vibrate(50);
                                         //选择了数量根据输入框中的来
                                        //vibrator.vibrate(50);
 
@@ -470,7 +470,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                                         @Override
                                         public void onValueChange(int value) {
                                             //没选选择时间默认数量为1
-
+                                               vibrator.vibrate(50);
                                                 mAccessory=(Accessory)adapter.getItem(position);
                                                 mfAccessory=new FAccessory.OrderAccessoryStrBean.OrderAccessoryBean();
                                                 mfAccessory.setFAccessoryID(mAccessory.getFAccessoryID());
@@ -496,7 +496,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                                         mList.get(position).setIscheck(false);
                                         mList.get(position).setCheckedcount(1);
                                         map.remove(position);
-                                        //vibrator.vibrate(50);
+                                        vibrator.vibrate(50);
                                     }
 
                                 break;
@@ -610,7 +610,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                         ImageView img_add_service_select = (ImageView) adapter.getViewByPosition(recyclerView_custom_add_service, position, R.id.img_add_service_select); //选中图片
                         ImageView img_add_service_unselect = (ImageView) adapter.getViewByPosition(recyclerView_custom_add_service, position, R.id.img_add_service_unselect);//未选中图片
-
+                        vibrator.vibrate(50);
                                 switch (view.getId()){
                                     case R.id.img_add_service_unselect:
                                     case R.id.img_add_service_select:
