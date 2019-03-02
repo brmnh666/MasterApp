@@ -1,64 +1,101 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ying.administrator.masterappdemo.R;
+import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.common.DefineView;
 
-public class Wallet_Activity extends AppCompatActivity implements DefineView {
-private LinearLayout ll_return;
-private TextView tv_actionbar_title;
-private ImageView img_actionbar_message;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class Wallet_Activity extends BaseActivity implements View.OnClickListener {
+    @BindView(R.id.img_actionbar_return)
+    ImageView mImgActionbarReturn;
+    @BindView(R.id.tv_actionbar_return)
+    TextView mTvActionbarReturn;
+    @BindView(R.id.ll_return)
+    LinearLayout mLlReturn;
+    @BindView(R.id.tv_actionbar_title)
+    TextView mTvActionbarTitle;
+    @BindView(R.id.img_actionbar_message)
+    ImageView mImgActionbarMessage;
+    @BindView(R.id.actionbar_layout)
+    RelativeLayout mActionbarLayout;
+    @BindView(R.id.tv_money)
+    TextView mTvMoney;
+    @BindView(R.id.tv_recharge)
+    TextView mTvRecharge;
+    @BindView(R.id.tv_withdraw)
+    TextView mTvWithdraw;
+    @BindView(R.id.tv_unfinished)
+    TextView mTvUnfinished;
+    @BindView(R.id.tv_free_gift)
+    TextView mTvFreeGift;
+    @BindView(R.id.rv_income_and_expenditure_details)
+    RecyclerView mRvIncomeAndExpenditureDetails;
+    @BindView(R.id.iv_bank_no)
+    ImageView mIvBankNo;
+    @BindView(R.id.tv_bank)
+    TextView mTvBank;
+    @BindView(R.id.iv_aplipay_no)
+    ImageView mIvAplipayNo;
+    @BindView(R.id.tv_aplipay)
+    TextView mTvAplipay;
+    @BindView(R.id.iv_wechat_no)
+    ImageView mIvWechatNo;
+    @BindView(R.id.tv_wechat)
+    TextView mTvWechat;
+    @BindView(R.id.rv_withdrawals_record)
+    RecyclerView mRvWithdrawalsRecord;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_wallet);
-        initView();
-        initValidata();
-        initListener();
+    protected int setLayoutId() {
+        return R.layout.activity_wallet;
+    }
+
+    @Override
+    protected void initData() {
+
     }
 
     @Override
     public void initView() {
-        ll_return=findViewById(R.id.ll_return);
-        tv_actionbar_title=findViewById(R.id.tv_actionbar_title);
-        img_actionbar_message=findViewById(R.id.img_actionbar_message);
+        mTvActionbarTitle.setText("我的钱包");
+        mImgActionbarMessage.setVisibility(View.INVISIBLE);
+    }
 
 
+    @Override
+    protected void setListener() {
+        mLlReturn.setOnClickListener(this);
+        mTvRecharge.setOnClickListener(this);
     }
 
     @Override
-    public void initValidata() {
-        tv_actionbar_title.setText("我的钱包");
-        img_actionbar_message.setVisibility(View.INVISIBLE);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 
     @Override
-    public void initListener() {
-        ll_return.setOnClickListener(new Customlistner());
-    }
-
-    @Override
-    public void bindData() {
-
-    }
-    public class Customlistner implements View.OnClickListener {
-
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()){
-
-                case R.id.ll_return:
-                    Wallet_Activity.this.finish();
-                    break;
-            }
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.ll_return:
+                finish();
+                break;
+            case R.id.tv_recharge:
+                startActivity(new Intent(mActivity,RechargeActivity.class));
+                break;
         }
+
     }
 }

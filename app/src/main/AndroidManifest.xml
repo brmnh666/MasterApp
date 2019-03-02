@@ -285,6 +285,11 @@
         <activity android:name=".mvp.ui.activity.MyInfoSkillsActivity" android:theme="@style/AppTheme.NoActionBar" android:launchMode="singleTask"/>
         <!--添加服务技能-->
         <activity android:name=".mvp.ui.activity.AddServiceAreaActivity" android:theme="@style/AppTheme.NoActionBar" android:launchMode="singleTask"/>
+        <!--充值界面-->
+        <activity android:name=".mvp.ui.activity.RechargeActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="stateHidden"/>
 
     </application>
 

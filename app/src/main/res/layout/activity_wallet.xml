@@ -67,7 +67,7 @@
                                 android:textColor="#1690FF"
                                 android:textSize="30sp"
                                 android:layout_gravity="center"
-                                android:layout_marginLeft="@dimen/dp_10"/>
+                                />
                             <TextView
                                 android:id="@+id/tv_money"
                                 android:layout_width="wrap_content"
@@ -81,6 +81,17 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content" 
                                 android:layout_weight="1"/>
+                            <TextView
+                                android:id="@+id/tv_recharge"
+                                android:layout_width="63dp"
+                                android:layout_height="33dp"
+                                android:gravity="center"
+                                android:text="充  值"
+                                android:textColor="#636363"
+                                android:textSize="16sp"
+                                android:layout_marginRight="10dp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/gray_rr_shape"/>
                             
                             <TextView
                                 android:id="@+id/tv_withdraw"
@@ -91,6 +102,7 @@
                                 android:textColor="#636363"
                                 android:textSize="16sp"
                                 android:layout_marginRight="23dp"
+                                android:layout_gravity="center"
                                 android:background="@drawable/gray_rr_shape"/>
                         </LinearLayout>
 
