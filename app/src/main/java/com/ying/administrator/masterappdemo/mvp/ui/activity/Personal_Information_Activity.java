@@ -228,7 +228,7 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
                 if (userInfo.getAvator()==null){//显示默认头像
                     return;
                 }else {
-                    Glide.with(this)
+                    Glide.with(mActivity)
                             .load(Config.HEAD_URL+userInfo.getAvator())
                             .apply(RequestOptions.bitmapTransform(new CircleCrop()))
                             .into(iv_avatar);

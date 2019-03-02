@@ -66,6 +66,7 @@ import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_Receiving_Acti
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Verified_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.GrabsheetAdapter;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseFragment;
+import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 import com.ying.administrator.masterappdemo.widget.CustomDialog;
 import com.ying.administrator.masterappdemo.widget.ShareDialog;
@@ -87,7 +88,7 @@ import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkOrdersModel> implements AllWorkOrdersContract.View, View.OnClickListener, EasyPermissions.PermissionCallbacks {
+public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllWorkOrdersModel> implements AllWorkOrdersContract.View, View.OnClickListener, EasyPermissions.PermissionCallbacks {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_SHOW_TEXT = "text";
     @BindView(R.id.img_home_customer_service)
@@ -118,8 +119,6 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
     ImageView mImg_un_certification;
     @BindView(R.id.img_home_location)
     ImageView mImgHomeLocation;
-    @BindView(R.id.ll_empty)
-    LinearLayout mLlEmpty;
     @BindView(R.id.tv_home_location)
     TextView mTvHomeLocation;
     @BindView(R.id.cv_home_user)
@@ -134,8 +133,6 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
     ImageView mimg_home_refresh;
     @BindView(R.id.recyclerview_order_receiving)
     RecyclerView mRecyclerviewOrderReceiving;
-    @BindView(R.id.tv_home_empty)
-    TextView mTvHomeEmpty;
 
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout mRefreshLayout;
@@ -262,146 +259,39 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
     public void onResume() {
         super.onResume();
         Log.d("===》","页面重新刷新");
-        mRefreshLayout.autoRefresh();
+//        mRefreshLayout.autoRefresh();
+
+    }
+
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+//        // Inflate the layout for this fragment
+//        if (mRootView == null) {
+//            mRootView = inflater.inflate(R.layout.fragment_home, container, false);
+//
+//
+//        }
+//        return mRootView;
+//    }
+
+//    @Override
+//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+//        super.onViewCreated(view, savedInstanceState);
+//        unbinder = ButterKnife.bind(this, mRootView);
+//        initView();
+//        initListener();
+//        EventBus.getDefault().register(this);
+//    }
+
+
+    @Override
+    protected void initView() {
 
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        if (mRootView == null) {
-            mRootView = inflater.inflate(R.layout.fragment_home, container, false);
-
-
-        }
-        return mRootView;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        unbinder = ButterKnife.bind(this, mRootView);
-        initView();
-        initListener();
-        EventBus.getDefault().register(this);
-    }
-
-    public void initView() {
-        UMShareConfig config = new UMShareConfig();
-        config.isNeedAuthOnGetUserInfo(true);
-        UMShareAPI.get(mActivity).setShareConfig(config);
-        mShareListener = new CustomShareListener(mActivity);
-        /*增加自定义按钮的分享面板*/
-        mShareAction = new ShareAction(mActivity).setDisplayList(
-                SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN_FAVORITE,
-                SHARE_MEDIA.SINA, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE, SHARE_MEDIA.MORE)
-                .addButton("复制文本", "复制文本", "umeng_socialize_copy", "umeng_socialize_copy")
-                .addButton("复制链接", "复制链接", "umeng_socialize_copyurl", "umeng_socialize_copyurl")
-                .setShareboardclickCallback(new ShareBoardlistener() {
-                    @Override
-                    public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
-                        if (snsPlatform.mShowWord.equals("复制文本")) {
-                            Toast.makeText(mActivity, "已复制", Toast.LENGTH_LONG).show();
-                        } else if (snsPlatform.mShowWord.equals("复制链接")) {
-                            Toast.makeText(mActivity, "已复制", Toast.LENGTH_LONG).show();
-
-                        } else {
-                            UMWeb web = new UMWeb("http://www.jmiren.com/");
-                            web.setTitle("西瓜鱼");
-                            web.setDescription("分享测试测试测试");
-                            web.setThumb(new UMImage(mActivity,R.mipmap.icon_app));
-                            new ShareAction(mActivity).withMedia(web)
-                                    .setPlatform(share_media)
-                                    .setCallback(mShareListener)
-                                    .share();
-                        }
-                    }
-                });
-
-        final CommonDialog_Home dialog = new CommonDialog_Home(getActivity()); //弹出框
-        userID = spUtils.getString("userName"); //获取用户id
-        mPresenter.GetUserInfoList(userID,"1");//根据 手机号码获取用户详细信息
-
-
-
-        methodRequiresPermission();
-        list = new ArrayList<>();
-        /*模拟数据*/
-        mRecyclerviewOrderReceiving.setLayoutManager(new LinearLayoutManager(mActivity));
-        grabsheetAdapter = new GrabsheetAdapter(R.layout.item_grabsheet, list);
-        //?? grabsheetAdapter.setEmptyView(getEmptyView());
-        mRecyclerviewOrderReceiving.setAdapter(grabsheetAdapter);
-
-        mPresenter.GetOrderInfoList(userID,"1",Integer.toString(pageIndex), "100");
-      /* if (list.isEmpty()){ //没有数据显示空
-           contentLoadingEmpty();
-
-       }else {
-           mLlEmpty.setVisibility(View.INVISIBLE);
-
-       }*/
-
-
-        /*点击抢单按钮*/
-        grabsheetAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                switch (view.getId()) {
-                    case R.id.img_grabsheet:
-                        if (userInfo.getIfAuth()!=null){
-                            if (userInfo.getIfAuth().equals("1")){
-                                mPresenter.AddGrabsheetapply(((WorkOrder.DataBean) adapter.getItem(position)).getOrderID(), userID);
-                                //Log.d("WorkOrder",((WorkOrder.DataBean)adapter.getItem(position)).getOrderID());
-                                grabsheetAdapter.remove(position);
-                                Intent intent = new Intent(getActivity(), Order_Receiving_Activity.class);
-                                intent.putExtra("intent", "pending_appointment");
-                                startActivity(intent);
-                                if (list.isEmpty()) {  //判断订单是否为空
-                                    contentLoadingEmpty();
-
-                                }
-                            }else if (userInfo.getIfAuth().equals("0")){
-                                under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_under_review,null);
-                                btnConfirm = under_review.findViewById(R.id.btn_confirm);
-                                btnConfirm.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        underReviewDialog.dismiss();
-                                    }
-                                });
-                                underReviewDialog =new AlertDialog.Builder(mActivity).setView(under_review).create();
-                                underReviewDialog.show();
-                            }else if (userInfo.getIfAuth().equals("-1")){
-                                under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_audit_failure,null);
-                                btnConfirm = under_review.findViewById(R.id.btn_confirm);
-                                btnConfirm.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        underReviewDialog.dismiss();
-                                        startActivity(new Intent(mActivity, Verified_Activity.class));
-                                    }
-                                });
-                                underReviewDialog =new AlertDialog.Builder(mActivity).setView(under_review).create();
-                                underReviewDialog.show();
-                            }else {
-                                showVerifiedDialog();
-                            }
-                        }else{
-                            showVerifiedDialog();
-                        }
-                        break;
-                }
-
-            }
-        });
-
-
-    }
-
-
-
-    public void initListener() {
-        //实名认证
+    protected void setListener() {
+//实名认证
         mTvCertification.setOnClickListener(this);
         //实名认证图片
         mImgCertification.setOnClickListener(this);
@@ -421,9 +311,6 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                if (!list.isEmpty()) { //当有数据的时候
-                    mLlEmpty.setVisibility(View.INVISIBLE);//隐藏空的界面
-                }
                 pageIndex = 1;
                 list.clear();
                 mPresenter.GetOrderInfoList(userID,"1", Integer.toString(pageIndex), "100");
@@ -439,23 +326,19 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
             }
         });
 
-            //上拉加载更多
-            mRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
+        //上拉加载更多
+        mRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
 
-                @Override
-                public void onLoadmore(RefreshLayout refreshlayout) {
-                    pageIndex++; //页数加1
-                    Log.d("当前的单数", String.valueOf(list.size()));
-                    mPresenter.GetOrderInfoList(userID,"1", Integer.toString(pageIndex), "4");
-                    grabsheetAdapter.notifyDataSetChanged();
-                    refreshlayout.finishLoadmore();
-                }
-            });
-
-
+            @Override
+            public void onLoadmore(RefreshLayout refreshlayout) {
+                pageIndex++; //页数加1
+                Log.d("当前的单数", String.valueOf(list.size()));
+                mPresenter.GetOrderInfoList(userID,"1", Integer.toString(pageIndex), "4");
+                grabsheetAdapter.notifyDataSetChanged();
+                refreshlayout.finishLoadmore();
+            }
+        });
     }
-
-
 
     @Override
     public void GetOrderInfoList(BaseResult<WorkOrder> baseResult) {
@@ -464,13 +347,6 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
                 workOrder = baseResult.getData();
                 list.addAll(workOrder.getData());
                 grabsheetAdapter.setNewData(list);
-                if (list.isEmpty()) {
-                    contentLoadingEmpty();
-
-                } else {
-                    mLlEmpty.setVisibility(View.INVISIBLE);
-
-                }
                 if (pageIndex!=1&&workOrder.getData().size()==0){
                     mRefreshLayout.finishLoadmoreWithNoMoreData();
                 }
@@ -552,7 +428,7 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
                 if (userInfo.getAvator()==null){//显示默认头像
                       return;
                 }else {
-                    Glide.with(this)
+                    Glide.with(mActivity)
                             .load(Config.HEAD_URL+userInfo.getAvator())
                             .apply(RequestOptions.bitmapTransform(new CircleCrop()))
                             .into(mImgHomeHead);
@@ -573,44 +449,6 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
         }
     }
 
-
-    @Override
-    public void contentLoading() {
-
-    }
-
-    @Override
-    public void contentLoadingComplete() {
-
-    }
-
-    @Override
-    public void contentLoadingError() {
-
-    }
-
-    @Override
-    public void contentLoadingEmpty() {
-        Log.d("empty", "工单为空");
-        mLlEmpty.setVisibility(View.VISIBLE);
-
-    }
-
-    @Override
-    public void showProgress() {
-
-    }
-
-    @Override
-    public void hideProgress() {
-
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
     public void showVerifiedDialog() {
         customDialog = new CustomDialog(getContext());
         customDialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
@@ -877,6 +715,122 @@ public class Home_Fragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
             mLocationClient.stopLocation();
         }
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    protected int setLayoutId() {
+        return R.layout.fragment_home;
+    }
+
+    @Override
+    protected void initData() {
+        UMShareConfig config = new UMShareConfig();
+        config.isNeedAuthOnGetUserInfo(true);
+        UMShareAPI.get(mActivity).setShareConfig(config);
+        mShareListener = new CustomShareListener(mActivity);
+        /*增加自定义按钮的分享面板*/
+        mShareAction = new ShareAction(mActivity).setDisplayList(
+                SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN_FAVORITE,
+                SHARE_MEDIA.SINA, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE, SHARE_MEDIA.MORE)
+                .addButton("复制文本", "复制文本", "umeng_socialize_copy", "umeng_socialize_copy")
+                .addButton("复制链接", "复制链接", "umeng_socialize_copyurl", "umeng_socialize_copyurl")
+                .setShareboardclickCallback(new ShareBoardlistener() {
+                    @Override
+                    public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
+                        if (snsPlatform.mShowWord.equals("复制文本")) {
+                            Toast.makeText(mActivity, "已复制", Toast.LENGTH_LONG).show();
+                        } else if (snsPlatform.mShowWord.equals("复制链接")) {
+                            Toast.makeText(mActivity, "已复制", Toast.LENGTH_LONG).show();
+
+                        } else {
+                            UMWeb web = new UMWeb("http://www.jmiren.com/");
+                            web.setTitle("西瓜鱼");
+                            web.setDescription("分享测试测试测试");
+                            web.setThumb(new UMImage(mActivity,R.mipmap.icon_app));
+                            new ShareAction(mActivity).withMedia(web)
+                                    .setPlatform(share_media)
+                                    .setCallback(mShareListener)
+                                    .share();
+                        }
+                    }
+                });
+
+        final CommonDialog_Home dialog = new CommonDialog_Home(getActivity()); //弹出框
+        userID = spUtils.getString("userName"); //获取用户id
+        mPresenter.GetUserInfoList(userID,"1");//根据 手机号码获取用户详细信息
+
+
+
+        methodRequiresPermission();
+        list = new ArrayList<>();
+        /*模拟数据*/
+        mRecyclerviewOrderReceiving.setLayoutManager(new LinearLayoutManager(mActivity));
+        grabsheetAdapter = new GrabsheetAdapter(R.layout.item_grabsheet, list);
+        grabsheetAdapter.setEmptyView(getEmptyView());
+        mRecyclerviewOrderReceiving.setAdapter(grabsheetAdapter);
+
+        mPresenter.GetOrderInfoList(userID,"1",Integer.toString(pageIndex), "100");
+      /* if (list.isEmpty()){ //没有数据显示空
+           contentLoadingEmpty();
+
+       }else {
+           mLlEmpty.setVisibility(View.INVISIBLE);
+
+       }*/
+
+
+        /*点击抢单按钮*/
+        grabsheetAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                switch (view.getId()) {
+                    case R.id.img_grabsheet:
+                        if (userInfo.getIfAuth()!=null){
+                            if (userInfo.getIfAuth().equals("1")){
+                                mPresenter.AddGrabsheetapply(((WorkOrder.DataBean) adapter.getItem(position)).getOrderID(), userID);
+                                //Log.d("WorkOrder",((WorkOrder.DataBean)adapter.getItem(position)).getOrderID());
+                                grabsheetAdapter.remove(position);
+                                Intent intent = new Intent(getActivity(), Order_Receiving_Activity.class);
+                                intent.putExtra("intent", "pending_appointment");
+                                startActivity(intent);
+                                if (list.isEmpty()) {  //判断订单是否为空
+                                    contentLoadingEmpty();
+
+                                }
+                            }else if (userInfo.getIfAuth().equals("0")){
+                                under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_under_review,null);
+                                btnConfirm = under_review.findViewById(R.id.btn_confirm);
+                                btnConfirm.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        underReviewDialog.dismiss();
+                                    }
+                                });
+                                underReviewDialog =new AlertDialog.Builder(mActivity).setView(under_review).create();
+                                underReviewDialog.show();
+                            }else if (userInfo.getIfAuth().equals("-1")){
+                                under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_audit_failure,null);
+                                btnConfirm = under_review.findViewById(R.id.btn_confirm);
+                                btnConfirm.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        underReviewDialog.dismiss();
+                                        startActivity(new Intent(mActivity, Verified_Activity.class));
+                                    }
+                                });
+                                underReviewDialog =new AlertDialog.Builder(mActivity).setView(under_review).create();
+                                underReviewDialog.show();
+                            }else {
+                                showVerifiedDialog();
+                            }
+                        }else{
+                            showVerifiedDialog();
+                        }
+                        break;
+                }
+
+            }
+        });
     }
 
     @Override

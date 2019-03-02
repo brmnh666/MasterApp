@@ -132,8 +132,7 @@
 
         <!--登录-->
         <activity android:name=".mvp.ui.activity.LoginActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:launchMode="singleTask">
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

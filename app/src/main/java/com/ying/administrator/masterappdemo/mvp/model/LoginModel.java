@@ -13,7 +13,7 @@ import okhttp3.RequestBody;
 public class LoginModel implements LoginContract.Model {
     @Override
     public Observable<BaseResult<String>> Login(String userName, String passWord) {
-        return ApiRetrofit.getDefault().LoginOn(userName,passWord)
+        return ApiRetrofit.getDefault().LoginOn(userName,passWord,"7")
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseModel;
 import com.ying.administrator.masterappdemo.base.BasePresenter;
 import com.ying.administrator.masterappdemo.base.BaseView;
@@ -26,7 +27,7 @@ import com.ying.administrator.masterappdemo.util.TUtil;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class BaseFragment<P extends BasePresenter, M extends BaseModel> extends Fragment {
+public class BaseFragment<P extends BasePresenter, M extends BaseModel> extends Fragment implements BaseView{
     public P mPresenter;
     public M mModel;
 
@@ -63,7 +64,9 @@ public class BaseFragment<P extends BasePresenter, M extends BaseModel> extends 
         return TUtil.getT(this, 1);
     }
 
-
+    public View getEmptyView() {
+        return  LayoutInflater.from(mActivity).inflate(R.layout.layout_empty,null);
+    }
 
 
 
@@ -116,6 +119,43 @@ public class BaseFragment<P extends BasePresenter, M extends BaseModel> extends 
             startActivity(intent);
         }
     }
+
+    @Override
+    public void contentLoading() {
+
+    }
+
+    @Override
+    public void contentLoadingComplete() {
+
+    }
+
+    @Override
+    public void contentLoadingError() {
+
+    }
+
+    @Override
+    public void contentLoadingEmpty() {
+
+    }
+
+    @Override
+    public void showProgress() {
+
+    }
+
+    @Override
+    public void hideProgress() {
+
+    }
     /*电话*/
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mPresenter != null) {
+            mPresenter.onDestroy();
+        }
+    }
 }

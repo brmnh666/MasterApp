@@ -26,7 +26,7 @@ public class RegisterModel implements RegisterContract.Model {
 
     @Override
     public Observable<BaseResult<String>> Login(String userName, String password) {
-        return ApiRetrofit.getDefault().LoginOn(userName,password)
+        return ApiRetrofit.getDefault().LoginOn(userName,password,"7")
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

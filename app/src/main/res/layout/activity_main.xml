@@ -1,129 +1,178 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".mvp.ui.activity.MainActivity">
-
-    <LinearLayout
-
+    android:layout_height="match_parent">
+    <com.ying.administrator.masterappdemo.widget.CustomViewPager
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="50dp"
-        android:orientation="vertical">
-
-        <FrameLayout
-            android:id="@+id/fragment_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </LinearLayout>
-
-    <RadioGroup
-        android:id="@+id/tabs_rg"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_below="@id/fragment_container"
-        android:layout_alignParentBottom="true"
-        android:background="#ffffff"
-        android:orientation="horizontal"
-        tools:ignore="NotSibling">
-
-        <!--首页-->
-        <RadioButton
-            android:id="@+id/workbench"
-            style="@style/Custom.TabRadioButton"
-            android:background="@color/transparent"
-            android:checked="true"
-            android:drawableTop="@drawable/tab_home_selector"
-            android:text="首页" />
-        <!--首页-->
-
-        <RadioButton
-            android:id="@+id/message"
-            style="@style/Custom.TabRadioButton"
-            android:background="@color/transparent"
-            android:drawableTop="@drawable/tab_message_selector"
-            android:text="消息" />
-
-        <View style="@style/Custom.TabRadioButton" />
-
-        <RadioButton
-            android:id="@+id/accessories_shop"
-            style="@style/Custom.TabRadioButton"
-            android:background="@color/transparent"
-            android:drawableTop="@drawable/tab_accessories_shop_selector"
-            android:text="配件商城" />
-
-        <RadioButton
-            android:id="@+id/me"
-            style="@style/Custom.TabRadioButton"
-            android:background="@color/transparent"
-            android:drawableTop="@drawable/tab_me_selector"
-            android:text="我的" />
-    </RadioGroup>
-    <!-- 实现提醒信息用的 -->
+        android:layout_marginBottom="50dp"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_alignStart="@+id/tabs_rg"
-        android:layout_alignLeft="@+id/tabs_rg"
-        android:layout_alignTop="@+id/tabs_rg"
+        android:background="@color/white"
+        android:layout_gravity="bottom"
+        android:orientation="vertical">
 
-        android:layout_marginStart="0dp"
-        android:layout_marginLeft="0dp"
-        android:background="#00000000"
-        android:orientation="horizontal">
-        <!-- 显示提醒信息的button android:layout_weight=1  是3个butto，平分手机界面的宽度-->
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:visibility="invisible" />
-        <!-- 占位置的button，以便适应不同分辨率手机 -->
-        <Button
-            android:id="@+id/btn_message_count"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:visibility="invisible" />
-        <!-- 占位置的button，以便适应不同分辨率手机 -->
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:visibility="invisible" />
-        <!-- 占位置的button，以便适应不同分辨率手机 -->
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:visibility="invisible" />
-        <!-- 占位置的button，以便适应不同分辨率手机 -->
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:visibility="invisible" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#888" />
+
+        <LinearLayout
+            android:id="@+id/tab_menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <LinearLayout
+                android:id="@+id/ll_home"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/img_home"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/tab_home_selector"
+                    android:gravity="center" />
+
+                <TextView
+                    android:id="@+id/tv_home"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:text="首页"
+                    android:textColor="@drawable/tab_mall_text"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_message"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/img_message"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/tab_message_selector"
+                    android:gravity="center" />
+
+                <TextView
+                    android:id="@+id/tv_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:text="消息"
+                    android:textColor="@drawable/tab_mall_text"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_category"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/img_cate"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/tab_accessories_shop_selector"
+                    android:gravity="center" />
+
+                <TextView
+                    android:id="@+id/tv_cate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:text="所有工单"
+                    android:textColor="@drawable/tab_mall_text"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_car"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/img_cart"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/tab_accessories_shop_selector"
+                    android:gravity="center" />
+
+                <TextView
+                    android:id="@+id/tv_cart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:text="发现"
+                    android:textColor="@drawable/tab_mall_text"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_mine"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/img_my"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/tab_me_selector"
+                    android:gravity="center" />
+
+                <TextView
+                    android:id="@+id/tv_my"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:text="我的"
+                    android:textColor="@drawable/tab_mall_text"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+
+        </LinearLayout>
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/receiving"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="25dp"
-        android:background="@android:color/transparent"
-        android:clickable="true"
-        android:src="@mipmap/icon_home_add" />
-
-    <TextView
+    <LinearLayout
+        android:id="@+id/ll_order"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="7dp"
-        android:text="所有订单"
-        android:textColor="#333333"
-        android:textSize="12sp" />
-</RelativeLayout>
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:background="@android:color/transparent"
+            android:src="@mipmap/icon_home_add" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="所有订单"
+            android:textColor="#333333"
+            android:textSize="12sp" />
+    </LinearLayout>
+</FrameLayout>

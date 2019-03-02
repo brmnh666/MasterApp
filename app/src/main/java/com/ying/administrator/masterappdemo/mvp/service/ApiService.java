@@ -62,7 +62,8 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("Account/LoginOn")
     Observable<BaseResult<String>> LoginOn(@Field("userName") String userName,
-                                           @Field("passWord") String passWord);
+                                           @Field("passWord") String passWord,
+                                           @Field("RoleType") String RoleType);
 
 
     /**

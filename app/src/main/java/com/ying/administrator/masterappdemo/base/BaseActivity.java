@@ -74,6 +74,9 @@ public abstract class BaseActivity<P extends BasePresenter, M extends BaseModel>
     protected void onDestroy() {
         super.onDestroy();
       unbinder.unbind();
+      if (mPresenter!=null){
+          mPresenter.onDestroy();
+      }
      /*     this.imm = null;
         if (mImmersionBar != null)
             mImmersionBar.destroy();  //在BaseActivity里销毁*/
