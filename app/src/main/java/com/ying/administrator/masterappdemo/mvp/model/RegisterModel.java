@@ -2,6 +2,7 @@ package com.ying.administrator.masterappdemo.mvp.model;
 
 import com.huawei.hms.api.Api;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.mvp.contract.RegisterContract;
 import com.ying.administrator.masterappdemo.mvp.service.ApiRetrofit;
 
@@ -25,7 +26,7 @@ public class RegisterModel implements RegisterContract.Model {
     }
 
     @Override
-    public Observable<BaseResult<String>> Login(String userName, String password) {
+    public Observable<BaseResult<Data<String>>> Login(String userName, String password) {
         return ApiRetrofit.getDefault().LoginOn(userName,password,"7")
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
@@ -34,6 +35,13 @@ public class RegisterModel implements RegisterContract.Model {
     @Override
     public Observable<BaseResult<String>> ValidateUserName(String userName) {
         return ApiRetrofit.getDefault().ValidateUserName(userName)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+    /*向服务端推送token*/
+    @Override
+    public Observable<BaseResult<String>> AddAndUpdatePushAccount(String token, String type, String UserID) {
+        return ApiRetrofit.getDefault().AddAndUpdatePushAccount(token,type,UserID)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

@@ -2,6 +2,7 @@ package com.ying.administrator.masterappdemo.mvp.presenter;
 
 import com.ying.administrator.masterappdemo.base.BaseObserver;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.mvp.contract.RegisterContract;
 
 public class RegisterPresenter extends RegisterContract.Presenter {
@@ -27,9 +28,9 @@ public class RegisterPresenter extends RegisterContract.Presenter {
 
     @Override
     public void Login(String userName, String password) {
-        mModel.Login(userName,password).subscribe(new BaseObserver<String>() {
+        mModel.Login(userName,password).subscribe(new BaseObserver<Data<String>>() {
             @Override
-            protected void onHandleSuccess(BaseResult<String> value) {
+            protected void onHandleSuccess(BaseResult<Data<String>> value) {
                 mView.Login(value);
             }
         });
@@ -43,5 +44,16 @@ public class RegisterPresenter extends RegisterContract.Presenter {
                 mView.ValidateUserName(value);
             }
         });
+    }
+    @Override
+    public void AddAndUpdatePushAccount(String token, String type, String UserID) {
+
+        mModel.AddAndUpdatePushAccount(token,type,UserID)
+                .subscribe(new BaseObserver<String>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<String> value) {
+                        mView.AddAndUpdatePushAccount(value);
+                    }
+                });
     }
 }

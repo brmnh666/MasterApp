@@ -17,6 +17,7 @@ import com.tencent.android.tpush.XGPushConfig;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.mvp.contract.LoginContract;
 import com.ying.administrator.masterappdemo.mvp.model.LoginModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.LoginPresenter;
@@ -61,6 +62,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginModel> impl
     private String passWord;
     private String code;
     private boolean isLogin;
+    private SPUtils spUtils;
 
     @Override
     protected int setLayoutId() {
@@ -144,40 +146,22 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginModel> impl
 
 
     @Override
-    public void Login(BaseResult<String> baseResult) {
+    public void Login(BaseResult<Data<String>> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-                SPUtils spUtils = SPUtils.getInstance("token");
-                spUtils.put("adminToken", baseResult.getData());
-                spUtils.put("userName", userName);
-                spUtils.put("password", passWord);
-                spUtils.put("isLogin", true);
-                //  Log.d("loginlogin",baseResult.getData());
-//                GetUserInfo getUserInfo=new GetUserInfo(userName,baseResult.getData(),"","");
-//                Gson gson=new Gson();
-//                RequestBody json=RequestBody.create(okhttp3.MediaType.parse("application/json;charset=UTF-8"),gson.toJson(getUserInfo));
-//                mPresenter.GetUserInfo(json);
-//                mPresenter.GetUserInfo(userName);
-                //Log.d("TokenTokenToken",Config.TOKEN);
-
-
-//token在设备卸载重装的时候有可能会变
-
-                mPresenter.AddAndUpdatePushAccount(XGPushConfig.getToken(this), "7", userName);
-                startActivity(new Intent(mActivity, MainActivity.class));
-                finish();
-//                        Config.TOKEN= (String) data;
-                //SPUtils spUtils = SPUtils.getInstance("token");
-                //spUtils.put("Token", (String) data);
-//
-                // String token = spUtils.getString("Token");
-
-                // Log.d("Token",token);
-
-
-                break;
-            case 401:
-                ToastUtils.showShort(baseResult.getData());
+                Data<String> data=baseResult.getData();
+                if (data.isItem1()){
+                    spUtils = SPUtils.getInstance("token");
+                    spUtils.put("adminToken", data.getItem2());
+                    spUtils.put("userName", userName);
+                    spUtils.put("passWord", passWord);
+                    spUtils.put("isLogin", true);
+                    mPresenter.AddAndUpdatePushAccount(XGPushConfig.getToken(this),"7",userName);
+                    startActivity(new Intent(mActivity, MainActivity.class));
+                    finish();
+                }else{
+                    ToastUtils.showShort(data.getItem2());
+                }
                 break;
         }
     }

@@ -12,9 +12,11 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.tencent.android.tpush.XGPushConfig;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.mvp.contract.RegisterContract;
 import com.ying.administrator.masterappdemo.mvp.model.RegisterModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.RegisterPresenter;
@@ -46,7 +48,9 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter, RegisterMo
     @BindView(R.id.tv_can_not_receive)
     TextView mTvCanNotReceive;
     private String userName;
+    private String passWord="888888";
     private String code;
+    private SPUtils spUtils;
 
     @Override
     protected int setLayoutId() {
@@ -147,17 +151,22 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter, RegisterMo
     }
 
     @Override
-    public void Login(BaseResult<String> baseResult) {
-        switch (baseResult.getStatusCode()){
+    public void Login(BaseResult<Data<String>> baseResult) {
+        switch (baseResult.getStatusCode()) {
             case 200:
-                SPUtils spUtils=SPUtils.getInstance("token");
-                spUtils.put("adminToken",baseResult.getData());
-                spUtils.put("useName",userName);
-                startActivity(new Intent(mActivity,MainActivity.class));
-                finish();
-                break;
-            case 401:
-                ToastUtils.showShort(baseResult.getData());
+                Data<String> data=baseResult.getData();
+                if (data.isItem1()){
+                    spUtils = SPUtils.getInstance("token");
+                    spUtils.put("adminToken", data.getItem2());
+                    spUtils.put("userName", userName);
+                    spUtils.put("passWord", passWord);
+                    spUtils.put("isLogin", true);
+                    mPresenter.AddAndUpdatePushAccount(XGPushConfig.getToken(this),"7",userName);
+                    startActivity(new Intent(mActivity, MainActivity.class));
+                    finish();
+                }else{
+                    ToastUtils.showShort(data.getItem2());
+                }
                 break;
         }
     }
@@ -180,7 +189,17 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter, RegisterMo
                 break;
         }
     }
-
+    @Override
+    public void AddAndUpdatePushAccount(BaseResult<String> baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                MyUtils.e("AddAndUpdatePushAccount", baseResult.getData());
+                break;
+            case 401:
+                ToastUtils.showShort(baseResult.getData());
+                break;
+        }
+    }
     class TimeCount extends CountDownTimer{
         public TimeCount(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);

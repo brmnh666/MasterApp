@@ -14,6 +14,7 @@ import com.blankj.utilcode.util.SPUtils;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.mvp.contract.LoginContract;
 import com.ying.administrator.masterappdemo.mvp.model.LoginModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.LoginPresenter;
@@ -136,7 +137,7 @@ public class SplashActivity extends BaseActivity<LoginPresenter, LoginModel> imp
     }
 
     @Override
-    public void Login(BaseResult<String> baseResult) {
+    public void Login(BaseResult<Data<String>> baseResult) {
 
     }
 

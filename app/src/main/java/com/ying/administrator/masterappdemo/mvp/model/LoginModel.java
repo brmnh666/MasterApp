@@ -1,6 +1,7 @@
 package com.ying.administrator.masterappdemo.mvp.model;
 
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.mvp.contract.LoginContract;
 import com.ying.administrator.masterappdemo.mvp.service.ApiRetrofit;
 
@@ -12,7 +13,7 @@ import okhttp3.RequestBody;
 
 public class LoginModel implements LoginContract.Model {
     @Override
-    public Observable<BaseResult<String>> Login(String userName, String passWord) {
+    public Observable<BaseResult<Data<String>>> Login(String userName, String passWord) {
         return ApiRetrofit.getDefault().LoginOn(userName,passWord,"7")
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());

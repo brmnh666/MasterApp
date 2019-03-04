@@ -3,6 +3,7 @@ package com.ying.administrator.masterappdemo.mvp.presenter;
 
 import com.ying.administrator.masterappdemo.base.BaseObserver;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.mvp.contract.LoginContract;
 
 import okhttp3.RequestBody;
@@ -11,9 +12,9 @@ public class LoginPresenter extends LoginContract.Presenter {
     @Override
     public void Login(String userName, String passWord) {
         mModel.Login(userName, passWord)
-                .subscribe(new BaseObserver<String>() {
+                .subscribe(new BaseObserver<Data<String>>() {
                     @Override
-                    protected void onHandleSuccess(BaseResult<String> value) {
+                    protected void onHandleSuccess(BaseResult<Data<String>> value) {
                         mView.Login(value);
                     }
                 });
