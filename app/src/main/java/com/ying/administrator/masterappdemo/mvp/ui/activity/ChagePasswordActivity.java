@@ -107,7 +107,7 @@ public class ChagePasswordActivity extends BaseActivity<InfoManagePresenter, Inf
                   }else {
 
                      // Log.d("用户的密码为11",userInfoDean.getPassWord());
-                     if (!old_password.equals(userInfoDean.getPayPassWord())){
+                     if (!old_password.equals(userInfoDean.getPassWord())){
                          Toast.makeText(ChagePasswordActivity.this,"请输入正确的密码",Toast.LENGTH_LONG).show();
 
                      }else {
