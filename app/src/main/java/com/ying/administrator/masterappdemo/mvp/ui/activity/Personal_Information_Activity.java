@@ -310,7 +310,7 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
             case 200:
                 if (!baseResult.getData().isItem1()){
 
-                    Toast.makeText(Personal_Information_Activity.this,"图片上传失败成功",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Personal_Information_Activity.this,"图片上传失败",Toast.LENGTH_SHORT).show();
                 }else {
 
                     Toast.makeText(Personal_Information_Activity.this,"图片上传成功",Toast.LENGTH_SHORT).show();

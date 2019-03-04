@@ -40,7 +40,7 @@ public class RegisterModel implements RegisterContract.Model {
     }
     /*向服务端推送token*/
     @Override
-    public Observable<BaseResult<String>> AddAndUpdatePushAccount(String token, String type, String UserID) {
+    public Observable<BaseResult<Data<String>>> AddAndUpdatePushAccount(String token, String type, String UserID) {
         return ApiRetrofit.getDefault().AddAndUpdatePushAccount(token,type,UserID)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());

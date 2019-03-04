@@ -17,7 +17,7 @@ public interface LoginContract {
         Observable<BaseResult<Data<String>>> Login(String userName, String passWord);
         Observable<BaseResult<String>> GetUserInfo(RequestBody json);
         Observable<BaseResult<String>> GetUserInfo(String userName);
-        Observable<BaseResult<String>> AddAndUpdatePushAccount(String token,String type,String UserID);
+        Observable<BaseResult<Data<String>>> AddAndUpdatePushAccount(String token,String type,String UserID);
 
 
     }
@@ -25,7 +25,7 @@ public interface LoginContract {
     interface View extends BaseView {
         void Login(BaseResult<Data<String>> baseResult);
         void GetUserInfo(BaseResult<String> baseResult);
-        void AddAndUpdatePushAccount(BaseResult<String> baseResult);
+        void AddAndUpdatePushAccount(BaseResult<Data<String>> baseResult);
     }
 
     abstract class Presenter extends BasePresenter<View,Model> {

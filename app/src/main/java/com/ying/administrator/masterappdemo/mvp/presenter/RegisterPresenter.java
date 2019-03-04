@@ -49,9 +49,9 @@ public class RegisterPresenter extends RegisterContract.Presenter {
     public void AddAndUpdatePushAccount(String token, String type, String UserID) {
 
         mModel.AddAndUpdatePushAccount(token,type,UserID)
-                .subscribe(new BaseObserver<String>() {
+                .subscribe(new BaseObserver<Data<String>>() {
                     @Override
-                    protected void onHandleSuccess(BaseResult<String> value) {
+                    protected void onHandleSuccess(BaseResult<Data<String>> value) {
                         mView.AddAndUpdatePushAccount(value);
                     }
                 });

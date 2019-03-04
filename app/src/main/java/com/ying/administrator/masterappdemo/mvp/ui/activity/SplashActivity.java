@@ -147,7 +147,7 @@ public class SplashActivity extends BaseActivity<LoginPresenter, LoginModel> imp
     }
 
     @Override
-    public void AddAndUpdatePushAccount(BaseResult<String> baseResult) {
+    public void AddAndUpdatePushAccount(BaseResult<Data<String>> baseResult) {
 
     }
 

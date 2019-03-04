@@ -15,7 +15,7 @@ public interface RegisterContract {
         Observable<BaseResult<String>> GetCode(String userName);
         Observable<BaseResult<Data<String>>> Login(String userName,String password);
         Observable<BaseResult<String>> ValidateUserName(String userName);
-        Observable<BaseResult<String>> AddAndUpdatePushAccount(String token,String type,String UserID);
+        Observable<BaseResult<Data<String>>> AddAndUpdatePushAccount(String token,String type,String UserID);
 
     }
 
@@ -24,7 +24,7 @@ public interface RegisterContract {
         void GetCode(BaseResult<String> baseResult);
         void Login(BaseResult<Data<String>> baseResult);
         void ValidateUserName(BaseResult<String> baseResult);
-        void AddAndUpdatePushAccount(BaseResult<String> baseResult);
+        void AddAndUpdatePushAccount(BaseResult<Data<String>> baseResult);
 
     }
 

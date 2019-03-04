@@ -95,7 +95,7 @@ public interface ApiService {
      * */
     @FormUrlEncoded
     @POST("Message/AddAndUpdatePushAccount")
-    Observable<BaseResult<String>> AddAndUpdatePushAccount(@Field("token") String token,
+    Observable<BaseResult<Data<String>>> AddAndUpdatePushAccount(@Field("token") String token,
                                                            @Field("type") String type,
                                                            @Field("UserID") String UserID);
 /*
