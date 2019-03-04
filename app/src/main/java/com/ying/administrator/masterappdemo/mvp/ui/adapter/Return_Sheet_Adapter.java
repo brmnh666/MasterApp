@@ -18,6 +18,6 @@ public class Return_Sheet_Adapter extends BaseQuickAdapter<GrabSheet_Entity,Base
     protected void convert(BaseViewHolder baseViewHolder, GrabSheet_Entity item) {
            baseViewHolder.setText(R.id.tv_address_returnedparts,item.getAddress());
         baseViewHolder.addOnClickListener(R.id.tv_returnedparts_apply_parts);
-        baseViewHolder.addOnClickListener(R.id.tv_returnedparts_finish);
+        baseViewHolder.addOnClickListener(R.id.tv_continue_service);
     }
 }

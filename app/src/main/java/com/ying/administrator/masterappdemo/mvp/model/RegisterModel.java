@@ -20,7 +20,7 @@ public class RegisterModel implements RegisterContract.Model {
 
     @Override
     public Observable<BaseResult<String>> GetCode(String userName) {
-        return ApiRetrofit.getDefault().GetCode(userName,"Reg","Master")
+        return ApiRetrofit.getDefault().GetCode(userName,"Reg","worker")
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

@@ -5,7 +5,8 @@
     android:layout_marginLeft="10dp"
     android:layout_marginTop="10dp"
     android:layout_marginRight="10dp"
-    android:background="@drawable/rr_shape">
+    android:background="@drawable/rr_shape"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
         android:id="@+id/tv_returnedparts"
@@ -36,8 +37,12 @@
         android:id="@+id/tv_returnedparts_status_repair"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/tv_returnedparts_status_install"
+        android:layout_alignRight="@+id/tv_returnedparts_status_install"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="17dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginRight="0dp"
         android:layout_toRightOf="@+id/tv_returnedparts"
         android:background="@color/color_custom_04"
         android:paddingLeft="5dp"
@@ -118,10 +123,65 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_address_returnedparts"
         android:layout_marginLeft="13dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="11dp"
         android:text="提示:服务过程中需要申请配件请点击申请配件"
-        android:textColor="@color/color_custom_04"
+        android:textColor="#FF4444"
         android:textSize="11sp" />
+
+    <LinearLayout
+        android:id="@+id/ll_pending_appointment_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_address_returnedparts"
+        android:layout_marginLeft="13dp"
+        android:layout_marginTop="11dp"
+        android:paddingRight="15dp"
+        android:visibility="gone">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="提示:"
+            android:textSize="12sp"
+            android:textColor="#FF4444"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="工单将于"
+            android:textSize="12sp" />
+
+        <cn.iwgang.countdownview.CountdownView
+            android:id="@+id/countdownview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            app:isHideTimeBackground="false"
+            app:isShowDay="true"
+            app:isShowHour="false"
+            app:isShowMillisecond="false"
+            app:isShowMinute="true"
+            app:isShowSecond="true"
+            app:isShowTimeBgDivisionLine="false"
+            app:isTimeTextBold="true"
+            app:suffix="："
+            app:suffixDay="天"
+            app:suffixGravity="center"
+            app:suffixMinute="分"
+            app:suffixSecond="秒"
+            app:suffixTextColor="#FF5656"
+            app:suffixTextSize="11sp"
+            app:timeBgColor="#ffffff"
+            app:timeBgRadius="3dp"
+            app:timeTextColor="#FF5656"
+            app:timeTextSize="11sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="自动完结"
+            android:textSize="12sp" />
+    </LinearLayout>
     <!--   <TextView
            android:id="@+id/tv_pending_receipt_cancel"
            android:layout_width="wrap_content"
@@ -183,46 +243,48 @@
           android:textSize="16sp"
                />-->
 
-    <TextView
-        android:id="@+id/tv_returnedparts_apply_parts"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_below="@+id/view_point"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/tv_recevied"
-        android:padding="10dp"
-        android:text="申请配件"
-        android:textSize="16sp" />
+        android:gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingRight="@dimen/dp_10">
+        <TextView
+            android:id="@+id/tv_returnedparts_apply_parts"
+            android:layout_width="87dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_10"
+            android:background="@drawable/tv_recevied"
+            android:padding="10dp"
+            android:text="申请配件"
+            android:textSize="16sp"
+            android:gravity="center" />
+        <TextView
+            android:id="@+id/tv_reminder"
+            android:layout_width="87dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_10"
+            android:background="@drawable/tv_recevied"
+            android:padding="10dp"
+            android:text="催     件"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:visibility="gone"/>
 
-    <TextView
-        android:id="@+id/tv_returnedparts_finish"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/view_point"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="70dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/tv_recevied"
-        android:padding="10dp"
-        android:text="完成工单"
-        android:textSize="16sp" />
+        <TextView
+            android:id="@+id/tv_continue_service"
+            android:layout_width="87dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_10"
+            android:background="@drawable/tv_recevied"
+            android:padding="10dp"
+            android:text="继续服务"
+            android:textSize="16sp"
+            android:gravity="center"/>
 
-    <TextView
-        android:id="@+id/tv_cancel_work_order"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/view_point"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/tv_recevied"
-        android:padding="10dp"
-        android:text="取消工单"
-        android:textSize="16sp" />
+    </LinearLayout>
 
 
 </RelativeLayout>

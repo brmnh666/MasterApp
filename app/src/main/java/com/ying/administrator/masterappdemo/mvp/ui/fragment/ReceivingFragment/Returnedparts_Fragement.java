@@ -55,7 +55,7 @@ public class Returnedparts_Fragement extends BaseFragment implements DefineView 
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 switch (view.getId()){
-                    case R.id.tv_returnedparts_finish:
+                    case R.id.tv_continue_service:
                         startActivity(new Intent(getActivity(), CompleteWorkOrderActivity.class));
                         break;
                     case R.id.tv_returnedparts_apply_parts:
