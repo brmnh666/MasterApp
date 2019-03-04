@@ -20,11 +20,19 @@ import android.widget.TextView;
 import com.alipay.sdk.app.PayTask;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.tencent.mm.opensdk.modelbase.BaseResp;
+import com.tencent.mm.opensdk.modelpay.PayReq;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.xiaomi.mipush.sdk.Constants;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.entity.FaceValue;
 import com.ying.administrator.masterappdemo.entity.PayResult;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.FaceValueAdapter;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +72,7 @@ public class RechargeActivity extends BaseActivity implements View.OnClickListen
     private FaceValueAdapter faceValueAdapter;
     private String[] faceValues = new String[]{"100", "300", "500", "1000", "2000", "3000"};
     private String value;
+    private IWXAPI api;
 
     @Override
     protected int setLayoutId() {
@@ -81,6 +90,8 @@ public class RechargeActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     protected void initData() {
+        api = WXAPIFactory.createWXAPI(this, Constants.APP_ID);
+
         mIvAplipay.setSelected(true);//默认选中支付宝
         mTvTitle.setVisibility(View.VISIBLE);
         mTvTitle.setText("充值");
@@ -219,7 +230,24 @@ public class RechargeActivity extends BaseActivity implements View.OnClickListen
         Thread payThread = new Thread(payRunnable);
         payThread.start();
     }
-
+    /**
+     * 微信支付
+     */
+    public void WXpay(){
+        PayReq req = new PayReq();
+//        req.appId			= json.getString("appid");
+//        req.partnerId		= json.getString("partnerid");
+//        req.prepayId		= json.getString("prepayid");
+//        req.nonceStr		= json.getString("noncestr");
+//        req.timeStamp		= json.getString("timestamp");
+//        req.packageValue	= json.getString("package");
+//        req.sign			= json.getString("sign");
+        req.extData			= "app data"; // optional
+        api.sendReq(req);
+    }
+    /**
+     * 支付宝支付结果回调
+     */
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         @SuppressWarnings("unused")
@@ -247,14 +275,26 @@ public class RechargeActivity extends BaseActivity implements View.OnClickListen
                     break;
             }
         }
-
-        ;
     };
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
+    /**
+     * 微信支付结果
+     * @param resp
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(BaseResp resp) {
+        switch (resp.errCode){
+            case 0:
+                ToastUtils.showShort("支付成功");
+                break;
+            case -1:
+                ToastUtils.showShort("支付出错");
+                break;
+            case -2:
+                ToastUtils.showShort("支付取消");
+                break;
+        }
     }
+
+
 }
