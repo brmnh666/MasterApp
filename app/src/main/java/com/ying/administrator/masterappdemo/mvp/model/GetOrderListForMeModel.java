@@ -18,8 +18,8 @@ import io.reactivex.schedulers.Schedulers;
 public class GetOrderListForMeModel implements GetOrderListForMeContract.Model {
 
     @Override
-    public Observable<BaseResult<WorkOrder>> GetOrderInfoListForMe(String state, String page, String limit, String SendUser) {
-        return ApiRetrofit.getDefault().GetOrderInfoListForMe(state,page,limit,SendUser)
+    public Observable<BaseResult<WorkOrder>> GetOrderInfoListForMe(String UserID, String State, String page, String limit) {
+        return ApiRetrofit.getDefault().GetOrderInfoListForMe(UserID,State,page,limit)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }
@@ -49,6 +49,13 @@ public class GetOrderListForMeModel implements GetOrderListForMeContract.Model {
     @Override
     public Observable<BaseResult<Data>> ChangeSendOrder(String OrderID, String UserID) {
         return ApiRetrofit.getDefault().ChangeSendOrder(OrderID,UserID)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<BaseResult<Data>> UpdateSendOrderState(String OrderID, String State) {
+        return ApiRetrofit.getDefault().UpdateSendOrderState(OrderID,State)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

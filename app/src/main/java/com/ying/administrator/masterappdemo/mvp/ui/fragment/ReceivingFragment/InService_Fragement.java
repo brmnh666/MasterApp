@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,9 +66,10 @@ import java.util.List;
         recyclerView=view.findViewById(R.id.recyclerview_order_receiving);
         mRefreshLayout=view.findViewById(R.id.refreshLayout);
         in_service_adapter=new In_Service_Adapter(R.layout.item_in_service,list);
+        in_service_adapter.setEmptyView(getEmptyView());
         recyclerView.setAdapter(in_service_adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mPresenter.GetOrderInfoListForMe("4",Integer.toString(pageIndex),"4",userID);
+        mPresenter.GetOrderInfoListForMe(userID,"2",Integer.toString(pageIndex),"4");
     }
     private void initListener() {
 
@@ -77,19 +79,20 @@ import java.util.List;
             public void onRefresh(RefreshLayout refreshlayout) {
                 pageIndex=1;
                 list.clear();
-                mPresenter.GetOrderInfoListForMe("4", Integer.toString(pageIndex), "4",userID);
+                mPresenter.GetOrderInfoListForMe(userID,"2",Integer.toString(pageIndex),"4");
                 in_service_adapter.notifyDataSetChanged();
                 refreshlayout.finishRefresh();
             }
         });
 
-
+        //没满屏时禁止上拉
+        mRefreshLayout.setEnableLoadmoreWhenContentNotFull(false);
         //上拉加载更多
         mRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 pageIndex++; //页数加1
-                mPresenter.GetOrderInfoListForMe("4", Integer.toString(pageIndex), "4",userID);
+                mPresenter.GetOrderInfoListForMe(userID,"2",Integer.toString(pageIndex),"4");
                 in_service_adapter.notifyDataSetChanged();
                 refreshlayout.finishLoadmore();
             }
@@ -122,9 +125,15 @@ import java.util.List;
     public void GetOrderInfoListForMe(BaseResult<WorkOrder> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-                workOrder = baseResult.getData();
-                list.addAll(workOrder.getData());
-                in_service_adapter.setNewData(list); //?
+                if (baseResult.getData().getData()==null){
+                    Log.d("==>","暂无服务工单");
+                }else {
+                    workOrder = baseResult.getData();
+                    list.clear();
+                    list.addAll(workOrder.getData());
+                    in_service_adapter.setNewData(list); //?
+                }
+
                 break;
             case 401:
                 ToastUtils.showShort(baseResult.getInfo());
@@ -149,6 +158,11 @@ import java.util.List;
 
     @Override
     public void ChangeSendOrder(BaseResult<Data> baseResult) {
+
+    }
+
+    @Override
+    public void UpdateSendOrderState(BaseResult<Data> baseResult) {
 
     }
 

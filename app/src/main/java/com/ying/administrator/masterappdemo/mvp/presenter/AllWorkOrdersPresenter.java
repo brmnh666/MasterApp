@@ -11,6 +11,18 @@ import com.ying.administrator.masterappdemo.mvp.contract.AllWorkOrdersContract;
 public class AllWorkOrdersPresenter extends AllWorkOrdersContract.Presenter {
 
     @Override
+    public void WorkerGetOrderList(String UserID, String State, String page, String limit) {
+        mModel.WorkerGetOrderList(UserID,State, page, limit)
+                .subscribe(new BaseObserver<WorkOrder>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<WorkOrder> value) {
+                        mView.WorkerGetOrderList(value);
+                    }
+                });
+
+    }
+
+  /*  @Override
     public void GetOrderInfoList(String SendUser,String state, String page, String limit) {
         mModel.GetOrderInfoList(SendUser,state, page, limit)
                 .subscribe(new BaseObserver<WorkOrder>() {
@@ -20,7 +32,7 @@ public class AllWorkOrdersPresenter extends AllWorkOrdersContract.Presenter {
                     }
                 });
     }
-
+*/
     @Override
     public void AddGrabsheetapply(String OrderID, String UserID) {
         mModel.AddGrabsheetapply(OrderID,UserID)

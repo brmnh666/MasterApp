@@ -294,7 +294,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
             public void onRefresh(RefreshLayout refreshlayout) {
                 pageIndex = 1;
                 list.clear();
-                mPresenter.GetOrderInfoList(userID,"1", Integer.toString(pageIndex), "100");
+                mPresenter.WorkerGetOrderList(userID,"0", Integer.toString(pageIndex), "100");
                 grabsheetAdapter.notifyDataSetChanged();
                 refreshlayout.finishRefresh();
                 refreshlayout.setLoadmoreFinished(false);
@@ -307,29 +307,45 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
             }
         });
 
-        //上拉加载更多
-        mRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
 
-            @Override
-            public void onLoadmore(RefreshLayout refreshlayout) {
-                pageIndex++; //页数加1
-                Log.d("当前的单数", String.valueOf(list.size()));
-                mPresenter.GetOrderInfoList(userID,"1", Integer.toString(pageIndex), "4");
-                grabsheetAdapter.notifyDataSetChanged();
-                refreshlayout.finishLoadmore();
-            }
-        });
+
+           //没满屏时禁止上拉
+            mRefreshLayout.setEnableLoadmoreWhenContentNotFull(false);
+
+            //上拉加载更多
+            mRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
+
+                @Override
+                public void onLoadmore(RefreshLayout refreshlayout) {
+                    pageIndex++; //页数加1
+                    Log.d("当前的单数", String.valueOf(list.size()));
+                    mPresenter.WorkerGetOrderList(userID,"0", Integer.toString(pageIndex), "4");
+                    grabsheetAdapter.notifyDataSetChanged();
+                    refreshlayout.finishLoadmore();
+                }
+            });
+
+
+
     }
 
+
+
+      /*获取订单列表新接口*/
     @Override
-    public void GetOrderInfoList(BaseResult<WorkOrder> baseResult) {
+    public void WorkerGetOrderList(BaseResult<WorkOrder> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-                workOrder = baseResult.getData();
-                list.addAll(workOrder.getData());
-                grabsheetAdapter.setNewData(list);
-                if (pageIndex!=1&&workOrder.getData().size()==0){
-                    mRefreshLayout.finishLoadmoreWithNoMoreData();
+                if (baseResult.getData().getData()==null){
+            // Toast.makeText(getActivity(),"咱无新工单",Toast.LENGTH_SHORT).show();
+                    Log.d("===>","暂无新工单");
+                }else {
+                    workOrder = baseResult.getData();
+                    list.addAll(workOrder.getData());
+                    grabsheetAdapter.setNewData(list);
+                    if (pageIndex!=1&&workOrder.getData().size()==0){
+                        mRefreshLayout.finishLoadmoreWithNoMoreData();
+                    }
                 }
 
                 break;
@@ -337,8 +353,9 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 ToastUtils.showShort(baseResult.getInfo());
                 break;
         }
-
     }
+
+
 
     @Override
     public void AddGrabsheetapply(BaseResult<Data> baseResult) {
@@ -750,7 +767,8 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
         grabsheetAdapter.setEmptyView(getEmptyView());
         mRecyclerviewOrderReceiving.setAdapter(grabsheetAdapter);
 
-        mPresenter.GetOrderInfoList(userID,"1",Integer.toString(pageIndex), "100");
+
+        mPresenter.WorkerGetOrderList(userID,"0",Integer.toString(pageIndex), "100");
       /* if (list.isEmpty()){ //没有数据显示空
            contentLoadingEmpty();
 

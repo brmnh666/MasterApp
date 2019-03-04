@@ -15,7 +15,11 @@ import io.reactivex.Observable;
 /*home页面*/
 public interface AllWorkOrdersContract {
     interface Model extends BaseModel {
-        Observable<BaseResult<WorkOrder>> GetOrderInfoList(String SendUser,String state, String page, String limit);
+      //获取列表新接口
+       Observable<BaseResult<WorkOrder>> WorkerGetOrderList(String UserID,String State,String page,String limit);
+
+       //获取列表旧接口
+       // Observable<BaseResult<WorkOrder>> GetOrderInfoList(String SendUser,String state, String page, String limit);
        //抢单操作
         Observable<BaseResult<Data>> AddGrabsheetapply(String OrderID, String UserID);
         //根据用户名获取已抢订单
@@ -29,7 +33,10 @@ public interface AllWorkOrdersContract {
     }
 
     interface View extends BaseView {
-        void GetOrderInfoList(BaseResult<WorkOrder> baseResult);
+        //获取列表新接口
+        void WorkerGetOrderList(BaseResult<WorkOrder>baseResult);
+
+       // void GetOrderInfoList(BaseResult<WorkOrder> baseResult);
         //抢单操作
         void AddGrabsheetapply(BaseResult<Data> baseResult);
         //根据用户名获取已抢订单
@@ -40,7 +47,10 @@ public interface AllWorkOrdersContract {
     }
 
     abstract class Presenter extends BasePresenter<View,Model> {
-        public abstract void GetOrderInfoList(String SendUser,String state, String page,String limit);
+        //获取列表新接口
+        public abstract void WorkerGetOrderList(String UserID,String State,String page,String limit);
+
+       // public abstract void GetOrderInfoList(String SendUser,String state, String page,String limit);
         //抢单操作
         public abstract void AddGrabsheetapply(String OrderID,String UserID);
         //根据用户名获取已抢订单

@@ -98,18 +98,42 @@ public interface ApiService {
     Observable<BaseResult<String>> AddAndUpdatePushAccount(@Field("token") String token,
                                                            @Field("type") String type,
                                                            @Field("UserID") String UserID);
+/*
 
-    /**
+    */
+/**
      * 获取工单列表
      * 废除-1，待审核0，派单中1，服务中2，已完成3
      * 获取首页 的单子
-     */
+     *//*
+
     @FormUrlEncoded
     @POST("Order/GetOrderInfoList")
     Observable<BaseResult<WorkOrder>> GetOrderInfoList(@Field("SendUser") String SendUser,
                                                        @Field("state") String state,
                                                        @Field("page") String page,
                                                        @Field("limit") String limit);
+*/
+
+
+    /*
+    * 师傅端获取工单列表新接口
+    * */
+   @FormUrlEncoded
+   @POST("Order/WorkerGetOrderList")
+   Observable<BaseResult<WorkOrder>> WorkerGetOrderList(@Field("UserID") String UserID,
+                                                        @Field("State") String State,
+                                                        @Field("page") String page,
+                                                        @Field("limit") String limit);
+
+
+
+    @FormUrlEncoded
+    @POST("Order/WorkerGetOrderList")
+    Observable<BaseResult<WorkOrder>> GetOrderInfoListForMe(@Field("UserID") String UserID,
+                                                            @Field("State") String State,
+                                                            @Field("page") String page,
+                                                            @Field("limit") String limit);
 
 
     /*
@@ -139,6 +163,22 @@ public interface ApiService {
     Observable<BaseResult<Data>> ChangeSendOrder(@Field("OrderID") String OrderID,
                                           @Field("UserID") String UserID);
 
+
+
+    /*
+     *
+    取消订单
+    *
+    * */
+
+    @FormUrlEncoded
+    @POST("Order/UpdateSendOrderState")
+    Observable<BaseResult<Data>> UpdateSendOrderState(@Field("OrderID") String OrderID,
+                                                      @Field("State") String State);
+
+
+
+
   /*  *//*获取派单列表*//*
     @FormUrlEncoded
     @POST("Order/GetSendOrderList")
@@ -149,12 +189,17 @@ public interface ApiService {
     /**
      * 获取其他状态的 获取已接的订单
      * **/
-    @FormUrlEncoded
+  /*  @FormUrlEncoded
     @POST("Order/GetOrderInfoList")
     Observable<BaseResult<WorkOrder>> GetOrderInfoListForMe(@Field("state") String state,
                                                             @Field("page") String page,
                                                             @Field("limit") String limit,
-                                                            @Field("SendUser") String SendUser);
+                                                            @Field("SendUser") String SendUser);*/
+
+
+
+
+
     /**
      * 提交师傅预约失败的原因
      * **/

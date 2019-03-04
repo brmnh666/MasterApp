@@ -15,11 +15,18 @@ import io.reactivex.schedulers.Schedulers;
 public class AllWorkOrdersModel implements AllWorkOrdersContract.Model {
 
     @Override
+    public Observable<BaseResult<WorkOrder>> WorkerGetOrderList(String UserID, String State, String page, String limit) {
+        return ApiRetrofit.getDefault().WorkerGetOrderList(UserID,State, page, limit)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
+   /* @Override
     public Observable<BaseResult<WorkOrder>> GetOrderInfoList(String SendUser,String state, String page, String limit) {
         return ApiRetrofit.getDefault().GetOrderInfoList(SendUser,state, page, limit)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
-    }
+    }*/
     /*抢单操作*/
     @Override
     public Observable<BaseResult<Data>> AddGrabsheetapply(String OrderID, String UserID) {

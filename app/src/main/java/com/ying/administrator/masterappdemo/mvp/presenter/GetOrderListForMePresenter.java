@@ -16,8 +16,8 @@ public class GetOrderListForMePresenter extends GetOrderListForMeContract.Presen
 
 
     @Override
-    public void GetOrderInfoListForMe(String state, String page, String limit, String SendUser) {
-        mModel.GetOrderInfoListForMe(state,page,limit,SendUser).subscribe(new BaseObserver<WorkOrder>() {
+    public void GetOrderInfoListForMe(String UserID, String State, String page, String limit) {
+        mModel.GetOrderInfoListForMe(UserID,State,page,limit).subscribe(new BaseObserver<WorkOrder>() {
             @Override
             protected void onHandleSuccess(BaseResult<WorkOrder> value) {
                 mView.GetOrderInfoListForMe(value);
@@ -65,6 +65,17 @@ public class GetOrderListForMePresenter extends GetOrderListForMeContract.Presen
                     @Override
                     protected void onHandleSuccess(BaseResult<Data> value) {
                         mView.ChangeSendOrder(value);
+                    }
+                });
+    }
+
+    @Override
+    public void UpdateSendOrderState(String OrderID, String State) {
+        mModel.UpdateSendOrderState(OrderID,State)
+                .subscribe(new BaseObserver<Data>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<Data> value) {
+                        mView.UpdateSendOrderState(value);
                     }
                 });
     }
