@@ -26,6 +26,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -134,9 +135,9 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
 
     /*  配件*/
-    private RadioGroup rg_order_details_add_accessories; //添加配件
+/*    private RadioGroup rg_order_details_add_accessories; //添加配件
     private RadioButton rb_order_details_manufacturer; //厂家寄件
-    private RadioButton rb_order_details_oneself; //自购件
+    private RadioButton rb_order_details_oneself; //自购件*/
     private TextView tv_order_details_add_accessories; //添加配件
     private List<Accessory> mList;   //存放返回的list
     private Map<Integer, FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> map; //用于存放dialog里选择的配件
@@ -231,9 +232,9 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
         tv_order_details_product_name = findViewById(R.id.tv_order_details_product_name);//产品名称
         tv_order_details_status = findViewById(R.id.tv_order_details_status);//安装维修状态
         tv_order_details_adress = findViewById(R.id.tv_order_details_adress); //地址
-        rg_order_details_add_accessories = findViewById(R.id.rg_order_details_add_accessories);//添加配件
+       /* rg_order_details_add_accessories = findViewById(R.id.rg_order_details_add_accessories);//添加配件
         rb_order_details_manufacturer = findViewById(R.id.rb_order_details_manufacturer);
-        rb_order_details_oneself = findViewById(R.id.rb_order_details_oneself);
+        rb_order_details_oneself = findViewById(R.id.rb_order_details_oneself);*/
         tv_order_details_add_accessories = findViewById(R.id.tv_order_details_add_accessories);//添加配件
         recyclerView_Pre_add_accessories = findViewById(R.id.recyclerView_add_accessories); //预接单recyclerview
         tv_order_detail_add_service = findViewById(R.id.tv_order_detail_add_service);
@@ -269,8 +270,9 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
         mIvItem2.setOnClickListener(this);
         mIvItem3.setOnClickListener(this);
 
+
         /*添加配件*/
-        rg_order_details_add_accessories.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+      /*  rg_order_details_add_accessories.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
@@ -280,12 +282,16 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
                     case R.id.rb_order_details_oneself: //自购件申请
 
+
                         break;
 
                 }
 
             }
         });
+*/
+
+
 
 
 
@@ -574,7 +580,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
                                         Log.d("map里面的值", String.valueOf(map.size()));
                                         tv_total_price.setText("服务金额:¥" + gettotalPrice(fAcList, fList_service));
-
+                                        vibrator.vibrate(50);
                                         break;
                                 }
                             }
@@ -704,7 +710,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                                         }
 
                                         tv_total_price.setText("服务金额:¥" + gettotalPrice(fAcList, fList_service));
-
+                                        vibrator.vibrate(50);
 
                                         break;
 

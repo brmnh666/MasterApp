@@ -420,10 +420,9 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                     Log.d("===>","暂无预约工单");
                 }else {
                     workOrder = baseResult.getData();
-
                     list.addAll(workOrder.getData());
-                   // pending_appointment_adapter.setNewData(list); //?
-                pending_appointment_adapter.notifyDataSetChanged();
+                    pending_appointment_adapter.setNewData(list);
+                   //  pending_appointment_adapter.notifyDataSetChanged();
 
                 }
 

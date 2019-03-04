@@ -129,9 +129,9 @@ import java.util.List;
                     Log.d("==>","暂无服务工单");
                 }else {
                     workOrder = baseResult.getData();
-                    list.clear();
+                    //list.clear();
                     list.addAll(workOrder.getData());
-                    in_service_adapter.setNewData(list); //?
+                    in_service_adapter.setNewData(list);
                 }
 
                 break;
