@@ -536,6 +536,9 @@ switch (baseResult.getStatusCode()){
     }
 
 
-
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        mRefreshLayout.autoRefresh();
+    }
 }

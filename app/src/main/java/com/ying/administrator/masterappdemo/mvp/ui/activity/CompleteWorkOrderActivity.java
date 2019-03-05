@@ -180,7 +180,6 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                     viewExampleDialog.setNoOnclickListener("取消", new ViewExampleDialog.onNoOnclickListener() {
                         @Override
                         public void onNoClick() {
-                            // Toast.makeText(getContext(), "点击了--关闭-按钮", Toast.LENGTH_LONG).show();
                             viewExampleDialog.dismiss();
                         }
                     });

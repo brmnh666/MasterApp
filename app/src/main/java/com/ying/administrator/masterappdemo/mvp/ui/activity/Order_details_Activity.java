@@ -66,6 +66,7 @@ import com.ying.administrator.masterappdemo.mvp.ui.adapter.Pre_order_Add_Service
 import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.widget.CustomDialog_Add_Accessory;
 import com.ying.administrator.masterappdemo.widget.CustomDialog_Add_Service;
+import com.ying.administrator.masterappdemo.widget.ViewExampleDialog;
 import com.ying.administrator.masterappdemo.widget.adderView;
 
 import org.feezu.liuli.timeselector.TimeSelector;
@@ -88,16 +89,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
     @BindView(R.id.tv_num)
     TextView mTvNum;
-    @BindView(R.id.iv_item1)
-    ImageView mIvItem1;
-    @BindView(R.id.iv_item2)
-    ImageView mIvItem2;
-    @BindView(R.id.iv_item3)
-    ImageView mIvItem3;
-    @BindView(R.id.iv_map1)
-    ImageView mIvMap1;
-    @BindView(R.id.iv_map2)
-    ImageView mIvMap2;
+
     @BindView(R.id.ll_return_information)
     LinearLayout mll_return_information;
     @BindView(R.id.ll_service_process)
@@ -107,33 +99,58 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     ImageView iv_manufacturers;
     @BindView(R.id.iv_selfbuying) //自购件
     ImageView iv_selfbuying;
-    @BindView(R.id.tv_manufacturers)
+    @BindView(R.id.tv_manufacturers)//厂家寄件申请
     TextView tv_manufacturers;
-    @BindView(R.id.tv_selfbuying)
+    @BindView(R.id.tv_selfbuying)//自购件
     TextView tv_selfbuying;
+     /*申请远程费*/
+    @BindView(R.id.tv_remote_km) //超过多少千米显示
+    TextView tv_remote_km;
+    @BindView(R.id.et_order_beyond_km)//超出多少千米 输入
+    EditText et_order_beyond_km;
+    @BindView(R.id.iv_map1)
+    ImageView mIvMap1;
+    @BindView(R.id.iv_map2)
+    ImageView mIvMap2;
+    /*申请远程费*/
 
 
-
-    private String orderID;//工单号
-    private TextView tv_actionbar_title; //title标题
     private RadioGroup rg_order_details_for_remote_fee;
-
     private WorkOrder.DataBean data = new WorkOrder.DataBean();
-    private LinearLayout ll_Out_of_service_tv;
-    private LinearLayout ll_Out_of_service_img;
-    private LinearLayout ll_return;
-    private TextView tv_detail_submit; //提交
+    @BindView(R.id.tv_actionbar_title)
+    TextView tv_actionbar_title;
+    @BindView(R.id.ll_Out_of_service_tv)
+    LinearLayout ll_Out_of_service_tv;
+    @BindView(R.id.ll_Out_of_service_img)
+    LinearLayout ll_Out_of_service_img;
+    @BindView(R.id.ll_return)
+    LinearLayout ll_return;
+
+
+    @BindView(R.id.tv_detail_submit)
+    TextView tv_detail_submit;
 
     /*订单属性*/
-    private LinearLayout rl_select_time; //选择时间
-    private TextView tv_select_time; //显示时间
-    private TextView tv_order_details_receiving_time; //工单接收时间
-    private TextView tv_order_details_orderid; //工单号
-    private TextView tv_order_details_reason;//故障原因
-    private TextView tv_order_details_product_name;//产品名称
-    private TextView tv_order_details_status; //安装维修状态
-    private TextView tv_order_details_adress; //地址
-    private TextView tv_total_price; // 配件和服务总价
+
+    @BindView(R.id.rl_select_time)
+    LinearLayout rl_select_time;
+    @BindView(R.id.tv_select_time)
+    TextView tv_select_time;
+    @BindView(R.id.tv_order_details_receiving_time)
+    TextView tv_order_details_receiving_time;
+    @BindView(R.id.tv_order_details_orderid)
+    TextView tv_order_details_orderid;
+    @BindView(R.id.tv_order_details_reason)
+    TextView tv_order_details_reason;
+    @BindView(R.id.tv_order_details_product_name)
+    TextView tv_order_details_product_name;
+    @BindView(R.id.tv_order_details_status)
+    TextView tv_order_details_status;
+    @BindView(R.id.tv_order_details_adress)
+    TextView tv_order_details_adress;
+    @BindView(R.id.tv_total_price)
+    TextView tv_total_price;
+
     /*订单属性*/
 
 
@@ -145,16 +162,13 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
 
     /*  配件*/
-/*    private RadioGroup rg_order_details_add_accessories; //添加配件
-    private RadioButton rb_order_details_manufacturer; //厂家寄件
-    private RadioButton rb_order_details_oneself; //自购件*/
-    private TextView tv_order_details_add_accessories; //添加配件
+    @BindView(R.id.tv_order_details_add_accessories)
+    TextView tv_order_details_add_accessories;
     private List<Accessory> mList;   //存放返回的list
     private Map<Integer, FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> map; //用于存放dialog里选择的配件
     private List<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> fAcList=new ArrayList<>();// 用于存放预接单页面显示的数据
     private FAccessory fAccessory;
     private SAccessory sAccessory;
-
     private FAccessory.OrderAccessoryStrBean orderAccessoryStrBean;
     private FAccessory.OrderAccessoryStrBean.OrderAccessoryBean mfAccessory;
     private Accessory mAccessory;
@@ -165,12 +179,15 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     /*配件*/
 
     /*服务*/
-    private TextView tv_order_detail_add_service;//添加服务
+    @BindView(R.id.tv_order_detail_add_service)
+    TextView tv_order_detail_add_service;
     private List<Service> mList_service;
     private Map<Integer, FService.OrderServiceStrBean.OrderServiceBean> map_service;
     private List<FService.OrderServiceStrBean.OrderServiceBean> fList_service=new ArrayList<>(); //存放预接单的service
     private RecyclerView recyclerView_custom_add_service;
     private RecyclerView recyclerView_Pre_add_service;
+
+
     private Pre_order_Add_Service_Adapter mPre_order_Add_Service_Adapter; //预接单的adpter
     private Service mService;
     private FService.OrderServiceStrBean orderServiceStrBean;
@@ -178,13 +195,46 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     private Add_Service_Adapter mAdd_Service_Adapter;
     private SService sService;
     /*服务*/
-
      private STotalAS sTotalAS; //服务配件一起提交
     /*扫码*/
-    private EditText et_express_sweep_code;//输入的快递单号信息
-    private ImageView img_express_sweep_code;
-    private TextView tv_express_sweep_code;
+
+
+    @BindView(R.id.iv_scan_QR)
+    ImageView iv_scan_QR;
+    @BindView(R.id.tv_scan_QR)
+    TextView tv_scan_QR;
+
+    @BindView(R.id.et_single_number)
+    EditText et_single_number;
+    @BindView(R.id.et_express_name)
+    EditText et_express_name;
     /*扫码*/
+
+
+    /*服务图片和返件图片*/
+    @BindView(R.id.iv_bar_code)
+    ImageView iv_bar_code;
+    @BindView(R.id.iv_machine)//整机
+    ImageView iv_machine;
+    @BindView(R.id.iv_fault_location)//故障位置
+    ImageView iv_fault_location;
+    @BindView(R.id.iv_new_and_old_accessories)
+    ImageView iv_new_and_old_accessories;
+    @BindView(R.id.ll_view_example)
+    LinearLayout ll_view_example;
+
+
+   @BindView(R.id.iv_one)
+   ImageView iv_one;
+   @BindView(R.id.iv_two)
+   ImageView iv_two;
+   @BindView(R.id.iv_three)
+   ImageView iv_three;
+   @BindView(R.id.iv_four)
+   ImageView iv_four;
+
+
+
     /*震动*/
     private Vibrator vibrator;
     private double totalPrice; // 配件价格*数量+服务价格   fList_service+
@@ -192,15 +242,14 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     private String FilePath;
     private PopupWindow mPopupWindow;
     private ArrayList<String> permissions;
-    private int size;
     private double Money; //默认的钱为（OrderMoney-InitMoney）
     private String time;//最后传递的时间
     private int select_state=0;//记录厂家寄件申请（1） 和自购件申请（2） 0为未选中
+    private String orderID;//工单号
+    private double Service_range=15; //正常距离(km)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //setContentView(R.layout.activity_order_details);
         initView();
         initValidata();
         //mPresenter.GetOrderInfo();
@@ -230,32 +279,9 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
         customDialog_add_accessory = new CustomDialog_Add_Accessory(mActivity);
         customDialog_add_service = new CustomDialog_Add_Service(mActivity);
-        tv_actionbar_title = findViewById(R.id.tv_actionbar_title);
         rg_order_details_for_remote_fee = findViewById(R.id.rg_order_details_for_remote_fee);
-        ll_Out_of_service_tv = findViewById(R.id.ll_Out_of_service_tv);
-        ll_Out_of_service_img = findViewById(R.id.ll_Out_of_service_img);
-        ll_return = findViewById(R.id.ll_return);
-        rl_select_time = findViewById(R.id.rl_select_time);
-        tv_select_time = findViewById(R.id.tv_select_time);
-        tv_order_details_receiving_time = findViewById(R.id.tv_order_details_receiving_time);//接单时间
-        tv_order_details_orderid = findViewById(R.id.tv_order_details_orderid);//工单号
-        tv_order_details_reason = findViewById(R.id.tv_order_details_reason);//故障原因
-        tv_order_details_product_name = findViewById(R.id.tv_order_details_product_name);//产品名称
-        tv_order_details_status = findViewById(R.id.tv_order_details_status);//安装维修状态
-        tv_order_details_adress = findViewById(R.id.tv_order_details_adress); //地址
-       /* rg_order_details_add_accessories = findViewById(R.id.rg_order_details_add_accessories);//添加配件
-        rb_order_details_manufacturer = findViewById(R.id.rb_order_details_manufacturer);
-        rb_order_details_oneself = findViewById(R.id.rb_order_details_oneself);*/
-        tv_order_details_add_accessories = findViewById(R.id.tv_order_details_add_accessories);//添加配件
         recyclerView_Pre_add_accessories = findViewById(R.id.recyclerView_add_accessories); //预接单recyclerview
-        tv_order_detail_add_service = findViewById(R.id.tv_order_detail_add_service);
         recyclerView_Pre_add_service = findViewById(R.id.tv_recyclerView_Pre_add_service);//预接单recyclerview
-        et_express_sweep_code = findViewById(R.id.et_express_sweep_code);
-        img_express_sweep_code = findViewById(R.id.img_express_sweep_code);
-        tv_express_sweep_code = findViewById(R.id.tv_express_sweep_code);
-        tv_total_price = findViewById(R.id.tv_total_price);
-        tv_detail_submit = findViewById(R.id.tv_detail_submit);
-
         vibrator = (Vibrator) this.getSystemService(this.VIBRATOR_SERVICE);
         //接收传来的OrderID
         orderID = getIntent().getStringExtra("OrderID");
@@ -271,40 +297,29 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
         rl_select_time.setOnClickListener(this);
         tv_order_details_add_accessories.setOnClickListener(this);
         tv_order_detail_add_service.setOnClickListener(this);
-        img_express_sweep_code.setOnClickListener(this);
-        tv_express_sweep_code.setOnClickListener(this);
+
+        iv_scan_QR.setOnClickListener(this);
+        tv_scan_QR.setOnClickListener(this);
         tv_detail_submit.setOnClickListener(this);
         mIvMap1.setOnClickListener(this);
         mIvMap2.setOnClickListener(this);
-        mIvItem1.setOnClickListener(this);
-        mIvItem2.setOnClickListener(this);
-        mIvItem3.setOnClickListener(this);
+
 
         iv_manufacturers.setOnClickListener(this);
         iv_selfbuying.setOnClickListener(this);
         tv_manufacturers.setOnClickListener(this);
         tv_selfbuying.setOnClickListener(this);
+        ll_view_example.setOnClickListener(this);
 
-        /*添加配件*/
-      /*  rg_order_details_add_accessories.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId) {
-                    case R.id.rb_order_details_manufacturer: //厂家寄件申请
+        iv_bar_code.setOnClickListener(this);
+        iv_machine.setOnClickListener(this);
+        iv_fault_location.setOnClickListener(this);
+        iv_new_and_old_accessories.setOnClickListener(this);
 
-                        break;
-
-                    case R.id.rb_order_details_oneself: //自购件申请
-
-
-                        break;
-
-                }
-
-            }
-        });
-*/
-
+        iv_one.setOnClickListener(this);
+        iv_two.setOnClickListener(this);
+        iv_three.setOnClickListener(this);
+        iv_four.setOnClickListener(this);
 
 
 
@@ -322,6 +337,16 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                     case R.id.rb_order_details_yes_for_remote_fee:
                         ll_Out_of_service_tv.setVisibility(View.VISIBLE);
                         ll_Out_of_service_img.setVisibility(View.VISIBLE);
+
+
+                        /*获取订单的距离*/
+                        double Distance = Double.parseDouble(data.getDistance());
+                        if (Service_range>=Distance){
+                            tv_remote_km.setText("0km");
+                        }else {
+                            tv_remote_km.setText(Distance-Service_range+"km");
+                        }
+
                         break;
 
                     default:
@@ -344,43 +369,6 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
     }
 
-    @Override
-    public void GetOrderInfo(BaseResult<WorkOrder.DataBean> baseResult) {
-
-        switch (baseResult.getStatusCode()) {
-
-            case 200:
-                data = baseResult.getData();
-                // Log.d("getOrderIDgetOrderID",data.getOrderID()+" "+data.getMemo()+" "+data.getBrandName());
-                tv_order_details_orderid.setText(data.getOrderID());
-                tv_order_details_receiving_time.setText(data.getAudDate().replace("T", " ")); //将T替换为空格
-                tv_order_details_reason.setText(data.getMemo());
-                tv_order_details_product_name.setText(data.getCategoryName() + "/" + data.getBrandName() + "/" + data.getProductType());
-
-                if (data.getTypeID()==1) {//维修
-                    tv_order_details_status.setText("维修");
-                    tv_order_details_status.setBackgroundResource(R.color.color_custom_01);
-                    mll_return_information.setVisibility(View.VISIBLE);
-                    mll_service_process.setVisibility(View.GONE);
-                } else {
-                    tv_order_details_status.setText("安装");
-                    tv_order_details_status.setBackgroundResource(R.color.color_custom_04);
-                    mll_return_information.setVisibility(View.GONE);
-                    mll_service_process.setVisibility(View.VISIBLE);
-                }
-                tv_order_details_adress.setText(data.getAddress());
-                mTvNum.setText("数量：" + data.getNum() + "台");
-                Money=data.getOrderMoney()-data.getInitMoney();
-
-                break;
-
-            default:
-                Log.d("detail", baseResult.getData().toString());
-                //  data=null;
-                break;
-        }
-
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -599,25 +587,25 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
                                     switch (view.getId()) {
                                         case R.id.iv_accessories_delete:
-                                            String AccessoryName = null; //用于保存配件名称
+                                            String AccessoryID = null; //用于保存配件id
                                             boolean is_exist = false;// 用于保存是否存在 map
                                             int keymap = 0;   //保存map的键
                                             for (int i = 0; i < mList.size(); i++) {
                                                 //先比较产品名字
                                                 if (((FAccessory.OrderAccessoryStrBean.OrderAccessoryBean) adapter.getData().get(position)).getFAccessoryName().equals(mList.get(i).getAccessoryName())) {
                                                     mList.get(i).setIscheck(false);
-                                                    AccessoryName = mList.get(i).getAccessoryName();
+                                                    AccessoryID = mList.get(i).getFAccessoryID();
                                                     mList.get(i).setCheckedcount(1);
                                                 }
                                             }
 
 
-                                            Log.d("AccessoryName的值是", AccessoryName);
+                                            Log.d("Accessoryid的值是", AccessoryID);
 
                                             for (Integer key : map.keySet()) {
                                                 System.out.println("key= " + key + " and value= " + map.get(key));
 
-                                                if (map.get(key).getFAccessoryName().equals(AccessoryName)) {
+                                                if (map.get(key).getFAccessoryID().equals(AccessoryID)) {
                                                     is_exist = true;
                                                     keymap = key;
                                                 }
@@ -634,10 +622,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                                     }
                                 }
                             });
-                          /*  for (int key : map.keySet()) {
-                                System.out.println("选择了" + map.get(key).getFAccessoryName() + "配件" + "数量" + map.get(key).getQuantity() + "总价格" + map.get(key).getDiscountPrice());
-                                System.out.println("选择了-------------------------------------------");
-                            }*/
+
 
                         }
                     });
@@ -737,22 +722,22 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                                 switch (view.getId()) {
                                     case R.id.iv_service_delete:
-                                        String ServiceName = null; //用于保存配件名称
+                                        String ServiceID = null; //用于保存服务id
                                         boolean is_exist = false;// 用于保存是否存在 map
                                         int keymap = 0;   //保存map的箭
                                         for (int i = 0; i < mList_service.size(); i++) {
                                             //先比较产品名字
                                             if (((FService.OrderServiceStrBean.OrderServiceBean) adapter.getData().get(position)).getServiceName().equals(mList_service.get(i).getFServiceName())) {
                                                 mList_service.get(i).setIschecked(false);
-                                                ServiceName = mList_service.get(i).getFServiceName();
+                                                ServiceID = mList_service.get(i).getFServiceID();
                                             }
                                         }
 
-                                        Log.d("ServiceName的值是", ServiceName);
+                                        Log.d("Serviceid的值是", ServiceID);
 
                                         for (Integer key : map_service.keySet()) {
 
-                                            if (map_service.get(key).getServiceName().equals(ServiceName)) {
+                                            if (map_service.get(key).getServiceID().equals(ServiceID)) {
                                                 is_exist = true;
                                                 keymap = key;
                                             }
@@ -779,8 +764,8 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                 break;
 
 
-            case R.id.img_express_sweep_code:
-            case R.id.tv_express_sweep_code:
+            case R.id.iv_scan_QR:
+            case R.id.tv_scan_QR:
                 IntentIntegrator integrator = new IntentIntegrator(Order_details_Activity.this);
                 // 设置要扫描的条码类型，ONE_D_CODE_TYPES：一维码，QR_CODE_TYPES-二维码
                 integrator.setDesiredBarcodeFormats(IntentIntegrator.ONE_D_CODE_TYPES);
@@ -894,22 +879,106 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                    }
 
                                  break;
+
+           //添加维修图片
+
+            case R.id.ll_view_example:  //查看示例
+                final ViewExampleDialog viewExampleDialog=new ViewExampleDialog(mActivity);
+                viewExampleDialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+                viewExampleDialog.setNoOnclickListener("取消", new ViewExampleDialog.onNoOnclickListener() {
+                    @Override
+                    public void onNoClick() {
+                        viewExampleDialog.dismiss();
+                    }
+                });
+                viewExampleDialog.show();
+                Window window=viewExampleDialog.getWindow();
+                WindowManager.LayoutParams wlp=window.getAttributes();
+                Display d=window.getWindowManager().getDefaultDisplay();
+                wlp.height=d.getHeight();
+                wlp.width=d.getWidth();
+                wlp.gravity= Gravity.CENTER;
+                window.setAttributes(wlp);
+                break;
+            case R.id.iv_bar_code:
+                showPopupWindow(101,102);
+                break;
+            case R.id.iv_machine:
+                showPopupWindow(201,202);
+                break;
+            case R.id.iv_fault_location:
+                showPopupWindow(301,303);
+                break;
+            case R.id.iv_new_and_old_accessories:
+                showPopupWindow(401,404);
+                break;
+
+                /*添加服务过程*/
+            case R.id.iv_one:
+                showPopupWindow(501,505);
+                break;
+            case R.id.iv_two:
+                showPopupWindow(601,606);
+                break;
+            case R.id.iv_three:
+                showPopupWindow(701,707);
+                break;
+            case R.id.iv_four:
+                showPopupWindow(801,808);
+                break;
+            case R.id.iv_map1: //选中地图1
+                showPopupWindow(901,909);
+                break;
+            case R.id.iv_map2: //选中地图2
+                showPopupWindow(1001,1002);
+                break;
                          default:
                           break;
 
         }
 
-        if (select_state==0){
-            Log.d("++++>","什么都没选");
-
-        }else if (select_state==1){
-            Log.d("++++>","选中了厂家寄件");
-        }else {
-            Log.d("++++>","选中了自购件");
-        }
 
 
     }
+
+    @Override
+    public void GetOrderInfo(BaseResult<WorkOrder.DataBean> baseResult) {
+
+        switch (baseResult.getStatusCode()) {
+
+            case 200:
+                data = baseResult.getData();
+                // Log.d("getOrderIDgetOrderID",data.getOrderID()+" "+data.getMemo()+" "+data.getBrandName());
+                tv_order_details_orderid.setText(data.getOrderID());
+                tv_order_details_receiving_time.setText(data.getAudDate().replace("T", " ")); //将T替换为空格
+                tv_order_details_reason.setText(data.getMemo());
+                tv_order_details_product_name.setText(data.getCategoryName() + "/" + data.getBrandName() + "/" + data.getProductType());
+
+                if (data.getTypeID()==1) {//维修
+                    tv_order_details_status.setText("维修");
+                    tv_order_details_status.setBackgroundResource(R.color.color_custom_01);
+                    mll_return_information.setVisibility(View.VISIBLE);
+                    mll_service_process.setVisibility(View.GONE);
+                } else {
+                    tv_order_details_status.setText("安装");
+                    tv_order_details_status.setBackgroundResource(R.color.color_custom_04);
+                    mll_return_information.setVisibility(View.GONE);
+                    mll_service_process.setVisibility(View.VISIBLE);
+                }
+                tv_order_details_adress.setText(data.getAddress());
+                mTvNum.setText("数量：" + data.getNum() + "台");
+                Money=data.getOrderMoney()-data.getInitMoney();
+
+                break;
+
+            default:
+                Log.d("detail", baseResult.getData().toString());
+                //  data=null;
+                break;
+        }
+
+    }
+
 
     /*获取工厂配件*/
     @Override
@@ -918,7 +987,6 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
             case 200:
                 mList.clear();
                 mList.addAll(baseResult.getData().getItem1());
-                //Log.d("mlist2", String.valueOf(mList.size()));
                 break;
             default:
                 break;
@@ -1021,7 +1089,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
         }
     }
 
-
+/*
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
@@ -1030,7 +1098,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
             et_express_sweep_code.setText("快递单号:" + result);
         }
 
-    }
+    }*/
 
     //计算价格
     private double gettotalPrice(List<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> list,
@@ -1067,6 +1135,309 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
     }
 
+
+
+
+
+    /**
+     * 弹出Popupwindow
+     */
+    public void showPopupWindow(final int code1,final int code2) {
+        popupWindow_view = LayoutInflater.from(mActivity).inflate(R.layout.camera_layout, null);
+        Button camera_btn= popupWindow_view.findViewById(R.id.camera_btn);
+        Button photo_btn= popupWindow_view.findViewById(R.id.photo_btn);
+        Button cancel_btn= popupWindow_view.findViewById(R.id.cancel_btn);
+        camera_btn.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onClick(View view) {
+                if (requestPermissions()){
+                    Intent intent = new Intent();
+                    // 指定开启系统相机的Action
+                    intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+                    intent.addCategory(Intent.CATEGORY_DEFAULT);
+                    String f = System.currentTimeMillis()+".jpg";
+                    String fileDir= Environment.getExternalStorageDirectory().getAbsolutePath()+"/xgy";
+                    FilePath =Environment.getExternalStorageDirectory().getAbsolutePath()+"/xgy/"+f;
+                    File dirfile=new File(fileDir);
+                    if (!dirfile.exists()){
+                        dirfile.mkdirs();
+                    }
+                    File file=new File(FilePath);
+                    Uri fileUri;
+                    if (Build.VERSION.SDK_INT >= 24) {
+                        fileUri = FileProvider.getUriForFile(mActivity,"com.ying.administrator.masterappdemo.fileProvider", file);
+                    } else {
+                        fileUri = Uri.fromFile(file);
+                    }
+
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+                    startActivityForResult(intent, code1);
+                }else{
+                    requestPermissions(permissions.toArray(new String[permissions.size()]), 10001);
+                }
+                mPopupWindow.dismiss();
+            }
+        });
+        photo_btn.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onClick(View view) {
+                if (requestPermissions()){
+                    Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+                    i.addCategory(Intent.CATEGORY_OPENABLE);
+                    i.setType("image/*");
+                    startActivityForResult(Intent.createChooser(i, "test"), code2);
+                    mPopupWindow.dismiss();
+                }else{
+                    requestPermissions(permissions.toArray(new String[permissions.size()]), 10002);
+                }
+
+            }
+        });
+        cancel_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPopupWindow.dismiss();
+            }
+        });
+        mPopupWindow = new PopupWindow(popupWindow_view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        mPopupWindow.setAnimationStyle(R.style.popwindow_anim_style);
+        mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+        mPopupWindow.setFocusable(true);
+        mPopupWindow.setOutsideTouchable(true);
+        mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                MyUtils.setWindowAlpa(mActivity,false);
+            }
+        });
+        if (mPopupWindow != null && !mPopupWindow.isShowing()) {
+//            popupWindow.showAsDropDown(tv, 0, 10);
+            mPopupWindow.showAtLocation(popupWindow_view, Gravity.BOTTOM, 0, 0);
+//            MyUtils.backgroundAlpha(mActivity,0.5f);
+        }
+        MyUtils.setWindowAlpa(mActivity, true);
+    }
+    //请求权限
+    private boolean requestPermissions(){
+        if (Build.VERSION.SDK_INT >= 23) {
+            permissions = new ArrayList<>();
+            if (mActivity.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+            }
+            if (mActivity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            }
+            if (mActivity.checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                permissions.add(Manifest.permission.CAMERA);
+            }
+            if (permissions.size() == 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    //返回图片处理
+    @SuppressLint("NewApi")
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (scanResult != null) {
+            String result = scanResult.getContents();
+            et_single_number.setText("单号:"+result);
+        }
+        File file = null;
+        switch (requestCode){
+            //拍照
+            case 101:
+                if (resultCode==-1){
+                    Glide.with(mActivity).load(FilePath).into(iv_bar_code);
+                    file=new File(FilePath);
+                }
+
+                break;
+            //相册
+            case 102:
+                if (data != null) {
+                    Uri uri = data.getData();
+                    Glide.with(mActivity).load(uri).into(iv_bar_code);
+                    file=new File(MyUtils.getRealPathFromUri(mActivity,uri));
+                }
+                break;
+            //拍照
+            case 201:
+                if (resultCode==-1){
+                    Glide.with(mActivity).load(FilePath).into(iv_machine);
+                    file=new File(FilePath);
+                }
+                break;
+            //相册
+            case 202:
+                if (data != null) {
+                    Uri uri = data.getData();
+                    Glide.with(mActivity).load(uri).into(iv_machine);
+                    file=new File(MyUtils.getRealPathFromUri(mActivity,uri));
+                }
+                break;
+            //拍照
+            case 301:
+                if (resultCode==-1){
+                    Glide.with(mActivity).load(FilePath).into(iv_fault_location);
+                    file=new File(FilePath);
+                }
+                break;
+            //相册
+            case 303:
+                if (data != null) {
+                    Uri uri = data.getData();
+                    Glide.with(mActivity).load(uri).into(iv_fault_location);
+                    file=new File(MyUtils.getRealPathFromUri(mActivity,uri));
+                }
+                break;
+            //拍照
+            case 401:
+                if (resultCode==-1){
+                    Glide.with(mActivity).load(FilePath).into(iv_new_and_old_accessories);
+                    file=new File(FilePath);
+                }
+                break;
+            //相册
+            case 404:
+                if (data != null) {
+                    Uri uri = data.getData();
+                    Glide.with(mActivity).load(uri).into(iv_new_and_old_accessories);
+                    file=new File(MyUtils.getRealPathFromUri(mActivity,uri));
+                }
+                break;
+            //拍照
+            case 501:
+                if (resultCode==-1){
+                    Glide.with(mActivity).load(FilePath).into(iv_one);
+                    file=new File(FilePath);
+                }
+
+                break;
+            //相册
+            case 505:
+                if (data != null) {
+                    Uri uri = data.getData();
+                    Glide.with(mActivity).load(uri).into(iv_one);
+                    file=new File(MyUtils.getRealPathFromUri(mActivity,uri));
+                }
+                break;
+
+
+            //拍照
+            case 601:
+                if (resultCode==-1){
+                    Glide.with(mActivity).load(FilePath).into(iv_two);
+                    file=new File(FilePath);
+                }
+
+                break;
+            //相册
+            case 606:
+                if (data != null) {
+                    Uri uri = data.getData();
+                    Glide.with(mActivity).load(uri).into(iv_two);
+                    file=new File(MyUtils.getRealPathFromUri(mActivity,uri));
+                }
+                break;
+
+            //拍照
+            case 701:
+                if (resultCode==-1){
+                    Glide.with(mActivity).load(FilePath).into(iv_three);
+                    file=new File(FilePath);
+                }
+
+                break;
+            //相册
+            case 707:
+                if (data != null) {
+                    Uri uri = data.getData();
+                    Glide.with(mActivity).load(uri).into(iv_three);
+                    file=new File(MyUtils.getRealPathFromUri(mActivity,uri));
+                }
+                break;
+
+
+            //拍照
+            case 801:
+                if (resultCode==-1){
+                    Glide.with(mActivity).load(FilePath).into(iv_four);
+                    file=new File(FilePath);
+                }
+
+                break;
+            //相册
+            case 808:
+                if (data != null) {
+                    Uri uri = data.getData();
+                    Glide.with(mActivity).load(uri).into(iv_four);
+                    file=new File(MyUtils.getRealPathFromUri(mActivity,uri));
+                }
+                break;
+
+
+                /* 地图1*/
+            //拍照
+            case 901:
+                if (resultCode==-1){
+                    Glide.with(mActivity).load(FilePath).into(mIvMap1);
+                    file=new File(FilePath);
+                }
+
+                break;
+            //相册
+            case 909:
+                if (data != null) {
+                    Uri uri = data.getData();
+                    Glide.with(mActivity).load(uri).into(mIvMap1);
+                    file=new File(MyUtils.getRealPathFromUri(mActivity,uri));
+                }
+                break;
+
+
+            /* 地图2*/
+            //拍照
+            case 1001:
+                if (resultCode==-1){
+                    Glide.with(mActivity).load(FilePath).into(mIvMap2);
+                    file=new File(FilePath);
+                }
+
+                break;
+            //相册
+            case 1002:
+                if (data != null) {
+                    Uri uri = data.getData();
+                    Glide.with(mActivity).load(uri).into(mIvMap2);
+                    file=new File(MyUtils.getRealPathFromUri(mActivity,uri));
+                }
+                break;
+
+
+
+
+        }
+//        if (file!=null){
+//            uploadImg(file);
+//        }
+    }
+//    public void uploadImg(File f){
+//        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+//        builder.addFormDataPart("img", f.getName(), RequestBody.create(MediaType.parse("img/png"), f));
+//        MultipartBody requestBody=builder.build();
+//        mPresenter.IDCardUpload(requestBody);
+//    }
+//
 
 
 }

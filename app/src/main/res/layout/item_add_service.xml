@@ -17,15 +17,15 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="添加冷媒"
-            android:textSize="14dp"
+            android:textSize="15dp"
             android:textColor="#6A6A6A"
             android:layout_gravity="center"/>
         
         <ImageView
 
             android:id="@+id/iv_service_delete"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:src="@mipmap/delete"/>
     </LinearLayout>
 
