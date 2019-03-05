@@ -207,23 +207,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
         tv_express_sweep_code.setOnClickListener(new CustomOnclickListnaer());
         tv_detail_submit.setOnClickListener(new CustomOnclickListnaer());
 
-         /*添加配件*/
-      /*  rg_order_details_add_accessories.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId){
-                    case R.id.rb_order_details_manufacturer: //厂家寄件申请
 
-                        break;
-
-                    case R.id.rb_order_details_oneself: //自购件申请
-
-                        break;
-
-                }
-
-            }
-        });*/
 
 
 
