@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--不成功弹窗-->
+<LinearLayout   xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
    <RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-       xmlns:tools="http://schemas.android.com/tools"
        android:layout_width="match_parent"
        android:layout_height="500dp"
     >
@@ -36,39 +39,32 @@
            <android.support.v7.widget.RecyclerView
                android:id="@+id/recyclerView_custom_add_service"
                android:layout_width="match_parent"
-               android:layout_height="wrap_content"
+               android:layout_height="match_parent"
+               android:layout_weight="1"
 
                >
 
            </android.support.v7.widget.RecyclerView>
 
+           <TextView
 
+               android:gravity="center"
+               android:layout_gravity="bottom"
+               android:id="@+id/tv_add_service_submit"
+               android:layout_width="match_parent"
+               android:layout_height="40dp"
+               android:textSize="20sp"
+               android:layout_marginLeft="10dp"
+               android:layout_marginRight="10dp"
+               android:textColor="@color/white"
+               android:layout_marginBottom="@dimen/dp_10"
+               android:text="确  定"
+               android:background="@drawable/add_accessory_submit"
+               />
        </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_alignParentBottom="true"
-        >
-        <TextView
-
-            android:gravity="center"
-            android:id="@+id/tv_add_service_submit"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:textSize="20sp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:textColor="@color/white"
-            android:text="确  定"
-             android:background="@drawable/add_accessory_submit"
-            />
-
-
-    </LinearLayout>
 
  </RelativeLayout>
 
 
 
+</LinearLayout>

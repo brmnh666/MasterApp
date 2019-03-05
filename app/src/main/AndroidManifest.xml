@@ -46,9 +46,9 @@
     <application
         android:name=".app.MyApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/icon_app"
+        android:icon="@drawable/icon_app"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/icon_app"
+        android:roundIcon="@drawable/icon_app"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         >
