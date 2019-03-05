@@ -10,15 +10,15 @@
     android:background="@drawable/rr_shape"
     >
 
-        <TextView
-            android:id="@+id/tv_complete_wait_fetch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="完成待取机"
-            android:textSize="12sp"
-            android:layout_marginLeft="13dp"
-            android:layout_marginTop="15dp"
-            />
+    <TextView
+        android:id="@+id/tv_complete_wait_fetch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="完成待取机"
+        android:textSize="12sp"
+        android:layout_marginLeft="13dp"
+        android:layout_marginTop="15dp"
+        />
 
 
     <TextView
@@ -74,50 +74,51 @@
         android:layout_marginTop="41dp"
         android:textColor="#333333"/>
 
-<ImageView
-    android:layout_below="@+id/tv_reason_complete_wait_fetch"
-    android:id="@+id/img_loaction"
-    android:layout_width="14dp"
-    android:layout_height="14dp"
-    android:src="@mipmap/icon_loaction"
-    android:layout_marginLeft="15dp"
-    android:layout_marginTop="5dp"
-    />
-        <TextView
-            android:id="@+id/tv_loaction_complete_wait_fetch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:text="距离 43.12KM"
-            android:layout_toRightOf="@+id/img_loaction"
-            android:layout_below="@+id/tv_reason_complete_wait_fetch"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="5dp"
+    <ImageView
+        android:layout_below="@+id/tv_reason_complete_wait_fetch"
+        android:id="@+id/img_loaction"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:src="@mipmap/icon_loaction"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="5dp"
+        />
+    <TextView
+        android:id="@+id/tv_loaction_complete_wait_fetch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:text="距离 43.12KM"
+        android:layout_toRightOf="@+id/img_loaction"
+        android:layout_below="@+id/tv_reason_complete_wait_fetch"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
 
-            />
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="数量:2台"
-    android:textSize="14sp"
-    android:layout_toRightOf="@+id/tv_loaction_complete_wait_fetch"
-    android:layout_below="@+id/tv_reason_complete_wait_fetch"
-    android:layout_marginTop="5dp"
-    android:layout_marginLeft="30dp"
-    />
+        />
+    <TextView
+        android:id="@+id/tv_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="数量:2台"
+        android:textSize="14sp"
+        android:layout_toRightOf="@+id/tv_loaction_complete_wait_fetch"
+        android:layout_below="@+id/tv_reason_complete_wait_fetch"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="30dp"
+        />
 
 
-        <TextView
-            android:id="@+id/tv_address_complete_wait_fetch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="宁波市江北区长阳路人才公寓5栋1701室"
-            android:textSize="14sp"
-            android:layout_below="@+id/tv_loaction_complete_wait_fetch"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="15dp"
-            />
+    <TextView
+        android:id="@+id/tv_address_complete_wait_fetch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="宁波市江北区长阳路人才公寓5栋1701室"
+        android:textSize="14sp"
+        android:layout_below="@+id/tv_loaction_complete_wait_fetch"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="15dp"
+        />
 
 
 

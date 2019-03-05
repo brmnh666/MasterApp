@@ -118,6 +118,16 @@ public interface ApiService {
 
     /*
     * 师傅端获取工单列表新接口
+    * 师傅端state
+
+0、待接单
+1、已接待预约
+2、服务中
+3、返件单
+4、质保单
+5、完成待取机
+6、已完成
+7、预约不成功
     * */
    @FormUrlEncoded
    @POST("Order/WorkerGetOrderList")

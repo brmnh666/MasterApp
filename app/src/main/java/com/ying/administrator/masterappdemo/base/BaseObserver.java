@@ -4,7 +4,6 @@ import android.util.Log;
 
 import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.bumptech.glide.load.HttpException;
 import com.google.gson.JsonSyntaxException;
 
 import org.json.JSONObject;
@@ -13,6 +12,7 @@ import java.io.IOException;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
+import retrofit2.adapter.rxjava2.HttpException;
 
 /**
  * Created by Administrator on 2018/5/2.
@@ -21,7 +21,7 @@ public abstract class BaseObserver<T> implements Observer<BaseResult<T>> {
 
     private static final String TAG = "BaseObserver";
     protected Disposable disposable;
-    private String errMsg="";
+    private String errMsg="接口异常";
 
     protected BaseObserver() {
     }
