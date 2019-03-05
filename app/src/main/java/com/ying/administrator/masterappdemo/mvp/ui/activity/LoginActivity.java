@@ -78,9 +78,9 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginModel> impl
     protected void initView() {
         SPUtils spUtils = SPUtils.getInstance("token");
         String userName = spUtils.getString("userName");
-        String password = spUtils.getString("password");
+        String password = spUtils.getString("passWord");
         isLogin = spUtils.getBoolean("isLogin");
-        if (userName != null) {
+        if (userName != null&&password!=null) {
             mEt_login_username.setText(userName);
             mEt_login_password.setText(password);
         }
