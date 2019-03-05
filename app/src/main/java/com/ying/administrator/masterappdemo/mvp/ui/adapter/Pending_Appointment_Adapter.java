@@ -28,6 +28,7 @@ public class Pending_Appointment_Adapter extends BaseQuickAdapter<WorkOrder.Data
     private ArrayList<SubUserInfo.SubUserInfoDean> subuserlist;
     private long now;
     private long cancel;
+    private long leftTime;
 
     public Pending_Appointment_Adapter(int layoutResId, @Nullable List<WorkOrder.DataBean> data, UserInfo.UserInfoDean userInfo,ArrayList subuserlist) {
         super(layoutResId, data);
@@ -46,7 +47,13 @@ helper.setText(R.id.tv_loaction_appointment,"距离 "+item.getDistance()+"Km");
         countdownView =helper.getView(R.id.countdownview);
         now =TimeUtils.getNowMills();
         cancel =TimeUtils.string2Millis(item.getAudDate())+3600000;
-        countdownView.start(cancel-now);
+        leftTime=cancel-now;
+        if (leftTime > 0) {
+            countdownView.start(leftTime);
+        } else {
+            countdownView.stop();
+            countdownView.allShowZero();
+        }
 
 
         if (item.getTypeID()==1){//维修

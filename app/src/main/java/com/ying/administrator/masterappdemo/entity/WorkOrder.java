@@ -412,7 +412,7 @@ public class WorkOrder implements Serializable {
         }
 
         public String getAudDate() {
-            return AudDate;
+            return AudDate.replace("T"," ");
         }
 
         public void setAudDate(String AudDate) {
