@@ -7,6 +7,7 @@ import com.ying.administrator.masterappdemo.entity.Category;
 import com.ying.administrator.masterappdemo.entity.City;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.District;
+import com.ying.administrator.masterappdemo.entity.GAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
 import com.ying.administrator.masterappdemo.entity.GetFactorySeviceData;
 import com.ying.administrator.masterappdemo.entity.IDCard;
@@ -230,6 +231,14 @@ public interface ApiService {
 
     @POST("FactoryConfig/GetFactoryService")
     Observable<BaseResult<GetFactorySeviceData<Service>>> GetFactoryService();
+
+
+     /*根据工单号获取配件列表*/
+    @FormUrlEncoded
+    @POST("Order/GetOrderAccessoryByOrderID")
+    Observable<BaseResult<List<GAccessory>>> GetOrderAccessoryByOrderID(@Field("OrderID") String OrderID);
+
+
 
     /**
      * 上传身份证以及清晰头像 UserID用户名Sort（1：正面，2：反面，3：清晰自拍照）

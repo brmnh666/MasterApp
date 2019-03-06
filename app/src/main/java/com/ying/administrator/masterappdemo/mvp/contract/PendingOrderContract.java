@@ -6,10 +6,13 @@ import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.base.BaseView;
 import com.ying.administrator.masterappdemo.entity.Accessory;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.GAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
 import com.ying.administrator.masterappdemo.entity.GetFactorySeviceData;
 import com.ying.administrator.masterappdemo.entity.Service;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
@@ -38,6 +41,11 @@ public interface PendingOrderContract {
 
         //更新时间
         Observable<BaseResult<Data>> UpdateSendOrderUpdateTime(String OrderID,String UpdateDate);
+
+        //根据工单号获取配件
+
+        Observable<BaseResult<List<GAccessory>>> GetOrderAccessoryByOrderID(String OrderID);
+
     }
 
     interface View extends BaseView{
@@ -60,6 +68,9 @@ public interface PendingOrderContract {
 
         //更新时间
         void UpdateSendOrderUpdateTime(BaseResult<Data> baseResult);
+
+        //根据工单号获取配件
+        void  GetOrderAccessoryByOrderID(BaseResult<List<GAccessory>> baseResult);
     }
 
     abstract  class Presenter extends BasePresenter<View,Model>{
@@ -77,6 +88,9 @@ public interface PendingOrderContract {
         public abstract void AddOrUpdateAccessoryServiceReturn(RequestBody json);
         //更新时间
         public abstract void UpdateSendOrderUpdateTime(String OrderID,String UpdateDate);
+        //根据工单号获取配件
+        public abstract void GetOrderAccessoryByOrderID(String OrderID);
+
     }
 
 

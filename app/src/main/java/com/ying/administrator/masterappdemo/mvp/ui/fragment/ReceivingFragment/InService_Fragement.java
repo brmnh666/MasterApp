@@ -109,7 +109,10 @@ import java.util.List;
                         startActivity(intent);
                         break;
                     case R.id.tv_in_service_apply_parts: //申请配件
-                        startActivity(new Intent(getActivity(), Order_Add_Accessories_Activity.class));
+                        Intent intent2=new Intent(getActivity(),Order_Add_Accessories_Activity.class);
+                        intent2.putExtra("OrderID",((WorkOrder.DataBean)adapter.getItem(position)).getOrderID());
+                        startActivity(intent2);
+
                         break;
                         default:
                             break;

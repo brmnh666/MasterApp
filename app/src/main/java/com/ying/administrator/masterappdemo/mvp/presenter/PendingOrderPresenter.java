@@ -4,11 +4,14 @@ import com.ying.administrator.masterappdemo.base.BaseObserver;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Accessory;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.GAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
 import com.ying.administrator.masterappdemo.entity.GetFactorySeviceData;
 import com.ying.administrator.masterappdemo.entity.Service;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.PendingOrderContract;
+
+import java.util.List;
 
 import okhttp3.RequestBody;
 
@@ -83,5 +86,15 @@ public class PendingOrderPresenter extends PendingOrderContract.Presenter {
             }
         });
 
+    }
+
+    @Override
+    public void GetOrderAccessoryByOrderID(String OrderID) {
+        mModel.GetOrderAccessoryByOrderID(OrderID).subscribe(new BaseObserver<List<GAccessory>>() {
+            @Override
+            protected void onHandleSuccess(BaseResult<List<GAccessory>> value) {
+                mView.GetOrderAccessoryByOrderID(value);
+            }
+        });
     }
 }

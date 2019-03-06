@@ -189,11 +189,19 @@ public class WorkOrder implements Serializable {
         private String IsRecevieGoods;
         private String AppointmentMessage;
         private String AppointmentState;
-
+        private List<GAccessory> OrderAccessroyDetail;
         private String Distance;//返回距离
         private int page;
         private int limit;
         private int Version;
+
+        public List<GAccessory> getOrderAccessroyDetail() {
+            return OrderAccessroyDetail;
+        }
+
+        public void setOrderAccessroyDetail(List<GAccessory> orderAccessroyDetail) {
+            OrderAccessroyDetail = orderAccessroyDetail;
+        }
 
         public int getId() {
             return Id;

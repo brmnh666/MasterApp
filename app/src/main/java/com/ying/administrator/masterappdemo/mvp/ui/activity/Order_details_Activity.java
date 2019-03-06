@@ -48,6 +48,7 @@ import com.ying.administrator.masterappdemo.entity.Accessory;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.FAccessory;
 import com.ying.administrator.masterappdemo.entity.FService;
+import com.ying.administrator.masterappdemo.entity.GAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
 import com.ying.administrator.masterappdemo.entity.FAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactorySeviceData;
@@ -507,6 +508,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                                         mfAccessory.setQuantity("1"); //默认数字为1
                                         mfAccessory.setDiscountPrice(mAccessory.getAccessoryPrice());
                                         mList.get(position).setCheckedcount(1);
+
                                         map.put(position, mfAccessory);
                                         adderView.setVisibility(View.VISIBLE);
                                         img_ac_unselect.setVisibility(View.INVISIBLE);
@@ -1087,6 +1089,11 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
 
         }
+    }
+
+    @Override
+    public void GetOrderAccessoryByOrderID(BaseResult<List<GAccessory>> baseResult) {
+
     }
 
 /*

@@ -34,6 +34,13 @@ public class Accessory {
         private int checkedcount;
 
 
+       /* *//*新增属性*//*
+        private String AccessoryID;
+        private String SendState;
+        private int Quantity;
+        private String OrderID;
+        private String CreateTime;
+        private String Relation;*/
      /*   public int getId() {
             return Id;
         }
