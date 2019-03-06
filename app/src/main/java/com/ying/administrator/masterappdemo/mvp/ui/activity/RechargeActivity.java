@@ -1,7 +1,6 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
 import android.annotation.SuppressLint;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.GridLayoutManager;
@@ -18,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alipay.sdk.app.PayTask;
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
@@ -27,8 +27,13 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.xiaomi.mipush.sdk.Constants;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
+import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.FaceValue;
 import com.ying.administrator.masterappdemo.entity.PayResult;
+import com.ying.administrator.masterappdemo.mvp.contract.RechargeContract;
+import com.ying.administrator.masterappdemo.mvp.model.RechargeModel;
+import com.ying.administrator.masterappdemo.mvp.presenter.RechargePresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.FaceValueAdapter;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -39,10 +44,9 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 
-public class RechargeActivity extends BaseActivity implements View.OnClickListener {
+public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeModel> implements View.OnClickListener, RechargeContract.View {
 
     @BindView(R.id.img_actionbar_return)
     ImageView mImgActionbarReturn;
@@ -73,6 +77,10 @@ public class RechargeActivity extends BaseActivity implements View.OnClickListen
     private String[] faceValues = new String[]{"100", "300", "500", "1000", "2000", "3000"};
     private String value;
     private IWXAPI api;
+    private int payway=1;
+    private SPUtils spUtils;
+    private String userID;
+    private String orderinfo;
 
     @Override
     protected int setLayoutId() {
@@ -90,6 +98,8 @@ public class RechargeActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     protected void initData() {
+        spUtils = SPUtils.getInstance("token");
+        userID = spUtils.getString("userName");
         api = WXAPIFactory.createWXAPI(this, Constants.APP_ID);
 
         mIvAplipay.setSelected(true);//默认选中支付宝
@@ -98,6 +108,9 @@ public class RechargeActivity extends BaseActivity implements View.OnClickListen
         for (int i = 0; i < faceValues.length; i++) {
             faceValueList.add(new FaceValue(faceValues[i], false));
         }
+        faceValueList.get(0).setSelect(true);
+        value = faceValueList.get(0).getValue();
+        mTvActualArrival.setText(value);
         faceValueAdapter = new FaceValueAdapter(R.layout.face_value_item, faceValueList);
         mRlRechargeAmount.setLayoutManager(new GridLayoutManager(mActivity, 3));
         mRlRechargeAmount.setAdapter(faceValueAdapter);
@@ -183,10 +196,12 @@ public class RechargeActivity extends BaseActivity implements View.OnClickListen
                 finish();
                 break;
             case R.id.ll_alipay:
+                payway=1;
                 mIvAplipay.setSelected(true);
                 mIvWechat.setSelected(false);
                 break;
             case R.id.ll_wxpay:
+                payway=2;
                 mIvAplipay.setSelected(false);
                 mIvWechat.setSelected(true);
                 break;
@@ -194,7 +209,19 @@ public class RechargeActivity extends BaseActivity implements View.OnClickListen
 
                 break;
             case R.id.bt_recharge:
-                ToastUtils.showShort("充值" + value + "元！");
+                if (value==null){
+                    ToastUtils.showShort("请选择或输入充值金额");
+                    return;
+                }
+                switch (payway){
+                    case 1:
+                        mPresenter.GetOrderStr(userID,value);
+//                        alipay();
+                        break;
+                    case 2:
+//                        WXpay();
+                        break;
+                }
                 break;
         }
     }
@@ -202,7 +229,7 @@ public class RechargeActivity extends BaseActivity implements View.OnClickListen
     /**
      * 支付宝支付业务
      */
-    public void payV2() {
+    public void alipay() {
 
         /**
          * 这里只是为了方便直接向商户展示支付宝的整个支付流程；所以Demo中加签过程直接放在客户端完成；
@@ -211,14 +238,13 @@ public class RechargeActivity extends BaseActivity implements View.OnClickListen
          *
          * orderInfo的获取必须来自服务端；
          */
-        final String orderInfo = "";
 
         Runnable payRunnable = new Runnable() {
 
             @Override
             public void run() {
                 PayTask alipay = new PayTask(RechargeActivity.this);
-                Map<String, String> result = alipay.payV2(orderInfo, true);
+                Map<String, String> result = alipay.payV2(orderinfo, true);
                 Log.i("msp", result.toString());
 
                 Message msg = new Message();
@@ -296,5 +322,22 @@ public class RechargeActivity extends BaseActivity implements View.OnClickListen
         }
     }
 
-
+    @Override
+    public void GetOrderStr(BaseResult<Data<String>> baseResult) {
+        switch(baseResult.getStatusCode()){
+            case 200:
+                if (baseResult.getData().isItem1()){
+                    orderinfo =baseResult.getData().getItem2();
+                    if (!"".equals(orderinfo)){
+                        alipay();
+                    }
+                }else{
+                    ToastUtils.showShort("获取支付信息失败！");
+                }
+                break;
+            default:
+                ToastUtils.showShort("获取支付信息失败！");
+                break;
+        }
+    }
 }

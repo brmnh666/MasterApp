@@ -383,5 +383,14 @@ public interface ApiService {
     Observable<BaseResult<Data>> UpdateSex(@Field("UserID") String UserID,
                                            @Field("Sex") String Sex);
 
-
+    /**
+     * 充值信息
+     * @param UserID
+     * @param TotalAmount
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("Pay/GetOrderStr")
+    Observable<BaseResult<Data<String>>> GetOrderStr(@Field("UserID") String UserID,
+                                                     @Field("TotalAmount") String TotalAmount);
 }
