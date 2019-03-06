@@ -120,7 +120,7 @@ public class Complete_wait_fetch_Fragement extends BaseFragment<GetOrderListForM
         recyclerView.setAdapter(Complete_wait_fetch_Adapter);
         Complete_wait_fetch_Adapter.setEmptyView(getEmptyView());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mPresenter.GetOrderInfoListForMe(userID,"1",Integer.toString(pageIndex),"4");
+        mPresenter.GetOrderInfoListForMe(userID,"5",Integer.toString(pageIndex),"4");
 
 
     }

@@ -120,7 +120,7 @@ public class Appointment_failure_fragment extends BaseFragment<GetOrderListForMe
         recyclerView.setAdapter(pending_appointment_adapter);
         pending_appointment_adapter.setEmptyView(getEmptyView());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mPresenter.GetOrderInfoListForMe(userID,"1",Integer.toString(pageIndex),"4");
+        mPresenter.GetOrderInfoListForMe(userID,"7",Integer.toString(pageIndex),"4");
 
 
     }

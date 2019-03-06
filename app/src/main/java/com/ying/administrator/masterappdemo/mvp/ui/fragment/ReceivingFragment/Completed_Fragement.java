@@ -120,7 +120,7 @@ public class Completed_Fragement extends BaseFragment<GetOrderListForMePresenter
         recyclerView.setAdapter(CompletedAdapter);
         CompletedAdapter.setEmptyView(getEmptyView());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mPresenter.GetOrderInfoListForMe(userID,"1",Integer.toString(pageIndex),"4");
+        mPresenter.GetOrderInfoListForMe(userID,"6",Integer.toString(pageIndex),"4");
 
 
     }

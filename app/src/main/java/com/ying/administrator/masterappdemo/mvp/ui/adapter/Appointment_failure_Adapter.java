@@ -1,7 +1,10 @@
 package com.ying.administrator.masterappdemo.mvp.ui.adapter;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.Nullable;
+import android.view.Window;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -21,9 +24,9 @@ public class Appointment_failure_Adapter extends BaseQuickAdapter<WorkOrder.Data
 //baseViewHolder.setText(R.id.tv_appointment_failure,item.getState());//预约不成功
         baseViewHolder.setText(R.id.tv_appointment_failure_status_install,item.getTypeName());//安装or维修
         if ("安装".equals(item.getTypeName())){
-            baseViewHolder.setBackgroundColor(R.id.tv_appointment_failure_status_install,R.color.color_custom_01);
+            baseViewHolder.setBackgroundColor(R.id.tv_appointment_failure_status_install, Color.parseColor("#1690FF"));
         }else{
-            baseViewHolder.setBackgroundColor(R.id.tv_appointment_failure_status_install,R.color.color_custom_04);
+            baseViewHolder.setBackgroundColor(R.id.tv_appointment_failure_status_install,Color.parseColor("#FF0000"));
         }
         baseViewHolder.setText(R.id.tv_reason_appointment_failure,item.getMemo());//memo
         baseViewHolder.setText(R.id.tv_appointment_failure_job_number,"工单号："+item.getOrderID());//工单号

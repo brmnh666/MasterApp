@@ -120,7 +120,7 @@ public class Quality_sheet_Fragement extends BaseFragment<GetOrderListForMePrese
         recyclerView.setAdapter(Qulity_Adapter);
         Qulity_Adapter.setEmptyView(getEmptyView());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mPresenter.GetOrderInfoListForMe(userID,"1",Integer.toString(pageIndex),"4");
+        mPresenter.GetOrderInfoListForMe(userID,"4",Integer.toString(pageIndex),"4");
 
 
     }

@@ -1,6 +1,7 @@
 package com.ying.administrator.masterappdemo.mvp.ui.adapter;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.support.annotation.Nullable;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -22,9 +23,9 @@ public class Complete_wait_fetch_Adapter extends BaseQuickAdapter<WorkOrder.Data
         //        baseViewHolder.setText(R.id.tv_complete_wait_fetch,item.getAddress());//已完成
         baseViewHolder.setText(R.id.tv_tv_complete_wait_fetch_status_install,item.getTypeName());//安装or维修
         if ("安装".equals(item.getTypeName())){
-            baseViewHolder.setBackgroundColor(R.id.tv_tv_complete_wait_fetch_status_install,R.color.color_custom_01);
+            baseViewHolder.setBackgroundColor(R.id.tv_tv_complete_wait_fetch_status_install, Color.parseColor("#1690FF"));
         }else{
-            baseViewHolder.setBackgroundColor(R.id.tv_tv_complete_wait_fetch_status_install,R.color.color_custom_04);
+            baseViewHolder.setBackgroundColor(R.id.tv_tv_complete_wait_fetch_status_install,Color.parseColor("#FF0000"));
         }
         baseViewHolder.setText(R.id.tv_complete_wait_fetch_job_number,"工单号:"+item.getOrderID());//工单号
         baseViewHolder.setText(R.id.tv_reason_complete_wait_fetch,item.getMemo());//memo
