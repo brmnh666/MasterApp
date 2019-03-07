@@ -9,14 +9,20 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
+import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.common.DefineView;
+import com.ying.administrator.masterappdemo.entity.UserInfo;
+import com.ying.administrator.masterappdemo.mvp.contract.WalletContract;
+import com.ying.administrator.masterappdemo.mvp.model.WalletModel;
+import com.ying.administrator.masterappdemo.mvp.presenter.WalletPresenter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class Wallet_Activity extends BaseActivity implements View.OnClickListener {
+public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> implements View.OnClickListener, WalletContract.View {
     @BindView(R.id.img_actionbar_return)
     ImageView mImgActionbarReturn;
     @BindView(R.id.tv_actionbar_return)
@@ -55,6 +61,8 @@ public class Wallet_Activity extends BaseActivity implements View.OnClickListene
     TextView mTvWechat;
     @BindView(R.id.rv_withdrawals_record)
     RecyclerView mRvWithdrawalsRecord;
+    private String userId;
+    private UserInfo.UserInfoDean userInfo=new UserInfo.UserInfoDean();
 
     @Override
     protected int setLayoutId() {
@@ -63,7 +71,9 @@ public class Wallet_Activity extends BaseActivity implements View.OnClickListene
 
     @Override
     protected void initData() {
-
+        SPUtils spUtils=SPUtils.getInstance("token");
+        userId = spUtils.getString("userName");
+        mPresenter.GetUserInfoList(userId,"1");
     }
 
     @Override
@@ -77,6 +87,7 @@ public class Wallet_Activity extends BaseActivity implements View.OnClickListene
     protected void setListener() {
         mLlReturn.setOnClickListener(this);
         mTvRecharge.setOnClickListener(this);
+        mTvWithdraw.setOnClickListener(this);
     }
 
     @Override
@@ -95,7 +106,23 @@ public class Wallet_Activity extends BaseActivity implements View.OnClickListene
             case R.id.tv_recharge:
                 startActivity(new Intent(mActivity,RechargeActivity.class));
                 break;
+            case R.id.tv_withdraw:
+                startActivity(new Intent(mActivity,WithDrawActivity.class));
+                break;
         }
 
+    }
+
+    @Override
+    public void GetUserInfoList(BaseResult<UserInfo> baseResult) {
+        switch (baseResult.getStatusCode()){
+            case 200:
+                userInfo=baseResult.getData().getData().get(0);
+                mTvMoney.setText(userInfo.getTotalMoney().toString());
+                mTvUnfinished.setText(userInfo.getFrozenMoney().toString()+"元");
+                break;
+            case 401:
+                break;
+        }
     }
 }

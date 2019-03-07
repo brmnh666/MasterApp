@@ -74,7 +74,8 @@
                 android:gravity="top"
                 android:textSize="14dp"
                 android:textColorHint="#B1B1B1"
-                android:textColor="#333333"/>
+                android:textColor="#333333"
+                android:maxLength="200"/>
 
            <!-- <TextView
                 android:layout_width="match_parent"

@@ -11,7 +11,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="85dp"
-        android:src="@mipmap/icon_app"
+        android:src="@drawable/app"
         android:layout_marginTop="30dp"/>
 
     <TextView
@@ -43,17 +43,19 @@
         android:layout_gravity="center"
         android:textColor="#AFAFAF"
         android:background="@drawable/gray_shape"/>
+
     <TextView
+        android:visibility="gone"
         android:id="@+id/tv_about_app"
-        android:layout_width="109dp"
-        android:layout_height="33dp"
-        android:textSize="16sp"
-        android:layout_marginTop="17dp"
-        android:text="关于APP"
-        android:gravity="center"
+        android:layout_width="107dp"
+        android:layout_height="34dp"
         android:layout_gravity="center"
+        android:layout_marginTop="17dp"
+        android:background="@drawable/gray_shape"
+        android:gravity="center"
+        android:text="关于APP"
         android:textColor="#AFAFAF"
-        android:background="@drawable/gray_shape"/>
+        android:textSize="16sp" />
     <TextView
         android:id="@+id/tv_opinion"
         android:layout_width="109dp"
@@ -70,7 +72,7 @@
         android:id="@+id/tv_net"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="http://www.jmiren.com"
+        android:text="http://www.xigyu.com"
         android:textSize="16sp"
         android:textColor="#6A6A6A"
         android:layout_gravity="center"
@@ -92,7 +94,7 @@
             android:id="@+id/tv_phone_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0574-88888888"
+            android:text="400-6262-365"
             android:textColor="#747FFF"
             android:textSize="16sp"/>
     </LinearLayout>

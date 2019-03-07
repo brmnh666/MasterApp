@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -14,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
@@ -36,7 +38,9 @@ import com.ying.administrator.masterappdemo.mvp.presenter.MainPresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.AboutUsActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.IntelligentCustomerServiceActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Opinion_Activity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_Receiving_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Personal_Information_Activity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.RechargeActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.SettingActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.SubAccountManagementActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Wallet_Activity;
@@ -48,6 +52,8 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> implements MainContract.View, View.OnClickListener {
     private static final String ARG_SHOW_TEXT = "text";
@@ -85,6 +91,9 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
     TextView mTv_me_withdraw;
     @BindView(R.id.tv_me_withdraw_deposit)
     TextView mTv_me_withdraw_deposit;
+    @BindView(R.id.tv_recharge)
+    TextView mTvRecharge;
+    Unbinder unbinder;
 
     private Home_Fragment.CustomShareListener mShareListener;
     private ShareAction mShareAction;
@@ -98,6 +107,9 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
     private String userID; //获取用户id
     private String mContentText;
 
+    int position = 0;
+    private Bundle bundle;
+    private Intent intent;
 
     public Me_Fragment() {
         // Required empty public constructor
@@ -177,6 +189,11 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
         mLlSubAccountManagement.setOnClickListener(this);
         mLlRecommendedGift.setOnClickListener(this);
         mLlOnlineConsultation.setOnClickListener(this);
+        mNormalAllLl.setOnClickListener(this);
+        mNormalDfhLl.setOnClickListener(this);
+        mNormalDfkLl.setOnClickListener(this);
+        mNormalDshLl.setOnClickListener(this);
+        mTvRecharge.setOnClickListener(this);
     }
 
     /*获取用户信息*/
@@ -309,7 +326,42 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                 break;
             case R.id.ll_online_consultation:
                 startActivity(new Intent(getActivity(), IntelligentCustomerServiceActivity.class));
-
+                break;
+            case R.id.normal_dfk_ll:
+                bundle = new Bundle();
+                bundle.putString("intent", "pending_appointment");
+                bundle.putInt("position", position);
+                intent = new Intent(mActivity, Order_Receiving_Activity.class);
+                intent.putExtras(bundle);
+                ActivityUtils.startActivity(intent);
+                break;
+            case R.id.normal_dfh_ll:
+                bundle = new Bundle();
+                bundle.putString("intent", "return");
+                bundle.putInt("position", 2);
+                intent = new Intent(mActivity, Order_Receiving_Activity.class);
+                intent.putExtras(bundle);
+                ActivityUtils.startActivity(intent);
+                break;
+            case R.id.normal_dsh_ll:
+                bundle = new Bundle();
+                bundle.putString("intent", "quality");
+                bundle.putInt("position", 3);
+                intent = new Intent(mActivity, Order_Receiving_Activity.class);
+                intent.putExtras(bundle);
+                ActivityUtils.startActivity(intent);
+                break;
+            case R.id.normal_all_ll:
+                bundle = new Bundle();
+                bundle.putString("intent", "completed");
+                bundle.putInt("position", 5);
+                intent = new Intent(mActivity, Order_Receiving_Activity.class);
+                intent.putExtras(bundle);
+                ActivityUtils.startActivity(intent);
+                break;
+            case R.id.tv_recharge:
+                startActivity(new Intent(mActivity, RechargeActivity.class));
+                break;
             default:
                 break;
         }
@@ -318,5 +370,19 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(String message) {
         mPresenter.GetUserInfoList(userID, "1");
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        unbinder = ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }

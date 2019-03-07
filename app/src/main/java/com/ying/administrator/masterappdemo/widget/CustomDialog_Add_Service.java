@@ -68,7 +68,7 @@ public class CustomDialog_Add_Service extends AlertDialog {
         setContentView(R.layout.customdialog_add_service);//自定义布局
 
         //按空白处不能取消动画
-         setCanceledOnTouchOutside(false);
+//         setCanceledOnTouchOutside(true);
 
         //初始化界面控件
         initView();

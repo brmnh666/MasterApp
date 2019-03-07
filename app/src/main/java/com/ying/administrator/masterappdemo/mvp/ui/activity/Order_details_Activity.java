@@ -65,6 +65,7 @@ import com.ying.administrator.masterappdemo.mvp.ui.adapter.Add_Service_Adapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Pre_order_Add_Ac_Adapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Pre_order_Add_Service_Adapter;
 import com.ying.administrator.masterappdemo.util.MyUtils;
+import com.ying.administrator.masterappdemo.widget.BalanceDialog;
 import com.ying.administrator.masterappdemo.widget.CustomDialog_Add_Accessory;
 import com.ying.administrator.masterappdemo.widget.CustomDialog_Add_Service;
 import com.ying.administrator.masterappdemo.widget.ViewExampleDialog;
@@ -445,6 +446,8 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                 }else {
                     customDialog_add_accessory.getWindow().setBackgroundDrawableResource(R.color.transparent);
                     customDialog_add_accessory.show();
+                    customDialog_add_accessory.setCanceledOnTouchOutside(true);
+                    customDialog_add_accessory.setCancelable(true);
                     // 设置宽度为屏宽、靠近屏幕底部。
                     Window window = customDialog_add_accessory.getWindow();
                     //最重要的一句话，一定要加上！要不然怎么设置都不行！
@@ -609,6 +612,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
                 }
 
+
                 /*添加*/
 
                 break;
@@ -763,7 +767,6 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                 if (selecttime == "") {//未选择时间
                     Toast.makeText(getApplication(), "请选择时间", Toast.LENGTH_SHORT).show();
                     return;
-
                 } else {
 
                     StringBuilder stringBuilder = new StringBuilder(selecttime);
@@ -997,7 +1000,22 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
         switch (baseResult.getStatusCode()) {
             case 200:
              if (!baseResult.getData().isItem1()){
-                 Toast.makeText(this,"余额不足请检查",Toast.LENGTH_LONG).show();
+//                 Toast.makeText(this,"余额不足请检查",Toast.LENGTH_LONG).show();
+                 final BalanceDialog dialog=new BalanceDialog(this);
+                 dialog.setMessage("余额不足，如需配件请充值，工单完成后，配件价钱将返还")
+                         .setTitle("提示")
+                         .setSingle(false).setOnClickBottomListener(new BalanceDialog.OnClickBottomListener() {
+                     @Override
+                     public void onPositiveClick() {
+                         dialog.dismiss();
+                         startActivity(new Intent(mActivity,RechargeActivity.class));
+                     }
+
+                     @Override
+                     public void onNegtiveClick() {
+                         dialog.dismiss();
+                     }
+                 }).show();
                  return;
              }else {
                    mPresenter.UpdateSendOrderUpdateTime(orderID,time);

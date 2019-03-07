@@ -144,13 +144,18 @@
         android:layout_below="@+id/tv_hint_in_service"
         android:layout_marginTop="10dp"
         android:background="#DAD7DB"></View>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_below="@+id/view_point"
+    android:gravity="center">
+
 
     <TextView
         android:id="@+id/tv_in_service_apply_parts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/view_point"
-        android:layout_marginLeft="30dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/tv_recevied"
@@ -162,13 +167,11 @@
         android:id="@+id/tv_in_service_finish"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/view_point"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="70dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/tv_recevied"
         android:padding="10dp"
+        android:layout_marginLeft="@dimen/dp_10"
         android:text="完成工单"
         android:textSize="16sp" />
 
@@ -176,15 +179,19 @@
         android:id="@+id/tv_cancel_work_order"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/view_point"
-        android:layout_alignParentRight="true"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="30dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/tv_recevied"
         android:padding="10dp"
         android:text="取消工单"
+        android:layout_marginLeft="@dimen/dp_10"
         android:textSize="16sp" />
-
-
+    <ImageView
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:src="@mipmap/daohang"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginBottom="10dp"/>
+</LinearLayout>
 </RelativeLayout>

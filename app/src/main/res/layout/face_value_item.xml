@@ -18,7 +18,7 @@
         android:background="@drawable/face_value_selector"
         android:text="100元"
         android:textColor="@drawable/face_value_textcolor_selector"
-        android:textSize="12sp"
+        android:textSize="16sp"
         android:layout_gravity="center"
         android:gravity="center"/>
 

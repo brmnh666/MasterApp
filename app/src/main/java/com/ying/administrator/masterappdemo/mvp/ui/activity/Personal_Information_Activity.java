@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -85,6 +86,11 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
     private ArrayList<IDCard.IDCardBean> idCardBeans=new ArrayList<>();
     SPUtils spUtils = SPUtils.getInstance("token");
     private UserInfo.UserInfoDean userInfo=new UserInfo.UserInfoDean();
+    private LinearLayout ll_select_service_area;
+    private LinearLayout ll_under_warranty;
+    private CheckBox cb_under_warranty;
+    private LinearLayout ll_outside_the_warranty;
+    private CheckBox cb_outside_the_warranty;
 
 
     @Override
@@ -140,6 +146,11 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
         ll_my_skills=findViewById(R.id.ll_my_skills);
         ll_male=findViewById(R.id.ll_male);
         ll_female=findViewById(R.id.ll_female);
+        ll_select_service_area = findViewById(R.id.ll_select_service_area);
+        ll_under_warranty = findViewById(R.id.ll_under_warranty);
+        cb_under_warranty = findViewById(R.id.cb_under_warranty);
+        ll_outside_the_warranty = findViewById(R.id.ll_outside_the_warranty);
+        cb_outside_the_warranty = findViewById(R.id.cb_outside_the_warranty);
     }
 
     @Override
@@ -151,7 +162,9 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
         ll_my_skills.setOnClickListener(this);
         ll_male.setOnClickListener(this);
         ll_female.setOnClickListener(this);
-
+        ll_select_service_area.setOnClickListener(this);
+        ll_under_warranty.setOnClickListener(this);
+        ll_outside_the_warranty.setOnClickListener(this);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -210,7 +223,17 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
 
                 break;
 
-
+            case R.id.ll_select_service_area:
+                startActivity(new Intent(mActivity, AddServiceAreaInfoActivity.class));
+                break;
+            case R.id.ll_under_warranty:
+                cb_under_warranty.setChecked(true);
+                cb_outside_the_warranty.setChecked(false);
+                break;
+            case R.id.ll_outside_the_warranty:
+                cb_outside_the_warranty.setChecked(true);
+                cb_under_warranty.setChecked(false);
+                break;
 
                 default:
                     break;

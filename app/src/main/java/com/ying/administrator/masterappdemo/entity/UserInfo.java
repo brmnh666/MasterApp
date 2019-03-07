@@ -54,8 +54,8 @@ public class UserInfo implements Serializable {
          * LastLoginDate : 2019-02-21T05:17:47.560Z
          * LoginCount : 0
          * RemainMoney : 0
-         * TotalMoney : 0
-         * FrozenMoney : 0
+         * TotalMoney : 0    总余额
+         * FrozenMoney : 0   冻结
          * Type : string
          * TopRank : string
          * IsUse : string

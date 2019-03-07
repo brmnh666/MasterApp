@@ -21,6 +21,10 @@ public class Opinion_Activity extends AppCompatActivity {
     private ImageView img_actionbar_message;
     private EditText et_opinion;
     private TextView tv_word_count;
+    private TextView tv_account_problem;
+    private TextView tv_payment_issues;
+    private TextView tv_other_questions;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +33,13 @@ public class Opinion_Activity extends AppCompatActivity {
         tv_actionbar_title=findViewById(R.id.tv_actionbar_title);
         img_actionbar_message=findViewById(R.id.img_actionbar_message);
         tv_word_count=findViewById(R.id.tv_word_count);
+        tv_account_problem = findViewById(R.id.tv_account_problem);
+        tv_payment_issues = findViewById(R.id.tv_payment_issues);
+        tv_other_questions = findViewById(R.id.tv_other_questions);
+        tv_account_problem.setOnClickListener(new CustomClickListnear());
+        tv_payment_issues.setOnClickListener(new CustomClickListnear());
+        tv_other_questions.setOnClickListener(new CustomClickListnear());
+
 
         et_opinion=findViewById(R.id.et_opinion);
         ll_return.setOnClickListener(new CustomClickListnear());
@@ -47,7 +58,7 @@ public class Opinion_Activity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                tv_word_count.setText("剩余字数:"+(MAX_COUNT - editable.length()));
+                tv_word_count.setText((MAX_COUNT - editable.length())+"/200");
             }
         });
 
@@ -61,6 +72,22 @@ public class Opinion_Activity extends AppCompatActivity {
                 case R.id.ll_return:
                     Opinion_Activity.this.finish();
                     break;
+                case R.id.tv_account_problem:
+                    tv_account_problem.setSelected(true);
+                    tv_payment_issues.setSelected(false);
+                    tv_other_questions.setSelected(false);
+                    break;
+                case R.id.tv_payment_issues:
+                    tv_account_problem.setSelected(false);
+                    tv_payment_issues.setSelected(true);
+                    tv_other_questions.setSelected(false);
+                    break;
+                case R.id.tv_other_questions:
+                    tv_account_problem.setSelected(false);
+                    tv_payment_issues.setSelected(false);
+                    tv_other_questions.setSelected(true);
+                        break;
+
             }
         }
     }

@@ -57,9 +57,21 @@
             android:layout_marginLeft="41dp"
             android:layout_marginRight="41dp"
             android:layout_marginTop="28dp"
-            android:layout_marginBottom="35dp"
             android:background="@drawable/green_shape"
             android:text="好的"
+            android:textColor="@color/white"
+            android:textSize="15sp"/>
+
+        <Button
+            android:id="@+id/btn_verified_update"
+            android:layout_width="match_parent"
+            android:layout_height="41dp"
+            android:layout_marginLeft="41dp"
+            android:layout_marginRight="41dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="35dp"
+            android:background="@drawable/green_shape"
+            android:text="修改实名认证"
             android:textColor="@color/white"
             android:textSize="15sp"/>
 

@@ -227,7 +227,7 @@
             android:layout_marginBottom="@dimen/dp_10"
             android:background="@drawable/tv_recevied"
             android:padding="8dp"
-            android:text="未预约成功"
+            android:text="预约失败"
             android:textSize="16sp"
 
             />
@@ -267,7 +267,7 @@
             android:layout_marginBottom="@dimen/dp_10"
             android:background="@drawable/tv_recevied"
             android:padding="8dp"
-            android:text="取消订单"
+            android:text="取消工单"
             android:textSize="16sp"
 
             />

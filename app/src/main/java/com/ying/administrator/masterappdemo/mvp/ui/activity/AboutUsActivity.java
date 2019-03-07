@@ -1,63 +1,87 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ying.administrator.masterappdemo.R;
+import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.common.DefineView;
 
-public class AboutUsActivity extends AppCompatActivity implements DefineView {
-private LinearLayout ll_return;
-private TextView tv_actionbar_title;
-private ImageView img_actionbar_message;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class AboutUsActivity extends BaseActivity implements View.OnClickListener {
+    @BindView(R.id.img_actionbar_return)
+    ImageView mImgActionbarReturn;
+    @BindView(R.id.tv_actionbar_return)
+    TextView mTvActionbarReturn;
+    @BindView(R.id.ll_return)
+    LinearLayout mLlReturn;
+    @BindView(R.id.tv_actionbar_title)
+    TextView mTvActionbarTitle;
+    @BindView(R.id.img_actionbar_message)
+    ImageView mImgActionbarMessage;
+    @BindView(R.id.actionbar_layout)
+    RelativeLayout mActionbarLayout;
+    @BindView(R.id.tv_version_number)
+    TextView mTvVersionNumber;
+    @BindView(R.id.tv_user_Agreement)
+    TextView mTvUserAgreement;
+    @BindView(R.id.tv_about_app)
+    TextView mTvAboutApp;
+    @BindView(R.id.tv_opinion)
+    TextView mTvOpinion;
+    @BindView(R.id.tv_net)
+    TextView mTvNet;
+    @BindView(R.id.tv_phone_number)
+    TextView mTvPhoneNumber;
+    @BindView(R.id.tv_company_english)
+    TextView mTvCompanyEnglish;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_about_us);
-        initView();
-        initValidata();
-        initListener();
+    protected int setLayoutId() {
+        return R.layout.activity_about_us;
+    }
+
+    @Override
+    protected void initData() {
+        mTvActionbarTitle.setText("关于我们");
+        mImgActionbarMessage.setVisibility(View.INVISIBLE);
     }
 
     @Override
     public void initView() {
-        ll_return=findViewById(R.id.ll_return);
-        tv_actionbar_title=findViewById(R.id.tv_actionbar_title);
-        img_actionbar_message=findViewById(R.id.img_actionbar_message);
+
+    }
 
 
+    @Override
+    protected void setListener() {
+        mLlReturn.setOnClickListener(this);
+        mTvOpinion.setOnClickListener(this);
     }
 
     @Override
-    public void initValidata() {
-        tv_actionbar_title.setText("关于我们");
-        img_actionbar_message.setVisibility(View.INVISIBLE);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 
     @Override
-    public void initListener() {
-        ll_return.setOnClickListener(new Customlistner());
-    }
-
-    @Override
-    public void bindData() {
-
-    }
-    public class Customlistner implements View.OnClickListener {
-
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()){
-                case R.id.ll_return:
-                    AboutUsActivity.this.finish();
-                    break;
-            }
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.ll_return:
+                finish();
+                break;
+            case R.id.tv_opinion:
+                startActivity(new Intent(mActivity,Opinion_Activity.class));
+                break;
         }
     }
 }

@@ -5,67 +5,73 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center">
-<!--不成功弹窗-->
-   <RelativeLayout
-       android:layout_width="match_parent"
-    android:layout_height="500dp"
-    >
-
-       <LinearLayout
+    <!--不成功弹窗-->
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="450dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-           android:layout_marginLeft="10dp"
-           android:layout_marginRight="10dp"
-           android:layout_marginBottom="60dp"
-           android:background="@drawable/dialog_unsuccess_bg"
-           android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-           <TextView
-               android:id="@+id/add_accessory_title"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:layout_gravity="center"
-               android:layout_marginTop="15dp"
-               android:layout_marginBottom="15dp"
-               android:text="请选择配件"
-               android:textColor="#6A6A6A"
-               android:textSize="17sp" />
-
-        <View
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/color_custom_02" />
+            android:layout_height="450dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="60dp"
+            android:background="@drawable/dialog_unsuccess_bg"
+            android:orientation="vertical">
 
-           <android.support.v7.widget.RecyclerView
-               android:id="@+id/recyclerView_custom_add_accessory"
-               android:layout_width="match_parent"
-               android:layout_height="match_parent"
-               android:layout_weight="1"
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/add_accessory_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:text="请选择配件"
+                    android:textColor="#6A6A6A"
+                    android:textSize="17sp" />
 
-               >
+            </RelativeLayout>
 
-           </android.support.v7.widget.RecyclerView>
 
-           <TextView
 
-               android:gravity="center"
-               android:layout_gravity="bottom"
-               android:id="@+id/tv_add_accessory_submit"
-               android:layout_width="match_parent"
-               android:layout_height="40dp"
-               android:textSize="20sp"
-               android:layout_marginLeft="10dp"
-               android:layout_marginRight="10dp"
-               android:layout_marginBottom="10dp"
-               android:textColor="@color/white"
-               android:text="确  定"
-               android:background="@drawable/add_accessory_submit"
-               />
-       </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/color_custom_02" />
 
- </RelativeLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView_custom_add_accessory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+
+                >
+
+            </android.support.v7.widget.RecyclerView>
+
+            <TextView
+
+                android:id="@+id/tv_add_accessory_submit"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/add_accessory_submit"
+                android:gravity="center"
+                android:text="确  定"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </LinearLayout>
 

@@ -62,6 +62,7 @@ import com.ying.administrator.masterappdemo.mvp.model.AllWorkOrdersModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.AllWorkOrdersPresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_Receiving_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Personal_Information_Activity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.VerifiedUpdateActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Verified_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Wallet_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.GrabsheetAdapter;
@@ -230,6 +231,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
     private View btn_share_one;
     private View btn_share_two;
     private Window window;
+    private Button btn_verified_update;
 
 
     public Home_Fragment() {
@@ -499,10 +501,18 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                     if (userInfo.getIfAuth().equals("1")) {
                         under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_successful_review, null);
                         btnConfirm = under_review.findViewById(R.id.btn_confirm);
+                        btn_verified_update = under_review.findViewById(R.id.btn_verified_update);
                         btnConfirm.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 underReviewDialog.dismiss();
+                            }
+                        });
+                        btn_verified_update.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                underReviewDialog.dismiss();
+                                startActivity(new Intent(mActivity, VerifiedUpdateActivity.class));
                             }
                         });
                         underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review).create();

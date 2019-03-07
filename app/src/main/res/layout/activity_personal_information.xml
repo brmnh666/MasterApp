@@ -73,6 +73,7 @@
                         android:layout_height="1dp"
                         android:layout_marginLeft="14dp"
                         android:layout_marginTop="11dp"
+                        android:layout_marginRight="14dp"
                         android:background="#E4E4E4" />
 
                     <LinearLayout
@@ -173,7 +174,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginLeft="14dp"
-                        android:layout_marginTop="14dp"
+                        android:layout_marginTop="11dp"
+                        android:layout_marginRight="14dp"
                         android:background="#E4E4E4" />
 
                     <LinearLayout
@@ -208,9 +210,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginLeft="14dp"
-                        android:layout_marginTop="14dp"
+                        android:layout_marginTop="11dp"
+                        android:layout_marginRight="14dp"
                         android:background="#E4E4E4" />
-
 
                     <LinearLayout
                         android:id="@+id/ll_password"
@@ -275,9 +277,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginLeft="14dp"
-                        android:layout_marginTop="14dp"
-                        />
-
+                        android:layout_marginTop="11dp"
+                        android:layout_marginRight="14dp"
+                        android:background="#E4E4E4" />
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -310,6 +312,117 @@
                             android:layout_height="60dp"
                             android:layout_marginLeft="14dp"
                             android:layout_marginRight="14dp" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/ll_select_service_area"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/color_white"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_codestr"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="17dp"
+                            android:layout_marginTop="19dp"
+                            android:layout_marginBottom="15dp"
+                            android:layout_weight="1"
+                            android:text="修改服务区域"
+                            android:textColor="#858585"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="点击申请"
+                            android:textColor="#aaaaaa"
+                            android:layout_marginRight="5dp"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:layout_width="14dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="14dp"
+                            android:src="@mipmap/right_arrow" />
+                    </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="14dp"
+                        android:layout_marginTop="11dp"
+                        android:layout_marginRight="14dp"
+                        android:background="#E4E4E4" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/color_white"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dp_10">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="7dp"
+                            android:layout_weight="1"
+                            android:text="选择服务起点"
+                            android:textColor="#858585"
+                            android:textSize="14sp" />
+
+                        <LinearLayout
+                            android:id="@+id/ll_under_warranty"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/dp_10">
+
+                            <CheckBox
+                                android:id="@+id/cb_under_warranty"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:background="@drawable/check_selector"
+                                android:button="@null"
+                                android:clickable="false" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:text="店铺地址"
+                                android:textColor="#858585"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ll_outside_the_warranty"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/dp_10">
+
+                            <CheckBox
+                                android:id="@+id/cb_outside_the_warranty"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:background="@drawable/check_selector"
+                                android:button="@null"
+                                android:clickable="false" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:text="政府中心"
+                                android:textColor="#858585"
+                                android:textSize="14sp" />
+                        </LinearLayout>
                     </LinearLayout>
 
                     <LinearLayout

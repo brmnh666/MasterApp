@@ -104,7 +104,7 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
 
         mIvAplipay.setSelected(true);//默认选中支付宝
         mTvTitle.setVisibility(View.VISIBLE);
-        mTvTitle.setText("充值");
+        mTvTitle.setText("在线充值");
         for (int i = 0; i < faceValues.length; i++) {
             faceValueList.add(new FaceValue(faceValues[i], false));
         }
