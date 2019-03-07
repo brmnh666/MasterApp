@@ -120,7 +120,7 @@ public class Completed_Fragement extends BaseFragment<GetOrderListForMePresenter
         recyclerView.setAdapter(CompletedAdapter);
         CompletedAdapter.setEmptyView(getEmptyView());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mPresenter.GetOrderInfoListForMe(userID,"6",Integer.toString(pageIndex),"20");
+        mPresenter.GetOrderInfoListForMe(userID,"6",Integer.toString(pageIndex),"5");
 
 
     }
@@ -139,8 +139,8 @@ public class Completed_Fragement extends BaseFragment<GetOrderListForMePresenter
                     ll_empty.setVisibility(View.INVISIBLE);//隐藏空的界面
                 }*/
                 pageIndex=1;
-                list.clear();
-                mPresenter.GetOrderInfoListForMe(userID,"6",Integer.toString(pageIndex),"20");
+                //list.clear();
+                mPresenter.GetOrderInfoListForMe(userID,"6",Integer.toString(pageIndex),"5");
                 CompletedAdapter.notifyDataSetChanged();
                 refreshlayout.finishRefresh();
             }
@@ -154,7 +154,7 @@ public class Completed_Fragement extends BaseFragment<GetOrderListForMePresenter
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 pageIndex++; //页数加1
-                mPresenter.GetOrderInfoListForMe(userID,"6",Integer.toString(pageIndex),"20");
+                mPresenter.GetOrderInfoListForMe(userID,"6",Integer.toString(pageIndex),"5");
                 CompletedAdapter.notifyDataSetChanged();
                 refreshlayout.finishLoadmore();
             }
@@ -419,10 +419,20 @@ public class Completed_Fragement extends BaseFragment<GetOrderListForMePresenter
                 if (baseResult.getData().getData()==null){
                     Log.d("===>","暂无预约工单");
                 }else {
-                    workOrder = baseResult.getData();
+                   /* workOrder = baseResult.getData();
                     list.addAll(workOrder.getData());
-                    CompletedAdapter.setNewData(list);
+                    CompletedAdapter.setNewData(list);*/
                     //  CompletedAdapter.notifyDataSetChanged();
+                    if (pageIndex==1){
+                        list.clear();
+                        workOrder = baseResult.getData();
+                        list.addAll(workOrder.getData());
+                        CompletedAdapter.notifyDataSetChanged();
+                    }else {
+                        workOrder = baseResult.getData();
+                        list.addAll(workOrder.getData());
+                        CompletedAdapter.setNewData(list);
+                    }
 
                 }
 

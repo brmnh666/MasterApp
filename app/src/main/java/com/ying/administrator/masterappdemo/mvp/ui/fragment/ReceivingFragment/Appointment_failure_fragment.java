@@ -107,7 +107,6 @@ public class Appointment_failure_fragment extends BaseFragment<GetOrderListForMe
 
         list=new ArrayList<>();
 
-
         subuserlist=new ArrayList<>();//获取子账号列表
 
 
@@ -120,7 +119,7 @@ public class Appointment_failure_fragment extends BaseFragment<GetOrderListForMe
         recyclerView.setAdapter(pending_appointment_adapter);
         pending_appointment_adapter.setEmptyView(getEmptyView());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mPresenter.GetOrderInfoListForMe(userID,"7",Integer.toString(pageIndex),"20");
+        mPresenter.GetOrderInfoListForMe(userID,"7",Integer.toString(pageIndex),"5");
 
 
     }
@@ -139,8 +138,8 @@ public class Appointment_failure_fragment extends BaseFragment<GetOrderListForMe
                     ll_empty.setVisibility(View.INVISIBLE);//隐藏空的界面
                 }*/
                 pageIndex=1;
-                list.clear();
-                mPresenter.GetOrderInfoListForMe(userID,"7",Integer.toString(pageIndex),"20");
+               // list.clear();
+                mPresenter.GetOrderInfoListForMe(userID,"7",Integer.toString(pageIndex),"5");
                 pending_appointment_adapter.notifyDataSetChanged();
                 refreshlayout.finishRefresh();
             }
@@ -154,7 +153,7 @@ public class Appointment_failure_fragment extends BaseFragment<GetOrderListForMe
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 pageIndex++; //页数加1
-                mPresenter.GetOrderInfoListForMe(userID,"7",Integer.toString(pageIndex),"20");
+                mPresenter.GetOrderInfoListForMe(userID,"7",Integer.toString(pageIndex),"5");
                 pending_appointment_adapter.notifyDataSetChanged();
                 refreshlayout.finishLoadmore();
             }
@@ -419,10 +418,21 @@ public class Appointment_failure_fragment extends BaseFragment<GetOrderListForMe
                 if (baseResult.getData().getData()==null){
                     Log.d("===>","暂无预约工单");
                 }else {
-                    workOrder = baseResult.getData();
+                /*    workOrder = baseResult.getData();
                     list.addAll(workOrder.getData());
                     pending_appointment_adapter.setNewData(list);
                     //  pending_appointment_adapter.notifyDataSetChanged();
+*/
+                    if (pageIndex==1){
+                        list.clear();
+                        workOrder = baseResult.getData();
+                        list.addAll(workOrder.getData());
+                        pending_appointment_adapter.notifyDataSetChanged();
+                    }else {
+                        workOrder = baseResult.getData();
+                        list.addAll(workOrder.getData());
+                        pending_appointment_adapter.setNewData(list);
+                    }
 
                 }
 

@@ -120,7 +120,7 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
         recyclerView.setAdapter(pending_appointment_adapter);
         pending_appointment_adapter.setEmptyView(getEmptyView());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mPresenter.GetOrderInfoListForMe(userID,"1",Integer.toString(pageIndex),"20");
+        mPresenter.GetOrderInfoListForMe(userID,"1",Integer.toString(pageIndex),"5");
 
 
     }
@@ -139,8 +139,8 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                     ll_empty.setVisibility(View.INVISIBLE);//隐藏空的界面
                 }*/
                 pageIndex=1;
-                list.clear();
-                mPresenter.GetOrderInfoListForMe(userID,"1",Integer.toString(pageIndex),"20");
+                //list.clear();
+                mPresenter.GetOrderInfoListForMe(userID,"1",Integer.toString(pageIndex),"5");
                 pending_appointment_adapter.notifyDataSetChanged();
                 refreshlayout.finishRefresh();
             }
@@ -154,7 +154,7 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 pageIndex++; //页数加1
-                mPresenter.GetOrderInfoListForMe(userID,"1",Integer.toString(pageIndex),"20");
+                mPresenter.GetOrderInfoListForMe(userID,"1",Integer.toString(pageIndex),"5");
                 pending_appointment_adapter.notifyDataSetChanged();
                 refreshlayout.finishLoadmore();
             }
@@ -308,7 +308,6 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                                             }
                                             subuserlist.get(position).setIscheck(true); //点击的为选中状态
                                             SubUserID=subuserlist.get(position).getUserID();
-
                                             redeploy_adapter.notifyDataSetChanged();
 
                                         }else { //点击的为已选中
@@ -419,9 +418,19 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                 if (baseResult.getData().getData()==null){
                     Log.d("===>","暂无预约工单");
                 }else {
-                    workOrder = baseResult.getData();
-                    list.addAll(workOrder.getData());
-                    pending_appointment_adapter.setNewData(list);
+
+                    if (pageIndex==1){
+                        list.clear();
+                        workOrder = baseResult.getData();
+                        list.addAll(workOrder.getData());
+                        pending_appointment_adapter.notifyDataSetChanged();
+                    }else {
+                        workOrder = baseResult.getData();
+                        list.addAll(workOrder.getData());
+                        pending_appointment_adapter.setNewData(list);
+                    }
+
+
                    //  pending_appointment_adapter.notifyDataSetChanged();
 
                 }

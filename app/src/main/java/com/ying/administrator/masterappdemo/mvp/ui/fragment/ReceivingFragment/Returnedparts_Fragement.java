@@ -120,7 +120,7 @@ public class Returnedparts_Fragement extends BaseFragment<GetOrderListForMePrese
         recyclerView.setAdapter(Return_Sheet_Adapter);
         Return_Sheet_Adapter.setEmptyView(getEmptyView());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mPresenter.GetOrderInfoListForMe(userID,"3",Integer.toString(pageIndex),"20");
+        mPresenter.GetOrderInfoListForMe(userID,"3",Integer.toString(pageIndex),"5");
 
 
     }
@@ -139,8 +139,8 @@ public class Returnedparts_Fragement extends BaseFragment<GetOrderListForMePrese
                     ll_empty.setVisibility(View.INVISIBLE);//隐藏空的界面
                 }*/
                 pageIndex=1;
-                list.clear();
-                mPresenter.GetOrderInfoListForMe(userID,"3",Integer.toString(pageIndex),"20");
+                //list.clear();
+                mPresenter.GetOrderInfoListForMe(userID,"3",Integer.toString(pageIndex),"5");
                 Return_Sheet_Adapter.notifyDataSetChanged();
                 refreshlayout.finishRefresh();
             }
@@ -154,7 +154,7 @@ public class Returnedparts_Fragement extends BaseFragment<GetOrderListForMePrese
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 pageIndex++; //页数加1
-                mPresenter.GetOrderInfoListForMe(userID,"3",Integer.toString(pageIndex),"20");
+                mPresenter.GetOrderInfoListForMe(userID,"3",Integer.toString(pageIndex),"5");
                 Return_Sheet_Adapter.notifyDataSetChanged();
                 refreshlayout.finishLoadmore();
             }
@@ -419,10 +419,23 @@ public class Returnedparts_Fragement extends BaseFragment<GetOrderListForMePrese
                 if (baseResult.getData().getData()==null){
                     Log.d("===>","暂无预约工单");
                 }else {
-                    workOrder = baseResult.getData();
+                  /*  workOrder = baseResult.getData();
                     list.addAll(workOrder.getData());
                     Return_Sheet_Adapter.setNewData(list);
                     //  Return_Sheet_Adapter.notifyDataSetChanged();
+*/
+                    if (pageIndex==1){
+                        list.clear();
+                        workOrder = baseResult.getData();
+                        list.addAll(workOrder.getData());
+                        Return_Sheet_Adapter.notifyDataSetChanged();
+                    }else {
+                        workOrder = baseResult.getData();
+                        list.addAll(workOrder.getData());
+                        Return_Sheet_Adapter.setNewData(list);
+                    }
+
+
 
                 }
 

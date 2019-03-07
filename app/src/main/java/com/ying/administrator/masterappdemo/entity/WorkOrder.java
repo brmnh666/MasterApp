@@ -189,7 +189,8 @@ public class WorkOrder implements Serializable {
         private String IsRecevieGoods;
         private String AppointmentMessage;
         private String AppointmentState;
-        private List<GAccessory> OrderAccessroyDetail;
+        private List<GAccessory> OrderAccessroyDetail; //所选配件详情
+        private List<GService> OrderServiceDetail;  //所选配件详情
         private String Distance;//返回距离
         private int page;
         private int limit;
@@ -201,6 +202,14 @@ public class WorkOrder implements Serializable {
 
         public void setOrderAccessroyDetail(List<GAccessory> orderAccessroyDetail) {
             OrderAccessroyDetail = orderAccessroyDetail;
+        }
+
+        public List<GService> getOrderServiceDetail() {
+            return OrderServiceDetail;
+        }
+
+        public void setOrderServiceDetail(List<GService> orderServiceDetail) {
+            OrderServiceDetail = orderServiceDetail;
         }
 
         public int getId() {

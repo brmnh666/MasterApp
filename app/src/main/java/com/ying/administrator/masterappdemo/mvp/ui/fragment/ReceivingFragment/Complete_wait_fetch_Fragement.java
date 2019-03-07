@@ -120,7 +120,7 @@ public class Complete_wait_fetch_Fragement extends BaseFragment<GetOrderListForM
         recyclerView.setAdapter(Complete_wait_fetch_Adapter);
         Complete_wait_fetch_Adapter.setEmptyView(getEmptyView());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mPresenter.GetOrderInfoListForMe(userID,"5",Integer.toString(pageIndex),"20");
+        mPresenter.GetOrderInfoListForMe(userID,"5",Integer.toString(pageIndex),"5");
 
 
     }
@@ -139,8 +139,8 @@ public class Complete_wait_fetch_Fragement extends BaseFragment<GetOrderListForM
                     ll_empty.setVisibility(View.INVISIBLE);//隐藏空的界面
                 }*/
                 pageIndex=1;
-                list.clear();
-                mPresenter.GetOrderInfoListForMe(userID,"5",Integer.toString(pageIndex),"20");
+               // list.clear();
+                mPresenter.GetOrderInfoListForMe(userID,"5",Integer.toString(pageIndex),"5");
                 Complete_wait_fetch_Adapter.notifyDataSetChanged();
                 refreshlayout.finishRefresh();
             }
@@ -154,7 +154,7 @@ public class Complete_wait_fetch_Fragement extends BaseFragment<GetOrderListForM
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 pageIndex++; //页数加1
-                mPresenter.GetOrderInfoListForMe(userID,"5",Integer.toString(pageIndex),"20");
+                mPresenter.GetOrderInfoListForMe(userID,"5",Integer.toString(pageIndex),"5");
                 Complete_wait_fetch_Adapter.notifyDataSetChanged();
                 refreshlayout.finishLoadmore();
             }
@@ -419,10 +419,22 @@ public class Complete_wait_fetch_Fragement extends BaseFragment<GetOrderListForM
                 if (baseResult.getData().getData()==null){
                     Log.d("===>","暂无预约工单");
                 }else {
-                    workOrder = baseResult.getData();
+                  /*  workOrder = baseResult.getData();
                     list.addAll(workOrder.getData());
-                    Complete_wait_fetch_Adapter.setNewData(list);
+                    Complete_wait_fetch_Adapter.setNewData(list);*/
                     //  Complete_wait_fetch_Adapter.notifyDataSetChanged();
+
+                    if (pageIndex==1){
+                        list.clear();
+                        workOrder = baseResult.getData();
+                        list.addAll(workOrder.getData());
+                        Complete_wait_fetch_Adapter.notifyDataSetChanged();
+                    }else {
+                        workOrder = baseResult.getData();
+                        list.addAll(workOrder.getData());
+                        Complete_wait_fetch_Adapter.setNewData(list);
+                    }
+
 
                 }
 

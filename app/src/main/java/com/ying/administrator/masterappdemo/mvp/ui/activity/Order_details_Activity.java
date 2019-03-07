@@ -248,15 +248,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     private int select_state=0;//记录厂家寄件申请（1） 和自购件申请（2） 0为未选中
     private String orderID;//工单号
     private double Service_range=15; //正常距离(km)
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        initView();
-        initValidata();
-        //mPresenter.GetOrderInfo();
 
-
-    }
 
 
     @Override
@@ -495,25 +487,10 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
                                     if (((Accessory) (adapter.getData().get(position))).isIscheck() == false) { //如果是为选中的状态点击  变为红色 选中状态 出现 数量选择器
 
-                                        //viewadd.setVisibility(View.VISIBLE); //数量选择器出现
-                                        adderView.setVisibility(View.VISIBLE);
-                                        img_ac_unselect.setVisibility(View.INVISIBLE);
-                                        img_ac_select.setVisibility(View.VISIBLE);
-                                        //ischeck[position]=true;
-                                        mList.get(position).setIscheck(true);
-                                        //没选选择默认数量为1
-                                        mAccessory = (Accessory) adapter.getItem(position);
-                                        mfAccessory = new FAccessory.OrderAccessoryStrBean.OrderAccessoryBean();
-                                        mfAccessory.setFAccessoryName(mAccessory.getAccessoryName());
-                                        mfAccessory.setQuantity("1"); //默认数字为1
-                                        mfAccessory.setDiscountPrice(mAccessory.getAccessoryPrice());
-                                        mList.get(position).setCheckedcount(1);
 
-                                        map.put(position, mfAccessory);
                                         adderView.setVisibility(View.VISIBLE);
                                         img_ac_unselect.setVisibility(View.INVISIBLE);
                                         img_ac_select.setVisibility(View.VISIBLE);
-                                        mList.get(position).setIscheck(true);
                                         //没选选择默认数量为1
                                         mAccessory=(Accessory)adapter.getItem(position);
                                         mfAccessory=new FAccessory.OrderAccessoryStrBean.OrderAccessoryBean();
@@ -523,6 +500,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                                         mfAccessory.setPrice(mAccessory.getAccessoryPrice());//原价
                                         mfAccessory.setDiscountPrice(mAccessory.getAccessoryPrice());//折扣价
                                         mList.get(position).setCheckedcount(1);
+                                        mList.get(position).setIscheck(true);
                                         map.put(position,mfAccessory);
 
 
@@ -594,7 +572,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                                             int keymap = 0;   //保存map的键
                                             for (int i = 0; i < mList.size(); i++) {
                                                 //先比较产品名字
-                                                if (((FAccessory.OrderAccessoryStrBean.OrderAccessoryBean) adapter.getData().get(position)).getFAccessoryName().equals(mList.get(i).getAccessoryName())) {
+                                                if (((FAccessory.OrderAccessoryStrBean.OrderAccessoryBean) adapter.getData().get(position)).getFAccessoryID().equals(mList.get(i).getFAccessoryID())) {
                                                     mList.get(i).setIscheck(false);
                                                     AccessoryID = mList.get(i).getFAccessoryID();
                                                     mList.get(i).setCheckedcount(1);
@@ -602,7 +580,6 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                                             }
 
 
-                                            Log.d("Accessoryid的值是", AccessoryID);
 
                                             for (Integer key : map.keySet()) {
                                                 System.out.println("key= " + key + " and value= " + map.get(key));
@@ -614,12 +591,13 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                                             }
                                             if (is_exist) {
                                                 map.remove(keymap);
+                                                vibrator.vibrate(50);
                                                 adapter.remove(position);
                                             }
 
                                             Log.d("map里面的值", String.valueOf(map.size()));
                                             tv_total_price.setText("服务金额:¥" + gettotalPrice(fAcList, fList_service));
-                                            vibrator.vibrate(50);
+
                                             break;
                                     }
                                 }
@@ -729,7 +707,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                                         int keymap = 0;   //保存map的箭
                                         for (int i = 0; i < mList_service.size(); i++) {
                                             //先比较产品名字
-                                            if (((FService.OrderServiceStrBean.OrderServiceBean) adapter.getData().get(position)).getServiceName().equals(mList_service.get(i).getFServiceName())) {
+                                            if (((FService.OrderServiceStrBean.OrderServiceBean) adapter.getData().get(position)).getServiceID().equals(mList_service.get(i).getFServiceID())) {
                                                 mList_service.get(i).setIschecked(false);
                                                 ServiceID = mList_service.get(i).getFServiceID();
                                             }

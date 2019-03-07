@@ -69,7 +69,7 @@ import java.util.List;
         in_service_adapter.setEmptyView(getEmptyView());
         recyclerView.setAdapter(in_service_adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mPresenter.GetOrderInfoListForMe(userID,"2",Integer.toString(pageIndex),"20");
+        mPresenter.GetOrderInfoListForMe(userID,"2",Integer.toString(pageIndex),"5");
     }
     private void initListener() {
 
@@ -78,8 +78,8 @@ import java.util.List;
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 pageIndex=1;
-                list.clear();
-                mPresenter.GetOrderInfoListForMe(userID,"2",Integer.toString(pageIndex),"20");
+              //  list.clear();
+                mPresenter.GetOrderInfoListForMe(userID,"2",Integer.toString(pageIndex),"5");
                 in_service_adapter.notifyDataSetChanged();
                 refreshlayout.finishRefresh();
             }
@@ -92,7 +92,7 @@ import java.util.List;
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 pageIndex++; //页数加1
-                mPresenter.GetOrderInfoListForMe(userID,"2",Integer.toString(pageIndex),"20");
+                mPresenter.GetOrderInfoListForMe(userID,"2",Integer.toString(pageIndex),"5");
                 in_service_adapter.notifyDataSetChanged();
                 refreshlayout.finishLoadmore();
             }
@@ -131,10 +131,20 @@ import java.util.List;
                 if (baseResult.getData().getData()==null){
                     Log.d("==>","暂无服务工单");
                 }else {
-                    workOrder = baseResult.getData();
-                    //list.clear();
-                    list.addAll(workOrder.getData());
-                    in_service_adapter.setNewData(list);
+                    if (pageIndex==1){
+                        list.clear();
+                        workOrder = baseResult.getData();
+                        list.addAll(workOrder.getData());
+                        in_service_adapter.notifyDataSetChanged();
+                    }else {
+                        workOrder = baseResult.getData();
+                        list.addAll(workOrder.getData());
+                        in_service_adapter.setNewData(list);
+                    }
+
+
+
+
                 }
 
                 break;

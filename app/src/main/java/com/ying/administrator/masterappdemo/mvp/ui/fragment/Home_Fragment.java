@@ -296,8 +296,8 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 pageIndex = 1;
-                list.clear();
-                mPresenter.WorkerGetOrderList(userID, "0", Integer.toString(pageIndex), "100");
+                //list.clear();
+                mPresenter.WorkerGetOrderList(userID, "0", Integer.toString(pageIndex), "10");
                 grabsheetAdapter.notifyDataSetChanged();
                 refreshlayout.finishRefresh();
                 refreshlayout.setLoadmoreFinished(false);
@@ -321,7 +321,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
             public void onLoadmore(RefreshLayout refreshlayout) {
                 pageIndex++; //页数加1
                 Log.d("当前的单数", String.valueOf(list.size()));
-                mPresenter.WorkerGetOrderList(userID, "0", Integer.toString(pageIndex), "20");
+                mPresenter.WorkerGetOrderList(userID, "0", Integer.toString(pageIndex), "10");
                 grabsheetAdapter.notifyDataSetChanged();
                 refreshlayout.finishLoadmore();
             }
@@ -340,12 +340,24 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                     // Toast.makeText(getActivity(),"咱无新工单",Toast.LENGTH_SHORT).show();
                     Log.d("===>", "暂无新工单");
                 } else {
-                    workOrder = baseResult.getData();
-                    list.addAll(workOrder.getData());
-                    grabsheetAdapter.setNewData(list);
+                  /*  workOrder = baseResult.getData();
+                    list.addAll(workOrder.getData());*/
+                   /* grabsheetAdapter.setNewData(list);
                     if (pageIndex != 1 && workOrder.getData().size() == 0) {
                         mRefreshLayout.finishLoadmoreWithNoMoreData();
+                    }*/
+
+                    if (pageIndex==1){
+                        list.clear();
+                        workOrder = baseResult.getData();
+                        list.addAll(workOrder.getData());
+                        grabsheetAdapter.notifyDataSetChanged();
+                    }else {
+                        workOrder = baseResult.getData();
+                        list.addAll(workOrder.getData());
+                        grabsheetAdapter.setNewData(list);
                     }
+
                 }
 
                 break;
