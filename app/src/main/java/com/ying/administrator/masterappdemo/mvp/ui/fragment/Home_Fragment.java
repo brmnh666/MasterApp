@@ -321,7 +321,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
             public void onLoadmore(RefreshLayout refreshlayout) {
                 pageIndex++; //页数加1
                 Log.d("当前的单数", String.valueOf(list.size()));
-                mPresenter.WorkerGetOrderList(userID, "0", Integer.toString(pageIndex), "4");
+                mPresenter.WorkerGetOrderList(userID, "0", Integer.toString(pageIndex), "20");
                 grabsheetAdapter.notifyDataSetChanged();
                 refreshlayout.finishLoadmore();
             }

@@ -176,7 +176,11 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
                 if (len > 1 && text.startsWith("0")) {
                     value = s.replace(0, 1, "").toString();
                 } else {
-                    value = s.toString();
+                    if ("".equals(text)){
+                        value="0";
+                    }else{
+                        value=text;
+                    }
                 }
                 mTvActualArrival.setText(value);
             }
@@ -209,7 +213,7 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
 
                 break;
             case R.id.bt_recharge:
-                if (value==null){
+                if (value==null||"0".equals(value)){
                     ToastUtils.showShort("请选择或输入充值金额");
                     return;
                 }
@@ -238,7 +242,7 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
          *
          * orderInfo的获取必须来自服务端；
          */
-
+//        orderinfo="app_id=2019022063243925&biz_content=%7b%22body%22%3a%2218892621500%e5%85%85%e5%80%bc100%22%2c%22out_trade_no%22%3a%221551925667260075260075%22%2c%22product_code%22%3a%22QUICK_MSECURITY_PAY%22%2c%22subject%22%3a%22%e5%85%85%e5%80%bc%22%2c%22timeout_express%22%3a%2230m%22%2c%22total_amount%22%3a%220.01%22%7d&charset=utf-8&format=json&method=alipay.trade.app.pay&notify_url=%e5%a4%96%e7%bd%91%e5%95%86%e6%88%b7%e5%8f%af%e4%bb%a5%e8%ae%bf%e9%97%ae%e7%9a%84%e5%bc%82%e6%ad%a5%e5%9c%b0%e5%9d%80&sign_type=RSA2&timestamp=2019-03-07+10%3a30%3a06&version=1.0&sign=TR2OmEdhQaN2BbKQr6GuiRboONI76S4WFFuim3ojWnKg4CcxdW3uxXyHOWl949Va3fucQ6OiQlU%2b8dx2VU%2fvUbhHRqAlCRJZ8%2fYdUD5kypTLElwA0ZS8BznnHmk3pn3DAtvNjUFPD2fO7YGytDJzo4FIkX5wnnBYuFx4Rf8N2HzVJC2JRlCnroS%2braPQluMcWxq9EhcaMHwGzUaegB73nfvQ55OI2jECWR1rOeH83OeLPX3wfwwigf1TmRsWuCuh5xjRq2hlV6DewlTl%2fg4NcYL1ZIwG26TXQ8tSjhCEHSbFgWhYYOk7UaRtyP2HSgoKuN%2bd3uVIU%2bE6%2fvxc2hoQbg%3d%3d";
         Runnable payRunnable = new Runnable() {
 
             @Override
