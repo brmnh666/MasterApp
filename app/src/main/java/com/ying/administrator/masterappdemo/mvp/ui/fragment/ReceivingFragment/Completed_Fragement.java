@@ -120,7 +120,7 @@ public class Completed_Fragement extends BaseFragment<GetOrderListForMePresenter
         recyclerView.setAdapter(CompletedAdapter);
         CompletedAdapter.setEmptyView(getEmptyView());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mPresenter.GetOrderInfoListForMe(userID,"6",Integer.toString(pageIndex),"4");
+        mPresenter.GetOrderInfoListForMe(userID,"6",Integer.toString(pageIndex),"20");
 
 
     }
@@ -140,7 +140,7 @@ public class Completed_Fragement extends BaseFragment<GetOrderListForMePresenter
                 }*/
                 pageIndex=1;
                 list.clear();
-                mPresenter.GetOrderInfoListForMe(userID,"1",Integer.toString(pageIndex),"4");
+                mPresenter.GetOrderInfoListForMe(userID,"6",Integer.toString(pageIndex),"20");
                 CompletedAdapter.notifyDataSetChanged();
                 refreshlayout.finishRefresh();
             }
@@ -154,7 +154,7 @@ public class Completed_Fragement extends BaseFragment<GetOrderListForMePresenter
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 pageIndex++; //页数加1
-                mPresenter.GetOrderInfoListForMe(userID,"1",Integer.toString(pageIndex),"4");
+                mPresenter.GetOrderInfoListForMe(userID,"6",Integer.toString(pageIndex),"20");
                 CompletedAdapter.notifyDataSetChanged();
                 refreshlayout.finishLoadmore();
             }

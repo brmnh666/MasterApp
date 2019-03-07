@@ -120,7 +120,7 @@ public class Appointment_failure_fragment extends BaseFragment<GetOrderListForMe
         recyclerView.setAdapter(pending_appointment_adapter);
         pending_appointment_adapter.setEmptyView(getEmptyView());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mPresenter.GetOrderInfoListForMe(userID,"7",Integer.toString(pageIndex),"4");
+        mPresenter.GetOrderInfoListForMe(userID,"7",Integer.toString(pageIndex),"20");
 
 
     }
@@ -140,7 +140,7 @@ public class Appointment_failure_fragment extends BaseFragment<GetOrderListForMe
                 }*/
                 pageIndex=1;
                 list.clear();
-                mPresenter.GetOrderInfoListForMe(userID,"1",Integer.toString(pageIndex),"4");
+                mPresenter.GetOrderInfoListForMe(userID,"7",Integer.toString(pageIndex),"20");
                 pending_appointment_adapter.notifyDataSetChanged();
                 refreshlayout.finishRefresh();
             }
@@ -154,7 +154,7 @@ public class Appointment_failure_fragment extends BaseFragment<GetOrderListForMe
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 pageIndex++; //页数加1
-                mPresenter.GetOrderInfoListForMe(userID,"1",Integer.toString(pageIndex),"4");
+                mPresenter.GetOrderInfoListForMe(userID,"7",Integer.toString(pageIndex),"20");
                 pending_appointment_adapter.notifyDataSetChanged();
                 refreshlayout.finishLoadmore();
             }

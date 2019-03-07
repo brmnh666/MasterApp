@@ -15,7 +15,7 @@ public class RechargeModel implements RechargeContract.Model {
 
     @Override
     public Observable<BaseResult<Data<String>>> GetOrderStr(String userid, String TotalAmount) {
-        return ApiRetrofit.getDefault().GetOrderStr(userid, TotalAmount)
+        return ApiRetrofit.getDefault().GetOrderStr(userid, TotalAmount,"1")
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

@@ -394,12 +394,14 @@ public interface ApiService {
 
     /**
      * 充值信息
-     * @param UserID
-     * @param TotalAmount
+     * @param UserID 账号
+     * @param TotalAmount 金额
+     * @param Type  1余额 2 诚意金
      * @return
      */
     @FormUrlEncoded
     @POST("Pay/GetOrderStr")
     Observable<BaseResult<Data<String>>> GetOrderStr(@Field("UserID") String UserID,
-                                                     @Field("TotalAmount") String TotalAmount);
+                                                     @Field("TotalAmount") String TotalAmount,
+                                                     @Field("Type") String Type);
 }
