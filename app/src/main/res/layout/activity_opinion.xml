@@ -24,7 +24,7 @@
             android:background="@drawable/white_shape"
             android:text="账号问题"
             android:textSize="16sp"
-            android:textColor="#666666" />
+            android:textColor="@drawable/opinion_textcolor_selector" />
         <TextView
             android:id="@+id/tv_payment_issues"
             android:layout_width="82dp"
@@ -34,7 +34,7 @@
             android:background="@drawable/white_shape"
             android:text="支付问题"
             android:textSize="16sp"
-            android:textColor="#666666"
+            android:textColor="@drawable/opinion_textcolor_selector"
             android:layout_marginLeft="24dp"/>
         <TextView
             android:id="@+id/tv_other_questions"
@@ -45,7 +45,7 @@
             android:background="@drawable/white_shape"
             android:text="其它问题"
             android:textSize="16sp"
-            android:textColor="#666666"
+            android:textColor="@drawable/opinion_textcolor_selector"
             android:layout_marginLeft="24dp"/>
 
     </LinearLayout>
