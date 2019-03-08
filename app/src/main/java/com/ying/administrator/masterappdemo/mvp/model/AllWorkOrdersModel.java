@@ -21,6 +21,14 @@ public class AllWorkOrdersModel implements AllWorkOrdersContract.Model {
                 .subscribeOn(Schedulers.io());
     }
 
+    /*接单操作*/
+    @Override
+    public Observable<BaseResult<Data>> UpdateSendOrderState(String OrderID, String State) {
+        return ApiRetrofit.getDefault().UpdateSendOrderState(OrderID,State)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
    /* @Override
     public Observable<BaseResult<WorkOrder>> GetOrderInfoList(String SendUser,String state, String page, String limit) {
         return ApiRetrofit.getDefault().GetOrderInfoList(SendUser,state, page, limit)
@@ -28,12 +36,12 @@ public class AllWorkOrdersModel implements AllWorkOrdersContract.Model {
                 .subscribeOn(Schedulers.io());
     }*/
     /*抢单操作*/
-    @Override
+  /*  @Override
     public Observable<BaseResult<Data>> AddGrabsheetapply(String OrderID, String UserID) {
         return  ApiRetrofit.getDefault().AddGrabsheetapply(OrderID,UserID)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
-    }
+    }*/
 
     @Override
     public Observable<BaseResult<String>> GetUserInfo(String userName) {

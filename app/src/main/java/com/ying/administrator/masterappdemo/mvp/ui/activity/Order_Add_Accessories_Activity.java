@@ -646,7 +646,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                      mfAccessory.setDiscountPrice(gAccessories.get(i).getDiscountPrice());
                      mfAccessory.setFAccessoryName(gAccessories.get(i).getFAccessoryName());
                      mfAccessory.setQuantity(String.valueOf(gAccessories.get(i).getQuantity()));
-                     map.put(i,mfAccessory);
+                     map.put(gAccessories.get(i).getFAccessoryID()-1,mfAccessory);
 
                     }
                     fAcList=new ArrayList<>(map.values());
@@ -674,7 +674,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                      mfService.setServiceName(gServices.get(i).getServiceName());
                      mfService.setDiscountPrice(gServices.get(i).getDiscountPrice());
                      mfService.setPrice(gServices.get(i).getPrice());
-                     map_service.put(i,mfService);
+                     map_service.put(gServices.get(i).getServiceID()-1,mfService);
                  }
                     fList_service=new ArrayList<>(map_service.values());
                     recyclerView_Pre_add_service.setLayoutManager(new LinearLayoutManager(mActivity));

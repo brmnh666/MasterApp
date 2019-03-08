@@ -18,13 +18,14 @@ public interface AllWorkOrdersContract {
       //获取列表新接口
        Observable<BaseResult<WorkOrder>> WorkerGetOrderList(String UserID,String State,String page,String limit);
 
-       //获取列表旧接口
-       // Observable<BaseResult<WorkOrder>> GetOrderInfoList(String SendUser,String state, String page, String limit);
-       //抢单操作
-        Observable<BaseResult<Data>> AddGrabsheetapply(String OrderID, String UserID);
+        //获取列表旧接口
+        // Observable<BaseResult<WorkOrder>> GetOrderInfoList(String SendUser,String state, String page, String limit);
+        //抢单操作
+        // Observable<BaseResult<Data>> AddGrabsheetapply(String OrderID, String UserID);
+        //接单操作
+         Observable<BaseResult<Data>> UpdateSendOrderState(String OrderID,String State);
         //根据用户名获取已抢订单
-      //  Observable<BaseResult<WorkOrder>> GetOrderInfoListForMe(String state, String page, String limit,String UserID);
-
+        //  Observable<BaseResult<WorkOrder>> GetOrderInfoListForMe(String state, String page, String limit,String UserID);
         //获取用户信息
         Observable<BaseResult<String>> GetUserInfo(String userName);
         Observable<BaseResult<UserInfo>> GetUserInfoList(String UserID,String limit);
@@ -36,11 +37,13 @@ public interface AllWorkOrdersContract {
         //获取列表新接口
         void WorkerGetOrderList(BaseResult<WorkOrder>baseResult);
 
-       // void GetOrderInfoList(BaseResult<WorkOrder> baseResult);
+        // void GetOrderInfoList(BaseResult<WorkOrder> baseResult);
         //抢单操作
-        void AddGrabsheetapply(BaseResult<Data> baseResult);
+        // void AddGrabsheetapply(BaseResult<Data> baseResult);
         //根据用户名获取已抢订单
-       // void GetOrderInfoListForMe(BaseResult<WorkOrder> baseResult);
+        // void GetOrderInfoListForMe(BaseResult<WorkOrder> baseResult);
+        //接单操作
+        void UpdateSendOrderState(BaseResult<Data> baseResult);
         //获取用户信息
         void GetUserInfo(BaseResult<String> baseResult);
         void GetUserInfoList(BaseResult<UserInfo> baseResult);
@@ -50,9 +53,11 @@ public interface AllWorkOrdersContract {
         //获取列表新接口
         public abstract void WorkerGetOrderList(String UserID,String State,String page,String limit);
 
-       // public abstract void GetOrderInfoList(String SendUser,String state, String page,String limit);
+        // public abstract void GetOrderInfoList(String SendUser,String state, String page,String limit);
         //抢单操作
-        public abstract void AddGrabsheetapply(String OrderID,String UserID);
+        // public abstract void AddGrabsheetapply(String OrderID,String UserID);
+        //接单操作
+        public abstract void UpdateSendOrderState(String OrderID,String State);
         //根据用户名获取已抢订单
         //public abstract void GetOrderInfoListForMe(String state, String page, String limit,String UserID);
         //获取用户信息

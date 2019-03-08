@@ -369,11 +369,30 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
         }
     }
 
-
     @Override
+    public void UpdateSendOrderState(BaseResult<Data> baseResult) {
+        Data data = baseResult.getData();
+        switch (baseResult.getStatusCode()) {
+            case 200://200
+                if (data.isItem1()) {//抢单成功
+                    Toast.makeText(getActivity(), "抢单成功", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getActivity(), Order_Receiving_Activity.class);
+                    intent.putExtra("intent", "pending_appointment");
+                    startActivity(intent);
+                } else  {
+                        Toast.makeText(getActivity(), (CharSequence) data.getItem2(), Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+            default:
+                break;
+        }
+    }
+
+
+  /*  @Override
     public void AddGrabsheetapply(BaseResult<Data> baseResult) {
         Data data = baseResult.getData();
-
         switch (baseResult.getStatusCode()) {
             case 200://200
                 if (data.isItem1()) {//抢单成功
@@ -385,16 +404,13 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                         Toast.makeText(getActivity(), "用户未进行实名认证", Toast.LENGTH_SHORT).show();
                         return;
                     }
-
                 }
                 break;
 
             default:
                 break;
         }
-
-
-    }
+    }*/
 
     @Override
     public void GetUserInfo(BaseResult<String> baseResult) {
@@ -809,7 +825,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
         mRecyclerviewOrderReceiving.setAdapter(grabsheetAdapter);
 
 
-        mPresenter.WorkerGetOrderList(userID, "0", Integer.toString(pageIndex), "100");
+        mPresenter.WorkerGetOrderList(userID, "0", Integer.toString(pageIndex), "5");
       /* if (list.isEmpty()){ //没有数据显示空
            contentLoadingEmpty();
 
@@ -827,16 +843,18 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                     case R.id.img_grabsheet:
                         if (userInfo.getIfAuth() != null) {
                             if (userInfo.getIfAuth().equals("1")) {
-                                mPresenter.AddGrabsheetapply(((WorkOrder.DataBean) adapter.getItem(position)).getOrderID(), userID);
+                               // mPresenter.AddGrabsheetapply(((WorkOrder.DataBean) adapter.getItem(position)).getOrderID(), userID);
+                               mPresenter.UpdateSendOrderState(((WorkOrder.DataBean) adapter.getItem(position)).getOrderID(),"1");
+
                                 //Log.d("WorkOrder",((WorkOrder.DataBean)adapter.getItem(position)).getOrderID());
-                                grabsheetAdapter.remove(position);
-                                Intent intent = new Intent(getActivity(), Order_Receiving_Activity.class);
+                                //grabsheetAdapter.remove(position);
+                               /* Intent intent = new Intent(getActivity(), Order_Receiving_Activity.class);
                                 intent.putExtra("intent", "pending_appointment");
-                                startActivity(intent);
-                                if (list.isEmpty()) {  //判断订单是否为空
+                                startActivity(intent);*/
+                              /*  if (list.isEmpty()) {  //判断订单是否为空
                                     contentLoadingEmpty();
 
-                                }
+                                }*/
                             } else if (userInfo.getIfAuth().equals("0")) {
                                 under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_under_review, null);
                                 btnConfirm = under_review.findViewById(R.id.btn_confirm);

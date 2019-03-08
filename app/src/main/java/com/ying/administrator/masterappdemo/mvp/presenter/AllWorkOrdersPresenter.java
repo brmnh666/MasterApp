@@ -22,6 +22,17 @@ public class AllWorkOrdersPresenter extends AllWorkOrdersContract.Presenter {
 
     }
 
+    @Override
+    public void UpdateSendOrderState(String OrderID, String State) {
+        mModel.UpdateSendOrderState(OrderID,State)
+                .subscribe(new BaseObserver<Data>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<Data> value) {
+                        mView.UpdateSendOrderState(value);
+                    }
+                });
+    }
+
   /*  @Override
     public void GetOrderInfoList(String SendUser,String state, String page, String limit) {
         mModel.GetOrderInfoList(SendUser,state, page, limit)
@@ -33,7 +44,7 @@ public class AllWorkOrdersPresenter extends AllWorkOrdersContract.Presenter {
                 });
     }
 */
-    @Override
+   /* @Override
     public void AddGrabsheetapply(String OrderID, String UserID) {
         mModel.AddGrabsheetapply(OrderID,UserID)
                 .subscribe(new BaseObserver<Data>() {
@@ -42,7 +53,7 @@ public class AllWorkOrdersPresenter extends AllWorkOrdersContract.Presenter {
                      mView.AddGrabsheetapply(value);
                     }
                 });
-    }
+    }*/
 
     @Override
     public void GetUserInfo(String userName) {
