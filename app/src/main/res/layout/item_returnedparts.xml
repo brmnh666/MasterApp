@@ -127,7 +127,8 @@
         android:layout_marginTop="11dp"
         android:text="提示:服务过程中需要申请配件请点击申请配件"
         android:textColor="#FF4444"
-        android:textSize="11sp" />
+        android:textSize="11sp"
+        android:visibility="invisible"/>
 
     <LinearLayout
         android:id="@+id/ll_pending_appointment_cancel"
@@ -137,7 +138,8 @@
         android:layout_marginLeft="13dp"
         android:layout_marginTop="11dp"
         android:paddingRight="15dp"
-        android:visibility="gone">
+        android:gravity="center_vertical"
+        android:visibility="visible">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -157,7 +159,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            app:isHideTimeBackground="false"
+            android:padding="5dp"
+            app:isHideTimeBackground="true"
             app:isShowDay="true"
             app:isShowHour="false"
             app:isShowMillisecond="false"

@@ -33,7 +33,7 @@ public class Appointment_failure_Adapter extends BaseQuickAdapter<WorkOrder.Data
         baseViewHolder.setText(R.id.tv_loaction_appointment_failure,"距离"+item.getDistance()+"km");//距离
         baseViewHolder.setText(R.id.tv_num,"数量："+item.getNum()+"台");//数量
         baseViewHolder.setText(R.id.tv_address_appointment_failure,item.getAddress());//地址
-        //baseViewHolder.setText(R.id.tv_appointment_failure_reason,item.getMemo());//原因
+        baseViewHolder.setText(R.id.tv_appointment_failure_reason,"原因:"+item.getAppointmentMessage());//原因
         baseViewHolder.addOnClickListener(R.id.img_pending_appointment_failure_phone);
     }
 }
