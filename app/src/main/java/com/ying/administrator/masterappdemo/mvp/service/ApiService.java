@@ -207,9 +207,49 @@ public interface ApiService {
                                                             @Field("limit") String limit,
                                                             @Field("SendUser") String SendUser);*/
 
+    /**
+     * 订单维修图片
+     * @param body
+     * @return
+     */
+    @POST("Upload/ReuturnAccessoryPicUpload")
+    Observable<BaseResult<Data<String>>> ReuturnAccessoryPicUpload(@Body RequestBody body);
 
 
 
+    /**
+     * 订单完成维修图片
+     * @param body
+     * @return
+     */
+  @POST("Upload/FinishOrderPicUpload")
+  Observable<BaseResult<Data<String>>> FinishOrderPicUpload(@Body RequestBody body);
+
+    /**
+     * 订单服务图片
+     * @param body
+     * @return
+     */
+  @POST("Upload/ServiceOrderPicUpload")
+  Observable<BaseResult<Data<String>>> ServiceOrderPicUpload(@Body RequestBody body);
+
+
+
+
+    /**
+     * 远程费图片
+     * @param body
+     * @return
+     */
+  @POST("Upload/OrderByondImgPicUpload")
+  Observable<BaseResult<Data<String>>> OrderByondImgPicUpload(@Body RequestBody body);
+
+
+
+    /*获取返件图片*/
+    @FormUrlEncoded
+    @POST("Order/GetReturnAccessoryByOrderID")
+    Observable<BaseResult<String>> GetReturnAccessoryByOrderID(@Field("OrderID") String OrderID);
 
     /**
      * 提交师傅预约失败的原因

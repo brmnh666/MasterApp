@@ -76,5 +76,33 @@ public class PendingOrderModel implements PendingOrderContract.Model {
                 .subscribeOn(Schedulers.io());
     }
 
+    @Override
+    public Observable<BaseResult<Data<String>>> ServiceOrderPicUpload(RequestBody json, int code) {
+        return ApiRetrofit.getDefault().ServiceOrderPicUpload(json)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<BaseResult<Data<String>>> ReuturnAccessoryPicUpload(RequestBody json, int code) {
+        return ApiRetrofit.getDefault().ReuturnAccessoryPicUpload(json)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<BaseResult<Data<String>>> FinishOrderPicUpload(RequestBody json, int code) {
+        return ApiRetrofit.getDefault().FinishOrderPicUpload(json)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<BaseResult<Data<String>>> OrderByondImgPicUpload(RequestBody json, int code) {
+        return ApiRetrofit.getDefault().OrderByondImgPicUpload(json)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
 
 }

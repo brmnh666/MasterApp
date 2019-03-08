@@ -866,6 +866,26 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
         }
     }
 
+    @Override
+    public void ServiceOrderPicUpload(BaseResult<Data<String>> baseResult, int code) {
+
+    }
+
+    @Override
+    public void ReuturnAccessoryPicUpload(BaseResult<Data<String>> baseResult, int code) {
+
+    }
+
+    @Override
+    public void FinishOrderPicUpload(BaseResult<Data<String>> baseResult, int code) {
+
+    }
+
+    @Override
+    public void OrderByondImgPicUpload(BaseResult<Data<String>> baseResult, int code) {
+
+    }
+
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);

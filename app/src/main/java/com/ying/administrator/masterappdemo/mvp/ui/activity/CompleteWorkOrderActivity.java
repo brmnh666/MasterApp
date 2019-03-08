@@ -35,6 +35,7 @@ import com.google.zxing.integration.android.IntentResult;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.CompleteWorkOrderContract;
 import com.ying.administrator.masterappdemo.mvp.model.CompleteWorkOrderModel;
@@ -78,13 +79,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
     private LinearLayout ll_scan;
     private EditText et_single_number;
 
-//    @Override
-//    protected void onCreate(@Nullable Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_setting);
-//
-//
-//    }
+
 
     @Override
     protected int setLayoutId() {
@@ -121,6 +116,8 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
         orderID = getIntent().getStringExtra("OrderID");
 
         mPresenter.GetOrderInfo(orderID);
+
+        mPresenter.GetReturnAccessoryByOrderID(orderID);
 
     }
 
@@ -163,6 +160,23 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                 break;
         }
 
+
+    }
+
+    /*添加服务过程的图片*/
+    @Override
+    public void ServiceOrderPicUpload(BaseResult<Data<String>> baseResult, int code) {
+
+    }
+
+    /*上传维修图片*/
+    @Override
+    public void FinishOrderPicUpload(BaseResult<Data<String>> baseResult, int code) {
+
+    }
+
+    @Override
+    public void GetReturnAccessoryByOrderID(BaseResult<String> baseResult) {
 
     }
 

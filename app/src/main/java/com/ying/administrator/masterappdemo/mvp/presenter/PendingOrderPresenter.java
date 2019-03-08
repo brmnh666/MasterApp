@@ -97,4 +97,44 @@ public class PendingOrderPresenter extends PendingOrderContract.Presenter {
             }
         });
     }
+
+    @Override
+    public void ServiceOrderPicUpload(RequestBody json, final int code) {
+        mModel.ServiceOrderPicUpload(json,code).subscribe(new BaseObserver<Data<String>>() {
+            @Override
+            protected void onHandleSuccess(BaseResult<Data<String>> value) {
+                mView.ServiceOrderPicUpload(value,code);
+            }
+        });
+    }
+
+    @Override
+    public void ReuturnAccessoryPicUpload(RequestBody json, final int code) {
+        mModel.ReuturnAccessoryPicUpload(json,code).subscribe(new BaseObserver<Data<String>>() {
+            @Override
+            protected void onHandleSuccess(BaseResult<Data<String>> value) {
+                mView.ReuturnAccessoryPicUpload(value,code);
+            }
+        });
+    }
+
+    @Override
+    public void FinishOrderPicUpload(RequestBody json, final int code) {
+        mModel.FinishOrderPicUpload(json,code).subscribe(new BaseObserver<Data<String>>() {
+            @Override
+            protected void onHandleSuccess(BaseResult<Data<String>> value) {
+                mView.FinishOrderPicUpload(value,code);
+            }
+        });
+    }
+
+    @Override
+    public void OrderByondImgPicUpload(RequestBody json,final int code) {
+        mModel.OrderByondImgPicUpload(json,code).subscribe(new BaseObserver<Data<String>>() {
+            @Override
+            protected void onHandleSuccess(BaseResult<Data<String>> value) {
+                mView.OrderByondImgPicUpload(value,code);
+            }
+        });
+    }
 }

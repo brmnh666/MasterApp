@@ -38,14 +38,21 @@ public interface PendingOrderContract {
         //提交配件服务和返件信息
         Observable<BaseResult<Data>> AddOrUpdateAccessoryServiceReturn(RequestBody json);
 
-
         //更新时间
         Observable<BaseResult<Data>> UpdateSendOrderUpdateTime(String OrderID,String UpdateDate);
 
         //根据工单号获取配件
-
         Observable<BaseResult<List<GAccessory>>> GetOrderAccessoryByOrderID(String OrderID);
 
+        //上传服务图片
+        Observable<BaseResult<Data<String>>> ServiceOrderPicUpload(RequestBody json,int code);
+        //上传维修图片
+        Observable<BaseResult<Data<String>>> ReuturnAccessoryPicUpload(RequestBody json,int code);
+
+        Observable<BaseResult<Data<String>>> FinishOrderPicUpload(RequestBody json,int code);
+
+        //上传远程费图片
+        Observable<BaseResult<Data<String>>> OrderByondImgPicUpload(RequestBody json,int code);
     }
 
     interface View extends BaseView{
@@ -71,6 +78,17 @@ public interface PendingOrderContract {
 
         //根据工单号获取配件
         void  GetOrderAccessoryByOrderID(BaseResult<List<GAccessory>> baseResult);
+
+        //上传服务图片
+        void ServiceOrderPicUpload(BaseResult<Data<String>> baseResult, int code);
+
+        void ReuturnAccessoryPicUpload(BaseResult<Data<String>> baseResult,int code);
+
+        //上传维修图片
+        void FinishOrderPicUpload(BaseResult<Data<String>> baseResult, int code);
+
+        //上传远程费图片
+        void OrderByondImgPicUpload(BaseResult<Data<String>> baseResult,int code);
     }
 
     abstract  class Presenter extends BasePresenter<View,Model>{
@@ -90,6 +108,15 @@ public interface PendingOrderContract {
         public abstract void UpdateSendOrderUpdateTime(String OrderID,String UpdateDate);
         //根据工单号获取配件
         public abstract void GetOrderAccessoryByOrderID(String OrderID);
+
+        //上传服务图片
+        public abstract void ServiceOrderPicUpload(RequestBody json,int code);
+        //上传维修图片
+        public abstract void ReuturnAccessoryPicUpload(RequestBody json,int code);
+
+        public abstract void FinishOrderPicUpload(RequestBody json,int code);
+        //上传远程费图片
+        public abstract void OrderByondImgPicUpload(RequestBody json,int code);
 
     }
 
