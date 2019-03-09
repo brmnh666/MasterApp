@@ -99,41 +99,41 @@ public class PendingOrderPresenter extends PendingOrderContract.Presenter {
     }
 
     @Override
-    public void ServiceOrderPicUpload(RequestBody json, final int code) {
-        mModel.ServiceOrderPicUpload(json,code).subscribe(new BaseObserver<Data<String>>() {
+    public void ServiceOrderPicUpload(RequestBody json) {
+        mModel.ServiceOrderPicUpload(json).subscribe(new BaseObserver<Data<String>>() {
             @Override
             protected void onHandleSuccess(BaseResult<Data<String>> value) {
-                mView.ServiceOrderPicUpload(value,code);
+                mView.ServiceOrderPicUpload(value);
             }
         });
     }
 
     @Override
-    public void ReuturnAccessoryPicUpload(RequestBody json, final int code) {
-        mModel.ReuturnAccessoryPicUpload(json,code).subscribe(new BaseObserver<Data<String>>() {
+    public void ReuturnAccessoryPicUpload(RequestBody json) {
+        mModel.ReuturnAccessoryPicUpload(json).subscribe(new BaseObserver<Data<String>>() {
             @Override
             protected void onHandleSuccess(BaseResult<Data<String>> value) {
-                mView.ReuturnAccessoryPicUpload(value,code);
+                mView.ReuturnAccessoryPicUpload(value);
             }
         });
     }
 
     @Override
-    public void FinishOrderPicUpload(RequestBody json, final int code) {
-        mModel.FinishOrderPicUpload(json,code).subscribe(new BaseObserver<Data<String>>() {
+    public void FinishOrderPicUpload(RequestBody json) {
+        mModel.FinishOrderPicUpload(json).subscribe(new BaseObserver<Data<String>>() {
             @Override
             protected void onHandleSuccess(BaseResult<Data<String>> value) {
-                mView.FinishOrderPicUpload(value,code);
+                mView.FinishOrderPicUpload(value);
             }
         });
     }
 
     @Override
-    public void OrderByondImgPicUpload(RequestBody json,final int code) {
-        mModel.OrderByondImgPicUpload(json,code).subscribe(new BaseObserver<Data<String>>() {
+    public void OrderByondImgPicUpload(RequestBody json) {
+        mModel.OrderByondImgPicUpload(json).subscribe(new BaseObserver<Data<String>>() {
             @Override
             protected void onHandleSuccess(BaseResult<Data<String>> value) {
-                mView.OrderByondImgPicUpload(value,code);
+                mView.OrderByondImgPicUpload(value);
             }
         });
     }

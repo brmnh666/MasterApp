@@ -662,6 +662,54 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                               }
                           }
                       }
+
+                    tv_total_price.setText("服务金额:¥"+gettotalPrice(fAcList,fList_service));
+                    /*删除配件*/
+                    mPre_order_add_ac_adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+                        @SuppressLint("MissingPermission")
+                        @Override
+                        public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                            switch (view.getId()){
+                                case R.id.iv_accessories_delete:
+                                    String AccessoryID=null; //用于保存配件名称
+                                    boolean is_exist=false;// 用于保存是否存在 map
+                                    int keymap = 0;   //保存map的箭
+                                    for (int i=0;i<mList.size();i++){
+                                        //先比较产品名字
+                                        if (((FAccessory.OrderAccessoryStrBean.OrderAccessoryBean)adapter.getData().get(position)).getFAccessoryID().equals(mList.get(i).getFAccessoryID())){
+                                            mList.get(i).setIscheck(false);
+                                            AccessoryID=mList.get(i).getFAccessoryID();
+                                            mList.get(i).setCheckedcount(1);
+                                        }
+                                    }
+
+
+
+                                    for (Integer key : map.keySet()) {
+                                        System.out.println("key= "+ key + " and value= " + map.get(key));
+
+                                        if (map.get(key).getFAccessoryID().equals(AccessoryID)){
+                                            is_exist=true;
+                                            keymap=key;
+                                        }
+                                    }
+                                    if (is_exist){
+                                        map.remove(keymap);
+                                        vibrator.vibrate(50);
+                                        adapter.remove(position);
+                                    }
+                                    Log.d("map里面的值", String.valueOf(map.size()));
+                                    tv_total_price.setText("服务金额:¥"+gettotalPrice(fAcList,fList_service));
+                                    break;
+                            }
+                        }
+                    });
+                    //*删除配件*//*
+
+
+
+
+
                     }
 
                     /*服务*/
@@ -689,94 +737,52 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                         }
                     }
 
-                }
 
-                    /*for (int i=0;i<mList.size();i++){
-                        Log.d("=====>", String.valueOf(mList.get(i).getCheckedcount()));
-                        Log.d("=====>", String.valueOf(mList.get(i).isIscheck()));
-                    }*/
-
-                tv_total_price.setText("服务金额:¥"+gettotalPrice(fAcList,fList_service));
-                    /*删除配件*/
-                    mPre_order_add_ac_adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+                    //*删除服务*//*
+                    mPre_order_Add_Service_Adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
                         @SuppressLint("MissingPermission")
                         @Override
                         public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                             switch (view.getId()){
-                                case R.id.iv_accessories_delete:
-                                    String AccessoryID=null; //用于保存配件名称
+                                case R.id.iv_service_delete:
+                                    String ServiceID=null; //用于保存配件名称
                                     boolean is_exist=false;// 用于保存是否存在 map
                                     int keymap = 0;   //保存map的箭
-                                    for (int i=0;i<mList.size();i++){
+                                    for (int i=0;i<mList_service.size();i++){
                                         //先比较产品名字
-                                        if (((FAccessory.OrderAccessoryStrBean.OrderAccessoryBean)adapter.getData().get(position)).getFAccessoryID().equals(mList.get(i).getFAccessoryID())){
-                                          mList.get(i).setIscheck(false);
-                                          AccessoryID=mList.get(i).getFAccessoryID();
-                                          mList.get(i).setCheckedcount(1);
+                                        if (((FService.OrderServiceStrBean.OrderServiceBean)adapter.getData().get(position)).getServiceID().equals(mList_service.get(i).getFServiceID())){
+                                            mList_service.get(i).setIschecked(false);
+                                            ServiceID=mList_service.get(i).getFServiceID();
                                         }
                                     }
-
-
-
-                                    for (Integer key : map.keySet()) {
-                                        System.out.println("key= "+ key + " and value= " + map.get(key));
-
-                                        if (map.get(key).getFAccessoryID().equals(AccessoryID)){
+                                    for (Integer key : map_service.keySet()) {
+                                        if (map_service.get(key).getServiceID().equals(ServiceID)){
                                             is_exist=true;
                                             keymap=key;
                                         }
                                     }
                                     if (is_exist){
-                                        map.remove(keymap);
+                                        map_service.remove(keymap);
                                         vibrator.vibrate(50);
                                         adapter.remove(position);
                                     }
-                                    Log.d("map里面的值", String.valueOf(map.size()));
+
                                     tv_total_price.setText("服务金额:¥"+gettotalPrice(fAcList,fList_service));
                                     break;
+
                             }
+
                         }
                     });
-                    /*删除配件*/
+                    //*删除服务*//*
+
+                }
 
 
-                   /*删除服务*/
-                mPre_order_Add_Service_Adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-                    @SuppressLint("MissingPermission")
-                    @Override
-                    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                        switch (view.getId()){
-                            case R.id.iv_service_delete:
-                                String ServiceID=null; //用于保存配件名称
-                                boolean is_exist=false;// 用于保存是否存在 map
-                                int keymap = 0;   //保存map的箭
-                                for (int i=0;i<mList_service.size();i++){
-                                    //先比较产品名字
-                                    if (((FService.OrderServiceStrBean.OrderServiceBean)adapter.getData().get(position)).getServiceID().equals(mList_service.get(i).getFServiceID())){
-                                        mList_service.get(i).setIschecked(false);
-                                        ServiceID=mList_service.get(i).getFServiceID();
-                                    }
-                                }
-                                for (Integer key : map_service.keySet()) {
-                                    if (map_service.get(key).getServiceID().equals(ServiceID)){
-                                        is_exist=true;
-                                        keymap=key;
-                                    }
-                                }
-                                if (is_exist){
-                                    map_service.remove(keymap);
-                                    vibrator.vibrate(50);
-                                    adapter.remove(position);
-                                }
 
-                                tv_total_price.setText("服务金额:¥"+gettotalPrice(fAcList,fList_service));
-                                break;
 
-                        }
 
-                    }
-                });
-                /*删除服务*/
+
 
 
                 break;
@@ -867,22 +873,22 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
     }
 
     @Override
-    public void ServiceOrderPicUpload(BaseResult<Data<String>> baseResult, int code) {
+    public void ServiceOrderPicUpload(BaseResult<Data<String>> baseResult) {
 
     }
 
     @Override
-    public void ReuturnAccessoryPicUpload(BaseResult<Data<String>> baseResult, int code) {
+    public void ReuturnAccessoryPicUpload(BaseResult<Data<String>> baseResult) {
 
     }
 
     @Override
-    public void FinishOrderPicUpload(BaseResult<Data<String>> baseResult, int code) {
+    public void FinishOrderPicUpload(BaseResult<Data<String>> baseResult) {
 
     }
 
     @Override
-    public void OrderByondImgPicUpload(BaseResult<Data<String>> baseResult, int code) {
+    public void OrderByondImgPicUpload(BaseResult<Data<String>> baseResult) {
 
     }
 

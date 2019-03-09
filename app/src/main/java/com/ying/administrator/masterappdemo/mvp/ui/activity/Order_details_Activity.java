@@ -250,6 +250,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     private double Service_range=15; //正常距离(km)
 
     private ArrayList<File> files_list=new ArrayList<>();
+    private HashMap<Integer,File> files_map=new HashMap<>();
 
 
     @Override
@@ -502,6 +503,10 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                                         mfAccessory.setQuantity("1"); //默认数字为1
                                         mfAccessory.setPrice(mAccessory.getAccessoryPrice());//原价
                                         mfAccessory.setDiscountPrice(mAccessory.getAccessoryPrice());//折扣价
+                                        mfAccessory.setSendState("N");
+                                        mfAccessory.setRelation("");
+                                        mfAccessory.setIsPay("N");
+
                                         mList.get(position).setCheckedcount(1);
                                         mList.get(position).setIscheck(true);
                                         map.put(position,mfAccessory);
@@ -519,6 +524,9 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                                                 mfAccessory.setQuantity(String.valueOf(value));
                                                 mfAccessory.setPrice(mAccessory.getAccessoryPrice());//原价
                                                 mfAccessory.setDiscountPrice(mAccessory.getAccessoryPrice());
+                                                mfAccessory.setSendState("N");
+                                                mfAccessory.setRelation("");
+                                                mfAccessory.setIsPay("N");
                                                 // Log.d("getQuantitys的个数00",mfAccessory.getQuantity());
                                                 mList.get(position).setCheckedcount(value);
                                                 map.put(position,mfAccessory);
@@ -1074,12 +1082,14 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                     //设置返回数据
                     Order_details_Activity.this.setResult(RESULT_OK, intent);*/
 
-                    ReuturnAccessoryPicUpload(files_list,1);
-                    Order_details_Activity.this.finish();
+                 if (files_map.size()>=4){
+                     ReuturnAccessoryPicUpload(files_map);
+                     Order_details_Activity.this.finish();
+                 }
+
 
 
                 }else {
-
                     Toast.makeText(this,"未知错误",Toast.LENGTH_LONG).show();
                 }
                 break;
@@ -1099,20 +1109,20 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
     /*上传服务图片*/
     @Override
-    public void ServiceOrderPicUpload(BaseResult<Data<String>> baseResult, int code) {
+    public void ServiceOrderPicUpload(BaseResult<Data<String>> baseResult) {
 
     }
 
 
     @Override
-    public void ReuturnAccessoryPicUpload(BaseResult<Data<String>> baseResult, int code) {
+    public void ReuturnAccessoryPicUpload(BaseResult<Data<String>> baseResult) {
 
 
     }
 
     /*上传维修图片*/
     @Override
-    public void FinishOrderPicUpload(BaseResult<Data<String>> baseResult, int code) {
+    public void FinishOrderPicUpload(BaseResult<Data<String>> baseResult) {
         switch (baseResult.getStatusCode()){
             case 200:
 
@@ -1124,7 +1134,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
     /*添加远程费图片*/
     @Override
-    public void OrderByondImgPicUpload(BaseResult<Data<String>> baseResult, int code) {
+    public void OrderByondImgPicUpload(BaseResult<Data<String>> baseResult) {
 
     }
 
@@ -1301,7 +1311,8 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                 }
                 if (file!=null){
                    // ReuturnAccessoryPicUpload(file,0);
-                    files_list.add(file);
+                   // files_list.add(file);
+                    files_map.put(0,file);
 
                 }
 
@@ -1315,7 +1326,8 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                 }
                 if (file!=null){
                    // ReuturnAccessoryPicUpload(file,0);
-                    files_list.add(file);
+                   // files_list.add(file);
+                    files_map.put(0,file);
                 }
                 break;
             //拍照
@@ -1326,7 +1338,8 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                 }
                 if (file!=null){
                  //   ReuturnAccessoryPicUpload(file,1);
-                    files_list.add(file);
+                  //  files_list.add(file);
+                    files_map.put(1,file);
                 }
                 break;
             //相册
@@ -1338,7 +1351,8 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                 }
                 if (file!=null){
                   //  ReuturnAccessoryPicUpload(file,1);
-                    files_list.add(file);
+                  //  files_list.add(file);
+                    files_map.put(1,file);
                 }
                 break;
             //拍照
@@ -1349,7 +1363,8 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                 }
                 if (file!=null){
                    // ReuturnAccessoryPicUpload(file,2);
-                    files_list.add(file);
+                   // files_list.add(file);
+                    files_map.put(2,file);
                 }
                 break;
             //相册
@@ -1361,7 +1376,8 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                 }
                 if (file!=null){
                   //  ReuturnAccessoryPicUpload(file,2);
-                    files_list.add(file);
+                   // files_list.add(file);
+                    files_map.put(2,file);
                 }
                 break;
             //拍照
@@ -1372,7 +1388,8 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                 }
                 if (file!=null){
                    // ReuturnAccessoryPicUpload(file,3);
-                    files_list.add(file);
+                //    files_list.add(file);
+                    files_map.put(3,file);
                 }
                 break;
             //相册
@@ -1384,7 +1401,8 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                 }
                 if (file!=null){
                   //  ReuturnAccessoryPicUpload(file,3);
-                    files_list.add(file);
+                    //files_list.add(file);
+                    files_map.put(3,file);
                 }
                 break;
             //拍照
@@ -1521,16 +1539,17 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
         mPresenter.FinishOrderPicUpload(requestBody,code);
     }*/
 
-    public void ReuturnAccessoryPicUpload(List<File> list, int code) {
+    public void ReuturnAccessoryPicUpload(HashMap<Integer,File> map) {
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
-        builder.addFormDataPart("img", list.get(0).getName(), RequestBody.create(MediaType.parse("img/png"), list.get(0)));
-        builder.addFormDataPart("img", list.get(1).getName(), RequestBody.create(MediaType.parse("img/png"), list.get(1)));
-        builder.addFormDataPart("img", list.get(2).getName(), RequestBody.create(MediaType.parse("img/png"), list.get(2)));
-        builder.addFormDataPart("img", list.get(3).getName(), RequestBody.create(MediaType.parse("img/png"), list.get(3)));
+        builder.addFormDataPart("img", map.get(0).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(0)));
+        builder.addFormDataPart("img", map.get(1).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(1)));
+        builder.addFormDataPart("img", map.get(2).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(2)));
+        builder.addFormDataPart("img", map.get(3).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(3)));
         builder.addFormDataPart("OrderID", orderID);
-        builder.addFormDataPart("Sort", (code + 1) + "");
+
+
         MultipartBody requestBody = builder.build();
-        mPresenter.ReuturnAccessoryPicUpload(requestBody,code);
+        mPresenter.ReuturnAccessoryPicUpload(requestBody);
     }
 
     /*安装服务图片*/
@@ -1546,7 +1565,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
         builder.addFormDataPart("OrderID", orderID);
         builder.addFormDataPart("Sort", (code + 1) + "");
         MultipartBody requestBody = builder.build();
-       mPresenter.OrderByondImgPicUpload(requestBody,code);
+       mPresenter.OrderByondImgPicUpload(requestBody);
     }
 
 

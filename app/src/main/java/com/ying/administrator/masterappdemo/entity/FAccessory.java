@@ -62,8 +62,35 @@ public class FAccessory implements Serializable {
             private String FAccessoryID;
             private String FAccessoryName;
             private String Quantity;
+            private String SendState;
+            private String Relation;
+            private String IsPay;
             private double Price;
             private double DiscountPrice;
+
+            public String getSendState() {
+                return SendState;
+            }
+
+            public void setSendState(String sendState) {
+                SendState = sendState;
+            }
+
+            public String getRelation() {
+                return Relation;
+            }
+
+            public void setRelation(String relation) {
+                Relation = relation;
+            }
+
+            public String getIsPay() {
+                return IsPay;
+            }
+
+            public void setIsPay(String isPay) {
+                IsPay = isPay;
+            }
 
             public String getFAccessoryID() {
                 return FAccessoryID;
