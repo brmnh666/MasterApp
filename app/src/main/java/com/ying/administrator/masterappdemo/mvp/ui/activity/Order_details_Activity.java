@@ -250,8 +250,8 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     private double Service_range=15; //正常距离(km)
 
     private ArrayList<File> files_list=new ArrayList<>();
-    private HashMap<Integer,File> files_map=new HashMap<>();
-
+    private HashMap<Integer,File> files_map=new HashMap<>();//返件图片
+    private HashMap<Integer,File> files_map_s=new HashMap<>();//服务图片
 
     @Override
     protected int setLayoutId() {
@@ -853,7 +853,6 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                     }
 
 
-                  //  sTotalAS.setAccessorySequency("0");//自购件 和工厂配件默认
                     sTotalAS.setOrderAccessoryStr(s1);
                     sTotalAS.setOrderServiceStr(s2);
                     sTotalAS.setReturnAccessoryMsg("1214124125125韵达快递");//模拟数据
@@ -863,7 +862,6 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                     mPresenter.AddOrUpdateAccessoryServiceReturn(body);
 
                    }
-
 
 
 
@@ -1082,10 +1080,17 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                     //设置返回数据
                     Order_details_Activity.this.setResult(RESULT_OK, intent);*/
 
-                 if (files_map.size()>=4){
-                     ReuturnAccessoryPicUpload(files_map);
-                     Order_details_Activity.this.finish();
-                 }
+                    if (files_map.size()>=4){
+                        ReuturnAccessoryPicUpload(files_map);
+                        Order_details_Activity.this.finish();
+                    }else if (files_map_s.size()>=4){
+                        ServiceOrderPicUpload(files_map_s);
+                        Order_details_Activity.this.finish();
+                    }
+                    else {
+                        Order_details_Activity.this.finish();
+                    }
+
 
 
 
@@ -1113,23 +1118,24 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
     }
 
-
+/*上传返件图片*/
     @Override
     public void ReuturnAccessoryPicUpload(BaseResult<Data<String>> baseResult) {
+        switch (baseResult.getStatusCode()){
+            case 200:
+                if (baseResult.getData().isItem1()){
 
+                }
+                break;
+            default:
+                break;
+        }
 
     }
 
-    /*上传维修图片*/
     @Override
     public void FinishOrderPicUpload(BaseResult<Data<String>> baseResult) {
-        switch (baseResult.getStatusCode()){
-            case 200:
 
-                break;
-                default:
-                    break;
-        }
     }
 
     /*添加远程费图片*/
@@ -1411,6 +1417,9 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                     Glide.with(mActivity).load(FilePath).into(iv_one);
                     file=new File(FilePath);
                 }
+                if (file!=null){
+                    files_map_s.put(0,file);
+                }
 
                 break;
             //相册
@@ -1419,6 +1428,9 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                     Uri uri = data.getData();
                     Glide.with(mActivity).load(uri).into(iv_one);
                     file=new File(MyUtils.getRealPathFromUri(mActivity,uri));
+                }
+                if (file!=null){
+                    files_map_s.put(0,file);
                 }
                 break;
 
@@ -1429,6 +1441,9 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                     Glide.with(mActivity).load(FilePath).into(iv_two);
                     file=new File(FilePath);
                 }
+                if (file!=null){
+                    files_map_s.put(1,file);
+                }
 
                 break;
             //相册
@@ -1438,6 +1453,9 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                     Glide.with(mActivity).load(uri).into(iv_two);
                     file=new File(MyUtils.getRealPathFromUri(mActivity,uri));
                 }
+                if (file!=null){
+                    files_map_s.put(1,file);
+                }
                 break;
 
             //拍照
@@ -1445,6 +1463,9 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                 if (resultCode==-1){
                     Glide.with(mActivity).load(FilePath).into(iv_three);
                     file=new File(FilePath);
+                }
+                if (file!=null){
+                    files_map_s.put(2,file);
                 }
 
                 break;
@@ -1455,6 +1476,9 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                     Glide.with(mActivity).load(uri).into(iv_three);
                     file=new File(MyUtils.getRealPathFromUri(mActivity,uri));
                 }
+                if (file!=null){
+                    files_map_s.put(2,file);
+                }
                 break;
 
 
@@ -1464,7 +1488,9 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                     Glide.with(mActivity).load(FilePath).into(iv_four);
                     file=new File(FilePath);
                 }
-
+                if (file!=null){
+                    files_map_s.put(3,file);
+                }
                 break;
             //相册
             case 808:
@@ -1472,6 +1498,9 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                     Uri uri = data.getData();
                     Glide.with(mActivity).load(uri).into(iv_four);
                     file=new File(MyUtils.getRealPathFromUri(mActivity,uri));
+                }
+                if (file!=null){
+                    files_map_s.put(3,file);
                 }
                 break;
 
@@ -1483,7 +1512,9 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                     Glide.with(mActivity).load(FilePath).into(mIvMap1);
                     file=new File(FilePath);
                 }
-
+                if (file!=null){
+                    files_map_s.put(4,file);
+                }
                 break;
             //相册
             case 909:
@@ -1492,6 +1523,9 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                     Glide.with(mActivity).load(uri).into(mIvMap1);
                     file=new File(MyUtils.getRealPathFromUri(mActivity,uri));
                 }
+                if (file!=null){
+                files_map_s.put(4,file);
+            }
                 break;
 
 
@@ -1546,14 +1580,21 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
         builder.addFormDataPart("img", map.get(2).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(2)));
         builder.addFormDataPart("img", map.get(3).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(3)));
         builder.addFormDataPart("OrderID", orderID);
-
-
         MultipartBody requestBody = builder.build();
         mPresenter.ReuturnAccessoryPicUpload(requestBody);
     }
 
     /*安装服务图片*/
-    public void ServiceOrderPicUpload(List<File> list, int code) {
+    public void ServiceOrderPicUpload(HashMap<Integer,File> map) {
+
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        builder.addFormDataPart("img", map.get(0).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(0)));
+        builder.addFormDataPart("img", map.get(1).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(1)));
+        builder.addFormDataPart("img", map.get(2).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(2)));
+        builder.addFormDataPart("img", map.get(3).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(3)));
+        builder.addFormDataPart("OrderID", orderID);
+        MultipartBody requestBody = builder.build();
+        mPresenter.ServiceOrderPicUpload(requestBody);
 
 
     }

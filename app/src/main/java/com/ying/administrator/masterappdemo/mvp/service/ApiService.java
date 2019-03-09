@@ -204,7 +204,7 @@ public interface ApiService {
     @POST("Order/GetOrderInfoList")
     Observable<BaseResult<WorkOrder>> GetOrderInfoListForMe(@Field("state") String state,
                                                             @Field("page") String page,
-                                                            @Field("limit") String limit,
+                                                          @Field("limit") String limit,
                                                             @Field("SendUser") String SendUser);*/
 
     /**
@@ -260,6 +260,12 @@ public interface ApiService {
                                                        @Field("AppointmentState") String AppointmentState,
                                                        @Field("AppointmentMessage") String AppointmentMessage);
 
+
+
+     @FormUrlEncoded
+    @POST("Order/UpdateOrderState")
+    Observable<BaseResult<Data>> UpdateOrderState (@Field("OrderID") String OrderID,
+                                                  @Field("State") String State);
     /*
      *
      * 获取工厂配件信息
@@ -444,24 +450,4 @@ public interface ApiService {
     Observable<BaseResult<Data<String>>> GetOrderStr(@Field("UserID") String UserID,
                                                      @Field("TotalAmount") String TotalAmount,
                                                      @Field("Type") String Type);
-
-    /**
-     * 继续服务（返件列表）
-     * @param OrderID 订单id
-     * @return
-     */
-    @FormUrlEncoded
-    @POST("Order/UpdateContinueServiceState")
-    Observable<BaseResult<Data<String>>> UpdateContinueServiceState(@Field("OrderID") String OrderID);
-
-    /**
-     * 催件
-     * @param UserID 用户id
-     * @param OrderID 订单id
-     * @return
-     */
-    @FormUrlEncoded
-    @POST("Order/PressFactoryAccount")
-    Observable<BaseResult<Data<String>>> PressFactoryAccount(@Field("UserID") String UserID,
-                                                     @Field("OrderID") String OrderID);
 }

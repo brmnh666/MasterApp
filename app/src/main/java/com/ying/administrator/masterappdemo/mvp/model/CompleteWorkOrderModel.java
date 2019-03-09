@@ -20,22 +20,36 @@ public class CompleteWorkOrderModel implements CompleteWorkOrderContract.Model {
     }
 
     @Override
-    public Observable<BaseResult<Data<String>>> ServiceOrderPicUpload(RequestBody json, int code) {
+    public Observable<BaseResult<Data<String>>> ServiceOrderPicUpload(RequestBody json) {
         return ApiRetrofit.getDefault().ServiceOrderPicUpload(json)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }
 
     @Override
-    public Observable<BaseResult<Data<String>>> FinishOrderPicUpload(RequestBody json, int code) {
-        return ApiRetrofit.getDefault().FinishOrderPicUpload(json)
+    public Observable<BaseResult<Data<String>>> ReuturnAccessoryPicUpload(RequestBody json) {
+        return ApiRetrofit.getDefault().ReuturnAccessoryPicUpload(json)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }
 
     @Override
+    public Observable<BaseResult<Data<String>>> FinishOrderPicUpload(RequestBody json) {
+        return ApiRetrofit.getDefault().FinishOrderPicUpload(json)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
+   /* @Override
     public Observable<BaseResult<String>> GetReturnAccessoryByOrderID(String OrderID) {
         return ApiRetrofit.getDefault().GetReturnAccessoryByOrderID(OrderID)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }*/
+
+    @Override
+    public Observable<BaseResult<Data>> UpdateOrderState(String OrderID, String State) {
+        return ApiRetrofit.getDefault().UpdateOrderState(OrderID,State)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

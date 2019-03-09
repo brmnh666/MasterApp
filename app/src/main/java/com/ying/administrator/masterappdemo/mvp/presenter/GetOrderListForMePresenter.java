@@ -80,25 +80,5 @@ public class GetOrderListForMePresenter extends GetOrderListForMeContract.Presen
                 });
     }
 
-    @Override
-    public void UpdateContinueServiceState(String OrderID) {
-        mModel.UpdateContinueServiceState(OrderID)
-                .subscribe(new BaseObserver<Data<String>>() {
-                    @Override
-                    protected void onHandleSuccess(BaseResult<Data<String>> value) {
-                        mView.UpdateContinueServiceState(value);
-                    }
-                });
-    }
 
-    @Override
-    public void PressFactoryAccount(String UserID, String OrderID) {
-        mModel.PressFactoryAccount(UserID, OrderID)
-                .subscribe(new BaseObserver<Data<String>>() {
-                    @Override
-                    protected void onHandleSuccess(BaseResult<Data<String>> value) {
-                        mView.PressFactoryAccount(value);
-                    }
-                });
-    }
 }

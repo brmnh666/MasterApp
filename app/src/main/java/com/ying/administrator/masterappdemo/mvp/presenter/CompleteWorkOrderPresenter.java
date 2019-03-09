@@ -23,27 +23,37 @@ public class CompleteWorkOrderPresenter extends CompleteWorkOrderContract.Presen
     }
 
     @Override
-    public void ServiceOrderPicUpload(RequestBody json, final int code) {
-        mModel.ServiceOrderPicUpload(json,code).subscribe(new BaseObserver<Data<String>>() {
+    public void ServiceOrderPicUpload(RequestBody json) {
+        mModel.ServiceOrderPicUpload(json).subscribe(new BaseObserver<Data<String>>() {
             @Override
             protected void onHandleSuccess(BaseResult<Data<String>> value) {
-                mView.ServiceOrderPicUpload(value,code);
+                mView.ServiceOrderPicUpload(value);
             }
         });
     }
 
     @Override
-    public void FinishOrderPicUpload(RequestBody json, final int code) {
-        mModel.FinishOrderPicUpload(json,code).subscribe(new BaseObserver<Data<String>>() {
+    public void ReuturnAccessoryPicUpload(RequestBody json) {
+        mModel.ReuturnAccessoryPicUpload(json).subscribe(new BaseObserver<Data<String>>() {
             @Override
             protected void onHandleSuccess(BaseResult<Data<String>> value) {
-                mView.FinishOrderPicUpload(value,code);
+                mView.ReuturnAccessoryPicUpload(value);
+            }
+        });
+    }
+
+    @Override
+    public void FinishOrderPicUpload(RequestBody json) {
+        mModel.FinishOrderPicUpload(json).subscribe(new BaseObserver<Data<String>>() {
+            @Override
+            protected void onHandleSuccess(BaseResult<Data<String>> value) {
+                mView.FinishOrderPicUpload(value);
             }
         });
     }
 
 
-    @Override
+ /*   @Override
     public void GetReturnAccessoryByOrderID(String OrderID) {
         mModel.GetReturnAccessoryByOrderID(OrderID).subscribe(new BaseObserver<String>() {
             @Override
@@ -52,5 +62,15 @@ public class CompleteWorkOrderPresenter extends CompleteWorkOrderContract.Presen
             }
         });
 
+    }*/
+
+    @Override
+    public void UpdateOrderState(String OrderID, String State) {
+        mModel.UpdateOrderState(OrderID,State).subscribe(new BaseObserver<Data>() {
+            @Override
+            protected void onHandleSuccess(BaseResult<Data> value) {
+                mView.UpdateOrderState(value);
+            }
+        });
     }
 }

@@ -189,20 +189,29 @@ public class WorkOrder implements Serializable {
         private String IsRecevieGoods;
         private String AppointmentMessage;
         private String AppointmentState;
-        private String  IsPressFactory ;
         private List<GAccessory> OrderAccessroyDetail; //所选配件详情
         private List<GService> OrderServiceDetail;  //所选配件详情
+        private List<ReturnaccessoryImg> ReturnaccessoryImg;//返件图片
+        private List<OrderImg> OrderImg;//返回服务图片
         private String Distance;//返回距离
         private int page;
         private int limit;
         private int Version;
 
-        public String getIsPressFactory() {
-            return IsPressFactory;
+        public List<com.ying.administrator.masterappdemo.entity.OrderImg> getOrderImg() {
+            return OrderImg;
         }
 
-        public void setIsPressFactory(String isPressFactory) {
-            IsPressFactory = isPressFactory;
+        public void setOrderImg(List<com.ying.administrator.masterappdemo.entity.OrderImg> orderImg) {
+            OrderImg = orderImg;
+        }
+
+        public List<com.ying.administrator.masterappdemo.entity.ReturnaccessoryImg> getReturnaccessoryImg() {
+            return ReturnaccessoryImg;
+        }
+
+        public void setReturnaccessoryImg(List<com.ying.administrator.masterappdemo.entity.ReturnaccessoryImg> returnaccessoryImg) {
+            ReturnaccessoryImg = returnaccessoryImg;
         }
 
         public List<GAccessory> getOrderAccessroyDetail() {

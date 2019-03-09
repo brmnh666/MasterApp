@@ -16,11 +16,17 @@ public interface CompleteWorkOrderContract {
         Observable<BaseResult<WorkOrder.DataBean>> GetOrderInfo(String OrderID);
 
         //上传服务图片
-        Observable<BaseResult<Data<String>>> ServiceOrderPicUpload(RequestBody json, int code);
+        Observable<BaseResult<Data<String>>> ServiceOrderPicUpload(RequestBody json);
         //上传维修图片
-        Observable<BaseResult<Data<String>>> FinishOrderPicUpload(RequestBody json,int code);
+
+        Observable<BaseResult<Data<String>>> ReuturnAccessoryPicUpload(RequestBody json);
+
+        Observable<BaseResult<Data<String>>> FinishOrderPicUpload(RequestBody json);
         //获取返件图片
-        Observable<BaseResult<String>> GetReturnAccessoryByOrderID(String OrderID);
+       // Observable<BaseResult<String>> GetReturnAccessoryByOrderID(String OrderID);
+
+        //修改订单状态
+        Observable<BaseResult<Data>> UpdateOrderState(String OrderID,String State);
     }
 
     interface View extends BaseView{
@@ -28,23 +34,35 @@ public interface CompleteWorkOrderContract {
         void GetOrderInfo(BaseResult<WorkOrder.DataBean> baseResult);
 
         //上传服务图片
-        void ServiceOrderPicUpload(BaseResult<Data<String>> baseResult, int code);
+        void ServiceOrderPicUpload(BaseResult<Data<String>> baseResult);
 
         //上传维修图片
-        void FinishOrderPicUpload(BaseResult<Data<String>> baseResult, int code);
+
+        void ReuturnAccessoryPicUpload(BaseResult<Data<String>> baseResult);
+
+        void FinishOrderPicUpload(BaseResult<Data<String>> baseResult);
 
         //获取返件图片
-         void GetReturnAccessoryByOrderID(BaseResult<String> baseResult);
+        // void GetReturnAccessoryByOrderID(BaseResult<String> baseResult);
+
+        //修改订单状态
+        void UpdateOrderState(BaseResult<Data> baseResult);
+
     }
-   abstract class Presenter extends BasePresenter<View,Model>{
+   abstract class Presenter extends BasePresenter<View,Model> {
        //根据工单号获取工单详情
        public abstract void GetOrderInfo(String OrderID);
 
        //上传服务图片
-       public abstract void ServiceOrderPicUpload(RequestBody json,int code);
+       public abstract void ServiceOrderPicUpload(RequestBody json);
        //上传维修图片
-       public abstract void FinishOrderPicUpload(RequestBody json,int code);
+
+       public abstract void ReuturnAccessoryPicUpload(RequestBody json);
+
+       public abstract void FinishOrderPicUpload(RequestBody json);
        //获取返件图片
-       public abstract void GetReturnAccessoryByOrderID(String OrderID);
+       //public abstract void GetReturnAccessoryByOrderID(String OrderID);
+
+       public abstract void UpdateOrderState(String OrderID,String State);
    }
 }

@@ -59,7 +59,12 @@ import java.util.List;
     return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mRefreshLayout.autoRefresh();
 
+    }
 
     public void initView() {
         list=new ArrayList<>();
@@ -176,16 +181,6 @@ import java.util.List;
 
     @Override
     public void UpdateSendOrderState(BaseResult<Data> baseResult) {
-
-    }
-
-    @Override
-    public void UpdateContinueServiceState(BaseResult<Data<String>> baseResult) {
-
-    }
-
-    @Override
-    public void PressFactoryAccount(BaseResult<Data<String>> baseResult) {
 
     }
 

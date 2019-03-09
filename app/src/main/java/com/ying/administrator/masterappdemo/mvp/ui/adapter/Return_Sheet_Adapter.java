@@ -51,12 +51,6 @@ public class Return_Sheet_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,Ba
         tv_returnedparts_apply_parts =baseViewHolder.getView(R.id.tv_returnedparts_apply_parts);
         tv_continue_service =baseViewHolder.getView(R.id.tv_continue_service);
         tv_reminder =baseViewHolder.getView(R.id.tv_reminder);
-        if ("Y".equals(item.getIsPressFactory())){
-            tv_reminder.setText("再次催件");
-        }else{
-            tv_reminder.setText("催件");
-
-        }
 
         tv_hint_returnedparts =baseViewHolder.getView(R.id.tv_hint_returnedparts);
         ll_pending_appointment_cancel =baseViewHolder.getView(R.id.ll_pending_appointment_cancel);
@@ -70,25 +64,30 @@ public class Return_Sheet_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,Ba
             countdownview.stop();
             countdownview.allShowZero();
         }
-//        N未返件 Y已返件 P部分返件
-        if ("N".equals(item.getAccessorySendState())){//未返件显示催件
-            tv_returnedparts_apply_parts.setVisibility(View.GONE);
-            tv_continue_service.setVisibility(View.GONE);
-            tv_reminder.setVisibility(View.VISIBLE);
-            ll_pending_appointment_cancel.setVisibility(View.VISIBLE);
-            tv_hint_returnedparts.setVisibility(View.INVISIBLE);
-            baseViewHolder.setText(R.id.tv_returnedparts,"未返件");
-        }else {//部分返件 也就是物流中 显示申请配件，继续服务
+        if ("G".equals(item.getAccessorySendState())){//已返件显示申请配件和继续服务
             tv_returnedparts_apply_parts.setVisibility(View.VISIBLE);
             tv_continue_service.setVisibility(View.VISIBLE);
             tv_reminder.setVisibility(View.GONE);
             ll_pending_appointment_cancel.setVisibility(View.INVISIBLE);
             tv_hint_returnedparts.setVisibility(View.VISIBLE);
+            baseViewHolder.setText(R.id.tv_returnedparts,"已返件");
+        }else  if ("N".equals(item.getAccessorySendState())){//待返件显示催件
+            tv_returnedparts_apply_parts.setVisibility(View.GONE);
+            tv_continue_service.setVisibility(View.GONE);
+            tv_reminder.setVisibility(View.VISIBLE);
+            ll_pending_appointment_cancel.setVisibility(View.VISIBLE);
+            tv_hint_returnedparts.setVisibility(View.INVISIBLE);
             baseViewHolder.setText(R.id.tv_returnedparts,"待返件");
+        }else if ("Y".equals(item.getAccessorySendState())){//返件中 也就是物流中 显示申请配件
+            tv_returnedparts_apply_parts.setVisibility(View.VISIBLE);
+            tv_continue_service.setVisibility(View.GONE);
+            tv_reminder.setVisibility(View.GONE);
+            ll_pending_appointment_cancel.setVisibility(View.INVISIBLE);
+            tv_hint_returnedparts.setVisibility(View.VISIBLE);
+            baseViewHolder.setText(R.id.tv_returnedparts,"返件中");
         }
         baseViewHolder.addOnClickListener(R.id.tv_returnedparts_apply_parts);//申请配件
         baseViewHolder.addOnClickListener(R.id.tv_continue_service);//继续服务
         baseViewHolder.addOnClickListener(R.id.tv_reminder);//催件
-        baseViewHolder.addOnClickListener(R.id.tv_see_detail);//查看详情
     }
 }

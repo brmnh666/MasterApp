@@ -36,7 +36,7 @@
 
             <include layout="@layout/activity_order_details_add_service"/>
 
-            <include layout="@layout/activity_order_details_application_for_remote_fee"/>
+           <!-- <include layout="@layout/activity_order_details_application_for_remote_fee"/>-->
             <include layout="@layout/activity_order_details_add_back"/>
 
            <include layout="@layout/activity_order_details_submit"/>

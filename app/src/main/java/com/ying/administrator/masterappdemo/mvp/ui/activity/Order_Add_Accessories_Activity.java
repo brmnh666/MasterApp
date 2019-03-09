@@ -37,6 +37,9 @@ import com.ying.administrator.masterappdemo.entity.GAccessory;
 import com.ying.administrator.masterappdemo.entity.GService;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
 import com.ying.administrator.masterappdemo.entity.GetFactorySeviceData;
+import com.ying.administrator.masterappdemo.entity.SAccessory;
+import com.ying.administrator.masterappdemo.entity.SService;
+import com.ying.administrator.masterappdemo.entity.STotalAS;
 import com.ying.administrator.masterappdemo.entity.Service;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.PendingOrderContract;
@@ -66,22 +69,16 @@ import okhttp3.RequestBody;
 /*预接单详情页*/
 public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPresenter, PendingOrderModel> implements  PendingOrderContract.View {
     private String orderID;//工单号
-    private RadioGroup rg_order_details_for_remote_fee;
     private WorkOrder.DataBean data=new WorkOrder.DataBean();
     private ArrayList<GAccessory> gAccessories=new ArrayList<>();//获得工厂返回的已选配件
     private ArrayList<GService> gServices=new ArrayList<>(); //获取工厂端返回的已选服务
     private int select_state=0;  //记录厂家寄件申请（1） 和自购件申请（2） 0为未选中
     @BindView(R.id.tv_actionbar_title)
     TextView tv_actionbar_title;
-    @BindView(R.id.ll_Out_of_service_tv)
-    LinearLayout ll_Out_of_service_tv;
-    @BindView(R.id.ll_Out_of_service_img)
-    LinearLayout ll_Out_of_service_img;
     @BindView(R.id.ll_return)
     LinearLayout ll_return;
     @BindView(R.id.tv_detail_submit)
     TextView tv_detail_submit;
-
     @BindView(R.id.iv_manufacturers) //厂家寄件申请
     ImageView iv_manufacturers;
     @BindView(R.id.iv_selfbuying) //自购件
@@ -91,7 +88,6 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
     @BindView(R.id.tv_selfbuying)//自购件
     TextView tv_selfbuying;
     /*订单属性*/
-
     @BindView(R.id.tv_order_details_receiving_time)
     TextView tv_order_details_receiving_time;
     @BindView(R.id.tv_order_details_orderid)
@@ -100,7 +96,6 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
     TextView tv_order_details_reason;
     @BindView(R.id.tv_order_details_product_name)
     TextView tv_order_details_product_name;
-
     @BindView(R.id.tv_order_details_status)
     TextView tv_order_details_status;
     @BindView(R.id.tv_order_details_adress)
@@ -143,25 +138,15 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
     private Service mService;
     private FService.OrderServiceStrBean.OrderServiceBean mfService;
     private Add_Service_Adapter mAdd_Service_Adapter;
-
-
+    private FService.OrderServiceStrBean orderServiceStrBean;
+    private SService sService;
     /*服务*/
-
-
-       /*扫码*/
-
-        @BindView(R.id.et_express_sweep_code)
-         EditText et_express_sweep_code;
-        @BindView(R.id.img_express_sweep_code)
-        ImageView img_express_sweep_code;
-        @BindView(R.id.tv_express_sweep_code)
-         TextView tv_express_sweep_code;
-
+    private STotalAS sTotalAS; //服务配件一起提交
        /*扫码*/
        /*震动*/
         Vibrator vibrator;
-
-
+      private double Money;
+    private SAccessory sAccessory;
 
     @Override
     protected int setLayoutId() {
@@ -173,13 +158,15 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
 
     }
 
+
+
+
     @Override
     public void initView() {
-  /*    mList_service=new ArrayList<>();
-        map_service=new HashMap<>();*/
+        tv_order_details_state.setText("服 务 中");
+        tv_actionbar_title.setText("服务中");
         customDialog_add_accessory=new CustomDialog_Add_Accessory(mActivity);
         customDialog_add_service=new CustomDialog_Add_Service(mActivity);
-        rg_order_details_for_remote_fee=findViewById(R.id.rg_order_details_for_remote_fee);
         tv_order_details_add_accessories=findViewById(R.id.tv_order_details_add_accessories);//添加配件
         recyclerView_Pre_add_accessories=findViewById(R.id.recyclerView_add_accessories); //预接单recyclerview
         tv_order_detail_add_service=findViewById(R.id.tv_order_detail_add_service);
@@ -200,36 +187,15 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
         ll_return.setOnClickListener(new CustomOnclickListnaer());
         tv_order_details_add_accessories.setOnClickListener(new CustomOnclickListnaer());
         tv_order_detail_add_service.setOnClickListener(new CustomOnclickListnaer());
-        img_express_sweep_code.setOnClickListener(new CustomOnclickListnaer());
-        tv_express_sweep_code.setOnClickListener(new CustomOnclickListnaer());
-        tv_detail_submit.setOnClickListener(new CustomOnclickListnaer());
+       /* img_express_sweep_code.setOnClickListener(new CustomOnclickListnaer());
+        tv_express_sweep_code.setOnClickListener(new CustomOnclickListnaer());*/
 
+        tv_detail_submit.setOnClickListener(new CustomOnclickListnaer());
         iv_manufacturers.setOnClickListener(new CustomOnclickListnaer());
         iv_selfbuying.setOnClickListener(new CustomOnclickListnaer());
         tv_manufacturers.setOnClickListener(new CustomOnclickListnaer());
         tv_selfbuying.setOnClickListener(new CustomOnclickListnaer());
-
-        /*申请远程费*/
-        rg_order_details_for_remote_fee.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId){
-
-                    case R.id.rb_order_details_no_for_remote_fee:
-                        ll_Out_of_service_tv.setVisibility(View.GONE);
-                        ll_Out_of_service_img.setVisibility(View.GONE);
-                        break;
-                    case R.id.rb_order_details_yes_for_remote_fee:
-                        ll_Out_of_service_tv.setVisibility(View.VISIBLE);
-                        ll_Out_of_service_img.setVisibility(View.VISIBLE);
-                        break;
-
-                    default:
-                        break;
-                }
-
-            }
-        });
+        tv_detail_submit.setOnClickListener(new CustomOnclickListnaer());
 
 
 
@@ -239,11 +205,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
     }
 
 
-    public void initValidata() {
-        tv_actionbar_title.setText("服务中");
-        tv_order_details_state.setText("服 务 中");
 
-    }
 
 
 
@@ -309,15 +271,20 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                     break;
 
                 case R.id.tv_order_details_add_accessories: //添加配件
-                    customDialog_add_accessory.getWindow().setBackgroundDrawableResource(R.color.transparent);
-                    customDialog_add_accessory.show();
-                    Window window=customDialog_add_accessory.getWindow();
-                    WindowManager.LayoutParams wlp = window.getAttributes();
-                    Display d = window.getWindowManager().getDefaultDisplay();
-                    wlp.height=(d.getHeight());
-                    wlp.width =(d.getWidth());
-                    wlp.gravity = Gravity.CENTER;
-                    window.setAttributes(wlp);
+
+                    if (select_state==0){
+                        Toast.makeText(Order_Add_Accessories_Activity.this,"请选择配件类型",Toast.LENGTH_SHORT).show();
+                    }else {
+                        customDialog_add_accessory.getWindow().setBackgroundDrawableResource(R.color.transparent);
+                        customDialog_add_accessory.show();
+                        Window window=customDialog_add_accessory.getWindow();
+                        WindowManager.LayoutParams wlp = window.getAttributes();
+                        Display d = window.getWindowManager().getDefaultDisplay();
+                        wlp.height=(d.getHeight());
+                        wlp.width =(d.getWidth());
+                        wlp.gravity = Gravity.CENTER;
+                        window.setAttributes(wlp);
+
 
                     //*添加配件弹出dialog*//*
                     recyclerView_custom_add_accessory=customDialog_add_accessory.findViewById(R.id.recyclerView_custom_add_accessory);
@@ -350,6 +317,9 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                                         mfAccessory.setFAccessoryName(mAccessory.getAccessoryName());
                                         mfAccessory.setQuantity("1"); //默认数字为1
                                         mfAccessory.setDiscountPrice(mAccessory.getAccessoryPrice());
+                                        mfAccessory.setSendState("N");
+                                        mfAccessory.setRelation("");
+                                        mfAccessory.setIsPay("N");
                                         mList.get(position).setCheckedcount(1);
                                         map.put(position,mfAccessory);
                                         //选择了数量根据输入框中的来
@@ -365,14 +335,14 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                                                 mfAccessory.setFAccessoryName(mAccessory.getAccessoryName());
                                                 mfAccessory.setQuantity(String.valueOf(value));
                                                 mfAccessory.setDiscountPrice(mAccessory.getAccessoryPrice());
+                                                mfAccessory.setSendState("N");
+                                                mfAccessory.setRelation("");
+                                                mfAccessory.setIsPay("N");
                                                // Log.d("getQuantitys的个数00",mfAccessory.getQuantity());
                                                 mList.get(position).setCheckedcount(value);
                                                 map.put(position,mfAccessory);
                                             }
                                         });
-
-
-
 
                                     }else {
                                         //viewadd.setVisibility(View.INVISIBLE); //数量选择器消失
@@ -448,6 +418,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
 
                         }
                     });
+                    }
                     /*添加*/
                     break;
                     /*添加服务*/
@@ -570,20 +541,80 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
 
 
 
-                         case R.id.img_express_sweep_code:
-                         case R.id.tv_express_sweep_code:
-                             IntentIntegrator integrator = new IntentIntegrator(Order_Add_Accessories_Activity.this);
-                             // 设置要扫描的条码类型，ONE_D_CODE_TYPES：一维码，QR_CODE_TYPES-二维码
-                             integrator.setDesiredBarcodeFormats(IntentIntegrator.ONE_D_CODE_TYPES);
-                             integrator.setCaptureActivity(ScanActivity.class); //设置打开摄像头的Activity
-                             integrator.setPrompt("请扫描快递码"); //底部的提示文字，设为""可以置空
-                             integrator.setCameraId(0); //前置或者后置摄像头
-                             integrator.setBeepEnabled(true); //扫描成功的「哔哔」声，默认开启
-                             integrator.setBarcodeImageEnabled(true);
-                             integrator.initiateScan();
-                             break;
                              /*提交工单*/
                              case R.id.tv_detail_submit:
+                                 if (fAcList.size()==0&&fList_service.size()==0){ //都没有添加只提交上门时间
+                                    Toast.makeText(Order_Add_Accessories_Activity.this,"请选择配件或者服务",Toast.LENGTH_SHORT).show();
+                                 }else if (fAcList.size()!=0&&fList_service.size()==0){//只有配件
+                                     orderAccessoryStrBean = new FAccessory.OrderAccessoryStrBean();
+                                     orderAccessoryStrBean.setOrderAccessory(fAcList);
+                                     Gson gson1=new Gson();
+                                     String s1 = gson1.toJson(orderAccessoryStrBean);
+                                     sAccessory=new SAccessory();
+                                     sAccessory.setOrderID(orderID);
+
+                                     if (select_state==0){    /*厂家0  自购 1*/
+                                         return;
+                                     }else if (select_state==1){
+                                         sAccessory.setAccessorySequency("0");
+                                     }else {
+                                         sAccessory.setAccessorySequency("1");
+                                     }
+                                     //   sAccessory.setAccessorySequency("0");//自购件 和工厂配件默认
+                                     sAccessory.setOrderAccessoryStr(s1);
+                                     Gson gson=new Gson();
+                                     String s = gson.toJson(sAccessory);
+                                     Log.d("添加的配件有",s);
+                                     RequestBody body=RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),s);
+                                     mPresenter.AddOrderAccessory(body);
+
+                                 }else if (fList_service.size()!=0&&fAcList.size()==0){//只有服务
+                                     orderServiceStrBean=new FService.OrderServiceStrBean();
+                                     orderServiceStrBean.setOrderService(fList_service);
+                                     Gson gson3=new Gson();
+                                     String s1 = gson3.toJson(orderServiceStrBean);
+                                     sService=new SService();
+                                     sService.setOrderID(orderID);
+                                     sService.setOrderServiceStr(s1);
+                                     Gson gson4=new Gson();
+                                     String s = gson4.toJson(sService);
+                                     Log.d("添加的服务有",s);
+                                     RequestBody body1=RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),s);
+                                     mPresenter.AddOrderService(body1);
+
+
+                                 }else {//都有
+                                     //*配件*//
+                                     sTotalAS=new STotalAS();
+                                     orderAccessoryStrBean = new FAccessory.OrderAccessoryStrBean();
+                                     orderAccessoryStrBean.setOrderAccessory(fAcList);
+                                     Gson gson=new Gson();
+                                     String s1 = gson.toJson(orderAccessoryStrBean);
+
+                                     //*服务*//*
+                                     orderServiceStrBean=new FService.OrderServiceStrBean();
+                                     orderServiceStrBean.setOrderService(fList_service);
+                                     String s2 = gson.toJson(orderServiceStrBean);
+                                     sTotalAS.setOrderID(orderID);
+
+                                     if (select_state==0){    /*厂家0  自购 1*/
+                                         return;
+                                     }else if (select_state==1){
+                                         sTotalAS.setAccessorySequency("0");
+                                     }else {
+                                         sTotalAS.setAccessorySequency("1");
+                                     }
+                                     sTotalAS.setOrderAccessoryStr(s1);
+                                     sTotalAS.setOrderServiceStr(s2);
+                                     sTotalAS.setReturnAccessoryMsg("1214124125125韵达快递");//模拟数据
+                                     String s3 = gson.toJson(sTotalAS);
+                                     Log.d("配件和服务有",s3);
+                                     RequestBody body=RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),s3);
+                                     mPresenter.AddOrUpdateAccessoryServiceReturn(body);
+                                 }
+
+
+
 
                                  break;
 
@@ -635,7 +666,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                 }
                 tv_order_details_adress.setText(data.getAddress());
                // Log.d("====>", String.valueOf(data.getOrderAccessroyDetail().size()));
-
+                Money=data.getOrderMoney()-data.getInitMoney();
 
                 gAccessories.addAll(data.getOrderAccessroyDetail());
 
@@ -779,8 +810,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                 }
 
 
-
-
+                tv_total_price.setText("服务金额:¥"+gettotalPrice(fAcList,fList_service));
 
 
 
@@ -807,7 +837,6 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                      case 200:
                           mList.clear();
                           mList.addAll(baseResult.getData().getItem1());
-                         Log.d("mlist2", String.valueOf(mList.size()));
 
                          break;
                        default:
@@ -838,6 +867,11 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
     public void AddOrderAccessory(BaseResult<Data> baseResult) {
         switch (baseResult.getStatusCode()){
             case 200:
+                if (baseResult.getData().isItem1()){
+                 Order_Add_Accessories_Activity.this.finish();
+                }else {
+                    Toast.makeText(Order_Add_Accessories_Activity.this, (CharSequence) baseResult.getData().getItem2(),Toast.LENGTH_SHORT).show();
+                }
                 break;
             default:
                 break;
@@ -845,14 +879,34 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
 
 
     }
-
+     /**/
     @Override
     public void AddOrderService(BaseResult<Data> baseResult) {
-
+        switch (baseResult.getStatusCode()){
+            case 200:
+                if (baseResult.getData().isItem1()){
+                    Order_Add_Accessories_Activity.this.finish();
+                }else {
+                    Toast.makeText(Order_Add_Accessories_Activity.this, (CharSequence) baseResult.getData().getItem2(),Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
     }
 
+    /*配件和服务都有*/
     @Override
     public void AddOrUpdateAccessoryServiceReturn(BaseResult<Data> baseResult) {
+
+        switch (baseResult.getStatusCode()){
+            case 200:
+                if (baseResult.getData().isItem1()){
+                    Order_Add_Accessories_Activity.this.finish();
+                }else {
+
+                    Toast.makeText(Order_Add_Accessories_Activity.this, (CharSequence) baseResult.getData().getItem2(),Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
 
     }
 
@@ -865,7 +919,6 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
     public void GetOrderAccessoryByOrderID(BaseResult<List<GAccessory>> baseResult) {
         switch (baseResult.getStatusCode()){
             case 200:
-                Log.d("===>","进入成功");
                 break;
                 default:
                     break;
@@ -893,16 +946,12 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
     }
 
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if (scanResult != null) {
-            String result = scanResult.getContents();
-            et_express_sweep_code.setText("快递单号:"+result);
-        }
-    }
+
      //计算价格
+
+    //计算价格
     private double gettotalPrice(List<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> list,
-                                  List<FService.OrderServiceStrBean.OrderServiceBean> list2) {
+                                 List<FService.OrderServiceStrBean.OrderServiceBean> list2) {
 
         double acprice = 0;
         double servicprice = 0;
@@ -911,30 +960,30 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
             for (int i = 0; i < list2.size(); i++) {
                 servicprice = servicprice + list2.get(i).getDiscountPrice();
             }
-            return servicprice;
+            return servicprice+Money;
         } else if (list != null && list2 == null)//有配件没服务
         {
             for (int i = 0; i < list.size(); i++) {
-                acprice = acprice + list.get(i).getDiscountPrice()*Double.parseDouble(list.get(i).getQuantity());
+                acprice = acprice + list.get(i).getDiscountPrice() * Double.parseDouble(list.get(i).getQuantity());
             }
-            return acprice;
-        }
-        else if (list != null && list2 != null)//都有
+            return acprice+Money;
+        } else if (list != null && list2 != null)//都有
         {
             for (int i = 0; i < list.size(); i++) {
-                acprice = acprice + list.get(i).getDiscountPrice()*Double.parseDouble(list.get(i).getQuantity());
+                acprice = acprice + list.get(i).getDiscountPrice() * Double.parseDouble(list.get(i).getQuantity());
             }
             for (int i = 0; i < list2.size(); i++) {
                 servicprice = servicprice + list2.get(i).getDiscountPrice();
             }
-            return acprice + servicprice;
+            return acprice + servicprice+Money;
 
-        } else
-        { //都没有
-            return 0;
+        } else { //都没有
+            return Money;
         }
 
 
     }
+
+
 
 }

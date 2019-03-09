@@ -518,16 +518,6 @@ switch (baseResult.getStatusCode()){
 }
     }
 
-    @Override
-    public void UpdateContinueServiceState(BaseResult<Data<String>> baseResult) {
-
-    }
-
-    @Override
-    public void PressFactoryAccount(BaseResult<Data<String>> baseResult) {
-
-    }
-
 
     @Override
     public void contentLoading() {
