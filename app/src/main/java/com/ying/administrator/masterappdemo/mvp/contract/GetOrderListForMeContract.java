@@ -34,7 +34,8 @@ public interface GetOrderListForMeContract {
         //取消订单
         Observable<BaseResult<Data>> UpdateSendOrderState(String OrderID,String State);//State为-1取消订单
 
-
+        Observable<BaseResult<Data<String>>> UpdateContinueServiceState(String OrderID);
+        Observable<BaseResult<Data<String>>> PressFactoryAccount(String UserID,String OrderID);
     }
 
     interface View extends BaseView {
@@ -55,6 +56,9 @@ public interface GetOrderListForMeContract {
 
         //取消订单
         void UpdateSendOrderState(BaseResult<Data> baseResult);
+
+        void UpdateContinueServiceState(BaseResult<Data<String>> baseResult);
+        void PressFactoryAccount(BaseResult<Data<String>> baseResult);
     }
 
     abstract class Presenter extends BasePresenter<View,Model> {
@@ -71,6 +75,7 @@ public interface GetOrderListForMeContract {
         //取消订单
         public abstract void UpdateSendOrderState(String OrderID,String State);
 
-
+        public abstract void UpdateContinueServiceState(String OrderID);
+        public abstract void PressFactoryAccount(String UserID,String OrderID);
     }
 }

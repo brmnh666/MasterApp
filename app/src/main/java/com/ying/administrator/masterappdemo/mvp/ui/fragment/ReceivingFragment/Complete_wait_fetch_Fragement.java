@@ -56,6 +56,17 @@ public class Complete_wait_fetch_Fragement extends BaseFragment<GetOrderListForM
     private Complete_wait_fetch_Adapter Complete_wait_fetch_Adapter;
     private ArrayList<WorkOrder.DataBean> list;
     private UserInfo.UserInfoDean userInfo=new UserInfo.UserInfoDean(); //获取当前账号详情
+
+    @Override
+    public void UpdateContinueServiceState(BaseResult<Data<String>> baseResult) {
+
+    }
+
+    @Override
+    public void PressFactoryAccount(BaseResult<Data<String>> baseResult) {
+
+    }
+
     private ArrayList<SubUserInfo.SubUserInfoDean> subuserlist;//获取子账号列表
 
     private WorkOrder workOrder;

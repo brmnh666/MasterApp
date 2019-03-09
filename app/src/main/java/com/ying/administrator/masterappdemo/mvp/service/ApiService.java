@@ -444,4 +444,24 @@ public interface ApiService {
     Observable<BaseResult<Data<String>>> GetOrderStr(@Field("UserID") String UserID,
                                                      @Field("TotalAmount") String TotalAmount,
                                                      @Field("Type") String Type);
+
+    /**
+     * 继续服务（返件列表）
+     * @param OrderID 订单id
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("Order/UpdateContinueServiceState")
+    Observable<BaseResult<Data<String>>> UpdateContinueServiceState(@Field("OrderID") String OrderID);
+
+    /**
+     * 催件
+     * @param UserID 用户id
+     * @param OrderID 订单id
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("Order/PressFactoryAccount")
+    Observable<BaseResult<Data<String>>> PressFactoryAccount(@Field("UserID") String UserID,
+                                                     @Field("OrderID") String OrderID);
 }

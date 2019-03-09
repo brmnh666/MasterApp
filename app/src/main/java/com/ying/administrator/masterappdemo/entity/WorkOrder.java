@@ -189,12 +189,21 @@ public class WorkOrder implements Serializable {
         private String IsRecevieGoods;
         private String AppointmentMessage;
         private String AppointmentState;
+        private String  IsPressFactory ;
         private List<GAccessory> OrderAccessroyDetail; //所选配件详情
         private List<GService> OrderServiceDetail;  //所选配件详情
         private String Distance;//返回距离
         private int page;
         private int limit;
         private int Version;
+
+        public String getIsPressFactory() {
+            return IsPressFactory;
+        }
+
+        public void setIsPressFactory(String isPressFactory) {
+            IsPressFactory = isPressFactory;
+        }
 
         public List<GAccessory> getOrderAccessroyDetail() {
             return OrderAccessroyDetail;
