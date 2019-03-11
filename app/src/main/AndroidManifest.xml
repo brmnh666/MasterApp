@@ -258,6 +258,14 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTask"
             android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".mvp.ui.activity.ArticleActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".mvp.ui.activity.WebActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="stateHidden"/>
         <!--新浪start-->
         <activity
             android:name="com.umeng.socialize.media.WBShareCallBackActivity"

@@ -1,13 +1,25 @@
 package com.ying.administrator.masterappdemo.mvp.ui.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.ying.administrator.masterappdemo.R;
+import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.Article;
+import com.ying.administrator.masterappdemo.mvp.contract.ArticleContract;
+import com.ying.administrator.masterappdemo.mvp.model.ArticleModel;
+import com.ying.administrator.masterappdemo.mvp.presenter.ArticlePresenter;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.ArticleActivity;
+import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import butterknife.BindView;
 
 
 /**
@@ -15,12 +27,19 @@ import com.ying.administrator.masterappdemo.R;
  * Use the {@link NoticeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NoticeFragment extends Fragment {
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_SHOW_TEXT = "text";
+public class NoticeFragment extends BaseLazyFragment<ArticlePresenter, ArticleModel> implements ArticleContract.View, View.OnClickListener {
 
-    private String mContentText;
-private View view;
+    @BindView(R.id.ll_announcement)
+    LinearLayout mLlAnnouncement;
+    @BindView(R.id.ll_platform_policy)
+    LinearLayout mLlPlatformPolicy;
+    @BindView(R.id.ll_news)
+    LinearLayout mLlNews;
+    @BindView(R.id.ll_order_must_read)
+    LinearLayout mLlOrderMustRead;
+    private String param1;
+    private String param2;
+    private Intent intent;
 
     public NoticeFragment() {
         // Required empty public constructor
@@ -49,21 +68,61 @@ private View view;
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mContentText = getArguments().getString(ARG_SHOW_TEXT);
+            param1 = getArguments().getString(ARG_PARAM1);
+            param2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        if (view==null){
-
-            view = inflater.inflate(R.layout.fragment_notice, container, false);
-        }
-
-
-        return view;
+    protected int setLayoutId() {
+        return R.layout.fragment_notice;
     }
 
+    @Override
+    protected void initData() {
+
+    }
+
+    @Override
+    protected void initView() {
+
+    }
+
+    @Override
+    protected void setListener() {
+        mLlAnnouncement.setOnClickListener(this);
+        mLlPlatformPolicy.setOnClickListener(this);
+        mLlNews.setOnClickListener(this);
+        mLlOrderMustRead.setOnClickListener(this);
+    }
+
+    @Override
+    public void GetListCategoryContentByCategoryID(BaseResult<Article> baseResult) {
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        intent = new Intent(mActivity, ArticleActivity.class);
+        switch(v.getId()){
+            case R.id.ll_announcement:
+                intent.putExtra("CategoryID","7");
+                break;
+            case R.id.ll_platform_policy:
+                intent.putExtra("CategoryID","8");
+                break;
+            case R.id.ll_news:
+                intent.putExtra("CategoryID","9");
+                break;
+            case R.id.ll_order_must_read:
+                intent.putExtra("CategoryID","10");
+                break;
+            default:
+                break;
+        }
+        startActivity(intent);
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(String message) {
+    }
 }

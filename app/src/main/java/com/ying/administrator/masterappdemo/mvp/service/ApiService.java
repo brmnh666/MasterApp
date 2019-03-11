@@ -3,6 +3,7 @@ package com.ying.administrator.masterappdemo.mvp.service;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Accessory;
 import com.ying.administrator.masterappdemo.entity.Area;
+import com.ying.administrator.masterappdemo.entity.Article;
 import com.ying.administrator.masterappdemo.entity.Category;
 import com.ying.administrator.masterappdemo.entity.City;
 import com.ying.administrator.masterappdemo.entity.Data;
@@ -470,4 +471,17 @@ public interface ApiService {
     @POST("Order/PressFactoryAccount")
     Observable<BaseResult<Data<String>>> PressFactoryAccount(@Field("UserID") String UserID,
                                                      @Field("OrderID") String OrderID);
+
+    /**
+     * 获取文章列表
+     * 师傅端
+     * 7系统消息 8平台政策 9平台新闻 10接单必读
+     * @param CategoryID 栏目id
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("Cms/GetListCategoryContentByCategoryID")
+    Observable<BaseResult<Article>> GetListCategoryContentByCategoryID(
+            @Field("CategoryID") String CategoryID
+    );
 }
