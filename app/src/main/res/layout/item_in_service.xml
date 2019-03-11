@@ -39,7 +39,6 @@
         android:layout_toRightOf="@id/tv_in_service_status_install"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
-        android:text="远程费被拒"
         android:textColor="@color/color_custom_04"
         android:textSize="10sp"
         />

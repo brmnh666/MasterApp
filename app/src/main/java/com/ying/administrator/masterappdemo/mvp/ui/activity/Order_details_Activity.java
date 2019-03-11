@@ -946,13 +946,13 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                 if (data.getTypeID()==1) {//维修
                     tv_order_details_status.setText("维修");
                     tv_order_details_status.setBackgroundResource(R.color.color_custom_01);
-                    mll_return_information.setVisibility(View.VISIBLE);
-                    mll_service_process.setVisibility(View.GONE);
+                 /*   mll_return_information.setVisibility(View.VISIBLE);
+                    mll_service_process.setVisibility(View.GONE);*/
                 } else {
                     tv_order_details_status.setText("安装");
                     tv_order_details_status.setBackgroundResource(R.color.color_custom_04);
-                    mll_return_information.setVisibility(View.GONE);
-                    mll_service_process.setVisibility(View.VISIBLE);
+                   /* mll_return_information.setVisibility(View.GONE);
+                    mll_service_process.setVisibility(View.VISIBLE);*/
                 }
                 tv_order_details_adress.setText(data.getAddress());
                 mTvNum.setText("数量：" + data.getNum() + "台");
@@ -1585,16 +1585,16 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     }
 
     /*安装服务图片*/
-    public void ServiceOrderPicUpload(HashMap<Integer,File> map) {
+        public void ServiceOrderPicUpload(HashMap<Integer,File> map) {
 
-        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
-        builder.addFormDataPart("img", map.get(0).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(0)));
-        builder.addFormDataPart("img", map.get(1).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(1)));
-        builder.addFormDataPart("img", map.get(2).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(2)));
-        builder.addFormDataPart("img", map.get(3).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(3)));
-        builder.addFormDataPart("OrderID", orderID);
-        MultipartBody requestBody = builder.build();
-        mPresenter.ServiceOrderPicUpload(requestBody);
+            MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+            builder.addFormDataPart("img", map.get(0).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(0)));
+            builder.addFormDataPart("img", map.get(1).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(1)));
+            builder.addFormDataPart("img", map.get(2).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(2)));
+            builder.addFormDataPart("img", map.get(3).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(3)));
+            builder.addFormDataPart("OrderID", orderID);
+            MultipartBody requestBody = builder.build();
+            mPresenter.ServiceOrderPicUpload(requestBody);
 
 
     }

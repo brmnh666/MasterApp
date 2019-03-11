@@ -38,6 +38,15 @@
                 android:textSize="15sp"
                 android:textColor="#6A6A6A" />
 
+            <TextView
+                android:id="@+id/tv_accessories_sendstate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                
+                android:textSize="15sp"
+                android:textColor="#6A6A6A" />
+
         </LinearLayout>
         
         <ImageView

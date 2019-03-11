@@ -229,7 +229,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@null"
-                android:hint="单号:640114527166"
+                android:hint="快递单号:"
                 android:textColor="#ABABAB"
                 android:textSize="12dp" />
 
@@ -244,7 +244,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_10"
                 android:background="@null"
-                android:hint="中通快递"
+                android:hint="快递公司名称"
                 android:textColor="#ABABAB"
                 android:textSize="12dp" />
 
@@ -482,6 +482,7 @@
         android:layout_weight="1"/>
     
     <Button
+        android:id="@+id/btn_complete_submit"
         android:layout_width="match_parent"
         android:layout_height="47dp"
         android:layout_margin="10dp"

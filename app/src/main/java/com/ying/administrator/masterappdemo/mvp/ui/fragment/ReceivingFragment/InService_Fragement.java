@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
@@ -31,6 +32,8 @@ import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_details_Activi
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.In_Service_Adapter;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseFragment;
 import com.ying.administrator.masterappdemo.R;
+import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +49,7 @@ import java.util.List;
      private WorkOrder workOrder;
      private String userID; //用户id
      private int pageIndex = 1;  //默认当前页数为1
+    private String OrderId;//记录当前工单号
      @Nullable
      @Override
      public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -59,7 +63,11 @@ import java.util.List;
     return view;
     }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        mRefreshLayout.autoRefresh();
+    }
 
     public void initView() {
         list=new ArrayList<>();
@@ -114,6 +122,30 @@ import java.util.List;
                         startActivity(intent2);
 
                         break;
+                    case R.id.tv_cancel_work_order://取消工单
+                        OrderId=((WorkOrder.DataBean)adapter.getData().get(position)).getOrderID();//获取工单号
+                        final CommonDialog_Home dialog = new CommonDialog_Home(getActivity());
+                        dialog.setMessage("是否取消工单")
+                                //.setImageResId(R.mipmap.ic_launcher)
+                                .setTitle("提示")
+                                .setSingle(false).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
+                            @Override
+                            public void onPositiveClick() {//取消订单
+                                mPresenter.UpdateSendOrderState(OrderId,"-1");
+                                dialog.dismiss();
+                            }
+
+                            @Override
+                            public void onNegtiveClick() {//放弃取消
+                                dialog.dismiss();
+                                // Toast.makeText(MainActivity.this,"ssss",Toast.LENGTH_SHORT).show();
+                            }
+                        }).show();
+
+
+
+                        break;
+
                         default:
                             break;
 
@@ -141,10 +173,6 @@ import java.util.List;
                         list.addAll(workOrder.getData());
                         in_service_adapter.setNewData(list);
                     }
-
-
-
-
                 }
 
                 break;
@@ -176,7 +204,18 @@ import java.util.List;
 
     @Override
     public void UpdateSendOrderState(BaseResult<Data> baseResult) {
+        switch (baseResult.getStatusCode()){
+            case 200:
+                if (baseResult.getData().isItem1()){
+                    mRefreshLayout.autoRefresh();
 
+                }else {
+                    Toast.makeText(getActivity(), (CharSequence) baseResult.getData().getItem2(),Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+                break;
+        }
     }
 
     @Override

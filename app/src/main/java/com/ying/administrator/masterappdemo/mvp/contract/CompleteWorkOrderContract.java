@@ -26,7 +26,10 @@ public interface CompleteWorkOrderContract {
        // Observable<BaseResult<String>> GetReturnAccessoryByOrderID(String OrderID);
 
         //修改订单状态
-        Observable<BaseResult<Data>> UpdateOrderState(String OrderID,String State);
+        Observable<BaseResult<Data<String>>> UpdateOrderState(String OrderID,String State);
+
+        //提交快递信息
+        Observable<BaseResult<Data<String>>> AddReturnAccessory(String OrderID,String ReturnAccessoryMsg);
     }
 
     interface View extends BaseView{
@@ -46,7 +49,10 @@ public interface CompleteWorkOrderContract {
         // void GetReturnAccessoryByOrderID(BaseResult<String> baseResult);
 
         //修改订单状态
-        void UpdateOrderState(BaseResult<Data> baseResult);
+        void UpdateOrderState(BaseResult<Data<String>> baseResult);
+
+        //提交快递信息
+        void AddReturnAccessory(BaseResult<Data<String>> baseResult);
 
     }
    abstract class Presenter extends BasePresenter<View,Model> {
@@ -62,7 +68,9 @@ public interface CompleteWorkOrderContract {
        public abstract void FinishOrderPicUpload(RequestBody json);
        //获取返件图片
        //public abstract void GetReturnAccessoryByOrderID(String OrderID);
-
        public abstract void UpdateOrderState(String OrderID,String State);
+
+       //提交快递信息
+       public abstract void AddReturnAccessory(String OrderID,String ReturnAccessoryMsg);
    }
 }

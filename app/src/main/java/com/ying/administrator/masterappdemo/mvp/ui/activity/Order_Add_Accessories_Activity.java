@@ -677,6 +677,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                      mfAccessory.setDiscountPrice(gAccessories.get(i).getDiscountPrice());
                      mfAccessory.setFAccessoryName(gAccessories.get(i).getFAccessoryName());
                      mfAccessory.setQuantity(String.valueOf(gAccessories.get(i).getQuantity()));
+                     mfAccessory.setSendState(gAccessories.get(i).getSendState());
                      map.put(gAccessories.get(i).getFAccessoryID()-1,mfAccessory);
 
                     }
@@ -725,9 +726,12 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                                         }
                                     }
                                     if (is_exist){
-                                        map.remove(keymap);
-                                        vibrator.vibrate(50);
-                                        adapter.remove(position);
+
+                                            map.remove(keymap);
+                                            vibrator.vibrate(50);
+                                            adapter.remove(position);
+
+
                                     }
                                     Log.d("map里面的值", String.valueOf(map.size()));
                                     tv_total_price.setText("服务金额:¥"+gettotalPrice(fAcList,fList_service));
@@ -793,8 +797,9 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                                         }
                                     }
                                     if (is_exist){
-                                        map_service.remove(keymap);
+
                                         vibrator.vibrate(50);
+                                        map_service.remove(keymap);
                                         adapter.remove(position);
                                     }
 

@@ -4,7 +4,9 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,8 +30,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.ViewTarget;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.ying.administrator.masterappdemo.R;
@@ -48,7 +52,11 @@ import com.ying.administrator.masterappdemo.widget.CustomDialog;
 import com.ying.administrator.masterappdemo.widget.ShareDialog;
 import com.ying.administrator.masterappdemo.widget.ViewExampleDialog;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -76,16 +84,18 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
     private TextView tv_service_goods;//产品名称
     private TextView tv_service_address;//服务地址
     private WorkOrder.DataBean data = new WorkOrder.DataBean();
-
     private View popupWindow_view;
     private String FilePath;
     private PopupWindow mPopupWindow;
     private ArrayList<String> permissions;
     private LinearLayout ll_scan;
-    private EditText et_single_number;
+    private EditText et_single_number; //快递单号
+    private EditText et_express_name;//快递公司名字
 
-    private ArrayList<ReturnaccessoryImg> return_img = new ArrayList<>();//返件图片
-    private ArrayList<OrderImg> service_img = new ArrayList<>();//服务过程图片
+    private Button btn_complete_submit;
+
+  /*  private ArrayList<ReturnaccessoryImg> return_img = new ArrayList<>();//返件图片
+    private ArrayList<OrderImg> service_img = new ArrayList<>();//服务过程图片*/
 
     private HashMap<Integer,File> return_img_map=new HashMap<>();//上传的返件图片
     private HashMap<Integer,File> service_img_map=new HashMap<>();//上传安装图片
@@ -125,6 +135,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
         iv_new_and_old_accessories = findViewById(R.id.iv_new_and_old_accessories);
         ll_scan = findViewById(R.id.ll_scan);
         et_single_number = findViewById(R.id.et_single_number);
+        et_express_name=findViewById(R.id.et_express_name);
         tv_order_time = findViewById(R.id.tv_order_time);
         tv_work_order_number = findViewById(R.id.tv_work_order_number);
         tv_reason_pending_appointment = findViewById(R.id.tv_reason_pending_appointment);
@@ -138,6 +149,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
         iv_three = findViewById(R.id.iv_three);
         iv_four = findViewById(R.id.iv_four);
 
+        btn_complete_submit=findViewById(R.id.btn_complete_submit);
         //接收传进来的工单id
         orderID = getIntent().getStringExtra("OrderID");
 
@@ -161,7 +173,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
         iv_two.setOnClickListener(new CustomOnclickLister());
         iv_three.setOnClickListener(new CustomOnclickLister());
         iv_four.setOnClickListener(new CustomOnclickLister());
-
+        btn_complete_submit.setOnClickListener(new CustomOnclickLister());
 
     }
 
@@ -191,25 +203,44 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                 }
                 tv_service_address.setText(data.getAddress());
 
-                return_img.addAll(baseResult.getData().getReturnaccessoryImg());
 
-                if (!return_img.isEmpty()) {//有返件图片
 
-                    Glide.with(mActivity).load(Config.RETURN_IMG + return_img.get(0).getUrl()).into(iv_bar_code);
-                    Glide.with(mActivity).load(Config.RETURN_IMG + return_img.get(1).getUrl()).into(iv_machine);
+
+               // return_img.addAll(baseResult.getData().getReturnaccessoryImg());
+
+              /*  if (!return_img.isEmpty()) {//有返件图片
+
+                   Glide.with(mActivity).load(Config.RETURN_IMG + return_img.get(0).getUrl()).into(iv_bar_code);
+                   Glide.with(mActivity).load(Config.RETURN_IMG + return_img.get(1).getUrl()).into(iv_machine);
                     Glide.with(mActivity).load(Config.RETURN_IMG + return_img.get(2).getUrl()).into(iv_fault_location);
                     Glide.with(mActivity).load(Config.RETURN_IMG + return_img.get(3).getUrl()).into(iv_new_and_old_accessories);
 
-                }
+                    if (iv_bar_code.getDrawable()!=null&&iv_machine!=null&&iv_fault_location!=null&&iv_new_and_old_accessories!=null){
 
-                service_img.addAll(baseResult.getData().getOrderImg());
+                      Log.d("======>","图片存在");
+
+                                //需要在子线程中处理的逻辑
+                                return_img_map.put(0,getFile(iv_bar_code,0));
+                                return_img_map.put(1,getFile(iv_machine,1));
+                                return_img_map.put(2,getFile(iv_fault_location,2));
+                                return_img_map.put(3,getFile(iv_new_and_old_accessories,3));
+                                Log.d("return_img_map的大小为====>", String.valueOf(return_img_map.size()));
+
+
+                    }
+
+
+
+                }*/
+
+             /*   service_img.addAll(baseResult.getData().getOrderImg());
 
                 if (!service_img.isEmpty()) {
                     Glide.with(mActivity).load(Config.Service_IMG + service_img.get(0).getUrl()).into(iv_one);
                     Glide.with(mActivity).load(Config.Service_IMG + service_img.get(1).getUrl()).into(iv_two);
                     Glide.with(mActivity).load(Config.Service_IMG + service_img.get(2).getUrl()).into(iv_three);
                     Glide.with(mActivity).load(Config.Service_IMG + service_img.get(3).getUrl()).into(iv_four);
-                }
+                }*/
 
 
                 break;
@@ -226,13 +257,28 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
     /*添加服务过程的图片*/
     @Override
     public void ServiceOrderPicUpload(BaseResult<Data<String>> baseResult) {
+        switch (baseResult.getStatusCode()){
+            case 200:
+                if (baseResult.getData().isItem1()){//图片上传成功
+                    mPresenter.UpdateOrderState(orderID,"7");
+                }
 
+                break;
+        }
     }
 
     /*提交返件图片*/
     @Override
     public void ReuturnAccessoryPicUpload(BaseResult<Data<String>> baseResult) {
 
+        switch (baseResult.getStatusCode()){
+            case 200:
+                if (baseResult.getData().isItem1()){//图片上传成功
+                   mPresenter.UpdateOrderState(orderID,"7");
+                }
+
+                break;
+        }
 
     }
 
@@ -246,13 +292,21 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 
 
     @Override
-    public void UpdateOrderState(BaseResult<Data> baseResult) {
+    public void UpdateOrderState(BaseResult<Data<String>> baseResult) {
 
         switch (baseResult.getStatusCode()) {
             case 200:
-                break;
+            if (baseResult.getData().isItem1()){
+                CompleteWorkOrderActivity.this.finish();
+                }
+                            break;
 
         }
+    }
+
+    @Override
+    public void AddReturnAccessory(BaseResult<Data<String>> baseResult) {
+
     }
 
     public class CustomOnclickLister implements View.OnClickListener {
@@ -319,13 +373,48 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                     integrator.initiateScan();
                     break;
 
+                case R.id.btn_complete_submit:
+                /*    if (return_img_map.size()<4||service_img_map.size()<4){
+                        Toast.makeText(CompleteWorkOrderActivity.this,"请添加四张图片",Toast.LENGTH_SHORT).show();
+                    }else {
+                     if (return_img_map.size()>=4){
+
+                         ReuturnAccessoryPicUpload(return_img_map);
+
+                     }
+                     if (service_img_map.size()>=4){
+
+                         ServiceOrderPicUpload(service_img_map);
+                     }
+
+                    }*/
+                if (data.getTypeID()==2){//安装
+                    if (service_img_map.size()<4){
+                        Toast.makeText(CompleteWorkOrderActivity.this,"请添加四张服务图片",Toast.LENGTH_SHORT).show();
+                    }else {
+
+
+                        ServiceOrderPicUpload(service_img_map);
+                    }
+
+                }else {//维修
+
+                    if (return_img_map.size()<4){
+                        Toast.makeText(CompleteWorkOrderActivity.this,"请添加四张返件图片",Toast.LENGTH_SHORT).show();
+
+                    }else {
+
+                        if (!et_express_name.getText().toString().equals("")&&et_single_number.getText().toString().equals("")){
+                            mPresenter.AddReturnAccessory(orderID,et_single_number.getText().toString()+et_express_name.getText().toString());
+                        }
+                        ReuturnAccessoryPicUpload(return_img_map);
+                    }
+                }
 
 
 
 
-
-
-
+                    break;
 
 
 
@@ -445,7 +534,12 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (scanResult != null) {
             String result = scanResult.getContents();
-            et_single_number.setText("单号:" + result);
+            if (result==null){
+                return;
+            }else {
+                et_single_number.setText(result);
+            }
+
         }
         File file = null;
         switch (requestCode) {
@@ -658,4 +752,28 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 
 
     }
+
+    /*public File getFile(ImageView imageView,int flag) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        Bitmap bitmap = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
+        File file = new File(Environment.getExternalStorageDirectory() + "/temp+"+flag+"+.jpg");
+        try {
+            file.createNewFile();
+            FileOutputStream fos = new FileOutputStream(file);
+            InputStream is = new ByteArrayInputStream(baos.toByteArray());
+            int x = 0;
+            byte[] b = new byte[1024 * 100];
+            while ((x = is.read(b)) != -1) {
+                fos.write(b, 0, x);
+            }
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return file;
+    }
+*/
+
+
 }

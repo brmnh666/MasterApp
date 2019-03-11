@@ -33,7 +33,6 @@ public interface GetOrderListForMeContract {
 
         //取消订单
         Observable<BaseResult<Data>> UpdateSendOrderState(String OrderID,String State);//State为-1取消订单
-
         Observable<BaseResult<Data<String>>> UpdateContinueServiceState(String OrderID);
         Observable<BaseResult<Data<String>>> PressFactoryAccount(String UserID,String OrderID);
     }

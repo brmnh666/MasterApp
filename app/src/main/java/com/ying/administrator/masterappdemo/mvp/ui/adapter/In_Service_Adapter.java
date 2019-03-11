@@ -25,14 +25,26 @@ public class In_Service_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,Base
             helper.setVisible(R.id.tv_in_service_status_repair,false);
             helper.setVisible(R.id.tv_in_service_status_install,true);
         }
+
         helper.setText(R.id.tv_loaction_in_service,"距离 "+item.getDistance()+"Km");
         helper.setText(R.id.tv_reason_in_service,item.getMemo());//原因
         helper.setText(R.id.tv_address_in_service,item.getAddress()); //地址
         helper.setText(R.id.tv_in_service_job_number,"工单号:"+item.getOrderID());
 
+         if (item.getBeyondState()==null){
+         }else if (item.getBeyondState().equals("0")){//待审核
+             helper.setText(R.id.tv_remote_fee,"远程费审核中");
+         }else if (item.getBeyondState().equals("1")){//审核通过
+             helper.setText(R.id.tv_remote_fee,"远程费审核通过");
+         }else {//审核不通过
+             helper.setText(R.id.tv_remote_fee,"远程费审核不通过");
+         }
+
+
 
       helper.addOnClickListener(R.id.tv_in_service_finish);//完成工单
       helper.addOnClickListener(R.id.tv_in_service_apply_parts);//申请配件
+      helper.addOnClickListener(R.id.tv_cancel_work_order);//取消工单
     }
 
 

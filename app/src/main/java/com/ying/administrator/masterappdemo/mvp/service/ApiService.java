@@ -262,10 +262,16 @@ public interface ApiService {
                                                        @Field("AppointmentMessage") String AppointmentMessage);
 
 
+    /*提交返件信息快递单号加快递公司*/
+
+    @FormUrlEncoded
+    @POST("Order/AddReturnAccessory")
+    Observable<BaseResult<Data<String>>> AddReturnAccessory(@Field("OrderID") String OrderID,
+                                                            @Field("ReturnAccessoryMsg") String ReturnAccessoryMsg);
 
      @FormUrlEncoded
     @POST("Order/UpdateOrderState")
-    Observable<BaseResult<Data>> UpdateOrderState (@Field("OrderID") String OrderID,
+    Observable<BaseResult<Data<String>>> UpdateOrderState (@Field("OrderID") String OrderID,
                                                   @Field("State") String State);
     /*
      *
@@ -484,4 +490,5 @@ public interface ApiService {
     Observable<BaseResult<Article>> GetListCategoryContentByCategoryID(
             @Field("CategoryID") String CategoryID
     );
+
 }
