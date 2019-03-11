@@ -39,6 +39,7 @@ import com.ying.administrator.masterappdemo.mvp.model.GetOrderListForMeModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.GetOrderListForMePresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_Add_Accessories_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_details_Activity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.WorkOrderDetailsActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Return_Sheet_Adapter;
 
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Redeploy_Adapter;
@@ -71,6 +72,8 @@ public class Returnedparts_Fragement extends BaseFragment<GetOrderListForMePrese
     private Redeploy_Adapter redeploy_adapter; //转派的adapter
     private String SubUserID; //用于存放主账号将要发送子账号的userid
     private String OrderId;//用于记录当前 工单的id
+    private Intent intent;
+
     public Returnedparts_Fragement() {
         // Required empty public constructor
     }
@@ -170,9 +173,9 @@ public class Returnedparts_Fragement extends BaseFragment<GetOrderListForMePrese
             public void onItemChildClick(final BaseQuickAdapter adapter, View view, final int position) {
                 switch(view.getId()){
                     case R.id.tv_returnedparts_apply_parts://申请配件
-                        Intent intent2=new Intent(getActivity(), Order_Add_Accessories_Activity.class);
-                        intent2.putExtra("OrderID",list.get(position).getOrderID());
-                        startActivity(intent2);
+                        intent = new Intent(getActivity(), Order_Add_Accessories_Activity.class);
+                        intent.putExtra("OrderID",list.get(position).getOrderID());
+                        startActivity(intent);
                         break;
                     case R.id.tv_reminder://催件
                         mPresenter.PressFactoryAccount(list.get(position).getUserID(),list.get(position).getOrderID());
@@ -181,7 +184,9 @@ public class Returnedparts_Fragement extends BaseFragment<GetOrderListForMePrese
                         mPresenter.UpdateContinueServiceState(list.get(position).getOrderID());
                         break;
                     case R.id.tv_see_detail://查看详情
-//                        mPresenter.UpdateContinueServiceState(list.get(position).getOrderID());
+                        intent=new Intent(getActivity(), WorkOrderDetailsActivity.class);
+                        intent.putExtra("OrderID",list.get(position).getOrderID());
+                        startActivity(intent);
                         break;
                     default:
                         break;

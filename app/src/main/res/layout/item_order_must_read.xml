@@ -23,15 +23,13 @@
             android:id="@+id/iv_message_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:singleLine="true"
             android:text="接单必读"
             android:textColor="#6a6a6a"
             android:textSize="16sp"
             android:layout_gravity="center"
             android:layout_marginLeft="10dp"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"/>
         <ImageView
             android:layout_width="15dp"
             android:layout_height="15dp"
