@@ -60,5 +60,17 @@ public class GetOrderListForMeModel implements GetOrderListForMeContract.Model {
                 .subscribeOn(Schedulers.io());
     }
 
+    @Override
+    public Observable<BaseResult<Data<String>>> UpdateContinueServiceState(String OrderID) {
+        return  ApiRetrofit.getDefault().UpdateContinueServiceState(OrderID)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
 
+    @Override
+    public Observable<BaseResult<Data<String>>> PressFactoryAccount(String UserID, String OrderID) {
+        return  ApiRetrofit.getDefault().PressFactoryAccount(UserID, OrderID)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
 }
