@@ -253,6 +253,11 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTask"
             android:windowSoftInputMode="stateHidden"/>
+        <!--订单详情-->
+        <activity android:name=".mvp.ui.activity.WorkOrderDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="stateHidden"/>
         <!--新浪start-->
         <activity
             android:name="com.umeng.socialize.media.WBShareCallBackActivity"
