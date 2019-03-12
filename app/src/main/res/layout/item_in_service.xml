@@ -143,6 +143,16 @@
         android:layout_below="@+id/tv_hint_in_service"
         android:layout_marginTop="10dp"
         android:background="#DAD7DB"></View>
+
+    <ImageView
+        android:id="@+id/iv_call"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@mipmap/call"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="50dp"
+        android:padding="@dimen/dp_10"/>
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
