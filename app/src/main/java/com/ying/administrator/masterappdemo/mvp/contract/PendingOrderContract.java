@@ -50,9 +50,11 @@ public interface PendingOrderContract {
         Observable<BaseResult<Data<String>>> ReuturnAccessoryPicUpload(RequestBody json);
 
         Observable<BaseResult<Data<String>>> FinishOrderPicUpload(RequestBody json);
-
         //上传远程费图片
         Observable<BaseResult<Data<String>>> OrderByondImgPicUpload(RequestBody json);
+
+        //申请远程费
+        Observable<BaseResult<Data<String>>> ApplyBeyondMoney(String OrderID,String BeyondMoney,String BeyondDistance);
     }
 
     interface View extends BaseView{
@@ -89,6 +91,9 @@ public interface PendingOrderContract {
 
         //上传远程费图片
         void OrderByondImgPicUpload(BaseResult<Data<String>> baseResult);
+
+        //申请远程费
+        void ApplyBeyondMoney(BaseResult<Data<String>> baseResult);
     }
 
     abstract  class Presenter extends BasePresenter<View,Model>{
@@ -118,6 +123,8 @@ public interface PendingOrderContract {
         //上传远程费图片
         public abstract void OrderByondImgPicUpload(RequestBody json);
 
+        //申请远程费
+        public abstract void ApplyBeyondMoney(String OrderID,String BeyondMoney,String BeyondDistance);
     }
 
 

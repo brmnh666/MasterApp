@@ -45,6 +45,7 @@ import com.ying.administrator.masterappdemo.mvp.contract.VerifiedContract;
 import com.ying.administrator.masterappdemo.mvp.model.VerifiedModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.VerifiedPresenter;
 import com.ying.administrator.masterappdemo.util.MyUtils;
+import com.ying.administrator.masterappdemo.util.imageutil.CompressHelper;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -541,7 +542,10 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                     file = new File(FilePath);
                 }
                 if (file != null) {
-                    uploadImg(file, 0);
+
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    uploadImg(newFile, 0);
+
                 }
                 break;
             //相册
@@ -552,7 +556,8 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                     file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
                 }
                 if (file != null) {
-                    uploadImg(file, 0);
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    uploadImg(newFile, 0);
                 }
                 break;
             //拍照
@@ -562,7 +567,8 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                     file = new File(FilePath);
                 }
                 if (file != null) {
-                    uploadImg(file, 1);
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    uploadImg(newFile, 1);
                 }
                 break;
             //相册
@@ -573,7 +579,8 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                     file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
                 }
                 if (file != null) {
-                    uploadImg(file, 1);
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    uploadImg(newFile, 1);
                 }
                 break;
             //拍照
@@ -583,7 +590,8 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                     file = new File(FilePath);
                 }
                 if (file != null) {
-                    uploadImg(file, 2);
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    uploadImg(newFile, 2);
                 }
                 break;
             //相册
@@ -594,9 +602,13 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                     file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
                 }
                 if (file != null) {
-                    uploadImg(file, 2);
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    uploadImg(newFile, 2);
                 }
                 break;
+
+
+
             case 100:
                 if (data != null) {
                     mAddress = data.getStringExtra("address");

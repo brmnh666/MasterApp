@@ -375,7 +375,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
         switch (baseResult.getStatusCode()) {
             case 200://200
                 if (data.isItem1()) {//抢单成功
-                    Toast.makeText(getActivity(), "抢单成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "接单成功", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getActivity(), Order_Receiving_Activity.class);
                     intent.putExtra("intent", "pending_appointment");
                     startActivity(intent);

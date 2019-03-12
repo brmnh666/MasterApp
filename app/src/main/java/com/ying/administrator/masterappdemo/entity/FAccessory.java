@@ -65,8 +65,17 @@ public class FAccessory implements Serializable {
             private String SendState;
             private String Relation;
             private String IsPay;
+            private String ExpressNo;
             private double Price;
             private double DiscountPrice;
+
+            public String getExpressNo() {
+                return ExpressNo;
+            }
+
+            public void setExpressNo(String expressNo) {
+                ExpressNo = expressNo;
+            }
 
             public String getSendState() {
                 return SendState;

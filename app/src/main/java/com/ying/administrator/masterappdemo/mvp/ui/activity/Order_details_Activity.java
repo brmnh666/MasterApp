@@ -248,11 +248,14 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     private int select_state=0;//记录厂家寄件申请（1） 和自购件申请（2） 0为未选中
     private String orderID;//工单号
     private double Service_range=15; //正常距离(km)
+    private int remote_fee=0; //远程费
+
 
     private ArrayList<File> files_list=new ArrayList<>();
     private HashMap<Integer,File> files_map=new HashMap<>();//返件图片
     private HashMap<Integer,File> files_map_s=new HashMap<>();//服务图片
 
+    private HashMap<Integer,File> files_map_remote=new HashMap<>();//申请除非图片
     @Override
     protected int setLayoutId() {
         return R.layout.activity_order_details;
@@ -325,14 +328,15 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
 
-                    case R.id.rb_order_details_no_for_remote_fee:
+                    case R.id.rb_order_details_no_for_remote_fee: //不要远程费
                         ll_Out_of_service_tv.setVisibility(View.GONE);
                         ll_Out_of_service_img.setVisibility(View.GONE);
+                        remote_fee=0;
                         break;
-                    case R.id.rb_order_details_yes_for_remote_fee:
+                    case R.id.rb_order_details_yes_for_remote_fee: //需要远程费
                         ll_Out_of_service_tv.setVisibility(View.VISIBLE);
                         ll_Out_of_service_img.setVisibility(View.VISIBLE);
-
+                        remote_fee=1;
 
                         /*获取订单的距离*/
                         double Distance = Double.parseDouble(data.getDistance());
@@ -506,7 +510,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                                         mfAccessory.setSendState("N");
                                         mfAccessory.setRelation("");
                                         mfAccessory.setIsPay("N");
-
+                                        mfAccessory.setExpressNo("");
                                         mList.get(position).setCheckedcount(1);
                                         mList.get(position).setIscheck(true);
                                         map.put(position,mfAccessory);
@@ -527,6 +531,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                                                 mfAccessory.setSendState("N");
                                                 mfAccessory.setRelation("");
                                                 mfAccessory.setIsPay("N");
+                                                mfAccessory.setExpressNo("");
                                                 // Log.d("getQuantitys的个数00",mfAccessory.getQuantity());
                                                 mList.get(position).setCheckedcount(value);
                                                 map.put(position,mfAccessory);
@@ -785,12 +790,22 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
                     if (fAcList.size()==0&&fList_service.size()==0){ //都没有添加只提交上门时间
 
+                        if (remote_fee==0){//没申请远程费直接改提交
+                            mPresenter.UpdateSendOrderUpdateTime(orderID,time);
+                        }else {
+                            if (files_map_remote.size()<2&&et_order_beyond_km.getText().toString().equals("")){
+                                Toast.makeText(this,"请传入两张图片并输入超出距离",Toast.LENGTH_SHORT).show();
+                            }else {
+                               /* OrderByondImgPicUpload(files_map_remote);
+                                //double beyond= Double.parseDouble(et_order_beyond_km.getText().toString());
+                                mPresenter.ApplyBeyondMoney(orderID,et_order_beyond_km.getText().toString(),et_order_beyond_km.getText().toString());
+*/
 
-                       mPresenter.UpdateSendOrderUpdateTime(orderID,time);
 
+                            }
+                        }
 
                    }else if (fAcList.size()!=0&&fList_service.size()==0){//只有配件
-
                        orderAccessoryStrBean = new FAccessory.OrderAccessoryStrBean();
                        orderAccessoryStrBean.setOrderAccessory(fAcList);
                        Gson gson1=new Gson();
@@ -1031,7 +1046,6 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                 break;
         }
     }
-
     /*提交服务信息*/
     @Override
     public void AddOrderService(BaseResult<Data> baseResult) {
@@ -1087,6 +1101,11 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                         ServiceOrderPicUpload(files_map_s);
                         Order_details_Activity.this.finish();
                     }
+                    else if (files_map_remote.size()>=2){
+                        OrderByondImgPicUpload(files_map_remote);
+                        Order_details_Activity.this.finish();
+
+                    }
                     else {
                         Order_details_Activity.this.finish();
                     }
@@ -1095,7 +1114,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
 
                 }else {
-                    Toast.makeText(this,"未知错误",Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, (CharSequence) baseResult.getData().getItem2(),Toast.LENGTH_LONG).show();
                 }
                 break;
             default:
@@ -1118,7 +1137,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
     }
 
-/*上传返件图片*/
+   /*上传返件图片*/
     @Override
     public void ReuturnAccessoryPicUpload(BaseResult<Data<String>> baseResult) {
         switch (baseResult.getStatusCode()){
@@ -1141,6 +1160,20 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     /*添加远程费图片*/
     @Override
     public void OrderByondImgPicUpload(BaseResult<Data<String>> baseResult) {
+
+    }
+
+    /*申请远程费*/
+    @Override
+    public void ApplyBeyondMoney(BaseResult<Data<String>> baseResult) {
+
+        switch (baseResult.getStatusCode()){
+            case 200:
+
+                break;
+             default:
+                 break;
+        }
 
     }
 
@@ -1513,7 +1546,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                     file=new File(FilePath);
                 }
                 if (file!=null){
-                    files_map_s.put(4,file);
+                    files_map_remote.put(0,file);
                 }
                 break;
             //相册
@@ -1524,7 +1557,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                     file=new File(MyUtils.getRealPathFromUri(mActivity,uri));
                 }
                 if (file!=null){
-                files_map_s.put(4,file);
+                    files_map_remote.put(0,file);
             }
                 break;
 
@@ -1536,6 +1569,9 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                     Glide.with(mActivity).load(FilePath).into(mIvMap2);
                     file=new File(FilePath);
                 }
+                if (file!=null){
+                    files_map_remote.put(1,file);
+                }
 
                 break;
             //相册
@@ -1545,23 +1581,16 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                     Glide.with(mActivity).load(uri).into(mIvMap2);
                     file=new File(MyUtils.getRealPathFromUri(mActivity,uri));
                 }
+                if(file!=null){
+                files_map_remote.put(1,file);
+                }
                 break;
 
 
-
-
         }
-//        if (file!=null){
-//            uploadImg(file);
-//        }
+
     }
-//    public void uploadImg(File f){
-//        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
-//        builder.addFormDataPart("img", f.getName(), RequestBody.create(MediaType.parse("img/png"), f));
-//        MultipartBody requestBody=builder.build();
-//        mPresenter.IDCardUpload(requestBody);
-//    }
-//
+
 
   /*  *//*维修上传图片*//*
     public void FinishOrderPicUpload(File f, int code) {
@@ -1600,11 +1629,11 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     }
 
     /*添加远程图片*/
-    public void OrderByondImgPicUpload(File f, int code) {
+    public void OrderByondImgPicUpload(HashMap<Integer,File> map) {
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
-        builder.addFormDataPart("img", f.getName(), RequestBody.create(MediaType.parse("img/png"), f));
+        builder.addFormDataPart("img", map.get(0).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(0)));
+        builder.addFormDataPart("img", map.get(1).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(1)));
         builder.addFormDataPart("OrderID", orderID);
-        builder.addFormDataPart("Sort", (code + 1) + "");
         MultipartBody requestBody = builder.build();
        mPresenter.OrderByondImgPicUpload(requestBody);
     }

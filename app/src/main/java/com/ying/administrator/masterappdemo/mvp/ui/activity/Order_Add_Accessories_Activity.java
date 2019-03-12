@@ -320,6 +320,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                                         mfAccessory.setSendState("N");
                                         mfAccessory.setRelation("");
                                         mfAccessory.setIsPay("N");
+                                        mfAccessory.setExpressNo("");
                                         mList.get(position).setCheckedcount(1);
                                         map.put(position,mfAccessory);
                                         //选择了数量根据输入框中的来
@@ -338,6 +339,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                                                 mfAccessory.setSendState("N");
                                                 mfAccessory.setRelation("");
                                                 mfAccessory.setIsPay("N");
+                                                mfAccessory.setExpressNo("");
                                                // Log.d("getQuantitys的个数00",mfAccessory.getQuantity());
                                                 mList.get(position).setCheckedcount(value);
                                                 map.put(position,mfAccessory);
@@ -678,6 +680,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                      mfAccessory.setFAccessoryName(gAccessories.get(i).getFAccessoryName());
                      mfAccessory.setQuantity(String.valueOf(gAccessories.get(i).getQuantity()));
                      mfAccessory.setSendState(gAccessories.get(i).getSendState());
+                     mfAccessory.setExpressNo(gAccessories.get(i).getExpressNo());
                      map.put(gAccessories.get(i).getFAccessoryID()-1,mfAccessory);
 
                     }
@@ -950,9 +953,13 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
 
     }
 
+    @Override
+    public void ApplyBeyondMoney(BaseResult<Data<String>> baseResult) {
+
+    }
 
 
-     //计算价格
+    //计算价格
 
     //计算价格
     private double gettotalPrice(List<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> list,

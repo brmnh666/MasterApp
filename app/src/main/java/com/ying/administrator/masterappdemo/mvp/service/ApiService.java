@@ -246,6 +246,16 @@ public interface ApiService {
   Observable<BaseResult<Data<String>>> OrderByondImgPicUpload(@Body RequestBody body);
 
 
+     /*申请远程费距离*/
+    @FormUrlEncoded
+    @POST("Order/ApplyBeyondMoney")
+    Observable<BaseResult<Data<String>>> ApplyBeyondMoney(@Field("OrderID") String OrderID,
+                                                          @Field("BeyondMoney") String BeyondMoney,
+                                                          @Field("BeyondDistance") String BeyondDistance);
+
+
+
+
 
     /*获取返件图片*/
     @FormUrlEncoded
@@ -284,6 +294,20 @@ public interface ApiService {
 
     @POST("FactoryConfig/GetFactoryService")
     Observable<BaseResult<GetFactorySeviceData<Service>>> GetFactoryService();
+
+/*
+
+    */
+/*上传远程费*//*
+
+    @POST("Upload/OrderByondImgPicUpload")
+    Observable<BaseResult<Data<String>>> OrderByondImgPicUpload(@Body RequestBody body);
+
+*/
+
+
+
+
 
 
      /*根据工单号获取配件列表*/

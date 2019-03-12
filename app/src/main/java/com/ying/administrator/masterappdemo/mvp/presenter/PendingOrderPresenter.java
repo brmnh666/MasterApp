@@ -137,4 +137,14 @@ public class PendingOrderPresenter extends PendingOrderContract.Presenter {
             }
         });
     }
+
+    @Override
+    public void ApplyBeyondMoney(String OrderID, String BeyondMoney, String BeyondDistance) {
+        mModel.ApplyBeyondMoney(OrderID,BeyondMoney,BeyondDistance).subscribe(new BaseObserver<Data<String>>() {
+            @Override
+            protected void onHandleSuccess(BaseResult<Data<String>> value) {
+                mView.ApplyBeyondMoney(value);
+            }
+        });
+    }
 }

@@ -35,7 +35,18 @@ public class GAccessory implements Serializable {
     private int Price;
     private int DiscountPrice;
     private String IsUse;
+    private String ExpressNo;
+
     private int Version;
+
+
+    public String getExpressNo() {
+        return ExpressNo;
+    }
+
+    public void setExpressNo(String expressNo) {
+        ExpressNo = expressNo;
+    }
 
     public int getId() {
         return Id;

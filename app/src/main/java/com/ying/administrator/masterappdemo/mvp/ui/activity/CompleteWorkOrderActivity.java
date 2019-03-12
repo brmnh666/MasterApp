@@ -48,6 +48,7 @@ import com.ying.administrator.masterappdemo.mvp.contract.CompleteWorkOrderContra
 import com.ying.administrator.masterappdemo.mvp.model.CompleteWorkOrderModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.CompleteWorkOrderPresenter;
 import com.ying.administrator.masterappdemo.util.MyUtils;
+import com.ying.administrator.masterappdemo.util.imageutil.CompressHelper;
 import com.ying.administrator.masterappdemo.widget.CustomDialog;
 import com.ying.administrator.masterappdemo.widget.ShareDialog;
 import com.ying.administrator.masterappdemo.widget.ViewExampleDialog;
@@ -550,8 +551,8 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                     file = new File(FilePath);
                 }
                 if (file!=null){
-
-                    return_img_map.put(0,file);
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    return_img_map.put(0,newFile);
                 }
 
                 break;
@@ -563,7 +564,8 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                     file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
                 }
                 if (file!=null){
-                    return_img_map.put(0,file);
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    return_img_map.put(0,newFile);
                 }
                 break;
             //拍照
@@ -574,7 +576,8 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                 }
                 if (file!=null){
 
-                    return_img_map.put(1,file);
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    return_img_map.put(1,newFile);
                 }
                 break;
             //相册
@@ -586,7 +589,8 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                 }
                 if (file!=null){
 
-                    return_img_map.put(1,file);
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    return_img_map.put(1,newFile);
                 }
                 break;
             //拍照
@@ -597,7 +601,8 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                 }
                 if (file!=null){
 
-                    return_img_map.put(2,file);
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    return_img_map.put(2,newFile);
                 }
                 break;
             //相册
@@ -609,7 +614,8 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                 }
                 if (file!=null){
 
-                    return_img_map.put(2,file);
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    return_img_map.put(2,newFile);
                 }
                 break;
             //拍照
@@ -619,8 +625,8 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                     file = new File(FilePath);
                 }
                 if (file!=null){
-
-                    return_img_map.put(3,file);
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    return_img_map.put(3,newFile);
                 }
                 break;
             //相册
@@ -631,8 +637,8 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                     file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
                 }
                 if (file!=null){
-
-                    return_img_map.put(3,file);
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    return_img_map.put(3,newFile);
                 }
                 break;
 
@@ -644,7 +650,8 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                     file = new File(FilePath);
                 }
                 if (file!=null){
-                    service_img_map.put(0,file);
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    service_img_map.put(0,newFile);
                 }
                 break;
             //相册
@@ -655,7 +662,17 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                     file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
                 }
                 if (file!=null){
-                    service_img_map.put(0,file);
+
+
+                    Log.d("未压缩图片的大小", String.valueOf(file.length()));
+
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    service_img_map.put(0,newFile);
+                    Log.d("已压缩图片的大小", String.valueOf(newFile.length()));
+
+
+
+
                 }
                 break;
             //拍照
@@ -665,7 +682,8 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                     file = new File(FilePath);
                 }
                 if (file!=null){
-                    service_img_map.put(1,file);
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    service_img_map.put(1,newFile);
                 }
                 break;
             //相册
@@ -676,7 +694,8 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                     file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
                 }
                 if (file!=null){
-                    service_img_map.put(1,file);
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    service_img_map.put(1,newFile);
                 }
                 break;
             //拍照
@@ -686,7 +705,8 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                     file = new File(FilePath);
                 }
                 if (file!=null){
-                    service_img_map.put(2,file);
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    service_img_map.put(2,newFile);
                 }
                 break;
             //相册
@@ -697,7 +717,8 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                     file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
                 }
                 if (file!=null){
-                    service_img_map.put(2,file);
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    service_img_map.put(2,newFile);
                 }
                 break;
             //拍照
@@ -707,7 +728,8 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                     file = new File(FilePath);
                 }
                 if (file!=null){
-                    service_img_map.put(3,file);
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    service_img_map.put(3,newFile);
                 }
                 break;
             //相册
@@ -718,7 +740,8 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                     file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
                 }
                 if (file!=null){
-                    service_img_map.put(3,file);
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    service_img_map.put(3,newFile);
                 }
                 break;
 

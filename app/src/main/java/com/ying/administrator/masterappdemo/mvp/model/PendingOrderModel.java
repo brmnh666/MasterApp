@@ -104,5 +104,13 @@ public class PendingOrderModel implements PendingOrderContract.Model {
                 .subscribeOn(Schedulers.io());
     }
 
+    @Override
+    public Observable<BaseResult<Data<String>>> ApplyBeyondMoney(String OrderID, String BeyondMoney, String BeyondDistance) {
+        return ApiRetrofit.getDefault().ApplyBeyondMoney(OrderID,BeyondMoney,BeyondDistance)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+
+    }
+
 
 }

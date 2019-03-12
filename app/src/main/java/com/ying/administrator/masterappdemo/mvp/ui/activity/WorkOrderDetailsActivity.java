@@ -198,4 +198,9 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
     public void OrderByondImgPicUpload(BaseResult<Data<String>> baseResult) {
 
     }
+
+    @Override
+    public void ApplyBeyondMoney(BaseResult<Data<String>> baseResult) {
+
+    }
 }

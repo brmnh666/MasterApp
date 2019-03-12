@@ -233,6 +233,7 @@
                         android:textSize="14sp" />
 
                     <ImageView
+                        android:id="@+id/img_clean_cache"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:src="@mipmap/clean" />

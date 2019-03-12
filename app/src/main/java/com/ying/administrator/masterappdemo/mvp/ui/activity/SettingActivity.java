@@ -18,6 +18,7 @@ import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
+import com.ying.administrator.masterappdemo.util.DataCleanManager;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 
 import butterknife.BindView;
@@ -52,7 +53,12 @@ public class SettingActivity extends BaseActivity {
     Button mBtnSignOutOfYourAccount;
     @BindView(R.id.switcher_allow_notification)
     Switch mSwitcherAllowNotification;
+    @BindView(R.id.img_clean_cache)
+    ImageView img_clean_cache;
+
     private SPUtils spUtils;
+
+
 
 
 //    @Override
@@ -82,6 +88,7 @@ public class SettingActivity extends BaseActivity {
         mLlReturn.setOnClickListener(new CustomOnclickLister());
         mBtnSignOutOfYourAccount.setOnClickListener(new CustomOnclickLister());
         mSwitcherAllowNotification.setOnClickListener(new CustomOnclickLister());
+        img_clean_cache.setOnClickListener(new CustomOnclickLister());
     }
 
     @Override
@@ -123,6 +130,28 @@ public class SettingActivity extends BaseActivity {
                 case R.id.switcher_allow_notification:
                     toSelfSetting(mActivity);
                     break;
+                case R.id.img_clean_cache:
+
+                    final CommonDialog_Home clean_dialog = new CommonDialog_Home(mActivity);
+                    clean_dialog.setMessage("当前缓存大小"+getCacheSize())
+                            //.setImageResId(R.mipmap.ic_launcher)
+                            .setTitle("是否清除缓存")
+                            .setSingle(false).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
+                        @Override
+                        public void onPositiveClick() {//清除缓存
+                            cleanCache();
+                            clean_dialog.dismiss();
+                        }
+
+                        @Override
+                        public void onNegtiveClick() {//取消
+                            clean_dialog.dismiss();
+                        }
+                    }).show();
+
+
+                    break;
+
             }
 
         }
@@ -180,4 +209,25 @@ public class SettingActivity extends BaseActivity {
         }
         context.startActivity(mIntent);
     }
+
+
+
+
+    //获取缓存大小
+    private String getCacheSize(){
+        String str = "";
+        try {
+            str =  DataCleanManager.getTotalCacheSize(mActivity);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return str ;
+    }
+
+
+    //清空缓存
+    private void cleanCache(){
+        DataCleanManager.clearAllCache(mActivity);
+    }
+
 }
