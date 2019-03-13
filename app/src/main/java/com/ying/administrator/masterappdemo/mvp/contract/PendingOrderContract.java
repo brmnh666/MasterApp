@@ -24,7 +24,7 @@ public interface PendingOrderContract {
         Observable<BaseResult<WorkOrder.DataBean>> GetOrderInfo(String OrderID);
 
         //获取工厂配件信息
-        Observable<BaseResult<GetFactoryData<Accessory>>> GetFactoryAccessory();
+        Observable<BaseResult<GetFactoryData<Accessory>>> GetFactoryAccessory(String FProductTypeID);
 
         //获取工厂服务信息
         Observable<BaseResult<GetFactorySeviceData<Service>>> GetFactoryService();
@@ -36,7 +36,7 @@ public interface PendingOrderContract {
         Observable<BaseResult<Data>> AddOrderService(RequestBody json);
 
         //提交配件服务和返件信息
-        Observable<BaseResult<Data>> AddOrUpdateAccessoryServiceReturn(RequestBody json);
+        Observable<BaseResult<Data<String>>> AddOrUpdateAccessoryServiceReturn(RequestBody json);
 
         //更新时间
         Observable<BaseResult<Data>> UpdateSendOrderUpdateTime(String OrderID,String UpdateDate);
@@ -73,7 +73,7 @@ public interface PendingOrderContract {
         void AddOrderService(BaseResult<Data> baseResult);
 
         //提交配件服务和返件信息
-        void AddOrUpdateAccessoryServiceReturn(BaseResult<Data> baseResult);
+        void AddOrUpdateAccessoryServiceReturn(BaseResult<Data<String>> baseResult);
 
         //更新时间
         void UpdateSendOrderUpdateTime(BaseResult<Data> baseResult);
@@ -100,7 +100,7 @@ public interface PendingOrderContract {
         //根据工单号获取工单详情
         public abstract void GetOrderInfo(String OrderID);
         //获取工厂配件信息
-        public abstract void GetFactoryAccessory();
+        public abstract void GetFactoryAccessory(String FProductTypeID);
         //获取工厂服务信息
         public abstract void GetFactoryService();
         //提交需要的配件信息

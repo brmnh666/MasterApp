@@ -195,9 +195,19 @@ public class WorkOrder implements Serializable {
         private List<ReturnaccessoryImg> ReturnaccessoryImg;//返件图片
         private List<OrderImg> OrderImg;//返回服务图片
         private String Distance;//返回距离
+        private String ProductTypeID;
         private int page;
         private int limit;
         private int Version;
+
+        public String getProductTypeID() {
+            return ProductTypeID;
+        }
+
+        public void setProductTypeID(String productTypeID) {
+            ProductTypeID = productTypeID;
+        }
+
         public String getIsPressFactory() {
             return IsPressFactory;
         }

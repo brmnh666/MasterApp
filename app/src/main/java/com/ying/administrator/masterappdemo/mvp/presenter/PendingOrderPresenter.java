@@ -26,15 +26,15 @@ public class PendingOrderPresenter extends PendingOrderContract.Presenter {
         });
     }
 
-    @Override
-    public void GetFactoryAccessory() {
-        mModel.GetFactoryAccessory().subscribe(new BaseObserver<GetFactoryData<Accessory>>() {
-            @Override
-            protected void onHandleSuccess(BaseResult<GetFactoryData<Accessory>> value) {
-                mView.GetFactoryAccessory(value);
-            }
-        });
-    }
+     @Override
+     public void GetFactoryAccessory(String FProductTypeID) {
+         mModel.GetFactoryAccessory(FProductTypeID).subscribe(new BaseObserver<GetFactoryData<Accessory>>() {
+             @Override
+             protected void onHandleSuccess(BaseResult<GetFactoryData<Accessory>> value) {
+                 mView.GetFactoryAccessory(value);
+             }
+         });
+     }
 
     @Override
     public void GetFactoryService() {
@@ -69,9 +69,9 @@ public class PendingOrderPresenter extends PendingOrderContract.Presenter {
 
     @Override
     public void AddOrUpdateAccessoryServiceReturn(RequestBody json) {
-        mModel.AddOrUpdateAccessoryServiceReturn(json).subscribe(new BaseObserver<Data>() {
+        mModel.AddOrUpdateAccessoryServiceReturn(json).subscribe(new BaseObserver<Data<String>>() {
             @Override
-            protected void onHandleSuccess(BaseResult<Data> value) {
+            protected void onHandleSuccess(BaseResult<Data<String>> value) {
                 mView.AddOrUpdateAccessoryServiceReturn(value);
             }
         });

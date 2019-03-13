@@ -174,7 +174,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
          vibrator = (Vibrator)this.getSystemService(this.VIBRATOR_SERVICE);
         //接收传来的OrderID
         orderID = getIntent().getStringExtra("OrderID");
-        mPresenter.GetFactoryAccessory();
+      //  mPresenter.GetFactoryAccessory("1");
         mPresenter.GetFactoryService();
         mPresenter.GetOrderInfo(orderID);
 
@@ -287,9 +287,13 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
 
 
                     //*添加配件弹出dialog*//*
+
+                    mPresenter.GetFactoryAccessory(data.getProductType());
+
                     recyclerView_custom_add_accessory=customDialog_add_accessory.findViewById(R.id.recyclerView_custom_add_accessory);
                     recyclerView_custom_add_accessory.setLayoutManager(new LinearLayoutManager(mActivity));
                     mAdd_Ac_Adapter=new Add_Ac_Adapter(R.layout.item_addaccessory,mList);
+                    mAdd_Ac_Adapter.setEmptyView(getEmptyViewAC());
                     recyclerView_custom_add_accessory.setAdapter(mAdd_Ac_Adapter);
 
                     mAdd_Ac_Adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
@@ -469,6 +473,8 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                                             mfService.setServiceID(mService.getFServiceID());
                                             mfService.setServiceName(mService.getFServiceName());
                                             mfService.setDiscountPrice(mService.getInitPrice());
+                                            mfService.setRelation("");
+                                            mfService.setIsPay("N");
                                             map_service.put(position,mfService);
                                             vibrator.vibrate(50);
                                         }else {
@@ -667,6 +673,9 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                     tv_order_details_status.setBackgroundResource(R.color.color_custom_04);
                 }
                 tv_order_details_adress.setText(data.getAddress());
+
+
+
                // Log.d("====>", String.valueOf(data.getOrderAccessroyDetail().size()));
                 Money=data.getOrderMoney()-data.getInitMoney();
 
@@ -760,6 +769,9 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                      mfService.setServiceName(gServices.get(i).getServiceName());
                      mfService.setDiscountPrice(gServices.get(i).getDiscountPrice());
                      mfService.setPrice(gServices.get(i).getPrice());
+
+                     mfService.setIsPay("N");
+                     mfService.setRelation("");
                      map_service.put(gServices.get(i).getServiceID()-1,mfService);
                  }
                     fList_service=new ArrayList<>(map_service.values());
@@ -903,7 +915,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
 
     /*配件和服务都有*/
     @Override
-    public void AddOrUpdateAccessoryServiceReturn(BaseResult<Data> baseResult) {
+    public void AddOrUpdateAccessoryServiceReturn(BaseResult<Data<String>> baseResult) {
 
         switch (baseResult.getStatusCode()){
             case 200:

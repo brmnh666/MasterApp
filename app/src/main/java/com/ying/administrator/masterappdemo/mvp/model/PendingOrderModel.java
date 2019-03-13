@@ -27,8 +27,8 @@ public class PendingOrderModel implements PendingOrderContract.Model {
     }
 
     @Override
-    public Observable<BaseResult<GetFactoryData<Accessory>>> GetFactoryAccessory() {
-        return ApiRetrofit.getDefault().GetFactoryAccessory()
+    public Observable<BaseResult<GetFactoryData<Accessory>>> GetFactoryAccessory(String FProductTypeID) {
+        return ApiRetrofit.getDefault().GetFactoryAccessory(FProductTypeID)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }
@@ -56,7 +56,7 @@ public class PendingOrderModel implements PendingOrderContract.Model {
     }
 
     @Override
-    public Observable<BaseResult<Data>> AddOrUpdateAccessoryServiceReturn(RequestBody json) {
+    public Observable<BaseResult<Data<String>>> AddOrUpdateAccessoryServiceReturn(RequestBody json) {
         return ApiRetrofit.getDefault().AddOrUpdateAccessoryServiceReturn(json)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());

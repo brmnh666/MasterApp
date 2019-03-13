@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.util.TUtil;
 
 import butterknife.ButterKnife;
@@ -135,6 +136,16 @@ public abstract class BaseActivity<P extends BasePresenter, M extends BaseModel>
             super.onBackPressed();
         }
     }*/
+
+     /*没有配件*/
+    public View getEmptyViewAC() {
+        return  LayoutInflater.from(mActivity).inflate(R.layout.layout_empty_ac,null);
+    }
+
+    /*没有服务*/
+    public View getEmptyViewService() {
+        return  LayoutInflater.from(mActivity).inflate(R.layout.layout_empty_service,null);
+    }
 
     @Override
     protected void onResume() {

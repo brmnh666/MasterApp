@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -12,6 +13,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.Gravity;
@@ -41,6 +43,7 @@ import com.ying.administrator.masterappdemo.mvp.contract.InfoManageContract;
 import com.ying.administrator.masterappdemo.mvp.model.InfoMangeModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.InfoManagePresenter;
 import com.ying.administrator.masterappdemo.util.MyUtils;
+import com.ying.administrator.masterappdemo.util.imageutil.CompressHelper;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -80,6 +83,7 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
     private View popupWindow_view;
     private PopupWindow mPopupWindow;
     private String FilePath;
+    private String Path;
     private int size;
     private Uri uri;
     private ArrayList<String> permissions;
@@ -91,8 +95,6 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
     private CheckBox cb_under_warranty;
     private LinearLayout ll_outside_the_warranty;
     private CheckBox cb_outside_the_warranty;
-
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -528,6 +530,8 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
     }
 
 
+
+
     //返回图片处理
     @SuppressLint("NewApi")
     @Override
@@ -541,20 +545,26 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
                     Glide.with(mActivity).load(FilePath).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(iv_avatar);
                     file = new File(FilePath);
                 }
-               if (file != null) {
-                    uploadImg(file);
+                if (file!=null){
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    uploadImg(newFile);
                 }
+
                 break;
             //从相册中获取
             case 102:
                 if (data != null) {
-                    uri = data.getData();
+                    Uri uri = data.getData();
                     Glide.with(mActivity).load(uri).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(iv_avatar);
                     file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
+
+
                 }
-                if (file != null) {
-                    uploadImg(file);
+                if (file!=null){
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    uploadImg(newFile);
                 }
+
                 break;
 
                 default:
@@ -594,4 +604,11 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
 
 
     }
+
+
+
+
+
+
+
 }

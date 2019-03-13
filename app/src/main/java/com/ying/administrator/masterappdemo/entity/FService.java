@@ -51,6 +51,25 @@ public class FService {
             private String ServiceName;
             private double Price;
             private double DiscountPrice;
+            private String IsPay;
+            private String Relation;
+
+
+            public String getIsPay() {
+                return IsPay;
+            }
+
+            public void setIsPay(String isPay) {
+                IsPay = isPay;
+            }
+
+            public String getRelation() {
+                return Relation;
+            }
+
+            public void setRelation(String relation) {
+                Relation = relation;
+            }
 
             public String getServiceID() {
                 return ServiceID;

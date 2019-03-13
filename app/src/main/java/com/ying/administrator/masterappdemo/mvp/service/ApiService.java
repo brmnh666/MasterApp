@@ -287,8 +287,9 @@ public interface ApiService {
      *
      * 获取工厂配件信息
      * */
+    @FormUrlEncoded
     @POST("FactoryConfig/GetFactoryAccessory")
-    Observable<BaseResult<GetFactoryData<Accessory>>> GetFactoryAccessory();
+    Observable<BaseResult<GetFactoryData<Accessory>>> GetFactoryAccessory(@Field("FProductTypeID") String FProductTypeID);
 
     /*获取工厂服务信息*/
 
@@ -351,8 +352,10 @@ public interface ApiService {
     Observable<BaseResult<Data>> AddOrderService(@Body RequestBody json);
 
 
+
+    /*预接单页面提交上门时间 */
     @POST("Order/AddOrUpdateAccessoryServiceReturn")
-    Observable<BaseResult<Data>> AddOrUpdateAccessoryServiceReturn(@Body RequestBody json);
+    Observable<BaseResult<Data<String>>> AddOrUpdateAccessoryServiceReturn(@Body RequestBody json);
 
 
     @FormUrlEncoded

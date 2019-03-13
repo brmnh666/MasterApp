@@ -165,7 +165,7 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
     }
 
     @Override
-    public void AddOrUpdateAccessoryServiceReturn(BaseResult<Data> baseResult) {
+    public void AddOrUpdateAccessoryServiceReturn(BaseResult<Data<String>> baseResult) {
 
     }
 
