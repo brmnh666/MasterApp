@@ -195,12 +195,17 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                     mll_return_information.setVisibility(View.VISIBLE);
                     mll_service_process.setVisibility(View.GONE);
 
-                } else {
+                } else if (data.getTypeID() == 2){
                     tv_service.setText("安装");
                     tv_service.setBackgroundResource(R.color.color_custom_04);
                     mll_return_information.setVisibility(View.GONE);
                     mll_service_process.setVisibility(View.VISIBLE);
 
+                }else{
+                    tv_service.setText("质保");
+                    tv_service.setBackgroundResource(R.color.color_custom_01);
+                    mll_return_information.setVisibility(View.VISIBLE);
+                    mll_service_process.setVisibility(View.GONE);
                 }
                 tv_service_address.setText(data.getAddress());
 

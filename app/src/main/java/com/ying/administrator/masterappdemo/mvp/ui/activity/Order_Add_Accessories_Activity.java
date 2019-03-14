@@ -668,9 +668,12 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                 if (data.getTypeID()==1){//维修
                     tv_order_details_status.setText("维修");
                     tv_order_details_status.setBackgroundResource(R.color.color_custom_01);
-                }else {
+                }else if (data.getTypeID()==2){
                     tv_order_details_status.setText("安装");
                     tv_order_details_status.setBackgroundResource(R.color.color_custom_04);
+                }else{
+                    tv_order_details_status.setText("质保");
+                    tv_order_details_status.setBackgroundResource(R.color.color_custom_01);
                 }
                 tv_order_details_adress.setText(data.getAddress());
 
