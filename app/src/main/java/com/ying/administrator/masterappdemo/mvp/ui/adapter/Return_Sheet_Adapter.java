@@ -28,6 +28,7 @@ public class Return_Sheet_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,Ba
     private long now;
     private long cancel;
     private long leftTime;
+    private TextView tv_telephone_reminder;
 
     public Return_Sheet_Adapter(int layoutResId, @Nullable List<WorkOrder.DataBean> data) {
         super(layoutResId, data);
@@ -61,6 +62,7 @@ public class Return_Sheet_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,Ba
         tv_hint_returnedparts =baseViewHolder.getView(R.id.tv_hint_returnedparts);
         ll_pending_appointment_cancel =baseViewHolder.getView(R.id.ll_pending_appointment_cancel);
         countdownview =baseViewHolder.getView(R.id.countdownview);
+        tv_telephone_reminder = baseViewHolder.getView(R.id.tv_telephone_reminder);
         now = TimeUtils.getNowMills();
         cancel =TimeUtils.string2Millis(item.getAudDate())+15*24*60*60*1000;
         leftTime = cancel - now;
@@ -75,6 +77,7 @@ public class Return_Sheet_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,Ba
             tv_returnedparts_apply_parts.setVisibility(View.GONE);
             tv_continue_service.setVisibility(View.GONE);
             tv_reminder.setVisibility(View.VISIBLE);
+            tv_telephone_reminder.setVisibility(View.VISIBLE);
             ll_pending_appointment_cancel.setVisibility(View.VISIBLE);
             tv_hint_returnedparts.setVisibility(View.INVISIBLE);
             baseViewHolder.setText(R.id.tv_returnedparts,"未返件");
@@ -82,6 +85,7 @@ public class Return_Sheet_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,Ba
             tv_returnedparts_apply_parts.setVisibility(View.VISIBLE);
             tv_continue_service.setVisibility(View.VISIBLE);
             tv_reminder.setVisibility(View.GONE);
+            tv_telephone_reminder.setVisibility(View.GONE);
             ll_pending_appointment_cancel.setVisibility(View.INVISIBLE);
             tv_hint_returnedparts.setVisibility(View.VISIBLE);
             baseViewHolder.setText(R.id.tv_returnedparts,"待返件");
@@ -90,5 +94,6 @@ public class Return_Sheet_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,Ba
         baseViewHolder.addOnClickListener(R.id.tv_continue_service);//继续服务
         baseViewHolder.addOnClickListener(R.id.tv_reminder);//催件
         baseViewHolder.addOnClickListener(R.id.tv_see_detail);//查看详情
+        baseViewHolder.addOnClickListener(R.id.tv_telephone_reminder);//电话催件
     }
 }

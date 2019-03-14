@@ -264,7 +264,19 @@
             android:padding="10dp"
             android:text="申请配件"
             android:textSize="16sp"
-            android:gravity="center" />
+            android:gravity="center"
+            />
+        <TextView
+            android:id="@+id/tv_telephone_reminder"
+            android:layout_width="87dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_10"
+            android:background="@drawable/tv_recevied"
+            android:padding="10dp"
+            android:text="电话催件"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:visibility="gone"/>
         <TextView
             android:id="@+id/tv_reminder"
             android:layout_width="87dp"
@@ -286,7 +298,7 @@
             android:padding="10dp"
             android:text="继续服务"
             android:textSize="16sp"
-            android:gravity="center"/>
+            android:gravity="center" />
 
         <TextView
             android:id="@+id/tv_see_detail"
