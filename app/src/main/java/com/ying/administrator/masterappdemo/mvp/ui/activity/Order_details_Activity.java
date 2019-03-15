@@ -7,11 +7,9 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Environment;
 import android.os.Vibrator;
 import android.provider.MediaStore;
-import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,19 +17,16 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,7 +45,6 @@ import com.ying.administrator.masterappdemo.entity.FAccessory;
 import com.ying.administrator.masterappdemo.entity.FService;
 import com.ying.administrator.masterappdemo.entity.GAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
-import com.ying.administrator.masterappdemo.entity.FAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactorySeviceData;
 import com.ying.administrator.masterappdemo.entity.SAccessory;
 import com.ying.administrator.masterappdemo.entity.SService;
@@ -65,7 +59,6 @@ import com.ying.administrator.masterappdemo.mvp.ui.adapter.Add_Service_Adapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Pre_order_Add_Ac_Adapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Pre_order_Add_Service_Adapter;
 import com.ying.administrator.masterappdemo.util.MyUtils;
-import com.ying.administrator.masterappdemo.widget.BalanceDialog;
 import com.ying.administrator.masterappdemo.widget.CustomDialog_Add_Accessory;
 import com.ying.administrator.masterappdemo.widget.CustomDialog_Add_Service;
 import com.ying.administrator.masterappdemo.widget.ViewExampleDialog;
@@ -248,14 +241,14 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     private int select_state=-1;//记录厂家寄件申请（0） 和自购件申请（1） -1为未选中
     private String orderID;//工单号
     private double Service_range=15; //正常距离(km)
-    private int remote_fee=0; //远程费
+    private int remote_fee=0; //是否需要远程费
 
 
     private ArrayList<File> files_list=new ArrayList<>();
     private HashMap<Integer,File> files_map=new HashMap<>();//返件图片
     private HashMap<Integer,File> files_map_s=new HashMap<>();//服务图片
 
-    private HashMap<Integer,File> files_map_remote=new HashMap<>();//申请除非图片
+    private HashMap<Integer,File> files_map_remote=new HashMap<>();//申请远程费图片
     @Override
     protected int setLayoutId() {
         return R.layout.activity_order_details;
@@ -441,6 +434,8 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                 if (select_state==-1){
                     Toast.makeText(this,"添加配件请选中类型",Toast.LENGTH_SHORT).show();
                 }else {
+                    map.clear();
+
                     customDialog_add_accessory.getWindow().setBackgroundDrawableResource(R.color.transparent);
                     customDialog_add_accessory.show();
                     customDialog_add_accessory.setCanceledOnTouchOutside(true);
@@ -464,11 +459,12 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
                     /*选择配件*/
                     //获取型号下面的配件
-                    if (data.getProductTypeID()==null){
-                        return;
-                    }
+                  /*  if (data.getProductTypeID()==null){
+                       break;
+                    }*/
 
-                    mPresenter.GetFactoryAccessory(data.getProductType());
+                    mPresenter.GetFactoryAccessory("133");
+
                     recyclerView_custom_add_accessory = customDialog_add_accessory.findViewById(R.id.recyclerView_custom_add_accessory);
                     recyclerView_custom_add_accessory.setLayoutManager(new LinearLayoutManager(mActivity));
                     mAdd_Ac_Adapter = new Add_Ac_Adapter(R.layout.item_addaccessory, mList);
@@ -479,19 +475,69 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                         @SuppressLint("MissingPermission")
                         @Override
                         public void onItemChildClick(final BaseQuickAdapter adapter, View view, final int position) {
-                            ImageView img_ac_select = (ImageView) adapter.getViewByPosition(recyclerView_custom_add_accessory, position, R.id.img_ac_select); //选中图片
-                            ImageView img_ac_unselect = (ImageView) adapter.getViewByPosition(recyclerView_custom_add_accessory, position, R.id.img_ac_unselect);//未选中图片
                             final adderView adderView = (adderView) adapter.getViewByPosition(recyclerView_custom_add_accessory, position, R.id.adderView);
                             //进入添加配件dialog 判断是否已经选了配件  有数据说明是第二次进入 没数据说明是第一次进入
-
-
+                              ImageView img_ac_unselect=(ImageView) adapter.getViewByPosition(recyclerView_custom_add_accessory,position,R.id.img_ac_unselect);
+                               ImageView img_ac_select=(ImageView) adapter.getViewByPosition(recyclerView_custom_add_accessory,position,R.id.img_ac_select);
                             switch (view.getId()) {
+                                case R.id.tv_accessory_name:
                                 case R.id.img_ac_unselect:
                                 case R.id.img_ac_select:
-                                case R.id.tv_accessory_name:
-                                    vibrator.vibrate(50);
+                                //case R.id.tv_accessory_name:
+                                vibrator.vibrate(50);
 
-                                    if (((Accessory) (adapter.getData().get(position))).isIscheck() == false) { //如果是为选中的状态点击  变为红色 选中状态 出现 数量选择器
+                                if (((Accessory) (adapter.getData().get(position))).isIscheck() == false){
+                                    adderView.setVisibility(View.VISIBLE);
+                                    img_ac_unselect.setVisibility(View.INVISIBLE);
+                                    img_ac_select.setVisibility(View.VISIBLE);
+                                    mList.get(position).setIscheck(true);
+                                    mAccessory=(Accessory)adapter.getItem(position);
+                                    mfAccessory=new FAccessory.OrderAccessoryStrBean.OrderAccessoryBean();
+                                    mfAccessory.setFAccessoryID(mAccessory.getFAccessoryID());//获取id
+                                    mfAccessory.setFAccessoryName(mAccessory.getAccessoryName()); //获取名字
+                                    mfAccessory.setQuantity("1"); //默认数字为1
+                                    mfAccessory.setPrice(mAccessory.getAccessoryPrice());//原价
+                                    mfAccessory.setDiscountPrice(mAccessory.getAccessoryPrice());//折扣价
+                                    mfAccessory.setSendState("N");
+                                    mfAccessory.setRelation("");
+                                    mfAccessory.setIsPay("N");
+                                    mfAccessory.setExpressNo("");
+                                    map.put(position,mfAccessory);
+
+                                    adderView.setOnValueChangeListene(new adderView.OnValueChangeListener() {
+                                        @Override
+                                        public void onValueChange(int value) {
+                                            //没选选择时间默认数量为1
+                                            vibrator.vibrate(50);
+                                            mAccessory=(Accessory)adapter.getItem(position);
+                                            mfAccessory=new FAccessory.OrderAccessoryStrBean.OrderAccessoryBean();
+                                            mfAccessory.setFAccessoryID(mAccessory.getFAccessoryID());
+                                            mfAccessory.setFAccessoryName(mAccessory.getAccessoryName());
+                                            mfAccessory.setQuantity(String.valueOf(value));
+                                            mfAccessory.setPrice(mAccessory.getAccessoryPrice());//原价
+                                            mfAccessory.setDiscountPrice(mAccessory.getAccessoryPrice());
+                                            mfAccessory.setSendState("N");
+                                            mfAccessory.setRelation("");
+                                            mfAccessory.setIsPay("N");
+                                            mfAccessory.setExpressNo("");
+                                            // Log.d("getQuantitys的个数00",mfAccessory.getQuantity());
+                                            map.put(position,mfAccessory);
+                                        }
+                                    });
+
+                                }else {
+                                    adderView.setVisibility(View.INVISIBLE);
+                                    img_ac_unselect.setVisibility(View.VISIBLE);
+                                    img_ac_select.setVisibility(View.INVISIBLE);
+                                    mList.get(position).setIscheck(false);
+                                    adderView.setValue(1); //但用户取消时将值设置为默认为1
+                                    map.remove(position);
+                                    vibrator.vibrate(50);
+                                }
+
+
+
+                                /*    if (((Accessory) (adapter.getData().get(position))).isIscheck() == false) { //如果是为选中的状态点击  变为红色 选中状态 出现 数量选择器
 
 
                                         adderView.setVisibility(View.VISIBLE);
@@ -512,8 +558,6 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                                         mList.get(position).setCheckedcount(1);
                                         mList.get(position).setIscheck(true);
                                         map.put(position,mfAccessory);
-
-
                                         adderView.setOnValueChangeListene(new adderView.OnValueChangeListener() {
                                             @Override
                                             public void onValueChange(int value) {
@@ -546,7 +590,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                                         mList.get(position).setCheckedcount(1);
                                         map.remove(position);
                                         vibrator.vibrate(50);
-                                    }
+                                    }*/
 
                                     break;
 
@@ -565,6 +609,12 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                     customDialog_add_accessory.setYesOnclickListener("添加", new CustomDialog_Add_Accessory.onYesOnclickListener() {
                         @Override
                         public void onYesClick() {
+                            Log.d("===>", String.valueOf(mList.size()));
+
+                           /* for (int i=0;i<mList.size();i++){
+                                Log.d("===>", String.valueOf(mList.get(i).isIscheck()));
+
+                            }*/
                             fAcList = new ArrayList<>(map.values());
                             recyclerView_Pre_add_accessories.setLayoutManager(new LinearLayoutManager(mActivity));
                             mPre_order_add_ac_adapter = new Pre_order_Add_Ac_Adapter(R.layout.item_pre_order_add_accessories, fAcList);
@@ -793,19 +843,35 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                 /*添加厂家还是自购件类型*/
                 if (select_state==-1){    /*厂家0  自购 1*/
                     sTotalAS.setAccessorySequency("");
-                }else if (select_state==1){
+                }else if (select_state==0){
                     sTotalAS.setAccessorySequency("0");//厂家
                 }else {
                     sTotalAS.setAccessorySequency("1");//自购件
                 }
-                /*快递单号*/
-                sTotalAS.setReturnAccessoryMsg("");//返件信息 快递单号+快递公司 暂时不用
-                /*是否送修*/
-                sTotalAS.setSendRepairState("");
-                /*申请远程费*/
-                sTotalAS.setBeyondDistance("");
-                sTotalAS.setBeyondMoney(0);
-                //添加服务和配件的数据
+
+                /*添加远程费*/
+
+                if (remote_fee==0){//没有选择远程费
+                    sTotalAS.setBeyondMoney(0);
+                    sTotalAS.setBeyondDistance("0");
+                }else {
+                    if (et_order_beyond_km.getText().toString().equals("")){//什么都不输入
+
+                        double Distance = Double.parseDouble(data.getDistance());
+                        double money=Distance-Service_range;
+                        sTotalAS.setBeyondMoney(money);
+                        sTotalAS.setBeyondDistance(String.valueOf(money));
+
+                    }else {
+                        //用户自己输入
+                        sTotalAS.setBeyondMoney(Double.parseDouble(et_order_beyond_km.getText().toString()));
+                        sTotalAS.setBeyondDistance(et_order_beyond_km.getText().toString());
+
+                    }
+
+                }
+
+
 
                 //添加配件
                 if (fAcList.isEmpty()){
@@ -833,7 +899,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                // sTotalAS.setOrderServiceStr(s2);
                 Gson gson=new Gson();
                 String s3 = gson.toJson(sTotalAS);
-                RequestBody body=RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),s3);
+                RequestBody body=RequestBody.create(MediaType.parse("application/json; charset=utf-8"),s3);
                 mPresenter.AddOrUpdateAccessoryServiceReturn(body);
 
 
@@ -1006,44 +1072,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
     @Override
     public void UpdateSendOrderUpdateTime(BaseResult<Data> baseResult) {
-      /*  switch (baseResult.getStatusCode()) {
-            case 200:
-                if (baseResult.getData().isItem1()) {//请求成功
-                 *//*   //数据是使用Intent返回
-                    Intent intent = new Intent();
-                    //把返回数据存入Intent
-                    intent.putExtra("result", "in_service");  //请求成功进入服务界面
-                    //设置返回数据
-                    Order_details_Activity.this.setResult(RESULT_OK, intent);*//*
 
-                    if (files_map.size()>=4){
-                        ReuturnAccessoryPicUpload(files_map);
-                        Order_details_Activity.this.finish();
-                    }else if (files_map_s.size()>=4){
-                        ServiceOrderPicUpload(files_map_s);
-                        Order_details_Activity.this.finish();
-                    }
-                    else if (files_map_remote.size()>=2){
-                        OrderByondImgPicUpload(files_map_remote);
-                        Order_details_Activity.this.finish();
-
-                    }
-                    else {
-                        Order_details_Activity.this.finish();
-                    }
-
-
-
-
-                }else {
-                    Toast.makeText(this, (CharSequence) baseResult.getData().getItem2(),Toast.LENGTH_LONG).show();
-                }
-                break;
-            default:
-                break;
-
-
-        }*/
     }
 
 

@@ -31,24 +31,8 @@ public class Add_Ac_Adapter extends BaseQuickAdapter<Accessory, BaseViewHolder> 
 
         helper.setText(R.id.tv_accessory_name,item.getAccessoryName());
 
-       if (item.isIscheck()){ //是被选中的状态  红钩显示  加减器显示
-           helper.setVisible(R.id.img_ac_select,true);
-           helper.setVisible(R.id.img_ac_unselect,false);
-           helper.setVisible(R.id.adderView,true);
-           adderView adderView = helper.getView(R.id.adderView);
-
-           adderView.setValue(item.getCheckedcount());
 
 
-
-
-
-       }else { //未选中状态
-           helper.setVisible(R.id.img_ac_select,false);
-           helper.setVisible(R.id.img_ac_unselect,true);
-           helper.setVisible(R.id.adderView,false);
-
-       }
 
         helper.addOnClickListener(R.id.tv_accessory_name);
         helper.addOnClickListener(R.id.img_ac_unselect);

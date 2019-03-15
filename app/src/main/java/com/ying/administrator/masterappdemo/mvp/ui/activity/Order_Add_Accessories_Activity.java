@@ -72,7 +72,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
     private WorkOrder.DataBean data=new WorkOrder.DataBean();
     private ArrayList<GAccessory> gAccessories=new ArrayList<>();//获得工厂返回的已选配件
     private ArrayList<GService> gServices=new ArrayList<>(); //获取工厂端返回的已选服务
-    private int select_state=0;  //记录厂家寄件申请（1） 和自购件申请（2） 0为未选中
+    private int select_state=-1;  //记录厂家寄件申请（0） 和自购件申请（1） -1为未选中
     @BindView(R.id.tv_actionbar_title)
     TextView tv_actionbar_title;
     @BindView(R.id.ll_return)
@@ -218,17 +218,13 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                 case R.id.iv_manufacturers://厂家寄件申请
                 case R.id.tv_manufacturers:
                     if (iv_manufacturers.isSelected()){ //如果是选中状态
-
-
-
-
                             if (!fAcList.isEmpty()){
                                 Toast.makeText(Order_Add_Accessories_Activity.this,"菜单仍有配件",Toast.LENGTH_SHORT).show();
                             }else {
                                 iv_manufacturers.setSelected(false);
                                 iv_selfbuying.setSelected(false);
                                 Log.d("====>","取消了厂家寄件申请");
-                                select_state=0;
+                                select_state=-1;
                             }
 
 
@@ -236,7 +232,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                               iv_manufacturers.setSelected(true);
                               iv_selfbuying.setSelected(false);
                               Log.d("====>","选中了厂家寄件申请");
-                              select_state=1;
+                              select_state=0;
                           }
 
                     break;
@@ -250,14 +246,14 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                             iv_selfbuying.setSelected(false);
                             iv_manufacturers.setSelected(false);
                             Log.d("====>","取消了自购件申请");
-                            select_state=0;
+                            select_state=-1;
                         }
 
                     } else {
                         iv_selfbuying.setSelected(true);
                         iv_manufacturers.setSelected(false);
                         Log.d("====>","选中了自购件申请");
-                        select_state=2;
+                        select_state=1;
                     }
 
                     break;
@@ -288,7 +284,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
 
                     //*添加配件弹出dialog*//*
 
-                    mPresenter.GetFactoryAccessory(data.getProductType());
+                    mPresenter.GetFactoryAccessory("133");
 
                     recyclerView_custom_add_accessory=customDialog_add_accessory.findViewById(R.id.recyclerView_custom_add_accessory);
                     recyclerView_custom_add_accessory.setLayoutManager(new LinearLayoutManager(mActivity));
@@ -325,7 +321,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                                         mfAccessory.setRelation("");
                                         mfAccessory.setIsPay("N");
                                         mfAccessory.setExpressNo("");
-                                        mList.get(position).setCheckedcount(1);
+                                      //  mList.get(position).setCheckedcount(1);
                                         map.put(position,mfAccessory);
                                         //选择了数量根据输入框中的来
                                         vibrator.vibrate(50);
@@ -345,7 +341,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                                                 mfAccessory.setIsPay("N");
                                                 mfAccessory.setExpressNo("");
                                                // Log.d("getQuantitys的个数00",mfAccessory.getQuantity());
-                                                mList.get(position).setCheckedcount(value);
+                                               // mList.get(position).setCheckedcount(value);
                                                 map.put(position,mfAccessory);
                                             }
                                         });
@@ -357,7 +353,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                                         img_ac_select.setVisibility(View.INVISIBLE);
                                         adderView.setValue(1); //但用户取消时将值设置为默认为1
                                         mList.get(position).setIscheck(false);
-                                        mList.get(position).setCheckedcount(1);
+                                        //mList.get(position).setCheckedcount(1);
                                         map.remove(position);
                                         vibrator.vibrate(50);
                                     }
@@ -645,15 +641,15 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
 
               /*判断是选中了那个*/
                 if (data.getAccessoryState()==null){//未选择
-                    select_state=0;
+                    select_state=-1;
                     iv_manufacturers.setSelected(false);
                     iv_selfbuying.setSelected(false);
                 }else if (data.getAccessoryState().equals("0")){//工厂寄件申请
-                    select_state=1;
+                    select_state=0;
                     iv_manufacturers.setSelected(true);
                     iv_selfbuying.setSelected(false);
                 }else {//自购件
-                    select_state=2;
+                    select_state=1;
                     iv_manufacturers.setSelected(false);
                     iv_selfbuying.setSelected(true);
                 }
@@ -772,7 +768,6 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                      mfService.setServiceName(gServices.get(i).getServiceName());
                      mfService.setDiscountPrice(gServices.get(i).getDiscountPrice());
                      mfService.setPrice(gServices.get(i).getPrice());
-
                      mfService.setIsPay("N");
                      mfService.setRelation("");
                      map_service.put(gServices.get(i).getServiceID()-1,mfService);

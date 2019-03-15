@@ -26,7 +26,7 @@ public class Pre_order_Add_Ac_Adapter extends BaseQuickAdapter<FAccessory.OrderA
                helper.setGone(R.id.tv_accessories_sendstate,false);
            }
            else if (item.getSendState().equals("N")){//未返件
-              helper.setGone(R.id.tv_accessories_sendstate,false);
+            helper.setGone(R.id.tv_accessories_sendstate,false);
            }else { //已返件
             helper.setGone(R.id.tv_accessories_sendstate,true);
             helper.setText(R.id.tv_accessories_sendstate,"已返件");
