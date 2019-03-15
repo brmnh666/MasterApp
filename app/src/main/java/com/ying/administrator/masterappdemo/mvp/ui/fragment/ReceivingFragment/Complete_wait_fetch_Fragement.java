@@ -131,7 +131,7 @@ public class Complete_wait_fetch_Fragement extends BaseFragment<GetOrderListForM
         recyclerView.setAdapter(Complete_wait_fetch_Adapter);
         Complete_wait_fetch_Adapter.setEmptyView(getEmptyView());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mPresenter.GetOrderInfoListForMe(userID,"5",Integer.toString(pageIndex),"5");
+        mPresenter.WorkerGetOrderList(userID,"5",Integer.toString(pageIndex),"5");
 
 
     }
@@ -151,7 +151,7 @@ public class Complete_wait_fetch_Fragement extends BaseFragment<GetOrderListForM
                 }*/
                 pageIndex=1;
                // list.clear();
-                mPresenter.GetOrderInfoListForMe(userID,"5",Integer.toString(pageIndex),"5");
+                mPresenter.WorkerGetOrderList(userID,"5",Integer.toString(pageIndex),"5");
                 Complete_wait_fetch_Adapter.notifyDataSetChanged();
                 refreshlayout.finishRefresh();
             }
@@ -165,7 +165,7 @@ public class Complete_wait_fetch_Fragement extends BaseFragment<GetOrderListForM
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 pageIndex++; //页数加1
-                mPresenter.GetOrderInfoListForMe(userID,"5",Integer.toString(pageIndex),"5");
+                mPresenter.WorkerGetOrderList(userID,"5",Integer.toString(pageIndex),"5");
                 Complete_wait_fetch_Adapter.notifyDataSetChanged();
                 refreshlayout.finishLoadmore();
             }
@@ -424,7 +424,7 @@ public class Complete_wait_fetch_Fragement extends BaseFragment<GetOrderListForM
 
     /*获取 自己抢到的订单*/
     @Override
-    public void GetOrderInfoListForMe(BaseResult<WorkOrder> baseResult) {
+    public void WorkerGetOrderList(BaseResult<WorkOrder> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
                 if (baseResult.getData().getData()==null){
@@ -434,7 +434,8 @@ public class Complete_wait_fetch_Fragement extends BaseFragment<GetOrderListForM
                     list.addAll(workOrder.getData());
                     Complete_wait_fetch_Adapter.setNewData(list);*/
                     //  Complete_wait_fetch_Adapter.notifyDataSetChanged();
-
+                    list.clear();
+                    Complete_wait_fetch_Adapter.notifyDataSetChanged();
                     if (pageIndex==1){
                         list.clear();
                         workOrder = baseResult.getData();

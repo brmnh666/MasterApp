@@ -126,7 +126,7 @@ public class Appointment_failure_fragment extends BaseFragment<GetOrderListForMe
         recyclerView.setAdapter(pending_appointment_adapter);
         pending_appointment_adapter.setEmptyView(getEmptyView());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mPresenter.GetOrderInfoListForMe(userID,"7",Integer.toString(pageIndex),"5");
+        mPresenter.WorkerGetOrderList(userID,"7",Integer.toString(pageIndex),"5");
 
 
     }
@@ -146,7 +146,7 @@ public class Appointment_failure_fragment extends BaseFragment<GetOrderListForMe
                 }*/
                 pageIndex=1;
                // list.clear();
-                mPresenter.GetOrderInfoListForMe(userID,"7",Integer.toString(pageIndex),"5");
+                mPresenter.WorkerGetOrderList(userID,"7",Integer.toString(pageIndex),"5");
                 pending_appointment_adapter.notifyDataSetChanged();
                 refreshlayout.finishRefresh();
             }
@@ -160,7 +160,7 @@ public class Appointment_failure_fragment extends BaseFragment<GetOrderListForMe
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 pageIndex++; //页数加1
-                mPresenter.GetOrderInfoListForMe(userID,"7",Integer.toString(pageIndex),"5");
+                mPresenter.WorkerGetOrderList(userID,"7",Integer.toString(pageIndex),"5");
                 pending_appointment_adapter.notifyDataSetChanged();
                 refreshlayout.finishLoadmore();
             }
@@ -419,11 +419,13 @@ public class Appointment_failure_fragment extends BaseFragment<GetOrderListForMe
 
     /*获取 自己抢到的订单*/
     @Override
-    public void GetOrderInfoListForMe(BaseResult<WorkOrder> baseResult) {
+    public void WorkerGetOrderList(BaseResult<WorkOrder> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
                 if (baseResult.getData().getData()==null){
                     Log.d("===>","暂无预约工单");
+                    list.clear();
+                    pending_appointment_adapter.notifyDataSetChanged();
                 }else {
                 /*    workOrder = baseResult.getData();
                     list.addAll(workOrder.getData());

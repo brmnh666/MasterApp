@@ -77,7 +77,7 @@ import java.util.List;
         in_service_adapter.setEmptyView(getEmptyView());
         recyclerView.setAdapter(in_service_adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mPresenter.GetOrderInfoListForMe(userID,"2",Integer.toString(pageIndex),"5");
+        mPresenter.WorkerGetOrderList(userID,"2",Integer.toString(pageIndex),"5");
     }
     private void initListener() {
 
@@ -87,7 +87,7 @@ import java.util.List;
             public void onRefresh(RefreshLayout refreshlayout) {
                 pageIndex=1;
               //  list.clear();
-                mPresenter.GetOrderInfoListForMe(userID,"2",Integer.toString(pageIndex),"5");
+                mPresenter.WorkerGetOrderList(userID,"2",Integer.toString(pageIndex),"5");
                 in_service_adapter.notifyDataSetChanged();
                 refreshlayout.finishRefresh();
             }
@@ -100,7 +100,7 @@ import java.util.List;
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 pageIndex++; //页数加1
-                mPresenter.GetOrderInfoListForMe(userID,"2",Integer.toString(pageIndex),"5");
+                mPresenter.WorkerGetOrderList(userID,"2",Integer.toString(pageIndex),"5");
                 in_service_adapter.notifyDataSetChanged();
                 refreshlayout.finishLoadmore();
             }
@@ -157,11 +157,14 @@ import java.util.List;
     }
 
     @Override
-    public void GetOrderInfoListForMe(BaseResult<WorkOrder> baseResult) {
+    public void WorkerGetOrderList(BaseResult<WorkOrder> baseResult) {
         switch (baseResult.getStatusCode()) {
+
             case 200:
                 if (baseResult.getData().getData()==null){
                     Log.d("==>","暂无服务工单");
+                    list.clear();
+                    in_service_adapter.notifyDataSetChanged();
                 }else {
                     if (pageIndex==1){
                         list.clear();

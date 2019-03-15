@@ -125,7 +125,7 @@ public class Returnedparts_Fragement extends BaseFragment<GetOrderListForMePrese
         recyclerView.setAdapter(Return_Sheet_Adapter);
         Return_Sheet_Adapter.setEmptyView(getEmptyView());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mPresenter.GetOrderInfoListForMe(userID,"3",Integer.toString(pageIndex),"5");
+        mPresenter.WorkerGetOrderList(userID,"3",Integer.toString(pageIndex),"5");
 
 
     }
@@ -145,7 +145,7 @@ public class Returnedparts_Fragement extends BaseFragment<GetOrderListForMePrese
                 }*/
                 pageIndex=1;
                 //list.clear();
-                mPresenter.GetOrderInfoListForMe(userID,"3",Integer.toString(pageIndex),"5");
+                mPresenter.WorkerGetOrderList(userID,"3",Integer.toString(pageIndex),"5");
                 Return_Sheet_Adapter.notifyDataSetChanged();
                 refreshlayout.finishRefresh();
             }
@@ -159,7 +159,7 @@ public class Returnedparts_Fragement extends BaseFragment<GetOrderListForMePrese
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 pageIndex++; //页数加1
-                mPresenter.GetOrderInfoListForMe(userID,"3",Integer.toString(pageIndex),"5");
+                mPresenter.WorkerGetOrderList(userID,"3",Integer.toString(pageIndex),"5");
                 Return_Sheet_Adapter.notifyDataSetChanged();
                 refreshlayout.finishLoadmore();
             }
@@ -203,7 +203,7 @@ public class Returnedparts_Fragement extends BaseFragment<GetOrderListForMePrese
 
     /*获取 自己抢到的订单*/
     @Override
-    public void GetOrderInfoListForMe(BaseResult<WorkOrder> baseResult) {
+    public void WorkerGetOrderList(BaseResult<WorkOrder> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
                 if (baseResult.getData().getData()==null){
@@ -214,6 +214,9 @@ public class Returnedparts_Fragement extends BaseFragment<GetOrderListForMePrese
                     Return_Sheet_Adapter.setNewData(list);
                     //  Return_Sheet_Adapter.notifyDataSetChanged();
 */
+
+                     list.clear();
+                    Return_Sheet_Adapter.notifyDataSetChanged();
                     if (pageIndex==1){
                         list.clear();
                         workOrder = baseResult.getData();

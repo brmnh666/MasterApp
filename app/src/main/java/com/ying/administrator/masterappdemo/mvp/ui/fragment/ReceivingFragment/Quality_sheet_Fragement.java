@@ -122,7 +122,7 @@ public class Quality_sheet_Fragement extends BaseFragment<GetOrderListForMePrese
         recyclerView.setAdapter(Qulity_Adapter);
         Qulity_Adapter.setEmptyView(getEmptyView());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mPresenter.GetOrderInfoListForMe(userID,"4",Integer.toString(pageIndex),"5");
+        mPresenter.WorkerGetOrderList(userID,"4",Integer.toString(pageIndex),"5");
 
 
     }
@@ -142,7 +142,7 @@ public class Quality_sheet_Fragement extends BaseFragment<GetOrderListForMePrese
                 }*/
                 pageIndex=1;
                 list.clear();
-                mPresenter.GetOrderInfoListForMe(userID,"4",Integer.toString(pageIndex),"5");
+                mPresenter.WorkerGetOrderList(userID,"4",Integer.toString(pageIndex),"5");
                 Qulity_Adapter.notifyDataSetChanged();
                 refreshlayout.finishRefresh();
             }
@@ -156,7 +156,7 @@ public class Quality_sheet_Fragement extends BaseFragment<GetOrderListForMePrese
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 pageIndex++; //页数加1
-                mPresenter.GetOrderInfoListForMe(userID,"4",Integer.toString(pageIndex),"5");
+                mPresenter.WorkerGetOrderList(userID,"4",Integer.toString(pageIndex),"5");
                 Qulity_Adapter.notifyDataSetChanged();
                 refreshlayout.finishLoadmore();
             }
@@ -191,7 +191,7 @@ public class Quality_sheet_Fragement extends BaseFragment<GetOrderListForMePrese
 
     /*获取 自己抢到的订单*/
     @Override
-    public void GetOrderInfoListForMe(BaseResult<WorkOrder> baseResult) {
+    public void WorkerGetOrderList(BaseResult<WorkOrder> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
                 if (baseResult.getData().getData()==null){
@@ -201,7 +201,8 @@ public class Quality_sheet_Fragement extends BaseFragment<GetOrderListForMePrese
                     list.addAll(workOrder.getData());
                     Qulity_Adapter.setNewData(list);*/
                     //  Qulity_Adapter.notifyDataSetChanged();
-
+                    list.clear();
+                    Qulity_Adapter.notifyDataSetChanged();
                     if (pageIndex==1){
                         list.clear();
                         workOrder = baseResult.getData();

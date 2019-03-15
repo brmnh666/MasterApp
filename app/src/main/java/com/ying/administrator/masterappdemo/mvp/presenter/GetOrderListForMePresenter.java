@@ -16,11 +16,11 @@ public class GetOrderListForMePresenter extends GetOrderListForMeContract.Presen
 
 
     @Override
-    public void GetOrderInfoListForMe(String UserID, String State, String page, String limit) {
-        mModel.GetOrderInfoListForMe(UserID,State,page,limit).subscribe(new BaseObserver<WorkOrder>() {
+    public void WorkerGetOrderList(String UserID, String State, String page, String limit) {
+        mModel.WorkerGetOrderList(UserID,State,page,limit).subscribe(new BaseObserver<WorkOrder>() {
             @Override
             protected void onHandleSuccess(BaseResult<WorkOrder> value) {
-                mView.GetOrderInfoListForMe(value);
+                mView.WorkerGetOrderList(value);
             }
         });
 

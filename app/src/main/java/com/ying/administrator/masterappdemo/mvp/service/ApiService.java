@@ -139,6 +139,7 @@ public interface ApiService {
                                                         @Field("limit") String limit);
 
 
+/*
 
     @FormUrlEncoded
     @POST("Order/WorkerGetOrderList")
@@ -146,6 +147,7 @@ public interface ApiService {
                                                             @Field("State") String State,
                                                             @Field("page") String page,
                                                             @Field("limit") String limit);
+*/
 
 
     /*
