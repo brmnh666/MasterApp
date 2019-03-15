@@ -73,7 +73,7 @@ public class Return_Sheet_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,Ba
             countdownview.allShowZero();
         }
 //        N未返件 Y已返件 P部分返件
-        if ("N".equals(item.getAccessorySendState())){//未返件显示催件
+        if ("N".equals(item.getAccessorySendState())||"P".equals(item.getAccessorySendState())){//未返件显示催件
             tv_returnedparts_apply_parts.setVisibility(View.GONE);
             tv_continue_service.setVisibility(View.GONE);
             tv_reminder.setVisibility(View.VISIBLE);
@@ -81,17 +81,17 @@ public class Return_Sheet_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,Ba
             ll_pending_appointment_cancel.setVisibility(View.VISIBLE);
             tv_hint_returnedparts.setVisibility(View.INVISIBLE);
             baseViewHolder.setText(R.id.tv_returnedparts,"未返件");
-        }else {//部分返件 也就是物流中 显示申请配件，继续服务
+        }else {//已返件 也就是物流中 显示申请配件，完成工单
             tv_returnedparts_apply_parts.setVisibility(View.VISIBLE);
             tv_continue_service.setVisibility(View.VISIBLE);
             tv_reminder.setVisibility(View.GONE);
             tv_telephone_reminder.setVisibility(View.GONE);
             ll_pending_appointment_cancel.setVisibility(View.INVISIBLE);
             tv_hint_returnedparts.setVisibility(View.VISIBLE);
-            baseViewHolder.setText(R.id.tv_returnedparts,"待返件");
+            baseViewHolder.setText(R.id.tv_returnedparts,"已返件");
         }
         baseViewHolder.addOnClickListener(R.id.tv_returnedparts_apply_parts);//申请配件
-        baseViewHolder.addOnClickListener(R.id.tv_continue_service);//继续服务
+        baseViewHolder.addOnClickListener(R.id.tv_continue_service);//完成工单
         baseViewHolder.addOnClickListener(R.id.tv_reminder);//催件
         baseViewHolder.addOnClickListener(R.id.tv_see_detail);//查看详情
         baseViewHolder.addOnClickListener(R.id.tv_telephone_reminder);//电话催件

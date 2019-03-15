@@ -37,6 +37,7 @@ import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.GetOrderListForMeContract;
 import com.ying.administrator.masterappdemo.mvp.model.GetOrderListForMeModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.GetOrderListForMePresenter;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.CompleteWorkOrderActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_Add_Accessories_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_details_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.WorkOrderDetailsActivity;
@@ -180,8 +181,12 @@ public class Returnedparts_Fragement extends BaseFragment<GetOrderListForMePrese
                     case R.id.tv_reminder://催件
                         mPresenter.PressFactoryAccount(list.get(position).getUserID(),list.get(position).getOrderID());
                         break;
-                    case R.id.tv_continue_service://继续服务
-                        mPresenter.UpdateContinueServiceState(list.get(position).getOrderID());
+                    case R.id.tv_continue_service://完成工单
+//                        mPresenter.UpdateContinueServiceState(list.get(position).getOrderID());
+                        Intent intent=new Intent(getActivity(), CompleteWorkOrderActivity.class);
+                        //传递工单号
+                        intent.putExtra("OrderID",((WorkOrder.DataBean)adapter.getItem(position)).getOrderID());
+                        startActivity(intent);
                         break;
                     case R.id.tv_see_detail://查看详情
                         intent=new Intent(getActivity(), WorkOrderDetailsActivity.class);

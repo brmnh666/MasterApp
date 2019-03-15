@@ -486,7 +486,7 @@ public interface ApiService {
                                                      @Field("Type") String Type);
 
     /**
-     * 继续服务（返件列表）
+     * 完成工单（返件列表）
      * @param OrderID 订单id
      * @return
      */
