@@ -89,6 +89,7 @@ helper.setText(R.id.tv_loaction_appointment,"距离 "+item.getDistance()+"Km");
         helper.addOnClickListener(R.id.tv_pending_appointment_failure);//预约不成功
         helper.addOnClickListener(R.id.tv_pending_appointment_redeploy);//转派
         helper.addOnClickListener(R.id.tv_cancel_order);//取消工单
+        helper.addOnClickListener(R.id.rl_pending_appointment);
     }
 
 

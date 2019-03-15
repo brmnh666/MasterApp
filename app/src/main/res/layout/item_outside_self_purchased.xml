@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_item_addaccessory"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/img_ac_unselect"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="20dp"
+        android:src="@mipmap/icon_ac_unselect"
+        android:layout_marginLeft="20dp"
+        />
+
+    <ImageView
+        android:visibility="invisible"
+        android:id="@+id/img_ac_select"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="20dp"
+        android:src="@mipmap/icon_ac_select"
+        android:layout_marginLeft="20dp"
+        />
+<TextView
+    android:id="@+id/tv_accessory_name"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="电脑板"
+    android:layout_marginTop="20dp"
+    android:layout_toRightOf="@+id/img_ac_unselect"
+    android:layout_marginLeft="5dp"
+    android:textColor="#6A6A6A"
+    android:textSize="18sp"
+    />
+
+
+ <!--   <com.jmf.addsubutils.AddSubUtils
+        android:visibility="invisible"
+        android:id="@+id/addaccessory_addsubutil"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+         android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="20dp"
+        >
+    </com.jmf.addsubutils.AddSubUtils>
+
+-->
+
+    <com.ying.administrator.masterappdemo.widget.adderView
+        android:id="@+id/adderView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:visibility="invisible">
+
+
+    </com.ying.administrator.masterappdemo.widget.adderView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_custom_03"
+        android:layout_alignParentBottom="true"/>
+
+    <View
+        android:id="@+id/view_add_reduce"
+        android:layout_width="407dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@color/transparent">
+
+    </View>
+
+    <LinearLayout
+        android:id="@+id/ll_amount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/tv_accessory_name"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+            android:layout_weight="1"
+          android:textColor="#6A6A6A"
+          android:textSize="18sp"
+          android:text="请输入配件的金额："/>
+
+        <EditText
+            android:id="@+id/et_amount"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/gray_shape"
+            android:gravity="right"
+            android:textSize="18sp"
+            android:textColor="#6a6a6a"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/ll_amount"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="#6A6A6A"
+            android:textSize="18sp"
+            android:text="维修标准金额："/>
+
+        <EditText
+            android:id="@+id/et_maintenance_amount"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/gray_shape"
+            android:gravity="right"
+            android:textSize="18sp"
+            android:textColor="#6a6a6a"/>
+    </LinearLayout>
+</RelativeLayout>

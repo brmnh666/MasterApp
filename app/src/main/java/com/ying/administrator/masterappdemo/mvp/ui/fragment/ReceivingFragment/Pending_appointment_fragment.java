@@ -168,6 +168,14 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
             @Override
             public void onItemChildClick(final BaseQuickAdapter adapter, View view, final int position) {
                 switch (view.getId()){
+                    case R.id.rl_pending_appointment:
+                        Intent intent1=new Intent(getActivity(),Order_details_Activity.class);
+                        //传递工单号
+                        intent1.putExtra("OrderID",((WorkOrder.DataBean)adapter.getItem(position)).getOrderID());
+
+                        //startActivity(intent);
+                        startActivityForResult(intent1,1);
+                        break;
                     /*预约成功*/
                     case R.id.tv_pending_appointment_success:
                         Intent intent=new Intent(getActivity(),Order_details_Activity.class);

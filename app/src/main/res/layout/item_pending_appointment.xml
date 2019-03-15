@@ -6,7 +6,8 @@
     android:layout_marginLeft="10dp"
     android:layout_marginTop="10dp"
     android:layout_marginRight="10dp"
-    android:background="@drawable/rr_shape">
+    android:background="@drawable/rr_shape"
+    android:id="@+id/rl_pending_appointment">
 
     <TextView
         android:id="@+id/tv_pending_appointment"
