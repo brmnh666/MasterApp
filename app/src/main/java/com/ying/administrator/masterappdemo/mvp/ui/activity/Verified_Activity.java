@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -46,6 +47,8 @@ import com.ying.administrator.masterappdemo.mvp.model.VerifiedModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.VerifiedPresenter;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.util.imageutil.CompressHelper;
+import com.zyao89.view.zloading.ZLoadingDialog;
+import com.zyao89.view.zloading.Z_TYPE;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -115,7 +118,7 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
     private PopupWindow mPopupWindow;
     private ArrayList<String> permissions;
     ArrayList<Media> select = new ArrayList<>();
-
+    ZLoadingDialog dialog = new ZLoadingDialog(this); //loading
     //声明AMapLocationClient类对象
     public AMapLocationClient mLocationClient = null;
     //声明AMapLocationClientOption对象
@@ -308,6 +311,7 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                 startActivityForResult(new Intent(mActivity, MySkillsActivity.class), 1000);
                 break;
             case R.id.submit_application_bt:
+
                 mActualName = mActualNameEt.getText().toString();
                 mIdNumber = mIdNumberEt.getText().toString();
 
@@ -352,8 +356,11 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                     return;
                 }
                 if ("Y".equals(Guarantee)) {
+                    showLoading();
                     mPresenter.ApplyAuthInfo(UserID, mActualName, mIdNumber, mAddress, NodeIds, mProvince, mCity, mDistrict, mStreet, Double.toString(mLongitude), Double.toString(mLatitude), codestr);
+
                 }else{
+                    showLoading();
                     mPresenter.ApplyAuthInfo(UserID, mActualName, mIdNumber, mAddress, NodeIds, mProvince, mCity, mDistrict, mStreet, "", "", codestr);
                 }
                 break;
@@ -703,12 +710,12 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
             case 200:
                 if (baseResult.getData().isItem1()) {
                     ToastUtils.showShort("提交成功");
-
                     EventBus.getDefault().post("");
                     finish();
                 }
                 break;
             default:
+                cancleLoading();
                 ToastUtils.showShort("提交失败");
                 break;
         }
@@ -720,4 +727,24 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
     }
+
+
+    public void showLoading(){
+        dialog.setLoadingBuilder(Z_TYPE.ROTATE_CIRCLE)//设置类型
+                .setLoadingColor(Color.BLACK)//颜色
+                .setHintText("提交中请稍后...")
+                .setHintTextSize(14) // 设置字体大小 dp
+                .setHintTextColor(Color.BLACK)  // 设置字体颜色
+                .setDurationTime(1) // 设置动画时间百分比 - 0.5倍
+                .setCanceledOnTouchOutside(false)//点击外部无法取消
+                .show();
+    }
+
+    public void cancleLoading(){
+        dialog.dismiss();
+    }
+
+
+
+
 }
