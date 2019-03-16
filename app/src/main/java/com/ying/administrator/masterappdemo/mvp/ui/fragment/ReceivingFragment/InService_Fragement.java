@@ -163,8 +163,11 @@ import java.util.List;
             case 200:
                 if (baseResult.getData().getData()==null){
                     Log.d("==>","暂无服务工单");
-                    list.clear();
-                    in_service_adapter.notifyDataSetChanged();
+                    if (pageIndex==1){
+                        list.clear();
+                        in_service_adapter.notifyDataSetChanged();
+                    }
+
                 }else {
                     if (pageIndex==1){
                         list.clear();

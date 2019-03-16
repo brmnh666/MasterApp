@@ -429,13 +429,12 @@ public class Complete_wait_fetch_Fragement extends BaseFragment<GetOrderListForM
             case 200:
                 if (baseResult.getData().getData()==null){
                     Log.d("===>","暂无预约工单");
+                    if (pageIndex==1){
+                        list.clear();
+                        Complete_wait_fetch_Adapter.notifyDataSetChanged();
+                    }
                 }else {
-                  /*  workOrder = baseResult.getData();
-                    list.addAll(workOrder.getData());
-                    Complete_wait_fetch_Adapter.setNewData(list);*/
-                    //  Complete_wait_fetch_Adapter.notifyDataSetChanged();
-                    list.clear();
-                    Complete_wait_fetch_Adapter.notifyDataSetChanged();
+
                     if (pageIndex==1){
                         list.clear();
                         workOrder = baseResult.getData();

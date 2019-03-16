@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -52,6 +53,8 @@ import com.ying.administrator.masterappdemo.util.imageutil.CompressHelper;
 import com.ying.administrator.masterappdemo.widget.CustomDialog;
 import com.ying.administrator.masterappdemo.widget.ShareDialog;
 import com.ying.administrator.masterappdemo.widget.ViewExampleDialog;
+import com.zyao89.view.zloading.ZLoadingDialog;
+import com.zyao89.view.zloading.Z_TYPE;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -112,6 +115,8 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
     private ImageView iv_three;
     private ImageView iv_four;
 
+
+    ZLoadingDialog dialog = new ZLoadingDialog(this);
     @Override
     protected int setLayoutId() {
         return R.layout.activity_complete_work_order;
@@ -169,7 +174,6 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
         iv_fault_location.setOnClickListener(new CustomOnclickLister());
         iv_new_and_old_accessories.setOnClickListener(new CustomOnclickLister());
         ll_scan.setOnClickListener(new CustomOnclickLister());
-
         iv_one.setOnClickListener(new CustomOnclickLister());
         iv_two.setOnClickListener(new CustomOnclickLister());
         iv_three.setOnClickListener(new CustomOnclickLister());
@@ -212,41 +216,6 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 
 
 
-               // return_img.addAll(baseResult.getData().getReturnaccessoryImg());
-
-              /*  if (!return_img.isEmpty()) {//有返件图片
-
-                   Glide.with(mActivity).load(Config.RETURN_IMG + return_img.get(0).getUrl()).into(iv_bar_code);
-                   Glide.with(mActivity).load(Config.RETURN_IMG + return_img.get(1).getUrl()).into(iv_machine);
-                    Glide.with(mActivity).load(Config.RETURN_IMG + return_img.get(2).getUrl()).into(iv_fault_location);
-                    Glide.with(mActivity).load(Config.RETURN_IMG + return_img.get(3).getUrl()).into(iv_new_and_old_accessories);
-
-                    if (iv_bar_code.getDrawable()!=null&&iv_machine!=null&&iv_fault_location!=null&&iv_new_and_old_accessories!=null){
-
-                      Log.d("======>","图片存在");
-
-                                //需要在子线程中处理的逻辑
-                                return_img_map.put(0,getFile(iv_bar_code,0));
-                                return_img_map.put(1,getFile(iv_machine,1));
-                                return_img_map.put(2,getFile(iv_fault_location,2));
-                                return_img_map.put(3,getFile(iv_new_and_old_accessories,3));
-                                Log.d("return_img_map的大小为====>", String.valueOf(return_img_map.size()));
-
-
-                    }
-
-
-
-                }*/
-
-             /*   service_img.addAll(baseResult.getData().getOrderImg());
-
-                if (!service_img.isEmpty()) {
-                    Glide.with(mActivity).load(Config.Service_IMG + service_img.get(0).getUrl()).into(iv_one);
-                    Glide.with(mActivity).load(Config.Service_IMG + service_img.get(1).getUrl()).into(iv_two);
-                    Glide.with(mActivity).load(Config.Service_IMG + service_img.get(2).getUrl()).into(iv_three);
-                    Glide.with(mActivity).load(Config.Service_IMG + service_img.get(3).getUrl()).into(iv_four);
-                }*/
 
 
                 break;
@@ -267,6 +236,8 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
             case 200:
                 if (baseResult.getData().isItem1()){//图片上传成功
                     mPresenter.UpdateOrderState(orderID,"7");
+                }else {
+                    cancleLoading();
                 }
 
                 break;
@@ -281,6 +252,8 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
             case 200:
                 if (baseResult.getData().isItem1()){//图片上传成功
                    mPresenter.UpdateOrderState(orderID,"7");
+                }else {
+                    cancleLoading();
                 }
 
                 break;
@@ -756,6 +729,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
     }
 
     public void ReuturnAccessoryPicUpload(HashMap<Integer, File> map) {
+        showLoading();
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("img", map.get(0).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(0)));
         builder.addFormDataPart("img", map.get(1).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(1)));
@@ -764,11 +738,12 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
         builder.addFormDataPart("OrderID", orderID);
         MultipartBody requestBody = builder.build();
         mPresenter.ReuturnAccessoryPicUpload(requestBody);
+
     }
 
     /*安装服务图片*/
     public void ServiceOrderPicUpload(HashMap<Integer, File> map) {
-
+        showLoading();
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("img", map.get(0).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(0)));
         builder.addFormDataPart("img", map.get(1).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(1)));
@@ -777,31 +752,22 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
         builder.addFormDataPart("OrderID", orderID);
         MultipartBody requestBody = builder.build();
         mPresenter.ServiceOrderPicUpload(requestBody);
-
-
     }
 
-    /*public File getFile(ImageView imageView,int flag) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        Bitmap bitmap = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
-        File file = new File(Environment.getExternalStorageDirectory() + "/temp+"+flag+"+.jpg");
-        try {
-            file.createNewFile();
-            FileOutputStream fos = new FileOutputStream(file);
-            InputStream is = new ByteArrayInputStream(baos.toByteArray());
-            int x = 0;
-            byte[] b = new byte[1024 * 100];
-            while ((x = is.read(b)) != -1) {
-                fos.write(b, 0, x);
-            }
-            fos.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return file;
-    }
-*/
+  public void showLoading(){
+      dialog.setLoadingBuilder(Z_TYPE.ROTATE_CIRCLE)//设置类型
+              .setLoadingColor(Color.BLACK)//颜色
+              .setHintText("提交中请稍后...")
+              .setHintTextSize(14) // 设置字体大小 dp
+              .setHintTextColor(Color.BLACK)  // 设置字体颜色
+              .setDurationTime(1) // 设置动画时间百分比 - 0.5倍
+              .setCanceledOnTouchOutside(false)//点击外部无法取消
+              .show();
+  }
 
+  public void cancleLoading(){
+      dialog.dismiss();
+
+  }
 
 }

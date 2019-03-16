@@ -208,15 +208,11 @@ public class Returnedparts_Fragement extends BaseFragment<GetOrderListForMePrese
             case 200:
                 if (baseResult.getData().getData()==null){
                     Log.d("===>","暂无预约工单");
+                    if (pageIndex==1){
+                        list.clear();
+                        Return_Sheet_Adapter.notifyDataSetChanged();
+                    }
                 }else {
-                  /*  workOrder = baseResult.getData();
-                    list.addAll(workOrder.getData());
-                    Return_Sheet_Adapter.setNewData(list);
-                    //  Return_Sheet_Adapter.notifyDataSetChanged();
-*/
-
-                     list.clear();
-                    Return_Sheet_Adapter.notifyDataSetChanged();
                     if (pageIndex==1){
                         list.clear();
                         workOrder = baseResult.getData();

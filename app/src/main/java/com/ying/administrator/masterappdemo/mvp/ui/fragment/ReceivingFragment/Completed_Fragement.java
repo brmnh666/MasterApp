@@ -418,13 +418,13 @@ public class Completed_Fragement extends BaseFragment<GetOrderListForMePresenter
             case 200:
                 if (baseResult.getData().getData()==null){
                     Log.d("===>","暂无预约工单");
+                    if (pageIndex==1){
+                        list.clear();
+                        CompletedAdapter.notifyDataSetChanged();
+                    }
+
                 }else {
-                   /* workOrder = baseResult.getData();
-                    list.addAll(workOrder.getData());
-                    CompletedAdapter.setNewData(list);*/
-                    //  CompletedAdapter.notifyDataSetChanged();
-                    list.clear();
-                    CompletedAdapter.notifyDataSetChanged();
+
                     if (pageIndex==1){
                         list.clear();
                         workOrder = baseResult.getData();

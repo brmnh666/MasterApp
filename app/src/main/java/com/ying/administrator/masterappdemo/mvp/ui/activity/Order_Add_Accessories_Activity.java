@@ -268,7 +268,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
 
                 case R.id.tv_order_details_add_accessories: //添加配件
 
-                    if (select_state==0){
+                    if (select_state==-1){
                         Toast.makeText(Order_Add_Accessories_Activity.this,"请选择配件类型",Toast.LENGTH_SHORT).show();
                     }else {
                         customDialog_add_accessory.getWindow().setBackgroundDrawableResource(R.color.transparent);

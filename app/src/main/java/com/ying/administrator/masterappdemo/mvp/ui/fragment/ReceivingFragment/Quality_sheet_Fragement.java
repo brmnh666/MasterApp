@@ -196,13 +196,12 @@ public class Quality_sheet_Fragement extends BaseFragment<GetOrderListForMePrese
             case 200:
                 if (baseResult.getData().getData()==null){
                     Log.d("===>","暂无预约工单");
+                    if (pageIndex==1){
+                        list.clear();
+                        Qulity_Adapter.notifyDataSetChanged();
+                    }
                 }else {
-                  /*  workOrder = baseResult.getData();
-                    list.addAll(workOrder.getData());
-                    Qulity_Adapter.setNewData(list);*/
-                    //  Qulity_Adapter.notifyDataSetChanged();
-                    list.clear();
-                    Qulity_Adapter.notifyDataSetChanged();
+
                     if (pageIndex==1){
                         list.clear();
                         workOrder = baseResult.getData();

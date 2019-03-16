@@ -424,8 +424,11 @@ public class Appointment_failure_fragment extends BaseFragment<GetOrderListForMe
             case 200:
                 if (baseResult.getData().getData()==null){
                     Log.d("===>","暂无预约工单");
-                    list.clear();
-                    pending_appointment_adapter.notifyDataSetChanged();
+                    if (pageIndex==1){
+                        list.clear();
+                        pending_appointment_adapter.notifyDataSetChanged();
+                    }
+
                 }else {
                 /*    workOrder = baseResult.getData();
                     list.addAll(workOrder.getData());

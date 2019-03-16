@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -70,6 +71,8 @@ import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLaz
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 import com.ying.administrator.masterappdemo.widget.CustomDialog;
 import com.ying.administrator.masterappdemo.widget.ShareDialog;
+import com.zyao89.view.zloading.ZLoadingDialog;
+import com.zyao89.view.zloading.Z_TYPE;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -175,6 +178,9 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
     private int mGpsAccuracyStatus;
     private String mTime;
     private ObjectAnimator animator; //刷新图片属性动画
+
+    private ZLoadingDialog dialog;
+    private Vibrator vibrator;//震动
     //声明定位回调监听器
     public AMapLocationListener mLocationListener = new AMapLocationListener() {
         @Override
@@ -269,7 +275,8 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
 
     @Override
     protected void initView() {
-
+        dialog=new ZLoadingDialog(mActivity);
+        vibrator = (Vibrator) getActivity().getSystemService(getActivity().VIBRATOR_SERVICE);
     }
 
     @Override
@@ -341,14 +348,12 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 if (baseResult.getData().getData() == null) {
                     // Toast.makeText(getActivity(),"咱无新工单",Toast.LENGTH_SHORT).show();
                     Log.d("===>", "暂无新工单");
-                } else {
-                  /*  workOrder = baseResult.getData();
-                    list.addAll(workOrder.getData());*/
-                   /* grabsheetAdapter.setNewData(list);
-                    if (pageIndex != 1 && workOrder.getData().size() == 0) {
-                        mRefreshLayout.finishLoadmoreWithNoMoreData();
-                    }*/
+              if (pageIndex==1){
+                  list.clear();
+                  grabsheetAdapter.notifyDataSetChanged();
+              }
 
+                } else {
                     if (pageIndex==1){
                         list.clear();
                         workOrder = baseResult.getData();
@@ -374,17 +379,22 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
         Data data = baseResult.getData();
         switch (baseResult.getStatusCode()) {
             case 200://200
-                if (data.isItem1()) {//抢单成功
+                if (data.isItem1()) {//接单成功
                     Toast.makeText(getActivity(), "接单成功", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getActivity(), Order_Receiving_Activity.class);
                     intent.putExtra("intent", "pending_appointment");
                     startActivity(intent);
+                    cancleLoading();
                 } else  {
                         Toast.makeText(getActivity(), (CharSequence) data.getItem2(), Toast.LENGTH_SHORT).show();
+                        cancleLoading();
+
                 }
+
                 break;
 
             default:
+                cancleLoading();
                 break;
         }
     }
@@ -835,26 +845,20 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
        }*/
 
 
-        /*点击抢单按钮*/
+        /*点击接单按钮*/
         grabsheetAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 switch (view.getId()) {
                     case R.id.img_grabsheet:
+                        vibrator.vibrate(100);
                         if (userInfo.getIfAuth() != null) {
                             if (userInfo.getIfAuth().equals("1")) {
+                                showLoading();
                                // mPresenter.AddGrabsheetapply(((WorkOrder.DataBean) adapter.getItem(position)).getOrderID(), userID);
                                mPresenter.UpdateSendOrderState(((WorkOrder.DataBean) adapter.getItem(position)).getOrderID(),"1");
 
-                                //Log.d("WorkOrder",((WorkOrder.DataBean)adapter.getItem(position)).getOrderID());
-                                //grabsheetAdapter.remove(position);
-                               /* Intent intent = new Intent(getActivity(), Order_Receiving_Activity.class);
-                                intent.putExtra("intent", "pending_appointment");
-                                startActivity(intent);*/
-                              /*  if (list.isEmpty()) {  //判断订单是否为空
-                                    contentLoadingEmpty();
 
-                                }*/
                             } else if (userInfo.getIfAuth().equals("0")) {
                                 under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_under_review, null);
                                 btnConfirm = under_review.findViewById(R.id.btn_confirm);
@@ -930,5 +934,24 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
     public void Event(String message) {
         mPresenter.GetUserInfoList(userID, "1");
     }
+
+
+
+    public void showLoading(){
+        dialog.setLoadingBuilder(Z_TYPE.ROTATE_CIRCLE)//设置类型
+                .setLoadingColor(Color.BLACK)//颜色
+                .setHintText("接单中请稍后...")
+                .setHintTextSize(14) // 设置字体大小 dp
+                .setHintTextColor(Color.BLACK)  // 设置字体颜色
+                .setDurationTime(1) // 设置动画时间百分比 - 0.5倍
+                .setCanceledOnTouchOutside(false)//点击外部无法取消
+                .show();
+    }
+
+    public void cancleLoading(){
+        dialog.dismiss();
+
+    }
+
 
 }

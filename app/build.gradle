@@ -186,6 +186,7 @@ dependencies {
     implementation 'com.github.w446108264:XhsEmoticonsKeyboard:2.0.4'
     implementation files('libs/alipaySdk-20180403.jar')
 
+    //Zloading加载动画
 
-
+    implementation 'com.zyao89:zloading:1.2.0'
 }
