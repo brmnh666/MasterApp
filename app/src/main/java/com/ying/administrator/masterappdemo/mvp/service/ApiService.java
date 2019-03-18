@@ -5,6 +5,7 @@ import com.ying.administrator.masterappdemo.entity.Accessory;
 import com.ying.administrator.masterappdemo.entity.Area;
 import com.ying.administrator.masterappdemo.entity.Article;
 import com.ying.administrator.masterappdemo.entity.Category;
+import com.ying.administrator.masterappdemo.entity.CategoryData;
 import com.ying.administrator.masterappdemo.entity.City;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.District;
@@ -369,13 +370,13 @@ public interface ApiService {
      * 获取分类
      */
     @POST("FactoryConfig/GetFactoryCategory")
-    Observable<BaseResult<Data<List<Category>>>> GetFactoryCategory();
+    Observable<BaseResult<CategoryData>> GetFactoryCategory();
 //    /**
 //     * 获取子分类
 //     */
 //    @FormUrlEncoded
 //    @POST("FactoryConfig/GetFactoryCategory")
-//    Observable<BaseResult<Data<List<Category>>>> GetChildFactoryCategory(@Field("ParentID") String ParentID);
+//    Observable<BaseResult<CategoryData>> GetChildFactoryCategory(@Field("ParentID") String ParentID);
 
    /*获取账户的技能*/
     @FormUrlEncoded

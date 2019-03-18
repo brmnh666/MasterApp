@@ -16,6 +16,7 @@ import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Category;
+import com.ying.administrator.masterappdemo.entity.CategoryData;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.MySkills;
 import com.ying.administrator.masterappdemo.entity.Skill;
@@ -124,12 +125,12 @@ public class MySkillsActivity extends BaseActivity<AddSkillsPresenter, AddSkills
     }
 
     @Override
-    public void GetFactoryCategory(BaseResult<Data<List<Category>>> baseResult) {
+    public void GetFactoryCategory(BaseResult<CategoryData> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-                Data<List<Category>> data = baseResult.getData();
-                if (data.isItem1()) {
-                    popularList = data.getItem2();
+                CategoryData data = baseResult.getData();
+                if ("0".equals(data.getCode())) {
+                    popularList = data.getData();
                     if (popularList.size() == 0) {
                         ToastUtils.showShort("无分类，请联系管理员添加！");
                     } else {

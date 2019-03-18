@@ -6,6 +6,7 @@ import com.ying.administrator.masterappdemo.base.BasePresenter;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.base.BaseView;
 import com.ying.administrator.masterappdemo.entity.Category;
+import com.ying.administrator.masterappdemo.entity.CategoryData;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.Skill;
 
@@ -16,8 +17,8 @@ import io.reactivex.Observable;
 
 public interface AddSkillsContract {
     interface Model extends BaseModel {
-        Observable<BaseResult<Data<List<Category>>>> GetFactoryCategory();
-       //  Observable<BaseResult<Data<List<Category>>>> GetChildFactoryCategory(String ParentID);
+        Observable<BaseResult<CategoryData>> GetFactoryCategory();
+       //  Observable<BaseResult<CategoryData>> GetChildFactoryCategory(String ParentID);
         //获取该账号下的技能
         Observable<BaseResult<List<Skill>>> GetAccountSkill(String UserID);
         Observable<BaseResult<String>> UpdateAccountSkillData(String UserID,String NodeIds);
@@ -25,8 +26,8 @@ public interface AddSkillsContract {
     }
 
     interface View extends BaseView {
-        void GetFactoryCategory(BaseResult<Data<List<Category>>> baseResult);
-//        void GetChildFactoryCategory(BaseResult<Data<List<Category>>> baseResult);
+        void GetFactoryCategory(BaseResult<CategoryData> baseResult);
+//        void GetChildFactoryCategory(BaseResult<CategoryData> baseResult);
         //获取该账号下的技能
         void GetAccountSkill(BaseResult<List<Skill>> baseResult);
         void UpdateAccountSkillData(BaseResult<String> baseResult);
