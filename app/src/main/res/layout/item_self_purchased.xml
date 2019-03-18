@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rl_item_addaccessory"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="wrap_content"
     android:background="@color/white">
 
     <ImageView
@@ -78,6 +78,7 @@
     </View>
 
     <LinearLayout
+        android:id="@+id/ll_price"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -99,6 +100,8 @@
             android:layout_height="wrap_content"
             android:background="@drawable/gray_shape"
             android:gravity="right"
+            android:inputType="numberDecimal"
+            android:padding="5dp"
             android:textSize="18sp"
             android:textColor="#6a6a6a"/>
 

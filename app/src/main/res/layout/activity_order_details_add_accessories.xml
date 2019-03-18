@@ -46,7 +46,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
-                android:text="自购件申请"/>
+                android:text="师傅自购件申请"/>
+            <ImageView
+                android:id="@+id/iv_selfbuying_user"
+                android:layout_width="19dp"
+                android:layout_height="19dp"
+                android:src="@drawable/pay_check_selector"
+                android:layout_marginLeft="10dp"/>
+            <TextView
+                android:id="@+id/tv_selfbuying_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="用户自购件申请"/>
         </LinearLayout>
 
     </LinearLayout>

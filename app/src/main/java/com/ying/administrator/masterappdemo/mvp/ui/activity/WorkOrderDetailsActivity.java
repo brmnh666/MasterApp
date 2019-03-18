@@ -112,7 +112,7 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                 mTvWorkOrderNumber.setText(data.getOrderID());
                 mTvOrderTime.setText(data.getAudDate().replace("T", " ")); //将T替换为空格
                 mTvCauseOfIssue.setText(data.getMemo());
-                mTvProductType.setText(data.getCategoryName() + "/" + data.getBrandName() + "/" + data.getProductType());
+                mTvProductType.setText(data.getCategoryName() + "/" + data.getBrandName() + "/" + data.getSubCategoryName());
 
                 if (data.getTypeID() == 1) {//维修
                     mTvType.setText("维修");

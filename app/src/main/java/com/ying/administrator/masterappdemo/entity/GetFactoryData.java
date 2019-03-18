@@ -1,25 +1,43 @@
 package com.ying.administrator.masterappdemo.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class GetFactoryData<T> {
-    private List<T> Item1;
-    private String Item2;
+public class GetFactoryData<T> implements Serializable {
+    private String code;
+    private String msg;
+    private String count;
+    private List<T> data;
 
-
-    public List<T> getItem1() {
-        return Item1;
+    public String getCode() {
+        return code;
     }
 
-    public void setItem1(List<T> item1) {
-        Item1 = item1;
+    public void setCode(String code) {
+        this.code = code;
     }
 
-    public String getItem2() {
-        return Item2;
+    public String getMsg() {
+        return msg;
     }
 
-    public void setItem2(String item2) {
-        Item2 = item2;
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public String getCount() {
+        return count;
+    }
+
+    public void setCount(String count) {
+        this.count = count;
+    }
+
+    public List<T> getData() {
+        return data;
+    }
+
+    public void setData(List<T> data) {
+        this.data = data;
     }
 }

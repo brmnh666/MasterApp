@@ -191,7 +191,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                 tv_work_order_number.setText(data.getOrderID());
                 tv_order_time.setText(data.getAudDate().replace("T", " ")); //将T替换为空格
                 tv_reason_pending_appointment.setText(data.getMemo());
-                tv_service_goods.setText(data.getCategoryName() + "/" + data.getBrandName() + "/" + data.getProductType());
+                tv_service_goods.setText(data.getCategoryName() + "/" + data.getBrandName() + "/" + data.getSubCategoryName());
 
                 if (data.getTypeID() == 1) {//维修
                     tv_service.setText("维修");
