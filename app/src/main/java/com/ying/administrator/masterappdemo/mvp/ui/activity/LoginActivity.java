@@ -1,6 +1,7 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -23,6 +24,8 @@ import com.ying.administrator.masterappdemo.mvp.model.LoginModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.LoginPresenter;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.widget.ClearEditText;
+import com.zyao89.view.zloading.ZLoadingDialog;
+import com.zyao89.view.zloading.Z_TYPE;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,7 +60,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginModel> impl
     LinearLayout mLlCode;
     @BindView(R.id.tv_change)
     TextView mTvChange;
-
+    ZLoadingDialog dialog = new ZLoadingDialog(this); //loading
     private String userName;
     private String passWord;
     private String code;
@@ -112,7 +115,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginModel> impl
                 break;
 
             case R.id.btn_login:
-
+                showLoading();
                 userName = mEt_login_username.getText().toString();
                 passWord = mEt_login_password.getText().toString();
 
@@ -161,6 +164,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginModel> impl
                     finish();
                 }else{
                     ToastUtils.showShort(data.getItem2());
+                    cancleLoading();
                 }
                 break;
         }
@@ -193,4 +197,20 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginModel> impl
                 break;
         }
     }
+
+    public void showLoading(){
+        dialog.setLoadingBuilder(Z_TYPE.SINGLE_CIRCLE)//设置类型
+                .setLoadingColor(Color.BLACK)//颜色
+                .setHintText("登陆中请稍后...")
+                .setHintTextSize(14) // 设置字体大小 dp
+                .setHintTextColor(Color.BLACK)  // 设置字体颜色
+                .setDurationTime(1) // 设置动画时间百分比 - 0.5倍
+                .setCanceledOnTouchOutside(false)//点击外部无法取消
+                .show();
+    }
+
+    public void cancleLoading(){
+        dialog.dismiss();
+    }
+
 }

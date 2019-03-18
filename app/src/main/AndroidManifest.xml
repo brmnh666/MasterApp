@@ -356,6 +356,15 @@
             android:screenOrientation="behind"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
+
+
+        <!--头像裁剪-->
+        <activity
+        android:name="com.yalantis.ucrop.UCropActivity"
+        android:screenOrientation="portrait"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            />
+
         <receiver
             android:name=".wxapi.AppRegister">
             <intent-filter>

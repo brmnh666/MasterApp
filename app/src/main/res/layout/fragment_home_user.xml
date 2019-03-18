@@ -17,11 +17,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tv_rank"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            />
+
+
+<!--<TextView
+    android:layout_alignParentRight="true"
+    android:layout_width="40dp"
+    android:layout_height="40dp"
+    android:text="2级"
+    android:textSize="10sp"
+    android:textColor="@color/white"
+    android:background="@drawable/bg_home_level"/>
+
+        -->
 
         <ImageView
             android:id="@+id/img_home_head"
@@ -29,7 +36,7 @@
             android:layout_height="74dp"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"
-            android:src="@mipmap/icon_user_head" />
+             />
 
         <LinearLayout
             android:id="@+id/ll_money"

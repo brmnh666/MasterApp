@@ -755,7 +755,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
     }
 
   public void showLoading(){
-      dialog.setLoadingBuilder(Z_TYPE.ROTATE_CIRCLE)//设置类型
+      dialog.setLoadingBuilder(Z_TYPE.SINGLE_CIRCLE)//设置类型
               .setLoadingColor(Color.BLACK)//颜色
               .setHintText("提交中请稍后...")
               .setHintTextSize(14) // 设置字体大小 dp

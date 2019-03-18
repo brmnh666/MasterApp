@@ -4,6 +4,9 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -32,6 +35,8 @@ import com.blankj.utilcode.util.SPUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
+import com.yalantis.ucrop.UCrop;
+import com.yalantis.ucrop.UCropActivity;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
@@ -44,12 +49,14 @@ import com.ying.administrator.masterappdemo.mvp.model.InfoMangeModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.InfoManagePresenter;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.util.imageutil.CompressHelper;
+import com.ying.administrator.masterappdemo.util.imageutil.FileUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -360,8 +367,6 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
                 }else {
                     idCardBeans.addAll(baseResult.getData());
                    // Log.d("身份图片的张数", String.valueOf(idCardBeans.size()));
-
-
                 }
 
                 break;
@@ -544,11 +549,12 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
                 if (resultCode == -1) {
                     Glide.with(mActivity).load(FilePath).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(iv_avatar);
                     file = new File(FilePath);
+                    startCrop(Uri.fromFile(file));
                 }
-                if (file!=null){
+             /*   if (file!=null){
                     File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
                     uploadImg(newFile);
-                }
+                }*/
 
                 break;
             //从相册中获取
@@ -557,20 +563,71 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
                     Uri uri = data.getData();
                     Glide.with(mActivity).load(uri).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(iv_avatar);
                     file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
-
-
+                   startCrop(Uri.fromFile(file));
                 }
-                if (file!=null){
+              /*  if (file!=null){
                     File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
                     uploadImg(newFile);
-                }
+                }*/
 
                 break;
+            //裁剪后的效果
+            case UCrop.REQUEST_CROP:
+                if (resultCode==RESULT_OK){
+                    Uri resultUri=UCrop.getOutput(data);
+
+                    try {
+                        Bitmap bitmap= BitmapFactory.decodeStream(getContentResolver().openInputStream(resultUri));
+                       // headimageView.setImageBitmap(bitmap);
+                        Glide.with(mActivity).load(bitmap).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(iv_avatar);
+
+                        File file1=uritoFile(resultUri);
+
+                        if (file1!=null){
+                            File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file1);
+                            uploadImg(newFile);
+                        }
+
+
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
+
+
+                }
+
+                //错误裁剪的结果
+            case UCrop.RESULT_ERROR:
+                if(resultCode==RESULT_OK){
+                    final Throwable cropError = UCrop.getError(data);
+                    handleCropError(cropError);
+                }
+                break;
+
 
                 default:
                     break;
         }
 
+    }
+
+    //处理剪切失败的返回值
+    private void handleCropError(Throwable cropError) {
+        deleteTempPhotoFile();
+        if (cropError != null) {
+            Toast.makeText(this, cropError.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    /**
+     * 删除拍照临时文件
+     */
+    private void deleteTempPhotoFile() {
+        File tempFile = new File(Environment.getExternalStorageDirectory() + File.separator + "output_iamge.jpg");
+        if (tempFile.exists() && tempFile.isFile()) {
+            tempFile.delete();
+        }
     }
 
     public void uploadImg(File f) {
@@ -606,9 +663,51 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
     }
 
 
+    //图片裁剪的方法
+    private void startCrop(Uri uri){
+        UCrop.Options options = new UCrop.Options();
+        //裁剪后图片保存在文件夹中
+        Uri destinationUri = Uri.fromFile(new File(getExternalCacheDir(), "uCrop.jpg"));
+        UCrop uCrop = UCrop.of(uri, destinationUri);//第一个参数是裁剪前的uri,第二个参数是裁剪后的uri
+        uCrop.withAspectRatio(1,1);//设置裁剪框的宽高比例
+        //下面参数分别是缩放,旋转,裁剪框的比例
+        options.setAllowedGestures(UCropActivity.ALL,UCropActivity.NONE,UCropActivity.ALL);
+        options.setToolbarTitle("头像裁剪");//设置标题栏文字
+        options.setCropGridStrokeWidth(2);//设置裁剪网格线的宽度(我这网格设置不显示，所以没效果)
+        options.setCropFrameStrokeWidth(10);//设置裁剪框的宽度
+        options.setMaxScaleMultiplier(3);//设置最大缩放比例
+        options.setHideBottomControls(true);//隐藏下边控制栏
+        options.setShowCropGrid(false);  //设置是否显示裁剪网格
+        options.setOvalDimmedLayer(true);//设置是否为圆形裁剪框
+        options.setShowCropFrame(false); //设置是否显示裁剪边框(true为方形边框)
+        options.setToolbarWidgetColor(Color.parseColor("#ffffff"));//标题字的颜色以及按钮颜色
+        options.setDimmedLayerColor(Color.parseColor("#AA000000"));//设置裁剪外颜色
+        options.setToolbarColor(Color.parseColor("#000000")); // 设置标题栏颜色
+        options.setStatusBarColor(Color.parseColor("#000000"));//设置状态栏颜色
+        options.setCropGridColor(Color.parseColor("#ffffff"));//设置裁剪网格的颜色
+        options.setCropFrameColor(Color.parseColor("#ffffff"));//设置裁剪框的颜色
+        uCrop.withOptions(options);
+        uCrop.start(this);
+    }
 
 
-
+    private File uritoFile(Uri uri) {
+        String img_path;
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor actualimagecursor = managedQuery(uri, proj, null,
+                null, null);
+        if (actualimagecursor == null) {
+            img_path = uri.getPath();
+        } else {
+            int actual_image_column_index = actualimagecursor
+                    .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            actualimagecursor.moveToFirst();
+            img_path = actualimagecursor
+                    .getString(actual_image_column_index);
+        }
+        File file = new File(img_path);
+        return file;
+    }
 
 
 }

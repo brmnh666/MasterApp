@@ -187,6 +187,8 @@ dependencies {
     implementation files('libs/alipaySdk-20180403.jar')
 
     //Zloading加载动画
-
     implementation 'com.zyao89:zloading:1.2.0'
+
+    //头像裁剪
+    implementation 'com.yalantis:ucrop:1.4.1'
 }
