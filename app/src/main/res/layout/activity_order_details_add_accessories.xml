@@ -11,30 +11,35 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="15dp"
-        android:gravity="center|top">
+        android:gravity="center"
+        android:orientation="horizontal">
+
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/ll_manufacturers"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/dp_10"
             android:gravity="center"
             android:orientation="horizontal">
-
-
             <ImageView
                 android:id="@+id/iv_manufacturers"
                 android:layout_width="19dp"
                 android:layout_height="19dp"
                 android:src="@drawable/pay_check_selector" />
             <TextView
-                android:id="@+id/tv_manufacturers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
                 android:layout_marginRight="10dp"
                 android:text="厂家寄件申请"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_selfbuying"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dp_10"
+            android:gravity="center"
+            android:orientation="horizontal">
             <ImageView
                 android:id="@+id/iv_selfbuying"
                 android:layout_width="19dp"
@@ -42,11 +47,19 @@
                 android:src="@drawable/pay_check_selector"
                 android:layout_marginLeft="10dp"/>
             <TextView
-                android:id="@+id/tv_selfbuying"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
                 android:text="师傅自购件申请"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_selfbuying_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:padding="@dimen/dp_10"
+            android:gravity="center"
+            android:orientation="horizontal">
             <ImageView
                 android:id="@+id/iv_selfbuying_user"
                 android:layout_width="19dp"
@@ -54,24 +67,28 @@
                 android:src="@drawable/pay_check_selector"
                 android:layout_marginLeft="10dp"/>
             <TextView
-                android:id="@+id/tv_selfbuying_user"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
                 android:text="用户自购件申请"/>
         </LinearLayout>
-
     </LinearLayout>
-<View
-    android:layout_width="match_parent"
-    android:layout_height="1dp"
-    android:background="@color/color_custom_08"/>
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView_add_accessories"
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    </android.support.v7.widget.RecyclerView>
+        android:layout_height="1dp"
+        android:background="@color/color_custom_08"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:descendantFocusability="blocksDescendants"
+        android:padding="@dimen/dp_10"
+        android:layout_margin="@dimen/dp_10">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView_add_accessories"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"/>
+    </RelativeLayout>
     <TextView
         android:id="@+id/tv_order_details_add_accessories"
         android:layout_gravity="center"

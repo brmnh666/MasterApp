@@ -17,17 +17,22 @@
         android:textColor="#6A6A6A"
         android:text="服务内容"
         />
-<View
-    android:layout_width="match_parent"
-    android:layout_height="1dp"
-    android:background="@color/color_custom_08"/>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/tv_recyclerView_Pre_add_service"
+    <View
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </android.support.v7.widget.RecyclerView>
+        android:layout_height="1dp"
+        android:background="@color/color_custom_08"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:descendantFocusability="blocksDescendants"
+        android:padding="@dimen/dp_10"
+        android:layout_margin="@dimen/dp_10">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/tv_recyclerView_Pre_add_service"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"/>
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/tv_order_detail_add_service"

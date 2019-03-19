@@ -1,20 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
+    android:padding="@dimen/dp_10"
+    android:gravity="center_vertical"
     android:layout_height="wrap_content">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="12dp"
-        android:layout_marginLeft="19dp"
-        android:layout_marginRight="18dp">
         <TextView
             android:id="@+id/tv_accessories_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="添加冷媒"
             android:textSize="15sp"
             android:textColor="#6A6A6A" />
@@ -23,7 +18,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_centerInParent="true">
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -43,26 +37,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
+                android:text=""
                 android:textSize="15sp"
                 android:textColor="#6A6A6A" />
 
         </LinearLayout>
-        
         <ImageView
             android:id="@+id/iv_accessories_delete"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@mipmap/delete"
-            android:layout_alignParentRight="true"
-            android:layout_centerInParent="true"/>
-    </RelativeLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="11dp"
-        android:layout_marginRight="12dp"
-        android:layout_marginTop="14dp"
-        android:background="#DCDCDC"/>
-
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dp_10"
+            android:src="@mipmap/delete"/>
 </LinearLayout>

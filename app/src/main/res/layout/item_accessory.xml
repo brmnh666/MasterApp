@@ -2,23 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/dp_10"
-    android:orientation="horizontal"
-    android:gravity="center_vertical"
     android:background="@color/white">
-
-    <ImageView
-        android:id="@+id/iv_check"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:background="@drawable/check_selector"
-        />
     <TextView
-        android:id="@+id/tv_add_service_name"
+        android:id="@+id/tv_accessory_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/dp_10"
-        android:text="加氮"
+        android:text="电脑板"
         android:textColor="@color/color_black"
-        android:textSize="18sp" />
+        android:textSize="18sp"/>
 </LinearLayout>

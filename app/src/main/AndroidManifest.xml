@@ -156,6 +156,7 @@
         <!--工单详情-->
         <activity android:name=".mvp.ui.activity.Order_details_Activity"
             android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustPan"
             android:launchMode="singleTask">
 
         </activity>
