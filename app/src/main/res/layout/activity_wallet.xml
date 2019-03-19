@@ -461,6 +461,52 @@
                 </android.support.v7.widget.RecyclerView>
             </LinearLayout>
 
+            <!--充值记录-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/rr_shape"
+                android:elevation="5dp"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="6dp"
+                    android:background="@drawable/btn_blue" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="13dp">
+                    <ImageView
+                        android:layout_width="12dp"
+                        android:layout_height="14dp"
+                        android:src="@mipmap/record"
+                        android:layout_gravity="center"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="充值记录"
+                        android:textSize="14sp"
+                        android:textColor="#333333"
+                        android:layout_marginLeft="5dp"/>
+                </LinearLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/rv_recharge_record">
+
+                </android.support.v7.widget.RecyclerView>
+            </LinearLayout>
+
+
+
         </LinearLayout>
     </ScrollView>
 

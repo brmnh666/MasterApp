@@ -38,27 +38,21 @@ public class Add_Ac_Adapter extends BaseQuickAdapter<Accessory, BaseViewHolder> 
     @Override
     protected void convert(BaseViewHolder helper, Accessory item) {
 
-        helper.setIsRecyclable(false);
+        /* helper.setIsRecyclable(false);*/
         helper.setText(R.id.tv_accessory_name,item.getAccessoryName());
 
-       if (item.isIscheck()){ //是被选中的状态  红钩显示  加减器显示
+     if (item.isIscheck()){ //是被选中的状态  红钩显示  加减器显示
            helper.setVisible(R.id.img_ac_select,true);
            helper.setVisible(R.id.img_ac_unselect,false);
            helper.setVisible(R.id.adderView,true);
            adderView adderView = helper.getView(R.id.adderView);
-
            adderView.setValue(item.getCheckedcount());
-
-
-
-
-
        }else { //未选中状态
            helper.setVisible(R.id.img_ac_select,false);
            helper.setVisible(R.id.img_ac_unselect,true);
            helper.setVisible(R.id.adderView,false);
-
        }
+
         ll_price =helper.getView(R.id.ll_price);
         switch(state){
             case 0:
@@ -76,7 +70,7 @@ public class Add_Ac_Adapter extends BaseQuickAdapter<Accessory, BaseViewHolder> 
         helper.addOnClickListener(R.id.tv_accessory_name);
         helper.addOnClickListener(R.id.img_ac_unselect);
         helper.addOnClickListener(R.id.img_ac_select);
-
+        helper.addOnClickListener(R.id.et_amount);
         /*TextWatcher textWatcher=new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

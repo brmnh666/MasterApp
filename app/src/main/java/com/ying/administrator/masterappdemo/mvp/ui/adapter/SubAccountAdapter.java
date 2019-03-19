@@ -49,7 +49,7 @@ private ImageView img_avatar;
         if (item.getSkills()==null){
             helper.setText(R.id.tv_skill,"技能:");
         }else {
-            helper.setText(R.id.tv_skill,"技能:");
+            helper.setText(R.id.tv_skill,"技能:"+item.getSkills());
         }
 
         helper.setText(R.id.tv_completion_amount,"1111");//完成金额 未实现
@@ -60,7 +60,6 @@ private ImageView img_avatar;
 
 
         helper.addOnClickListener(R.id.tv_close_account).addOnClickListener(R.id.img_tv_close_account);//注销账号
-
 
     }
 }

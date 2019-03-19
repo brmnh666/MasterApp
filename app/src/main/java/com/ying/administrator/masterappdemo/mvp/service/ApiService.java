@@ -4,6 +4,7 @@ import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Accessory;
 import com.ying.administrator.masterappdemo.entity.Area;
 import com.ying.administrator.masterappdemo.entity.Article;
+import com.ying.administrator.masterappdemo.entity.Bill;
 import com.ying.administrator.masterappdemo.entity.Category;
 import com.ying.administrator.masterappdemo.entity.CategoryData;
 import com.ying.administrator.masterappdemo.entity.City;
@@ -520,5 +521,19 @@ public interface ApiService {
     Observable<BaseResult<Article>> GetListCategoryContentByCategoryID(
             @Field("CategoryID") String CategoryID
     );
+
+    /*
+    * 注销子账号
+    * */
+    @FormUrlEncoded
+    @POST("Account/CancelChildAccount")
+    Observable<BaseResult<Data<String>>> CancelChildAccount(@Field("UserID") String UserID,
+                                                            @Field("ParentUserID") String ParentUserID);
+
+    /*获取用户账单*/
+    @FormUrlEncoded
+    @POST("Account/AccountBill")
+    Observable<BaseResult<Data<Bill>>> AccountBill(@Field("UserID") String UserID,
+                                                   @Field("state") String state);
 
 }

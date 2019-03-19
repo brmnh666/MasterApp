@@ -1,6 +1,7 @@
 package com.ying.administrator.masterappdemo.mvp.model;
 
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.SubUserInfo;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.mvp.contract.SubAccountContract;
@@ -26,6 +27,13 @@ public class SubAccountModel implements SubAccountContract.Model {
     @Override
     public Observable<BaseResult<List<SubUserInfo.SubUserInfoDean>>> GetChildAccountByParentUserID(String ParentUserID) {
         return ApiRetrofit.getDefault().GetChildAccountByParentUserID(ParentUserID)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<BaseResult<Data<String>>> CancelChildAccount(String UserID, String ParentUserID) {
+        return ApiRetrofit.getDefault().CancelChildAccount(UserID,ParentUserID)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

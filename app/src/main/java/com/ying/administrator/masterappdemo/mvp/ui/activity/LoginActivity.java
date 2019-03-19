@@ -204,7 +204,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginModel> impl
                 .setHintText("登陆中请稍后...")
                 .setHintTextSize(14) // 设置字体大小 dp
                 .setHintTextColor(Color.BLACK)  // 设置字体颜色
-                .setDurationTime(1) // 设置动画时间百分比 - 0.5倍
+                .setDurationTime(0.5) // 设置动画时间百分比 - 0.5倍
                 .setCanceledOnTouchOutside(false)//点击外部无法取消
                 .show();
     }

@@ -2,27 +2,38 @@ package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.common.DefineView;
+import com.ying.administrator.masterappdemo.entity.Bill;
+import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.mvp.contract.WalletContract;
 import com.ying.administrator.masterappdemo.mvp.model.WalletModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.WalletPresenter;
+import com.ying.administrator.masterappdemo.mvp.ui.adapter.Wallet_record_Adapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> implements View.OnClickListener, WalletContract.View {
+
+
     @BindView(R.id.img_actionbar_return)
     ImageView mImgActionbarReturn;
     @BindView(R.id.tv_actionbar_return)
@@ -59,10 +70,20 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
     ImageView mIvWechatNo;
     @BindView(R.id.tv_wechat)
     TextView mTvWechat;
-    @BindView(R.id.rv_withdrawals_record)
+    @BindView(R.id.rv_withdrawals_record)//提现
     RecyclerView mRvWithdrawalsRecord;
+
+    @BindView(R.id.rv_recharge_record)//充值
+    RecyclerView mRv_recharge_record;
+
+    private Wallet_record_Adapter wallet_record_adapter;
+
     private String userId;
     private UserInfo.UserInfoDean userInfo=new UserInfo.UserInfoDean();
+
+    private List<Bill.DataBean> recharge_list=new ArrayList<>();//充值记录
+    private List<Bill.DataBean> withdraw_list=new ArrayList<>();//提现记录
+    private List<Bill.DataBean> expend_income_list=new ArrayList<>();//收入支出记录
 
     @Override
     protected int setLayoutId() {
@@ -74,6 +95,11 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
         SPUtils spUtils=SPUtils.getInstance("token");
         userId = spUtils.getString("userName");
         mPresenter.GetUserInfoList(userId,"1");
+
+        mPresenter.AccountBill(userId,"1");//充值
+        mPresenter.AccountBill(userId,"2,5");//收入和支出
+        mPresenter.AccountBill(userId,"3");//提现
+      //  mPresenter.AccountBill(userId,"4");//待支付
     }
 
     @Override
@@ -124,5 +150,53 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
             case 401:
                 break;
         }
+    }
+
+    @Override
+    public void AccountBill(BaseResult<Data<Bill>> baseResult) {
+switch (baseResult.getStatusCode()){
+    case 200:
+        if (baseResult.getData().isItem1()){
+           // Log.d("=====>","连接成功");
+         if (baseResult.getData().getItem2().getData()!=null){
+             switch (baseResult.getData().getItem2().getData().get(0).getState()){
+                 case "1"://充值
+                     recharge_list.addAll(baseResult.getData().getItem2().getData());
+                     mRv_recharge_record.setLayoutManager(new LinearLayoutManager(mActivity));
+                     wallet_record_adapter=new Wallet_record_Adapter(R.layout.item_withdrawals_record,recharge_list);
+                     mRv_recharge_record.setAdapter(wallet_record_adapter);
+
+                     break;
+                 case "2"://支出
+                 case "5"://收入
+                     expend_income_list.addAll(baseResult.getData().getItem2().getData());
+                     mRvIncomeAndExpenditureDetails.setLayoutManager(new LinearLayoutManager(mActivity));
+                     wallet_record_adapter=new Wallet_record_Adapter(R.layout.item_withdrawals_record,withdraw_list);
+                     mRvIncomeAndExpenditureDetails.setAdapter(wallet_record_adapter);
+
+                     break;
+                 case "3"://提现
+                     withdraw_list.addAll(baseResult.getData().getItem2().getData());
+                     mRvWithdrawalsRecord.setLayoutManager(new LinearLayoutManager(mActivity));
+                     wallet_record_adapter=new Wallet_record_Adapter(R.layout.item_withdrawals_record,withdraw_list);
+                     mRvWithdrawalsRecord.setAdapter(wallet_record_adapter);
+
+
+                     break;
+                 case "4"://待支付
+                     break;
+                     default:
+                         break;
+
+
+
+             }
+
+
+         }
+
+        }
+        break;
+}
     }
 }

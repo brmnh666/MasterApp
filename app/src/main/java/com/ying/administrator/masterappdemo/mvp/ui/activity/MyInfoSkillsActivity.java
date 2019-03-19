@@ -1,6 +1,7 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,6 +27,8 @@ import com.ying.administrator.masterappdemo.mvp.contract.AddSkillsContract;
 import com.ying.administrator.masterappdemo.mvp.model.AddSkillsModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.AddSkillsPresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.MySkillAdapter;
+import com.zyao89.view.zloading.ZLoadingDialog;
+import com.zyao89.view.zloading.Z_TYPE;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +64,7 @@ public class MyInfoSkillsActivity extends BaseActivity<AddSkillsPresenter, AddSk
     private List<Category> subList;
     private String skills;
     private String NodeIds="";
-
+    ZLoadingDialog dialog = new ZLoadingDialog(this); //loading
 //    @Override
 //    protected void onCreate(@Nullable Bundle savedInstanceState) {
 //        super.onCreate(savedInstanceState);
@@ -108,6 +111,7 @@ public class MyInfoSkillsActivity extends BaseActivity<AddSkillsPresenter, AddSk
                 finish();
                 break;
             case R.id.btn_skill:
+                showLoading();
                 skills ="";
                 for (int i = 0; i < mySkillAdapter.getData().size(); i++) {
                     if (mySkillAdapter.getData().get(i).isSelected()){
@@ -203,7 +207,26 @@ public class MyInfoSkillsActivity extends BaseActivity<AddSkillsPresenter, AddSk
             case 401:
 //                ToastUtils.showShort(baseResult.getData());
                 break;
+
+            default:
+                cancleLoading();
+                break;
         }
+    }
+
+    public void showLoading(){
+        dialog.setLoadingBuilder(Z_TYPE.SINGLE_CIRCLE)//设置类型
+                .setLoadingColor(Color.BLACK)//颜色
+                .setHintText("提交中请稍后...")
+                .setHintTextSize(14) // 设置字体大小 dp
+                .setHintTextColor(Color.BLACK)  // 设置字体颜色
+                .setDurationTime(0.5) // 设置动画时间百分比 - 0.5倍
+                .setCanceledOnTouchOutside(false)//点击外部无法取消
+                .show();
+    }
+
+    public void cancleLoading(){
+        dialog.dismiss();
     }
 
 }

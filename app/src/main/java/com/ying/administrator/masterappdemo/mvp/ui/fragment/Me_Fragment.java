@@ -155,7 +155,6 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                             Toast.makeText(mActivity, "已复制", Toast.LENGTH_LONG).show();
                         } else if (snsPlatform.mShowWord.equals("复制链接")) {
                             Toast.makeText(mActivity, "已复制", Toast.LENGTH_LONG).show();
-
                         } else {
                             UMWeb web = new UMWeb("http://www.jmiren.com/");
                             web.setTitle("西瓜鱼");

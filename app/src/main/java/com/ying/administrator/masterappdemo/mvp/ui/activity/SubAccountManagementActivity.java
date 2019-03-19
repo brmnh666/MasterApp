@@ -14,11 +14,13 @@ import com.blankj.utilcode.util.SPUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.common.DefineView;
+import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.SubAccount;
 import com.ying.administrator.masterappdemo.entity.SubUserInfo;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
@@ -66,6 +68,7 @@ public class SubAccountManagementActivity extends BaseActivity<SubAccountPresent
     private UserInfo.UserInfoDean userInfoDean=new UserInfo.UserInfoDean();
     private List<SubUserInfo.SubUserInfoDean> subUserInfolist=new ArrayList<>();
     private SubAccountAdapter subAccountAdapter;
+    private int cancleposition;
     @Override
     protected int setLayoutId() {
         return R.layout.activtity_sub_account_management;
@@ -87,7 +90,39 @@ public class SubAccountManagementActivity extends BaseActivity<SubAccountPresent
          subAccountAdapter = new SubAccountAdapter(R.layout.item_sub_account, subUserInfolist,mActivity);
          mRvSubAccount.setLayoutManager(new LinearLayoutManager(mActivity));
          mRvSubAccount.setAdapter(subAccountAdapter);
+         subAccountAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+             @Override
+             public void onItemChildClick(final BaseQuickAdapter adapter, View view, final int position) {
+                 switch (view.getId()){
+                     case R.id.tv_close_account:
+                     case R.id.img_tv_close_account:
+                         final CommonDialog_Home dialog = new CommonDialog_Home(mActivity);
+                         dialog.setMessage("是否删除子账号")
+                                 //.setImageResId(R.mipmap.ic_launcher)
+                                 .setTitle("提示")
+                                 .setSingle(false).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
+                             @Override
+                             public void onPositiveClick() {//删除用户
+                                 cancleposition=position;
+                                 mPresenter.CancelChildAccount(((SubUserInfo.SubUserInfoDean)adapter.getData().get(position)).getUserID(),userID);
+                                 dialog.dismiss();
+                             }
 
+                             @Override
+                             public void onNegtiveClick() {//取消
+                                 dialog.dismiss();
+                                 // Toast.makeText(MainActivity.this,"ssss",Toast.LENGTH_SHORT).show();
+                             }
+                         }).show();
+
+
+                         break;
+                         default:
+                             break;
+                 }
+
+             }
+         });
 
 
 
@@ -185,5 +220,20 @@ public class SubAccountManagementActivity extends BaseActivity<SubAccountPresent
          }
 
 
+    }
+
+    @Override
+    public void CancelChildAccount(BaseResult<Data<String>> baseResult) {
+
+        switch (baseResult.getStatusCode()){
+            case 200:
+                if ( baseResult.getData().isItem1()){
+                    subAccountAdapter.remove(cancleposition);
+
+                }
+
+                break;
+                default:break;
+        }
     }
 }

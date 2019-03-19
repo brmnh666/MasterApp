@@ -534,9 +534,6 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
         }
     }
 
-
-
-
     //返回图片处理
     @SuppressLint("NewApi")
     @Override
@@ -551,10 +548,6 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
                     file = new File(FilePath);
                     startCrop(Uri.fromFile(file));
                 }
-             /*   if (file!=null){
-                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
-                    uploadImg(newFile);
-                }*/
 
                 break;
             //从相册中获取
@@ -587,14 +580,9 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
                             File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file1);
                             uploadImg(newFile);
                         }
-
-
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
-
-
-
                 }
 
                 //错误裁剪的结果

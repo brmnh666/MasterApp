@@ -70,6 +70,7 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
     private Redeploy_Adapter redeploy_adapter; //转派的adapter
     private String SubUserID; //用于存放主账号将要发送子账号的userid
     private String OrderId;//用于记录当前 工单的id
+    private int cancleposition;
     public Pending_appointment_fragment() {
         // Required empty public constructor
     }
@@ -395,6 +396,7 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                             @Override
                             public void onPositiveClick() {//取消订单
                                 mPresenter.UpdateSendOrderState(OrderId,"-1");
+                                cancleposition=position;
                                 dialog.dismiss();
                             }
 
@@ -429,7 +431,6 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                         list.clear();
                         pending_appointment_adapter.notifyDataSetChanged();
                     }
-
 
                 }else {
                     if (pageIndex==1){
@@ -520,8 +521,8 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
 switch (baseResult.getStatusCode()){
          case 200:
           if (baseResult.getData().isItem1()){
-           mRefreshLayout.autoRefresh();
-
+           //mRefreshLayout.autoRefresh();
+              pending_appointment_adapter.remove(cancleposition);
           }else {
               Toast.makeText(getActivity(),"取消失败",Toast.LENGTH_LONG).show();
           }

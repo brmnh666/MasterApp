@@ -50,6 +50,7 @@ import java.util.List;
      private String userID; //用户id
      private int pageIndex = 1;  //默认当前页数为1
     private String OrderId;//记录当前工单号
+    private int cancelposition;
      @Nullable
      @Override
      public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -108,7 +109,7 @@ import java.util.List;
 
         in_service_adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, final int position) {
                 switch (view.getId()){
                     case R.id.tv_in_service_finish://完成服务
                         Intent intent=new Intent(getActivity(),CompleteWorkOrderActivity.class);
@@ -132,6 +133,8 @@ import java.util.List;
                             @Override
                             public void onPositiveClick() {//取消订单
                                 mPresenter.UpdateSendOrderState(OrderId,"-1");
+                                cancelposition=position;
+
                                 dialog.dismiss();
                             }
 
@@ -213,8 +216,8 @@ import java.util.List;
         switch (baseResult.getStatusCode()){
             case 200:
                 if (baseResult.getData().isItem1()){
-                    mRefreshLayout.autoRefresh();
-
+                   // mRefreshLayout.autoRefresh();
+                    in_service_adapter.remove(cancelposition);
                 }else {
                     Toast.makeText(getActivity(), (CharSequence) baseResult.getData().getItem2(),Toast.LENGTH_SHORT).show();
                 }
