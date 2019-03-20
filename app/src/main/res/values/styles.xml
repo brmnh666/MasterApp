@@ -43,11 +43,11 @@
     </style>
 
 
-<!--欢迎页-->
+<!---->
     <style name="AppTheme.Splash">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:statusBarColor">#1690FF</item>
+        <item name="android:windowFullscreen">true</item>
         <item name="android:windowIsTranslucent">true</item>
 
     </style>
