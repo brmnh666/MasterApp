@@ -97,8 +97,8 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
         mPresenter.GetUserInfoList(userId,"1");
 
         mPresenter.AccountBill(userId,"1");//充值
-        mPresenter.AccountBill(userId,"2,5");//收入和支出
         mPresenter.AccountBill(userId,"3");//提现
+        mPresenter.AccountBill(userId,"2,5");//收入和支出
       //  mPresenter.AccountBill(userId,"4");//待支付
     }
 
@@ -163,6 +163,8 @@ switch (baseResult.getStatusCode()){
                  case "1"://充值
                      recharge_list.addAll(baseResult.getData().getItem2().getData());
                      mRv_recharge_record.setLayoutManager(new LinearLayoutManager(mActivity));
+                     mRv_recharge_record.setHasFixedSize(true);
+                     mRv_recharge_record.setNestedScrollingEnabled(false);
                      wallet_record_adapter=new Wallet_record_Adapter(R.layout.item_withdrawals_record,recharge_list);
                      mRv_recharge_record.setAdapter(wallet_record_adapter);
 
@@ -171,13 +173,17 @@ switch (baseResult.getStatusCode()){
                  case "5"://收入
                      expend_income_list.addAll(baseResult.getData().getItem2().getData());
                      mRvIncomeAndExpenditureDetails.setLayoutManager(new LinearLayoutManager(mActivity));
-                     wallet_record_adapter=new Wallet_record_Adapter(R.layout.item_withdrawals_record,withdraw_list);
+                     mRvIncomeAndExpenditureDetails.setHasFixedSize(true);
+                     mRvIncomeAndExpenditureDetails.setNestedScrollingEnabled(false);
+                     wallet_record_adapter=new Wallet_record_Adapter(R.layout.item_withdrawals_record,expend_income_list);
                      mRvIncomeAndExpenditureDetails.setAdapter(wallet_record_adapter);
 
                      break;
                  case "3"://提现
                      withdraw_list.addAll(baseResult.getData().getItem2().getData());
                      mRvWithdrawalsRecord.setLayoutManager(new LinearLayoutManager(mActivity));
+                     mRvWithdrawalsRecord.setHasFixedSize(true);
+                     mRvWithdrawalsRecord.setNestedScrollingEnabled(false);
                      wallet_record_adapter=new Wallet_record_Adapter(R.layout.item_withdrawals_record,withdraw_list);
                      mRvWithdrawalsRecord.setAdapter(wallet_record_adapter);
 

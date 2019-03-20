@@ -412,16 +412,16 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                         @SuppressLint("MissingPermission")
                         @Override
                         public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                            ImageView img_add_service_select = (ImageView) adapter.getViewByPosition(recyclerView_custom_add_service, position, R.id.img_add_service_select); //选中图片
-                            ImageView img_add_service_unselect = (ImageView) adapter.getViewByPosition(recyclerView_custom_add_service, position, R.id.img_add_service_unselect);//未选中图片
+                         /*   ImageView img_add_service_select = (ImageView) adapter.getViewByPosition(recyclerView_custom_add_service, position, R.id.img_add_service_select); //选中图片
+                            ImageView img_add_service_unselect = (ImageView) adapter.getViewByPosition(recyclerView_custom_add_service, position, R.id.img_add_service_unselect);//未选中图片*/
 
                             switch (view.getId()) {
-                                case R.id.img_add_service_unselect:
-                                case R.id.img_add_service_select:
+                          /*      case R.id.img_add_service_unselect:
+                                case R.id.img_add_service_select:*/
                                 case R.id.tv_add_service_name:
                                     if (((Service) (adapter.getData().get(position))).isIschecked() == false) { //如果是为选中的状态点击  变为红色 选中状态 出现 数量选择器
-                                        img_add_service_unselect.setVisibility(View.INVISIBLE);
-                                        img_add_service_select.setVisibility(View.VISIBLE);
+                                       /* img_add_service_unselect.setVisibility(View.INVISIBLE);
+                                        img_add_service_select.setVisibility(View.VISIBLE);*/
                                         mList_service.get(position).setIschecked(true);
                                         mService = (Service) adapter.getItem(position);
                                         mfService = new FService.OrderServiceStrBean.OrderServiceBean();
@@ -433,8 +433,8 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                                         map_service.put(position, mfService);
                                         vibrator.vibrate(50);
                                     } else {
-                                        img_add_service_unselect.setVisibility(View.VISIBLE);
-                                        img_add_service_select.setVisibility(View.INVISIBLE);
+                                    /*    img_add_service_unselect.setVisibility(View.VISIBLE);
+                                        img_add_service_select.setVisibility(View.INVISIBLE);*/
                                         mList_service.get(position).setIschecked(false);
                                         map_service.remove(position);
                                         vibrator.vibrate(50);

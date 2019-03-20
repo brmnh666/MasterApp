@@ -73,9 +73,7 @@ public class MyApplication extends Application {
                 Config.TOKEN= (String) data;
                 //SPUtils spUtils = SPUtils.getInstance("token");
                 //spUtils.put("Token", (String) data);
-//
                // String token = spUtils.getString("Token");
-
                // Log.d("Token",token);
             }
             @Override

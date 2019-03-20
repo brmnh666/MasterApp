@@ -145,11 +145,7 @@
         <!--登录-->
         <activity android:name=".mvp.ui.activity.LoginActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
         </activity>
 
@@ -168,8 +164,14 @@
 
         </activity>
         <!--引导页-->
-        <activity android:name=".mvp.ui.activity.SplashActivity" android:launchMode="singleTask">
+        <activity android:name=".mvp.ui.activity.SplashActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
         </activity>
 

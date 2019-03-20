@@ -68,6 +68,7 @@ import com.ying.administrator.masterappdemo.mvp.ui.activity.Verified_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Wallet_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.GrabsheetAdapter;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
+import com.ying.administrator.masterappdemo.receiver.XGPushReceiver;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 import com.ying.administrator.masterappdemo.widget.CustomDialog;
 import com.ying.administrator.masterappdemo.widget.ShareDialog;
@@ -154,6 +155,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
     private int pageIndex = 1;  //默认当前页数为1
     private String userID;//用户id
     SPUtils spUtils = SPUtils.getInstance("token");
+    private int grabposition;
     private UserInfo.UserInfoDean userInfo = new UserInfo.UserInfoDean();
     //声明AMapLocationClient类对象
     public AMapLocationClient mLocationClient = null;
@@ -263,6 +265,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
 
     }
 
+/*
 
     @Override
     public void onResume() {
@@ -271,16 +274,21 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
         mRefreshLayout.autoRefresh();
 
     }
+*/
 
 
     @Override
     protected void initView() {
         dialog=new ZLoadingDialog(mActivity);
         vibrator = (Vibrator) getActivity().getSystemService(getActivity().VIBRATOR_SERVICE);
+        mPresenter.WorkerGetOrderList(userID, "0", Integer.toString(pageIndex), "10");
     }
 
     @Override
     protected void setListener() {
+
+
+
 //实名认证
         mTvCertification.setOnClickListener(this);
         //实名认证图片
@@ -380,6 +388,8 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
         switch (baseResult.getStatusCode()) {
             case 200://200
                 if (data.isItem1()) {//接单成功
+
+                    grabsheetAdapter.remove(grabposition);
                     Toast.makeText(getActivity(), "接单成功", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getActivity(), Order_Receiving_Activity.class);
                     intent.putExtra("intent", "pending_appointment");
@@ -855,6 +865,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                         if (userInfo.getIfAuth() != null) {
                             if (userInfo.getIfAuth().equals("1")) {
                                 showLoading();
+                                grabposition=position;
                                // mPresenter.AddGrabsheetapply(((WorkOrder.DataBean) adapter.getItem(position)).getOrderID(), userID);
                                mPresenter.UpdateSendOrderState(((WorkOrder.DataBean) adapter.getItem(position)).getOrderID(),"1");
 

@@ -3,6 +3,7 @@ package com.ying.administrator.masterappdemo.receiver;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
+import android.util.Log;
 
 import com.tencent.android.tpush.XGPushBaseReceiver;
 import com.tencent.android.tpush.XGPushClickedResult;
@@ -40,7 +41,7 @@ public class XGPushReceiver extends XGPushBaseReceiver {
      */
     @Override
     public void onTextMessage(Context context, XGPushTextMessage xgPushTextMessage) {
-        openAssetMusics(context,"new_message_voice.mp3");
+      //  openAssetMusics(context,"new_message_voice.mp3");
     }
 
     /**
@@ -50,6 +51,7 @@ public class XGPushReceiver extends XGPushBaseReceiver {
      */
     @Override
     public void onNotifactionClickedResult(Context context, XGPushClickedResult xgPushClickedResult) {
+        Log.d("=======>","点击了");
 
     }
 

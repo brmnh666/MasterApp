@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -25,22 +26,15 @@ import java.util.TimerTask;
 /*引导页*/
 public class SplashActivity extends BaseActivity<LoginPresenter, LoginModel> implements View.OnClickListener, LoginContract.View {
 
-    private int recLen=3; //倒计时3秒
+    private int recLen=4; //倒计时3秒
     private TextView tv_splash_skin;
     Timer timer =new Timer();
     private Handler handler;
     private Runnable runnable;
     private String userName;
-
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams. FLAG_FULLSCREEN , WindowManager.LayoutParams. FLAG_FULLSCREEN);
-
-
-
-    }
+    private String password;
+    private boolean isLogin;
+    private String admintoken;
 
     @Override
     protected int setLayoutId() {
@@ -51,6 +45,14 @@ public class SplashActivity extends BaseActivity<LoginPresenter, LoginModel> imp
     protected void initData() {
         SPUtils spUtils = SPUtils.getInstance("token");
         userName=spUtils.getString("userName");
+        password = spUtils.getString("passWord");
+        isLogin = spUtils.getBoolean("isLogin");
+        admintoken=spUtils.getString("adminToken");
+
+        Log.d("======>", userName);
+        Log.d("======>", password);
+        Log.d("======>", String.valueOf(isLogin));
+        Log.d("======>", admintoken);
     }
 
     @Override
@@ -71,7 +73,7 @@ public class SplashActivity extends BaseActivity<LoginPresenter, LoginModel> imp
             @Override
             public void run() {
                 /*调转到主界面界面*/
-                if (userName!=null){ //存在用户名说明登录过 直接登录到主界面
+                if (userName!=null&&password!=null&&isLogin){ //存在用户名说明登录过 直接登录到主界面
                     Intent intent =new Intent(SplashActivity.this,MainActivity.class);
                     startActivity(intent);
                     SplashActivity.this.finish();
@@ -84,7 +86,7 @@ public class SplashActivity extends BaseActivity<LoginPresenter, LoginModel> imp
                 }
 
             }
-        },5000); //延时5秒后发送信息
+        },3000); //延时3秒后发送信息
 
 
     }
@@ -113,7 +115,7 @@ public class SplashActivity extends BaseActivity<LoginPresenter, LoginModel> imp
             case R.id.tv_splash_skin:
 
                 /*调转到主界面界面*/
-                if (userName!=null){ //存在用户名说明登录过 直接登录到主界面
+                if (userName!=null&&password!=null&&isLogin){ //存在用户名说明登录过 直接登录到主界面
                     Intent intent =new Intent(SplashActivity.this,MainActivity.class);
                     startActivity(intent);
                     SplashActivity.this.finish();

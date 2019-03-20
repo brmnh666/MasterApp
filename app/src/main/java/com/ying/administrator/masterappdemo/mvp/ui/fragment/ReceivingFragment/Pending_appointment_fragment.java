@@ -71,6 +71,7 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
     private String SubUserID; //用于存放主账号将要发送子账号的userid
     private String OrderId;//用于记录当前 工单的id
     private int cancleposition;
+    private int redeployposition;
     public Pending_appointment_fragment() {
         // Required empty public constructor
     }
@@ -317,6 +318,7 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                                             }
                                             subuserlist.get(position).setIscheck(true); //点击的为选中状态
                                             SubUserID=subuserlist.get(position).getUserID();
+                                            Log.d("====>",SubUserID);
                                             redeploy_adapter.notifyDataSetChanged();
 
                                         }else { //点击的为已选中
@@ -345,20 +347,20 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
 
                               Toast.makeText(getActivity(),"您还没选择子账号进行转派",Toast.LENGTH_SHORT).show();
                                 //  customDialog_redeploy.dismiss(); //没选择人进行选派
-                              return;
                               }
 
                               else {
                                   //转派成功状态恢复原状
-                                  SubUserID=null;
+
                                   for (int i=0;i<subuserlist.size();i++){
                                       subuserlist.get(i).setIscheck(false);
                                   }
-
                                   //转派成功 刷新当前页面
+                                  redeployposition=position;
                                   mPresenter.ChangeSendOrder(OrderId,SubUserID);
                                   customDialog_redeploy.dismiss();
-                                  mRefreshLayout.autoRefresh();
+                                 // mRefreshLayout.autoRefresh();
+                                  SubUserID=null;
                               }
 
                             }
@@ -506,7 +508,14 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
     public void ChangeSendOrder(BaseResult<Data> baseResult) {
      switch (baseResult.getStatusCode()){
          case 200:
-        Toast.makeText(getActivity(),"转派成功",Toast.LENGTH_SHORT).show();
+             if (baseResult.getData().isItem1()){
+                 Toast.makeText(getActivity(),"转派成功",Toast.LENGTH_SHORT).show();
+                 pending_appointment_adapter.remove(redeployposition);
+             }else {
+
+                 Toast.makeText(getActivity(),"转派失败",Toast.LENGTH_SHORT).show();
+             }
+
              break;
              default:
                  break;
