@@ -1,5 +1,6 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -15,17 +16,18 @@ import com.ying.administrator.masterappdemo.entity.Accessory;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.GAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
-import com.ying.administrator.masterappdemo.entity.GetFactorySeviceData;
 import com.ying.administrator.masterappdemo.entity.Service;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.PendingOrderContract;
 import com.ying.administrator.masterappdemo.mvp.model.PendingOrderModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.PendingOrderPresenter;
+import com.ying.administrator.masterappdemo.mvp.ui.adapter.GServiceAdapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.ReturnAccessoryAdapter;
 
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter, PendingOrderModel> implements View.OnClickListener, PendingOrderContract.View {
 
@@ -62,11 +64,36 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
     TextView mTvServiceAddress;
     @BindView(R.id.rv_return_information)
     RecyclerView mRvReturnInformation;
-    @BindView(R.id.rv_return)
-    RecyclerView mRvReturn;
+    @BindView(R.id.tv_accessory_application)
+    TextView mTvAccessoryApplication;
+    @BindView(R.id.tv_service_application)
+    TextView mTvServiceApplication;
+    @BindView(R.id.rv_service)
+    RecyclerView mRvService;
+    @BindView(R.id.tv_accessory_apply_state)
+    TextView mTvAccessoryApplyState;
+    @BindView(R.id.ll_accessory)
+    LinearLayout mLlAccessory;
+    @BindView(R.id.tv_service_apply_state)
+    TextView mTvServiceApplyState;
+    @BindView(R.id.ll_service)
+    LinearLayout mLlService;
+    @BindView(R.id.tv_beyond_state)
+    TextView mTvBeyondState;
+    @BindView(R.id.tv_beyond_application)
+    TextView mTvBeyondApplication;
+    @BindView(R.id.tv_range)
+    TextView mTvRange;
+    @BindView(R.id.iv_range_one)
+    ImageView mIvRangeOne;
+    @BindView(R.id.iv_range_two)
+    ImageView mIvRangeTwo;
+    @BindView(R.id.ll_approve_beyond_money)
+    LinearLayout mLlApproveBeyondMoney;
     private String OrderID;
     private WorkOrder.DataBean data;
     private ReturnAccessoryAdapter returnAccessoryAdapter;
+    private GServiceAdapter gServiceAdapter;
 
     @Override
     protected int setLayoutId() {
@@ -81,7 +108,7 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
     @Override
     public void initView() {
         mTvActionbarTitle.setText("详情页");
-        OrderID =getIntent().getStringExtra("OrderID");
+        OrderID = getIntent().getStringExtra("OrderID");
         mPresenter.GetOrderInfo(OrderID);
     }
 
@@ -115,13 +142,13 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                 mTvProductType.setText(data.getCategoryName() + "/" + data.getBrandName() + "/" + data.getSubCategoryName());
 
                 if (data.getTypeID() == 1) {//维修
-                    mTvType.setText("维修");
+                    mTvType.setText(data.getTypeName() + "/" + data.getGuaranteeText());
                     mTvType.setBackgroundResource(R.color.color_custom_01);
 //                    mll_return_information.setVisibility(View.VISIBLE);
 //                    mll_service_process.setVisibility(View.GONE);
 
                 } else {
-                    mTvType.setText("安装");
+                    mTvType.setText(data.getTypeName() + "/" + data.getGuaranteeText());
                     mTvType.setBackgroundResource(R.color.color_custom_04);
 //                    mll_return_information.setVisibility(View.GONE);
 //                    mll_service_process.setVisibility(View.VISIBLE);
@@ -129,12 +156,57 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                 }
                 mTvServiceAddress.setText(data.getAddress());
                 mTvNumber.setText(data.getNum());
-                if (data.getOrderAccessroyDetail() == null) {
-                    return;
+                if (data.getOrderAccessroyDetail() != null) {
+                    returnAccessoryAdapter = new ReturnAccessoryAdapter(R.layout.item_returned, data.getOrderAccessroyDetail());
+                    mRvReturnInformation.setLayoutManager(new LinearLayoutManager(mActivity));
+                    mRvReturnInformation.setAdapter(returnAccessoryAdapter);
+                    mLlAccessory.setVisibility(View.VISIBLE);
+                    if ("0".equals(data.getAccessoryApplyState())){
+                        mTvAccessoryApplyState.setText("审核中");
+                        mTvAccessoryApplication.setVisibility(View.GONE);
+                    }else if ("1".equals(data.getAccessoryApplyState())){
+                        mTvAccessoryApplyState.setText("审核通过");
+                        mTvAccessoryApplication.setVisibility(View.GONE);
+                    }else{
+                        mTvAccessoryApplyState.setText("被拒");
+                        mTvAccessoryApplication.setVisibility(View.VISIBLE);
+                    }
+                }else{
+                    mLlAccessory.setVisibility(View.GONE);
                 }
-                returnAccessoryAdapter = new ReturnAccessoryAdapter(R.layout.item_returned,data.getOrderAccessroyDetail());
-                mRvReturnInformation.setLayoutManager(new LinearLayoutManager(mActivity));
-                mRvReturnInformation.setAdapter(returnAccessoryAdapter);
+                if (data.getOrderServiceDetail() != null) {
+                    gServiceAdapter = new GServiceAdapter(R.layout.item_service, data.getOrderServiceDetail());
+                    mRvService.setLayoutManager(new LinearLayoutManager(mActivity));
+                    mRvService.setAdapter(gServiceAdapter);
+                    mLlService.setVisibility(View.VISIBLE);
+                    if ("0".equals(data.getServiceApplyState())){
+                        mTvServiceApplyState.setText("审核中");
+                        mTvServiceApplication.setVisibility(View.GONE);
+                    }else if ("1".equals(data.getServiceApplyState())){
+                        mTvServiceApplyState.setText("审核通过");
+                        mTvServiceApplication.setVisibility(View.GONE);
+                    }else{
+                        mTvServiceApplyState.setText("被拒");
+                        mTvServiceApplication.setVisibility(View.VISIBLE);
+                    }
+                }else{
+                    mLlService.setVisibility(View.GONE);
+                }
+                if (data.getBeyondState()==null){
+                    mLlApproveBeyondMoney.setVisibility(View.GONE);
+                }else{
+                    mLlApproveBeyondMoney.setVisibility(View.VISIBLE);
+                    if ("0".equals(data.getBeyondState())){
+                        mTvBeyondState.setText("审核中");
+                        mTvBeyondApplication.setVisibility(View.GONE);
+                    }else if ("1".equals(data.getBeyondState())){
+                        mTvBeyondState.setText("审核通过");
+                        mTvBeyondApplication.setVisibility(View.GONE);
+                    }else{
+                        mTvBeyondState.setText("被拒");
+                        mTvBeyondApplication.setVisibility(View.VISIBLE);
+                    }
+                }
                 break;
 
             default:
@@ -150,7 +222,7 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
     }
 
     @Override
-    public void GetFactoryService(BaseResult<GetFactorySeviceData<Service>> baseResult) {
+    public void GetFactoryService(BaseResult<GetFactoryData<Service>> baseResult) {
 
     }
 
@@ -202,5 +274,12 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
     @Override
     public void ApplyBeyondMoney(BaseResult<Data<String>> baseResult) {
 
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

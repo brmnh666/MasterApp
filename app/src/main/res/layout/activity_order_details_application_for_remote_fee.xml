@@ -139,9 +139,14 @@
 
             <EditText
                 android:id="@+id/et_order_beyond_km"
-                android:layout_width="50dp"
-                android:layout_height="33dp"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dp_10"
                 android:layout_marginRight="@dimen/dp_10"
+                android:inputType="numberDecimal"
+                android:maxLength="5"
+                android:lines="1"
+                android:singleLine="true"
                 android:background="@drawable/ed_order_detail"
                 android:textColor="@color/color_black" />
         </LinearLayout>

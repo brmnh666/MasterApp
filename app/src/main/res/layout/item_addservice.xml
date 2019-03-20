@@ -11,7 +11,7 @@
         android:id="@+id/iv_check"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:background="@drawable/check_selector"
+        android:background="@drawable/check_kill_selector"
         />
     <TextView
         android:id="@+id/tv_add_service_name"

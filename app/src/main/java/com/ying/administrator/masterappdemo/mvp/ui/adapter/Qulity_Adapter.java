@@ -20,11 +20,11 @@ public class Qulity_Adapter extends BaseQuickAdapter<WorkOrder.DataBean, BaseVie
     @Override
     protected void convert(BaseViewHolder baseViewHolder, WorkOrder.DataBean item) {
         //        baseViewHolder.setText(R.id.tv_quality,item.getAddress());//已完成
-        baseViewHolder.setText(R.id.tv_quality_status_install,item.getTypeName());//安装or维修
+        baseViewHolder.setText(R.id.tv_quality_status_repair,item.getTypeName()+"/"+item.getGuaranteeText());//安装or维修
         if ("安装".equals(item.getTypeName())){
-            baseViewHolder.setBackgroundColor(R.id.tv_quality_status_install,Color.parseColor("#1690FF"));
+            baseViewHolder.setBackgroundColor(R.id.tv_quality_status_repair,Color.parseColor("#1690FF"));
         }else{
-            baseViewHolder.setBackgroundColor(R.id.tv_quality_status_install, Color.parseColor("#FF0000"));
+            baseViewHolder.setBackgroundColor(R.id.tv_quality_status_repair, Color.parseColor("#FF0000"));
         }
         baseViewHolder.setText(R.id.tv_quality_job_number,"工单号:"+item.getOrderID());//工单号
         baseViewHolder.setText(R.id.tv_reason_quality,item.getMemo());//memo

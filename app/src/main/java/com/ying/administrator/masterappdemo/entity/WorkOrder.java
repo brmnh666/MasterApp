@@ -196,9 +196,17 @@ public class WorkOrder implements Serializable {
         private List<OrderImg> OrderImg;//返回服务图片
         private String Distance;//返回距离
         private String ProductTypeID;
+        private String ServiceApplyState;
         private int page;
         private int limit;
         private int Version;
+
+        public String getServiceApplyState() {
+            return ServiceApplyState;
+        }
+        public void setServiceApplyState(String serviceApplyState) {
+            ServiceApplyState = serviceApplyState;
+        }
 
         public String getProductTypeID() {
             return ProductTypeID;
@@ -434,7 +442,9 @@ public class WorkOrder implements Serializable {
         public String getGuarantee() {
             return Guarantee;
         }
-
+        public String getGuaranteeText() {
+            return "Y".equals(Guarantee)?"保内":"保外";
+        }
         public void setGuarantee(String Guarantee) {
             this.Guarantee = Guarantee;
         }

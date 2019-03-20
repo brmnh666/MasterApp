@@ -2,6 +2,7 @@ package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -232,7 +233,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     private Accessory mAccessory;
     private Pre_order_Add_Ac_Adapter mPre_order_add_ac_adapter; //预接单 的adater
     private Add_Ac_Adapter mAdd_Ac_Adapter;
-    private List<Service> mList_service;
+    private List<Service> mList_service=new ArrayList<>();
     private Map<Integer, FService.OrderServiceStrBean.OrderServiceBean> map_service;
     private List<FService.OrderServiceStrBean.OrderServiceBean> fList_service = new ArrayList<>(); //存放预接单的service
     private RecyclerView recyclerView_custom_add_service;
@@ -276,6 +277,11 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     private List<Accessory> ac_list;
     private Window window;
     private WindowManager.LayoutParams lp;
+    private View add_service_view;
+    private AlertDialog add_service_dialog;
+    private RecyclerView recyclerViewCustomAddService;
+    private ImageView iv_check;
+    private TextView tv_add_service_submit;
 
     @Override
     protected int setLayoutId() {
@@ -302,6 +308,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                 switch(view.getId()){
                     case R.id.iv_accessories_delete:
                         mPre_order_add_ac_adapter.remove(position);
+                        tv_total_price.setText("服务金额:¥" + gettotalPrice(mPre_order_add_ac_adapter.getData(), fList_service));
                         break;
                     default:
                         break;
@@ -318,6 +325,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                 switch(view.getId()){
                     case R.id.iv_service_delete:
                         mPre_order_Add_Service_Adapter.remove(position);
+                        tv_total_price.setText("服务金额:¥" + gettotalPrice(mPre_order_add_ac_adapter.getData(), fList_service));
                         break;
                     default:
                         break;
@@ -407,12 +415,14 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                     mIvSelfbuyingUser.setSelected(false);
                     mPre_order_add_ac_adapter.setNewData(fAcList);
                     mRecyclerViewAddAccessories.setVisibility(View.VISIBLE);
+                    tv_total_price.setText("服务金额:¥" + gettotalPrice(mPre_order_add_ac_adapter.getData(), fList_service));
                 }else{
                     select_state=-1;
                     iv_manufacturers.setSelected(false);
                     iv_selfbuying.setSelected(false);
                     mIvSelfbuyingUser.setSelected(false);
                     mRecyclerViewAddAccessories.setVisibility(View.GONE);
+                    tv_total_price.setText("服务金额:¥" + gettotalPrice(null, fList_service));
                 }
                 break;
             case R.id.ll_selfbuying://师傅自购件
@@ -423,12 +433,14 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                     mIvSelfbuyingUser.setSelected(false);
                     mPre_order_add_ac_adapter.setNewData(mAcList);
                     mRecyclerViewAddAccessories.setVisibility(View.VISIBLE);
+                    tv_total_price.setText("服务金额:¥" + gettotalPrice(mPre_order_add_ac_adapter.getData(), fList_service));
                 }else{
                     select_state=-1;
                     iv_manufacturers.setSelected(false);
                     iv_selfbuying.setSelected(false);
                     mIvSelfbuyingUser.setSelected(false);
                     mRecyclerViewAddAccessories.setVisibility(View.GONE);
+                    tv_total_price.setText("服务金额:¥" + gettotalPrice(null, fList_service));
                 }
                 break;
             case R.id.ll_selfbuying_user://用户自购件
@@ -439,12 +451,14 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                     mIvSelfbuyingUser.setSelected(true);
                     mPre_order_add_ac_adapter.setNewData(sAcList);
                     mRecyclerViewAddAccessories.setVisibility(View.VISIBLE);
+                    tv_total_price.setText("服务金额:¥" + gettotalPrice(mPre_order_add_ac_adapter.getData(), fList_service));
                 }else{
                     select_state=-1;
                     iv_manufacturers.setSelected(false);
                     iv_selfbuying.setSelected(false);
                     mIvSelfbuyingUser.setSelected(false);
                     mRecyclerViewAddAccessories.setVisibility(View.GONE);
+                    tv_total_price.setText("服务金额:¥" + gettotalPrice(null, fList_service));
                 }
                 break;
             case R.id.ll_return:
@@ -466,7 +480,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                 break;
             /*添加服务*/
             case R.id.tv_order_detail_add_service:
-
+                addService();
                 break;
 
             case R.id.iv_scan_QR:
@@ -592,18 +606,21 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                 mfAccessory.setExpressNo("");
                 if (select_state == 0) {//厂家自购
                     mfAccessory.setPrice(accessory.getAccessoryPrice());//原价
+                    mfAccessory.setDiscountPrice(accessory.getAccessoryPrice());//原价
                 } else if (select_state == 1) {//师傅自购 还要判断保内保外
                     if ("".equals(price)) {
                         ToastUtils.showShort("请输入配件价格");
                         return;
                     }
                     mfAccessory.setPrice(Double.parseDouble(price));
+                    mfAccessory.setDiscountPrice(Double.parseDouble(price));
                 } else {//用户自购
                     if ("".equals(servicePrice)) {
                         ToastUtils.showShort("请输入服务价格");
                         return;
                     }
                     mfAccessory.setPrice(Double.parseDouble(servicePrice));
+                    mfAccessory.setDiscountPrice(Double.parseDouble(servicePrice));
                 }
 
                 if (select_state == 0) {//厂家自购
@@ -637,6 +654,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                     sAcList.add(mfAccessory);
                     mPre_order_add_ac_adapter.setNewData(sAcList);
                 }
+                tv_total_price.setText("服务金额:¥" + gettotalPrice(mPre_order_add_ac_adapter.getData(), fList_service));
                 choose_accessory_dialog.dismiss();
             }
         });
@@ -649,13 +667,61 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                 servicePrice = "";
             }
         });
+
     }
 
     /**
      * 添加服务
      */
     public void addService() {
-
+        add_service_view =LayoutInflater.from(mActivity).inflate(R.layout.customdialog_add_service,null);
+        add_service_dialog =new AlertDialog.Builder(mActivity)
+                .setView(add_service_view)
+                .create();
+        add_service_dialog.show();
+        tv_add_service_submit =add_service_view.findViewById(R.id.tv_add_service_submit);
+        recyclerView_custom_add_service =add_service_view.findViewById(R.id.recyclerView_custom_add_service);
+        recyclerView_custom_add_service.setLayoutManager(new LinearLayoutManager(mActivity));
+        mAdd_Service_Adapter=new Add_Service_Adapter(R.layout.item_addservice,mList_service);
+        recyclerView_custom_add_service.setAdapter(mAdd_Service_Adapter);
+        mAdd_Service_Adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                if (mList_service.get(position).isIschecked()){
+                    mList_service.get(position).setIschecked(false);
+                }else{
+                    mList_service.get(position).setIschecked(true);
+                }
+                mAdd_Service_Adapter.notifyDataSetChanged();
+            }
+        });
+        tv_add_service_submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fList_service.clear();
+                for (int i = 0; i < mList_service.size(); i++) {
+                    mService=mList_service.get(i);
+                    if (mService.isIschecked()){
+                        mfService=new FService.OrderServiceStrBean.OrderServiceBean();
+                        mfService.setServiceID(mService.getFServiceID());
+                        mfService.setServiceName(mService.getFServiceName());
+                        mfService.setPrice(mService.getInitPrice());
+                        mfService.setDiscountPrice(mService.getInitPrice());
+                        mfService.setIsPay("N");
+                        mfService.setRelation("");
+                        fList_service.add(mfService);
+                    }
+                }
+                mPre_order_Add_Service_Adapter.setNewData(fList_service);
+                if (select_state==-1){
+                    tv_total_price.setText("服务金额:¥" + gettotalPrice(null, fList_service));
+                }else{
+                    tv_total_price.setText("服务金额:¥" + gettotalPrice(mPre_order_add_ac_adapter.getData(), fList_service));
+                }
+                add_service_dialog.dismiss();
+            }
+        });
+        mPresenter.GetFactoryService(data.getBrandID()+"",data.getCategoryID()+"");
     }
 
     /**
@@ -711,16 +777,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
         }
 
 
-        /*添加厂家还是自购件类型*/
-        if (select_state == -1) {    /*厂家0  自购 1*/
-            sTotalAS.setAccessorySequency("");
-        } else if (select_state == 0) {
-            sTotalAS.setAccessorySequency("0");//厂家
-        } else if (select_state == 1) {
-            sTotalAS.setAccessorySequency("1");//师傅自购
-        } else {
-            sTotalAS.setAccessorySequency("2");//用户自购件
-        }
+
 
         /*添加远程费*/
 
@@ -746,16 +803,32 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
 
         //添加配件
-        if (fAcList.isEmpty()) {
+        /*添加厂家还是自购件类型*/
+        if (select_state == -1) {    /*厂家0  师傅自购 1 用户自购 2*/
+            sTotalAS.setAccessorySequency("");
             sTotalAS.setOrderAccessoryStr("");
-        } else {
+        } else if (select_state == 0) {
+            sTotalAS.setAccessorySequency("0");//厂家
             orderAccessoryStrBean = new FAccessory.OrderAccessoryStrBean();
             orderAccessoryStrBean.setOrderAccessory(fAcList); //配件
             Gson gson = new Gson();
             String s1 = gson.toJson(orderAccessoryStrBean);
             sTotalAS.setOrderAccessoryStr(s1);
+        } else if (select_state == 1) {
+            sTotalAS.setAccessorySequency("1");//师傅自购
+            orderAccessoryStrBean = new FAccessory.OrderAccessoryStrBean();
+            orderAccessoryStrBean.setOrderAccessory(mAcList); //配件
+            Gson gson = new Gson();
+            String s1 = gson.toJson(orderAccessoryStrBean);
+            sTotalAS.setOrderAccessoryStr(s1);
+        } else {
+            sTotalAS.setAccessorySequency("2");//用户自购件
+            orderAccessoryStrBean = new FAccessory.OrderAccessoryStrBean();
+            orderAccessoryStrBean.setOrderAccessory(sAcList); //配件
+            Gson gson = new Gson();
+            String s1 = gson.toJson(orderAccessoryStrBean);
+            sTotalAS.setOrderAccessoryStr(s1);
         }
-
         if (fList_service.isEmpty()) {
             sTotalAS.setOrderServiceStr("");
         } else {
@@ -816,22 +889,23 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                 tv_order_details_product_name.setText(data.getCategoryName() + "/" + data.getBrandName() + "/" + data.getSubCategoryName());
 
                 if (data.getTypeID() == 1) {//维修
-                    tv_order_details_status.setText("维修");
+                    tv_order_details_status.setText(data.getTypeName()+"/"+data.getGuaranteeText());
                     tv_order_details_status.setBackgroundResource(R.color.color_custom_01);
                  /*   mll_return_information.setVisibility(View.VISIBLE);
                     mll_service_process.setVisibility(View.GONE);*/
                 } else if (data.getTypeID() == 2) {
-                    tv_order_details_status.setText("安装");
+                    tv_order_details_status.setText(data.getTypeName()+"/"+data.getGuaranteeText());
                     tv_order_details_status.setBackgroundResource(R.color.color_custom_04);
                    /* mll_return_information.setVisibility(View.GONE);
                     mll_service_process.setVisibility(View.VISIBLE);*/
                 } else {
-                    tv_order_details_status.setText("质保");
+                    tv_order_details_status.setText(data.getTypeName()+"/"+data.getGuaranteeText());
                     tv_order_details_status.setBackgroundResource(R.color.color_custom_04);
                 }
                 tv_order_details_adress.setText(data.getAddress());
                 mTvNum.setText("数量：" + data.getNum() + "台");
                 Money = data.getOrderMoney() - data.getInitMoney();
+                tv_total_price.setText("服务金额:¥" + gettotalPrice(mPre_order_add_ac_adapter.getData(), fList_service));
                 if ("Y".equals(data.getGuarantee())) {//保内
                     mLlManufacturers.setVisibility(View.VISIBLE);
                     mLlSelfbuying.setVisibility(View.VISIBLE);
@@ -885,13 +959,15 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
      * @param baseResult
      */
     @Override
-    public void GetFactoryService(BaseResult<GetFactorySeviceData<Service>> baseResult) {
+    public void GetFactoryService(BaseResult<GetFactoryData<Service>> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-                mList_service.clear();
-                Log.d("getitem1", String.valueOf(baseResult.getData().isItem1()));
-                mList_service.addAll(baseResult.getData().getItem2());
-                Log.d("ischeck_service", String.valueOf(mList_service.size()));
+                if ("0".equals(baseResult.getData().getCode())){
+                    mList_service=baseResult.getData().getData();
+                    mAdd_Service_Adapter.setNewData(mList_service);
+                }else{
+
+                }
                 break;
             default:
                 break;

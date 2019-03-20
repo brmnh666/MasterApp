@@ -17,17 +17,11 @@ public class Add_Service_Adapter extends BaseQuickAdapter<Service, BaseViewHolde
     @Override
     protected void convert(BaseViewHolder helper, Service item) {
         helper.setText(R.id.tv_add_service_name,item.getFServiceName());
-      /*   helper.addOnClickListener(R.id.img_add_service_unselect);
-         helper.addOnClickListener(R.id.img_add_service_select);*/
-         helper.addOnClickListener(R.id.tv_add_service_name);
-      /*   if (item.isIschecked()==false){
-             helper.setVisible(R.id.img_add_service_unselect,true);
-             helper.setVisible(R.id.img_add_service_select,false);
-
+         if (item.isIschecked()==false){
+            helper.getView(R.id.iv_check).setSelected(false);
          }else {
-             helper.setVisible(R.id.img_add_service_unselect,false);
-             helper.setVisible(R.id.img_add_service_select,true);
-         }*/
+             helper.getView(R.id.iv_check).setSelected(true);
+         }
 
     }
 }

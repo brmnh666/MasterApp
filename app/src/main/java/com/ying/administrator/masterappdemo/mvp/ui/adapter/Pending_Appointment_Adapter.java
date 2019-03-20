@@ -39,6 +39,7 @@ public class Pending_Appointment_Adapter extends BaseQuickAdapter<WorkOrder.Data
     @Override
     protected void convert(BaseViewHolder helper, WorkOrder.DataBean item) {
 
+helper.setText(R.id.tv_pending_appointment_status_repair,item.getTypeName()+"/"+item.getGuaranteeText());
 helper.setText(R.id.tv_loaction_appointment,"距离 "+item.getDistance()+"Km");
         helper.setText(R.id.tv_reason_pending_appointment,item.getMemo());//原因
      helper.setText(R.id.tv_address_pending_appointment,item.getAddress()); //地址
@@ -55,16 +56,6 @@ helper.setText(R.id.tv_loaction_appointment,"距离 "+item.getDistance()+"Km");
             countdownView.allShowZero();
         }
 
-
-        if (item.getTypeID()==1){//维修
-          helper.setVisible(R.id.tv_pending_appointment_status_repair,true);
-          helper.setVisible(R.id.tv_pending_appointment_status_install,false);
-
-        }else {
-            helper.setVisible(R.id.tv_pending_appointment_status_repair,false);
-            helper.setVisible(R.id.tv_pending_appointment_status_install,true);
-
-        }
 
         if (userInfo.getParentUserID()==null){//如果没有父账号说明自己是父账号 显示 转派
             //helper.setGone(R.id.tv_pending_appointment_redeploy,true);

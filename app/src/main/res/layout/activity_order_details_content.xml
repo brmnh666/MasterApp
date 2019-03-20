@@ -113,6 +113,7 @@
             android:id="@+id/tv_order_details_reason"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:textSize="14sp"
             android:text="热水器不通电"
             android:textStyle="bold"
@@ -120,7 +121,6 @@
             />
         <TextView
             android:id="@id/tv_num"
-            android:layout_weight="1"
             android:gravity="right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

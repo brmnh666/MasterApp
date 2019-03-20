@@ -21,11 +21,11 @@ public class Complete_wait_fetch_Adapter extends BaseQuickAdapter<WorkOrder.Data
     @Override
     protected void convert(BaseViewHolder baseViewHolder, WorkOrder.DataBean item) {
         //        baseViewHolder.setText(R.id.tv_complete_wait_fetch,item.getAddress());//已完成
-        baseViewHolder.setText(R.id.tv_tv_complete_wait_fetch_status_install,item.getTypeName());//安装or维修
+        baseViewHolder.setText(R.id.tv_complete_status_repair,item.getTypeName()+"/"+item.getGuaranteeText());//安装or维修
         if ("安装".equals(item.getTypeName())){
-            baseViewHolder.setBackgroundColor(R.id.tv_tv_complete_wait_fetch_status_install, Color.parseColor("#1690FF"));
+            baseViewHolder.setBackgroundColor(R.id.tv_complete_status_repair, Color.parseColor("#1690FF"));
         }else{
-            baseViewHolder.setBackgroundColor(R.id.tv_tv_complete_wait_fetch_status_install,Color.parseColor("#FF0000"));
+            baseViewHolder.setBackgroundColor(R.id.tv_complete_status_repair,Color.parseColor("#FF0000"));
         }
         baseViewHolder.setText(R.id.tv_complete_wait_fetch_job_number,"工单号:"+item.getOrderID());//工单号
         baseViewHolder.setText(R.id.tv_reason_complete_wait_fetch,item.getMemo());//memo

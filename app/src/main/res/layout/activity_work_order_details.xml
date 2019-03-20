@@ -263,6 +263,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_accessory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_10"
@@ -285,16 +286,28 @@
                         android:layout_marginTop="16dp"
                         android:layout_marginLeft="12dp"
                         android:layout_marginBottom="16dp"/>
+                    <TextView
+                        android:id="@+id/tv_accessory_apply_state"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="审核中"
+                        android:textSize="16sp"
+                        android:textColor="@color/color_custom_07"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginBottom="16dp"/>
 
                     <TextView
                         android:id="@+id/tv_accessory_application"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="15dp"
+                        android:padding="@dimen/dp_10"
                         android:text="再次申请"
                         android:textColor="#FF0000"
-                        android:layout_gravity="center"
-                        android:textSize="14sp"
-                        android:layout_marginRight="15dp"/>
+                        android:textSize="14sp" />
                 </LinearLayout>
 
 
@@ -304,18 +317,21 @@
                     android:background="#DCDCDC"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="14dp"/>
-
-                <android.support.v7.widget.RecyclerView
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/rv_return_information"></android.support.v7.widget.RecyclerView>
-
-                <android.support.v7.widget.RecyclerView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/rv_return"></android.support.v7.widget.RecyclerView>
+                    android:descendantFocusability="blocksDescendants"
+                    android:padding="@dimen/dp_10"
+                    android:layout_margin="@dimen/dp_10">
+                    <android.support.v7.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rv_return_information"
+                        android:nestedScrollingEnabled="false"/>
+                </RelativeLayout>
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/ll_service"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_10"
@@ -338,7 +354,17 @@
                         android:layout_marginTop="16dp"
                         android:layout_marginLeft="12dp"
                         android:layout_marginBottom="16dp"/>
-
+                    <TextView
+                        android:id="@+id/tv_service_apply_state"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="审核中"
+                        android:textSize="16sp"
+                        android:textColor="@color/color_custom_07"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginBottom="16dp"/>
                     <TextView
                         android:id="@+id/tv_service_application"
                         android:layout_width="wrap_content"
@@ -346,6 +372,7 @@
                         android:text="再次申请"
                         android:textColor="#FF0000"
                         android:layout_gravity="center"
+                        android:padding="@dimen/dp_10"
                         android:textSize="14sp"
                         android:layout_marginRight="15dp"/>
                 </LinearLayout>
@@ -356,11 +383,111 @@
                     android:background="#DCDCDC"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="14dp"/>
-
-                <android.support.v7.widget.RecyclerView
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/rv_service"></android.support.v7.widget.RecyclerView>
+                    android:descendantFocusability="blocksDescendants"
+                    android:padding="@dimen/dp_10"
+                    android:layout_margin="@dimen/dp_10">
+                    <android.support.v7.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
+                        android:id="@+id/rv_service"/>
+                </RelativeLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_approve_beyond_money"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="11dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="@dimen/dp_10"
+                android:background="@color/white"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="远程费信息"
+                        android:textSize="16sp"
+                        android:textColor="#000000"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginBottom="16dp"/>
+                    <TextView
+                        android:id="@+id/tv_beyond_state"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="审核中"
+                        android:textSize="16sp"
+                        android:textColor="@color/color_custom_07"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginBottom="16dp"/>
+                    <TextView
+                        android:id="@+id/tv_beyond_application"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="再次申请"
+                        android:textColor="#FF0000"
+                        android:layout_gravity="center"
+                        android:padding="@dimen/dp_10"
+                        android:textSize="14sp"
+                        android:layout_marginRight="15dp"/>
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:background="#DCDCDC" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="已超出正常范围"
+                        android:textColor="#333"
+                        android:layout_marginLeft="17dp"
+                        android:layout_gravity="center"
+                        android:textSize="15sp" />
+                    <TextView
+                        android:id="@+id/tv_range"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="20"
+                        android:textColor="@color/color_custom_04"
+                        android:layout_gravity="center"
+                        android:textSize="15sp" />
+                    <TextView
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="公里"
+                        android:textColor="#333"
+                        android:layout_gravity="center"
+                        android:textSize="15sp" />
+                    <ImageView
+                        android:id="@+id/iv_range_one"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:src="@mipmap/tianjia"
+                        android:layout_marginRight="30dp"/>
+                    <ImageView
+                        android:id="@+id/iv_range_two"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:src="@mipmap/tianjia"
+                        android:layout_marginRight="40dp" />
+
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

@@ -22,11 +22,11 @@ public class Appointment_failure_Adapter extends BaseQuickAdapter<WorkOrder.Data
     @Override
     protected void convert(BaseViewHolder baseViewHolder, WorkOrder.DataBean item) {
 //baseViewHolder.setText(R.id.tv_appointment_failure,item.getState());//预约不成功
-        baseViewHolder.setText(R.id.tv_appointment_failure_status_install,item.getTypeName());//安装or维修
+        baseViewHolder.setText(R.id.tv_appointment_failure_status_repair,item.getTypeName()+"/"+item.getGuaranteeText());//安装or维修
         if ("安装".equals(item.getTypeName())){
-            baseViewHolder.setBackgroundColor(R.id.tv_appointment_failure_status_install, Color.parseColor("#1690FF"));
+            baseViewHolder.setBackgroundColor(R.id.tv_appointment_failure_status_repair, Color.parseColor("#1690FF"));
         }else{
-            baseViewHolder.setBackgroundColor(R.id.tv_appointment_failure_status_install,Color.parseColor("#FF0000"));
+            baseViewHolder.setBackgroundColor(R.id.tv_appointment_failure_status_repair,Color.parseColor("#FF0000"));
         }
         baseViewHolder.setText(R.id.tv_reason_appointment_failure,item.getMemo());//memo
         baseViewHolder.setText(R.id.tv_appointment_failure_job_number,"工单号："+item.getOrderID());//工单号

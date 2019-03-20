@@ -194,19 +194,19 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                 tv_service_goods.setText(data.getCategoryName() + "/" + data.getBrandName() + "/" + data.getSubCategoryName());
 
                 if (data.getTypeID() == 1) {//维修
-                    tv_service.setText("维修");
+                    tv_service.setText(data.getTypeName()+"/"+data.getGuaranteeText());
                     tv_service.setBackgroundResource(R.color.color_custom_01);
                     mll_return_information.setVisibility(View.VISIBLE);
                     mll_service_process.setVisibility(View.GONE);
 
                 } else if (data.getTypeID() == 2){
-                    tv_service.setText("安装");
+                    tv_service.setText(data.getTypeName()+"/"+data.getGuaranteeText());
                     tv_service.setBackgroundResource(R.color.color_custom_04);
                     mll_return_information.setVisibility(View.GONE);
                     mll_service_process.setVisibility(View.VISIBLE);
 
                 }else{
-                    tv_service.setText("质保");
+                    tv_service.setText(data.getTypeName()+"/"+data.getGuaranteeText());
                     tv_service.setBackgroundResource(R.color.color_custom_01);
                     mll_return_information.setVisibility(View.VISIBLE);
                     mll_service_process.setVisibility(View.GONE);
