@@ -158,4 +158,6 @@ public class BaseFragment<P extends BasePresenter, M extends BaseModel> extends 
             mPresenter.onDestroy();
         }
     }
+
+
 }

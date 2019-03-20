@@ -72,6 +72,7 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
     private String OrderId;//用于记录当前 工单的id
     private int cancleposition;
     private int redeployposition;
+    private int successposition;
     public Pending_appointment_fragment() {
         // Required empty public constructor
     }
@@ -106,23 +107,17 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
         recyclerView=view.findViewById(R.id.recyclerview_order_receiving);
         tv_pending_appointment_redeploy=view.findViewById(R.id.tv_pending_appointment_redeploy);
         mRefreshLayout=view.findViewById(R.id.refreshLayout);
-
         list=new ArrayList<>();
-
-
         subuserlist=new ArrayList<>();//获取子账号列表
-
-
           mPresenter.GetUserInfoList(userID,"1"); //获取关于自己的信息
           mPresenter.GetChildAccountByParentUserID(userID);//获取自己的子账号 如果没有返回空
-
-
-
         pending_appointment_adapter=new Pending_Appointment_Adapter(R.layout.item_pending_appointment,list,userInfo,subuserlist);
         recyclerView.setAdapter(pending_appointment_adapter);
         pending_appointment_adapter.setEmptyView(getEmptyView());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mPresenter.WorkerGetOrderList(userID,"1",Integer.toString(pageIndex),"5");
+
+
 
 
     }
@@ -174,18 +169,23 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                         Intent intent1=new Intent(getActivity(),Order_details_Activity.class);
                         //传递工单号
                         intent1.putExtra("OrderID",((WorkOrder.DataBean)adapter.getItem(position)).getOrderID());
-
+                        successposition=position;
                         //startActivity(intent);
-                        startActivityForResult(intent1,1);
+                      //  intent1.putExtra("successposition",successposition);
+                       // startActivityForResult(intent1,22);
+                        startActivityForResult(intent1,1001);
                         break;
                     /*预约成功*/
                     case R.id.tv_pending_appointment_success:
                         Intent intent=new Intent(getActivity(),Order_details_Activity.class);
                         //传递工单号
                         intent.putExtra("OrderID",((WorkOrder.DataBean)adapter.getItem(position)).getOrderID());
-
+                        successposition=position;
                         //startActivity(intent);
-                           startActivityForResult(intent,1);
+                       // intent.putExtra("successposition",successposition);
+                        startActivityForResult(intent,1001);
+
+                        //startActivityForResult(intent,22);
                         break;
                     case R.id.tv_pending_appointment_failure:
 
@@ -578,9 +578,16 @@ switch (baseResult.getStatusCode()){
     }
 
 
+
+
     @Override
-    public void onResume() {
-        super.onResume();
-        mRefreshLayout.autoRefresh();
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode==10001){
+            if (requestCode==1001){
+              pending_appointment_adapter.remove(successposition);
+            }
+
+        }
     }
 }

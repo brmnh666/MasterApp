@@ -181,6 +181,9 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
     private String mTime;
     private ObjectAnimator animator; //刷新图片属性动画
 
+    private ObjectAnimator animator_order; //刷新图片属性动画
+
+
     private ZLoadingDialog dialog;
     private Vibrator vibrator;//震动
     //声明定位回调监听器
@@ -324,6 +327,12 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 animator = ObjectAnimator.ofFloat(mimg_home_refresh, "rotation", 0f, 360f);
                 animator.setDuration(2000);
                 animator.start();
+
+
+
+                animator_order = ObjectAnimator.ofFloat(mImgNewOrder, "rotation", 0f, -30f,30f,0f);
+                animator_order.setDuration(1000);
+                animator_order.start();
             }
         });
 

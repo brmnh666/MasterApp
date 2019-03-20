@@ -1002,6 +1002,10 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
                     Toast.makeText(this, baseResult.getData().getItem2(), Toast.LENGTH_LONG).show();
                 } else {
+
+                    //Intent intent=new Intent();
+                    //intent.putExtra("successposition",getIntent().getIntExtra("successposition",0));
+                    setResult(10001);
                     Order_details_Activity.this.finish();
                 }
                 break;
@@ -1030,15 +1034,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     /*上传返件图片*/
     @Override
     public void ReuturnAccessoryPicUpload(BaseResult<Data<String>> baseResult) {
-       /* switch (baseResult.getStatusCode()){
-            case 200:
-                if (baseResult.getData().isItem1()){
 
-                }
-                break;
-            default:
-                break;
-        }*/
 
     }
 
@@ -1058,13 +1054,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     @Override
     public void ApplyBeyondMoney(BaseResult<Data<String>> baseResult) {
 
-      /*  switch (baseResult.getStatusCode()){
-            case 200:
 
-                break;
-             default:
-                 break;
-        }*/
 
     }
 
