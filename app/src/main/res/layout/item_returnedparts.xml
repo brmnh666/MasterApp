@@ -249,6 +249,7 @@
             android:text="申请配件"
             android:textSize="16sp"
             android:gravity="center"
+            android:visibility="gone"
             />
         <TextView
             android:id="@+id/tv_telephone_reminder"
@@ -281,6 +282,7 @@
             android:background="@drawable/tv_recevied"
             android:padding="10dp"
             android:text="完成工单"
+            android:visibility="gone"
             android:textSize="16sp"
             android:gravity="center" />
 
