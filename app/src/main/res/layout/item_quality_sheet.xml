@@ -191,6 +191,7 @@
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="70dp"
+        android:visibility="gone"
         />
 
     <TextView
@@ -206,6 +207,7 @@
         android:layout_marginRight="70dp"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
+        android:visibility="gone"
         />
 
 

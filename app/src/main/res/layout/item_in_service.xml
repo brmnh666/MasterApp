@@ -147,6 +147,7 @@
         android:background="@drawable/tv_recevied"
         android:padding="10dp"
         android:text="申请配件"
+        android:visibility="gone"
         android:textSize="16sp" />
 
     <TextView
@@ -158,6 +159,7 @@
         android:background="@drawable/tv_recevied"
         android:padding="10dp"
         android:layout_marginLeft="@dimen/dp_10"
+        android:visibility="gone"
         android:text="完成工单"
         android:textSize="16sp" />
 
