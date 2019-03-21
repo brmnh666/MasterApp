@@ -55,6 +55,8 @@ public interface PendingOrderContract {
 
         //申请远程费
         Observable<BaseResult<Data<String>>> ApplyBeyondMoney(String OrderID,String BeyondMoney,String BeyondDistance);
+
+        Observable<BaseResult<Data<String>>> PressFactoryAccount(String UserID,String OrderID);
     }
 
     interface View extends BaseView{
@@ -94,6 +96,7 @@ public interface PendingOrderContract {
 
         //申请远程费
         void ApplyBeyondMoney(BaseResult<Data<String>> baseResult);
+        void PressFactoryAccount(BaseResult<Data<String>> baseResult);
     }
 
     abstract  class Presenter extends BasePresenter<View,Model>{
@@ -125,6 +128,7 @@ public interface PendingOrderContract {
 
         //申请远程费
         public abstract void ApplyBeyondMoney(String OrderID,String BeyondMoney,String BeyondDistance);
+        public abstract void PressFactoryAccount(String UserID,String OrderID);
     }
 
 

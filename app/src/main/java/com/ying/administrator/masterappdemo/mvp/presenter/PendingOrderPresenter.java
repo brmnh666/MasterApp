@@ -147,4 +147,14 @@ public class PendingOrderPresenter extends PendingOrderContract.Presenter {
             }
         });
     }
+
+    @Override
+    public void PressFactoryAccount(String UserID, String OrderID) {
+        mModel.PressFactoryAccount(UserID, OrderID).subscribe(new BaseObserver<Data<String>>() {
+            @Override
+            protected void onHandleSuccess(BaseResult<Data<String>> value) {
+                mView.PressFactoryAccount(value);
+            }
+        });
+    }
 }

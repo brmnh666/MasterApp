@@ -193,6 +193,7 @@ public class WorkOrder implements Serializable {
         private List<GAccessory> OrderAccessroyDetail; //所选配件详情
         private List<GService> OrderServiceDetail;  //所选配件详情
         private List<ReturnaccessoryImg> ReturnaccessoryImg;//返件图片
+        private List<OrderBeyondImg> OrderBeyondImg;//远程费图片
         private List<OrderImg> OrderImg;//返回服务图片
         private String Distance;//返回距离
         private String ProductTypeID;
@@ -200,6 +201,14 @@ public class WorkOrder implements Serializable {
         private int page;
         private int limit;
         private int Version;
+
+        public List<com.ying.administrator.masterappdemo.entity.OrderBeyondImg> getOrderBeyondImg() {
+            return OrderBeyondImg;
+        }
+
+        public void setOrderBeyondImg(List<com.ying.administrator.masterappdemo.entity.OrderBeyondImg> orderBeyondImg) {
+            OrderBeyondImg = orderBeyondImg;
+        }
 
         public String getServiceApplyState() {
             return ServiceApplyState;

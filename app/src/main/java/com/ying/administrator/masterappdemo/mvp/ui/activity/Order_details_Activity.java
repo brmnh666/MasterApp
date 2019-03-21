@@ -69,6 +69,9 @@ import com.ying.administrator.masterappdemo.widget.HideSoftInputDialog;
 import com.ying.administrator.masterappdemo.widget.ViewExampleDialog;
 
 import org.feezu.liuli.timeselector.TimeSelector;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -290,7 +293,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
     @Override
     protected void initData() {
-
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -488,7 +491,11 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                 scan();
                 break;
             case R.id.tv_detail_submit:
-                submit();
+                if (files_map_remote.size()>0){
+                    OrderByondImgPicUpload(files_map_remote);
+                }else{
+                    submit();
+                }
                 break;
             //添加维修图片
             case R.id.ll_view_example:  //查看示例
@@ -789,6 +796,9 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
                 double Distance = Double.parseDouble(data.getDistance());
                 double money = Distance - Service_range;
+                if (money<0){
+                    money=0;
+                }
                 sTotalAS.setBeyondMoney(money);
                 sTotalAS.setBeyondDistance(String.valueOf(money));
 
@@ -1055,6 +1065,11 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     public void ApplyBeyondMoney(BaseResult<Data<String>> baseResult) {
 
 
+
+    }
+
+    @Override
+    public void PressFactoryAccount(BaseResult<Data<String>> baseResult) {
 
     }
 
@@ -1557,11 +1572,14 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
         lp.alpha = 0.9f;
         window.setAttributes(lp);
     }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(String name) {
+        mPresenter.GetOrderInfo(orderID);
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

@@ -29,6 +29,7 @@ import com.ying.administrator.masterappdemo.mvp.presenter.GetOrderListForMePrese
 import com.ying.administrator.masterappdemo.mvp.ui.activity.CompleteWorkOrderActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_Add_Accessories_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_details_Activity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.WorkOrderDetailsActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.In_Service_Adapter;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseFragment;
 import com.ying.administrator.masterappdemo.R;
@@ -111,8 +112,8 @@ import java.util.List;
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, final int position) {
                 switch (view.getId()){
-                    case R.id.tv_in_service_finish://完成服务
-                        Intent intent=new Intent(getActivity(),CompleteWorkOrderActivity.class);
+                    case R.id.tv_see_detail://完成服务
+                        Intent intent=new Intent(getActivity(), WorkOrderDetailsActivity.class);
                         //传递工单号
                         intent.putExtra("OrderID",((WorkOrder.DataBean)adapter.getItem(position)).getOrderID());
                         startActivity(intent);

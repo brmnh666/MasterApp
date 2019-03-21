@@ -5,6 +5,7 @@
     android:layout_marginLeft="10dp"
     android:layout_marginTop="10dp"
     android:layout_marginRight="10dp"
+    android:id="@+id/ll_approve_beyond_money"
     android:background="@drawable/ll_order_details_shape"
     android:orientation="vertical">
 

@@ -35,7 +35,7 @@ public class In_Service_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,Base
 
 
 
-      helper.addOnClickListener(R.id.tv_in_service_finish);//完成工单
+      helper.addOnClickListener(R.id.tv_see_detail);//完成工单
       helper.addOnClickListener(R.id.tv_in_service_apply_parts);//申请配件
       helper.addOnClickListener(R.id.tv_cancel_work_order);//取消工单
     }

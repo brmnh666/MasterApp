@@ -112,5 +112,10 @@ public class PendingOrderModel implements PendingOrderContract.Model {
 
     }
 
-
+    @Override
+    public Observable<BaseResult<Data<String>>> PressFactoryAccount(String UserID, String OrderID) {
+        return ApiRetrofit.getDefault().PressFactoryAccount(UserID, OrderID)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
 }

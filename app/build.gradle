@@ -191,4 +191,10 @@ dependencies {
 
     //头像裁剪
     implementation 'com.yalantis:ucrop:1.4.1'
+
+    //基础工具库
+    implementation "com.github.vondear.RxTool:RxKit:v2.2.7"
+
+    //UI库
+    implementation "com.github.vondear.RxTool:RxUI:v2.2.7"
 }

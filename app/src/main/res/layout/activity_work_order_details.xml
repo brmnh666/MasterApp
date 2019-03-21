@@ -62,7 +62,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -261,7 +260,6 @@
                         android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>
-
             <LinearLayout
                 android:id="@+id/ll_accessory"
                 android:layout_width="match_parent"
@@ -400,7 +398,7 @@
                 android:id="@+id/ll_approve_beyond_money"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="11dp"
+                android:layout_margin="@dimen/dp_10"
                 android:paddingTop="10dp"
                 android:paddingBottom="@dimen/dp_10"
                 android:background="@color/white"
@@ -449,6 +447,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:padding="@dimen/dp_10"
                     android:orientation="horizontal">
                     <TextView
                         android:layout_width="wrap_content"
@@ -478,17 +477,62 @@
                         android:id="@+id/iv_range_one"
                         android:layout_width="45dp"
                         android:layout_height="45dp"
-                        android:src="@mipmap/tianjia"
+                        android:scaleType="fitXY"
                         android:layout_marginRight="30dp"/>
                     <ImageView
                         android:id="@+id/iv_range_two"
                         android:layout_width="45dp"
                         android:layout_height="45dp"
-                        android:src="@mipmap/tianjia"
+                        android:scaleType="fitXY"
                         android:layout_marginRight="40dp" />
 
                 </LinearLayout>
             </LinearLayout>
+            <Button
+                android:id="@+id/btn_addaccessory"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_margin="@dimen/dp_10"
+                android:background="@drawable/btn_verified"
+                android:text="申请配件"
+                android:textColor="@color/color_white"
+                android:textSize="20sp" />
+            <Button
+                android:id="@+id/btn_add_service"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_margin="@dimen/dp_10"
+                android:background="@drawable/btn_verified"
+                android:text="申请服务"
+                android:textColor="@color/color_white"
+                android:textSize="20sp" />
+            <Button
+                android:id="@+id/btn_beyond"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_margin="@dimen/dp_10"
+                android:background="@drawable/btn_verified"
+                android:text="申请远程费"
+                android:textColor="@color/color_white"
+                android:textSize="20sp" />
+            <Button
+                android:id="@+id/btn_complete_submit"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_margin="@dimen/dp_10"
+                android:background="@drawable/btn_verified"
+                android:text="完成工单"
+                android:textColor="@color/color_white"
+                android:textSize="20sp" />
+            <Button
+                android:id="@+id/btn_trial"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_margin="@dimen/dp_10"
+                android:background="@drawable/btn_verified"
+                android:text="催审"
+                android:textColor="@color/color_white"
+                android:textSize="20sp" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
