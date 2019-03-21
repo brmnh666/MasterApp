@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.SPUtils;
@@ -102,8 +103,7 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter, RegisterMo
                 }
                 mPresenter.Reg(userName,code);
 //                ToastUtils.showShort("注册成功");
-                finish();
-                mPresenter.Login(userName,"888888");
+
                 break;
         }
     }
@@ -117,35 +117,37 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter, RegisterMo
     }
 
     @Override
-    public void Reg(BaseResult<String> baseResult) {
+    public void Reg(BaseResult<Data<String>> baseResult) {
         switch (baseResult.getStatusCode()){
             case 200:
 
-                MyUtils.e(TAG,baseResult.getData());
-                ToastUtils.showShort(baseResult.getData());
-                if ("true".equals(baseResult.getData())){
-                    mPresenter.Login(userName,"888888");
-//                    MyUtils.showToast(mActivity,"注册成功");
-                }
+
+              if (baseResult.getData().isItem1()){
+                  RegisterActivity.this.finish();
+                  mPresenter.Login(userName,"888888");
+              }else {
+                  Toast.makeText(this,"验证码出错",Toast.LENGTH_SHORT).show();
+              }
+
+
                 break;
-            case 401:
-                ToastUtils.showShort(baseResult.getData());
+            default:
                 break;
         }
     }
 
     @Override
-    public void GetCode(BaseResult<String> baseResult) {
+    public void GetCode(BaseResult<Data<String>> baseResult) {
         switch (baseResult.getStatusCode()){
             case 200:
-                MyUtils.e(TAG,baseResult.getData());
-                ToastUtils.showShort(baseResult.getData());
-                if ("true".equals(baseResult.getData())){
-                    MyUtils.showToast(mActivity,"验证码已发送，请注意查收！");
+                if (baseResult.getData().isItem1()){
+                    Toast.makeText(this,"验证码已发送",Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(this,"频繁请求验证码请稍后再试",Toast.LENGTH_SHORT).show();
                 }
                 break;
-            case 401:
-                ToastUtils.showShort(baseResult.getData());
+                default:
                 break;
         }
     }

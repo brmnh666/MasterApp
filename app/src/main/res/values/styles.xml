@@ -88,6 +88,8 @@
         <item name="android:backgroundDimEnabled">false</item>
     </style>
 
+
+
     <!--tablayout 字体大小-->
     <style name="MyCustomTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="textAllCaps">true</item>

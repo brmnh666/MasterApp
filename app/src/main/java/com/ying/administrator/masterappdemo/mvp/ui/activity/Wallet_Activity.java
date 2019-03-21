@@ -62,19 +62,24 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
     ImageView mIvBankNo;
     @BindView(R.id.tv_bank)
     TextView mTvBank;
-    @BindView(R.id.iv_aplipay_no)
+ /*   @BindView(R.id.iv_aplipay_no)
     ImageView mIvAplipayNo;
     @BindView(R.id.tv_aplipay)
     TextView mTvAplipay;
     @BindView(R.id.iv_wechat_no)
     ImageView mIvWechatNo;
     @BindView(R.id.tv_wechat)
-    TextView mTvWechat;
+    TextView mTvWechat;*/
     @BindView(R.id.rv_withdrawals_record)//提现
     RecyclerView mRvWithdrawalsRecord;
 
     @BindView(R.id.rv_recharge_record)//充值
     RecyclerView mRv_recharge_record;
+
+    @BindView(R.id.ll_card_list)//跳转到银行卡列表
+    LinearLayout ll_card_list;
+
+
 
     private Wallet_record_Adapter wallet_record_adapter;
 
@@ -114,6 +119,7 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
         mLlReturn.setOnClickListener(this);
         mTvRecharge.setOnClickListener(this);
         mTvWithdraw.setOnClickListener(this);
+        ll_card_list.setOnClickListener(this);
     }
 
     @Override
@@ -134,6 +140,9 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
                 break;
             case R.id.tv_withdraw:
                 startActivity(new Intent(mActivity,WithDrawActivity.class));
+                break;
+            case R.id.ll_card_list:
+                startActivity(new Intent(this,CardList_Activity.class));
                 break;
         }
 
@@ -186,8 +195,6 @@ switch (baseResult.getStatusCode()){
                      mRvWithdrawalsRecord.setNestedScrollingEnabled(false);
                      wallet_record_adapter=new Wallet_record_Adapter(R.layout.item_withdrawals_record,withdraw_list);
                      mRvWithdrawalsRecord.setAdapter(wallet_record_adapter);
-
-
                      break;
                  case "4"://待支付
                      break;

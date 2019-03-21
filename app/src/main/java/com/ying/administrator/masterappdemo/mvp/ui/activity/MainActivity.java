@@ -213,7 +213,12 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
 
         switch (baseResult.getStatusCode()) {
             case 200:
-                userInfo = baseResult.getData().getData().get(0);
+                if (baseResult.getData().getData()==null){
+
+                }else {
+                    userInfo = baseResult.getData().getData().get(0);
+                }
+
 
                 break;
 

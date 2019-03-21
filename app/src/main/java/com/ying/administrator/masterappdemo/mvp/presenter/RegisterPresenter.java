@@ -8,9 +8,9 @@ import com.ying.administrator.masterappdemo.mvp.contract.RegisterContract;
 public class RegisterPresenter extends RegisterContract.Presenter {
     @Override
     public void Reg(String userName, String code) {
-        mModel.Reg(userName,code).subscribe(new BaseObserver<String>() {
+        mModel.Reg(userName,code).subscribe(new BaseObserver<Data<String>>() {
             @Override
-            protected void onHandleSuccess(BaseResult<String> value) {
+            protected void onHandleSuccess(BaseResult<Data<String>> value) {
                 mView.Reg(value);
             }
         });
@@ -18,9 +18,9 @@ public class RegisterPresenter extends RegisterContract.Presenter {
 
     @Override
     public void GetCode(String userName) {
-        mModel.GetCode(userName).subscribe(new BaseObserver<String>() {
+        mModel.GetCode(userName).subscribe(new BaseObserver<Data<String>>() {
             @Override
-            protected void onHandleSuccess(BaseResult<String> value) {
+            protected void onHandleSuccess(BaseResult<Data<String>> value) {
                 mView.GetCode(value);
             }
         });

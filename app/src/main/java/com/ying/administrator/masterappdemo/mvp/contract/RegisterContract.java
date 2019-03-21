@@ -11,8 +11,8 @@ import io.reactivex.Observable;
 
 public interface RegisterContract {
     interface Model extends BaseModel{
-        Observable<BaseResult<String>> Reg(String userName, String code);
-        Observable<BaseResult<String>> GetCode(String userName);
+        Observable<BaseResult<Data<String>>> Reg(String userName, String code);
+        Observable<BaseResult<Data<String>>> GetCode(String userName);
         Observable<BaseResult<Data<String>>> Login(String userName,String password);
         Observable<BaseResult<String>> ValidateUserName(String userName);
         Observable<BaseResult<Data<String>>> AddAndUpdatePushAccount(String token,String type,String UserID);
@@ -20,8 +20,8 @@ public interface RegisterContract {
     }
 
     interface View extends BaseView{
-        void Reg(BaseResult<String> baseResult);
-        void GetCode(BaseResult<String> baseResult);
+        void Reg(BaseResult<Data<String>> baseResult);
+        void GetCode(BaseResult<Data<String>> baseResult);
         void Login(BaseResult<Data<String>> baseResult);
         void ValidateUserName(BaseResult<String> baseResult);
         void AddAndUpdatePushAccount(BaseResult<Data<String>> baseResult);

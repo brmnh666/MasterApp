@@ -326,9 +326,12 @@
             android:configChanges="orientation|keyboardHidden|screenSize" android:launchMode="singleTask"/>
         <!--QQend-->
         <!--我的消息页面技能-->
-        <activity android:name=".mvp.ui.activity.MyInfoSkillsActivity" android:theme="@style/AppTheme.NoActionBar" android:launchMode="singleTask"/>
+        <activity android:name=".mvp.ui.activity.MyInfoSkillsActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"/>
         <!--添加服务技能-->
-        <activity android:name=".mvp.ui.activity.AddServiceAreaActivity" android:theme="@style/AppTheme.NoActionBar" android:launchMode="singleTask"/>
+        <activity android:name=".mvp.ui.activity.AddServiceAreaActivity"
+            android:theme="@style/AppTheme.NoActionBar" android:launchMode="singleTask"/>
         <!--充值界面-->
         <activity android:name=".mvp.ui.activity.RechargeActivity"
             android:theme="@style/AppTheme.NoActionBar"
@@ -369,6 +372,20 @@
         android:screenOrientation="portrait"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             />
+
+
+        <!--银行卡列表-->
+
+        <activity android:name=".mvp.ui.activity.CardList_Activity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
+            />
+
+        <!--添加银行卡页面-->
+         <activity android:name=".mvp.ui.activity.Add_Card_Activity"
+             android:theme="@style/AppTheme.NoActionBar"
+             android:launchMode="singleTask"
+             />
 
         <receiver
             android:name=".wxapi.AppRegister">

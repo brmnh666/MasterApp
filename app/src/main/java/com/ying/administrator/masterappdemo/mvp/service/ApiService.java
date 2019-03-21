@@ -43,7 +43,7 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST("Message/Send")
-    Observable<BaseResult<String>> GetCode(@Field("mobile") String mobile,
+    Observable<BaseResult<Data<String>>> GetCode(@Field("mobile") String mobile,
                                            @Field("type") String type,
                                            @Field("roleType") String roleType);
 
@@ -54,7 +54,7 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST("Account/Reg")
-    Observable<BaseResult<String>> Reg(@Field("mobile") String mobile,
+    Observable<BaseResult<Data<String>>> Reg(@Field("mobile") String mobile,
                                        @Field("type") String type,
                                        @Field("code") String code,
                                        @Field("roleType") String roleType);

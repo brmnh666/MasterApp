@@ -130,7 +130,7 @@
                                 android:id="@+id/tv_unfinished"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="1410.4 元"
+                                android:text="0.00 元"
                                 android:textSize="14sp"
                                 android:textColor="#000000"
                                 android:layout_gravity="center" />
@@ -155,7 +155,7 @@
                                 android:id="@+id/tv_free_gift"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="1410.4 元"
+                                android:text="0.0 元"
                                 android:textSize="14sp"
                                 android:textColor="#000000"
                                 android:layout_gravity="center"
@@ -212,6 +212,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_card_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -240,7 +241,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="支付绑定"
+                        android:text="提现绑定"
                         android:textSize="14sp"
                         android:textColor="#333333"
                         android:layout_marginLeft="5dp"/>
@@ -257,7 +258,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginTop="17dp"
-                    android:layout_marginLeft="24dp">
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginBottom="17dp">
                     <ImageView
                         android:layout_width="21dp"
                         android:layout_height="21dp"
@@ -293,15 +295,16 @@
                         android:textColor="#9A9FB4"
                         android:layout_marginLeft="6dp"
                         android:layout_gravity="center"/>
+
                     <ImageView
-                        android:layout_width="17dp"
+                        android:layout_width="14dp"
                         android:layout_height="17dp"
-                        android:src="@mipmap/right_arrow"
-                        android:layout_marginLeft="8dp"
                         android:layout_gravity="center"
-                        android:layout_marginRight="22dp"/>
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="22dp"
+                        android:src="@mipmap/right_arrow" />
                 </LinearLayout>
-                <View
+                <!--  <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="#E7E7E7"
@@ -309,7 +312,7 @@
                     android:layout_marginRight="18dp"
                     android:layout_marginTop="15dp"/>
 
-                <LinearLayout
+              <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -357,8 +360,8 @@
                         android:layout_marginLeft="8dp"
                         android:layout_gravity="center"
                         android:layout_marginRight="22dp"/>
-                </LinearLayout>
-                <View
+                </LinearLayout>-->
+              <!--  <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="#E7E7E7"
@@ -415,7 +418,7 @@
                         android:layout_marginLeft="8dp"
                         android:layout_gravity="center"
                         android:layout_marginRight="22dp"/>
-                </LinearLayout>
+                </LinearLayout>-->
             </LinearLayout>
 
             <LinearLayout
