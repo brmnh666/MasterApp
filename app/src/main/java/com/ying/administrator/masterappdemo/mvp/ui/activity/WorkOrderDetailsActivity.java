@@ -58,8 +58,6 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
     ImageView mImgActionbarMessage;
     @BindView(R.id.actionbar_layout)
     RelativeLayout mActionbarLayout;
-    @BindView(R.id.tv_work_order_status)
-    TextView mTvWorkOrderStatus;
     @BindView(R.id.tv_payment_method)
     TextView mTvPaymentMethod;
     @BindView(R.id.tv_order_time)
@@ -114,6 +112,14 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
     Button mBtnCompleteSubmit;
     @BindView(R.id.btn_trial)
     Button mBtnTrial;
+    @BindView(R.id.tv_status)
+    TextView mTvStatus;
+    @BindView(R.id.tv_accessory_information)
+    TextView mTvAccessoryInformation;
+    @BindView(R.id.tv_service_information)
+    TextView mTvServiceInformation;
+    @BindView(R.id.tv_remote_fee_information)
+    TextView mTvRemoteFeeInformation;
     private String OrderID;
     private WorkOrder.DataBean data;
     private ReturnAccessoryAdapter returnAccessoryAdapter;
@@ -159,6 +165,10 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
         mBtnCompleteSubmit.setOnClickListener(this);
 
         mBtnTrial.setOnClickListener(this);
+
+        mTvAccessoryInformation.setOnClickListener(this);
+        mTvServiceInformation.setOnClickListener(this);
+        mTvRemoteFeeInformation.setOnClickListener(this);
     }
 
     @Override
@@ -167,8 +177,11 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
             case R.id.ll_return:
                 finish();
                 break;
+            case R.id.tv_accessory_information:
+            case R.id.tv_service_information:
+            case R.id.tv_remote_fee_information:
             case R.id.btn_trial:
-                mPresenter.PressFactoryAccount(data.getUserID(),OrderID);
+                mPresenter.PressFactoryAccount(data.getUserID(), OrderID);
                 break;
             case R.id.btn_addaccessory:
             case R.id.tv_accessory_application:
@@ -471,10 +484,10 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
     public void PressFactoryAccount(BaseResult<Data<String>> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-                Data<String> data=baseResult.getData();
-                if (data.isItem1()){
+                Data<String> data = baseResult.getData();
+                if (data.isItem1()) {
                     ToastUtils.showShort("催审成功");
-                }else{
+                } else {
                     ToastUtils.showShort(data.getItem2());
                 }
                 break;

@@ -890,7 +890,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                     EventBus.getDefault().post("");
                     finish();
                 }else{
-                    ToastUtils.showShort("提交失败");
+                    ToastUtils.showShort((String)baseResult.getData().getItem2());
                 }
                 break;
             default:
