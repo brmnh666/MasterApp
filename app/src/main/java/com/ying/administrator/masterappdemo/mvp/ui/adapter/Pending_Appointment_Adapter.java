@@ -39,6 +39,7 @@ public class Pending_Appointment_Adapter extends BaseQuickAdapter<WorkOrder.Data
     @Override
     protected void convert(BaseViewHolder helper, WorkOrder.DataBean item) {
 
+helper.setText(R.id.tv_pending_appointment,item.getStateStr());
 helper.setText(R.id.tv_pending_appointment_status_repair,item.getTypeName()+"/"+item.getGuaranteeText());
 helper.setText(R.id.tv_loaction_appointment,"距离 "+item.getDistance()+"Km");
         helper.setText(R.id.tv_reason_pending_appointment,item.getMemo());//原因

@@ -893,6 +893,8 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
             case 200:
                 data = baseResult.getData();
                 // Log.d("getOrderIDgetOrderID",data.getOrderID()+" "+data.getMemo()+" "+data.getBrandName());
+                mTvOrderDetailsState.setText(data.getStateStr());
+
                 tv_order_details_orderid.setText(data.getOrderID());
                 tv_order_details_receiving_time.setText(data.getAudDate().replace("T", " ")); //将T替换为空格
                 tv_order_details_reason.setText(data.getMemo());

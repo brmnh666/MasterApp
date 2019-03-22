@@ -20,6 +20,7 @@ public class Qulity_Adapter extends BaseQuickAdapter<WorkOrder.DataBean, BaseVie
     @Override
     protected void convert(BaseViewHolder baseViewHolder, WorkOrder.DataBean item) {
         //        baseViewHolder.setText(R.id.tv_quality,item.getAddress());//已完成
+        baseViewHolder.setText(R.id.tv_quality,item.getStateStr());
         baseViewHolder.setText(R.id.tv_quality_status_repair,item.getTypeName()+"/"+item.getGuaranteeText());//安装or维修
         if ("安装".equals(item.getTypeName())){
             baseViewHolder.setBackgroundColor(R.id.tv_quality_status_repair,Color.parseColor("#1690FF"));

@@ -57,6 +57,7 @@
         android:textSize="18sp"
         android:text="热水器不通电"
         android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:layout_marginTop="41dp"
         android:textColor="#333333"/>
 
@@ -103,6 +104,7 @@
         android:layout_below="@+id/tv_loaction_quality"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="5dp"
+        android:layout_marginBottom="15dp"
         />
 
 
@@ -115,6 +117,7 @@
         android:layout_marginTop="20dp"
         android:textColor="@color/color_custom_04"
         android:text="提示:服务过程中需要申请配件请点击申请配件"
+        android:visibility="gone"
         android:layout_below="@+id/tv_address_quality"
         />
     <!--   <TextView
@@ -163,6 +166,7 @@
         android:background="#DAD7DB"
         android:layout_below="@+id/tv_hint_quality"
         android:layout_marginTop="10dp"
+        android:visibility="gone"
         ></View>
     <!--  <TextView
           android:id="@+id/tv_pending_appointment_success"

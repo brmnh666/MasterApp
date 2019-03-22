@@ -38,6 +38,7 @@ public class Return_Sheet_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,Ba
     @Override
     protected void convert(BaseViewHolder baseViewHolder, WorkOrder.DataBean item) {
 
+        baseViewHolder.setText(R.id.tv_returnedparts,item.getStateStr());
         baseViewHolder.setText(R.id.tv_returnedparts_status_repair,item.getTypeName()+"/"+item.getGuaranteeText());//安装or维修
         if ("安装".equals(item.getTypeName())){
             baseViewHolder.setBackgroundColor(R.id.tv_returnedparts_status_repair, Color.parseColor("#1690FF"));

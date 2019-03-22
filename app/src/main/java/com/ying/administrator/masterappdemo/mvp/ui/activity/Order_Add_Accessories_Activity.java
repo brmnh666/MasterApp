@@ -263,23 +263,25 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
 
     @Override
     public void initView() {
-        tv_order_details_state.setText("服 务 中");
-        tv_actionbar_title.setText("服务中");
+
         //接收传来的OrderID
         orderID = getIntent().getStringExtra("OrderID");
         type = getIntent().getIntExtra("type", 0);
         switch (type) {
             case 1:
+                tv_actionbar_title.setText("申请配件");
                 mLlAddAccessory.setVisibility(View.VISIBLE);
                 mLlAddService.setVisibility(View.GONE);
                 mLlApproveBeyondMoney.setVisibility(View.GONE);
                 break;
             case 2:
+                tv_actionbar_title.setText("申请服务");
                 mLlAddAccessory.setVisibility(View.GONE);
                 mLlAddService.setVisibility(View.VISIBLE);
                 mLlApproveBeyondMoney.setVisibility(View.GONE);
                 break;
             case 3:
+                tv_actionbar_title.setText("申请远程费");
                 mLlAddAccessory.setVisibility(View.GONE);
                 mLlAddService.setVisibility(View.GONE);
                 mLlApproveBeyondMoney.setVisibility(View.VISIBLE);
@@ -707,6 +709,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
             case 200:
                 data = baseResult.getData();
 
+                tv_order_details_state.setText(data.getStateStr());
                 /*判断是选中了那个*/
                 if (data.getAccessoryState() == null) {//未选择
                     select_state = -1;

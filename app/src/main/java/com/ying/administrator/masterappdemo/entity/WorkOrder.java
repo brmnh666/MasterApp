@@ -509,7 +509,42 @@ public class WorkOrder implements Serializable {
         public String getState() {
             return State;
         }
-
+        public String getStateStr() {
+            String status="";
+            switch (State){
+                case "-2":
+                    status="申请废除工单";
+                    break;
+                case "-1":
+                    status="废除工单";
+                    break;
+                case "0":
+                    status="待审核";
+                    break;
+                case "1":
+                    status="已审核派单中";
+                    break;
+                case "2":
+                    status="已接单待联系客户";
+                    break;
+                case "3":
+                    status="已联系客户待服务";
+                    break;
+                case "4":
+                    status="服务中";
+                    break;
+                case "5":
+                    status="服务完成";
+                    break;
+                case "6":
+                    status="待评价";
+                    break;
+                case "7":
+                    status="结束";
+                    break;
+            }
+            return status;
+        }
         public void setState(String State) {
             this.State = State;
         }

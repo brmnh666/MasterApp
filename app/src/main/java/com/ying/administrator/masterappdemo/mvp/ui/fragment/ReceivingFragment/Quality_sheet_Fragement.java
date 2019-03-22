@@ -40,6 +40,7 @@ import com.ying.administrator.masterappdemo.mvp.presenter.GetOrderListForMePrese
 import com.ying.administrator.masterappdemo.mvp.ui.activity.CompleteWorkOrderActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_Add_Accessories_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_details_Activity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.WorkOrderDetailsActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Qulity_Adapter;
 
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Redeploy_Adapter;
@@ -166,23 +167,13 @@ public class Quality_sheet_Fragement extends BaseFragment<GetOrderListForMePrese
 
 
 
-        Qulity_Adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+        Qulity_Adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                switch(view.getId()){
-                    case R.id.tv_quality_finish://完成服务
-                        Intent intent=new Intent(getActivity(), CompleteWorkOrderActivity.class);
-                        //传递工单号
-                        intent.putExtra("OrderID",((WorkOrder.DataBean)adapter.getItem(position)).getOrderID());
-                        startActivity(intent);
-                        break;
-                    case R.id.tv_quality_apply_parts: //申请配件
-                        Intent intent2=new Intent(getActivity(), Order_Add_Accessories_Activity.class);
-                        intent2.putExtra("OrderID",((WorkOrder.DataBean)adapter.getItem(position)).getOrderID());
-                        startActivity(intent2);
-                    default:
-                        break;
-                }
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Intent intent=new Intent(getActivity(), WorkOrderDetailsActivity.class);
+                //传递工单号
+                intent.putExtra("OrderID",((WorkOrder.DataBean)adapter.getItem(position)).getOrderID());
+                startActivity(intent);
             }
         });
 

@@ -19,7 +19,7 @@ public class CompletedAdapter extends BaseQuickAdapter<WorkOrder.DataBean, BaseV
     @SuppressLint("ResourceAsColor")
     @Override
     protected void convert(BaseViewHolder baseViewHolder, WorkOrder.DataBean item) {
-//        baseViewHolder.setText(R.id.tv_complete,item.getAddress());//已完成
+        baseViewHolder.setText(R.id.tv_complete,item.getStateStr());//已完成
         baseViewHolder.setText(R.id.tv_complete_status_repair,item.getTypeName()+"/"+item.getGuaranteeText());//安装or维修
         if ("安装".equals(item.getTypeName())){
             baseViewHolder.setBackgroundColor(R.id.tv_complete_status_repair, Color.parseColor("#1690FF"));

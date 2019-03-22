@@ -18,6 +18,7 @@ public class In_Service_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,Base
     @Override
     protected void convert(BaseViewHolder helper, WorkOrder.DataBean item) {
 
+        helper.setText(R.id.tv_in_service,item.getStateStr());
         helper.setText(R.id.tv_in_service_status_repair,item.getTypeName()+"/"+item.getGuaranteeText());
         helper.setText(R.id.tv_loaction_in_service,"距离 "+item.getDistance()+"Km");
         helper.setText(R.id.tv_reason_in_service,item.getMemo());//原因
