@@ -14,24 +14,24 @@ import java.util.List;
 import io.reactivex.Observable;
 
 
-public interface WalletContract {
+/*添加银行卡页面*/
+public interface CardContract {
     interface Model extends BaseModel{
         Observable<BaseResult<UserInfo>> GetUserInfoList(String UserId, String limit);
-
-        Observable<BaseResult<Data<Bill>>> AccountBill(String UserID, String state);
-
+        Observable<BaseResult<Data<String>>> AddorUpdateAccountPayInfo(String UserId,String PayInfoCode ,String PayInfoName,String PayNo);
         Observable<BaseResult<List<BankCard>>> GetAccountPayInfoList(String UserId);
+
     }
 
     interface View extends BaseView{
         void GetUserInfoList(BaseResult<UserInfo> baseResult);
-        void AccountBill(BaseResult<Data<Bill>> baseResult);
+        void AddorUpdateAccountPayInfo(BaseResult<Data<String>> baseResult);
         void GetAccountPayInfoList(BaseResult<List<BankCard>> baseResult);
     }
 
     abstract class Presenter extends BasePresenter<View,Model>{
         public abstract void GetUserInfoList(String UserId,String limit);
-        public abstract void AccountBill(String UserID,String state);
+        public abstract void AddorUpdateAccountPayInfo(String UserId,String PayInfoCode ,String PayInfoName,String PayNo);
         public abstract void GetAccountPayInfoList(String UserId);
     }
 }

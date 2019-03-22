@@ -4,6 +4,7 @@ import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Accessory;
 import com.ying.administrator.masterappdemo.entity.Area;
 import com.ying.administrator.masterappdemo.entity.Article;
+import com.ying.administrator.masterappdemo.entity.BankCard;
 import com.ying.administrator.masterappdemo.entity.Bill;
 import com.ying.administrator.masterappdemo.entity.Category;
 import com.ying.administrator.masterappdemo.entity.CategoryData;
@@ -535,5 +536,17 @@ public interface ApiService {
     @POST("Account/AccountBill")
     Observable<BaseResult<Data<Bill>>> AccountBill(@Field("UserID") String UserID,
                                                    @Field("state") String state);
+
+    /*添加银行卡*/
+    @FormUrlEncoded
+    @POST("Account/AddorUpdateAccountPayInfo")
+    Observable<BaseResult<Data<String>>> AddorUpdateAccountPayInfo(@Field("UserID") String UserID,
+                                                                   @Field("PayInfoCode") String PayInfoCode,
+                                                                   @Field("PayInfoName") String PayInfoName,
+                                                                   @Field("PayNo") String PayNo);
+    /*获取银行卡*/
+    @FormUrlEncoded
+    @POST("Account/GetAccountPayInfoList")
+    Observable <BaseResult<List<BankCard>>> GetAccountPayInfoList(@Field("UserID") String UserID);
 
 }

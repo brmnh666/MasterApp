@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -11,8 +12,8 @@
         >
         <ImageView
             android:id="@+id/img_actionbar_return"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_marginLeft="10dp"
             android:src="@mipmap/left"
             android:layout_centerVertical="true"
@@ -23,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="银行卡列表"
+            android:text="我的银行卡"
             android:textSize="20sp"
             android:textColor="@color/color_white"
             />
@@ -33,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="添加"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:textColor="@color/color_white"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"

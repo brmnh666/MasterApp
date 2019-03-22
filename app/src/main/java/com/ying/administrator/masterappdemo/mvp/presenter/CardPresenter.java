@@ -2,16 +2,16 @@ package com.ying.administrator.masterappdemo.mvp.presenter;
 
 import com.ying.administrator.masterappdemo.base.BaseObserver;
 import com.ying.administrator.masterappdemo.base.BaseResult;
-import com.ying.administrator.masterappdemo.entity.Bank;
 import com.ying.administrator.masterappdemo.entity.BankCard;
 import com.ying.administrator.masterappdemo.entity.Bill;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
+import com.ying.administrator.masterappdemo.mvp.contract.CardContract;
 import com.ying.administrator.masterappdemo.mvp.contract.WalletContract;
 
 import java.util.List;
 
-public class WalletPresenter extends WalletContract.Presenter {
+public class CardPresenter extends CardContract.Presenter {
     @Override
     public void GetUserInfoList(String UserId, String limit) {
         mModel.GetUserInfoList(UserId, limit)
@@ -24,12 +24,12 @@ public class WalletPresenter extends WalletContract.Presenter {
     }
 
     @Override
-    public void AccountBill(String UserID,String state) {
-        mModel.AccountBill(UserID,state)
-                .subscribe(new BaseObserver<Data<Bill>>() {
+    public void AddorUpdateAccountPayInfo(String UserId, String PayInfoCode, String PayInfoName,String PayNo) {
+        mModel.AddorUpdateAccountPayInfo(UserId, PayInfoCode,PayInfoName,PayNo)
+                .subscribe(new BaseObserver<Data<String>>() {
                     @Override
-                    protected void onHandleSuccess(BaseResult<Data<Bill>> value) {
-                        mView.AccountBill(value);
+                    protected void onHandleSuccess(BaseResult<Data<String>> value) {
+                        mView.AddorUpdateAccountPayInfo(value);
                     }
                 });
     }
@@ -44,4 +44,6 @@ public class WalletPresenter extends WalletContract.Presenter {
                     }
                 });
     }
+
+
 }

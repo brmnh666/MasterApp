@@ -17,6 +17,7 @@ import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.common.DefineView;
+import com.ying.administrator.masterappdemo.entity.BankCard;
 import com.ying.administrator.masterappdemo.entity.Bill;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
@@ -24,6 +25,7 @@ import com.ying.administrator.masterappdemo.mvp.contract.WalletContract;
 import com.ying.administrator.masterappdemo.mvp.model.WalletModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.WalletPresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Wallet_record_Adapter;
+import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,9 +61,9 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
     @BindView(R.id.rv_income_and_expenditure_details)
     RecyclerView mRvIncomeAndExpenditureDetails;
     @BindView(R.id.iv_bank_no)
-    ImageView mIvBankNo;
+    ImageView mIvBankNo; //未绑定警告图片
     @BindView(R.id.tv_bank)
-    TextView mTvBank;
+    TextView mTvBank; //未绑定文字
  /*   @BindView(R.id.iv_aplipay_no)
     ImageView mIvAplipayNo;
     @BindView(R.id.tv_aplipay)
@@ -105,6 +107,7 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
         mPresenter.AccountBill(userId,"3");//提现
         mPresenter.AccountBill(userId,"2,5");//收入和支出
       //  mPresenter.AccountBill(userId,"4");//待支付
+        mPresenter.GetAccountPayInfoList(userId);
     }
 
     @Override
@@ -142,7 +145,37 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
                 startActivity(new Intent(mActivity,WithDrawActivity.class));
                 break;
             case R.id.ll_card_list:
-                startActivity(new Intent(this,CardList_Activity.class));
+                  if (userInfo.getIfAuth()==null){
+                    return;
+                  }else if (userInfo.getIfAuth().equals("1")){
+                      startActivity(new Intent(this,CardList_Activity.class));
+
+                  }else {
+                      final CommonDialog_Home dialog = new CommonDialog_Home(mActivity);
+                      dialog.setMessage("未实名认证不能绑定银行卡")
+                              //.setImageResId(R.mipmap.ic_launcher)
+                              .setTitle("提示")
+                              .setSingle(false).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
+                          @Override
+                          public void onPositiveClick() {//去实名认证
+                              dialog.dismiss();
+                          }
+
+                          @Override
+                          public void onNegtiveClick() {//取消
+                              dialog.dismiss();
+                              // Toast.makeText(MainActivity.this,"ssss",Toast.LENGTH_SHORT).show();
+                          }
+                      }).show();
+
+
+
+                  }
+
+
+
+
+
                 break;
         }
 
@@ -152,9 +185,14 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
     public void GetUserInfoList(BaseResult<UserInfo> baseResult) {
         switch (baseResult.getStatusCode()){
             case 200:
-                userInfo=baseResult.getData().getData().get(0);
-                mTvMoney.setText(userInfo.getTotalMoney().toString());
-                mTvUnfinished.setText(userInfo.getFrozenMoney().toString()+"元");
+                if (baseResult.getData()!=null){
+                    userInfo=baseResult.getData().getData().get(0);
+                    mTvMoney.setText(userInfo.getTotalMoney().toString());
+                    mTvUnfinished.setText(userInfo.getFrozenMoney().toString()+"元");
+
+
+                }
+
                 break;
             case 401:
                 break;
@@ -211,5 +249,25 @@ switch (baseResult.getStatusCode()){
         }
         break;
 }
+    }
+
+    @Override
+    public void GetAccountPayInfoList(BaseResult<List<BankCard>> baseResult) {
+        switch (baseResult.getStatusCode()){
+            case 200:
+                 if (baseResult.getData()==null){
+                     mIvBankNo.setVisibility(View.VISIBLE);
+                     mTvBank.setVisibility(View.VISIBLE);
+                 }else {
+                     mIvBankNo.setVisibility(View.GONE);
+                     mTvBank.setVisibility(View.VISIBLE);
+                     mTvBank.setText("已绑定"+baseResult.getData().size()+"张银行卡");
+
+                 }
+                break;
+                default:
+                    break;
+        }
+
     }
 }

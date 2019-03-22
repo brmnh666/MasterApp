@@ -28,8 +28,6 @@ public class BankUtil {
         list.add(new Bank("浙商银行",R.mipmap.zheshang));
         list.add(new Bank("中国银行",R.mipmap.zhongguo));
         list.add(new Bank("中信银行",R.mipmap.zhongxin));
-
-
         return list;
     }
 }

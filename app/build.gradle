@@ -197,4 +197,7 @@ dependencies {
 
     //UI库
     implementation "com.github.vondear.RxTool:RxUI:v2.2.7"
+
+    /*识别card*/
+/*    implementation 'io.card:android-sdk:5.5.1'*/
 }

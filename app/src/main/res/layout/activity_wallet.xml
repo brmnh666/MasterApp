@@ -280,6 +280,7 @@
                         android:layout_weight="1"/>
 
                     <ImageView
+                        android:visibility="invisible"
                         android:id="@+id/iv_bank_no"
                         android:layout_width="17dp"
                         android:layout_height="17dp"
@@ -287,6 +288,7 @@
                         android:layout_gravity="center"/>
 
                     <TextView
+                        android:visibility="invisible"
                         android:id="@+id/tv_bank"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

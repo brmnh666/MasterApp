@@ -73,7 +73,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:text="2018-12-16 13:53:08"
             android:textColor="#6A6A6A"
             />
     </LinearLayout>
@@ -96,7 +95,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:text="1231241212124"
             android:textColor="#6A6A6A"
             />
     </LinearLayout>
@@ -115,7 +113,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textSize="14sp"
-            android:text="热水器不通电"
             android:textStyle="bold"
             android:textColor="#6A6A6A"
             />
@@ -125,7 +122,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:text="数量:1台"
             android:layout_marginRight="10dp"
             android:textColor="#6A6A6A"
             />
@@ -146,14 +142,12 @@
             android:paddingRight="5dp"
             android:background="@color/color_custom_04"
             android:textColor="@color/color_white"
-            android:text="维修"
             />
         <TextView
             android:id="@+id/tv_order_details_product_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:text="即热式热水器/储水式热水器"
             android:textColor="#A4A4A4"
             android:layout_marginLeft="5dp"
             />
@@ -178,7 +172,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:text="宁波市江北区长阳路人才公寓5栋1702室"
             android:textColor="#6A6A6A"
             />
     </LinearLayout>
