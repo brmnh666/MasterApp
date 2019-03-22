@@ -76,10 +76,10 @@
                                 android:textColor="#1690FF"
                                 android:textSize="30sp"
                                 android:layout_gravity="center"/>
-                            
+
                             <TextView
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content" 
+                                android:layout_height="wrap_content"
                                 android:layout_weight="1"/>
                             <TextView
                                 android:id="@+id/tv_recharge"
@@ -92,7 +92,7 @@
                                 android:layout_marginRight="10dp"
                                 android:layout_gravity="center"
                                 android:background="@drawable/gray_rr_shape"/>
-                            
+
                             <TextView
                                 android:id="@+id/tv_withdraw"
                                 android:layout_width="63dp"
@@ -206,9 +206,26 @@
                 <android.support.v7.widget.RecyclerView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:visibility="visible"
                     android:id="@+id/rv_income_and_expenditure_details">
 
                 </android.support.v7.widget.RecyclerView>
+
+                <LinearLayout
+                    android:id="@+id/empty_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    android:gravity="center"
+                    android:background="#ffffff">
+
+                    <ImageView
+                        android:layout_width="200dp"
+                        android:layout_height="200dp"
+                        android:background="@mipmap/wu"/>
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -464,6 +481,21 @@
                     android:id="@+id/rv_withdrawals_record">
 
                 </android.support.v7.widget.RecyclerView>
+                <LinearLayout
+                    android:id="@+id/empty_view_one"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    android:gravity="center"
+                    android:background="#ffffff">
+
+                    <ImageView
+                        android:layout_width="200dp"
+                        android:layout_height="200dp"
+                        android:background="@mipmap/wu"/>
+                </LinearLayout>
             </LinearLayout>
 
             <!--充值记录-->
@@ -508,6 +540,21 @@
                     android:id="@+id/rv_recharge_record">
 
                 </android.support.v7.widget.RecyclerView>
+                <LinearLayout
+                    android:id="@+id/empty_view_two"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    android:gravity="center"
+                    android:background="#ffffff">
+
+                    <ImageView
+                        android:layout_width="200dp"
+                        android:layout_height="200dp"
+                        android:background="@mipmap/wu"/>
+                </LinearLayout>
             </LinearLayout>
 
 
