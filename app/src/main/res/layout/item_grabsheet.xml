@@ -86,6 +86,7 @@
         android:layout_marginLeft="13dp"
         android:layout_marginTop="10dp"
         android:layout_below="@+id/tv_brand_name"
+        android:layout_toLeftOf="@+id/img_grabsheet"
         android:text="热水器不通电"
         android:textSize="16sp" />
 

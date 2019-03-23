@@ -52,7 +52,7 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="75dp"
         android:layout_marginTop="41dp"
-        android:text="热水器不通电热水器不通电热水器不通电热水器不通电热水器不通电热水器不通电热水器不通电热水器不通电热水器不通电热水器不通电热水器不通电"
+        android:text="不通电热水器不通电热水器不通电热水器不通电"
         android:textColor="#333333"
         android:textSize="18sp" />
 
@@ -93,12 +93,13 @@
 
     <TextView
         android:id="@+id/tv_address_pending_appointment"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_loaction_appointment"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="5dp"
         android:text="宁波市江北区长阳路人才公寓5栋1701室"
+        android:layout_toLeftOf="@+id/img_pending_appointment_phone"
         android:textSize="14sp" />
 
     <LinearLayout

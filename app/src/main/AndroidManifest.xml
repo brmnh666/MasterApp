@@ -396,9 +396,20 @@
              android:theme="@style/AppTheme.NoActionBar"
              android:launchMode="singleTask"
              />
+
+        <!--工单消息-->
+        <activity android:name=".mvp.ui.activity.OrderMessageActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+        <!--交易信息-->
+        <activity android:name=".mvp.ui.activity.TransactionMessageActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
+
        <!-- <activity android:name="io.card.payment.CardIOActivity" android:configChanges="keyboardHidden|orientation" />
         <activity android:name="io.card.payment.DataEntryActivity" />
--->
+                    -->
         <receiver
             android:name=".wxapi.AppRegister">
             <intent-filter>

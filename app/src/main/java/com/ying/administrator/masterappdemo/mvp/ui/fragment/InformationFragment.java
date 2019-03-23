@@ -1,14 +1,19 @@
 package com.ying.administrator.masterappdemo.mvp.ui.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ying.administrator.masterappdemo.R;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.OrderMessageActivity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.TransactionMessageActivity;
+import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseFragment;
 
 
 /**
@@ -16,12 +21,13 @@ import com.ying.administrator.masterappdemo.R;
  * Use the {@link InformationFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class InformationFragment extends Fragment {
+public class InformationFragment extends Fragment implements View.OnClickListener {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_SHOW_TEXT = "text";
     private View view;
     private String mContentText;
-
+    private LinearLayout mll_work_order_message;
+    private LinearLayout mll_transaction_news;
 
     public InformationFragment() {
         // Required empty public constructor
@@ -60,10 +66,40 @@ public class InformationFragment extends Fragment {
         if (view==null){
 
             view = inflater.inflate(R.layout.fragment_information, container, false);
+           initView();
+            initListner();
+            
         }
 
 
         return view;
     }
 
+    private void initView() {
+        mll_work_order_message=view.findViewById(R.id.ll_work_order_message);
+        mll_transaction_news=view.findViewById(R.id.ll_transaction_news);
+    }
+
+    private void initListner() {
+        mll_work_order_message.setOnClickListener(this);
+        mll_transaction_news.setOnClickListener(this);
+
+    }
+
+    @Override
+    public void onClick(View v) {
+    switch (v.getId()){
+        case R.id.ll_work_order_message://工单消息
+
+             startActivity(new Intent(getActivity(), OrderMessageActivity.class));
+            break;
+        case R.id.ll_transaction_news://交易信息
+            startActivity(new Intent(getActivity(), TransactionMessageActivity.class));
+            break;
+            default:
+                break;
+
+
+    }
+    }
 }

@@ -16,6 +16,8 @@ import com.ying.administrator.masterappdemo.entity.GAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
 import com.ying.administrator.masterappdemo.entity.GetFactorySeviceData;
 import com.ying.administrator.masterappdemo.entity.IDCard;
+import com.ying.administrator.masterappdemo.entity.Message;
+import com.ying.administrator.masterappdemo.entity.MessageData;
 import com.ying.administrator.masterappdemo.entity.Province;
 import com.ying.administrator.masterappdemo.entity.Service;
 import com.ying.administrator.masterappdemo.entity.Skill;
@@ -569,4 +571,16 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("Account/GetBankNameByCardNo")
     Observable<BaseResult<Data<String>>> GetBankNameByCardNo(@Field("CardNo") String CardNo);
+
+    /*获取消息列表*/
+
+    /*获取个人消息  1.交易消息类型  2.订单消息类型*/
+    @FormUrlEncoded
+    @POST("Cms/GetMessageList")
+    Observable<BaseResult<MessageData<List<Message>>>> GetMessageList(@Field("UserID") String UserID,
+                                                                      @Field("Type") String Type,
+                                                                      @Field("limit") String limit,
+                                                                      @Field("page") String page);
+
+
 }
