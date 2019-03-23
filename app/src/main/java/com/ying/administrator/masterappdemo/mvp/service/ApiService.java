@@ -2,6 +2,7 @@ package com.ying.administrator.masterappdemo.mvp.service;
 
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Accessory;
+import com.ying.administrator.masterappdemo.entity.Address;
 import com.ying.administrator.masterappdemo.entity.Area;
 import com.ying.administrator.masterappdemo.entity.Article;
 import com.ying.administrator.masterappdemo.entity.BankCard;
@@ -437,6 +438,13 @@ public interface ApiService {
             @Field("Dimension") String Dimension,
             @Field("ServiceAreaJsonStr") String ServiceAreaJsonStr
     );
+      /*更新服务区域*/
+    @FormUrlEncoded
+    @POST("Account/AddorUpdateServiceArea")
+    Observable<BaseResult<Data<String>>> AddorUpdateServiceArea(@Field("UserID") String UserID,
+                                                                @Field("ServiceAreaJsonStr") String ServiceAreaJsonStr);
+
+
 
     /*
     获取子账号*/
@@ -549,4 +557,16 @@ public interface ApiService {
     @POST("Account/GetAccountPayInfoList")
     Observable <BaseResult<List<BankCard>>> GetAccountPayInfoList(@Field("UserID") String UserID);
 
+
+    /*获取服务区域*/
+    @FormUrlEncoded
+    @POST("Account/GetServiceRangeByUserID")
+    Observable<BaseResult<List<Address>>> GetServiceRangeByUserID(@Field("UserID") String UserID);
+
+
+    /*根据银行卡号获取银行名 判断后台是否支持该银行的提现*/
+
+    @FormUrlEncoded
+    @POST("Account/GetBankNameByCardNo")
+    Observable<BaseResult<Data<String>>> GetBankNameByCardNo(@Field("CardNo") String CardNo);
 }

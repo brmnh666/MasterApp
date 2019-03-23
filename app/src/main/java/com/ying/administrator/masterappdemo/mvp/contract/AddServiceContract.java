@@ -5,6 +5,7 @@ import com.ying.administrator.masterappdemo.base.BaseModel;
 import com.ying.administrator.masterappdemo.base.BasePresenter;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.base.BaseView;
+import com.ying.administrator.masterappdemo.entity.Address;
 import com.ying.administrator.masterappdemo.entity.Area;
 import com.ying.administrator.masterappdemo.entity.City;
 import com.ying.administrator.masterappdemo.entity.Data;
@@ -22,6 +23,8 @@ public interface AddServiceContract {
         Observable<BaseResult<Data<List<City>>>> GetCity(String parentcode);
         Observable<BaseResult<Data<List<Area>>>> GetArea(String parentcode);
         Observable<BaseResult<Data<List<District>>>> GetDistrict(String parentcode,int code);
+        Observable<BaseResult<List<Address>>> GetServiceRangeByUserID(String UserID);
+        Observable<BaseResult<Data<String>>> AddorUpdateServiceArea(String UserID ,String ServiceAreaJsonStr);
     }
 
     interface View extends BaseView {
@@ -29,6 +32,8 @@ public interface AddServiceContract {
         void GetCity(BaseResult<Data<List<City>>> baseResult);
         void GetArea(BaseResult<Data<List<Area>>> baseResult);
         void GetDistrict(BaseResult<Data<List<District>>> baseResult,int code);
+        void GetServiceRangeByUserID(BaseResult<List<Address>> baseResult);
+        void AddorUpdateServiceArea(BaseResult<Data<String>> baseResult);
     }
 
     abstract class Presenter extends BasePresenter<View,Model> {
@@ -38,6 +43,10 @@ public interface AddServiceContract {
 
         public abstract void GetArea(String parentcode);
         public abstract void GetDistrict(String parentcode,int code);
+
+        public abstract void GetServiceRangeByUserID(String UserID);
+
+        public abstract void AddorUpdateServiceArea(String UserID ,String ServiceAreaJsonStr);
     }
 
 

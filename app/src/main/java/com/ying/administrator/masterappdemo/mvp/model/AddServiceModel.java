@@ -1,6 +1,7 @@
 package com.ying.administrator.masterappdemo.mvp.model;
 
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.Address;
 import com.ying.administrator.masterappdemo.entity.Area;
 import com.ying.administrator.masterappdemo.entity.City;
 import com.ying.administrator.masterappdemo.entity.Data;
@@ -43,6 +44,20 @@ public class AddServiceModel implements AddServiceContract.Model {
     @Override
     public Observable<BaseResult<Data<List<District>>>> GetDistrict(String parentcode,int code) {
         return  ApiRetrofit.getDefault().GetDistrict(parentcode)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<BaseResult<List<Address>>> GetServiceRangeByUserID(String UserID) {
+        return  ApiRetrofit.getDefault().GetServiceRangeByUserID(UserID)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<BaseResult<Data<String>>> AddorUpdateServiceArea(String UserID ,String ServiceAreaJsonStr) {
+        return  ApiRetrofit.getDefault().AddorUpdateServiceArea(UserID,ServiceAreaJsonStr)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

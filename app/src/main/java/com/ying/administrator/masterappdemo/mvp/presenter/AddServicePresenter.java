@@ -3,6 +3,7 @@ package com.ying.administrator.masterappdemo.mvp.presenter;
 
 import com.ying.administrator.masterappdemo.base.BaseObserver;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.Address;
 import com.ying.administrator.masterappdemo.entity.Area;
 import com.ying.administrator.masterappdemo.entity.City;
 import com.ying.administrator.masterappdemo.entity.Data;
@@ -10,6 +11,7 @@ import com.ying.administrator.masterappdemo.entity.District;
 import com.ying.administrator.masterappdemo.entity.Province;
 import com.ying.administrator.masterappdemo.mvp.contract.AddServiceContract;
 
+import java.util.Date;
 import java.util.List;
 
 public class AddServicePresenter extends AddServiceContract.Presenter {
@@ -55,6 +57,28 @@ public class AddServicePresenter extends AddServiceContract.Presenter {
                     @Override
                     protected void onHandleSuccess(BaseResult<Data<List<District>>> value) {
                         mView.GetDistrict(value,code);
+                    }
+                });
+    }
+
+    @Override
+    public void GetServiceRangeByUserID(String UserID) {
+        mModel.GetServiceRangeByUserID(UserID)
+                .subscribe(new BaseObserver<List<Address>>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<List<Address>> value) {
+                        mView.GetServiceRangeByUserID(value);
+                    }
+                });
+    }
+
+    @Override
+    public void AddorUpdateServiceArea(String UserID,String ServiceAreaJsonStr) {
+        mModel.AddorUpdateServiceArea(UserID,ServiceAreaJsonStr)
+                .subscribe(new BaseObserver<Data<String>>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<Data<String>> value) {
+                        mView.AddorUpdateServiceArea(value);
                     }
                 });
     }

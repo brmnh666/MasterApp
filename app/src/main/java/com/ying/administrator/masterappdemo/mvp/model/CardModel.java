@@ -37,4 +37,11 @@ public class CardModel implements CardContract.Model {
                 .subscribeOn(Schedulers.io());
     }
 
+    @Override
+    public Observable<BaseResult<Data<String>>> GetBankNameByCardNo(String CardNo) {
+        return ApiRetrofit.getDefault().GetBankNameByCardNo(CardNo)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
 }

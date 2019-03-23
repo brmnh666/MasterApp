@@ -40,7 +40,7 @@ public class MyCardAdapter extends BaseQuickAdapter<BankCard, BaseViewHolder> {
                         .into((ImageView) helper.getView(R.id.iv_bank_card));
                 helper.setText(R.id.tv_bank_name,item.getPayInfoName());
                 break;
-            case "工商银行":
+            case "中国工商银行":
                 Glide.with(context)
                         .load(R.mipmap.gongshang)
                         .apply(RequestOptions.bitmapTransform(new CircleCrop()))
@@ -55,21 +55,21 @@ public class MyCardAdapter extends BaseQuickAdapter<BankCard, BaseViewHolder> {
                 helper.setText(R.id.tv_bank_name,item.getPayInfoName());
                 break;
 
-            case "建设银行":
+            case "中国建设银行":
                 Glide.with(context)
                         .load(R.mipmap.jianshe)
                         .apply(RequestOptions.bitmapTransform(new CircleCrop()))
                         .into((ImageView) helper.getView(R.id.iv_bank_card));
                 helper.setText(R.id.tv_bank_name,item.getPayInfoName());
                 break;
-            case "交通银行":
+            case "中国交通银行":
                 Glide.with(context)
                         .load(R.mipmap.jiaotong)
                         .apply(RequestOptions.bitmapTransform(new CircleCrop()))
                         .into((ImageView) helper.getView(R.id.iv_bank_card));
                 helper.setText(R.id.tv_bank_name,item.getPayInfoName());
                 break;
-            case "民生银行":
+            case "中国民生银行":
                 Glide.with(context)
                         .load(R.mipmap.minsheng)
                         .apply(RequestOptions.bitmapTransform(new CircleCrop()))
@@ -83,7 +83,7 @@ public class MyCardAdapter extends BaseQuickAdapter<BankCard, BaseViewHolder> {
                         .into((ImageView) helper.getView(R.id.iv_bank_card));
                         helper.setText(R.id.tv_bank_name,item.getPayInfoName());
                 break;
-            case "农业银行":
+            case "中国农业银行":
                 Glide.with(context)
                         .load(R.mipmap.nongye)
                         .apply(RequestOptions.bitmapTransform(new CircleCrop()))
@@ -97,21 +97,21 @@ public class MyCardAdapter extends BaseQuickAdapter<BankCard, BaseViewHolder> {
                         .into((ImageView) helper.getView(R.id.iv_bank_card));
                         helper.setText(R.id.tv_bank_name,item.getPayInfoName());
                 break;
-           case "兴业银行":
+           case "中国兴业银行":
                Glide.with(context)
                        .load(R.mipmap.xinye)
                        .apply(RequestOptions.bitmapTransform(new CircleCrop()))
                        .into((ImageView) helper.getView(R.id.iv_bank_card));
                        helper.setText(R.id.tv_bank_name,item.getPayInfoName());
            break;
-            case "邮政储蓄":
+            case "中国邮政储蓄":
                 Glide.with(context)
                         .load(R.mipmap.youzheng)
                         .apply(RequestOptions.bitmapTransform(new CircleCrop()))
                         .into((ImageView) helper.getView(R.id.iv_bank_card));
                      helper.setText(R.id.tv_bank_name,item.getPayInfoName());
                 break;
-            case "招商银行":
+            case "中国招商银行":
                 Glide.with(context)
                         .load(R.mipmap.zhaoshan)
                         .apply(RequestOptions.bitmapTransform(new CircleCrop()))
@@ -135,7 +135,7 @@ public class MyCardAdapter extends BaseQuickAdapter<BankCard, BaseViewHolder> {
                         .into((ImageView) helper.getView(R.id.iv_bank_card));
                 helper.setText(R.id.tv_bank_name,item.getPayInfoName());
                 break;
-            case "中信银行":
+            case "中国中信银行":
                 Glide.with(context)
                         .load(R.mipmap.zhongxin)
                         .apply(RequestOptions.bitmapTransform(new CircleCrop()))

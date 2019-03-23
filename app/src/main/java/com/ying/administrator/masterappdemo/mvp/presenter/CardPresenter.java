@@ -45,5 +45,16 @@ public class CardPresenter extends CardContract.Presenter {
                 });
     }
 
+    @Override
+    public void GetBankNameByCardNo(String CardNo) {
+        mModel.GetBankNameByCardNo(CardNo)
+                .subscribe(new BaseObserver<Data<String>>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<Data<String>> value) {
+                        mView.GetBankNameByCardNo(value);
+                    }
+                });
+    }
+
 
 }

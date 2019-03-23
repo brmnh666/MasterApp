@@ -1,10 +1,12 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -14,11 +16,13 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.Address;
 import com.ying.administrator.masterappdemo.entity.Area;
 import com.ying.administrator.masterappdemo.entity.City;
 import com.ying.administrator.masterappdemo.entity.Data;
@@ -34,6 +38,8 @@ import com.ying.administrator.masterappdemo.mvp.ui.adapter.DistrictAdapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.ProvinceAdapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.ServiceAddressAdapter;
 import com.ying.administrator.masterappdemo.util.MyUtils;
+import com.zyao89.view.zloading.ZLoadingDialog;
+import com.zyao89.view.zloading.Z_TYPE;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,6 +92,8 @@ public class AddServiceAreaInfoActivity extends BaseActivity<AddServicePresenter
     private List<City> cityList;
     private List<Area> areaList;
     private List<District> districtList;
+
+    private List<Address> getserviceaddresslist=new ArrayList<>(); //得到已选的地址
     private List<ServiceAddress> serviceAddressList=new ArrayList<>();
     private List<ServiceAddress> tempServiceAddressList=new ArrayList<>();
     private ServiceAddressAdapter serviceAddressAdapter;
@@ -96,7 +104,8 @@ public class AddServiceAreaInfoActivity extends BaseActivity<AddServicePresenter
     private PopupWindow popupWindow;
     private String codestr="";
     private String name;
-
+    private String userId;
+    private ZLoadingDialog dialog;
     @Override
     protected int setLayoutId() {
         return R.layout.activity_add_service_area_info;
@@ -104,16 +113,22 @@ public class AddServiceAreaInfoActivity extends BaseActivity<AddServicePresenter
 
     @Override
     protected void initData() {
+        SPUtils spUtils=SPUtils.getInstance("token");
+        userId = spUtils.getString("userName");
 
     }
 
     @Override
     public void initView() {
-        mTvActionbarTitle.setText("添加服务区域");
+        dialog=new ZLoadingDialog(mActivity);
+        showLoading("loading");
+        mTvActionbarTitle.setText("修改服务区域");
         mTvProvince.setText("省");
         mTvCity.setText("市");
         mTvArea.setText("区");
         mTvDistrict.setText("街道");
+
+
         serviceAddressAdapter=new ServiceAddressAdapter(R.layout.item_region,serviceAddressList);
         mRvRegion.setLayoutManager(new LinearLayoutManager(mActivity));
         mRvRegion.setAdapter(serviceAddressAdapter);
@@ -128,6 +143,8 @@ public class AddServiceAreaInfoActivity extends BaseActivity<AddServicePresenter
                 }
             }
         });
+
+        mPresenter.GetServiceRangeByUserID(userId);
     }
 
     @Override
@@ -226,10 +243,17 @@ public class AddServiceAreaInfoActivity extends BaseActivity<AddServicePresenter
                     ToastUtils.showShort("请添加至少一个服务区域");
                     return;
                 }
-                Intent intent=new Intent();
-                intent.putExtra("codestr",codestr);
-                setResult(317,intent);
-                finish();
+               //Intent intent=new Intent();
+               //intent.putExtra("codestr",codestr);
+               //Log.d("===============>codestr",codestr);
+               //setResult(317,intent);
+               // finish();
+
+
+                Log.d("===============>codestr",codestr);
+                showLoading("summit");
+                mPresenter.AddorUpdateServiceArea(userId,codestr);
+
                 break;
         }
 
@@ -290,7 +314,7 @@ public class AddServiceAreaInfoActivity extends BaseActivity<AddServicePresenter
     @Override
     public void GetDistrict(BaseResult<Data<List<District>>> baseResult,int code) {
         switch (code){
-            case 0:
+            case 0:  // 不选街道添加全部街道
                 switch (baseResult.getStatusCode()) {
                     case 200:
                         Data<List<District>> data = baseResult.getData();
@@ -345,6 +369,74 @@ public class AddServiceAreaInfoActivity extends BaseActivity<AddServicePresenter
                 break;
         }
 
+    }
+
+
+    /*获取服务区域*/
+    @Override
+    public void GetServiceRangeByUserID(BaseResult<List<Address>> baseResult) {
+
+        switch (baseResult.getStatusCode()){
+            case 200:
+                     if (baseResult.getData()==null){
+                         cancleLoading();
+                     }else {
+                         cancleLoading();
+                         getserviceaddresslist.addAll(baseResult.getData());
+
+                         for (int i=0;i<getserviceaddresslist.size();i++){
+
+                             /*public ServiceAddress(Province province, City city, Area area, District district) {*/
+                             Province province=new Province();
+                             province.setCode(getserviceaddresslist.get(i).getProvinceCode());
+                             province.setName(getserviceaddresslist.get(i).getProvinceName());
+                             City city=new City();
+                             city.setCode(getserviceaddresslist.get(i).getCityCode());
+                             city.setName(getserviceaddresslist.get(i).getCityName());
+                             Area area=new Area();
+                             area.setCode(getserviceaddresslist.get(i).getAreaCode());
+                             area.setName(getserviceaddresslist.get(i).getAreaName());
+                             District district=new District();
+                             district.setCode(getserviceaddresslist.get(i).getDistrictCode());
+                             district.setName(getserviceaddresslist.get(i).getDistrictName());
+
+                             ServiceAddress serviceAddress=new ServiceAddress(province,city,area,district);
+
+                             serviceAddressList.add(serviceAddress);
+
+
+                         }
+
+                   /*      serviceAddressAdapter=new ServiceAddressAdapter(R.layout.item_region,serviceAddressList);
+                         mRvRegion.setLayoutManager(new LinearLayoutManager(mActivity));
+                         mRvRegion.setAdapter(serviceAddressAdapter);*/
+                         serviceAddressAdapter.notifyDataSetChanged();
+
+                     }
+                break;
+                default:
+                break;
+        }
+
+    }
+
+    /*更新服务范围*/
+    @Override
+    public void AddorUpdateServiceArea(BaseResult<Data<String>> baseResult) {
+         switch (baseResult.getStatusCode()){
+             case 200:
+                 if (baseResult.getData().isItem1()){
+                     cancleLoading();
+                     AddServiceAreaInfoActivity.this.finish();
+
+                 }else {
+                     cancleLoading();
+                 }
+                 break;
+                 default:
+                     cancleLoading();
+                     break;
+         }
     }
 
     public void showPopWindow(final TextView tv, BaseQuickAdapter adapter, final List list) {
@@ -410,4 +502,29 @@ public class AddServiceAreaInfoActivity extends BaseActivity<AddServicePresenter
         }
         MyUtils.setWindowAlpa(mActivity, true);
     }
+
+
+
+    public void showLoading(String s){
+        String text="加载中";
+        if (s.equals("loading")){
+            text="全力加载中...";
+        }else if (s.equals("summit")){
+            text="地址提交中...";
+        }
+        dialog.setLoadingBuilder(Z_TYPE.ROTATE_CIRCLE)//设置类型
+                .setLoadingColor(Color.BLACK)//颜色
+                .setHintText(text)
+                .setHintTextSize(14) // 设置字体大小 dp
+                .setHintTextColor(Color.BLACK)  // 设置字体颜色
+                .setDurationTime(1) // 设置动画时间百分比 - 0.5倍
+                .setCanceledOnTouchOutside(false)//点击外部无法取消
+                .show();
+    }
+
+    public void cancleLoading(){
+        dialog.dismiss();
+
+    }
+
 }

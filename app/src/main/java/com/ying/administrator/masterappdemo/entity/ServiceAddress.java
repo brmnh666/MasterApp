@@ -11,6 +11,7 @@ public class ServiceAddress implements Serializable {
     private String name;
     private String codestr;
 
+
     public ServiceAddress(Province province, City city, Area area, District district) {
         this.province = province;
         this.city = city;

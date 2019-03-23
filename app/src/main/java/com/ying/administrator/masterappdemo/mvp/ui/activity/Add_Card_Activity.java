@@ -7,6 +7,8 @@ import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
@@ -35,6 +37,7 @@ import com.ying.administrator.masterappdemo.mvp.presenter.CardPresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.ChooseBankAdapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Redeploy_Adapter;
 import com.ying.administrator.masterappdemo.util.BankUtil;
+import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 import com.ying.administrator.masterappdemo.widget.CustomDialog_ChooseBank;
 
 import java.util.List;
@@ -46,7 +49,6 @@ import butterknife.ButterKnife;
 /*绑定银行卡页面*/
 public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> implements View.OnClickListener, CardContract.View {
 
-    private static int REQUEST_AUTOTEST=1011;
 
     @BindView(R.id.img_actionbar_return)
     ImageView mImgActionbarReturn;
@@ -60,8 +62,8 @@ public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> im
     TextView mAddCardPhone;
 /*    @BindView(R.id.et_add_card_verification_code)
     EditText mEtAddCardVerificationCode;*/
-    @BindView(R.id.ll_choose_bank)
-    LinearLayout mLlChooseBank;
+   /* @BindView(R.id.ll_choose_bank)
+    LinearLayout mLlChooseBank;*/
     /*@BindView(R.id.tv_getcode)
     TextView mtv_getcode;*/
     @BindView(R.id.btn_bind_card)
@@ -110,18 +112,44 @@ public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> im
 
     @Override
     protected void setListener() {
-        mLlChooseBank.setOnClickListener(this);
+       // mLlChooseBank.setOnClickListener(this);
         mImgActionbarReturn.setOnClickListener(this);
       /*  mtv_getcode.setOnClickListener(this);*/
         mbtn_bind_card.setOnClickListener(this);
         /*mimg_scan_card.setOnClickListener(this);*/
+        met_banknumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if (s.toString().length()==6){
+
+                    Log.d("======>count","输入数等于6了");
+
+                    mPresenter.GetBankNameByCardNo(s.toString());
+                }else if (s.toString().length()<6){
+
+                    mTvAddCardBankname.setText("");
+                }
+
+            }
+        });
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ll_choose_bank:
-
+          /*  case R.id.ll_choose_bank:
                 customDialog_chooseBank.getWindow().setBackgroundDrawableResource(R.color.transparent);
                 customDialog_chooseBank.show();
                 Window window = customDialog_chooseBank.getWindow();
@@ -151,7 +179,7 @@ public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> im
                 });
 
 
-                break;
+                break;*/
             case R.id.img_actionbar_return:
                 Add_Card_Activity.this.finish();
 
@@ -160,7 +188,6 @@ public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> im
                 time.start();
                 break;*/
             case R.id.btn_bind_card:
-                //验证码接口为写好
 
                 if (mTvAddCardBankname.getText().toString().length()==0||met_banknumber.getText().toString().length()==0){
                     Toast.makeText(this,"请选择银行并输入卡号",Toast.LENGTH_SHORT).show();
@@ -232,6 +259,42 @@ public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> im
     @Override
     public void GetAccountPayInfoList(BaseResult<List<BankCard>> baseResult) {
 
+    }
+
+    /*根据卡号判断是否支持银行*/
+    @Override
+    public void GetBankNameByCardNo(BaseResult<Data<String>> baseResult) {
+        switch (baseResult.getStatusCode()){
+            case 200:
+                if (baseResult.getData().isItem1()&&!baseResult.getData().getItem2().equals("")){
+
+                    mTvAddCardBankname.setText(baseResult.getData().getItem2()); //绑定银行名
+
+
+                }else {//不支持的银行
+                    met_banknumber.setText("");
+                    final CommonDialog_Home dialog = new CommonDialog_Home(mActivity);
+                    dialog.setMessage("暂时不支持绑定该银行")
+                            //.setImageResId(R.mipmap.ic_launcher)
+                            .setTitle("提示")
+                            .setSingle(false).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
+                        @Override
+                        public void onPositiveClick() {//拨打电话
+                            dialog.dismiss();
+                        }
+
+                        @Override
+                        public void onNegtiveClick() {//取消
+                            dialog.dismiss();
+                            // Toast.makeText(MainActivity.this,"ssss",Toast.LENGTH_SHORT).show();
+                        }
+                    }).show();
+
+                }
+                break;
+                default:
+                    break;
+        }
     }
 
 

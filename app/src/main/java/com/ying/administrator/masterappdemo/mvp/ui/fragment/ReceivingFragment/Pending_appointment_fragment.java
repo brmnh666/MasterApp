@@ -2,6 +2,7 @@ package com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -45,6 +46,8 @@ import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseFra
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 import com.ying.administrator.masterappdemo.widget.CustomDialog_Redeploy;
 import com.ying.administrator.masterappdemo.widget.CustomDialog_UnSuccess;
+import com.zyao89.view.zloading.ZLoadingDialog;
+import com.zyao89.view.zloading.Z_TYPE;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,6 +76,8 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
     private int cancleposition;
     private int redeployposition;
     private int successposition;
+
+    private ZLoadingDialog dialog;
     public Pending_appointment_fragment() {
         // Required empty public constructor
     }
@@ -103,6 +108,7 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
     }
 
     public void initView() {
+        dialog=new ZLoadingDialog(mActivity);
         customDialog_redeploy=new CustomDialog_Redeploy(mActivity);
         recyclerView=view.findViewById(R.id.recyclerview_order_receiving);
         tv_pending_appointment_redeploy=view.findViewById(R.id.tv_pending_appointment_redeploy);
@@ -115,10 +121,9 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
         recyclerView.setAdapter(pending_appointment_adapter);
         pending_appointment_adapter.setEmptyView(getEmptyView());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        showLoading();
         mPresenter.WorkerGetOrderList(userID,"1",Integer.toString(pageIndex),"5");
-
-
-
 
     }
 
@@ -433,7 +438,7 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                         list.clear();
                         pending_appointment_adapter.notifyDataSetChanged();
                     }
-
+                   cancleLoading();
                 }else {
                     if (pageIndex==1){
                         list.clear();
@@ -446,15 +451,15 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                         pending_appointment_adapter.setNewData(list);
                     }
 
-
+                    cancleLoading();
                    //  pending_appointment_adapter.notifyDataSetChanged();
 
                 }
 
 
                 break;
-            case 401:
-                ToastUtils.showShort(baseResult.getInfo());
+            default:
+                cancleLoading();
                 break;
         }
     }
@@ -590,4 +595,22 @@ switch (baseResult.getStatusCode()){
 
         }
     }
+
+    public void showLoading(){
+        dialog.setLoadingBuilder(Z_TYPE.ROTATE_CIRCLE)//设置类型
+                .setLoadingColor(Color.BLACK)//颜色
+                .setHintText("正在加载工单...")
+                .setHintTextSize(14) // 设置字体大小 dp
+                .setHintTextColor(Color.BLACK)  // 设置字体颜色
+                .setDurationTime(1) // 设置动画时间百分比 - 0.5倍
+                .setCanceledOnTouchOutside(false)//点击外部无法取消
+                .show();
+    }
+
+    public void cancleLoading(){
+        dialog.dismiss();
+
+    }
+
+
 }

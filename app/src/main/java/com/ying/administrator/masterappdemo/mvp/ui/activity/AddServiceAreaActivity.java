@@ -19,6 +19,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.Address;
 import com.ying.administrator.masterappdemo.entity.Area;
 import com.ying.administrator.masterappdemo.entity.City;
 import com.ying.administrator.masterappdemo.entity.Data;
@@ -344,6 +345,16 @@ public class AddServiceAreaActivity extends BaseActivity<AddServicePresenter, Ad
                 }
                 break;
         }
+
+    }
+
+    @Override
+    public void GetServiceRangeByUserID(BaseResult<List<Address>> baseResult) {
+
+    }
+
+    @Override
+    public void AddorUpdateServiceArea(BaseResult<Data<String>> baseResult) {
 
     }
 
