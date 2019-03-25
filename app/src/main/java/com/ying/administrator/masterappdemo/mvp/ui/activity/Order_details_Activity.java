@@ -1014,10 +1014,16 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
                     Toast.makeText(this, baseResult.getData().getItem2(), Toast.LENGTH_LONG).show();
                 } else {
-
                     //Intent intent=new Intent();
                     //intent.putExtra("successposition",getIntent().getIntExtra("successposition",0));
-                    setResult(10001);
+                    if (baseResult.getData().getItem2().equals("操作成功2")){//到服务中去
+                        setResult(10001);
+                    }else if(baseResult.getData().getItem2().equals("操作成功1")){//到返件中去
+                        setResult(10002);
+                    }
+
+
+
                     Order_details_Activity.this.finish();
                 }
                 break;

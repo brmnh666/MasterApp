@@ -588,7 +588,7 @@ switch (baseResult.getStatusCode()){
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode==10001){
+        if (resultCode==10001||resultCode==10002){
             if (requestCode==1001){
               pending_appointment_adapter.remove(successposition);
             }
