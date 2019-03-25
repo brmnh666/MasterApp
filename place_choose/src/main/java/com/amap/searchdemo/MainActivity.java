@@ -135,30 +135,9 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
             public void onClick(View v) {
                 if (searchResultAdapter!=null){
                     PoiItem poiItem=((PoiItem)(searchResultAdapter.getItem(searchResultAdapter.getSelectedPosition())));
-//                    if (poiItem.getPoiId().equals("regeo")){
-//                        address=poiItem.getSnippet();
-//                    }else{
-                        address=poiItem.getProvinceName()+poiItem.getCityName() + poiItem.getAdName() + poiItem.getSnippet()+poiItem.getTitle();
-//                    }
-                    Province=poiItem.getProvinceName();
-                    City=poiItem.getCityName();
-                    Area=poiItem.getAdName();
-                    District=poiItem.getSnippet();
-                    Longitude=poiItem.getLatLonPoint().getLongitude();
-                    Dimension=poiItem.getLatLonPoint().getLatitude();
+                    searchLatlonPoint=poiItem.getLatLonPoint();
+                    geoAddress();
                 }
-                Intent intent=new Intent();
-//                if (searchResultAdapter.getSelectedPosition()!=0){
-                    intent.putExtra("address",address);
-                    intent.putExtra("Province",Province);
-                    intent.putExtra("City",City);
-                    intent.putExtra("Area",Area);
-                    intent.putExtra("District",District);
-                    intent.putExtra("Longitude",Longitude);
-                    intent.putExtra("Dimension",Dimension);
-//                }
-                setResult(100,intent);
-                finish();
             }
         });
 
@@ -187,7 +166,8 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
                     searchType = "130103";
 
                 }
-                geoAddress();
+                doSearchQuery();
+//                geoAddress();
             }
         });
 
@@ -252,7 +232,8 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
             @Override
             public void onCameraChangeFinish(CameraPosition cameraPosition) {
                 if (!isItemClickAction && !isInputKeySearch) {
-                    geoAddress();
+//                    geoAddress();
+                    doSearchQuery();
                     startJumpAnimation();
                 }
                 searchLatlonPoint = new LatLonPoint(cameraPosition.target.latitude, cameraPosition.target.longitude);
@@ -428,14 +409,23 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
         if (rCode == AMapException.CODE_AMAP_SUCCESS) {
             if (result != null && result.getRegeocodeAddress() != null
                     && result.getRegeocodeAddress().getFormatAddress() != null) {
-                String address = result.getRegeocodeAddress().getFormatAddress();
-//                String address = result.getRegeocodeAddress().getProvince() + result.getRegeocodeAddress().getCity() + result.getRegeocodeAddress().getDistrict() + result.getRegeocodeAddress().getTownship();
-                firstItem = new PoiItem("regeo", searchLatlonPoint, result.getRegeocodeAddress().getPois().get(1).getTitle(), result.getRegeocodeAddress().getTownship());
-                firstItem.setProvinceName(result.getRegeocodeAddress().getProvince());
-                firstItem.setCityName(result.getRegeocodeAddress().getCity());
-                firstItem.setAdName(result.getRegeocodeAddress().getDistrict());
-//                firstItem=result.getRegeocodeAddress().getPois().get(0);
-                doSearchQuery();
+                address=result.getRegeocodeAddress().getFormatAddress();
+                Province=result.getRegeocodeAddress().getProvince();
+                City=result.getRegeocodeAddress().getCity();
+                Area=result.getRegeocodeAddress().getDistrict();
+                District=result.getRegeocodeAddress().getTownship();
+                Longitude=result.getRegeocodeQuery().getPoint().getLongitude();
+                Dimension=result.getRegeocodeQuery().getPoint().getLatitude();
+                Intent intent=new Intent();
+                intent.putExtra("address",address);
+                intent.putExtra("Province",Province);
+                intent.putExtra("City",City);
+                intent.putExtra("Area",Area);
+                intent.putExtra("District",District);
+                intent.putExtra("Longitude",Longitude);
+                intent.putExtra("Dimension",Dimension);
+                setResult(100,intent);
+                finish();
             }
         } else {
             Toast.makeText(MainActivity.this, "error code is " + rCode, Toast.LENGTH_SHORT).show();

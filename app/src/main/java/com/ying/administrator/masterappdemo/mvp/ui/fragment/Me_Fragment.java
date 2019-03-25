@@ -193,6 +193,7 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
         mNormalDfkLl.setOnClickListener(this);
         mNormalDshLl.setOnClickListener(this);
         mTvRecharge.setOnClickListener(this);
+        mImgMeHead.setOnClickListener(this);
     }
 
     /*获取用户信息*/
@@ -211,7 +212,7 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                             .into(mImgMeHead);
                 }
                 /*显示余额*/
-                mTv_me_withdraw.setText("可提现金额(元) " + userInfo.getTotalMoney());
+                mTv_me_withdraw.setText(userInfo.getTotalMoney()+"");
 
 
                 break;
@@ -251,6 +252,9 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                 break;
             case R.id.ll_me_mywallet:  //我的钱包
                 startActivity(new Intent(getActivity(), Wallet_Activity.class));
+                break;
+            case R.id.img_me_head:  //头像
+                startActivity(new Intent(getActivity(), Personal_Information_Activity.class));
                 break;
             case R.id.img_me_setting: //设置
                 startActivity(new Intent(getActivity(), SettingActivity.class));

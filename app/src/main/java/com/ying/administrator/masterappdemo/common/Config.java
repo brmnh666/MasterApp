@@ -15,6 +15,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 * 常量配置
 * */
 public class Config {
+//    public static final String BASE_URL = "http://192.168.101.11:8810/api/";//服务端地址
     public static final String BASE_URL = "http://47.96.126.145:8001/api/";//服务端地址
    public static final String HEAD_URL="http://47.96.126.145:8820/Pics/Avator/";//头像地址
    public static final String SUB_ACCOUNT_QRCODE="http://47.96.126.145:8001/api/VerifyCode/GetQrCodeToReg?ParentUserID=";//二维码
