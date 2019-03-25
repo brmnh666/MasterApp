@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import com.ying.administrator.masterappdemo.common.DefineView;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment.Appointment_failure_fragment;
@@ -31,6 +32,7 @@ public class Order_Receiving_Activity extends AppCompatActivity implements Defin
      private ViewPager receiving_viewpager;
      private ArrayList<Fragment> fragmentList =new ArrayList<>();
      private LinearLayout ll_return;
+     private ImageView img_actionbar_message;
      //tablout的内容
      private  ArrayList<String> title=new ArrayList<>();
     // private Grabsheet_Fragement grabsheet_fragement;
@@ -61,20 +63,20 @@ public class Order_Receiving_Activity extends AppCompatActivity implements Defin
         tab_Receiving_layout=findViewById(R.id.tab_receiving_layout);
         receiving_viewpager=findViewById(R.id.receiving_viewpager);
         ll_return=findViewById(R.id.ll_return);
+        img_actionbar_message=findViewById(R.id.img_actionbar_message);
+
 
     }
 
     @Override
     public void initValidata() {
-        //显示未读消息红点
-    /*    BadgeView badgeView =new BadgeView(this);
-        badgeView.setTargetView(findViewById(R.id.img_actionbar_message));
-        badgeView.setBadgeCount(8);*/
+
     }
 
     @Override
     public void initListener() {
       ll_return.setOnClickListener(new CustomOnclickListner());
+      img_actionbar_message.setOnClickListener(new CustomOnclickListner());
     }
 
     @Override
@@ -113,6 +115,12 @@ public class Order_Receiving_Activity extends AppCompatActivity implements Defin
         tab_Receiving_layout.setTabMode(TabLayout.MODE_SCROLLABLE);
         receiving_viewpager.setAdapter(tabLayoutViewPagerAdapter);
         tab_Receiving_layout.setupWithViewPager(receiving_viewpager);
+
+        //显示未读消息红点
+    /*   BadgeView badgeView =new BadgeView(this);
+        badgeView.setTargetView(View);
+        badgeView.setBadgeCount(8);*/
+
 
         receiving_viewpager.setCurrentItem(0);//默认第一个
         /*显示哪一个fragment*/
@@ -164,6 +172,12 @@ public class Order_Receiving_Activity extends AppCompatActivity implements Defin
             case R.id.ll_return:
                 Order_Receiving_Activity.this.finish();
                 break;
+            case R.id.img_actionbar_message:
+                setResult(10202);
+                Order_Receiving_Activity.this.finish();
+
+                break;
+
 
         }
         }

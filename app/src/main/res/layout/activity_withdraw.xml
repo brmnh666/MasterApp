@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_white"
@@ -50,7 +51,7 @@
                         android:id="@+id/all_withdraw_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="123.20"
+                        android:text=""
                         android:textColor="#63ABF4"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -81,7 +82,7 @@
                         android:id="@+id/income_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="123.20"
+                        android:text=""
                         android:textColor="#63ABF4"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -275,14 +276,17 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:id="@+id/circle_wechat_iv"
+                        android:id="@+id/img_withdraw_wechat"
                         android:layout_width="15dp"
                         android:layout_height="15dp"
-                        android:src="@mipmap/circle" />
+                        android:src="@drawable/pay_check_selector"
+
+                        />
 
                     <ImageView
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
+                        android:id="@+id/img_wechat"
+                        android:layout_width="17dp"
+                        android:layout_height="match_parent"
                         android:layout_marginLeft="5dp"
                         android:src="@mipmap/wechat_pay" />
 
@@ -303,12 +307,14 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:id="@+id/circle_alipay_iv"
+                        android:id="@+id/img_withdraw_alipay"
                         android:layout_width="15dp"
                         android:layout_height="15dp"
-                        android:src="@mipmap/circle" />
+                        android:src="@drawable/pay_check_selector"
+                         />
 
                     <ImageView
+                        android:id="@+id/img_alipay"
                         android:layout_width="15dp"
                         android:layout_height="15dp"
                         android:layout_marginLeft="5dp"
@@ -333,12 +339,13 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:id="@+id/circle_unionpay_iv"
+                        android:id="@+id/img_withdraw_bank"
                         android:layout_width="15dp"
                         android:layout_height="15dp"
-                        android:src="@mipmap/circle" />
+                        android:src="@drawable/pay_check_selector" />
 
                     <ImageView
+                        android:id="@+id/img_bank"
                         android:layout_width="15dp"
                         android:layout_height="15dp"
                         android:layout_marginLeft="5dp"
@@ -361,7 +368,7 @@
                 android:layout_marginRight="10dp"
                 android:background="#C7C7C7" />
 
-            <LinearLayout
+     <!--       <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:layout_marginLeft="25dp"
@@ -429,7 +436,7 @@
                     android:textColor="#7EC8FF"
                     android:textSize="10sp" />
             </LinearLayout>
-
+-->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -459,7 +466,6 @@
                     android:layout_marginLeft="10dp"
                     android:background="@null"
                     android:gravity="left"
-                    android:hint="1000"
                     android:textSize="25sp"
                     android:textStyle="bold"
                     android:inputType="number"/>

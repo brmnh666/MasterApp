@@ -5,6 +5,7 @@
     android:background="#2891F0">
 
     <ImageView
+        android:visibility="invisible"
         android:id="@+id/img_me_message"
         android:layout_width="21dp"
         android:layout_height="21dp"
@@ -12,6 +13,8 @@
         android:layout_marginTop="15dp"
         android:src="@mipmap/icon_me_message" />
 <TextView
+    android:visibility="invisible"
+    android:id="@+id/tv_me_message"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="消息"

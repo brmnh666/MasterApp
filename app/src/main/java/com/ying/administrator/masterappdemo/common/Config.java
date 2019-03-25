@@ -48,7 +48,6 @@ public class Config {
     static Interceptor interceptor;
 
     public static Interceptor getInterceptor() {
-//        if (null == interceptor) {
         interceptor = new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
@@ -60,7 +59,6 @@ public class Config {
                         .build());
             }
         };
-//        }
         return interceptor;
     }
 
@@ -71,7 +69,6 @@ public class Config {
 
     public static OkHttpClient getClient() {
 
-//        if (null == client) {
         spUtils = SPUtils.getInstance("token");
         if (spUtils.getString("userName")==null){
             client = new OkHttpClient.Builder()
@@ -84,7 +81,6 @@ public class Config {
                     .build();
         }
 
-//        }
         return client;
     }
 

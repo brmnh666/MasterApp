@@ -62,7 +62,6 @@ public abstract class BaseActivity<P extends BasePresenter, M extends BaseModel>
 
     }
 
-    /*???*/
     protected P obtainPresenter() {
         return TUtil.getT(this, 0);
     }

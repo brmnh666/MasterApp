@@ -59,6 +59,9 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
     private static final String ARG_SHOW_TEXT = "text";
     @BindView(R.id.img_me_message)
     ImageView mImgMeMessage;
+    @BindView(R.id.tv_me_message)
+    TextView mTv_me_message;
+
     @BindView(R.id.img_me_setting)
     ImageView mImgMeSetting;
     @BindView(R.id.img_me_head)
@@ -194,6 +197,7 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
         mNormalDshLl.setOnClickListener(this);
         mTvRecharge.setOnClickListener(this);
         mImgMeHead.setOnClickListener(this);
+        mTv_me_message.setOnClickListener(this);
     }
 
     /*获取用户信息*/

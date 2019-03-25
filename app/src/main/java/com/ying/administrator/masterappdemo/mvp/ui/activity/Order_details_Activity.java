@@ -98,11 +98,11 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     @BindView(R.id.ll_service_process)
     LinearLayout mll_service_process;
     @BindView(R.id.iv_manufacturers) //厂家寄件申请
-            ImageView iv_manufacturers;
+    ImageView iv_manufacturers;
     @BindView(R.id.iv_selfbuying) //自购件
-            ImageView iv_selfbuying;
+    ImageView iv_selfbuying;
     @BindView(R.id.et_order_beyond_km)//超出多少千米 输入
-            EditText et_order_beyond_km;
+    EditText et_order_beyond_km;
     @BindView(R.id.iv_map1)
     ImageView mIvMap1;
     @BindView(R.id.iv_map2)
@@ -1021,9 +1021,6 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                     }else if(baseResult.getData().getItem2().equals("操作成功1")){//到返件中去
                         setResult(10002);
                     }
-
-
-
                     Order_details_Activity.this.finish();
                 }
                 break;

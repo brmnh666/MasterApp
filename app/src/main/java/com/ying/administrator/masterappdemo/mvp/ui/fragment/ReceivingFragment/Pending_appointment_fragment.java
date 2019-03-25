@@ -334,7 +334,6 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                                             }
                                             SubUserID=null;
                                             redeploy_adapter.notifyDataSetChanged();
-
                                         }
 
 
@@ -349,7 +348,6 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                             @Override
                             public void onYesClick() {
                               if (SubUserID==null){
-
                               Toast.makeText(getActivity(),"您还没选择子账号进行转派",Toast.LENGTH_SHORT).show();
                                 //  customDialog_redeploy.dismiss(); //没选择人进行选派
                               }
@@ -382,11 +380,6 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                               customDialog_redeploy.dismiss();
                             }
                         });
-
-
-
-
-
                         break;
                     /*转派订单*/
 
@@ -532,11 +525,11 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
     /*取消订单 */
     @Override
     public void UpdateSendOrderState(BaseResult<Data> baseResult) {
-switch (baseResult.getStatusCode()){
+    switch (baseResult.getStatusCode()){
          case 200:
           if (baseResult.getData().isItem1()){
            //mRefreshLayout.autoRefresh();
-              pending_appointment_adapter.remove(cancleposition);
+           pending_appointment_adapter.remove(cancleposition);
           }else {
               Toast.makeText(getActivity(),"取消失败",Toast.LENGTH_LONG).show();
           }

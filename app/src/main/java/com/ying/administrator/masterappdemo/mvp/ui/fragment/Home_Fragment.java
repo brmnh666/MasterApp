@@ -292,7 +292,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
 
 
 
-//实名认证
+        //实名认证
         mTvCertification.setOnClickListener(this);
         //实名认证图片
         mImgCertification.setOnClickListener(this);

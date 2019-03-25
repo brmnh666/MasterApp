@@ -3,9 +3,11 @@ package com.ying.administrator.masterappdemo.mvp.ui.activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -248,7 +250,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
                     if (userInfo.getIfAuth().equals("1")) {
                         Intent intent = new Intent(MainActivity.this, Order_Receiving_Activity.class);
                         intent.putExtra("intent", "pending_appointment");
-                        startActivity(intent);
+                        startActivityForResult(intent,20202);
                     } else if (userInfo.getIfAuth().equals("0")) {
                         under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_under_review, null);
                         btnConfirm = under_review.findViewById(R.id.btn_confirm);
@@ -303,5 +305,19 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
         mLlCar.setSelected(false);
         mLlMine.setSelected(false);
         linearLayout.setSelected(true);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode==10202){
+            if (requestCode==20202){
+                Log.d("=========>","进入onActivityResult");
+                mViewPager.setCurrentItem(1);
+                tabSelected(mLlMessage);
+            }
+
+        }
+
     }
 }
