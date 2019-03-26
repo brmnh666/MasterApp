@@ -33,6 +33,7 @@ public class WebActivity extends BaseActivity {
     @BindView(R.id.webview)
     WebView mWebview;
     private String url = "";
+    private String Title;
 
 
     @Override
@@ -42,9 +43,10 @@ public class WebActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        mTvActionbarTitle.setText("文章标题");
 //        url = "https://h5.emjiayuan.com/Public/app/about/company.html";
         url=getIntent().getStringExtra("Url");
+        Title =getIntent().getStringExtra("Title");
+        mTvActionbarTitle.setText(Title);
         mWebview.loadUrl(url);
         WebSettings webSettings = mWebview.getSettings();
         webSettings.setDomStorageEnabled(true);

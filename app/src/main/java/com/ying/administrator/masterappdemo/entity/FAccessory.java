@@ -39,7 +39,7 @@ public class FAccessory implements Serializable {
     }
 
     public static class OrderAccessoryStrBean {
-
+        private String Memo;
         private List<OrderAccessoryBean> OrderAccessory;
 
         public List<OrderAccessoryBean> getOrderAccessory() {
@@ -48,6 +48,14 @@ public class FAccessory implements Serializable {
 
         public void setOrderAccessory(List<OrderAccessoryBean> OrderAccessory) {
             this.OrderAccessory = OrderAccessory;
+        }
+
+        public String getAccessoryMemo() {
+            return Memo;
+        }
+
+        public void setAccessoryMemo(String accessoryMemo) {
+            Memo = accessoryMemo;
         }
 
         public static class OrderAccessoryBean {

@@ -213,6 +213,12 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
     TextView mTvPhone;
     @BindView(R.id.tv_address)
     TextView mTvAddress;
+    @BindView(R.id.et_memo)
+    EditText mEtMemo;
+    @BindView(R.id.tv_accessory_memo)
+    TextView mTvAccessoryMemo;
+    @BindView(R.id.tv_accessory_sequency)
+    TextView mTvAccessorySequency;
     private String OrderID;
     private WorkOrder.DataBean data;
     private ReturnAccessoryAdapter returnAccessoryAdapter;
@@ -282,6 +288,7 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
     private double money;
     private SAccessory sAccessory;
     private int type;
+    private String AccessoryMemo;
 
     @Override
     protected int setLayoutId() {
@@ -723,6 +730,7 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
         gson = new Gson();
         switch (type) {
             case 1:
+                AccessoryMemo = mEtMemo.getText().toString().trim();
                 if (select_state == -1) {
                     ToastUtils.showShort("请选择配件类型");
                 } else {
@@ -731,6 +739,7 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                     } else {
                         orderAccessoryStrBean = new FAccessory.OrderAccessoryStrBean();
                         orderAccessoryStrBean.setOrderAccessory(mPre_order_add_ac_adapter.getData());
+                        orderAccessoryStrBean.setAccessoryMemo(AccessoryMemo);
                         String s1 = gson.toJson(orderAccessoryStrBean);
                         sAccessory = new SAccessory();
                         sAccessory.setOrderID(OrderID);
@@ -787,6 +796,8 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
             case 200:
                 data = baseResult.getData();
                 mTvStatus.setText(data.getStateStr());
+                mTvAccessoryMemo.setText("备注：" + data.getAccessoryMemo());
+                mTvAccessorySequency.setText("寄件类型：" + data.getAccessorySequencyStr());
                 mTvName.setText(data.getUserName());
                 mTvPhone.setText(data.getPhone());
                 mTvAddress.setText(data.getAddress());

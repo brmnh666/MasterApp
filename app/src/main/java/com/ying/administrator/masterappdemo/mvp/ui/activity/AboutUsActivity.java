@@ -42,6 +42,7 @@ public class AboutUsActivity extends BaseActivity implements View.OnClickListene
     TextView mTvPhoneNumber;
     @BindView(R.id.tv_company_english)
     TextView mTvCompanyEnglish;
+    private Intent intent;
 
     @Override
     protected int setLayoutId() {
@@ -64,6 +65,7 @@ public class AboutUsActivity extends BaseActivity implements View.OnClickListene
     protected void setListener() {
         mLlReturn.setOnClickListener(this);
         mTvOpinion.setOnClickListener(this);
+        mTvUserAgreement.setOnClickListener(this);
     }
 
     @Override
@@ -81,6 +83,12 @@ public class AboutUsActivity extends BaseActivity implements View.OnClickListene
                 break;
             case R.id.tv_opinion:
                 startActivity(new Intent(mActivity,Opinion_Activity.class));
+                break;
+            case R.id.tv_user_Agreement:
+                intent =new Intent(mActivity,WebActivity.class);
+                intent.putExtra("Url","file:////android_asset/agreement.html");
+                intent.putExtra("Title","用户协议");
+                startActivity(intent);
                 break;
         }
     }

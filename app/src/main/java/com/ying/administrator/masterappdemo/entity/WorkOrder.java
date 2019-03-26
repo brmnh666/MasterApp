@@ -172,6 +172,7 @@ public class WorkOrder implements Serializable {
         private String BeyondDistance;
         private String Accessory;
         private String AccessorySequency;
+        private String AccessoryMemo;
         private String AccessoryApplyState;
         private String AccessoryState;
         private String AccessorySendState;
@@ -201,6 +202,14 @@ public class WorkOrder implements Serializable {
         private int page;
         private int limit;
         private int Version;
+
+        public String getAccessoryMemo() {
+            return AccessoryMemo==null?"":AccessoryMemo;
+        }
+
+        public void setAccessoryMemo(String accessoryMemo) {
+            AccessoryMemo = accessoryMemo;
+        }
 
         public List<com.ying.administrator.masterappdemo.entity.OrderBeyondImg> getOrderBeyondImg() {
             return OrderBeyondImg;
@@ -679,6 +688,23 @@ public class WorkOrder implements Serializable {
 
         public String getAccessorySequency() {
             return AccessorySequency;
+        }
+        public String getAccessorySequencyStr() {
+            String AccessorySequencyStr="";
+            switch(AccessoryState){
+                case "0":
+                    AccessorySequencyStr="厂家自购件";
+                    break;
+                case "1":
+                    AccessorySequencyStr="师傅自购件";
+                    break;
+                case "2":
+                    AccessorySequencyStr="用户自购件";
+                    break;
+                default:
+                    break;
+            }
+            return AccessorySequencyStr;
         }
 
         public void setAccessorySequency(String AccessorySequency) {

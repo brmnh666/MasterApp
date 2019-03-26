@@ -90,6 +90,7 @@ public class ArticleActivity extends BaseActivity<ArticlePresenter, ArticleModel
                     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                         Intent intent=new Intent(mActivity,WebActivity.class);
                         intent.putExtra("Url",list.get(position).getUrl());
+                        intent.putExtra("Title",list.get(position).getTitle());
                         startActivity(intent);
                     }
                 });

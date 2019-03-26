@@ -157,6 +157,8 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
     TextView mTvPhone;
     @BindView(R.id.tv_address)
     TextView mTvAddress;
+    @BindView(R.id.et_memo)
+    EditText mEtMemo;
     private String orderID;//工单号
     private WorkOrder.DataBean data = new WorkOrder.DataBean();
     private ArrayList<GAccessory> gAccessories = new ArrayList<>();//获得工厂返回的已选配件
@@ -257,6 +259,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
     private View popupWindow_view;
     private PopupWindow mPopupWindow;
     private SimpleTarget<Bitmap> simpleTarget;
+    private String AccessoryMemo;
 
     @Override
     protected int setLayoutId() {
@@ -652,6 +655,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
         gson = new Gson();
         switch (type) {
             case 1:
+                AccessoryMemo =mEtMemo.getText().toString().trim();
                 if (select_state == -1) {
                     ToastUtils.showShort("请选择配件类型");
                 } else {
@@ -660,9 +664,11 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                     } else {
                         orderAccessoryStrBean = new FAccessory.OrderAccessoryStrBean();
                         orderAccessoryStrBean.setOrderAccessory(mPre_order_add_ac_adapter.getData());
+                        orderAccessoryStrBean.setAccessoryMemo(AccessoryMemo);
                         String s1 = gson.toJson(orderAccessoryStrBean);
                         sAccessory = new SAccessory();
                         sAccessory.setOrderID(orderID);
+
                         sAccessory.setAccessorySequency(Integer.toString(select_state));
                         sAccessory.setOrderAccessoryStr(s1);
                         String s = gson.toJson(sAccessory);
@@ -717,6 +723,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
             case 200:
                 data = baseResult.getData();
                 mTvName.setText(data.getUserName());
+                mEtMemo.setText(data.getAccessoryMemo());
                 mTvPhone.setText(data.getPhone());
                 mTvAddress.setText(data.getAddress());
                 tv_order_details_state.setText(data.getStateStr());
