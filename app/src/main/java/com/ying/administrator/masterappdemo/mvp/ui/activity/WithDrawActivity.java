@@ -44,6 +44,8 @@ import com.ying.administrator.masterappdemo.mvp.presenter.WithDrawPresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.PopwidowBankAdapter;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -348,6 +350,7 @@ switch (baseResult.getStatusCode()){
     case 200:
         if (baseResult.getData().isItem1()){
             Toast.makeText(this,baseResult.getData().getItem2(),Toast.LENGTH_SHORT).show();
+            EventBus.getDefault().post("");
             WithDrawActivity.this.finish();
         }else {
             Toast.makeText(this,baseResult.getData().getItem2(),Toast.LENGTH_SHORT).show();

@@ -493,8 +493,9 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 /*设置金额*/
                 String TotalMoney = String.valueOf(userInfo.getTotalMoney());
                 String FrozenMoney = String.valueOf(userInfo.getFrozenMoney());//冻结金额
-                String can_withdraw = String.valueOf(userInfo.getTotalMoney() - userInfo.getFrozenMoney());//可提现余额=总金额-冻结金额
-                mTvHomeAvailableBalance.setText("可提现余额: " + can_withdraw + "元");
+               // String can_withdraw = String.valueOf(userInfo.getTotalMoney() - userInfo.getFrozenMoney());//可提现余额=总金额-冻结金额
+                String format = String.format("%.2f", userInfo.getTotalMoney() - userInfo.getFrozenMoney());
+                mTvHomeAvailableBalance.setText("可提现余额: " + format + "元");
                 mTvHomeOutstandingAmount.setText("未完结金额: " + FrozenMoney + "元");
                 mTvHomeGivingMoney.setText("赠 送 金 额: 暂无");
                 break;

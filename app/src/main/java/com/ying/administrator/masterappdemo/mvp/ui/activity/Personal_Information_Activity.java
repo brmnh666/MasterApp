@@ -323,11 +323,6 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
 
                 }
 
-
-
-
-
-
                 break;
                 default:
                     break;
@@ -644,9 +639,6 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
            mPresenter.UpdateSex(userID,"女");
            userInfo.setSex("女");
        }
-
-
-
 
     }
 
