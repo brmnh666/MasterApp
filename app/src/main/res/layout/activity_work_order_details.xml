@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="23dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginBottom="40dp"
                 android:orientation="vertical">
 
@@ -63,7 +63,7 @@
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="139dp"
+            android:layout_height="110dp"
             android:layout_gravity="right"
             android:layout_marginTop="20dp"
             android:layout_marginRight="24dp"
@@ -237,13 +237,68 @@
                         android:layout_height="1dp"
                         android:layout_marginTop="14dp"
                         android:background="#DCDCDC" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="@dimen/dp_10"
+                        android:orientation="horizontal">
 
+                        <ImageView
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="33dp"
+                            android:src="@drawable/address" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="9dp"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/tv_name"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="20dp"
+                                    android:text="刘波"
+                                    android:textColor="#333333"
+                                    android:textSize="15sp" />
+
+                                <TextView
+                                    android:id="@+id/tv_phone"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="20dp"
+                                    android:layout_marginTop="20dp"
+                                    android:text="86-13963560259"
+                                    android:textColor="#898989"
+                                    android:textSize="15sp" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/tv_address"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginRight="20dp"
+                                android:text="山东/聊城市/东昌府区/水城雅居一号楼一单元5楼东户"
+                                android:textColor="#333333"
+                                android:textSize="15dp" />
+                        </LinearLayout>
+                    </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="17dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="15dp"
+                        android:visibility="gone"
                         android:orientation="horizontal">
 
                         <TextView
@@ -408,7 +463,7 @@
                             android:layout_marginLeft="12dp"
                             android:layout_marginTop="16dp"
                             android:layout_marginBottom="16dp"
-                            android:text="返件信息"
+                            android:text="寄件信息"
                             android:textColor="#000000"
                             android:textSize="16sp" />
 

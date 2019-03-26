@@ -207,6 +207,12 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
     TextView mTvSubmitBeyond;
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout mRefreshLayout;
+    @BindView(R.id.tv_name)
+    TextView mTvName;
+    @BindView(R.id.tv_phone)
+    TextView mTvPhone;
+    @BindView(R.id.tv_address)
+    TextView mTvAddress;
     private String OrderID;
     private WorkOrder.DataBean data;
     private ReturnAccessoryAdapter returnAccessoryAdapter;
@@ -781,6 +787,9 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
             case 200:
                 data = baseResult.getData();
                 mTvStatus.setText(data.getStateStr());
+                mTvName.setText(data.getUserName());
+                mTvPhone.setText(data.getPhone());
+                mTvAddress.setText(data.getAddress());
                 mTvWorkOrderNumber.setText(data.getOrderID());
                 mTvOrderTime.setText(data.getAudDate().replace("T", " ")); //将T替换为空格
                 mTvCauseOfIssue.setText(data.getMemo());
@@ -806,6 +815,8 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                 distance = Double.parseDouble(data.getDistance());
                 if (Service_range >= distance) {
                     mTvRemoteKm.setText("0km");
+                    mLlApplyBeyond.setVisibility(View.GONE);
+                    mLlApproveBeyondMoney.setVisibility(View.GONE);
                 } else {
                     mTvRemoteKm.setText(distance - Service_range + "km");
                 }
@@ -820,9 +831,9 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                 } else if (!"".equals(AccessoryApplyState) && "".equals(ServiceApplyState) && BeyondState == null) {
                     //ynn
                     if ("1".equals(AccessoryApplyState)) {
-                        if ("Y".equals(data.getAccessorySendState())){
+                        if ("Y".equals(data.getAccessorySendState())) {
                             mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                        }else{
+                        } else {
                             mBtnCompleteSubmit.setVisibility(View.VISIBLE);
                         }
                     } else {
@@ -845,9 +856,9 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                 } else if (!"".equals(AccessoryApplyState) && !"".equals(ServiceApplyState) && BeyondState == null) {
                     //yyn
                     if ("1".equals(AccessoryApplyState) && "1".equals(ServiceApplyState)) {
-                        if ("Y".equals(data.getAccessorySendState())){
+                        if ("Y".equals(data.getAccessorySendState())) {
                             mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                        }else{
+                        } else {
                             mBtnCompleteSubmit.setVisibility(View.VISIBLE);
                         }
                     } else {
@@ -856,9 +867,9 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                 } else if (!"".equals(AccessoryApplyState) && "".equals(ServiceApplyState) && BeyondState != null) {
                     //yny
                     if ("1".equals(AccessoryApplyState) && "1".equals(BeyondState)) {
-                        if ("Y".equals(data.getAccessorySendState())){
+                        if ("Y".equals(data.getAccessorySendState())) {
                             mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                        }else{
+                        } else {
                             mBtnCompleteSubmit.setVisibility(View.VISIBLE);
                         }
                     } else {
@@ -874,9 +885,9 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                 } else {
                     //yyy
                     if ("1".equals(AccessoryApplyState) && "1".equals(ServiceApplyState) && "1".equals(BeyondState)) {
-                        if ("Y".equals(data.getAccessorySendState())){
+                        if ("Y".equals(data.getAccessorySendState())) {
                             mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                        }else{
+                        } else {
                             mBtnCompleteSubmit.setVisibility(View.VISIBLE);
                         }
                     } else {

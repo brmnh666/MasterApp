@@ -51,7 +51,6 @@ import com.ying.administrator.masterappdemo.entity.FAccessory;
 import com.ying.administrator.masterappdemo.entity.FService;
 import com.ying.administrator.masterappdemo.entity.GAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
-import com.ying.administrator.masterappdemo.entity.GetFactorySeviceData;
 import com.ying.administrator.masterappdemo.entity.SService;
 import com.ying.administrator.masterappdemo.entity.STotalAS;
 import com.ying.administrator.masterappdemo.entity.Service;
@@ -98,11 +97,11 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     @BindView(R.id.ll_service_process)
     LinearLayout mll_service_process;
     @BindView(R.id.iv_manufacturers) //厂家寄件申请
-    ImageView iv_manufacturers;
+            ImageView iv_manufacturers;
     @BindView(R.id.iv_selfbuying) //自购件
-    ImageView iv_selfbuying;
+            ImageView iv_selfbuying;
     @BindView(R.id.et_order_beyond_km)//超出多少千米 输入
-    EditText et_order_beyond_km;
+            EditText et_order_beyond_km;
     @BindView(R.id.iv_map1)
     ImageView mIvMap1;
     @BindView(R.id.iv_map2)
@@ -225,6 +224,18 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     LinearLayout mLlSelfbuyingUser;
     @BindView(R.id.tv_remote_km)
     TextView mTvRemoteKm;
+    @BindView(R.id.tv_name)
+    TextView mTvName;
+    @BindView(R.id.tv_phone)
+    TextView mTvPhone;
+    @BindView(R.id.tv_address)
+    TextView mTvAddress;
+    @BindView(R.id.ll_add_accessory)
+    LinearLayout mLlAddAccessory;
+    @BindView(R.id.ll_add_service)
+    LinearLayout mLlAddService;
+    @BindView(R.id.ll_approve_beyond_money)
+    LinearLayout mLlApproveBeyondMoney;
 
     private WorkOrder.DataBean data = new WorkOrder.DataBean();
     private List<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> fAcList = new ArrayList<>();// 工厂自购件
@@ -894,7 +905,9 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                 data = baseResult.getData();
                 // Log.d("getOrderIDgetOrderID",data.getOrderID()+" "+data.getMemo()+" "+data.getBrandName());
                 mTvOrderDetailsState.setText(data.getStateStr());
-
+                mTvName.setText(data.getUserName());
+                mTvPhone.setText(data.getPhone());
+                mTvAddress.setText(data.getAddress());
                 tv_order_details_orderid.setText(data.getOrderID());
                 tv_order_details_receiving_time.setText(data.getAudDate().replace("T", " ")); //将T替换为空格
                 tv_order_details_reason.setText(data.getMemo());
@@ -1021,6 +1034,8 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                     }else if(baseResult.getData().getItem2().equals("操作成功1")){//到返件中去
                         setResult(10002);
                     }
+
+
                     Order_details_Activity.this.finish();
                 }
                 break;
@@ -1068,7 +1083,6 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     /*申请远程费*/
     @Override
     public void ApplyBeyondMoney(BaseResult<Data<String>> baseResult) {
-
 
 
     }

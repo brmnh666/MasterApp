@@ -11,6 +11,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
 import android.os.Vibrator;
 import android.provider.MediaStore;
@@ -78,6 +79,7 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -149,6 +151,12 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
     LinearLayout mLlOutOfServiceImg;
     @BindView(R.id.ll_approve_beyond_money)
     LinearLayout mLlApproveBeyondMoney;
+    @BindView(R.id.tv_name)
+    TextView mTvName;
+    @BindView(R.id.tv_phone)
+    TextView mTvPhone;
+    @BindView(R.id.tv_address)
+    TextView mTvAddress;
     private String orderID;//工单号
     private WorkOrder.DataBean data = new WorkOrder.DataBean();
     private ArrayList<GAccessory> gAccessories = new ArrayList<>();//获得工厂返回的已选配件
@@ -240,7 +248,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
     private Gson gson;
     private RequestBody body;
     private int remote_fee;
-    private double Service_range=15;//正常距离
+    private double Service_range = 15;//正常距离
     private double distance;
     private double money;
     private HashMap<Integer, File> files_map_remote = new HashMap<>();//申请远程费图片
@@ -430,18 +438,18 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                 break;
             /*提交工单*/
             case R.id.tv_detail_submit:
-                if (files_map_remote.size()>0){
+                if (files_map_remote.size() > 0) {
                     OrderByondImgPicUpload(files_map_remote);
-                }else{
+                } else {
                     submit();
                 }
                 break;
 
             case R.id.iv_map1:
-                showPopupWindow(901,909);
+                showPopupWindow(901, 909);
                 break;
             case R.id.iv_map2:
-                showPopupWindow(1001,1002);
+                showPopupWindow(1001, 1002);
                 break;
 
             default:
@@ -684,16 +692,16 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                 if (mEtOrderBeyondKm.getText().toString().equals("")) {//什么都不输入
                     distance = Double.parseDouble(data.getDistance());
                     money = distance - Service_range;
-                    if (money<0){
+                    if (money < 0) {
                         ToastUtils.showShort("未超出正常服务范围");
                         return;
                     }
                 } else {
                     //用户自己输入
-                    money=Double.parseDouble(mEtOrderBeyondKm.getText().toString());
-                    distance=Double.parseDouble(mEtOrderBeyondKm.getText().toString());
+                    money = Double.parseDouble(mEtOrderBeyondKm.getText().toString());
+                    distance = Double.parseDouble(mEtOrderBeyondKm.getText().toString());
                 }
-                mPresenter.ApplyBeyondMoney(orderID,money+"",distance+"");
+                mPresenter.ApplyBeyondMoney(orderID, money + "", distance + "");
                 break;
             default:
                 break;
@@ -708,7 +716,9 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
 
             case 200:
                 data = baseResult.getData();
-
+                mTvName.setText(data.getUserName());
+                mTvPhone.setText(data.getPhone());
+                mTvAddress.setText(data.getAddress());
                 tv_order_details_state.setText(data.getStateStr());
                 /*判断是选中了那个*/
                 if (data.getAccessoryState() == null) {//未选择
@@ -886,14 +896,14 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
     /*提交配件信息*/
     @Override
     public void AddOrderAccessory(BaseResult<Data> baseResult) {
-        switch(baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData().isItem1()){
+                if (baseResult.getData().isItem1()) {
                     ToastUtils.showShort("提交成功");
                     EventBus.getDefault().post("");
                     finish();
-                }else{
-                    ToastUtils.showShort((String)baseResult.getData().getItem2());
+                } else {
+                    ToastUtils.showShort((String) baseResult.getData().getItem2());
                 }
                 break;
             default:
@@ -904,13 +914,13 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
     /**/
     @Override
     public void AddOrderService(BaseResult<Data> baseResult) {
-        switch(baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData().isItem1()){
+                if (baseResult.getData().isItem1()) {
                     ToastUtils.showShort("提交成功");
                     EventBus.getDefault().post("");
                     finish();
-                }else{
+                } else {
                     ToastUtils.showShort("提交失败");
                 }
                 break;
@@ -968,11 +978,11 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
 
     @Override
     public void OrderByondImgPicUpload(BaseResult<Data<String>> baseResult) {
-        switch(baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData().isItem1()){
+                if (baseResult.getData().isItem1()) {
                     submit();
-                }else{
+                } else {
                     ToastUtils.showShort("远程费图片上传失败");
                 }
                 break;
@@ -983,13 +993,13 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
 
     @Override
     public void ApplyBeyondMoney(BaseResult<Data<String>> baseResult) {
-        switch(baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData().isItem1()){
+                if (baseResult.getData().isItem1()) {
                     ToastUtils.showShort("提交成功");
                     EventBus.getDefault().post("");
                     finish();
-                }else{
+                } else {
                     ToastUtils.showShort("提交失败");
                 }
                 break;
@@ -1172,6 +1182,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
         }
         MyUtils.setWindowAlpa(mActivity, true);
     }
+
     //请求权限
     private boolean requestPermissions() {
         if (Build.VERSION.SDK_INT >= 23) {
@@ -1264,5 +1275,12 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
         builder.addFormDataPart("OrderID", orderID);
         MultipartBody requestBody = builder.build();
         mPresenter.OrderByondImgPicUpload(requestBody);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }
