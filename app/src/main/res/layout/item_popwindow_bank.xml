@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:id="@+id/rl_popwindow_bank"
+    >
+    <TextView
+        android:id="@+id/tv_bank_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="银行名"
+        android:textSize="15sp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="20dp"/>
+<TextView
+    android:id="@+id/tv_bank_num"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_toRightOf="@+id/tv_bank_name"
+    android:layout_centerVertical="true"
+    android:textSize="15sp"
+    android:text="(1213)"
+    />
+    
+    <ImageView
+        android:id="@+id/img_bankcheck"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:src="@drawable/pay_check_selector"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="20dp"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_custom_06"
+        android:layout_alignParentBottom="true"
+        />
+</RelativeLayout>

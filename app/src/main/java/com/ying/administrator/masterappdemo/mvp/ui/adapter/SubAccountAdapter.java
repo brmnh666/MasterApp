@@ -51,13 +51,24 @@ private ImageView img_avatar;
         }else {
             helper.setText(R.id.tv_skill,"技能:"+item.getSkills());
         }
+        if (item.getServiceTotalMoney()==null){
+            helper.setText(R.id.tv_completion_amount,"0");
+        }else {
 
-        helper.setText(R.id.tv_completion_amount,"1111");//完成金额 未实现
+            helper.setText(R.id.tv_completion_amount,item.getServiceTotalMoney());
+        }
 
-        helper.setText(R.id.tv_amount_completed,"1212");//完成数量  未实现
+        if (item.getServiceTotalOrderNum()==null){
+            helper.setText(R.id.tv_amount_completed,"0");
+        }else {
+            helper.setText(R.id.tv_amount_completed,item.getServiceComplaintNum());
+        }
 
-        helper.setText(R.id.tv_being_complain,"0");  //被投诉  未实现
-
+        if (item.getServiceComplaintNum()==null){
+            helper.setText(R.id.tv_being_complain,"0");
+        }else {
+            helper.setText(R.id.tv_being_complain,item.getServiceComplaintNum());
+        }
 
         helper.addOnClickListener(R.id.tv_close_account).addOnClickListener(R.id.img_tv_close_account);//注销账号
 

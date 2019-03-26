@@ -94,6 +94,9 @@ public class SubUserInfo implements Serializable {
         private String Sex;
         private String Phone;
         private String RoleID;
+        private String ServiceTotalMoney;//完成金额
+        private String ServiceTotalOrderNum;//完成数量
+        private String ServiceComplaintNum;//被投诉数量
         private int page;
         private int limit;
         private int Version;
@@ -101,6 +104,30 @@ public class SubUserInfo implements Serializable {
 
         private List<?> AccountDetail;
         private List<?> AccountServiceArea;
+
+        public String getServiceTotalMoney() {
+            return ServiceTotalMoney;
+        }
+
+        public void setServiceTotalMoney(String serviceTotalMoney) {
+            ServiceTotalMoney = serviceTotalMoney;
+        }
+
+        public String getServiceTotalOrderNum() {
+            return ServiceTotalOrderNum;
+        }
+
+        public void setServiceTotalOrderNum(String serviceTotalOrderNum) {
+            ServiceTotalOrderNum = serviceTotalOrderNum;
+        }
+
+        public String getServiceComplaintNum() {
+            return ServiceComplaintNum;
+        }
+
+        public void setServiceComplaintNum(String serviceComplaintNum) {
+            ServiceComplaintNum = serviceComplaintNum;
+        }
 
         public boolean isIscheck() {
             return ischeck;

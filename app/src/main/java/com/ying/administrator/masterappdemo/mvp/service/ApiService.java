@@ -23,6 +23,7 @@ import com.ying.administrator.masterappdemo.entity.Service;
 import com.ying.administrator.masterappdemo.entity.Skill;
 import com.ying.administrator.masterappdemo.entity.SubUserInfo;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
+import com.ying.administrator.masterappdemo.entity.WithDrawMoney;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 
 import java.util.List;
@@ -32,6 +33,7 @@ import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 public interface ApiService {
@@ -582,5 +584,20 @@ public interface ApiService {
                                                                       @Field("limit") String limit,
                                                                       @Field("page") String page);
 
+
+
+
+    /*提现页面获取提现页面的数据*/
+    @FormUrlEncoded
+    @POST("Account/GetDepositMoneyDisplay")
+    Observable<BaseResult<WithDrawMoney>> GetDepositMoneyDisplay(@Field("UserID") String UserID);
+
+
+    /*提现*/
+    @FormUrlEncoded
+    @POST("Account/WithDraw")
+    Observable<BaseResult<Data<String>>> WithDraw(@Field("DrawMoney") String DrawMoney,
+                                                  @Field("CardNo") String CardNo,
+                                                  @Field("UserID") String UserID);
 
 }

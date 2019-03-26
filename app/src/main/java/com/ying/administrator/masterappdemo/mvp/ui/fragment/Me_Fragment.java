@@ -216,7 +216,9 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                             .into(mImgMeHead);
                 }
                 /*显示余额*/
-                mTv_me_withdraw.setText(userInfo.getTotalMoney()+"");
+
+                String can_withdraw = String.valueOf(userInfo.getTotalMoney() - userInfo.getFrozenMoney());//可提现余额=总金额-冻结金额
+                mTv_me_withdraw.setText(can_withdraw);
 
 
                 break;
