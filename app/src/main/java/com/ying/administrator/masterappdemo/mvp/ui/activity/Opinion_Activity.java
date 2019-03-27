@@ -93,6 +93,10 @@ public class Opinion_Activity extends BaseActivity implements View.OnClickListen
                 break;
             case R.id.btn_opinion:
                 content =mEtOpinion.getText().toString().trim();
+                if ("".equals(type)){
+                    MyUtils.showToast(mActivity,"请选择问题类型");
+                    return;
+                }
                 if ("".equals(content)){
                     MyUtils.showToast(mActivity,"请输入反馈内容");
                     return;

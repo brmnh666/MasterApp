@@ -350,6 +350,8 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                 mRefreshLayout.finishRefresh(3000);
             }
         });
+
+        mAdd_Service_Adapter = new Add_Service_Adapter(R.layout.item_addservice, mList_service);
     }
 
 
@@ -695,7 +697,7 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
         tv_add_service_submit = add_service_view.findViewById(R.id.tv_add_service_submit);
         recyclerView_custom_add_service = add_service_view.findViewById(R.id.recyclerView_custom_add_service);
         recyclerView_custom_add_service.setLayoutManager(new LinearLayoutManager(mActivity));
-        mAdd_Service_Adapter = new Add_Service_Adapter(R.layout.item_addservice, mList_service);
+
         recyclerView_custom_add_service.setAdapter(mAdd_Service_Adapter);
         mAdd_Service_Adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
