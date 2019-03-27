@@ -443,7 +443,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                 break;
             /*添加服务*/
             case R.id.tv_order_detail_add_service:
-                addService();
+                mPresenter.GetFactoryService(data.getBrandID() + "", data.getCategoryID() + "");
                 break;
             /*提交工单*/
             case R.id.tv_detail_submit:
@@ -654,7 +654,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                 add_service_dialog.dismiss();
             }
         });
-        mPresenter.GetFactoryService(data.getBrandID() + "", data.getCategoryID() + "");
+
     }
 
     public void submit() {
@@ -869,11 +869,11 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                 if ("0".equals(baseResult.getData().getCode())) {
                     ac_list = baseResult.getData().getData();
                     if (ac_list == null) {
-                        ToastUtils.showShort("无配件");
+                        MyUtils.showToast(mActivity,"无配件，请联系管理员");
                         return;
                     }
                     if (ac_list.size() == 0) {
-                        ToastUtils.showShort("无配件");
+                        MyUtils.showToast(mActivity,"无配件，请联系管理员");
                         return;
                     }
                     ac_list_adapter = new Ac_List_Adapter(R.layout.item_accessory, ac_list);
@@ -895,6 +895,11 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                 if ("0".equals(baseResult.getData().getCode())) {
                     mList_service = baseResult.getData().getData();
                     mAdd_Service_Adapter.setNewData(mList_service);
+                    if (mList_service.size()==0){
+                        MyUtils.showToast(mActivity,"无服务，请联系管理员");
+                    }else{
+                        addService();
+                    }
                 } else {
 
                 }

@@ -1,6 +1,7 @@
 package com.ying.administrator.masterappdemo.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GetFactoryData<T> implements Serializable {
@@ -34,7 +35,7 @@ public class GetFactoryData<T> implements Serializable {
     }
 
     public List<T> getData() {
-        return data;
+        return data==null?new ArrayList<T>():data;
     }
 
     public void setData(List<T> data) {
