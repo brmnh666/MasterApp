@@ -299,6 +299,12 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     private ImageView iv_check;
     private TextView tv_add_service_submit;
     private String AccessoryMemo;
+    private View customdialog_home_view;
+    private AlertDialog customdialog_home_dialog;
+    private TextView title;
+    private TextView message;
+    private Button negtive;
+    private Button positive;
 
     @Override
     protected int setLayoutId() {
@@ -1033,7 +1039,36 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
             case 200:
                 if (!baseResult.getData().isItem1()) {
 
-                    Toast.makeText(this, baseResult.getData().getItem2(), Toast.LENGTH_LONG).show();
+                    if ("支付出错，添加失败".equals(baseResult.getData().getItem2())){
+                        customdialog_home_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_home, null);
+                        customdialog_home_dialog = new AlertDialog.Builder(mActivity)
+                                .setView(customdialog_home_view)
+                                .create();
+                        customdialog_home_dialog.show();
+                        title = customdialog_home_view.findViewById(R.id.title);
+                        message = customdialog_home_view.findViewById(R.id.message);
+                        negtive = customdialog_home_view.findViewById(R.id.negtive);
+                        positive = customdialog_home_view.findViewById(R.id.positive);
+                        title.setText("提示");
+                        message.setText("余额不足，是否充值？");
+                        negtive.setText("否");
+                        positive.setText("是");
+                        negtive.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                customdialog_home_dialog.dismiss();
+                            }
+                        });
+                        positive.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                startActivity(new Intent(mActivity,RechargeActivity.class));
+                                customdialog_home_dialog.dismiss();
+                            }
+                        });
+                    }else{
+                        ToastUtils.showShort( baseResult.getData().getItem2());
+                    }
                 } else {
                     //Intent intent=new Intent();
                     //intent.putExtra("successposition",getIntent().getIntExtra("successposition",0));

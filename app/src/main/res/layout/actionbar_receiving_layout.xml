@@ -38,7 +38,7 @@
         android:singleLine="true"
         android:maxLength="10"
         android:layout_marginRight="60dp"
-        android:text=""
+        android:text="接单"
         android:textSize="20sp"
         android:textColor="@color/color_white"
 
