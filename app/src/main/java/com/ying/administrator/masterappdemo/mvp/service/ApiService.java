@@ -600,4 +600,17 @@ public interface ApiService {
                                                   @Field("CardNo") String CardNo,
                                                   @Field("UserID") String UserID);
 
+    /**
+     * 意见反馈
+     * @param UserID 用户id
+     * @param BackType  1.账号问题 2.支付问题 3.其他问题
+     * @param Content 描述
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("Account/AddOpinion")
+    Observable<BaseResult<Data<String>>> AddOpinion(@Field("UserID") String UserID,
+                                                  @Field("BackType") String BackType,
+                                                  @Field("Content") String Content);
+
 }

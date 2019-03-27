@@ -8,13 +8,20 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
+import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.mvp.contract.OpinionContract;
+import com.ying.administrator.masterappdemo.mvp.model.OpinionModel;
+import com.ying.administrator.masterappdemo.mvp.presenter.OpinionPresenter;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 
 import butterknife.BindView;
 
-public class Opinion_Activity extends BaseActivity implements View.OnClickListener {
+public class Opinion_Activity extends BaseActivity<OpinionPresenter, OpinionModel> implements View.OnClickListener, OpinionContract.View {
     @BindView(R.id.img_actionbar_return)
     ImageView mImgActionbarReturn;
     @BindView(R.id.tv_actionbar_return)
@@ -42,6 +49,7 @@ public class Opinion_Activity extends BaseActivity implements View.OnClickListen
 
     private String type="";
     private String content;
+    private String userId;
 
     @Override
     protected int setLayoutId() {
@@ -50,7 +58,8 @@ public class Opinion_Activity extends BaseActivity implements View.OnClickListen
 
     @Override
     protected void initData() {
-
+        SPUtils spUtils=SPUtils.getInstance("token");
+        userId = spUtils.getString("userName");
     }
 
     @Override
@@ -101,11 +110,30 @@ public class Opinion_Activity extends BaseActivity implements View.OnClickListen
                     MyUtils.showToast(mActivity,"请输入反馈内容");
                     return;
                 }
-
+                mPresenter.AddOpinion(userId,type,content);
                 break;
 
         }
 
     }
 
+    @Override
+    public void AddOpinion(BaseResult<Data<String>> baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                Data<String> data=baseResult.getData();
+                if (data.isItem1()){
+//                    ToastUtils.showShort(data.getItem2());
+                    ToastUtils.showShort("反馈成功");
+                    mEtOpinion.setText("");
+                    type="";
+                    mTvAccountProblem.setSelected(false);
+                    mTvPaymentIssues.setSelected(false);
+                    mTvOtherQuestions.setSelected(false);
+                }else{
+                    ToastUtils.showShort(data.getItem2());
+                }
+                break;
+        }
+    }
 }
