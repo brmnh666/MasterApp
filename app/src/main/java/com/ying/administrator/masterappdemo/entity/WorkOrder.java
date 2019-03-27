@@ -691,18 +691,20 @@ public class WorkOrder implements Serializable {
         }
         public String getAccessorySequencyStr() {
             String AccessorySequencyStr="";
-            switch(AccessoryState){
-                case "0":
-                    AccessorySequencyStr="厂家自购件";
-                    break;
-                case "1":
-                    AccessorySequencyStr="师傅自购件";
-                    break;
-                case "2":
-                    AccessorySequencyStr="用户自购件";
-                    break;
-                default:
-                    break;
+            if (AccessoryState != null) {
+                switch(AccessoryState){
+                    case "0":
+                        AccessorySequencyStr="厂家自购件";
+                        break;
+                    case "1":
+                        AccessorySequencyStr="师傅自购件";
+                        break;
+                    case "2":
+                        AccessorySequencyStr="用户自购件";
+                        break;
+                    default:
+                        break;
+                }
             }
             return AccessorySequencyStr;
         }
