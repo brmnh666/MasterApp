@@ -1076,7 +1076,36 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                     EventBus.getDefault().post("");
                     finish();
                 } else {
-                    ToastUtils.showShort("提交失败");
+                    if ("支付错误,添加失败".equals(baseResult.getData().getItem2())){
+                        customdialog_home_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_home, null);
+                        customdialog_home_dialog = new AlertDialog.Builder(mActivity)
+                                .setView(customdialog_home_view)
+                                .create();
+                        customdialog_home_dialog.show();
+                        title = customdialog_home_view.findViewById(R.id.title);
+                        message = customdialog_home_view.findViewById(R.id.message);
+                        negtive = customdialog_home_view.findViewById(R.id.negtive);
+                        positive = customdialog_home_view.findViewById(R.id.positive);
+                        title.setText("提示");
+                        message.setText("余额不足，是否充值？");
+                        negtive.setText("否");
+                        positive.setText("是");
+                        negtive.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                customdialog_home_dialog.dismiss();
+                            }
+                        });
+                        positive.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                startActivity(new Intent(mActivity,RechargeActivity.class));
+                                customdialog_home_dialog.dismiss();
+                            }
+                        });
+                    }else{
+                        ToastUtils.showShort(baseResult.getData().getItem2());
+                    }
                 }
                 break;
             default:
