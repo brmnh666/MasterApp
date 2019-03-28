@@ -1,5 +1,7 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -50,6 +52,7 @@ public class Opinion_Activity extends BaseActivity<OpinionPresenter, OpinionMode
     private String type="";
     private String content;
     private String userId;
+    private int MAX_COUNT=200;
 
     @Override
     protected int setLayoutId() {
@@ -65,6 +68,26 @@ public class Opinion_Activity extends BaseActivity<OpinionPresenter, OpinionMode
     @Override
     protected void initView() {
         mTvActionbarTitle.setText("意见反馈");
+        type="1";
+        mTvAccountProblem.setSelected(true);
+        mTvPaymentIssues.setSelected(false);
+        mTvOtherQuestions.setSelected(false);
+        mEtOpinion.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                mTvWordCount.setText(editable.length()+"/200");
+            }
+        });
     }
 
     @Override

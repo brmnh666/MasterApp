@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
@@ -90,6 +91,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
     private View btnConfirm;
     private AlertDialog underReviewDialog;
     private CustomDialog customDialog;
+    private Button btn_verified_update;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,6 +144,51 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
                 customDialog.dismiss();
             }
         });
+    }
+    public void showRejectDialog() {
+        under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_audit_failure, null);
+        btnConfirm = under_review.findViewById(R.id.btn_confirm);
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                underReviewDialog.dismiss();
+                startActivity(new Intent(mActivity, Verified_Activity.class));
+            }
+        });
+        underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review).create();
+        underReviewDialog.show();
+    }
+    public void showUnderDialog() {
+        under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_under_review, null);
+        btnConfirm = under_review.findViewById(R.id.btn_confirm);
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                underReviewDialog.dismiss();
+            }
+        });
+        underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review).create();
+        underReviewDialog.show();
+    }
+    public void showPassDialog() {
+        under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_successful_review, null);
+        btnConfirm = under_review.findViewById(R.id.btn_confirm);
+        btn_verified_update = under_review.findViewById(R.id.btn_verified_update);
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                underReviewDialog.dismiss();
+            }
+        });
+        btn_verified_update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                underReviewDialog.dismiss();
+                startActivity(new Intent(mActivity, VerifiedUpdateActivity.class));
+            }
+        });
+        underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review).create();
+        underReviewDialog.show();
     }
 
     @Override
@@ -219,6 +266,17 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
 
                 }else {
                     userInfo = baseResult.getData().getData().get(0);
+                    if (userInfo!=null){
+                        if ("0".equals(userInfo.getIfAuth())){
+                            showUnderDialog();
+                        }else if ("-1".equals(userInfo.getIfAuth())){
+                            showRejectDialog();
+                        }else if ("1".equals(userInfo.getIfAuth())){
+//                            showPassDialog();
+                        }else{
+                            showVerifiedDialog();
+                        }
+                    }
                 }
 
 
@@ -252,28 +310,9 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
                         intent.putExtra("intent", "pending_appointment");
                         startActivityForResult(intent,20202);
                     } else if (userInfo.getIfAuth().equals("0")) {
-                        under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_under_review, null);
-                        btnConfirm = under_review.findViewById(R.id.btn_confirm);
-                        btnConfirm.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                underReviewDialog.dismiss();
-                            }
-                        });
-                        underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review).create();
-                        underReviewDialog.show();
+                        showUnderDialog();
                     } else if (userInfo.getIfAuth().equals("-1")) {
-                        under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_audit_failure, null);
-                        btnConfirm = under_review.findViewById(R.id.btn_confirm);
-                        btnConfirm.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                underReviewDialog.dismiss();
-                                startActivity(new Intent(mActivity, Verified_Activity.class));
-                            }
-                        });
-                        underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review).create();
-                        underReviewDialog.show();
+                        showRejectDialog();
                     } else {
                         showVerifiedDialog();
                     }

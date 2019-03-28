@@ -23,8 +23,8 @@ public class VerifiedPresenter extends VerifiedContract.Presenter {
     }
 
     @Override
-    public void ApplyAuthInfo(String UserID, String TrueName, String IDCard, String Address, String NodeIds, String Province, String City, String Area, String District, String Longitude, String Dimension,String ServiceAreaJsonStr) {
-        mModel.ApplyAuthInfo(UserID, TrueName, IDCard, Address, NodeIds, Province, City, Area, District, Longitude, Dimension,ServiceAreaJsonStr)
+    public void ApplyAuthInfo(String UserID, String TrueName,String Sex, String IDCard, String Address, String NodeIds, String Province, String City, String Area, String District, String Longitude, String Dimension,String ServiceAreaJsonStr) {
+        mModel.ApplyAuthInfo(UserID, TrueName,Sex, IDCard, Address, NodeIds, Province, City, Area, District, Longitude, Dimension,ServiceAreaJsonStr)
                 .subscribe(new BaseObserver<Data<String>>() {
                     @Override
                     protected void onHandleSuccess(BaseResult<Data<String>> value) {

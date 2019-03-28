@@ -122,7 +122,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:text="发现"
+                    android:text="配件商城"
                     android:textColor="@drawable/tab_mall_text"
                     android:textSize="12sp" />
             </LinearLayout>

@@ -329,6 +329,8 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 animator_order = ObjectAnimator.ofFloat(mImgNewOrder, "rotation", 0f, -30f,30f,0f);
                 animator_order.setDuration(1000);
                 animator_order.start();
+
+                EventBus.getDefault().post("");
             }
         });
 
@@ -828,7 +830,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                             UMWeb web = new UMWeb("http://www.jmiren.com/");
                             web.setTitle("西瓜鱼");
                             web.setDescription("分享测试测试测试");
-                            web.setThumb(new UMImage(mActivity, R.mipmap.icon_app));
+                            web.setThumb(new UMImage(mActivity, R.drawable.icon));
                             new ShareAction(mActivity).withMedia(web)
                                     .setPlatform(share_media)
                                     .setCallback(mShareListener)

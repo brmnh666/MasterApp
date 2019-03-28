@@ -431,6 +431,7 @@ public interface ApiService {
     Observable<BaseResult<Data<String>>> ApplyAuthInfo(
             @Field("UserID") String UserID,
             @Field("TrueName") String TrueName,
+            @Field("Sex") String Sex,
             @Field("IDCard") String IDCard,
             @Field("Address") String Address,
             @Field("NodeIds") String NodeIds,

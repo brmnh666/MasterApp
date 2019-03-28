@@ -202,6 +202,10 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 
             case 200:
                 data = baseResult.getData();
+                mTvWorkOrderStatus.setText(data.getStateStr());
+                mTvPaymentMethod.setText(data.getOrderPayStr());
+                mTvNumber.setText(data.getNum());
+
                 mTvWorkOrderNumber.setText(data.getOrderID());
                 mTvOrderTime.setText(data.getAudDate().replace("T", " ")); //将T替换为空格
                 mTvReasonPendingAppointment.setText(data.getMemo());
@@ -247,7 +251,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
         switch (baseResult.getStatusCode()) {
             case 200:
                 if (baseResult.getData().isItem1()) {//图片上传成功
-                    mPresenter.UpdateOrderState(orderID, "7");
+                    mPresenter.UpdateOrderState(orderID, "5");
                 } else {
                     cancleLoading();
                 }
@@ -263,7 +267,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
         switch (baseResult.getStatusCode()) {
             case 200:
                 if (baseResult.getData().isItem1()) {//图片上传成功
-                    mPresenter.UpdateOrderState(orderID, "7");
+                    mPresenter.UpdateOrderState(orderID, "5");
                 } else {
                     cancleLoading();
                 }

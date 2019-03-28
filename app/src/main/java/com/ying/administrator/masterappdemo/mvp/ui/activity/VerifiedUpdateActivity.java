@@ -201,6 +201,7 @@ public class VerifiedUpdateActivity extends BaseActivity<VerifiedPresenter, Veri
     private int size;
     private String codestr = "";
     private String Guarantee="";
+    private String Sex;
 
     @Override
     protected int setLayoutId() {
@@ -356,10 +357,10 @@ public class VerifiedUpdateActivity extends BaseActivity<VerifiedPresenter, Veri
                 }
                 if ("Y".equals(Guarantee)) {
                     showLoading();
-                    mPresenter.ApplyAuthInfo(UserID, mActualName, mIdNumber, mAddress, NodeIds, mProvince, mCity, mDistrict, mStreet, Double.toString(mLongitude), Double.toString(mLatitude), codestr);
+                    mPresenter.ApplyAuthInfo(UserID, mActualName, Sex, mIdNumber, mAddress, NodeIds, mProvince, mCity, mDistrict, mStreet, Double.toString(mLongitude), Double.toString(mLatitude), codestr);
                 }else{
                     showLoading();
-                    mPresenter.ApplyAuthInfo(UserID, mActualName, mIdNumber, mAddress, NodeIds, mProvince, mCity, mDistrict, mStreet, "", "", codestr);
+                    mPresenter.ApplyAuthInfo(UserID, mActualName, Sex, mIdNumber, mAddress, NodeIds, mProvince, mCity, mDistrict, mStreet, "", "", codestr);
                 }
                 break;
             case R.id.ll_select_service_area:

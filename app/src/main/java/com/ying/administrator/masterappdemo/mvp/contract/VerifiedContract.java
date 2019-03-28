@@ -16,6 +16,7 @@ public interface VerifiedContract {
         Observable<BaseResult<Data<String>>> IDCardUpload(RequestBody json,int code);
         Observable<BaseResult<Data<String>>> ApplyAuthInfo(String UserID,
                                                                 String TrueName,
+                                                                String Sex,
                                                                 String IDCard,
                                                                 String Address,
                                                            String NodeIds,
@@ -38,6 +39,7 @@ public interface VerifiedContract {
         public abstract void IDCardUpload(RequestBody json,int code);
         public abstract void ApplyAuthInfo(String UserID,
                                                 String TrueName,
+                                                String Sex,
                                                 String IDCard,
                                                 String Address,
                                            String NodeIds,

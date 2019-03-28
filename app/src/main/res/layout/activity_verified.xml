@@ -144,7 +144,75 @@
                         android:layout_marginLeft="18dp"
                         android:layout_marginRight="18dp"
                         android:background="#E4E4E4" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="17dp"
+                        android:orientation="horizontal">
 
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:text="性别"
+                            android:textColor="#5A5A5B"
+                            android:textSize="16sp" />
+
+                        <LinearLayout
+                            android:id="@+id/ll_male"
+                            android:layout_width="54dp"
+                            android:layout_height="25dp"
+                            android:background="@drawable/gray_radius_shape"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:id="@+id/img_male_unselect"
+                                android:layout_width="14dp"
+                                android:layout_height="14dp"
+                                android:layout_gravity="center"
+                                android:visibility="visible"
+                                android:src="@drawable/male_selector" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="7dp"
+                                android:text="男"
+                                android:textColor="#BBBBBB"
+                                android:textSize="16sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ll_female"
+                            android:layout_width="54dp"
+                            android:layout_height="25dp"
+                            android:layout_marginLeft="9dp"
+                            android:background="@drawable/gray_radius_shape"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:id="@+id/img_female_select"
+                                android:layout_width="14dp"
+                                android:layout_height="14dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/female_selector" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="7dp"
+                                android:text="女"
+                                android:textColor="#BBBBBB"
+                                android:textSize="16sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="18dp"
+                        android:layout_marginRight="18dp"
+                        android:background="#E4E4E4" />
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

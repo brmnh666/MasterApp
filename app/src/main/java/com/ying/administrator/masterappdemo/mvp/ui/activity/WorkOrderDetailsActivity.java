@@ -837,6 +837,34 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                     mLlApproveBeyondMoney.setVisibility(View.GONE);
                 } else {
                     mTvRemoteKm.setText(distance - Service_range + "km");
+                    if (data.getBeyondState() == null) {
+                        mLlApproveBeyondMoney.setVisibility(View.GONE);
+                        mLlApplyBeyond.setVisibility(View.VISIBLE);
+                    } else {
+                        mTvRange.setText(data.getBeyondDistance());
+                        if (data.getOrderBeyondImg() == null) {
+                            return;
+                        }
+                        if (data.getOrderBeyondImg().size() == 2) {
+                            Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OrderByondImg/" + data.getOrderBeyondImg().get(0).getUrl()).into(mIvRangeOne);
+                            Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OrderByondImg/" + data.getOrderBeyondImg().get(1).getUrl()).into(mIvRangeTwo);
+                        } else {
+                            mIvRangeOne.setVisibility(View.GONE);
+                            mIvRangeTwo.setVisibility(View.GONE);
+                        }
+                        mLlApproveBeyondMoney.setVisibility(View.VISIBLE);
+                        mLlApplyBeyond.setVisibility(View.GONE);
+                        if ("0".equals(data.getBeyondState())) {
+                            mTvBeyondState.setText("审核中");
+                            mTvBeyondApplication.setVisibility(View.GONE);
+                        } else if ("1".equals(data.getBeyondState())) {
+                            mTvBeyondState.setText("审核通过");
+                            mTvBeyondApplication.setVisibility(View.VISIBLE);
+                        } else {
+                            mTvBeyondState.setText("被拒");
+                            mTvBeyondApplication.setVisibility(View.VISIBLE);
+                        }
+                    }
                 }
 
                 AccessoryApplyState = data.getAccessoryApplyState();
@@ -954,37 +982,10 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                     mLlService.setVisibility(View.GONE);
                     mLlAddService.setVisibility(View.VISIBLE);
                 }
-                if (data.getBeyondState() == null) {
-                    mLlApproveBeyondMoney.setVisibility(View.GONE);
-                    mLlApplyBeyond.setVisibility(View.VISIBLE);
-                } else {
-                    mTvRange.setText(data.getBeyondDistance());
-                    if (data.getOrderBeyondImg() == null) {
-                        return;
-                    }
-                    if (data.getOrderBeyondImg().size() == 2) {
-                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OrderByondImg/" + data.getOrderBeyondImg().get(0).getUrl()).into(mIvRangeOne);
-                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OrderByondImg/" + data.getOrderBeyondImg().get(1).getUrl()).into(mIvRangeTwo);
-                    } else {
-                        mIvRangeOne.setVisibility(View.GONE);
-                        mIvRangeTwo.setVisibility(View.GONE);
-                    }
-                    mLlApproveBeyondMoney.setVisibility(View.VISIBLE);
-                    mLlApplyBeyond.setVisibility(View.GONE);
-                    if ("0".equals(data.getBeyondState())) {
-                        mTvBeyondState.setText("审核中");
-                        mTvBeyondApplication.setVisibility(View.GONE);
-                    } else if ("1".equals(data.getBeyondState())) {
-                        mTvBeyondState.setText("审核通过");
-                        mTvBeyondApplication.setVisibility(View.VISIBLE);
-                    } else {
-                        mTvBeyondState.setText("被拒");
-                        mTvBeyondApplication.setVisibility(View.VISIBLE);
-                    }
-                }
 
 
-                if ("7".equals(data.getState())) {
+
+                if ("5".equals(data.getState())) {
                     mBtnCompleteSubmit.setVisibility(View.GONE);
                     mBtnTrial.setVisibility(View.GONE);
                     mLlAddAccessory.setVisibility(View.GONE);

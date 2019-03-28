@@ -162,7 +162,7 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                             UMWeb web = new UMWeb("http://www.jmiren.com/");
                             web.setTitle("西瓜鱼");
                             web.setDescription("分享测试测试测试");
-                            web.setThumb(new UMImage(mActivity, R.mipmap.icon_app));
+                            web.setThumb(new UMImage(mActivity, R.drawable.icon));
                             new ShareAction(mActivity).withMedia(web)
                                     .setPlatform(share_media)
                                     .setCallback(mShareListener)

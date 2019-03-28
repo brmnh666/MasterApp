@@ -113,6 +113,14 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
     CheckBox mCbOutsideTheWarranty;
     @BindView(R.id.ll_outside_the_warranty)
     LinearLayout mLlOutsideTheWarranty;
+    @BindView(R.id.img_male_unselect)
+    ImageView mImgMaleUnselect;
+    @BindView(R.id.ll_male)
+    LinearLayout mLlMale;
+    @BindView(R.id.img_female_select)
+    ImageView mImgFemaleSelect;
+    @BindView(R.id.ll_female)
+    LinearLayout mLlFemale;
     private View popupWindow_view;
     private String FilePath;
     private PopupWindow mPopupWindow;
@@ -200,7 +208,8 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
     private Uri uri;
     private int size;
     private String codestr = "";
-    private String Guarantee="";
+    private String Guarantee = "";
+    private String Sex="";
 
     @Override
     protected int setLayoutId() {
@@ -263,6 +272,9 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
 
         mLlUnderWarranty.setOnClickListener(this);
         mLlOutsideTheWarranty.setOnClickListener(this);
+
+        mLlMale.setOnClickListener(this);
+        mLlFemale.setOnClickListener(this);
     }
 
 
@@ -279,6 +291,16 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                 mCbUnderWarranty.setChecked(false);
                 mCbOutsideTheWarranty.setChecked(true);
                 Guarantee = "N";
+                break;
+            case R.id.ll_male:
+                mImgMaleUnselect.setSelected(true);
+                mImgFemaleSelect.setSelected(false);
+                Sex = "男";
+                break;
+            case R.id.ll_female:
+                mImgMaleUnselect.setSelected(false);
+                mImgFemaleSelect.setSelected(true);
+                Sex = "女";
                 break;
             case R.id.ll_return:
                 finish();
@@ -319,6 +341,10 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                     ToastUtils.showShort("请输入真实姓名！");
                     return;
                 }
+                if ("".equals(Sex)) {
+                    ToastUtils.showShort("请选择性别！");
+                    return;
+                }
                 if ("".equals(mIdNumber)) {
                     ToastUtils.showShort("请输入身份证号码！");
                     return;
@@ -357,11 +383,11 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                 }
                 if ("Y".equals(Guarantee)) {
                     showLoading();
-                    mPresenter.ApplyAuthInfo(UserID, mActualName, mIdNumber, mAddress, NodeIds, mProvince, mCity, mDistrict, mStreet, Double.toString(mLongitude), Double.toString(mLatitude), codestr);
+                    mPresenter.ApplyAuthInfo(UserID, mActualName, Sex, mIdNumber, mAddress, NodeIds, mProvince, mCity, mDistrict, mStreet, Double.toString(mLongitude), Double.toString(mLatitude), codestr);
 
-                }else{
+                } else {
                     showLoading();
-                    mPresenter.ApplyAuthInfo(UserID, mActualName, mIdNumber, mAddress, NodeIds, mProvince, mCity, mDistrict, mStreet, "", "", codestr);
+                    mPresenter.ApplyAuthInfo(UserID, mActualName, Sex, mIdNumber, mAddress, NodeIds, mProvince, mCity, mDistrict, mStreet, "", "", codestr);
                 }
                 break;
             case R.id.ll_select_service_area:
@@ -615,7 +641,6 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                 break;
 
 
-
             case 100:
                 if (data != null) {
                     mAddress = data.getStringExtra("address");
@@ -646,6 +671,7 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                     codestr = data.getStringExtra("codestr");
                     if (codestr != null) {
                         mTvCodestr.setText("已添加服务区域");
+                        mTvCodestr.setTextColor(Color.RED);
                     }
                 }
                 break;
@@ -729,7 +755,7 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
     }
 
 
-    public void showLoading(){
+    public void showLoading() {
         dialog.setLoadingBuilder(Z_TYPE.SINGLE_CIRCLE)//设置类型
                 .setLoadingColor(Color.BLACK)//颜色
                 .setHintText("提交中请稍后...")
@@ -740,11 +766,9 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                 .show();
     }
 
-    public void cancleLoading(){
+    public void cancleLoading() {
         dialog.dismiss();
     }
-
-
 
 
 }
