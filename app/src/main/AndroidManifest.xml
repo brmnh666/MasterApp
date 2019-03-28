@@ -406,6 +406,12 @@
             android:theme="@style/AppTheme.NoActionBar"
             />
 
+        <!--详细的交易记录actvity-->
+
+        <activity android:name=".mvp.ui.activity.DetailRecordActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
 
        <!-- <activity android:name="io.card.payment.CardIOActivity" android:configChanges="keyboardHidden|orientation" />
         <activity android:name="io.card.payment.DataEntryActivity" />

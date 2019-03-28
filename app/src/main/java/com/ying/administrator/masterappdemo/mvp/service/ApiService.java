@@ -586,7 +586,6 @@ public interface ApiService {
 
 
 
-
     /*提现页面获取提现页面的数据*/
     @FormUrlEncoded
     @POST("Account/GetDepositMoneyDisplay")

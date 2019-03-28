@@ -17,9 +17,7 @@ import io.reactivex.Observable;
 public interface WalletContract {
     interface Model extends BaseModel{
         Observable<BaseResult<UserInfo>> GetUserInfoList(String UserId, String limit);
-
         Observable<BaseResult<Data<Bill>>> AccountBill(String UserID, String state);
-
         Observable<BaseResult<List<BankCard>>> GetAccountPayInfoList(String UserId);
     }
 

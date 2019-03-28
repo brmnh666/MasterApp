@@ -114,7 +114,7 @@ public class OrderMessageActivity extends BaseActivity<MyMessagePresenter, MyMes
     public void GetMessageList(BaseResult<MessageData<List<Message>>> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData() == null) {
+             /*   if (baseResult.getData() == null) {
                     if (pageIndex==1){
                         list.clear();
                         messageAdapter.notifyDataSetChanged();
@@ -131,7 +131,7 @@ public class OrderMessageActivity extends BaseActivity<MyMessagePresenter, MyMes
                         messageAdapter.setNewData(list);
                     }
 
-                }
+                }*/
                 break;
             default:
                 break;

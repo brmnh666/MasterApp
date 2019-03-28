@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tl="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#1690ff"
+        >
+        <ImageView
+            android:id="@+id/img_actionbar_return"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="10dp"
+            android:src="@mipmap/left"
+            android:layout_centerVertical="true"
+            />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="流水详情"
+            android:textSize="20sp"
+            android:textColor="@color/color_white"
+            />
+
+
+
+    </RelativeLayout>
+
+
+    <com.flyco.tablayout.SegmentTabLayout
+        android:id="@+id/st_tablayout"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp"
+        tl:tl_bar_color="#ffffff"
+        tl:tl_indicator_anim_enable="true"
+        tl:tl_indicator_color="@color/color_custom_01"
+        tl:tl_indicator_margin_bottom="2dp"
+        tl:tl_indicator_margin_left="2dp"
+        tl:tl_indicator_margin_right="2dp"
+        tl:tl_indicator_margin_top="2dp"
+        tl:tl_textBold="SELECT"/>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_record"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>

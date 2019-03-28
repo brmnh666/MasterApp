@@ -198,6 +198,8 @@ dependencies {
     //UI库
     implementation "com.github.vondear.RxTool:RxUI:v2.2.7"
 
+
+    implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
     /*识别card*/
 /*    implementation 'io.card:android-sdk:5.5.1'*/
 }

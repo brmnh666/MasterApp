@@ -66,14 +66,14 @@
                             android:layout_height="wrap_content"
                             android:text="0.00"
                             android:textColor="@color/white"
-                            android:textSize="29sp" />
+                            android:textSize="20sp" />
                     </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
+                    android:layout_marginLeft="40dp"
                     android:layout_marginTop="25dp"
                     android:orientation="vertical">
 
@@ -96,7 +96,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="7dp"
-                        android:text="本 金"
+                        android:text="总金额"
                         android:textColor="@color/white"
                         android:textSize="16sp" />
 
@@ -119,7 +119,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="right"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        >
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -129,9 +130,9 @@
                             android:textSize="16sp" />
 
                         <TextView
+                            android:id="@+id/tv_freeze_money"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0.00"
                             android:textColor="@color/white"
                             android:textSize="16sp" />
                     </LinearLayout>
@@ -151,9 +152,9 @@
                             android:textSize="16sp" />
 
                         <TextView
+                            android:id="@+id/tv_presentation_money"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0.00"
                             android:textColor="@color/white"
                             android:textSize="16sp" />
                     </LinearLayout>
@@ -173,9 +174,9 @@
                             android:textSize="16sp" />
 
                         <TextView
+                            android:id="@+id/tv_total_money"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0.00"
                             android:textColor="@color/white"
                             android:textSize="16sp" />
                     </LinearLayout>

@@ -115,11 +115,11 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
     @BindView(R.id.tv_home_giving_money)
     TextView mTvHomeGivingMoney;      //赠送金额
     @BindView(R.id.tv_certification) //实名认证
-            TextView mTvCertification;
+    TextView mTvCertification;
     @BindView(R.id.img_certification)//实名认证图片
-            ImageView mImgCertification;
+    ImageView mImgCertification;
     @BindView(R.id.img_un_certification) //未实名认证图片
-            ImageView mImg_un_certification;
+    ImageView mImg_un_certification;
     @BindView(R.id.img_home_location)
     ImageView mImgHomeLocation;
     @BindView(R.id.tv_home_location)
@@ -140,7 +140,6 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout mRefreshLayout;
 
-    Unbinder unbinder;
     @BindView(R.id.ll_money)
     LinearLayout mLlMoney;
     Unbinder unbinder1;
@@ -151,7 +150,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
 
     private GrabsheetAdapter grabsheetAdapter;
     private WorkOrder workOrder;
-    private List<WorkOrder.DataBean> list;
+    private List<WorkOrder.DataBean> list= new ArrayList<>();
     private int pageIndex = 1;  //默认当前页数为1
     private String userID;//用户id
     SPUtils spUtils = SPUtils.getInstance("token");
@@ -289,9 +288,6 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
 
     @Override
     protected void setListener() {
-
-
-
         //实名认证
         mTvCertification.setOnClickListener(this);
         //实名认证图片
@@ -847,7 +843,6 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
 
 
         methodRequiresPermission();
-        list = new ArrayList<>();
         /*模拟数据*/
         mRecyclerviewOrderReceiving.setLayoutManager(new LinearLayoutManager(mActivity));
         grabsheetAdapter = new GrabsheetAdapter(R.layout.item_grabsheet, list);

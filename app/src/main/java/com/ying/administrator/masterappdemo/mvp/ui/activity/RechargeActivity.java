@@ -1,6 +1,7 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
 import android.annotation.SuppressLint;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.GridLayoutManager;
@@ -31,11 +32,13 @@ import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.FaceValue;
 import com.ying.administrator.masterappdemo.entity.PayResult;
+import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.mvp.contract.RechargeContract;
 import com.ying.administrator.masterappdemo.mvp.model.RechargeModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.RechargePresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.FaceValueAdapter;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -44,6 +47,7 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeModel> implements View.OnClickListener, RechargeContract.View {
@@ -72,15 +76,24 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
     Button mBtRecharge;
     @BindView(R.id.tv_title)
     TextView mTvTitle;
+
+
+    @BindView(R.id.tv_freeze_money)
+    TextView mTvFreezeMoney;
+    @BindView(R.id.tv_presentation_money)
+    TextView mTvPresentationMoney;
+    @BindView(R.id.tv_total_money)
+    TextView mTvTotalMoney;
     private List<FaceValue> faceValueList = new ArrayList<>();
     private FaceValueAdapter faceValueAdapter;
     private String[] faceValues = new String[]{"100", "300", "500", "1000", "2000", "3000"};
     private String value;
     private IWXAPI api;
-    private int payway=1;
+    private int payway = 1;
     private SPUtils spUtils;
     private String userID;
     private String orderinfo;
+    private UserInfo.UserInfoDean userInfo = new UserInfo.UserInfoDean();
 
     @Override
     protected int setLayoutId() {
@@ -101,6 +114,8 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
         spUtils = SPUtils.getInstance("token");
         userID = spUtils.getString("userName");
         api = WXAPIFactory.createWXAPI(this, Constants.APP_ID);
+        mPresenter.GetUserInfoList(userID, "1");
+
 
         mIvAplipay.setSelected(true);//默认选中支付宝
         mTvTitle.setVisibility(View.VISIBLE);
@@ -176,10 +191,10 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
                 if (len > 1 && text.startsWith("0")) {
                     value = s.replace(0, 1, "").toString();
                 } else {
-                    if ("".equals(text)){
-                        value="0";
-                    }else{
-                        value=text;
+                    if ("".equals(text)) {
+                        value = "0";
+                    } else {
+                        value = text;
                     }
                 }
                 mTvActualArrival.setText(value);
@@ -200,12 +215,12 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
                 finish();
                 break;
             case R.id.ll_alipay:
-                payway=1;
+                payway = 1;
                 mIvAplipay.setSelected(true);
                 mIvWechat.setSelected(false);
                 break;
             case R.id.ll_wxpay:
-                payway=2;
+                payway = 2;
                 mIvAplipay.setSelected(false);
                 mIvWechat.setSelected(true);
                 break;
@@ -213,13 +228,13 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
 
                 break;
             case R.id.bt_recharge:
-                if (value==null||"0".equals(value)){
+                if (value == null || "0".equals(value)) {
                     ToastUtils.showShort("请选择或输入充值金额");
                     return;
                 }
-                switch (payway){
+                switch (payway) {
                     case 1:
-                        mPresenter.GetOrderStr(userID,value);
+                        mPresenter.GetOrderStr(userID, value);
 //                        alipay();
                         break;
                     case 2:
@@ -260,10 +275,11 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
         Thread payThread = new Thread(payRunnable);
         payThread.start();
     }
+
     /**
      * 微信支付
      */
-    public void WXpay(){
+    public void WXpay() {
         PayReq req = new PayReq();
 //        req.appId			= json.getString("appid");
 //        req.partnerId		= json.getString("partnerid");
@@ -272,9 +288,10 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
 //        req.timeStamp		= json.getString("timestamp");
 //        req.packageValue	= json.getString("package");
 //        req.sign			= json.getString("sign");
-        req.extData			= "app data"; // optional
+        req.extData = "app data"; // optional
         api.sendReq(req);
     }
+
     /**
      * 支付宝支付结果回调
      */
@@ -295,6 +312,8 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
                     if (TextUtils.equals(resultStatus, "9000")) {
                         // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
                         ToastUtils.showShort("支付成功");
+                        EventBus.getDefault().post("");
+                        RechargeActivity.this.finish();
                     } else {
                         // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
                         ToastUtils.showShort("支付失败");
@@ -309,11 +328,12 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
 
     /**
      * 微信支付结果
+     *
      * @param resp
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(BaseResp resp) {
-        switch (resp.errCode){
+        switch (resp.errCode) {
             case 0:
                 ToastUtils.showShort("支付成功");
                 break;
@@ -328,14 +348,14 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
 
     @Override
     public void GetOrderStr(BaseResult<Data<String>> baseResult) {
-        switch(baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData().isItem1()){
-                    orderinfo =baseResult.getData().getItem2();
-                    if (!"".equals(orderinfo)){
+                if (baseResult.getData().isItem1()) {
+                    orderinfo = baseResult.getData().getItem2();
+                    if (!"".equals(orderinfo)) {
                         alipay();
                     }
-                }else{
+                } else {
                     ToastUtils.showShort("获取支付信息失败！");
                 }
                 break;
@@ -343,5 +363,36 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
                 ToastUtils.showShort("获取支付信息失败！");
                 break;
         }
+    }
+
+    @Override
+    public void GetUserInfoList(BaseResult<UserInfo> baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                if (baseResult.getData() == null) {
+                    return;
+                } else {
+                    userInfo = baseResult.getData().getData().get(0);
+                    String format = String.format("%.2f", userInfo.getTotalMoney() - userInfo.getFrozenMoney());
+                    mTvMoney.setText(format);
+                    String FrozenMoney= String.valueOf(userInfo.getFrozenMoney());
+                    mTvFreezeMoney.setText(FrozenMoney);
+                    //赠送金额暂无
+                    String TotalMoney= String.valueOf(userInfo.getTotalMoney());
+                    mTvTotalMoney.setText(TotalMoney);
+
+
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

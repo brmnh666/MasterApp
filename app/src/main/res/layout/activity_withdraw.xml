@@ -51,7 +51,7 @@
                         android:id="@+id/all_withdraw_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=""
+                        android:text="暂无"
                         android:textColor="#63ABF4"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -82,7 +82,7 @@
                         android:id="@+id/income_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=""
+                        android:text="暂无"
                         android:textColor="#63ABF4"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -263,12 +263,13 @@
                     android:textColor="@color/color_black"
                     android:textSize="16sp" />
 
-                <TextView
+             <!--   <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1" />
-
+-->
                 <LinearLayout
+                    android:visibility="gone"
                     android:id="@+id/wechat_pay_ll"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -299,6 +300,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:id="@+id/alipay_ll"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

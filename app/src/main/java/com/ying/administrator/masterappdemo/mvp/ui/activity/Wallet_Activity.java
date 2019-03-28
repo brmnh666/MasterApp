@@ -77,13 +77,21 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
 
     @BindView(R.id.ll_card_list)//跳转到银行卡列表
             LinearLayout ll_card_list;
-    @BindView(R.id.empty_view)
+ /*   @BindView(R.id.empty_view)
     LinearLayout mEmptyView;
     @BindView(R.id.empty_view_one)
     LinearLayout mEmptyViewOne;
     @BindView(R.id.empty_view_two)
-    LinearLayout mEmptyViewTwo;
+    LinearLayout mEmptyViewTwo;*/
 
+    @BindView(R.id.ll_wallet_sz_detail)
+    LinearLayout mll_wallet_sz_detail;
+
+     @BindView(R.id.ll_withdraw)//提现记录
+     LinearLayout mll_withdraw;
+
+     @BindView(R.id.ll_recharge)//充值记录
+     LinearLayout mll_recharge;
 
     private Wallet_record_Adapter wallet_record_adapter;
 
@@ -125,6 +133,9 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
         mTvRecharge.setOnClickListener(this);
         mTvWithdraw.setOnClickListener(this);
         ll_card_list.setOnClickListener(this);
+        mll_wallet_sz_detail.setOnClickListener(this);
+        mll_withdraw.setOnClickListener(this);
+        mll_recharge.setOnClickListener(this);
     }
 
     @Override
@@ -175,6 +186,26 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
 
 
                 break;
+
+            case R.id.ll_wallet_sz_detail:
+                Intent intent1=new Intent(this,DetailRecordActivity.class);
+                intent1.putExtra("openwhich","1");
+                startActivity(intent1);
+                break;
+            case R.id.ll_withdraw:
+                Intent intent2=new Intent(this,DetailRecordActivity.class);
+                intent2.putExtra("openwhich","2");
+                startActivity(intent2);
+                break;
+            case R.id.ll_recharge:
+                Intent intent3=new Intent(this,DetailRecordActivity.class);
+                intent3.putExtra("openwhich","3");
+                startActivity(intent3);
+
+                break;
+
+
+
         }
 
     }
@@ -202,7 +233,6 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
         switch (baseResult.getStatusCode()) {
             case 200:
                 if (baseResult.getData().isItem1()) {
-                    // Log.d("=====>","连接成功");
                     if (baseResult.getData().getItem2().getData() != null) {
                         switch (baseResult.getData().getItem2().getData().get(0).getState()) {
                             case "1"://充值
@@ -241,11 +271,11 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
                         }
 
 
-                    }else {
+                    }/*else {
                         mEmptyView.setVisibility(View.VISIBLE);
                         mEmptyViewTwo.setVisibility(View.VISIBLE);
                         mEmptyViewOne.setVisibility(View.VISIBLE);
-                    }
+                    }*/
 
                 }
                 break;

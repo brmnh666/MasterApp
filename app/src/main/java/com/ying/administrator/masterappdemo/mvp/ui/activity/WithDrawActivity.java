@@ -197,7 +197,47 @@ public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
             }
         });*/
 
+        mMoneyEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //删除“.”后面超过2位后的数据
+                if (s.toString().contains(".")) {
+                    if (s.length() - 1 - s.toString().indexOf(".") > 2) {
+                        s = s.toString().subSequence(0,
+                                s.toString().indexOf(".") + 3);
+                        mMoneyEt.setText(s);
+                        mMoneyEt.setSelection(s.length()); //光标移到最后
+                    }
+                }
+                //如果"."在起始位置,则起始位置自动补0
+                if (s.toString().trim().substring(0).equals(".")) {
+                    s = "0" + s;
+                    mMoneyEt.setText(s);
+                    mMoneyEt.setSelection(2);
+                }
+
+                //如果起始位置为0,且第二位跟的不是".",则无法后续输入
+                if (s.toString().startsWith("0")
+                        && s.toString().trim().length() > 1) {
+                    if (!s.toString().substring(1, 2).equals(".")) {
+                        mMoneyEt.setText(s.subSequence(0, 1));
+                        mMoneyEt.setSelection(1);
+                        return;
+                    }
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
     }
 
@@ -248,17 +288,26 @@ public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
                 break;
             case R.id.full_withdrawal_tv://全部提现
                 mMoneyEt.setText(withDrawMoney.getKtx());
+                mMoneyEt.setSelection(mMoneyEt.getText().toString().length()); //光标移到最后
                 break;
             case R.id.ll_choose_withdraw_bank://选择银行
                 showPopupWindow();
             break;
             case R.id.confirm_withdrawal_btn: //提交
-                if (mMoneyEt.getText().toString()==null||CardNo==null){
+                double money= Double.parseDouble(mMoneyEt.getText().toString());
+                if (mMoneyEt.getText().toString().isEmpty()||CardNo==null){
                     Toast.makeText(WithDrawActivity.this,"请输入金额并选择银行卡",Toast.LENGTH_SHORT).show();
                 }else {
-                    DrawMoney=mMoneyEt.getText().toString();
-                    mPresenter.WithDraw(DrawMoney,CardNo,userId);
-                }
+                    if (money==0){
+                        Toast.makeText(WithDrawActivity.this,"不能提现0元",Toast.LENGTH_SHORT).show();
+                    }else {
+                        DrawMoney=mMoneyEt.getText().toString();
+                        mPresenter.WithDraw(DrawMoney,CardNo,userId);
+                    }
+
+                    }
+
+
 
                 break;
 
@@ -371,7 +420,7 @@ switch (baseResult.getStatusCode()){
 
         img_bankcancle=popupWindow_view.findViewById(R.id.img_bankcancle);
         mPopupWindow.setAnimationStyle(R.style.popwindow_anim_style);
-        mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+        mPopupWindow.setBackgroundDrawable(new BitmapDrawable(getResources()));
         mPopupWindow.setFocusable(true);
         mPopupWindow.setOutsideTouchable(true);
         mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {

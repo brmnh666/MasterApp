@@ -121,7 +121,6 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
         recyclerView.setAdapter(pending_appointment_adapter);
         pending_appointment_adapter.setEmptyView(getEmptyView());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
         showLoading();
         mPresenter.WorkerGetOrderList(userID,"1",Integer.toString(pageIndex),"5");
 

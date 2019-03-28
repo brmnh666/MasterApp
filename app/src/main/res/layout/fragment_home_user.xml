@@ -36,6 +36,7 @@
             android:layout_height="74dp"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"
+            android:src="@mipmap/icon_defaulthead"
              />
 
         <LinearLayout
@@ -120,7 +121,7 @@
                     android:layout_below="@+id/tv_home_outstanding_amount"
                     android:layout_marginTop="5dp"
                     android:layout_toRightOf="@+id/img_home_free_gold"
-                    android:text="赠 送 金 额: 0.00 元"
+                    android:text="赠 送 金 额:"
                     android:textSize="15sp" />
             </LinearLayout>
         </LinearLayout>

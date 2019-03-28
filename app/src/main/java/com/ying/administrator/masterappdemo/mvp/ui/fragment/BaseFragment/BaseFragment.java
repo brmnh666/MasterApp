@@ -27,7 +27,7 @@ import com.ying.administrator.masterappdemo.util.TUtil;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class BaseFragment<P extends BasePresenter, M extends BaseModel> extends Fragment implements BaseView{
+public abstract class BaseFragment<P extends BasePresenter, M extends BaseModel> extends Fragment implements BaseView{
     public P mPresenter;
     public M mModel;
 
