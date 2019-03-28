@@ -6,7 +6,6 @@
     android:background="@drawable/ll_order_details_shape"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
-    android:layout_marginTop="10dp"
     android:id="@+id/ll_add_accessory"
     >
     <LinearLayout
@@ -19,7 +18,10 @@
             android:id="@+id/ll_manufacturers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/dp_10"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:gravity="center"
             android:orientation="horizontal">
             <ImageView
@@ -38,7 +40,10 @@
             android:id="@+id/ll_selfbuying"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/dp_10"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:gravity="center"
             android:orientation="horizontal">
             <ImageView
@@ -90,17 +95,7 @@
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false"/>
     </RelativeLayout>
-    <EditText
-        android:id="@+id/et_memo"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@drawable/edit_shape"
-        android:hint="备注"
-        android:padding="@dimen/dp_10"
-        android:textColor="@color/black"
-        android:layout_margin="@dimen/dp_10"
-        android:textSize="12dp" />
+
     <TextView
         android:id="@+id/tv_order_details_add_accessories"
         android:layout_gravity="center"
@@ -114,4 +109,6 @@
         android:background="@drawable/tv_order_detail_btn"
         android:padding="10dp"
         />
+
+
 </LinearLayout>

@@ -39,6 +39,7 @@ import com.ying.administrator.masterappdemo.mvp.model.GetOrderListForMeModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.GetOrderListForMePresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_details_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.WorkOrderDetailsActivity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.WorkOrderDetailsFinishActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.CompletedAdapter;
 
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Redeploy_Adapter;
@@ -168,7 +169,7 @@ public class Completed_Fragement extends BaseFragment<GetOrderListForMePresenter
         CompletedAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Intent intent=new Intent(getActivity(), WorkOrderDetailsActivity.class);
+                Intent intent=new Intent(getActivity(), WorkOrderDetailsFinishActivity.class);
                 //传递工单号
                 intent.putExtra("OrderID",((WorkOrder.DataBean)adapter.getItem(position)).getOrderID());
                 startActivity(intent);
