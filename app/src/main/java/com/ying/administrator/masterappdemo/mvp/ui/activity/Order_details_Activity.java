@@ -1044,7 +1044,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
             case 200:
                 if (!baseResult.getData().isItem1()) {
 
-                    if ("支付出错，添加失败".equals(baseResult.getData().getItem2())){
+                    if ("支付错误,添加失败".equals(baseResult.getData().getItem2())){
                         customdialog_home_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_home, null);
                         customdialog_home_dialog = new AlertDialog.Builder(mActivity)
                                 .setView(customdialog_home_view)

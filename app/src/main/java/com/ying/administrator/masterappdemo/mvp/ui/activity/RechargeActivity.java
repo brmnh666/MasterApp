@@ -338,7 +338,7 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
                 ToastUtils.showShort("支付成功");
                 break;
             case -1:
-                ToastUtils.showShort("支付出错");
+                ToastUtils.showShort("支付错误");
                 break;
             case -2:
                 ToastUtils.showShort("支付取消");

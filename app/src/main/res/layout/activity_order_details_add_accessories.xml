@@ -99,7 +99,8 @@
     <TextView
         android:id="@+id/tv_order_details_add_accessories"
         android:layout_gravity="center"
-        android:layout_width="wrap_content"
+        android:layout_width="110dp"
+        android:gravity="center"
         android:layout_height="wrap_content"
         android:text="添加配件"
         android:textColor="#6A6A6A"

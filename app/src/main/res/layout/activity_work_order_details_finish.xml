@@ -436,7 +436,8 @@
 
                         <TextView
                             android:id="@+id/tv_order_details_add_accessories"
-                            android:layout_width="wrap_content"
+                            android:layout_width="110dp"
+                            android:gravity="center"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginTop="10dp"
@@ -449,7 +450,8 @@
 
                         <TextView
                             android:id="@+id/tv_submit_add_accessories"
-                            android:layout_width="wrap_content"
+                            android:layout_width="110dp"
+                            android:gravity="center"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginLeft="20dp"
@@ -608,7 +610,8 @@
 
                         <TextView
                             android:id="@+id/tv_accessory_application"
-                            android:layout_width="wrap_content"
+                            android:layout_width="110dp"
+                            android:gravity="center"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginTop="10dp"
@@ -622,7 +625,8 @@
 
                         <TextView
                             android:id="@+id/tv_accessory_information"
-                            android:layout_width="wrap_content"
+                            android:layout_width="110dp"
+                            android:gravity="center"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginTop="10dp"
@@ -686,7 +690,8 @@
 
                         <TextView
                             android:id="@+id/tv_order_detail_add_service"
-                            android:layout_width="wrap_content"
+                            android:layout_width="110dp"
+                            android:gravity="center"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginTop="10dp"
@@ -704,7 +709,8 @@
 
                         <TextView
                             android:id="@+id/tv_submit_add_service"
-                            android:layout_width="wrap_content"
+                            android:layout_width="110dp"
+                            android:gravity="center"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginLeft="20dp"
@@ -795,7 +801,8 @@
 
                         <TextView
                             android:id="@+id/tv_service_application"
-                            android:layout_width="wrap_content"
+                            android:layout_width="110dp"
+                            android:gravity="center"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginTop="10dp"
@@ -809,7 +816,8 @@
 
                         <TextView
                             android:id="@+id/tv_service_information"
-                            android:layout_width="wrap_content"
+                            android:layout_width="110dp"
+                            android:gravity="center"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginTop="10dp"
@@ -949,7 +957,8 @@
                     <TextView
                         android:visibility="gone"
                         android:id="@+id/tv_submit_beyond"
-                        android:layout_width="wrap_content"
+                        android:layout_width="110dp"
+                        android:gravity="center"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="10dp"
@@ -1072,7 +1081,8 @@
 
                         <TextView
                             android:id="@+id/tv_beyond_application"
-                            android:layout_width="wrap_content"
+                            android:layout_width="110dp"
+                            android:gravity="center"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginTop="10dp"
@@ -1085,7 +1095,8 @@
 
                         <TextView
                             android:id="@+id/tv_remote_fee_information"
-                            android:layout_width="wrap_content"
+                            android:layout_width="110dp"
+                            android:gravity="center"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginLeft="20dp"

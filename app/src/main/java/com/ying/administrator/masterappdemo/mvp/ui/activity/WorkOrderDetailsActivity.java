@@ -1064,7 +1064,7 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                     ToastUtils.showShort("提交成功");
                     EventBus.getDefault().post("");
                 } else {
-                    if ("支付出错，添加失败".equals(baseResult.getData().getItem2())){
+                    if ("支付错误,添加失败".equals(baseResult.getData().getItem2())){
                         customdialog_home_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_home, null);
                         customdialog_home_dialog = new AlertDialog.Builder(mActivity)
                                 .setView(customdialog_home_view)
@@ -1110,7 +1110,7 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                     ToastUtils.showShort("提交成功");
                     EventBus.getDefault().post("");
                 } else {
-                    if ("支付出错，添加失败".equals(baseResult.getData().getItem2())){
+                    if ("支付错误,添加失败".equals(baseResult.getData().getItem2())){
                         customdialog_home_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_home, null);
                         customdialog_home_dialog = new AlertDialog.Builder(mActivity)
                                 .setView(customdialog_home_view)
