@@ -355,7 +355,7 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
             case R.id.normal_dsh_ll:
                 bundle = new Bundle();
                 bundle.putString("intent", "quality");
-                bundle.putInt("position", 3);
+                bundle.putInt("position", 4);
                 intent = new Intent(mActivity, Order_Receiving_Activity.class);
                 intent.putExtras(bundle);
                 ActivityUtils.startActivity(intent);
@@ -363,7 +363,7 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
             case R.id.normal_all_ll:
                 bundle = new Bundle();
                 bundle.putString("intent", "completed");
-                bundle.putInt("position", 5);
+                bundle.putInt("position", 6);
                 intent = new Intent(mActivity, Order_Receiving_Activity.class);
                 intent.putExtras(bundle);
                 ActivityUtils.startActivity(intent);

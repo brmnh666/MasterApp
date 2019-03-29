@@ -22,6 +22,7 @@ import com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment.Pe
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment.Returnedparts_Fragement;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.TabLayoutViewPagerAdapter;
+import com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment.Wait_Return_Fragment;
 import com.ying.administrator.masterappdemo.widget.BadgeView;
 
 import java.util.ArrayList;
@@ -40,7 +41,9 @@ public class Order_Receiving_Activity extends AppCompatActivity implements Defin
      private Pending_appointment_fragment pending_appointment_fragment; //已接订单待预约
      private InService_Fragement inService_fragement; //服务中
      private Quality_sheet_Fragement quality_sheet_fragement; //质保单
-     private Returnedparts_Fragement returnedparts_fragement;//待返件
+    private Wait_Return_Fragment wait_return_fragment;//待返件
+
+     private Returnedparts_Fragement returnedparts_fragement;//返件单
      private Complete_wait_fetch_Fragement complete_wait_fetch_fragement;//完成待取机
      private Completed_Fragement completed_fragement; //已完成
      private Appointment_failure_fragment appointment_failure_fragment;//预约失败
@@ -85,6 +88,7 @@ public class Order_Receiving_Activity extends AppCompatActivity implements Defin
          title.add("已接待预约");
          title.add("服务中");
          title.add("返件单");
+         title.add("待返件");
          title.add("质保单");
          title.add("完成待取机");
          title.add("已完成");
@@ -94,6 +98,7 @@ public class Order_Receiving_Activity extends AppCompatActivity implements Defin
         pending_appointment_fragment=new Pending_appointment_fragment(); //已接待预约
         inService_fragement=new InService_Fragement(); //服务中
         returnedparts_fragement=new Returnedparts_Fragement();//返件单
+        wait_return_fragment=new Wait_Return_Fragment();//待返件
         quality_sheet_fragement=new Quality_sheet_Fragement();//质保单
         complete_wait_fetch_fragement=new Complete_wait_fetch_Fragement();//完成待取机
         completed_fragement=new Completed_Fragement();//已完成
@@ -105,6 +110,7 @@ public class Order_Receiving_Activity extends AppCompatActivity implements Defin
         fragmentList.add(pending_appointment_fragment);
         fragmentList.add(inService_fragement);
         fragmentList.add(returnedparts_fragement);
+        fragmentList.add(wait_return_fragment);
         fragmentList.add(quality_sheet_fragement);
         fragmentList.add(complete_wait_fetch_fragement);
         fragmentList.add(completed_fragement);
@@ -140,19 +146,24 @@ public class Order_Receiving_Activity extends AppCompatActivity implements Defin
                 receiving_viewpager.setCurrentItem(2);
                 break;
 
-            case "quality"://质保单
-                receiving_viewpager.setCurrentItem(3);
-                break;
+            case "wait_return"://待返件
 
-            case "complete_wait_fetch"://完成待取机
+                receiving_viewpager.setCurrentItem(3);
+                 break;
+
+            case "quality"://质保单
                 receiving_viewpager.setCurrentItem(4);
                 break;
 
-            case "completed"://已完成
+            case "complete_wait_fetch"://完成待取机
                 receiving_viewpager.setCurrentItem(5);
                 break;
-            case "appointment_failure"://预约失败
+
+            case "completed"://已完成
                 receiving_viewpager.setCurrentItem(6);
+                break;
+            case "appointment_failure"://预约失败
+                receiving_viewpager.setCurrentItem(7);
                 break;
 
 
