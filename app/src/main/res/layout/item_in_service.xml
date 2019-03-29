@@ -176,6 +176,7 @@
         android:layout_marginLeft="@dimen/dp_10"
         android:textSize="16sp" />
     <ImageView
+        android:id="@+id/img_navigation"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:src="@mipmap/daohang"
