@@ -51,7 +51,7 @@
                         android:id="@+id/all_withdraw_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="暂无"
+                        android:text="0.00"
                         android:textColor="#63ABF4"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -82,7 +82,7 @@
                         android:id="@+id/income_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="暂无"
+                        android:text="0.00"
                         android:textColor="#63ABF4"
                         android:textSize="16sp" />
                 </LinearLayout>

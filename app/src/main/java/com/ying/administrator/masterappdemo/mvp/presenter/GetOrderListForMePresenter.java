@@ -35,6 +35,17 @@ public class GetOrderListForMePresenter extends GetOrderListForMeContract.Presen
             }
         });
     }
+
+    @Override
+    public void AddOrderSuccess(String OrderID, String AppointmentState, String AppointmentMessage) {
+        mModel.AddOrderSuccess(OrderID,AppointmentState,AppointmentMessage).subscribe(new BaseObserver<Data>() {
+            @Override
+            protected void onHandleSuccess(BaseResult<Data> value) {
+                mView.AddOrderSuccess(value);
+            }
+        });
+    }
+
     @Override
     public void GetUserInfoList(String UserID,String limit) {
         mModel.GetUserInfoList(UserID,limit)

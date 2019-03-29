@@ -22,6 +22,10 @@ public interface GetOrderListForMeContract {
         Observable<BaseResult<WorkOrder>> WorkerGetOrderList(String UserID,String State,String page,String limit);
         //未预约成功
         Observable<BaseResult<Data>> AddOrderfailureReason(String OrderID, String AppointmentState, String AppointmentMessage);
+
+        //预约成功
+        Observable<BaseResult<Data>> AddOrderSuccess(String OrderID, String AppointmentState, String AppointmentMessage);
+
         //获取自己的信息
         Observable<BaseResult<UserInfo>> GetUserInfoList(String UserID, String limit);
         //获取子账号
@@ -32,6 +36,9 @@ public interface GetOrderListForMeContract {
         Observable<BaseResult<Data>> UpdateSendOrderState(String OrderID,String State);//State为-1取消订单
         Observable<BaseResult<Data<String>>> UpdateContinueServiceState(String OrderID);
         Observable<BaseResult<Data<String>>> PressFactoryAccount(String UserID,String OrderID);
+
+
+
     }
 
     interface View extends BaseView {
@@ -40,6 +47,10 @@ public interface GetOrderListForMeContract {
 
         //未预约成功
         void AddOrderfailureReason(BaseResult<Data> baseResult);
+
+        //预约成功
+
+        void AddOrderSuccess(BaseResult<Data> baseResult);
 
         //获取自己的信息
         void GetUserInfoList(BaseResult<UserInfo> baseResult);
@@ -62,6 +73,8 @@ public interface GetOrderListForMeContract {
         public abstract void WorkerGetOrderList(String UserID, String State, String page,String limit);
         //未预约成功
         public abstract void AddOrderfailureReason(String OrderID,String AppointmentState,String AppointmentMessage);
+        //预约成功
+        public abstract void AddOrderSuccess(String OrderID,String AppointmentState,String AppointmentMessage);
         //获取自己的信息
         public abstract void GetUserInfoList(String UserID,String limit);
         //获取子账号

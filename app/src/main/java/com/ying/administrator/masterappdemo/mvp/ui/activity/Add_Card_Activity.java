@@ -40,6 +40,8 @@ import com.ying.administrator.masterappdemo.util.BankUtil;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 import com.ying.administrator.masterappdemo.widget.CustomDialog_ChooseBank;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 import butterknife.BindView;
@@ -58,8 +60,8 @@ public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> im
     TextView mTvAddCardName;
     @BindView(R.id.tv_add_card_bankname)
     TextView mTvAddCardBankname;
-    @BindView(R.id.add_card_phone)
-    TextView mAddCardPhone;
+    @BindView(R.id.et_add_card_phone)
+    TextView met_add_card_phone;
 /*    @BindView(R.id.et_add_card_verification_code)
     EditText mEtAddCardVerificationCode;*/
    /* @BindView(R.id.ll_choose_bank)
@@ -189,8 +191,8 @@ public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> im
                 break;*/
             case R.id.btn_bind_card:
 
-                if (mTvAddCardBankname.getText().toString().length()==0||met_banknumber.getText().toString().length()==0){
-                    Toast.makeText(this,"请选择银行并输入卡号",Toast.LENGTH_SHORT).show();
+                if (mTvAddCardBankname.getText().toString().length()==0||met_banknumber.getText().toString().length()==0||met_add_card_phone.getText()==null){
+                    Toast.makeText(this,"请选择银行并输入卡号和手机号",Toast.LENGTH_SHORT).show();
                 }else {
                     mPresenter.AddorUpdateAccountPayInfo(userId,"Bank",mTvAddCardBankname.getText().toString(),met_banknumber.getText().toString());
                 }
@@ -218,11 +220,7 @@ public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> im
                      }else {
                          mTvAddCardName.setText(userInfo.getTrueName());
                      }
-                     if (userInfo.getPhone()==null){
-                         return;
-                     }else {
-                         mAddCardPhone.setText(userInfo.getPhone());
-                     }
+
 
 
 
@@ -243,6 +241,7 @@ public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> im
             case 200:
                 if (baseResult.getData().isItem1()){
                     setResult(2000);
+                    EventBus.getDefault().post("");
                     Add_Card_Activity.this.finish();
 
                 }else {
@@ -298,71 +297,5 @@ public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> im
     }
 
 
-/*    class TimeCount extends CountDownTimer {
 
-        public TimeCount(long millisInFuture, long countDownInterval) {
-            super(millisInFuture, countDownInterval);
-        }
-
-        @Override
-        public void onTick(long millisUntilFinished) {
-            mtv_getcode.setClickable(false);
-            mtv_getcode.setText( millisUntilFinished / 1000 +"秒后可重新发送");
-            mtv_getcode.setBackgroundResource(R.drawable.shape_code_after);
-        }
-
-        @Override
-        public void onFinish() {
-            mtv_getcode.setText("重新获取验证码");
-            mtv_getcode.setClickable(true);
-            mtv_getcode.setBackgroundResource(R.drawable.shape_code);
-
-        }
-    }*/
-
-  /*  public void scan() {
-        Intent intent = new Intent(this, CardIOActivity.class)
-                .putExtra(CardIOActivity.EXTRA_REQUIRE_EXPIRY, false)
-                .putExtra(CardIOActivity.EXTRA_REQUIRE_POSTAL_CODE, false)
-                .putExtra(CardIOActivity.EXTRA_HIDE_CARDIO_LOGO, true)//去除水印
-                .putExtra(CardIOActivity.EXTRA_SUPPRESS_MANUAL_ENTRY, true)//去除键盘
-                .putExtra(CardIOActivity.EXTRA_LANGUAGE_OR_LOCALE, "zh-Hans")//设置提示为中文
-                .putExtra("debug_autoAcceptResult", true);
-        startActivityForResult(intent, REQUEST_AUTOTEST);
-    }*/
-
-
-   /* @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        String resultDisplayStr;
-        if (data != null && data.hasExtra(CardIOActivity.EXTRA_SCAN_RESULT)) {
-            CreditCard scanResult = data.getParcelableExtra(CardIOActivity.EXTRA_SCAN_RESULT);
-
-            // Never log a raw card number. Avoid displaying it, but if necessary use getFormattedCardNumber()
-            //resultDisplayStr = "银行卡号: " + scanResult.getRedactedCardNumber() + "\n"; //只显示尾号
-            resultDisplayStr = "银行卡号: " + scanResult.getFormattedCardNumber() + "\n";  //显示银行卡号
-
-            // Do something with the raw number, e.g.:
-            // myService.setCardNumber( scanResult.cardNumber );
-
-            if (scanResult.isExpiryValid()) {
-                resultDisplayStr += "有效期：" + scanResult.expiryMonth + "/" + scanResult.expiryYear + "\n";
-            }
-
-            if (scanResult.cvv != null) {
-                // Never log or display a CVV
-                resultDisplayStr += "CVV has " + scanResult.cvv.length() + " digits.\n";
-            }
-
-            if (scanResult.postalCode != null) {
-                resultDisplayStr += "Postal Code: " + scanResult.postalCode + "\n";
-            }
-        } else {
-            resultDisplayStr = "Scan was canceled.";
-        }
-        met_banknumber.setText(resultDisplayStr);
-        // do something with resultDisplayStr, maybe display it in a textView
-        // resultTextView.setText(resultDisplayStr);
-    }*/
 }

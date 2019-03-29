@@ -305,26 +305,12 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_income_and_expenditure_details"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:visibility="visible">
 
                 </android.support.v7.widget.RecyclerView>
 
-                <LinearLayout
-                    android:id="@+id/empty_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="#ffffff"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:visibility="gone">
 
-                    <ImageView
-                        android:layout_width="200dp"
-                        android:layout_height="200dp"
-                        android:background="@mipmap/wu" />
-                </LinearLayout>
             </LinearLayout>
 
 
@@ -367,31 +353,17 @@
 
                 <android.support.v7.widget.RecyclerView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:id="@+id/rv_withdrawals_record">
 
                 </android.support.v7.widget.RecyclerView>
-                <LinearLayout
-                    android:id="@+id/empty_view_one"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:visibility="gone"
-                    android:gravity="center"
-                    android:background="#ffffff">
 
-                    <ImageView
-                        android:layout_width="200dp"
-                        android:layout_height="200dp"
-                        android:background="@mipmap/wu"/>
-                </LinearLayout>
             </LinearLayout>
 
             <!--充值记录-->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:background="@drawable/rr_shape"
@@ -431,23 +403,8 @@
                     android:id="@+id/rv_recharge_record">
 
                 </android.support.v7.widget.RecyclerView>
-                <LinearLayout
-                    android:id="@+id/empty_view_two"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:visibility="gone"
-                    android:gravity="center"
-                    android:background="#ffffff">
 
-                    <ImageView
-                        android:layout_width="200dp"
-                        android:layout_height="200dp"
-                        android:background="@mipmap/wu"/>
-                </LinearLayout>
             </LinearLayout>
-
 
 
         </LinearLayout>

@@ -475,6 +475,11 @@ public class Complete_wait_fetch_Fragement extends BaseFragment<GetOrderListForM
     }
 
     @Override
+    public void AddOrderSuccess(BaseResult<Data> baseResult) {
+
+    }
+
+    @Override
     public void GetUserInfoList(BaseResult<UserInfo> baseResult) {
         switch (baseResult.getStatusCode()){
             case 200:

@@ -99,7 +99,6 @@
                             android:id="@+id/tv_nickname"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="西瓜鱼"
                             android:textColor="#858585"
                             android:textSize="14sp" />
 
@@ -138,7 +137,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:text="123456789"
                             android:textColor="#858585"
                             android:textSize="14sp" />
 
@@ -170,15 +168,16 @@
 
                     </LinearLayout>
 
-                    <View
+               <!--     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginLeft="14dp"
                         android:layout_marginTop="11dp"
                         android:layout_marginRight="14dp"
-                        android:background="#E4E4E4" />
+                        android:background="#E4E4E4" />-->
 
                     <LinearLayout
+                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="17dp"
@@ -200,7 +199,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:text="155*****123"
                             android:textColor="#858585"
                             android:textSize="14sp" />
 
@@ -268,7 +266,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:text="510626198606285614"
                             android:textColor="#858585"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -454,17 +451,9 @@
                             android:layout_height="wrap_content"
                             android:gravity="right"
                             android:layout_weight="1"
-                            android:text="宁波市江北区金山路企协大厦1901室"
                             android:textColor="#858585"
                             android:singleLine="true"
                             android:textSize="14sp" />
-
-                        <ImageView
-                            android:layout_width="15dp"
-                            android:layout_height="20dp"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="6dp"
-                            android:src="@mipmap/right_arrow" />
                     </LinearLayout>
 
                     <View
@@ -585,7 +574,7 @@
                             android:id="@+id/tv_my_skills"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="生活技能"
+                            android:text="修改生活技能"
                             android:textColor="#858585"
                             android:textSize="14sp" />
 

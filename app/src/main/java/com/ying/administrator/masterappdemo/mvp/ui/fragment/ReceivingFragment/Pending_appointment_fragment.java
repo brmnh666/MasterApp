@@ -181,15 +181,19 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                         break;
                     /*预约成功*/
                     case R.id.tv_pending_appointment_success:
-                        Intent intent=new Intent(getActivity(),Order_details_Activity.class);
+                      //  Intent intent=new Intent(getActivity(),Order_details_Activity.class);
                         //传递工单号
-                        intent.putExtra("OrderID",((WorkOrder.DataBean)adapter.getItem(position)).getOrderID());
-                        successposition=position;
+                       //    intent.putExtra("OrderID",((WorkOrder.DataBean)adapter.getItem(position)).getOrderID());
+                       //    successposition=position;
                         //startActivity(intent);
                        // intent.putExtra("successposition",successposition);
-                        startActivityForResult(intent,1001);
-
+                      //  startActivityForResult(intent,1001);
                         //startActivityForResult(intent,22);
+                        successposition=position;
+                        mPresenter.AddOrderSuccess(((WorkOrder.DataBean)adapter.getItem(position)).getOrderID(),"1","预约成功");
+
+
+
                         break;
                     case R.id.tv_pending_appointment_failure:
 
@@ -464,13 +468,28 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
     public void AddOrderfailureReason(BaseResult<Data> baseResult) {
         switch (baseResult.getStatusCode()){
             case 200:
-                Log.d("949559482",baseResult.getData().getItem2().toString());
                 break;
             default:
-                Log.d("949559482",baseResult.getData().getItem2().toString());
                 break;
 
         }
+    }
+
+    @Override
+    public void AddOrderSuccess(BaseResult<Data> baseResult) {
+        switch (baseResult.getStatusCode()){
+
+            case 200:
+                if (baseResult.getData().isItem1()){
+                    pending_appointment_adapter.remove(successposition);
+                     Toast.makeText(getActivity(),"预约成功请到服务中",Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+                break;
+
+        }
+
     }
 
     @Override

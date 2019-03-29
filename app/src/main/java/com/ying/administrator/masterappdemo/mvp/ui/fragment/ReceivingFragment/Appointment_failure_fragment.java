@@ -474,6 +474,11 @@ public class Appointment_failure_fragment extends BaseFragment<GetOrderListForMe
     }
 
     @Override
+    public void AddOrderSuccess(BaseResult<Data> baseResult) {
+
+    }
+
+    @Override
     public void GetUserInfoList(BaseResult<UserInfo> baseResult) {
         switch (baseResult.getStatusCode()){
             case 200:

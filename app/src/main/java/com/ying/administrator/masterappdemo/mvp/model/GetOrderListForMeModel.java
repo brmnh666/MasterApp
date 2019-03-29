@@ -31,6 +31,14 @@ public class GetOrderListForMeModel implements GetOrderListForMeContract.Model {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }
+
+    @Override
+    public Observable<BaseResult<Data>> AddOrderSuccess(String OrderID, String AppointmentState, String AppointmentMessage) {
+        return ApiRetrofit.getDefault().AddOrderSuccess(OrderID,AppointmentState,AppointmentMessage)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
     @Override
     public Observable<BaseResult<UserInfo>> GetUserInfoList(String UserID, String limit) {
         return ApiRetrofit.getDefault().GetUserInfoList(UserID,limit)

@@ -186,13 +186,12 @@ public class Order_Receiving_Activity extends AppCompatActivity implements Defin
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("====>","调用了activity里main的onActivityResult");
 
-        if (resultCode==10001){    //到服务中去
+      /*  if (resultCode==10001){    //到服务中去
             receiving_viewpager.setCurrentItem(1);
             Log.d("====>","10001");
         }else if (resultCode==10002){ //到返件中去
             receiving_viewpager.setCurrentItem(2);
-        }
+        }*/
     }
 }

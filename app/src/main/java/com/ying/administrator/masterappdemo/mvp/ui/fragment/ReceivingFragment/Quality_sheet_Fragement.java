@@ -231,6 +231,11 @@ public class Quality_sheet_Fragement extends BaseFragment<GetOrderListForMePrese
     }
 
     @Override
+    public void AddOrderSuccess(BaseResult<Data> baseResult) {
+
+    }
+
+    @Override
     public void GetUserInfoList(BaseResult<UserInfo> baseResult) {
         switch (baseResult.getStatusCode()){
             case 200:

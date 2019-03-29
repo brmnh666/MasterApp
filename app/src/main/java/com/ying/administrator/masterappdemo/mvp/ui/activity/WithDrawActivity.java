@@ -61,7 +61,7 @@ public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
     @BindView(R.id.tv_title)
     TextView mTvTitle;
     @BindView(R.id.all_withdraw_tv)  //累计提现
-            TextView mAllWithdrawTv;
+    TextView mAllWithdrawTv;
     @BindView(R.id.withdraw_ll)
     LinearLayout mWithdrawLl;
     @BindView(R.id.income_tv)  //累计收入
@@ -294,10 +294,11 @@ public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
                 showPopupWindow();
             break;
             case R.id.confirm_withdrawal_btn: //提交
-                double money= Double.parseDouble(mMoneyEt.getText().toString());
+
                 if (mMoneyEt.getText().toString().isEmpty()||CardNo==null){
                     Toast.makeText(WithDrawActivity.this,"请输入金额并选择银行卡",Toast.LENGTH_SHORT).show();
                 }else {
+                    double money= Double.parseDouble(mMoneyEt.getText().toString());
                     if (money==0){
                         Toast.makeText(WithDrawActivity.this,"不能提现0元",Toast.LENGTH_SHORT).show();
                     }else {
@@ -324,11 +325,34 @@ public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
     public void GetDepositMoneyDisplay(BaseResult<WithDrawMoney> baseResult) {
 switch (baseResult.getStatusCode()){
        case 200:
-           withDrawMoney=baseResult.getData();
-           mMarginAmountTv.setText(baseResult.getData().getBzj());
-           mCashWithdrawalAmountTv.setText(baseResult.getData().getKtx());
-           mWithdrawTv.setText(baseResult.getData().getTxz());
-           mAmountToBeConfirmedTv.setText(baseResult.getData().getDqr());
+           if (baseResult.getData()==null){
+               return;
+           }else {
+               withDrawMoney=baseResult.getData();
+               mMarginAmountTv.setText(baseResult.getData().getBzj());
+               mCashWithdrawalAmountTv.setText(baseResult.getData().getKtx());
+               if (baseResult.getData().getTxz()==null){
+                   mWithdrawTv.setText("0.00");
+               }else {
+                   mWithdrawTv.setText(baseResult.getData().getTxz());
+               }
+               //累计提现
+               if (baseResult.getData().getLjtx()==null){
+                   mAllWithdrawTv.setText("0.00");
+               }else {
+                   mAllWithdrawTv.setText(baseResult.getData().getLjtx());
+               }
+               //累计收入
+
+               if (baseResult.getData().getLjsr()==null){
+                   mIncomeTv.setText("0.00");
+               }else {
+                   mIncomeTv.setText(baseResult.getData().getLjsr());
+               }
+
+               mAmountToBeConfirmedTv.setText(baseResult.getData().getDqr());
+           }
+
         break;
         default:
             break;

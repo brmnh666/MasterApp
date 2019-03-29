@@ -15,6 +15,24 @@ public class WithDrawMoney implements Serializable {
     private String ktx;
     private String txz;
     private String dqr;
+    private String ljtx;
+    private String ljsr;
+
+    public String getLjtx() {
+        return ljtx;
+    }
+
+    public void setLjtx(String ljtx) {
+        this.ljtx = ljtx;
+    }
+
+    public String getLjsr() {
+        return ljsr;
+    }
+
+    public void setLjsr(String ljsr) {
+        this.ljsr = ljsr;
+    }
 
     public String getBzj() {
         return bzj;

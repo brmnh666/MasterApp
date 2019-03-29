@@ -198,6 +198,11 @@ import java.util.List;
     }
 
     @Override
+    public void AddOrderSuccess(BaseResult<Data> baseResult) {
+
+    }
+
+    @Override
     public void GetUserInfoList(BaseResult<UserInfo> baseResult) {
 
     }

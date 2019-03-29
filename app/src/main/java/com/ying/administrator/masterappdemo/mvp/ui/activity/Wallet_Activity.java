@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,6 +24,10 @@ import com.ying.administrator.masterappdemo.mvp.model.WalletModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.WalletPresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Wallet_record_Adapter;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -143,6 +148,7 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -240,7 +246,20 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
                                 mRv_recharge_record.setLayoutManager(new LinearLayoutManager(mActivity));
                                 mRv_recharge_record.setHasFixedSize(true);
                                 mRv_recharge_record.setNestedScrollingEnabled(false);
-                                wallet_record_adapter = new Wallet_record_Adapter(R.layout.item_withdrawals_record, recharge_list);
+
+                                if (recharge_list.size()<=4){
+                                    wallet_record_adapter = new Wallet_record_Adapter(R.layout.item_withdrawals_record, recharge_list);
+                                }else {
+                                    List<Bill.DataBean> list = new ArrayList<>();//充值记录
+
+                                    for (int i=0;i<4;i++){
+                                        list.add(recharge_list.get(i));
+                                    }
+                                    wallet_record_adapter = new Wallet_record_Adapter(R.layout.item_withdrawals_record, list);
+
+
+                                }
+
                                 mRv_recharge_record.setAdapter(wallet_record_adapter);
 
                                 break;
@@ -250,8 +269,23 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
                                 mRvIncomeAndExpenditureDetails.setLayoutManager(new LinearLayoutManager(mActivity));
                                 mRvIncomeAndExpenditureDetails.setHasFixedSize(true);
                                 mRvIncomeAndExpenditureDetails.setNestedScrollingEnabled(false);
-                                wallet_record_adapter = new Wallet_record_Adapter(R.layout.item_withdrawals_record, expend_income_list);
+
+
+
+                                if (withdraw_list.size()<=4){
+                                    wallet_record_adapter = new Wallet_record_Adapter(R.layout.item_withdrawals_record, expend_income_list);
+                                }else {
+                                    List<Bill.DataBean> list = new ArrayList<>();//提现记录
+
+                                    for (int i=0;i<4;i++){
+                                        list.add(expend_income_list.get(i));
+                                    }
+                                    wallet_record_adapter = new Wallet_record_Adapter(R.layout.item_withdrawals_record, list);
+
+                                }
+
                                 mRvIncomeAndExpenditureDetails.setAdapter(wallet_record_adapter);
+
 
                                 break;
                             case "3"://提现
@@ -259,24 +293,25 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
                                 mRvWithdrawalsRecord.setLayoutManager(new LinearLayoutManager(mActivity));
                                 mRvWithdrawalsRecord.setHasFixedSize(true);
                                 mRvWithdrawalsRecord.setNestedScrollingEnabled(false);
-                                wallet_record_adapter = new Wallet_record_Adapter(R.layout.item_withdrawals_record, withdraw_list);
+
+                                if (withdraw_list.size()<=4){
+                                    wallet_record_adapter = new Wallet_record_Adapter(R.layout.item_withdrawals_record, withdraw_list);
+                                }else {
+                                    List<Bill.DataBean> list = new ArrayList<>();//提现记录
+
+                                   for (int i=0;i<4;i++){
+                                       list.add(withdraw_list.get(i));
+                                   }
+                                    wallet_record_adapter = new Wallet_record_Adapter(R.layout.item_withdrawals_record, list);
+                                }
                                 mRvWithdrawalsRecord.setAdapter(wallet_record_adapter);
                                 break;
                             case "4"://待支付
                                 break;
                             default:
                                 break;
-
-
                         }
-
-
-                    }/*else {
-                        mEmptyView.setVisibility(View.VISIBLE);
-                        mEmptyViewTwo.setVisibility(View.VISIBLE);
-                        mEmptyViewOne.setVisibility(View.VISIBLE);
-                    }*/
-
+                    }
                 }
                 break;
         }
@@ -300,5 +335,16 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
                 break;
         }
 
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(String message) {
+        mPresenter.GetAccountPayInfoList(userId);
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

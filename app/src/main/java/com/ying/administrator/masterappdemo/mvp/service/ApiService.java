@@ -282,6 +282,19 @@ public interface ApiService {
                                                        @Field("AppointmentMessage") String AppointmentMessage);
 
 
+
+    /**
+     * 提交师傅预约预约成功
+     * **/
+    @FormUrlEncoded
+    @POST("Order/UpdateSendOrderAppointmentState")
+    Observable<BaseResult<Data>> AddOrderSuccess(@Field("OrderID") String OrderID,
+                                                 @Field("AppointmentState") String AppointmentState,
+                                                 @Field("AppointmentMessage") String AppointmentMessage);
+
+
+
+
     /*提交返件信息快递单号加快递公司*/
 
     @FormUrlEncoded
@@ -292,7 +305,7 @@ public interface ApiService {
      @FormUrlEncoded
     @POST("Order/UpdateOrderState")
     Observable<BaseResult<Data<String>>> UpdateOrderState (@Field("OrderID") String OrderID,
-                                                  @Field("State") String State);
+                                                      @Field("State") String State);
     /*
      *
      * 获取工厂配件信息
