@@ -195,7 +195,7 @@
         android:layout_height="1dp"
         android:layout_below="@id/ll_pending_appointment_cancel"
         android:layout_marginTop="5dp"
-        android:background="#DAD7DB" />
+        android:background="#eeeeee" />
 
     <LinearLayout
         android:layout_width="match_parent"

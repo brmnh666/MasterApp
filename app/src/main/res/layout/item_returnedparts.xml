@@ -216,7 +216,7 @@
         android:layout_height="1dp"
         android:layout_below="@+id/tv_hint_returnedparts"
         android:layout_marginTop="10dp"
-        android:background="#DAD7DB"></View>
+        android:background="#eeeeee"></View>
     <!--  <TextView
           android:id="@+id/tv_pending_appointment_success"
           android:layout_below="@+id/view_point"

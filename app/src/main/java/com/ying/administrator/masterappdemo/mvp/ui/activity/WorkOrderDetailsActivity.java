@@ -219,6 +219,16 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
     TextView mTvAccessoryMemo;
     @BindView(R.id.tv_accessory_sequency)
     TextView mTvAccessorySequency;
+    @BindView(R.id.tv_order_details_select_time)
+    TextView mTvOrderDetailsSelectTime;
+    @BindView(R.id.tv_select_time)
+    TextView mTvSelectTime;
+    @BindView(R.id.view_select_time_point)
+    ImageView mViewSelectTimePoint;
+    @BindView(R.id.rl_select_time)
+    LinearLayout mRlSelectTime;
+    @BindView(R.id.ll_memo)
+    LinearLayout mLlMemo;
     private String OrderID;
     private WorkOrder.DataBean data;
     private ReturnAccessoryAdapter returnAccessoryAdapter;
@@ -947,7 +957,9 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                     mRvReturnInformation.setLayoutManager(new LinearLayoutManager(mActivity));
                     mRvReturnInformation.setAdapter(returnAccessoryAdapter);
                     mLlAccessory.setVisibility(View.VISIBLE);
+                    mRlSelectTime.setVisibility(View.GONE);
                     mLlAddAccessory.setVisibility(View.GONE);
+                    mLlMemo.setVisibility(View.GONE);
                     if ("0".equals(data.getAccessoryApplyState())) {
                         mTvAccessoryApplyState.setText("审核中");
                         mTvAccessoryApplication.setVisibility(View.GONE);
@@ -961,6 +973,8 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                 } else {
                     mLlAccessory.setVisibility(View.GONE);
                     mLlAddAccessory.setVisibility(View.VISIBLE);
+                    mLlMemo.setVisibility(View.VISIBLE);
+                    mRlSelectTime.setVisibility(View.GONE);
                 }
                 if (data.getOrderServiceDetail().size() != 0) {
                     gServiceAdapter = new GServiceAdapter(R.layout.item_service, data.getOrderServiceDetail());
@@ -968,6 +982,7 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                     mRvService.setAdapter(gServiceAdapter);
                     mLlService.setVisibility(View.VISIBLE);
                     mLlAddService.setVisibility(View.GONE);
+                    mRlSelectTime.setVisibility(View.GONE);
                     if ("0".equals(data.getServiceApplyState())) {
                         mTvServiceApplyState.setText("审核中");
                         mTvServiceApplication.setVisibility(View.GONE);
@@ -981,8 +996,8 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                 } else {
                     mLlService.setVisibility(View.GONE);
                     mLlAddService.setVisibility(View.VISIBLE);
+                    mRlSelectTime.setVisibility(View.GONE);
                 }
-
 
 
                 if ("5".equals(data.getState())) {
@@ -1013,11 +1028,11 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                 if ("0".equals(baseResult.getData().getCode())) {
                     ac_list = baseResult.getData().getData();
                     if (ac_list == null) {
-                        MyUtils.showToast(mActivity,"无配件，请联系管理员");
+                        MyUtils.showToast(mActivity, "无配件，请联系管理员");
                         return;
                     }
                     if (ac_list.size() == 0) {
-                        MyUtils.showToast(mActivity,"无配件，请联系管理员");
+                        MyUtils.showToast(mActivity, "无配件，请联系管理员");
                         return;
                     }
                     ac_list_adapter = new Ac_List_Adapter(R.layout.item_accessory, ac_list);
@@ -1039,9 +1054,9 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                 if ("0".equals(baseResult.getData().getCode())) {
                     mList_service = baseResult.getData().getData();
                     mAdd_Service_Adapter.setNewData(mList_service);
-                    if (mList_service.size()==0){
-                        MyUtils.showToast(mActivity,"无服务，请联系管理员");
-                    }else{
+                    if (mList_service.size() == 0) {
+                        MyUtils.showToast(mActivity, "无服务，请联系管理员");
+                    } else {
                         addService();
                     }
                 } else {
@@ -1064,7 +1079,7 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                     ToastUtils.showShort("提交成功");
                     EventBus.getDefault().post("");
                 } else {
-                    if ("支付错误,添加失败".equals(baseResult.getData().getItem2())){
+                    if ("支付错误,添加失败".equals(baseResult.getData().getItem2())) {
                         customdialog_home_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_home, null);
                         customdialog_home_dialog = new AlertDialog.Builder(mActivity)
                                 .setView(customdialog_home_view)
@@ -1087,11 +1102,11 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                         positive.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                startActivity(new Intent(mActivity,RechargeActivity.class));
+                                startActivity(new Intent(mActivity, RechargeActivity.class));
                                 customdialog_home_dialog.dismiss();
                             }
                         });
-                    }else{
+                    } else {
                         ToastUtils.showShort((String) baseResult.getData().getItem2());
                     }
                 }
@@ -1110,7 +1125,7 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                     ToastUtils.showShort("提交成功");
                     EventBus.getDefault().post("");
                 } else {
-                    if ("支付错误,添加失败".equals(baseResult.getData().getItem2())){
+                    if ("支付错误,添加失败".equals(baseResult.getData().getItem2())) {
                         customdialog_home_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_home, null);
                         customdialog_home_dialog = new AlertDialog.Builder(mActivity)
                                 .setView(customdialog_home_view)
@@ -1133,11 +1148,11 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                         positive.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                startActivity(new Intent(mActivity,RechargeActivity.class));
+                                startActivity(new Intent(mActivity, RechargeActivity.class));
                                 customdialog_home_dialog.dismiss();
                             }
                         });
-                    }else{
+                    } else {
                         ToastUtils.showShort((String) baseResult.getData().getItem2());
                     }
                 }
@@ -1200,7 +1215,7 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                     ToastUtils.showShort("提交成功");
                     EventBus.getDefault().post("");
                 } else {
-                    if ("支付错误,添加失败".equals(baseResult.getData().getItem2())){
+                    if ("支付错误,添加失败".equals(baseResult.getData().getItem2())) {
                         customdialog_home_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_home, null);
                         customdialog_home_dialog = new AlertDialog.Builder(mActivity)
                                 .setView(customdialog_home_view)
@@ -1223,11 +1238,11 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                         positive.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                startActivity(new Intent(mActivity,RechargeActivity.class));
+                                startActivity(new Intent(mActivity, RechargeActivity.class));
                                 customdialog_home_dialog.dismiss();
                             }
                         });
-                    }else{
+                    } else {
                         ToastUtils.showShort((String) baseResult.getData().getItem2());
                     }
                 }

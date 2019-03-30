@@ -147,7 +147,7 @@
         android:id="@+id/view_point"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#DAD7DB"
+        android:background="#eeeeee"
         android:layout_below="@+id/tv_address_pending_receipt"
         android:layout_marginTop="10dp"
         ></View>

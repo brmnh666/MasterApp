@@ -43,7 +43,7 @@ public class Order_Receiving_Activity extends AppCompatActivity implements Defin
      private Quality_sheet_Fragement quality_sheet_fragement; //质保单
     private Wait_Return_Fragment wait_return_fragment;//待返件
 
-     private Returnedparts_Fragement returnedparts_fragement;//返件单
+     private Returnedparts_Fragement returnedparts_fragement;//配件单
      private Complete_wait_fetch_Fragement complete_wait_fetch_fragement;//完成待取机
      private Completed_Fragement completed_fragement; //已完成
      private Appointment_failure_fragment appointment_failure_fragment;//预约失败
@@ -87,7 +87,7 @@ public class Order_Receiving_Activity extends AppCompatActivity implements Defin
          //为tablayout添加内容
          title.add("已接待预约");
          title.add("服务中");
-         title.add("返件单");
+         title.add("配件单");
          title.add("待返件");
          title.add("质保单");
          title.add("完成待取机");
@@ -97,7 +97,7 @@ public class Order_Receiving_Activity extends AppCompatActivity implements Defin
         //grabsheet_fragement=new Grabsheet_Fragement();
         pending_appointment_fragment=new Pending_appointment_fragment(); //已接待预约
         inService_fragement=new InService_Fragement(); //服务中
-        returnedparts_fragement=new Returnedparts_Fragement();//返件单
+        returnedparts_fragement=new Returnedparts_Fragement();//配件单
         wait_return_fragment=new Wait_Return_Fragment();//待返件
         quality_sheet_fragement=new Quality_sheet_Fragement();//质保单
         complete_wait_fetch_fragement=new Complete_wait_fetch_Fragement();//完成待取机
