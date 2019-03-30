@@ -112,20 +112,19 @@ public class TransactionMessageActivity extends BaseActivity<MyMessagePresenter,
     public void GetMessageList(BaseResult<MessageData<List<Message>>> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData() == null) {
+
+                if (baseResult.getData().getData()==null){
                     if (pageIndex==1){
                         list.clear();
                         messageAdapter.notifyDataSetChanged();
                     }
-                    return;
-                } else {
-
+                }else {
                     if (pageIndex==1){
                         list.clear();
-                        list.addAll(baseResult.getData().getItem1());
+                        list.addAll(baseResult.getData().getData());
                         messageAdapter.notifyDataSetChanged();
                     }else {
-                        list.addAll(baseResult.getData().getItem1());
+                        list.addAll(baseResult.getData().getData());
                         messageAdapter.setNewData(list);
                     }
 

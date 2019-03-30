@@ -592,7 +592,7 @@ public interface ApiService {
 
     /*获取个人消息  1.交易消息类型  2.订单消息类型*/
     @FormUrlEncoded
-    @POST("Cms/GetMessageList")
+    @POST("Cms/GetListmessageByType")
     Observable<BaseResult<MessageData<List<Message>>>> GetMessageList(@Field("UserID") String UserID,
                                                                       @Field("Type") String Type,
                                                                       @Field("limit") String limit,

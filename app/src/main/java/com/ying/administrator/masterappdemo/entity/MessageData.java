@@ -4,24 +4,41 @@ import java.io.Serializable;
 
 public class MessageData<T> implements Serializable {
 
+    private String code;
+    private String msg;
+    private String count;
+    private T data;
 
-
-    private T Item1;
-    private int Item2;
-
-    public T getItem1() {
-        return Item1;
+    public String getCode() {
+        return code;
     }
 
-    public void setItem1(T item1) {
-        Item1 = item1;
+    public void setCode(String code) {
+        this.code = code;
     }
 
-    public int getItem2() {
-        return Item2;
+    public String getMsg() {
+        return msg;
     }
 
-    public void setItem2(int item2) {
-        Item2 = item2;
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public String getCount() {
+        return count;
+    }
+
+    public void setCount(String count) {
+        this.count = count;
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
     }
 }
+
