@@ -3,6 +3,7 @@ package com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -43,6 +44,8 @@ import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseFra
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
+import com.zyao89.view.zloading.ZLoadingDialog;
+import com.zyao89.view.zloading.Z_TYPE;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +71,8 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
     private ImageView img_cancle;
     private LinearLayout ll_choose_baidumap;
     private LinearLayout ll_choose_gaodemap;
+    private ZLoadingDialog dialog;
+    private boolean isfristin;
      @Nullable
      @Override
      public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -81,13 +86,14 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
     return view;
     }
 
-    @Override
+   /* @Override
     public void onResume() {
         super.onResume();
         mRefreshLayout.autoRefresh();
     }
-
+*/
     public void initView() {
+        dialog =new ZLoadingDialog(mActivity);
         list=new ArrayList<>();
         recyclerView=view.findViewById(R.id.recyclerview_order_receiving);
         mRefreshLayout=view.findViewById(R.id.refreshLayout);
@@ -95,13 +101,12 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
         in_service_adapter.setEmptyView(getEmptyView());
         recyclerView.setAdapter(in_service_adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
         /*选择地图*/
         popupWindow_view = LayoutInflater.from(mActivity).inflate(R.layout.popwindow_choosemap, null);
         mPopupWindow = new PopupWindow(popupWindow_view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
 
-        mPresenter.WorkerGetOrderList(userID,"2",Integer.toString(pageIndex),"5");
+       // mPresenter.WorkerGetOrderList(userID,"2",Integer.toString(pageIndex),"5");
     }
     private void initListener() {
 
@@ -195,7 +200,6 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
                         list.clear();
                         in_service_adapter.notifyDataSetChanged();
                     }
-
                 }else {
                     if (pageIndex==1){
                         list.clear();
@@ -208,7 +212,8 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
                         in_service_adapter.setNewData(list);
                     }
                 }
-
+                isfristin=true;
+                cancleLoading();
                 break;
             case 401:
                 ToastUtils.showShort(baseResult.getInfo());
@@ -296,6 +301,24 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
     public void hideProgress() {
 
     }
+
+
+    public void showLoading(){
+        dialog.setLoadingBuilder(Z_TYPE.ROTATE_CIRCLE)//设置类型
+                .setLoadingColor(Color.BLACK)//颜色
+                .setHintText("正在加载工单...")
+                .setHintTextSize(14) // 设置字体大小 dp
+                .setHintTextColor(Color.BLACK)  // 设置字体颜色
+                .setDurationTime(1) // 设置动画时间百分比 - 0.5倍
+                .setCanceledOnTouchOutside(false)//点击外部无法取消
+                .show();
+    }
+
+    public void cancleLoading(){
+        dialog.dismiss();
+
+    }
+
 
 
     /**
@@ -405,6 +428,18 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
                 "&dev=0"));
         intent.setPackage("com.autonavi.minimap");
         startActivity(intent);
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser){
+       if (isfristin==false){
+           showLoading();
+            }
+            mPresenter.WorkerGetOrderList(userID,"2",Integer.toString(pageIndex),"5");
+        }
+
     }
 
 

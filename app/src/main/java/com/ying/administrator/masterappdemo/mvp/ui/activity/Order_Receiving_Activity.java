@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+
 import com.ying.administrator.masterappdemo.common.DefineView;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment.Appointment_failure_fragment;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment.Complete_wait_fetch_Fragement;
@@ -23,7 +25,9 @@ import com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment.Re
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.TabLayoutViewPagerAdapter;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment.Wait_Return_Fragment;
-import com.ying.administrator.masterappdemo.widget.BadgeView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 
@@ -55,6 +59,7 @@ public class Order_Receiving_Activity extends AppCompatActivity implements Defin
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_order_receiving);
+         EventBus.getDefault().register(this);
         initView();
         initValidata();
         initListener();
@@ -128,6 +133,9 @@ public class Order_Receiving_Activity extends AppCompatActivity implements Defin
         badgeView.setBadgeCount(8);*/
 
 
+
+
+
         receiving_viewpager.setCurrentItem(0);//默认第一个
         /*显示哪一个fragment*/
         String intent = getIntent().getStringExtra("intent");
@@ -174,6 +182,7 @@ public class Order_Receiving_Activity extends AppCompatActivity implements Defin
 
 
 
+
     }
 
     public class CustomOnclickListner implements View.OnClickListener {
@@ -204,5 +213,19 @@ public class Order_Receiving_Activity extends AppCompatActivity implements Defin
         }else if (resultCode==10002){ //到返件中去
             receiving_viewpager.setCurrentItem(2);
         }*/
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    //任意写一个方法，给这个方法一个@Subscribe注解，参数类型可以自定义，但是一定要与你发出的类型相同
+    @Subscribe
+    public void getEventBus(Integer num) {
+        if (num == 2) {
+            receiving_viewpager.setCurrentItem(1);
+        }
     }
 }

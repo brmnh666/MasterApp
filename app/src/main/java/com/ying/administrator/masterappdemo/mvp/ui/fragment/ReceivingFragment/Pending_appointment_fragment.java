@@ -1,5 +1,6 @@
 package com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment;
 
+import android.arch.lifecycle.Lifecycle;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -11,20 +12,16 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.SPUtils;
-import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
@@ -48,6 +45,8 @@ import com.ying.administrator.masterappdemo.widget.CustomDialog_Redeploy;
 import com.ying.administrator.masterappdemo.widget.CustomDialog_UnSuccess;
 import com.zyao89.view.zloading.ZLoadingDialog;
 import com.zyao89.view.zloading.Z_TYPE;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,6 +77,7 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
     private int successposition;
 
     private ZLoadingDialog dialog;
+
     public Pending_appointment_fragment() {
         // Required empty public constructor
     }
@@ -482,7 +482,11 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
             case 200:
                 if (baseResult.getData().isItem1()){
                     pending_appointment_adapter.remove(successposition);
-                     Toast.makeText(getActivity(),"预约成功请到服务中",Toast.LENGTH_SHORT).show();
+                     //Toast.makeText(getActivity(),"预约成功请到服务中",Toast.LENGTH_SHORT).show();
+                    EventBus.getDefault().post(2);//预约成功跳转到服务中
+                }else {
+
+
                 }
                 break;
             default:
@@ -622,6 +626,5 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
         dialog.dismiss();
 
     }
-
 
 }
