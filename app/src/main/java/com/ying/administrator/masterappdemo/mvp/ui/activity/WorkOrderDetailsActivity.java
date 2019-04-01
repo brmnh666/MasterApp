@@ -3,6 +3,9 @@ package com.ying.administrator.masterappdemo.mvp.ui.activity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -227,8 +230,8 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
     ImageView mViewSelectTimePoint;
     @BindView(R.id.rl_select_time)
     LinearLayout mRlSelectTime;
-    @BindView(R.id.ll_memo)
-    LinearLayout mLlMemo;
+    @BindView(R.id.iv_copy)
+    ImageView mIvCopy;
     private String OrderID;
     private WorkOrder.DataBean data;
     private ReturnAccessoryAdapter returnAccessoryAdapter;
@@ -305,6 +308,8 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
     private TextView message;
     private Button negtive;
     private Button positive;
+    private ClipboardManager myClipboard;
+
 
     @Override
     protected int setLayoutId() {
@@ -362,6 +367,8 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
         });
 
         mAdd_Service_Adapter = new Add_Service_Adapter(R.layout.item_addservice, mList_service);
+
+        myClipboard = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
     }
 
 
@@ -397,6 +404,8 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
         mTvAccessoryInformation.setOnClickListener(this);
         mTvServiceInformation.setOnClickListener(this);
         mTvRemoteFeeInformation.setOnClickListener(this);
+
+        mIvCopy.setOnClickListener(this);
     }
 
     @Override
@@ -556,6 +565,11 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                         .load("http://47.96.126.145:8820/Pics/OrderByondImg/" + data.getOrderBeyondImg().get(1).getUrl())
                         .into(simpleTarget);
                 break;
+            case R.id.iv_copy:
+                String id=data.getOrderID();
+                ClipData myClip = ClipData.newPlainText("", id);
+                myClipboard.setPrimaryClip(myClip);
+                ToastUtils.showShort("复制成功");
         }
 
     }
@@ -957,9 +971,8 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                     mRvReturnInformation.setLayoutManager(new LinearLayoutManager(mActivity));
                     mRvReturnInformation.setAdapter(returnAccessoryAdapter);
                     mLlAccessory.setVisibility(View.VISIBLE);
-                    mRlSelectTime.setVisibility(View.GONE);
                     mLlAddAccessory.setVisibility(View.GONE);
-                    mLlMemo.setVisibility(View.GONE);
+//                    mLlMemo.setVisibility(View.GONE);
                     if ("0".equals(data.getAccessoryApplyState())) {
                         mTvAccessoryApplyState.setText("审核中");
                         mTvAccessoryApplication.setVisibility(View.GONE);
@@ -973,8 +986,7 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                 } else {
                     mLlAccessory.setVisibility(View.GONE);
                     mLlAddAccessory.setVisibility(View.VISIBLE);
-                    mLlMemo.setVisibility(View.VISIBLE);
-                    mRlSelectTime.setVisibility(View.GONE);
+//                    mLlMemo.setVisibility(View.VISIBLE);
                 }
                 if (data.getOrderServiceDetail().size() != 0) {
                     gServiceAdapter = new GServiceAdapter(R.layout.item_service, data.getOrderServiceDetail());
@@ -982,7 +994,6 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                     mRvService.setAdapter(gServiceAdapter);
                     mLlService.setVisibility(View.VISIBLE);
                     mLlAddService.setVisibility(View.GONE);
-                    mRlSelectTime.setVisibility(View.GONE);
                     if ("0".equals(data.getServiceApplyState())) {
                         mTvServiceApplyState.setText("审核中");
                         mTvServiceApplication.setVisibility(View.GONE);
@@ -996,7 +1007,6 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                 } else {
                     mLlService.setVisibility(View.GONE);
                     mLlAddService.setVisibility(View.VISIBLE);
-                    mRlSelectTime.setVisibility(View.GONE);
                 }
 
 

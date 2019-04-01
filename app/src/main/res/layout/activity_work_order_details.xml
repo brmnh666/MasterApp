@@ -13,7 +13,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_marginTop="50dp"
             android:background="#1690ff"
             android:orientation="horizontal">
@@ -23,8 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="23dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="40dp"
+                android:layout_marginBottom="10dp"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -53,7 +52,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="9dp"
+                    android:layout_marginTop="7dp"
                     android:text="长时间无人确认返件可联系厂家催件"
                     android:textColor="@color/white"
                     android:textSize="10sp" />
@@ -68,7 +67,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginRight="24dp"
             android:src="@mipmap/bacground" />
-    </FrameLayout>
+
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"
@@ -77,7 +76,8 @@
         app:srlAccentColor="#00000000"
         app:srlEnableLoadmore="false"
         app:srlEnablePreviewInEditMode="true"
-        app:srlPrimaryColor="#00000000">
+        app:srlPrimaryColor="#00000000"
+        android:layout_marginTop="110dp">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -164,6 +164,13 @@
                             android:text="132165465464"
                             android:textColor="#6A6A6A"
                             android:textSize="15sp" />
+
+                        <ImageView
+                            android:id="@+id/iv_copy"
+                            android:layout_width="15dp"
+                            android:layout_height="17dp"
+                            android:src="@mipmap/fuzhi"
+                            android:layout_marginLeft="10dp"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -184,6 +191,7 @@
                             android:textSize="18sp" />
 
                         <TextView
+                            android:visibility="gone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="数量:"
@@ -191,6 +199,7 @@
                             android:textSize="14sp" />
 
                         <TextView
+                            android:visibility="gone"
                             android:id="@+id/tv_number"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -199,6 +208,7 @@
                             android:textSize="14sp" />
 
                         <TextView
+                            android:visibility="gone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="台"
@@ -211,6 +221,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
                         android:layout_marginTop="13dp"
+                        android:layout_marginBottom="15dp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -234,68 +245,65 @@
                             android:textSize="14sp" />
                     </LinearLayout>
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginTop="14dp"
-                        android:background="#eeeeee" />
+                    </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/dp_10"
+                    android:background="@color/white"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp">
+
+                    <ImageView
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="27dp"
+                        android:src="@drawable/address" />
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingBottom="@dimen/dp_10">
-
-                        <ImageView
-                            android:layout_width="28dp"
-                            android:layout_height="28dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginTop="33dp"
-                            android:src="@drawable/address" />
+                        android:layout_marginLeft="9dp"
+                        android:orientation="vertical">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="9dp"
-                            android:orientation="vertical">
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:id="@+id/tv_name"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="20dp"
-                                    android:text="刘波"
-                                    android:textColor="#333333"
-                                    android:textSize="15sp" />
-
-                                <TextView
-                                    android:id="@+id/tv_phone"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginTop="20dp"
-                                    android:text="86-13963560259"
-                                    android:textColor="#898989"
-                                    android:textSize="15sp" />
-                            </LinearLayout>
+                            android:orientation="horizontal">
 
                             <TextView
-                                android:id="@+id/tv_address"
+                                android:id="@+id/tv_name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                android:layout_marginRight="20dp"
-                                android:text="山东/聊城市/东昌府区/水城雅居一号楼一单元5楼东户"
+                                android:layout_marginTop="14dp"
+                                android:text="刘波"
                                 android:textColor="#333333"
-                                android:textSize="15dp" />
-                        </LinearLayout>
-                    </LinearLayout>
+                                android:textSize="15sp" />
 
+                            <TextView
+                                android:id="@+id/tv_phone"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginTop="14dp"
+                                android:text="86-13963560259"
+                                android:textColor="#898989"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tv_address"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginRight="20dp"
+                            android:text="山东/聊城市/东昌府区/水城雅居一号楼一单元5楼东户"
+                            android:textColor="#333333"
+                            android:textSize="15dp" />
+                    </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -426,7 +434,19 @@
                             android:layout_height="wrap_content"
                             android:nestedScrollingEnabled="false" />
                     </RelativeLayout>
-
+                    <EditText
+                        android:id="@+id/et_memo"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/edit_shape"
+                        android:hint="如有疑问可在此处填写"
+                        android:textColorHint="#898989"
+                        android:padding="@dimen/dp_10"
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -444,7 +464,7 @@
                             android:background="@drawable/tv_order_detail_btn"
                             android:padding="10dp"
                             android:text="添加配件"
-                            android:textColor="#6A6A6A"
+                            android:textColor="#000000"
                             android:textSize="14sp" />
 
                         <TextView
@@ -458,35 +478,13 @@
                             android:layout_marginBottom="10dp"
                             android:background="@drawable/tv_order_detail_btn"
                             android:padding="10dp"
-                            android:text="提交配件申请"
-                            android:textColor="#6A6A6A"
+                            android:text="提交申请"
+                            android:textColor="#000000"
                             android:textSize="14sp" />
                     </LinearLayout>
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/ll_memo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dp_10"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:layout_marginRight="@dimen/dp_10"
-                    android:background="@color/white">
-
-                    <EditText
-                        android:id="@+id/et_memo"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="@dimen/dp_10"
-                        android:layout_weight="1"
-                        android:background="@drawable/edit_shape"
-                        android:hint="备注:如有疑问可在备注内填写"
-                        android:padding="@dimen/dp_10"
-                        android:textColor="@color/black"
-                        android:textSize="12dp" />
-
-                </LinearLayout>
 
 
                 <LinearLayout
@@ -618,7 +616,7 @@
                             android:background="@drawable/tv_order_detail_btn"
                             android:padding="10dp"
                             android:text="再次申请"
-                            android:textColor="#6A6A6A"
+                            android:textColor="#000000"
                             android:textSize="14sp" />
 
                         <TextView
@@ -632,7 +630,7 @@
                             android:background="@drawable/tv_order_detail_btn"
                             android:padding="10dp"
                             android:text="催    单"
-                            android:textColor="#6A6A6A"
+                            android:textColor="#000000"
                             android:textSize="14sp" />
                     </LinearLayout>
                 </LinearLayout>
@@ -655,7 +653,7 @@
                         android:layout_marginTop="15dp"
                         android:layout_marginBottom="15dp"
                         android:text="服务内容"
-                        android:textColor="#6A6A6A"
+                        android:textColor="#000000"
                         android:textSize="16sp" />
 
                     <View
@@ -699,7 +697,7 @@
                             android:paddingRight="10dp"
                             android:paddingBottom="10dp"
                             android:text="添加服务"
-                            android:textColor="#6A6A6A"
+                            android:textColor="#000000"
                             android:textSize="14sp"
 
                             />
@@ -718,8 +716,8 @@
                             android:paddingTop="10dp"
                             android:paddingRight="10dp"
                             android:paddingBottom="10dp"
-                            android:text="提交服务申请"
-                            android:textColor="#6A6A6A"
+                            android:text="提交申请"
+                            android:textColor="#000000"
                             android:textSize="14sp"
 
                             />
@@ -807,7 +805,7 @@
                             android:background="@drawable/tv_order_detail_btn"
                             android:padding="10dp"
                             android:text="再次申请"
-                            android:textColor="#6A6A6A"
+                            android:textColor="#000000"
                             android:textSize="14sp" />
 
                         <TextView
@@ -821,7 +819,7 @@
                             android:background="@drawable/tv_order_detail_btn"
                             android:padding="10dp"
                             android:text="催    单"
-                            android:textColor="#6A6A6A"
+                            android:textColor="#000000"
                             android:textSize="14sp" />
                     </LinearLayout>
                 </LinearLayout>
@@ -849,7 +847,7 @@
                             android:layout_marginTop="15dp"
                             android:layout_marginBottom="15dp"
                             android:text="申请远程费"
-                            android:textColor="#6A6A6A"
+                            android:textColor="#000000"
                             android:textSize="16sp" />
                     </LinearLayout>
 
@@ -860,93 +858,114 @@
                         android:layout_marginLeft="8dp"
                         android:layout_marginRight="14dp"
                         android:background="@color/color_custom_08" />
-
                     <LinearLayout
-                        android:id="@+id/ll_Out_of_service_tv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:layout_marginBottom="12dp"
-                        android:orientation="horizontal"
-                        android:visibility="visible">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="20dp"
-                            android:text="已超出服务范围"
-                            android:textColor="#6A6A6A"
-                            android:textSize="14sp" />
-
-                        <ImageView
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="4dp"
-                            android:layout_marginRight="4dp"
-                            android:src="@mipmap/icon_loaction" />
-
-                        <TextView
-                            android:id="@+id/tv_remote_km"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="12Km"
-                            android:textColor="@color/color_custom_04"
-                            android:textSize="14sp" />
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:id="@+id/ll_Out_of_service_img"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:layout_marginBottom="12dp"
-                        android:visibility="visible">
-
-                        <ImageView
-                            android:id="@+id/iv_map1"
-                            android:layout_width="45dp"
-                            android:layout_height="45dp"
-                            android:layout_marginLeft="20dp"
-                            android:src="@mipmap/upload" />
-
-                        <ImageView
-                            android:id="@+id/iv_map2"
-                            android:layout_width="45dp"
-                            android:layout_height="45dp"
-                            android:layout_marginLeft="10dp"
-                            android:src="@mipmap/upload"
-                            android:visibility="gone" />
-
+                        android:orientation="horizontal">
                         <LinearLayout
+                            android:id="@+id/ll_Out_of_service_tv"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="right">
+                            android:layout_weight="1"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginBottom="12dp"
+                            android:orientation="vertical"
+                            android:visibility="visible">
 
-                            <!--<TextView-->
-                            <!--android:layout_width="wrap_content"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:text="输入超出公里数: "-->
-                            <!--android:textColor="#6A6A6A"-->
-                            <!--android:textSize="14sp" />-->
 
-                            <EditText
-                                android:id="@+id/et_order_beyond_km"
+
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginRight="@dimen/dp_10"
-                                android:background="@drawable/ed_order_detail"
-                                android:hint="输入超出公里数"
-                                android:inputType="numberDecimal"
-                                android:lines="1"
-                                android:maxLength="5"
-                                android:padding="10dp"
-                                android:singleLine="true"
-                                android:textColor="@color/color_black"
+                                android:orientation="horizontal"
+                                android:layout_marginLeft="34dp">
+                                <ImageView
+                                    android:layout_width="15dp"
+                                    android:layout_height="15dp"
+                                    android:layout_gravity="center"
+                                    android:layout_marginLeft="4dp"
+                                    android:layout_marginRight="4dp"
+                                    android:src="@mipmap/icon_loaction" />
+
+                                <TextView
+                                    android:id="@+id/tv_remote_km"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="12Km"
+                                    android:textColor="@color/color_custom_04"
+                                    android:textSize="14sp" />
+                            </LinearLayout>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="15dp"
+                                android:layout_marginTop="7dp"
+                                android:text="已超出服务范围"
+                                android:textColor="#ABABAB"
                                 android:textSize="14sp" />
                         </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/ll_Out_of_service_img"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginBottom="12dp"
+                            android:visibility="visible"
+                            android:layout_gravity="center">
+
+                            <ImageView
+                                android:id="@+id/iv_map1"
+                                android:layout_width="45dp"
+                                android:layout_height="45dp"
+                                android:layout_marginLeft="20dp"
+                                android:src="@mipmap/upload" />
+
+                            <ImageView
+                                android:id="@+id/iv_map2"
+                                android:layout_width="45dp"
+                                android:layout_height="45dp"
+                                android:layout_marginLeft="10dp"
+                                android:src="@mipmap/upload"
+                                android:visibility="gone" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="right">
+
+                                <!--<TextView-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:text="输入超出公里数: "-->
+                                <!--android:textColor="#6A6A6A"-->
+                                <!--android:textSize="14sp" />-->
+
+                                <EditText
+                                    android:id="@+id/et_order_beyond_km"
+                                    android:layout_width="87dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginRight="10dp"
+                                    android:background="@drawable/ed_order_detail"
+                                    android:hint="请输入公里数"
+                                    android:textColorHint="#6A6A6A"
+                                    android:inputType="numberDecimal"
+                                    android:lines="1"
+                                    android:maxLength="5"
+                                    android:gravity="center"
+                                    android:singleLine="true"
+                                    android:textColor="@color/color_black"
+                                    android:textSize="12sp"
+                                    android:layout_marginLeft="9dp"/>
+                            </LinearLayout>
+
+
+
+                        </LinearLayout>
+
+
+
 
                     </LinearLayout>
 
@@ -960,8 +979,8 @@
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/tv_order_detail_btn"
                         android:padding="10dp"
-                        android:text="提交远程费申请"
-                        android:textColor="#6A6A6A"
+                        android:text="提交申请"
+                        android:textColor="#000000"
                         android:textSize="14sp" />
                 </LinearLayout>
 
@@ -1084,7 +1103,7 @@
                             android:background="@drawable/tv_order_detail_btn"
                             android:padding="10dp"
                             android:text="再次申请"
-                            android:textColor="#6A6A6A"
+                            android:textColor="#000000"
                             android:textSize="14sp" />
 
                         <TextView
@@ -1099,7 +1118,7 @@
                             android:background="@drawable/tv_order_detail_btn"
                             android:padding="10dp"
                             android:text="催单"
-                            android:textColor="#6A6A6A"
+                            android:textColor="#000000"
                             android:textSize="14sp" />
                     </LinearLayout>
                 </LinearLayout>
@@ -1342,4 +1361,5 @@
             </LinearLayout>
         </ScrollView>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+    </FrameLayout>
 </LinearLayout>
