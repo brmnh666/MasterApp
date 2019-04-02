@@ -62,7 +62,7 @@
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="110dp"
+            android:layout_height="87dp"
             android:layout_gravity="right"
             android:layout_marginTop="20dp"
             android:layout_marginRight="24dp"
@@ -77,7 +77,7 @@
         app:srlEnableLoadmore="false"
         app:srlEnablePreviewInEditMode="true"
         app:srlPrimaryColor="#00000000"
-        android:layout_marginTop="110dp">
+        android:layout_marginTop="87dp">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -337,7 +337,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="10dp"
-                    android:background="@drawable/ll_order_details_shape"
+                    android:background="@color/white"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -455,9 +455,9 @@
 
                         <TextView
                             android:id="@+id/tv_order_details_add_accessories"
-                            android:layout_width="110dp"
+                            android:layout_width="87dp"
                             android:gravity="center"
-                            android:layout_height="wrap_content"
+                            android:layout_height="40dp"
                             android:layout_gravity="center"
                             android:layout_marginTop="10dp"
                             android:layout_marginBottom="10dp"
@@ -469,9 +469,9 @@
 
                         <TextView
                             android:id="@+id/tv_submit_add_accessories"
-                            android:layout_width="110dp"
+                            android:layout_width="87dp"
                             android:gravity="center"
-                            android:layout_height="wrap_content"
+                            android:layout_height="40dp"
                             android:layout_gravity="center"
                             android:layout_marginLeft="20dp"
                             android:layout_marginTop="10dp"
@@ -606,9 +606,9 @@
 
                         <TextView
                             android:id="@+id/tv_accessory_application"
-                            android:layout_width="110dp"
+                            android:layout_width="87dp"
                             android:gravity="center"
-                            android:layout_height="wrap_content"
+                            android:layout_height="40dp"
                             android:layout_gravity="center"
                             android:layout_marginTop="10dp"
                             android:layout_marginRight="20dp"
@@ -621,9 +621,9 @@
 
                         <TextView
                             android:id="@+id/tv_accessory_information"
-                            android:layout_width="110dp"
+                            android:layout_width="87dp"
                             android:gravity="center"
-                            android:layout_height="wrap_content"
+                            android:layout_height="40dp"
                             android:layout_gravity="center"
                             android:layout_marginTop="10dp"
                             android:layout_marginBottom="10dp"
@@ -642,7 +642,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="10dp"
-                    android:background="@drawable/ll_order_details_shape"
+                    android:background="@color/white"
                     android:orientation="vertical">
 
                     <TextView
@@ -685,9 +685,9 @@
 
                         <TextView
                             android:id="@+id/tv_order_detail_add_service"
-                            android:layout_width="110dp"
+                            android:layout_width="87dp"
                             android:gravity="center"
-                            android:layout_height="wrap_content"
+                            android:layout_height="40dp"
                             android:layout_gravity="center"
                             android:layout_marginTop="10dp"
                             android:layout_marginBottom="10dp"
@@ -704,9 +704,9 @@
 
                         <TextView
                             android:id="@+id/tv_submit_add_service"
-                            android:layout_width="110dp"
+                            android:layout_width="87dp"
                             android:gravity="center"
-                            android:layout_height="wrap_content"
+                            android:layout_height="40dp"
                             android:layout_gravity="center"
                             android:layout_marginLeft="20dp"
                             android:layout_marginTop="10dp"
@@ -795,9 +795,9 @@
 
                         <TextView
                             android:id="@+id/tv_service_application"
-                            android:layout_width="110dp"
+                            android:layout_width="87dp"
                             android:gravity="center"
-                            android:layout_height="wrap_content"
+                            android:layout_height="40dp"
                             android:layout_gravity="center"
                             android:layout_marginTop="10dp"
                             android:layout_marginRight="20dp"
@@ -810,9 +810,9 @@
 
                         <TextView
                             android:id="@+id/tv_service_information"
-                            android:layout_width="110dp"
+                            android:layout_width="87dp"
                             android:gravity="center"
-                            android:layout_height="wrap_content"
+                            android:layout_height="40dp"
                             android:layout_gravity="center"
                             android:layout_marginTop="10dp"
                             android:layout_marginBottom="10dp"
@@ -831,7 +831,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="10dp"
-                    android:background="@drawable/ll_order_details_shape"
+                    android:background="@color/white"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -971,9 +971,9 @@
 
                     <TextView
                         android:id="@+id/tv_submit_beyond"
-                        android:layout_width="110dp"
+                        android:layout_width="87dp"
                         android:gravity="center"
-                        android:layout_height="wrap_content"
+                        android:layout_height="40dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
@@ -1094,9 +1094,9 @@
 
                         <TextView
                             android:id="@+id/tv_beyond_application"
-                            android:layout_width="110dp"
+                            android:layout_width="87dp"
                             android:gravity="center"
-                            android:layout_height="wrap_content"
+                            android:layout_height="40dp"
                             android:layout_gravity="center"
                             android:layout_marginTop="10dp"
                             android:layout_marginBottom="10dp"
@@ -1108,9 +1108,9 @@
 
                         <TextView
                             android:id="@+id/tv_remote_fee_information"
-                            android:layout_width="110dp"
+                            android:layout_width="87dp"
                             android:gravity="center"
-                            android:layout_height="wrap_content"
+                            android:layout_height="40dp"
                             android:layout_gravity="center"
                             android:layout_marginLeft="20dp"
                             android:layout_marginTop="10dp"
