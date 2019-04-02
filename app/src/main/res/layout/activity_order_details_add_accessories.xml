@@ -95,7 +95,28 @@
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false"/>
     </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/ll_memo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_10"
+        android:background="@color/white">
 
+        <EditText
+            android:id="@+id/et_memo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/dp_10"
+            android:layout_weight="1"
+            android:background="@drawable/edit_shape"
+            android:hint="备注:如有疑问可在备注内填写"
+            android:padding="@dimen/dp_10"
+            android:textColor="@color/black"
+            android:textSize="12dp" />
+
+    </LinearLayout>
     <TextView
         android:id="@+id/tv_order_details_add_accessories"
         android:layout_gravity="center"

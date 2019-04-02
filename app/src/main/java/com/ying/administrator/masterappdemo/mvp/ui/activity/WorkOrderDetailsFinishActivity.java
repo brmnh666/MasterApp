@@ -618,6 +618,7 @@ public class WorkOrderDetailsFinishActivity extends BaseActivity<PendingOrderPre
                 mfAccessory.setDiscountPrice(accessory.getAccessoryPrice());//折扣价
                 mfAccessory.setSendState("N");
                 mfAccessory.setRelation("");
+                mfAccessory.setState("0");
                 mfAccessory.setIsPay("N");
                 mfAccessory.setExpressNo("");
                 if (select_state == 0) {//厂家自购
@@ -804,7 +805,7 @@ public class WorkOrderDetailsFinishActivity extends BaseActivity<PendingOrderPre
                 data = baseResult.getData();
                 mTvStatus.setText(data.getStateStr());
                 mTvAccessoryMemo.setText("备注：" + data.getAccessoryMemo());
-                mTvAccessorySequency.setText("寄件类型：" + data.getAccessorySequencyStr());
+                mTvAccessorySequency.setText(data.getAccessorySequencyStr());
                 mTvName.setText(data.getUserName());
                 mTvPhone.setText(data.getPhone());
                 mTvAddress.setText(data.getAddress());
@@ -836,7 +837,7 @@ public class WorkOrderDetailsFinishActivity extends BaseActivity<PendingOrderPre
                     mLlApplyBeyond.setVisibility(View.GONE);
                     mLlApproveBeyondMoney.setVisibility(View.GONE);
                 } else {
-                    mTvRemoteKm.setText(distance - Service_range + "km");
+                    mTvRemoteKm.setText(String.format("%.2f", distance - Service_range) + "km");
                 }
 
                 AccessoryApplyState = data.getAccessoryApplyState();
@@ -1210,6 +1211,11 @@ public class WorkOrderDetailsFinishActivity extends BaseActivity<PendingOrderPre
         }
     }
 
+    @Override
+    public void AddReturnAccessory(BaseResult<Data<String>> baseResult) {
+
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(String name) {
         mPresenter.GetOrderInfo(OrderID);
@@ -1442,7 +1448,7 @@ public class WorkOrderDetailsFinishActivity extends BaseActivity<PendingOrderPre
     public void OrderByondImgPicUpload(HashMap<Integer, File> map) {
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("img", map.get(0).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(0)));
-        builder.addFormDataPart("img", map.get(1).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(1)));
+//        builder.addFormDataPart("img", map.get(1).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(1)));
         builder.addFormDataPart("OrderID", OrderID);
         MultipartBody requestBody = builder.build();
         mPresenter.OrderByondImgPicUpload(requestBody);

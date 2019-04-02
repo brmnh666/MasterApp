@@ -384,7 +384,8 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("Order/UpdateSendOrderUpdateTime")
     Observable<BaseResult<Data>> UpdateSendOrderUpdateTime(@Field("OrderID") String OrderID,
-                                                           @Field("UpdateDate") String UpdateDate);
+                                                           @Field("UpdateDate") String UpdateDate,
+                                                           @Field("UpdateDate2") String EndDate);
 
     /**
      * 获取分类
@@ -527,14 +528,14 @@ public interface ApiService {
 
     /**
      * 催件
-     * @param UserID 用户id
      * @param OrderID 订单id
+     * @param Content 内容
      * @return
      */
     @FormUrlEncoded
     @POST("Order/PressFactoryAccount")
-    Observable<BaseResult<Data<String>>> PressFactoryAccount(@Field("UserID") String UserID,
-                                                     @Field("OrderID") String OrderID);
+    Observable<BaseResult<Data<String>>> PressFactoryAccount(@Field("OrderID") String OrderID,
+                                                     @Field("Content") String Content);
 
     /**
      * 获取文章列表

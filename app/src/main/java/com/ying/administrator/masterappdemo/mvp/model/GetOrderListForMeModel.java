@@ -76,8 +76,8 @@ public class GetOrderListForMeModel implements GetOrderListForMeContract.Model {
     }
 
     @Override
-    public Observable<BaseResult<Data<String>>> PressFactoryAccount(String UserID, String OrderID) {
-        return  ApiRetrofit.getDefault().PressFactoryAccount(UserID, OrderID)
+    public Observable<BaseResult<Data<String>>> PressFactoryAccount(String OrderID,String Content) {
+        return  ApiRetrofit.getDefault().PressFactoryAccount(OrderID, Content)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

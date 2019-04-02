@@ -6,7 +6,6 @@ import com.ying.administrator.masterappdemo.entity.Accessory;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.GAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
-import com.ying.administrator.masterappdemo.entity.GetFactorySeviceData;
 import com.ying.administrator.masterappdemo.entity.Service;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.PendingOrderContract;
@@ -78,8 +77,8 @@ public class PendingOrderPresenter extends PendingOrderContract.Presenter {
     }
 
     @Override
-    public void UpdateSendOrderUpdateTime(String OrderID, String UpdateDate) {
-        mModel.UpdateSendOrderUpdateTime(OrderID,UpdateDate).subscribe(new BaseObserver<Data>() {
+    public void UpdateSendOrderUpdateTime(String OrderID, String UpdateDate,String EndDate) {
+        mModel.UpdateSendOrderUpdateTime(OrderID,UpdateDate,EndDate).subscribe(new BaseObserver<Data>() {
             @Override
             protected void onHandleSuccess(BaseResult<Data> value) {
                 mView.UpdateSendOrderUpdateTime(value);
@@ -149,11 +148,20 @@ public class PendingOrderPresenter extends PendingOrderContract.Presenter {
     }
 
     @Override
-    public void PressFactoryAccount(String UserID, String OrderID) {
-        mModel.PressFactoryAccount(UserID, OrderID).subscribe(new BaseObserver<Data<String>>() {
+    public void PressFactoryAccount(String OrderID,String Content) {
+        mModel.PressFactoryAccount(OrderID, Content).subscribe(new BaseObserver<Data<String>>() {
             @Override
             protected void onHandleSuccess(BaseResult<Data<String>> value) {
                 mView.PressFactoryAccount(value);
+            }
+        });
+    }
+    @Override
+    public void AddReturnAccessory(String OrderID,String ReturnAccessoryMsg) {
+        mModel.AddReturnAccessory(OrderID, ReturnAccessoryMsg).subscribe(new BaseObserver<Data<String>>() {
+            @Override
+            protected void onHandleSuccess(BaseResult<Data<String>> value) {
+                mView.AddReturnAccessory(value);
             }
         });
     }

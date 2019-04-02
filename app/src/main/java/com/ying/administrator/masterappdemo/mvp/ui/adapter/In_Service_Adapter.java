@@ -25,14 +25,14 @@ public class In_Service_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,Base
         helper.setText(R.id.tv_address_in_service,item.getAddress()); //地址
         helper.setText(R.id.tv_in_service_job_number,"工单号:"+item.getOrderID());
 
-         if (item.getBeyondState()==null){
-         }else if (item.getBeyondState().equals("0")){//待审核
-             helper.setText(R.id.tv_remote_fee,"远程费审核中");
-         }else if (item.getBeyondState().equals("1")){//审核通过
-             helper.setText(R.id.tv_remote_fee,"远程费审核通过");
-         }else {//审核不通过
-             helper.setText(R.id.tv_remote_fee,"远程费审核不通过");
-         }
+//         if (item.getBeyondState()==null){
+//         }else if (item.getBeyondState().equals("0")){//待审核
+//             helper.setText(R.id.tv_remote_fee,"远程费审核中");
+//         }else if (item.getBeyondState().equals("1")){//审核通过
+//             helper.setText(R.id.tv_remote_fee,"远程费审核通过");
+//         }else {//审核不通过
+//             helper.setText(R.id.tv_remote_fee,"远程费审核不通过");
+//         }
 
 
 

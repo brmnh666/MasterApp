@@ -125,6 +125,7 @@ public class Order_Receiving_Activity extends AppCompatActivity implements Defin
         TabLayoutViewPagerAdapter tabLayoutViewPagerAdapter=new TabLayoutViewPagerAdapter(getSupportFragmentManager(),fragmentList,title);
         tab_Receiving_layout.setTabMode(TabLayout.MODE_SCROLLABLE);
         receiving_viewpager.setAdapter(tabLayoutViewPagerAdapter);
+        receiving_viewpager.setOffscreenPageLimit(0);
         tab_Receiving_layout.setupWithViewPager(receiving_viewpager);
 
         //显示未读消息红点
@@ -224,8 +225,18 @@ public class Order_Receiving_Activity extends AppCompatActivity implements Defin
     //任意写一个方法，给这个方法一个@Subscribe注解，参数类型可以自定义，但是一定要与你发出的类型相同
     @Subscribe
     public void getEventBus(Integer num) {
-        if (num == 2) {
-            receiving_viewpager.setCurrentItem(1);
-        }
+         switch(num){
+             case 2:
+                 receiving_viewpager.setCurrentItem(1); //服务中 state 4
+                 break;
+             case 3:
+                 receiving_viewpager.setCurrentItem(3);//待返件 state 5
+                 break;
+             case 4:
+                 receiving_viewpager.setCurrentItem(6);//已完成 state 7
+                 break;
+             default:
+                 break;
+         }
     }
 }

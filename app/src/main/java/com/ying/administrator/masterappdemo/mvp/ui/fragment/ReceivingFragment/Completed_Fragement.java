@@ -8,17 +8,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Display;
-import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,16 +29,11 @@ import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.GetOrderListForMeContract;
 import com.ying.administrator.masterappdemo.mvp.model.GetOrderListForMeModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.GetOrderListForMePresenter;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_details_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.WorkOrderDetailsActivity;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.WorkOrderDetailsFinishActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.CompletedAdapter;
-
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Redeploy_Adapter;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseFragment;
-import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 import com.ying.administrator.masterappdemo.widget.CustomDialog_Redeploy;
-import com.ying.administrator.masterappdemo.widget.CustomDialog_UnSuccess;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -169,7 +156,7 @@ public class Completed_Fragement extends BaseFragment<GetOrderListForMePresenter
         CompletedAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Intent intent=new Intent(getActivity(), WorkOrderDetailsFinishActivity.class);
+                Intent intent=new Intent(getActivity(), WorkOrderDetailsActivity.class);
                 //传递工单号
                 intent.putExtra("OrderID",((WorkOrder.DataBean)adapter.getItem(position)).getOrderID());
                 startActivity(intent);

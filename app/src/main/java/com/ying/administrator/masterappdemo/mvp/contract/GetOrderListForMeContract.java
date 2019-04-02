@@ -35,7 +35,7 @@ public interface GetOrderListForMeContract {
         //取消订单
         Observable<BaseResult<Data>> UpdateSendOrderState(String OrderID,String State);//State为-1取消订单
         Observable<BaseResult<Data<String>>> UpdateContinueServiceState(String OrderID);
-        Observable<BaseResult<Data<String>>> PressFactoryAccount(String UserID,String OrderID);
+        Observable<BaseResult<Data<String>>> PressFactoryAccount(String OrderID,String Content);
 
 
 
@@ -85,6 +85,6 @@ public interface GetOrderListForMeContract {
         public abstract void UpdateSendOrderState(String OrderID,String State);
 
         public abstract void UpdateContinueServiceState(String OrderID);
-        public abstract void PressFactoryAccount(String UserID,String OrderID);
+        public abstract void PressFactoryAccount(String OrderID,String Content);
     }
 }

@@ -103,8 +103,8 @@ public class GetOrderListForMePresenter extends GetOrderListForMeContract.Presen
     }
 
     @Override
-    public void PressFactoryAccount(String UserID, String OrderID) {
-        mModel.PressFactoryAccount(UserID, OrderID)
+    public void PressFactoryAccount(String OrderID,String Content) {
+        mModel.PressFactoryAccount(OrderID, Content)
                 .subscribe(new BaseObserver<Data<String>>() {
                     @Override
                     protected void onHandleSuccess(BaseResult<Data<String>> value) {

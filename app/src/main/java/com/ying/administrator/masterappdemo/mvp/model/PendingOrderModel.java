@@ -5,7 +5,6 @@ import com.ying.administrator.masterappdemo.entity.Accessory;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.GAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
-import com.ying.administrator.masterappdemo.entity.GetFactorySeviceData;
 import com.ying.administrator.masterappdemo.entity.Service;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.PendingOrderContract;
@@ -63,8 +62,8 @@ public class PendingOrderModel implements PendingOrderContract.Model {
     }
 
     @Override
-     public Observable<BaseResult<Data>> UpdateSendOrderUpdateTime(String OrderID, String UpdateDate) {
-         return ApiRetrofit.getDefault().UpdateSendOrderUpdateTime(OrderID,UpdateDate)
+     public Observable<BaseResult<Data>> UpdateSendOrderUpdateTime(String OrderID, String UpdateDate,String EndDate) {
+         return ApiRetrofit.getDefault().UpdateSendOrderUpdateTime(OrderID,UpdateDate,EndDate)
          .observeOn(AndroidSchedulers.mainThread())
          .subscribeOn(Schedulers.io());
      }
@@ -113,8 +112,14 @@ public class PendingOrderModel implements PendingOrderContract.Model {
     }
 
     @Override
-    public Observable<BaseResult<Data<String>>> PressFactoryAccount(String UserID, String OrderID) {
-        return ApiRetrofit.getDefault().PressFactoryAccount(UserID, OrderID)
+    public Observable<BaseResult<Data<String>>> PressFactoryAccount(String OrderID,String Content) {
+        return ApiRetrofit.getDefault().PressFactoryAccount(OrderID, Content)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+    @Override
+    public Observable<BaseResult<Data<String>>> AddReturnAccessory(String OrderID,String ReturnAccessoryMsg) {
+        return ApiRetrofit.getDefault().AddReturnAccessory(OrderID, ReturnAccessoryMsg)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

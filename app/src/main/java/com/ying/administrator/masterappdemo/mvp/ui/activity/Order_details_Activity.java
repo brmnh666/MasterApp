@@ -412,7 +412,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                         if (Service_range >= Distance) {
                             mTvRemoteKm.setText("0km");
                         } else {
-                            mTvRemoteKm.setText(Distance - Service_range + "km");
+                            mTvRemoteKm.setText(String.format("%.2f", Distance - Service_range) + "km");
                         }
 
                         break;
@@ -630,6 +630,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                 mfAccessory.setDiscountPrice(accessory.getAccessoryPrice());//折扣价
                 mfAccessory.setSendState("N");
                 mfAccessory.setRelation("");
+                mfAccessory.setState("0");
                 mfAccessory.setIsPay("N");
                 mfAccessory.setExpressNo("");
                 if (select_state == 0) {//厂家自购
@@ -1140,6 +1141,11 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
     }
 
+    @Override
+    public void AddReturnAccessory(BaseResult<Data<String>> baseResult) {
+
+    }
+
     //计算价格
     private double gettotalPrice(List<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> list,
                                  List<FService.OrderServiceStrBean.OrderServiceBean> list2) {
@@ -1582,7 +1588,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     public void OrderByondImgPicUpload(HashMap<Integer, File> map) {
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("img", map.get(0).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(0)));
-        builder.addFormDataPart("img", map.get(1).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(1)));
+//        builder.addFormDataPart("img", map.get(1).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(1)));
         builder.addFormDataPart("OrderID", orderID);
         MultipartBody requestBody = builder.build();
         mPresenter.OrderByondImgPicUpload(requestBody);

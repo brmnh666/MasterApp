@@ -176,6 +176,7 @@ public class WorkOrder implements Serializable {
         private String AccessoryApplyState;
         private String AccessoryState;
         private String AccessorySendState;
+        private String AccessorySearchState;
         private int AccessoryMoney;
         private String Service;
         private int ServiceMoney;
@@ -203,6 +204,14 @@ public class WorkOrder implements Serializable {
         private int limit;
         private int Version;
 
+        public String getAccessorySearchState() {
+            return AccessorySearchState;
+        }
+
+        public void setAccessorySearchState(String accessorySearchState) {
+            AccessorySearchState = accessorySearchState;
+        }
+
         public String getAccessoryMemo() {
             return AccessoryMemo==null?"":AccessoryMemo;
         }
@@ -220,7 +229,7 @@ public class WorkOrder implements Serializable {
         }
 
         public String getServiceApplyState() {
-            return ServiceApplyState;
+            return ServiceApplyState==null?"":ServiceApplyState;
         }
         public void setServiceApplyState(String serviceApplyState) {
             ServiceApplyState = serviceApplyState;
@@ -525,13 +534,13 @@ public class WorkOrder implements Serializable {
                     status="申请废除工单";
                     break;
                 case "-1":
-                    status="废除工单";
+                    status="退单处理";
                     break;
                 case "0":
                     status="待审核";
                     break;
                 case "1":
-                    status="已审核派单中";
+                    status="待接单";
                     break;
                 case "2":
                     status="已接单待联系客户";
@@ -549,7 +558,7 @@ public class WorkOrder implements Serializable {
                     status="待评价";
                     break;
                 case "7":
-                    status="结束";
+                    status="已完成";
                     break;
             }
             return status;
@@ -714,7 +723,7 @@ public class WorkOrder implements Serializable {
         }
 
         public String getAccessoryApplyState() {
-            return AccessoryApplyState;
+            return AccessoryApplyState==null?"":AccessoryApplyState;
         }
 
         public void setAccessoryApplyState(String AccessoryApplyState) {

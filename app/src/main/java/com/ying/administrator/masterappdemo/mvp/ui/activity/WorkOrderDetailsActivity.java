@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -77,12 +78,15 @@ import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.widget.ClearEditText;
 import com.ying.administrator.masterappdemo.widget.HideSoftInputDialog;
 
+import org.feezu.liuli.timeselector.TimeSelector;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -232,6 +236,34 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
     LinearLayout mRlSelectTime;
     @BindView(R.id.iv_copy)
     ImageView mIvCopy;
+    @BindView(R.id.iv_bar_code)
+    ImageView mIvBarCode;
+    @BindView(R.id.ll_bar_code)
+    LinearLayout mLlBarCode;
+    @BindView(R.id.iv_machine)
+    ImageView mIvMachine;
+    @BindView(R.id.ll_machine)
+    LinearLayout mLlMachine;
+    @BindView(R.id.iv_fault_location)
+    ImageView mIvFaultLocation;
+    @BindView(R.id.ll_fault_location)
+    LinearLayout mLlFaultLocation;
+    @BindView(R.id.iv_new_and_old_accessories)
+    ImageView mIvNewAndOldAccessories;
+    @BindView(R.id.ll_new_and_old_accessories)
+    LinearLayout mLlNewAndOldAccessories;
+    @BindView(R.id.ll_return_information)
+    LinearLayout mLlReturnInformation;
+    @BindView(R.id.tv_total_price)
+    TextView mTvTotalPrice;
+    @BindView(R.id.tv_detail_submit)
+    TextView mTvDetailSubmit;
+    @BindView(R.id.Rl_expressno)
+    RelativeLayout mRlExpressno;
+    @BindView(R.id.tv_select_time2)
+    TextView mTvSelectTime2;
+    @BindView(R.id.view_select_time_point2)
+    ImageView mViewSelectTimePoint2;
     private String OrderID;
     private WorkOrder.DataBean data;
     private ReturnAccessoryAdapter returnAccessoryAdapter;
@@ -302,6 +334,7 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
     private SAccessory sAccessory;
     private int type;
     private String AccessoryMemo;
+    private String Content;
     private View customdialog_home_view;
     private AlertDialog customdialog_home_dialog;
     private TextView title;
@@ -309,6 +342,19 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
     private Button negtive;
     private Button positive;
     private ClipboardManager myClipboard;
+    private View puchsh_view;
+    private Button btn_negtive;
+    private Button btn_positive;
+    private TextView tv_title;
+    private TextView tv_message;
+    private EditText etContent;
+    private AlertDialog push_dialog;
+    private TextView et_expressno;
+    private LinearLayout ll_scan;
+    private String expressno;
+
+    private String startTime;
+    private String endTime;
 
 
     @Override
@@ -335,6 +381,13 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                 switch (view.getId()) {
                     case R.id.iv_accessories_delete:
                         mPre_order_add_ac_adapter.remove(position);
+                        if (mPre_order_add_ac_adapter.getData().size()>0){
+                            mTvSubmitAddAccessories.setBackgroundResource(R.drawable.ed_order_detail_submit);
+                            mTvSubmitAddAccessories.setTextColor(Color.WHITE);
+                        }else{
+                            mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
+                            mTvSubmitAddAccessories.setTextColor(Color.BLACK);
+                        }
                         break;
                     default:
                         break;
@@ -346,11 +399,19 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
         mTvRecyclerViewPreAddService.setLayoutManager(new LinearLayoutManager(mActivity));
         mTvRecyclerViewPreAddService.setAdapter(mPre_order_Add_Service_Adapter);
         mPre_order_Add_Service_Adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @SuppressLint("ResourceAsColor")
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 switch (view.getId()) {
                     case R.id.iv_service_delete:
                         mPre_order_Add_Service_Adapter.remove(position);
+                        if (mPre_order_Add_Service_Adapter.getData().size()>0){
+                            mTvSubmitAddService.setBackgroundResource(R.drawable.ed_order_detail_submit);
+                            mTvSubmitAddService.setTextColor(Color.WHITE);
+                        }else{
+                            mTvSubmitAddService.setBackgroundResource(R.drawable.tv_order_detail_btn);
+                            mTvSubmitAddService.setTextColor(Color.BLACK);
+                        }
                         break;
                     default:
                         break;
@@ -397,6 +458,11 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
         mIvMap1.setOnClickListener(this);
         mIvMap2.setOnClickListener(this);
 
+        mIvBarCode.setOnClickListener(this);
+        mIvMachine.setOnClickListener(this);
+        mIvFaultLocation.setOnClickListener(this);
+        mIvNewAndOldAccessories.setOnClickListener(this);
+
         mBtnCompleteSubmit.setOnClickListener(this);
 
         mBtnTrial.setOnClickListener(this);
@@ -406,11 +472,53 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
         mTvRemoteFeeInformation.setOnClickListener(this);
 
         mIvCopy.setOnClickListener(this);
-    }
+        mTvDetailSubmit.setOnClickListener(this);
 
+        mViewSelectTimePoint.setOnClickListener(this);
+        mViewSelectTimePoint2.setOnClickListener(this);
+    }
+    /**
+     * 选择上门时间
+     */
+    public void chooseTime(final TextView tv, final String title) {
+        Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+        String format1 = format.format(date);
+
+        TimeSelector timeSelector = new TimeSelector(mActivity, new TimeSelector.ResultHandler() {
+            @Override
+            public void handle(String time) {
+                if ("请选择结束时间".equals(title)){
+                    Integer i=startTime.compareTo(time);
+                    if (i>0){
+                        MyUtils.showToast(mActivity,"结束时间应大于开始时间");
+                        return;
+                    }
+                    mPresenter.UpdateSendOrderUpdateTime(OrderID,startTime,time);
+                }else{
+                    mTvSelectTime2.setText("");
+                }
+                tv.setText(time);
+            }
+        }, format1, "2022-1-1 24:00");
+
+        timeSelector.setTitle(title);
+        timeSelector.show();
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.view_select_time_point:
+                chooseTime(mTvSelectTime,"请选择开始时间");
+                break;
+            case R.id.view_select_time_point2:
+                startTime=mTvSelectTime.getText().toString();
+                if ("".equals(startTime)){
+                    MyUtils.showToast(mActivity,"请先选择开始时间");
+                    return;
+                }
+                chooseTime(mTvSelectTime2,"请选择结束时间");
+                break;
             case R.id.tv_submit_add_accessories:
                 submit(1);
                 break;
@@ -449,12 +557,21 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                     mIvSelfbuyingUser.setSelected(false);
                     mPre_order_add_ac_adapter.setNewData(fAcList);
                     mRecyclerViewAddAccessories.setVisibility(View.VISIBLE);
+                    if (mPre_order_add_ac_adapter.getData().size()>0){
+                        mTvSubmitAddAccessories.setBackgroundResource(R.drawable.ed_order_detail_submit);
+                        mTvSubmitAddAccessories.setTextColor(Color.WHITE);
+                    }else{
+                        mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
+                        mTvSubmitAddAccessories.setTextColor(Color.BLACK);
+                    }
                 } else {
                     select_state = -1;
                     mIvManufacturers.setSelected(false);
                     mIvSelfbuying.setSelected(false);
                     mIvSelfbuyingUser.setSelected(false);
                     mRecyclerViewAddAccessories.setVisibility(View.GONE);
+                    mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
+                    mTvSubmitAddAccessories.setTextColor(Color.BLACK);
                 }
                 break;
             case R.id.ll_selfbuying://师傅自购件
@@ -465,12 +582,21 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                     mIvSelfbuyingUser.setSelected(false);
                     mPre_order_add_ac_adapter.setNewData(mAcList);
                     mRecyclerViewAddAccessories.setVisibility(View.VISIBLE);
+                    if (mPre_order_add_ac_adapter.getData().size()>0){
+                        mTvSubmitAddAccessories.setBackgroundResource(R.drawable.ed_order_detail_submit);
+                        mTvSubmitAddAccessories.setTextColor(Color.WHITE);
+                    }else{
+                        mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
+                        mTvSubmitAddAccessories.setTextColor(Color.BLACK);
+                    }
                 } else {
                     select_state = -1;
                     mIvManufacturers.setSelected(false);
                     mIvSelfbuying.setSelected(false);
                     mIvSelfbuyingUser.setSelected(false);
                     mRecyclerViewAddAccessories.setVisibility(View.GONE);
+                    mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
+                    mTvSubmitAddAccessories.setTextColor(Color.BLACK);
                 }
                 break;
             case R.id.ll_selfbuying_user://用户自购件
@@ -481,12 +607,21 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                     mIvSelfbuyingUser.setSelected(true);
                     mPre_order_add_ac_adapter.setNewData(sAcList);
                     mRecyclerViewAddAccessories.setVisibility(View.VISIBLE);
+                    if (mPre_order_add_ac_adapter.getData().size()>0){
+                        mTvSubmitAddAccessories.setBackgroundResource(R.drawable.ed_order_detail_submit);
+                        mTvSubmitAddAccessories.setTextColor(Color.WHITE);
+                    }else{
+                        mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
+                        mTvSubmitAddAccessories.setTextColor(Color.BLACK);
+                    }
                 } else {
                     select_state = -1;
                     mIvManufacturers.setSelected(false);
                     mIvSelfbuying.setSelected(false);
                     mIvSelfbuyingUser.setSelected(false);
                     mRecyclerViewAddAccessories.setVisibility(View.GONE);
+                    mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
+                    mTvSubmitAddAccessories.setTextColor(Color.BLACK);
                 }
                 break;
             case R.id.ll_return:
@@ -496,7 +631,61 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
             case R.id.tv_service_information:
             case R.id.tv_remote_fee_information:
             case R.id.btn_trial:
-                mPresenter.PressFactoryAccount(data.getUserID(), OrderID);
+                puchsh_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_push, null);
+                btn_negtive = puchsh_view.findViewById(R.id.negtive);
+                btn_positive = puchsh_view.findViewById(R.id.positive);
+                tv_title = puchsh_view.findViewById(R.id.title);
+                etContent = puchsh_view.findViewById(R.id.et_content);
+                push_dialog = new AlertDialog.Builder(mActivity)
+                        .setView(puchsh_view)
+                        .create();
+                push_dialog.show();
+                tv_title.setText("提示");
+                btn_negtive.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        push_dialog.dismiss();
+                    }
+                });
+                btn_positive.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Content = etContent.getText().toString().trim();
+                        mPresenter.PressFactoryAccount(OrderID, Content);
+                    }
+                });
+
+                break;
+            case R.id.tv_detail_submit:
+                puchsh_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_add_expressno, null);
+                btn_negtive = puchsh_view.findViewById(R.id.negtive);
+                btn_positive = puchsh_view.findViewById(R.id.positive);
+                tv_title = puchsh_view.findViewById(R.id.title);
+                et_expressno = puchsh_view.findViewById(R.id.et_expressno);
+                ll_scan = puchsh_view.findViewById(R.id.ll_scan);
+                push_dialog = new AlertDialog.Builder(mActivity)
+                        .setView(puchsh_view)
+                        .create();
+                push_dialog.show();
+                tv_title.setText("填写快递单号");
+                btn_negtive.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        push_dialog.dismiss();
+                    }
+                });
+                btn_positive.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        expressno = et_expressno.getText().toString().trim();
+                        if ("".equals(expressno)) {
+                            MyUtils.showToast(mActivity, "请填写快递单号");
+                            return;
+                        }
+                        mPresenter.AddReturnAccessory(OrderID, expressno);
+                    }
+                });
+
                 break;
             case R.id.tv_accessory_application:
                 intent = new Intent(mActivity, Order_Add_Accessories_Activity.class);
@@ -528,20 +717,7 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                 if (data.getOrderBeyondImg().size() == 0) {
                     return;
                 }
-                simpleTarget = new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<?
-                            super Bitmap> transition) {
-                        RxDialogScaleView rxDialogScaleView = new RxDialogScaleView(mActivity);
-                        rxDialogScaleView.setImage(resource);
-                        rxDialogScaleView.show();
-                    }
-                };
-
-                Glide.with(mActivity)
-                        .asBitmap()
-                        .load("http://47.96.126.145:8820/Pics/OrderByondImg/" + data.getOrderBeyondImg().get(0).getUrl())
-                        .into(simpleTarget);
+                scaleview("http://47.96.126.145:8820/Pics/OrderByondImg/" + data.getOrderBeyondImg().get(0).getUrl());
                 break;
             case R.id.iv_range_two:
                 if (data.getOrderBeyondImg() == null) {
@@ -550,28 +726,44 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                 if (data.getOrderBeyondImg().size() < 2) {
                     return;
                 }
-                simpleTarget = new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<?
-                            super Bitmap> transition) {
-                        RxDialogScaleView rxDialogScaleView = new RxDialogScaleView(mActivity);
-                        rxDialogScaleView.setImage(resource);
-                        rxDialogScaleView.show();
-                    }
-                };
-
-                Glide.with(mActivity)
-                        .asBitmap()
-                        .load("http://47.96.126.145:8820/Pics/OrderByondImg/" + data.getOrderBeyondImg().get(1).getUrl())
-                        .into(simpleTarget);
+                scaleview("http://47.96.126.145:8820/Pics/OrderByondImg/" + data.getOrderBeyondImg().get(1).getUrl());
+                break;
+            case R.id.iv_bar_code:
+                scaleview("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(0).getUrl());
+                break;
+            case R.id.iv_machine:
+                scaleview("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(1).getUrl());
+                break;
+            case R.id.iv_fault_location:
+                scaleview("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(2).getUrl());
+                break;
+            case R.id.iv_new_and_old_accessories:
+                scaleview("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(3).getUrl());
                 break;
             case R.id.iv_copy:
-                String id=data.getOrderID();
+                String id = data.getOrderID();
                 ClipData myClip = ClipData.newPlainText("", id);
                 myClipboard.setPrimaryClip(myClip);
                 ToastUtils.showShort("复制成功");
         }
 
+    }
+
+    public void scaleview(String url) {
+        simpleTarget = new SimpleTarget<Bitmap>() {
+            @Override
+            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<?
+                    super Bitmap> transition) {
+                RxDialogScaleView rxDialogScaleView = new RxDialogScaleView(mActivity);
+                rxDialogScaleView.setImage(resource);
+                rxDialogScaleView.show();
+            }
+        };
+
+        Glide.with(mActivity)
+                .asBitmap()
+                .load(url)
+                .into(simpleTarget);
     }
 
     /**
@@ -642,6 +834,7 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                 mfAccessory.setDiscountPrice(accessory.getAccessoryPrice());//折扣价
                 mfAccessory.setSendState("N");
                 mfAccessory.setRelation("");
+                mfAccessory.setState("0");
                 mfAccessory.setIsPay("N");
                 mfAccessory.setExpressNo("");
                 if (select_state == 0) {//厂家自购
@@ -698,12 +891,20 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
             }
         });
         choose_accessory_dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @SuppressLint("ResourceAsColor")
             @Override
             public void onDismiss(DialogInterface dialog) {
                 accessory = null;
                 num = "";
                 price = "";
                 servicePrice = "";
+                if (mPre_order_add_ac_adapter.getData().size()>0){
+                    mTvSubmitAddAccessories.setBackgroundResource(R.drawable.ed_order_detail_submit);
+                    mTvSubmitAddAccessories.setTextColor(Color.WHITE);
+                }else{
+                    mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
+                    mTvSubmitAddAccessories.setTextColor(Color.BLACK);
+                }
             }
         });
 
@@ -753,6 +954,19 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                 }
                 mPre_order_Add_Service_Adapter.setNewData(fList_service);
                 add_service_dialog.dismiss();
+            }
+        });
+        add_service_dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @SuppressLint("ResourceAsColor")
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                if (mPre_order_Add_Service_Adapter.getData().size()>0){
+                    mTvSubmitAddService.setBackgroundResource(R.drawable.ed_order_detail_submit);
+                    mTvSubmitAddService.setTextColor(Color.WHITE);
+                }else{
+                    mTvSubmitAddService.setBackgroundResource(R.drawable.tv_order_detail_btn);
+                    mTvSubmitAddService.setTextColor(Color.BLACK);
+                }
             }
         });
     }
@@ -827,8 +1041,9 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
             case 200:
                 data = baseResult.getData();
                 mTvStatus.setText(data.getStateStr());
+                mTvTotalPrice.setText("服务金额：￥" + data.getOrderMoney());
                 mTvAccessoryMemo.setText("备注：" + data.getAccessoryMemo());
-                mTvAccessorySequency.setText("寄件类型：" + data.getAccessorySequencyStr());
+                mTvAccessorySequency.setText(data.getAccessorySequencyStr());
                 mTvName.setText(data.getUserName());
                 mTvPhone.setText(data.getPhone());
                 mTvAddress.setText(data.getAddress());
@@ -857,40 +1072,37 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                 distance = Double.parseDouble(data.getDistance());
                 if (Service_range >= distance) {
                     mTvRemoteKm.setText("0km");
-                    mLlApplyBeyond.setVisibility(View.GONE);
-                    mLlApproveBeyondMoney.setVisibility(View.GONE);
                 } else {
-                    mTvRemoteKm.setText(distance - Service_range + "km");
-                    if (data.getBeyondState() == null) {
-                        mLlApproveBeyondMoney.setVisibility(View.GONE);
-                        mLlApplyBeyond.setVisibility(View.VISIBLE);
+                    mTvRemoteKm.setText(String.format("%.2f", distance - Service_range) + "km");
+                }
+                if (data.getBeyondState() == null) {
+                    mLlApproveBeyondMoney.setVisibility(View.GONE);
+                    mLlApplyBeyond.setVisibility(View.VISIBLE);
+                } else {
+                    mTvRange.setText(data.getBeyondDistance());
+                    if (data.getOrderBeyondImg() == null) {
+                        return;
+                    }
+                    if (data.getOrderBeyondImg().size() == 2) {
+                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OrderByondImg/" + data.getOrderBeyondImg().get(0).getUrl()).into(mIvRangeOne);
+                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OrderByondImg/" + data.getOrderBeyondImg().get(1).getUrl()).into(mIvRangeTwo);
                     } else {
-                        mTvRange.setText(data.getBeyondDistance());
-                        if (data.getOrderBeyondImg() == null) {
-                            return;
-                        }
-                        if (data.getOrderBeyondImg().size() == 2) {
-                            Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OrderByondImg/" + data.getOrderBeyondImg().get(0).getUrl()).into(mIvRangeOne);
-                            Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OrderByondImg/" + data.getOrderBeyondImg().get(1).getUrl()).into(mIvRangeTwo);
-                        } else {
-                            mIvRangeOne.setVisibility(View.GONE);
-                            mIvRangeTwo.setVisibility(View.GONE);
-                        }
-                        mLlApproveBeyondMoney.setVisibility(View.VISIBLE);
-                        mLlApplyBeyond.setVisibility(View.GONE);
-                        if ("0".equals(data.getBeyondState())) {
-                            mTvBeyondState.setText("审核中");
-                            mTvBeyondApplication.setVisibility(View.GONE);
-                        } else if ("1".equals(data.getBeyondState())) {
-                            mTvBeyondState.setText("审核通过");
-                            mTvBeyondApplication.setVisibility(View.VISIBLE);
-                        } else {
-                            mTvBeyondState.setText("被拒");
-                            mTvBeyondApplication.setVisibility(View.VISIBLE);
-                        }
+                        mIvRangeOne.setVisibility(View.GONE);
+                        mIvRangeTwo.setVisibility(View.GONE);
+                    }
+                    mLlApproveBeyondMoney.setVisibility(View.VISIBLE);
+                    mLlApplyBeyond.setVisibility(View.GONE);
+                    if ("0".equals(data.getBeyondState())) {
+                        mTvBeyondState.setText("审核中");
+                        mTvBeyondApplication.setVisibility(View.GONE);
+                    } else if ("1".equals(data.getBeyondState())) {
+                        mTvBeyondState.setText("审核通过");
+                        mTvBeyondApplication.setVisibility(View.VISIBLE);
+                    } else {
+                        mTvBeyondState.setText("被拒");
+                        mTvBeyondApplication.setVisibility(View.VISIBLE);
                     }
                 }
-
                 AccessoryApplyState = data.getAccessoryApplyState();
                 ServiceApplyState = data.getServiceApplyState();
                 BeyondState = data.getBeyondState();
@@ -1010,7 +1222,7 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                 }
 
 
-                if ("5".equals(data.getState())) {
+                if ("5".equals(data.getState())||"6".equals(data.getState())||"7".equals(data.getState())) {
                     mBtnCompleteSubmit.setVisibility(View.GONE);
                     mBtnTrial.setVisibility(View.GONE);
                     mLlAddAccessory.setVisibility(View.GONE);
@@ -1020,6 +1232,31 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                     mTvBeyondState.setVisibility(View.GONE);
                     mTvServiceApplyState.setVisibility(View.GONE);
                     mTvAccessoryApplyState.setVisibility(View.GONE);
+
+                    mTvAccessoryApplication.setVisibility(View.GONE);
+                    mTvServiceApplication.setVisibility(View.GONE);
+                    mTvBeyondApplication.setVisibility(View.GONE);
+                    mTvAccessoryInformation.setVisibility(View.GONE);
+                    mTvServiceInformation.setVisibility(View.GONE);
+                    mTvRemoteFeeInformation.setVisibility(View.GONE);
+
+                    mViewSelectTimePoint.setVisibility(View.GONE);
+                    mViewSelectTimePoint2.setVisibility(View.GONE);
+                    if ("5".equals(data.getState())){
+                        mRlExpressno.setVisibility(View.VISIBLE);
+                    }else{
+                        mRlExpressno.setVisibility(View.GONE);
+                    }
+                    mLlReturnInformation.setVisibility(View.VISIBLE);
+                    Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(0).getUrl()).into(mIvBarCode);
+                    Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(1).getUrl()).into(mIvMachine);
+                    Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(2).getUrl()).into(mIvFaultLocation);
+                    Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(3).getUrl()).into(mIvNewAndOldAccessories);
+                } else {
+                    mLlReturnInformation.setVisibility(View.GONE);
+                    mRlExpressno.setVisibility(View.GONE);
+                    mViewSelectTimePoint.setVisibility(View.VISIBLE);
+                    mViewSelectTimePoint2.setVisibility(View.VISIBLE);
                 }
                 break;
 
@@ -1179,7 +1416,13 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
 
     @Override
     public void UpdateSendOrderUpdateTime(BaseResult<Data> baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
 
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
@@ -1268,7 +1511,26 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
             case 200:
                 Data<String> data = baseResult.getData();
                 if (data.isItem1()) {
+                    push_dialog.dismiss();
                     ToastUtils.showShort("催审成功");
+                } else {
+                    ToastUtils.showShort(data.getItem2());
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void AddReturnAccessory(BaseResult<Data<String>> baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                Data<String> data = baseResult.getData();
+                if (data.isItem1()) {
+                    push_dialog.dismiss();
+                    ToastUtils.showShort("提交成功");
+                    finish();
+//                    EventBus.getDefault().post("");
+//                    EventBus.getDefault().post("");
                 } else {
                     ToastUtils.showShort(data.getItem2());
                 }
@@ -1508,7 +1770,7 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
     public void OrderByondImgPicUpload(HashMap<Integer, File> map) {
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("img", map.get(0).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(0)));
-        builder.addFormDataPart("img", map.get(1).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(1)));
+//        builder.addFormDataPart("img", map.get(1).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(1)));
         builder.addFormDataPart("OrderID", OrderID);
         MultipartBody requestBody = builder.build();
         mPresenter.OrderByondImgPicUpload(requestBody);

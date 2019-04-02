@@ -8,7 +8,6 @@ import com.ying.administrator.masterappdemo.entity.Accessory;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.GAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
-import com.ying.administrator.masterappdemo.entity.GetFactorySeviceData;
 import com.ying.administrator.masterappdemo.entity.Service;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 
@@ -39,7 +38,7 @@ public interface PendingOrderContract {
         Observable<BaseResult<Data<String>>> AddOrUpdateAccessoryServiceReturn(RequestBody json);
 
         //更新时间
-        Observable<BaseResult<Data>> UpdateSendOrderUpdateTime(String OrderID,String UpdateDate);
+        Observable<BaseResult<Data>> UpdateSendOrderUpdateTime(String OrderID,String UpdateDate,String EndDate);
 
         //根据工单号获取配件
         Observable<BaseResult<List<GAccessory>>> GetOrderAccessoryByOrderID(String OrderID);
@@ -56,7 +55,9 @@ public interface PendingOrderContract {
         //申请远程费
         Observable<BaseResult<Data<String>>> ApplyBeyondMoney(String OrderID,String BeyondMoney,String BeyondDistance);
 
-        Observable<BaseResult<Data<String>>> PressFactoryAccount(String UserID,String OrderID);
+        Observable<BaseResult<Data<String>>> PressFactoryAccount(String OrderID,String Content);
+        //提交快递信息
+        Observable<BaseResult<Data<String>>> AddReturnAccessory(String OrderID,String ReturnAccessoryMsg);
     }
 
     interface View extends BaseView{
@@ -97,6 +98,7 @@ public interface PendingOrderContract {
         //申请远程费
         void ApplyBeyondMoney(BaseResult<Data<String>> baseResult);
         void PressFactoryAccount(BaseResult<Data<String>> baseResult);
+        void AddReturnAccessory(BaseResult<Data<String>> baseResult);
     }
 
     abstract  class Presenter extends BasePresenter<View,Model>{
@@ -113,7 +115,7 @@ public interface PendingOrderContract {
          //提交配件服务和返件信息
         public abstract void AddOrUpdateAccessoryServiceReturn(RequestBody json);
         //更新时间
-        public abstract void UpdateSendOrderUpdateTime(String OrderID,String UpdateDate);
+        public abstract void UpdateSendOrderUpdateTime(String OrderID,String UpdateDate,String EndDate);
         //根据工单号获取配件
         public abstract void GetOrderAccessoryByOrderID(String OrderID);
 
@@ -128,7 +130,8 @@ public interface PendingOrderContract {
 
         //申请远程费
         public abstract void ApplyBeyondMoney(String OrderID,String BeyondMoney,String BeyondDistance);
-        public abstract void PressFactoryAccount(String UserID,String OrderID);
+        public abstract void PressFactoryAccount(String OrderID,String Content);
+        public abstract void AddReturnAccessory(String OrderID,String ReturnAccessoryMsg);
     }
 
 

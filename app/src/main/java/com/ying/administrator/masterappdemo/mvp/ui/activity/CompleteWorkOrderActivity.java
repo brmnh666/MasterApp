@@ -47,6 +47,8 @@ import com.ying.administrator.masterappdemo.widget.ViewExampleDialog;
 import com.zyao89.view.zloading.ZLoadingDialog;
 import com.zyao89.view.zloading.Z_TYPE;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -251,7 +253,11 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
         switch (baseResult.getStatusCode()) {
             case 200:
                 if (baseResult.getData().isItem1()) {//图片上传成功
-                    mPresenter.UpdateOrderState(orderID, "5");
+                    if ("0".equals(data.getAccessorySearchState())){
+                        mPresenter.UpdateOrderState(orderID, "7");
+                    }else{
+                        mPresenter.UpdateOrderState(orderID, "5");
+                    }
                 } else {
                     cancleLoading();
                 }
@@ -267,7 +273,12 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
         switch (baseResult.getStatusCode()) {
             case 200:
                 if (baseResult.getData().isItem1()) {//图片上传成功
-                    mPresenter.UpdateOrderState(orderID, "5");
+                    if ("0".equals(data.getAccessorySearchState())){
+                        mPresenter.UpdateOrderState(orderID, "7");
+                    }else{
+                        mPresenter.UpdateOrderState(orderID, "5");
+                    }
+
                 } else {
                     cancleLoading();
                 }
@@ -293,6 +304,12 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
             case 200:
                 if (baseResult.getData().isItem1()) {
                     CompleteWorkOrderActivity.this.finish();
+                    EventBus.getDefault().post("");
+                    if ("0".equals(data.getAccessorySearchState())){
+                        EventBus.getDefault().post(3);
+                    }else{
+                        EventBus.getDefault().post(4);
+                    }
                 }
                 break;
 

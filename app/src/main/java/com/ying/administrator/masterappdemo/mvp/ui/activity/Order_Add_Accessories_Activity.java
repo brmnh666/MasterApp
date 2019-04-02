@@ -535,6 +535,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                 mfAccessory.setDiscountPrice(accessory.getAccessoryPrice());//折扣价
                 mfAccessory.setSendState("N");
                 mfAccessory.setRelation("");
+                mfAccessory.setState("0");
                 mfAccessory.setIsPay("N");
                 mfAccessory.setExpressNo("");
                 if (select_state == 0) {//厂家自购
@@ -765,7 +766,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                 if (Service_range >= distance) {
                     mTvRemoteKm.setText("0km");
                 } else {
-                    mTvRemoteKm.setText(distance - Service_range + "km");
+                    mTvRemoteKm.setText(String.format("%.2f", distance - Service_range) + "km");
                 }
 
                 if (data.getTypeID() == 1) {//维修
@@ -815,6 +816,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                 mfAccessory.setQuantity(String.valueOf(gAccessories.get(i).getQuantity()));
                 mfAccessory.setSendState(gAccessories.get(i).getSendState());
                 mfAccessory.setExpressNo(gAccessories.get(i).getExpressNo());
+                mfAccessory.setState(gAccessories.get(i).getState());
                 mfAccessory.setRelation("");
                 mfAccessory.setPrice(gAccessories.get(i).getPrice());
                 mfAccessory.setIsPay("N");
@@ -1117,6 +1119,11 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
     public void PressFactoryAccount(BaseResult<Data<String>> baseResult) {
 
     }
+
+    @Override
+    public void AddReturnAccessory(BaseResult<Data<String>> baseResult) {
+
+    }
     //计算价格
 
     //计算价格
@@ -1376,16 +1383,10 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
     public void OrderByondImgPicUpload(HashMap<Integer, File> map) {
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("img", map.get(0).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(0)));
-        builder.addFormDataPart("img", map.get(1).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(1)));
+//        builder.addFormDataPart("img", map.get(1).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(1)));
         builder.addFormDataPart("OrderID", orderID);
         MultipartBody requestBody = builder.build();
         mPresenter.OrderByondImgPicUpload(requestBody);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }
