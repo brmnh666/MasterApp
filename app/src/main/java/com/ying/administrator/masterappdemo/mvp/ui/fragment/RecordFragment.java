@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +26,11 @@ import com.ying.administrator.masterappdemo.mvp.ui.adapter.Wallet_record_Adapter
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseFragment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class RecordFragment extends BaseFragment<WalletPresenter, WalletModel>implements WalletContract.View {
     private View view;
@@ -37,6 +42,8 @@ public class RecordFragment extends BaseFragment<WalletPresenter, WalletModel>im
     private List<Bill.DataBean> recharge_list = new ArrayList<>();//充值记录
     private List<Bill.DataBean> withdraw_list = new ArrayList<>();//提现记录
     private List<Bill.DataBean> expend_income_list = new ArrayList<>();//收入支出记录
+
+
     public static RecordFragment newInstance(String title) {
         RecordFragment fragment = new RecordFragment();
         fragment.title=title;
@@ -101,6 +108,7 @@ public class RecordFragment extends BaseFragment<WalletPresenter, WalletModel>im
                                 recyclerView.setNestedScrollingEnabled(false);*/
                                 wallet_record_adapter = new Wallet_record_Adapter(R.layout.item_withdrawals_record, recharge_list);
                                 recyclerView.setAdapter(wallet_record_adapter);
+
 
                                 break;
                             case "2"://支出

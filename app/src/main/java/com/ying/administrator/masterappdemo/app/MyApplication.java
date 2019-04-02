@@ -2,12 +2,15 @@ package com.ying.administrator.masterappdemo.app;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.multidex.MultiDex;
 import android.util.Log;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.Utils;
+import com.paradigm.botkit.BotKitClient;
+import com.paradigm.botkit.ChatActivity;
 import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreater;
@@ -101,6 +104,15 @@ public class MyApplication extends Application {
         PlatformConfig.setSinaWeibo("2062370017", "ed8cf0cbbdb756f002777c3f648e3818","http://sns.whalecloud.com");
         //QQ
         PlatformConfig.setQQZone("1108047427", "LLqcMP1nxKVS18gr");
+
+
+
+        /*智能客服*/
+
+        // 在APP启动时进行初始化
+        String accessKey = "[NTEwMyM5YTRkMDdhNC05YmNmLTQyZTktODIyOC1lZTY4ZmUwYjczM2EjM2Y1MDdkMTAtZjcxNC00YmQ3LWIzMWUtMWZlNDNlNGM5MWIwI2FkNGMxZGE0MGM1YzVjYzU3NzA5NzVjODllYTA2NDdl]";
+        BotKitClient.getInstance().init(this, accessKey);
+
     }
 
 

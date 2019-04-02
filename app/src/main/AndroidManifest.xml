@@ -97,6 +97,7 @@
             android:name="com.amap.api.v2.apikey"
             android:value="34c7c57316ca676e492e288c3866195c"/>
            <!--广播接受者-->
+
         <!--推送接收-->
         <receiver android:name=".receiver.XGPushReceiver"
             android:exported="true" >

@@ -20,6 +20,12 @@ import com.blankj.utilcode.util.SPUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
+import com.paradigm.botkit.BotKitClient;
+import com.paradigm.botkit.ChatActivity;
+import com.paradigm.botlib.BotLibClient;
+import com.paradigm.botlib.MenuItem;
+import com.paradigm.botlib.Message;
+import com.paradigm.botlib.VisitorInfo;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareConfig;
@@ -51,11 +57,13 @@ import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> implements MainContract.View, View.OnClickListener {
+public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> implements MainContract.View, View.OnClickListener, BotLibClient.ConnectionListener,BotLibClient.MessageListener {
     private static final String ARG_SHOW_TEXT = "text";
     @BindView(R.id.img_me_message)
     ImageView mImgMeMessage;
@@ -198,6 +206,10 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
         mTvRecharge.setOnClickListener(this);
         mImgMeHead.setOnClickListener(this);
         mTv_me_message.setOnClickListener(this);
+
+
+        BotKitClient.getInstance().setConnectionListener(this); // 设置连接状态监听器
+        BotKitClient.getInstance().setMessageListener(this); // 设置消息监听器
     }
 
     /*获取用户信息*/
@@ -333,8 +345,20 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
 //                window.setDimAmount(0.1f);
                 window.setBackgroundDrawable(new ColorDrawable());
                 break;
-            case R.id.ll_online_consultation:
-                startActivity(new Intent(getActivity(), IntelligentCustomerServiceActivity.class));
+            case R.id.ll_online_consultation: //在线咨询
+                //startActivity(new Intent(getActivity(), IntelligentCustomerServiceActivity.class));
+
+
+                VisitorInfo visitorInfo = new VisitorInfo();
+                visitorInfo.userName = userInfo.getUserID();
+                visitorInfo.nickName = userInfo.getTrueName();
+                visitorInfo.phone = userInfo.getPhone();
+                BotKitClient.getInstance().setVisitor(visitorInfo);
+
+                Intent intent = new Intent();
+                intent.setClass(mActivity, ChatActivity.class);
+                startActivity(intent);
+
                 break;
             case R.id.normal_dfk_ll:
                 bundle = new Bundle();
@@ -393,5 +417,22 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+
+    /*智能客服监听方法*/
+    @Override
+    public void onConnectionStateChanged(int state) {
+
+    }
+
+    @Override
+    public void onReceivedSuggestion(ArrayList<MenuItem> suggestions) {
+
+    }
+
+    @Override
+    public void onAppendMessage(Message message) {
+
     }
 }
