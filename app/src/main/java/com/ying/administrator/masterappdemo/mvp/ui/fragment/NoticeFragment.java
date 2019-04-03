@@ -29,8 +29,7 @@ import butterknife.BindView;
  */
 public class NoticeFragment extends BaseLazyFragment<ArticlePresenter, ArticleModel> implements ArticleContract.View, View.OnClickListener {
 
-    @BindView(R.id.ll_announcement)
-    LinearLayout mLlAnnouncement;
+
     @BindView(R.id.ll_platform_policy)
     LinearLayout mLlPlatformPolicy;
     @BindView(R.id.ll_news)
@@ -90,7 +89,6 @@ public class NoticeFragment extends BaseLazyFragment<ArticlePresenter, ArticleMo
 
     @Override
     protected void setListener() {
-        mLlAnnouncement.setOnClickListener(this);
         mLlPlatformPolicy.setOnClickListener(this);
         mLlNews.setOnClickListener(this);
         mLlOrderMustRead.setOnClickListener(this);
@@ -105,9 +103,6 @@ public class NoticeFragment extends BaseLazyFragment<ArticlePresenter, ArticleMo
     public void onClick(View v) {
         intent = new Intent(mActivity, ArticleActivity.class);
         switch(v.getId()){
-            case R.id.ll_announcement:
-                intent.putExtra("CategoryID","7");
-                break;
             case R.id.ll_platform_policy:
                 intent.putExtra("CategoryID","8");
                 break;

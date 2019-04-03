@@ -1,39 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    >
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_push_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="时间"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:background="#B5B5B5"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" />
 
     <LinearLayout
-        android:id="@+id/ll_order_message"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/white_shape"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="10dp">
+        android:layout_height="70dp"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
 
-        <TextView
-            android:id="@+id/tv_order_message"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/ll_order_message"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="工单消息"
-            android:textColor="#6a6a6a"
-            android:layout_margin="10dp"
-            android:textSize="16sp"
-           />
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_order_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="时间"
-            android:layout_margin="10dp"
-            android:textColor="#6a6a6a"
-            android:textSize="16sp"
-            />
+            <TextView
+                android:id="@+id/tv_order_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:text="工单消息"
+                android:textColor="#333333"
+                android:textSize="16sp" />
 
+            <TextView
+                android:id="@+id/tv_order_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="时间"
+                android:textColor="#808080"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/iv_new"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/xin"/>
     </LinearLayout>
-    </LinearLayout>
+</LinearLayout>

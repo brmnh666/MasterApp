@@ -10,41 +10,40 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="#1690ff"
-        >
-    <ImageView
-        android:id="@+id/img_actionbar_return"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_marginLeft="10dp"
-        android:src="@mipmap/left"
-        android:layout_centerVertical="true"
-        />
+        android:background="#1690ff">
 
-    <TextView
-        android:id="@+id/tv_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="工单消息"
-        android:textSize="20sp"
-        android:textColor="@color/color_white"
-        />
+        <ImageView
+            android:id="@+id/img_actionbar_return"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:src="@mipmap/left" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="工单消息"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
 
     </RelativeLayout>
-<com.scwang.smartrefresh.layout.SmartRefreshLayout
-android:id="@+id/refreshLayout"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-app:srlAccentColor="#00000000"
-app:srlPrimaryColor="#00000000"
-app:srlEnablePreviewInEditMode="true"
-    >
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_ordermessage"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-    </android.support.v7.widget.RecyclerView>
-</com.scwang.smartrefresh.layout.SmartRefreshLayout>
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:srlAccentColor="#00000000"
+        app:srlEnablePreviewInEditMode="true"
+        app:srlPrimaryColor="#00000000">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_ordermessage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v7.widget.RecyclerView>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </LinearLayout>
