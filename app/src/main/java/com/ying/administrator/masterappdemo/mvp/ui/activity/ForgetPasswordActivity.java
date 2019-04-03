@@ -31,6 +31,7 @@ public class ForgetPasswordActivity extends BaseActivity implements View.OnClick
     @BindView(R.id.tv_login)
     TextView mTvLogin;
 
+    private String phone;
     @Override
     protected int setLayoutId() {
         return R.layout.activity_forgetpassword;
@@ -38,6 +39,14 @@ public class ForgetPasswordActivity extends BaseActivity implements View.OnClick
 
     @Override
     protected void initData() {
+        phone=getIntent().getStringExtra("phone");
+        if (phone.equals("")){
+            mEtForgetPhone.setText("");
+        }else {
+            mEtForgetPhone.setText(phone);
+            mEtForgetPhone.setSelection(mEtForgetPhone.getText().toString().length());
+        }
+
 
     }
 

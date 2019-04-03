@@ -86,7 +86,17 @@ public class Login_New_Activity extends BaseActivity<LoginPresenter, LoginModel>
               Login_New_Activity.this.finish();
               break;
           case R.id.tv_forget_password:
-              startActivity(new Intent(mActivity, ForgetPasswordActivity.class));
+                  String phone=mEtLoginUsername.getText().toString();
+                  Intent intent=new Intent(mActivity, ForgetPasswordActivity.class);
+
+              if (phone!=null){
+                  intent.putExtra("phone",phone);
+              }else {
+                  intent.putExtra("phone","");
+              }
+
+              startActivity(intent);
+
               break;
           case R.id.tv_register:
               startActivity(new Intent(mActivity, Register_New_Activity.class));

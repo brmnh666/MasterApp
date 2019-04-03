@@ -67,6 +67,7 @@
                 android:layout_alignParentRight="true"/>
 
             <EditText
+                android:layout_toLeftOf="@+id/img_login_username"
                 android:id="@+id/et_login_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -75,10 +76,13 @@
                 android:background="@null"
                 android:hint="请输入手机号"
                 android:textSize="16sp"
+                android:maxLength="11"
                 android:layout_marginLeft="10dp"
                 android:textColor="@color/color_black"
                 android:textColorHint="@color/color_custom_06"
-                android:singleLine="true"/>
+                android:singleLine="true"
+                android:textCursorDrawable="@drawable/my_cursor"
+                />
 
         </RelativeLayout>
 
@@ -111,6 +115,7 @@
                 android:inputType="textPassword"
                 android:textColor="@color/color_black"
                 android:textColorHint="@color/color_custom_06"
+                android:textCursorDrawable="@drawable/my_cursor"
                 android:singleLine="true"/>
 
         </RelativeLayout>

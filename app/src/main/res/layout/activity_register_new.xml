@@ -101,6 +101,7 @@
             android:textSize="15sp"
             android:inputType="numberDecimal"
             android:maxLength="11"
+            android:textCursorDrawable="@drawable/my_cursor"
             android:textColorHint="@color/color_custom_06" />
 
     </LinearLayout>
@@ -141,6 +142,7 @@
             android:textSize="15sp"
             android:inputType="numberDecimal"
             android:maxLength="11"
+            android:textCursorDrawable="@drawable/my_cursor"
             android:textColorHint="@color/color_custom_06" />
 
         <TextView
@@ -190,6 +192,7 @@
             android:textSize="15sp"
             android:inputType="textPassword"
             android:maxLength="11"
+            android:textCursorDrawable="@drawable/my_cursor"
             android:textColorHint="@color/color_custom_06" />
 
     </LinearLayout>
