@@ -197,12 +197,21 @@ public class WorkOrder implements Serializable {
         private List<ReturnaccessoryImg> ReturnaccessoryImg;//返件图片
         private List<OrderBeyondImg> OrderBeyondImg;//远程费图片
         private List<OrderImg> OrderImg;//返回服务图片
+        private List<SendOrderBean> SendOrderList;
         private String Distance;//返回距离
         private String ProductTypeID;
         private String ServiceApplyState;
         private int page;
         private int limit;
         private int Version;
+
+        public List<SendOrderBean> getSendOrderList() {
+            return SendOrderList;
+        }
+
+        public void setSendOrderList(List<SendOrderBean> sendOrderList) {
+            SendOrderList = sendOrderList;
+        }
 
         public String getAccessorySearchState() {
             return AccessorySearchState;

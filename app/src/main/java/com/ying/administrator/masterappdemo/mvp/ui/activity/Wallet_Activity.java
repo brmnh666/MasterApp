@@ -340,6 +340,9 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(String message) {
+        if (!"GetAccountPayInfoList".equals(message)){
+            return;
+        }
         mPresenter.GetAccountPayInfoList(userId);
     }
     @Override

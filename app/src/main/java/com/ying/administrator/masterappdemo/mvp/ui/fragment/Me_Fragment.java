@@ -402,6 +402,9 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(String message) {
+        if (!"GetUserInfoList".equals(message)){
+            return;
+        }
         mPresenter.GetUserInfoList(userID, "1");
     }
 

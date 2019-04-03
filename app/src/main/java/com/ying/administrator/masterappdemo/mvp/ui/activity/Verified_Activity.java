@@ -736,7 +736,7 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
             case 200:
                 if (baseResult.getData().isItem1()) {
                     ToastUtils.showShort("提交成功");
-                    EventBus.getDefault().post("");
+                    EventBus.getDefault().post("GetUserInfoList");
                     finish();
                 }
                 break;

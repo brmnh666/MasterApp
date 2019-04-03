@@ -100,14 +100,14 @@ public class Order_Receiving_Activity extends AppCompatActivity implements Defin
          title.add("预约不成功");
 
         //grabsheet_fragement=new Grabsheet_Fragement();
-        pending_appointment_fragment=new Pending_appointment_fragment(); //已接待预约
-        inService_fragement=new InService_Fragement(); //服务中
-        returnedparts_fragement=new Returnedparts_Fragement();//配件单
-        wait_return_fragment=new Wait_Return_Fragment();//待返件
-        quality_sheet_fragement=new Quality_sheet_Fragement();//质保单
-        complete_wait_fetch_fragement=new Complete_wait_fetch_Fragement();//完成待取机
-        completed_fragement=new Completed_Fragement();//已完成
-        appointment_failure_fragment=new Appointment_failure_fragment();//预约不成功
+        pending_appointment_fragment=Pending_appointment_fragment.newInstance(); //已接待预约
+        inService_fragement= InService_Fragement.newInstance(); //服务中
+        returnedparts_fragement= Returnedparts_Fragement.newInstance();//配件单
+        wait_return_fragment= Wait_Return_Fragment.newInstance();//待返件
+        quality_sheet_fragement= Quality_sheet_Fragement.newInstance();//质保单
+        complete_wait_fetch_fragement= Complete_wait_fetch_Fragement.newInstance();//完成待取机
+        completed_fragement= Completed_Fragement.newInstance();//已完成
+        appointment_failure_fragment= Appointment_failure_fragment.newInstance();//预约不成功
 
 
 
@@ -125,7 +125,23 @@ public class Order_Receiving_Activity extends AppCompatActivity implements Defin
         TabLayoutViewPagerAdapter tabLayoutViewPagerAdapter=new TabLayoutViewPagerAdapter(getSupportFragmentManager(),fragmentList,title);
         tab_Receiving_layout.setTabMode(TabLayout.MODE_SCROLLABLE);
         receiving_viewpager.setAdapter(tabLayoutViewPagerAdapter);
-        receiving_viewpager.setOffscreenPageLimit(0);
+        receiving_viewpager.setOffscreenPageLimit(fragmentList.size());
+        receiving_viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+                EventBus.getDefault().post(Integer.toString(i+1));
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
         tab_Receiving_layout.setupWithViewPager(receiving_viewpager);
 
         //显示未读消息红点
@@ -138,6 +154,7 @@ public class Order_Receiving_Activity extends AppCompatActivity implements Defin
 
 
         receiving_viewpager.setCurrentItem(0);//默认第一个
+//        EventBus.getDefault().post("1");
         /*显示哪一个fragment*/
         String intent = getIntent().getStringExtra("intent");
         switch (intent){
@@ -234,6 +251,9 @@ public class Order_Receiving_Activity extends AppCompatActivity implements Defin
                  break;
              case 4:
                  receiving_viewpager.setCurrentItem(6);//已完成 state 7
+                 break;
+             case 5:
+                 receiving_viewpager.setCurrentItem(2);//配件单 state 4
                  break;
              default:
                  break;

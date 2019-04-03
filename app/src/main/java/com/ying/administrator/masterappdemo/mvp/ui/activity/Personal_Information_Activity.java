@@ -115,6 +115,9 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(String message) {
+        if (!"GetUserInfoList".equals(message)){
+            return;
+        }
         mPresenter.GetUserInfoList(userID,"1");
     }
 
@@ -341,7 +344,7 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
                 }else {
 
                     Toast.makeText(Personal_Information_Activity.this,"图片上传成功",Toast.LENGTH_SHORT).show();
-                    EventBus.getDefault().post("");
+                    EventBus.getDefault().post("GetUserInfoList");
                 }
 
                 break;

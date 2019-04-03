@@ -699,7 +699,7 @@ public class VerifiedUpdateActivity extends BaseActivity<VerifiedPresenter, Veri
                 if (baseResult.getData().isItem1()) {
                     ToastUtils.showShort("提交成功");
 
-                    EventBus.getDefault().post("");
+                    EventBus.getDefault().post("GetUserInfoList");
                     finish();
                 }
                 break;

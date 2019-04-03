@@ -8,6 +8,8 @@ import android.os.Environment;
 
 import com.huawei.hms.support.api.push.PushReceiver;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -20,13 +22,14 @@ public class HWReceiver extends PushReceiver {
 
     @Override
     public boolean onPushMsg(Context context, byte[] arg1, Bundle arg2) {
-        openAssetMusics(context,"new_messsage_voice.mp3");
+//        openAssetMusics(context,"new_messsage_voice.mp3");
         return super.onPushMsg(context, arg1, arg2);
     }
 
     @Override
     public void onPushMsg(Context context, byte[] arg1, String arg2) {
         openAssetMusics(context,"new_order_voice.mp3");
+        EventBus.getDefault().post(0);
         super.onPushMsg(context, arg1, arg2);
     }
 

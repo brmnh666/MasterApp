@@ -482,7 +482,7 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
      */
     public void chooseTime(final TextView tv, final String title) {
         Date date = new Date();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String format1 = format.format(date);
 
         TimeSelector timeSelector = new TimeSelector(mActivity, new TimeSelector.ResultHandler() {
@@ -1052,6 +1052,10 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                 mTvCauseOfIssue.setText(data.getMemo());
                 mTvProductType.setText(data.getCategoryName() + "/" + data.getBrandName() + "/" + data.getSubCategoryName());
 
+                if (data.getSendOrderList().size()!=0){
+                    mTvSelectTime.setText(data.getSendOrderList().get(0).getServiceDate());
+                    mTvSelectTime2.setText(data.getSendOrderList().get(0).getServiceDate2());
+                }
                 if (data.getTypeID() == 1) {//维修
                     mTvType.setText(data.getTypeName() + "/" + data.getGuaranteeText());
                     mTvType.setBackgroundResource(R.color.color_custom_01);
@@ -1083,9 +1087,10 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                     if (data.getOrderBeyondImg() == null) {
                         return;
                     }
-                    if (data.getOrderBeyondImg().size() == 2) {
+                    if (data.getOrderBeyondImg().size() == 1) {
                         Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OrderByondImg/" + data.getOrderBeyondImg().get(0).getUrl()).into(mIvRangeOne);
-                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OrderByondImg/" + data.getOrderBeyondImg().get(1).getUrl()).into(mIvRangeTwo);
+//                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OrderByondImg/" + data.getOrderBeyondImg().get(1).getUrl()).into(mIvRangeTwo);
+                        mIvRangeTwo.setVisibility(View.GONE);
                     } else {
                         mIvRangeOne.setVisibility(View.GONE);
                         mIvRangeTwo.setVisibility(View.GONE);
@@ -1243,7 +1248,11 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                     mViewSelectTimePoint.setVisibility(View.GONE);
                     mViewSelectTimePoint2.setVisibility(View.GONE);
                     if ("5".equals(data.getState())){
-                        mRlExpressno.setVisibility(View.VISIBLE);
+                        if ("".equals(data.getReturnAccessoryMsg())||data.getReturnAccessoryMsg()==null){
+                            mRlExpressno.setVisibility(View.VISIBLE);
+                        }else{
+                            mRlExpressno.setVisibility(View.GONE);
+                        }
                     }else{
                         mRlExpressno.setVisibility(View.GONE);
                     }
@@ -1324,7 +1333,8 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
             case 200:
                 if (baseResult.getData().isItem1()) {
                     ToastUtils.showShort("提交成功");
-                    EventBus.getDefault().post("");
+                    EventBus.getDefault().post("WorkOrderDetailsActivity");
+                    EventBus.getDefault().post(5);
                 } else {
                     if ("支付错误,添加失败".equals(baseResult.getData().getItem2())) {
                         customdialog_home_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_home, null);
@@ -1370,7 +1380,8 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
             case 200:
                 if (baseResult.getData().isItem1()) {
                     ToastUtils.showShort("提交成功");
-                    EventBus.getDefault().post("");
+                    EventBus.getDefault().post("WorkOrderDetailsActivity");
+                    EventBus.getDefault().post(5);
                 } else {
                     if ("支付错误,添加失败".equals(baseResult.getData().getItem2())) {
                         customdialog_home_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_home, null);
@@ -1466,7 +1477,7 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
             case 200:
                 if (baseResult.getData().isItem1()) {
                     ToastUtils.showShort("提交成功");
-                    EventBus.getDefault().post("");
+                    EventBus.getDefault().post("WorkOrderDetailsActivity");
                 } else {
                     if ("支付错误,添加失败".equals(baseResult.getData().getItem2())) {
                         customdialog_home_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_home, null);
@@ -1529,8 +1540,7 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                     push_dialog.dismiss();
                     ToastUtils.showShort("提交成功");
                     finish();
-//                    EventBus.getDefault().post("");
-//                    EventBus.getDefault().post("");
+                    EventBus.getDefault().post(4);
                 } else {
                     ToastUtils.showShort(data.getItem2());
                 }
@@ -1540,6 +1550,9 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(String name) {
+        if (!"WorkOrderDetailsActivity".equals(name)){
+            return;
+        }
         mPresenter.GetOrderInfo(OrderID);
     }
 

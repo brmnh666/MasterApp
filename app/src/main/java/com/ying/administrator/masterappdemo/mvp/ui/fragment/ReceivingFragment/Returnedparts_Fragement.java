@@ -49,6 +49,9 @@ import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 import com.ying.administrator.masterappdemo.widget.CustomDialog_Redeploy;
 import com.ying.administrator.masterappdemo.widget.CustomDialog_UnSuccess;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -116,8 +119,8 @@ public class Returnedparts_Fragement extends BaseFragment<GetOrderListForMePrese
         subuserlist=new ArrayList<>();//获取子账号列表
 
 
-        mPresenter.GetUserInfoList(userID,"1"); //获取关于自己的信息
-        mPresenter.GetChildAccountByParentUserID(userID);//获取自己的子账号 如果没有返回空
+//        mPresenter.GetUserInfoList(userID,"1"); //获取关于自己的信息
+//        mPresenter.GetChildAccountByParentUserID(userID);//获取自己的子账号 如果没有返回空
 
 
 
@@ -125,7 +128,7 @@ public class Returnedparts_Fragement extends BaseFragment<GetOrderListForMePrese
         recyclerView.setAdapter(Return_Sheet_Adapter);
         Return_Sheet_Adapter.setEmptyView(getEmptyView());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mPresenter.WorkerGetOrderList(userID,"3",Integer.toString(pageIndex),"5");
+//        mPresenter.WorkerGetOrderList(userID,"3",Integer.toString(pageIndex),"5");
 
 
     }
@@ -370,5 +373,12 @@ public class Returnedparts_Fragement extends BaseFragment<GetOrderListForMePrese
                 }
                 break;
         }
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(String message) {
+        if (!"3".equals(message)){
+            return;
+        }
+        mPresenter.WorkerGetOrderList(userID, "3", Integer.toString(pageIndex), "5");
     }
 }

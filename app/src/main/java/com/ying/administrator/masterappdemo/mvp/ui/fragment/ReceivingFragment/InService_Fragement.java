@@ -47,6 +47,9 @@ import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 import com.zyao89.view.zloading.ZLoadingDialog;
 import com.zyao89.view.zloading.Z_TYPE;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,6 +76,10 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
     private LinearLayout ll_choose_gaodemap;
     private ZLoadingDialog dialog;
     private boolean isfristin;
+    public static InService_Fragement newInstance() {
+        InService_Fragement fragment = new InService_Fragement();
+        return fragment;
+    }
      @Nullable
      @Override
      public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -430,7 +437,7 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
         startActivity(intent);
     }
 
-    @Override
+    /*@Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser){
@@ -440,8 +447,14 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
             mPresenter.WorkerGetOrderList(userID,"2",Integer.toString(pageIndex),"5");
         }
 
+    }*/
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(String message) {
+        if (!"2".equals(message)){
+            return;
+        }
+        mPresenter.WorkerGetOrderList(userID, "2", Integer.toString(pageIndex), "5");
     }
-
 
     /**
      * 跳转腾讯地图

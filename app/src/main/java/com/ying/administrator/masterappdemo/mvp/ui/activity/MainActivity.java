@@ -290,6 +290,9 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(String message) {
+        if (!"GetUserInfoList".equals(message)){
+            return;
+        }
         mPresenter.GetUserInfoList(userID, "1");
     }
 

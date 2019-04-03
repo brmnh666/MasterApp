@@ -963,9 +963,10 @@ public class WorkOrderDetailsFinishActivity extends BaseActivity<PendingOrderPre
                     if (data.getOrderBeyondImg() == null) {
                         return;
                     }
-                    if (data.getOrderBeyondImg().size() == 2) {
+                    if (data.getOrderBeyondImg().size() == 1) {
                         Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OrderByondImg/" + data.getOrderBeyondImg().get(0).getUrl()).into(mIvRangeOne);
-                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OrderByondImg/" + data.getOrderBeyondImg().get(1).getUrl()).into(mIvRangeTwo);
+//                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OrderByondImg/" + data.getOrderBeyondImg().get(1).getUrl()).into(mIvRangeTwo);
+                        mIvRangeTwo.setVisibility(View.GONE);
                     } else {
                         mIvRangeOne.setVisibility(View.GONE);
                         mIvRangeTwo.setVisibility(View.GONE);

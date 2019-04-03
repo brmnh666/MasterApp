@@ -241,7 +241,7 @@ public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> im
             case 200:
                 if (baseResult.getData().isItem1()){
                     setResult(2000);
-                    EventBus.getDefault().post("");
+                    EventBus.getDefault().post("GetAccountPayInfoList");
                     Add_Card_Activity.this.finish();
 
                 }else {

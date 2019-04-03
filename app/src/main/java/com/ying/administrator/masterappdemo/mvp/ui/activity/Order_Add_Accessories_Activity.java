@@ -920,7 +920,8 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
             case 200:
                 if (baseResult.getData().isItem1()) {
                     ToastUtils.showShort("提交成功");
-                    EventBus.getDefault().post("");
+                    EventBus.getDefault().post("WorkOrderDetailsActivity");
+                    EventBus.getDefault().post(5);
                     finish();
                 } else {
                     if ("支付错误,添加失败".equals(baseResult.getData().getItem2())){
@@ -967,7 +968,8 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
             case 200:
                 if (baseResult.getData().isItem1()) {
                     ToastUtils.showShort("提交成功");
-                    EventBus.getDefault().post("");
+                    EventBus.getDefault().post("WorkOrderDetailsActivity");
+                    EventBus.getDefault().post(5);
                     finish();
                 } else {
                     if ("支付错误,添加失败".equals(baseResult.getData().getItem2())){
@@ -1075,7 +1077,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
             case 200:
                 if (baseResult.getData().isItem1()) {
                     ToastUtils.showShort("提交成功");
-                    EventBus.getDefault().post("");
+                    EventBus.getDefault().post("WorkOrderDetailsActivity");
                     finish();
                 } else {
                     if ("支付错误,添加失败".equals(baseResult.getData().getItem2())){

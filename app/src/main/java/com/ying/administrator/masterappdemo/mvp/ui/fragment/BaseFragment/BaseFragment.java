@@ -24,6 +24,8 @@ import com.ying.administrator.masterappdemo.base.BaseView;
 import com.ying.administrator.masterappdemo.base.RxManager;
 import com.ying.administrator.masterappdemo.util.TUtil;
 
+import org.greenrobot.eventbus.EventBus;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -43,6 +45,11 @@ public abstract class BaseFragment<P extends BasePresenter, M extends BaseModel>
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        try {
+            EventBus.getDefault().register(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         mPresenter = obtainPresenter();
         mModel = obtainModel();
         if (mPresenter != null) {
@@ -157,6 +164,7 @@ public abstract class BaseFragment<P extends BasePresenter, M extends BaseModel>
         if (mPresenter != null) {
             mPresenter.onDestroy();
         }
+        EventBus.getDefault().unregister(this);
     }
 
 

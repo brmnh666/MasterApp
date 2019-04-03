@@ -125,7 +125,7 @@ public class ChageUserNameActivity extends BaseActivity<InfoManagePresenter, Inf
                   //修改成功
                   if (baseResult.getData().isItem1()){
                       Toast.makeText(ChageUserNameActivity.this,"修改成功",Toast.LENGTH_SHORT).show();
-                      EventBus.getDefault().post("");
+                      EventBus.getDefault().post("GetUserInfoList");
                       ChageUserNameActivity.this.finish();
                   }else {
                       Toast.makeText(ChageUserNameActivity.this,"修改失败",Toast.LENGTH_SHORT).show();

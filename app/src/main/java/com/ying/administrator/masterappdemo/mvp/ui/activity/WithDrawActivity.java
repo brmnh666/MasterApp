@@ -423,7 +423,7 @@ switch (baseResult.getStatusCode()){
     case 200:
         if (baseResult.getData().isItem1()){
             Toast.makeText(this,baseResult.getData().getItem2(),Toast.LENGTH_SHORT).show();
-            EventBus.getDefault().post("");
+            EventBus.getDefault().post("GetUserInfoList");
             WithDrawActivity.this.finish();
         }else {
             Toast.makeText(this,baseResult.getData().getItem2(),Toast.LENGTH_SHORT).show();

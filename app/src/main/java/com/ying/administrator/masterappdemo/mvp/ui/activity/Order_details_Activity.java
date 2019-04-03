@@ -757,7 +757,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
      */
     public void chooseTime() {
         Date date = new Date();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String format1 = format.format(date);
 
         TimeSelector timeSelector = new TimeSelector(Order_details_Activity.this, new TimeSelector.ResultHandler() {
@@ -1648,6 +1648,9 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(String name) {
+        if (!"GetOrderInfo".equals(name)){
+            return;
+        }
         mPresenter.GetOrderInfo(orderID);
     }
 

@@ -304,11 +304,11 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
             case 200:
                 if (baseResult.getData().isItem1()) {
                     CompleteWorkOrderActivity.this.finish();
-                    EventBus.getDefault().post("");
+                    EventBus.getDefault().post("WorkOrderDetailsActivity");
                     if ("0".equals(data.getAccessorySearchState())){
-                        EventBus.getDefault().post(3);
-                    }else{
                         EventBus.getDefault().post(4);
+                    }else{
+                        EventBus.getDefault().post(3);
                     }
                 }
                 break;

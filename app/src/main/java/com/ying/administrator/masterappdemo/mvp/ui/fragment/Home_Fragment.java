@@ -331,7 +331,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 animator_order.setDuration(1000);
                 animator_order.start();
 
-                EventBus.getDefault().post("");
+//                EventBus.getDefault().post("");
             }
         });
 
@@ -974,7 +974,11 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(String message) {
-        mPresenter.GetUserInfoList(userID, "1");
+        if ("GetUserInfoList".equals(message)){
+            mPresenter.GetUserInfoList(userID, "1");
+        }else if ("0".equals(message)){
+            mPresenter.WorkerGetOrderList(userID, "0", Integer.toString(pageIndex), "10");
+        }
     }
 
 
