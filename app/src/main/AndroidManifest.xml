@@ -418,11 +418,39 @@
         <activity android:name=".mvp.ui.activity.DetailRecordActivity"
             android:theme="@style/AppTheme.NoActionBar"
             />
+         <!--新的注册activity-->
+
+        <activity android:name=".mvp.ui.activity.Register_New_Activity"
+            android:theme="@style/AppTheme.Splash"
+            android:launchMode="singleTask"
+            />
+
+        <!--新的登陆-->
+
+        <activity android:name=".mvp.ui.activity.Login_New_Activity"
+            android:theme="@style/AppTheme.Splash"
+            android:launchMode="singleTask"
+            />
+
+       <!--找回密码-->
+
+        <activity android:name=".mvp.ui.activity.ForgetPasswordActivity"
+            android:theme="@style/AppTheme.Splash"
+            android:launchMode="singleTask"
+            />
 
 
        <!-- <activity android:name="io.card.payment.CardIOActivity" android:configChanges="keyboardHidden|orientation" />
         <activity android:name="io.card.payment.DataEntryActivity" />
                     -->
+
+
+        <activity android:name=".mvp.ui.activity.CustomChatActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
+            />
+
+
         <receiver
             android:name=".wxapi.AppRegister">
             <intent-filter>

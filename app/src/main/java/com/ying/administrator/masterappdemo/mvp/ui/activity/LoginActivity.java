@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.tencent.android.tpush.XGPushConfig;
@@ -111,7 +112,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginModel> impl
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_register:
-                startActivity(new Intent(mActivity, RegisterActivity.class));
+                startActivity(new Intent(mActivity, Register_New_Activity.class));
                 break;
 
             case R.id.btn_login:
@@ -123,10 +124,10 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginModel> impl
                     ToastUtils.showShort("请输入手机号！");
                     return;
                 }
-                //                if (!RegexUtils.isMobileExact(userName)){
-                //                    ToastUtils.showShort("手机号格式不正确！");
-                //                    return;
-                //                }
+                 if (!RegexUtils.isMobileExact(userName)){
+                     ToastUtils.showShort("手机号格式不正确！");
+                     return;
+                 }
                 if ("".equals(passWord)) {
                     ToastUtils.showShort("请输入密码！");
                     return;

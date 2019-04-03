@@ -7,8 +7,8 @@ import com.ying.administrator.masterappdemo.mvp.contract.RegisterContract;
 
 public class RegisterPresenter extends RegisterContract.Presenter {
     @Override
-    public void Reg(String userName, String code) {
-        mModel.Reg(userName,code).subscribe(new BaseObserver<Data<String>>() {
+    public void Reg(String userName, String code,String password) {
+        mModel.Reg(userName,code,password).subscribe(new BaseObserver<Data<String>>() {
             @Override
             protected void onHandleSuccess(BaseResult<Data<String>> value) {
                 mView.Reg(value);

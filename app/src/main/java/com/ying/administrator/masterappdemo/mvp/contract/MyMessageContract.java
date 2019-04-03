@@ -19,7 +19,7 @@ import io.reactivex.Observable;
 public interface MyMessageContract {
     interface Model extends BaseModel{
 
-     Observable<BaseResult<MessageData<List<Message>>>> GetMessageList(String UserID, String Type, String limit, String page);
+     Observable<BaseResult<MessageData<List<Message>>>> GetMessageList(String UserID, String Type, String SubType,String limit, String page);
 
     }
 
@@ -30,7 +30,7 @@ public interface MyMessageContract {
 
     abstract class Presenter extends BasePresenter<View,Model>{
 
-        public abstract void GetMessageList(String UserID,String Type,String limit,String page);
+        public abstract void GetMessageList(String UserID,String Type,String SubType,String limit,String page);
 
     }
 }

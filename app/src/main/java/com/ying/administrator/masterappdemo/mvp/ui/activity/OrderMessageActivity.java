@@ -65,7 +65,7 @@ public class OrderMessageActivity extends BaseActivity<MyMessagePresenter, MyMes
 
         SPUtils spUtils = SPUtils.getInstance("token");
         userId = spUtils.getString("userName");
-        mPresenter.GetMessageList(userId, "2", "10", "1");
+        mPresenter.GetMessageList(userId, "2", "0","10", "1");
         //mPresenter.GetMessageList(userId,"1","10","1");
 
 
@@ -89,7 +89,7 @@ public class OrderMessageActivity extends BaseActivity<MyMessagePresenter, MyMes
                 }*/
                 pageIndex=1;
                 //list.clear();
-                mPresenter.GetMessageList(userId, "2", "10", Integer.toString(pageIndex));
+                mPresenter.GetMessageList(userId, "2","0", "10", Integer.toString(pageIndex));
                 messageAdapter.notifyDataSetChanged();
                 refreshlayout.finishRefresh();
             }
@@ -102,7 +102,7 @@ public class OrderMessageActivity extends BaseActivity<MyMessagePresenter, MyMes
             public void onLoadmore(RefreshLayout refreshlayout) {
                 pageIndex++; //页数加1
               //  mPresenter.WorkerGetOrderList(userID,"1",Integer.toString(pageIndex),"5");
-                mPresenter.GetMessageList(userId, "2", "10", Integer.toString(pageIndex));
+                mPresenter.GetMessageList(userId, "2","0", "10", Integer.toString(pageIndex));
                 messageAdapter.notifyDataSetChanged();
                 refreshlayout.finishLoadmore();
             }

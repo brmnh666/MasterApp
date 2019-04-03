@@ -61,9 +61,11 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("Account/Reg")
     Observable<BaseResult<Data<String>>> Reg(@Field("mobile") String mobile,
-                                       @Field("type") String type,
-                                       @Field("code") String code,
-                                       @Field("roleType") String roleType);
+                                             @Field("type") String type,
+                                             @Field("code") String code,
+                                             @Field("roleType") String roleType,
+                                             @Field("password") String password
+                                            );
 
 
     /**
@@ -72,8 +74,8 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("Account/LoginOn")
     Observable<BaseResult<Data<String>>> LoginOn(@Field("userName") String userName,
-                                           @Field("passWord") String passWord,
-                                           @Field("RoleType") String RoleType);
+                                                 @Field("passWord") String passWord,
+                                                 @Field("RoleType") String RoleType);
 
 
     /**
@@ -596,6 +598,7 @@ public interface ApiService {
     @POST("Cms/GetListmessageByType")
     Observable<BaseResult<MessageData<List<Message>>>> GetMessageList(@Field("UserID") String UserID,
                                                                       @Field("Type") String Type,
+                                                                      @Field("SubType") String SubType,
                                                                       @Field("limit") String limit,
                                                                       @Field("page") String page);
 

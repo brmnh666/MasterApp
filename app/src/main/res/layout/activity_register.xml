@@ -56,6 +56,8 @@
                 android:background="@null"
                 android:hint="请输入手机号"
                 android:textColor="@color/color_black"
+                android:inputType="numberDecimal"
+                android:maxLength="11"
                 android:textColorHint="@color/color_custom_06" />
 
             <ImageView

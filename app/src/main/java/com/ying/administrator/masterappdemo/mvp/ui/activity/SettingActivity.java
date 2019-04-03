@@ -116,7 +116,7 @@ public class SettingActivity extends BaseActivity {
                         public void onPositiveClick() {
                             dialog.dismiss();
                             spUtils.put("isLogin", false);
-                            startActivity(new Intent(mActivity, LoginActivity.class));
+                            startActivity(new Intent(mActivity, Login_New_Activity.class));
                             ActivityUtils.finishAllActivities();
                         }
 

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +43,7 @@ import com.ying.administrator.masterappdemo.mvp.contract.MainContract;
 import com.ying.administrator.masterappdemo.mvp.model.MainModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.MainPresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.AboutUsActivity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.CustomChatActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.IntelligentCustomerServiceActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Opinion_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_Receiving_Activity;
@@ -63,7 +65,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> implements MainContract.View, View.OnClickListener, BotLibClient.ConnectionListener,BotLibClient.MessageListener {
+public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> implements MainContract.View, View.OnClickListener {
     private static final String ARG_SHOW_TEXT = "text";
     @BindView(R.id.img_me_message)
     ImageView mImgMeMessage;
@@ -207,9 +209,6 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
         mImgMeHead.setOnClickListener(this);
         mTv_me_message.setOnClickListener(this);
 
-
-        BotKitClient.getInstance().setConnectionListener(this); // 设置连接状态监听器
-        BotKitClient.getInstance().setMessageListener(this); // 设置消息监听器
     }
 
     /*获取用户信息*/
@@ -351,11 +350,13 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
 
                 VisitorInfo visitorInfo = new VisitorInfo();
                 visitorInfo.userName = userInfo.getUserID();
+
                 visitorInfo.nickName = userInfo.getTrueName();
                 visitorInfo.phone = userInfo.getPhone();
                 BotKitClient.getInstance().setVisitor(visitorInfo);
 
                 Intent intent = new Intent();
+             //   intent.setClass(mActivity, ChatActivity.class);
                 intent.setClass(mActivity, ChatActivity.class);
                 startActivity(intent);
 
@@ -423,19 +424,4 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
     }
 
 
-    /*智能客服监听方法*/
-    @Override
-    public void onConnectionStateChanged(int state) {
-
-    }
-
-    @Override
-    public void onReceivedSuggestion(ArrayList<MenuItem> suggestions) {
-
-    }
-
-    @Override
-    public void onAppendMessage(Message message) {
-
-    }
 }

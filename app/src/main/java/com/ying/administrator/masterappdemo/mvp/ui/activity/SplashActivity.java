@@ -79,7 +79,7 @@ public class SplashActivity extends BaseActivity<LoginPresenter, LoginModel> imp
                     SplashActivity.this.finish();
 
                 }else {
-                    Intent intent =new Intent(SplashActivity.this,LoginActivity.class);
+                    Intent intent =new Intent(SplashActivity.this,Login_New_Activity.class);
                     startActivity(intent);
                     SplashActivity.this.finish();
 
@@ -121,7 +121,7 @@ public class SplashActivity extends BaseActivity<LoginPresenter, LoginModel> imp
                     SplashActivity.this.finish();
 
                 }else {
-                    Intent intent =new Intent(SplashActivity.this,LoginActivity.class);
+                    Intent intent =new Intent(SplashActivity.this,Login_New_Activity.class);
                     startActivity(intent);
                     SplashActivity.this.finish();
 
