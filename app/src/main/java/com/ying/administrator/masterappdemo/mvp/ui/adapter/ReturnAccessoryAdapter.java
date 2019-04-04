@@ -10,15 +10,26 @@ import com.ying.administrator.masterappdemo.entity.GAccessory;
 import java.util.List;
 
 public class ReturnAccessoryAdapter extends BaseQuickAdapter<GAccessory,BaseViewHolder> {
-    public ReturnAccessoryAdapter(int layoutResId, List<GAccessory> data) {
+    private int state;
+    public ReturnAccessoryAdapter(int layoutResId, List<GAccessory> data,int state) {
         super(layoutResId, data);
+        this.state=state;
     }
     @Override
     protected void convert(BaseViewHolder helper, GAccessory item) {
-        if ("Y".equals(item.getSendState())){
-            helper.getView(R.id.ll_y).setVisibility(View.VISIBLE);
-            helper.getView(R.id.ll_n).setVisibility(View.GONE);
-        }else {
+        if (state==0){
+            helper.getView(R.id.ll_state_y).setVisibility(View.VISIBLE);
+            helper.getView(R.id.ll_state_n).setVisibility(View.VISIBLE);
+            if ("Y".equals(item.getSendState())){
+                helper.getView(R.id.ll_y).setVisibility(View.VISIBLE);
+                helper.getView(R.id.ll_n).setVisibility(View.GONE);
+            }else {
+                helper.getView(R.id.ll_y).setVisibility(View.GONE);
+                helper.getView(R.id.ll_n).setVisibility(View.VISIBLE);
+            }
+        }else{
+            helper.getView(R.id.ll_state_y).setVisibility(View.GONE);
+            helper.getView(R.id.ll_state_n).setVisibility(View.GONE);
             helper.getView(R.id.ll_y).setVisibility(View.GONE);
             helper.getView(R.id.ll_n).setVisibility(View.VISIBLE);
         }

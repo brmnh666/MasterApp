@@ -28,18 +28,24 @@
                 android:textColor="#6A6A6A"
                 android:textSize="16sp"
                 android:layout_marginLeft="10dp"/>
-            <ImageView
-                android:layout_width="14dp"
-                android:layout_height="15dp"
-                android:src="@mipmap/sure"
-                android:layout_gravity="center"/>
-            <TextView
+            <LinearLayout
+                android:id="@+id/ll_state_y"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:text="已返件"
-                android:textColor="#979797"
-                android:layout_marginLeft="5dp"/>
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="15dp"
+                    android:src="@mipmap/sure"
+                    android:layout_gravity="center"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:text="已返件"
+                    android:textColor="#979797"
+                    android:layout_marginLeft="5dp"/>
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -73,10 +79,10 @@
 
             </LinearLayout>
             <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="9dp"
-            android:text="【运输中】快件已从南昌转运中心发出，准备....."
+                android:text="【运输中】快件已从南昌转运中心发出，准备....."
                 android:textSize="12sp"
                 android:textColor="#818181"/>
         </LinearLayout>
@@ -107,18 +113,24 @@
                 android:textColor="#6A6A6A"
                 android:textSize="16sp"
                 android:layout_marginLeft="10dp"/>
-            <ImageView
-                android:layout_width="14dp"
-                android:layout_height="15dp"
-                android:src="@mipmap/wait"
-                android:layout_gravity="center"/>
-            <TextView
+            <LinearLayout
+                android:id="@+id/ll_state_n"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:text="待返件"
-                android:textColor="#979797"
-                android:layout_marginLeft="5dp"/>
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="15dp"
+                    android:src="@mipmap/wait"
+                    android:layout_gravity="center"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:text="待返件"
+                    android:textColor="#979797"
+                    android:layout_marginLeft="5dp"/>
+            </LinearLayout>
         </LinearLayout>
         <View
             android:layout_width="match_parent"
