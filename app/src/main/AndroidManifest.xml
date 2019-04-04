@@ -51,6 +51,9 @@
     <!--震动权限-->
     <uses-permission android:name="android.permission.VIBRATE"/>
 
+
+    <uses-permission android:name="android.permission.RECEIVE_SMS" /> <!-- 接收短信权限 -->
+    <uses-permission android:name="android.permission.READ_SMS" />    <!-- 读取短信权限 -->
 <!--
 
     <uses-feature android:name="android.hardware.camera" android:required="false" />
@@ -453,6 +456,11 @@
                 <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
             </intent-filter>
         </receiver>
+
+
+         <!--读取短信-->
+
+
         <!-- wx sdk end -->
     </application>
 

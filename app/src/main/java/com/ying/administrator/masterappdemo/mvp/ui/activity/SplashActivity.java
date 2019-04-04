@@ -49,10 +49,10 @@ public class SplashActivity extends BaseActivity<LoginPresenter, LoginModel> imp
         isLogin = spUtils.getBoolean("isLogin");
         admintoken=spUtils.getString("adminToken");
 
-        Log.d("======>", userName);
+   /*     Log.d("======>", userName);
         Log.d("======>", password);
         Log.d("======>", String.valueOf(isLogin));
-        Log.d("======>", admintoken);
+        Log.d("======>", admintoken);*/
     }
 
     @Override

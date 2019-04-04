@@ -44,9 +44,9 @@ public class ChageUserNameActivity extends BaseActivity<InfoManagePresenter, Inf
     RelativeLayout mActionbarLayout;
     @BindView(R.id.et_username)
     EditText mEtUsername;
-    @BindView(R.id.btn_save)
-    Button mBtnSave;
 
+    @BindView(R.id.tv_change_username)
+    TextView mTv_change_username;
     SPUtils spUtils = SPUtils.getInstance("token");
     private String userID;
     @Override
@@ -70,7 +70,7 @@ public class ChageUserNameActivity extends BaseActivity<InfoManagePresenter, Inf
     @Override
     protected void setListener() {
         mLlReturn.setOnClickListener(this);
-        mBtnSave.setOnClickListener(this);
+        mTv_change_username.setOnClickListener(this);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class ChageUserNameActivity extends BaseActivity<InfoManagePresenter, Inf
             case R.id.ll_return:
                 ChageUserNameActivity.this.finish();
                 break;
-            case R.id.btn_save:
+            case R.id.tv_change_username:
                   if (mEtUsername.getText().toString().equals("")){//判断输入是否为空
                       Toast.makeText(ChageUserNameActivity.this,"昵称不能为空",Toast.LENGTH_LONG).show();
                   }else {

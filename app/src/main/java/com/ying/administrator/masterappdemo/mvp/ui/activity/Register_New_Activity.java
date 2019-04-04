@@ -1,9 +1,11 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -14,6 +16,7 @@ import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.tencent.android.tpush.XGPushConfig;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
@@ -22,7 +25,6 @@ import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.mvp.contract.RegisterContract;
 import com.ying.administrator.masterappdemo.mvp.model.RegisterModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.RegisterPresenter;
-import com.ying.administrator.masterappdemo.util.MyUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -62,10 +64,30 @@ public class Register_New_Activity extends BaseActivity<RegisterPresenter, Regis
     @Override
     protected void initView() {
 
+/*
+        RxPermissions rxPermissions = new RxPermissions(this);
+        rxPermissions.request(Manifest.permission.RECEIVE_SMS,
+                Manifest.permission.READ_SMS)
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean aBoolean) throws Exception {
+                        if (aBoolean){
+                            // 获取全部权限成功
+                             Log.d("=====>","权限获取成功");
+                        }else{
+                            // 获取全部权限失败
+                            Log.d("=====>","权限获取失败");
+                        }
+                    }
+                });*/
+
+
     }
 
     @Override
     protected void setListener() {
+
+
         mTvSendYzm.setOnClickListener(this);
         mTvRegister.setOnClickListener(this);
         mImg_agreement.setOnClickListener(this);
@@ -87,6 +109,7 @@ public class Register_New_Activity extends BaseActivity<RegisterPresenter, Regis
                 return;
             }
             mPresenter.ValidateUserName(Phone);
+
         break;
 
             case R.id.img_agreement:
@@ -160,6 +183,7 @@ switch (baseResult.getStatusCode()){
         switch (baseResult.getStatusCode()){
             case 200:
                 if (baseResult.getData().isItem1()){
+
                 }
                 else {
                     Toast.makeText(this,"频繁请求验证码请稍后再试",Toast.LENGTH_SHORT).show();
@@ -247,4 +271,16 @@ switch (baseResult.getStatusCode()){
             mTvSendYzm.setClickable(true);
         }
     }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+
+
+
+
+
 }

@@ -7,29 +7,37 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:orientation="vertical"
         android:layout_marginTop="20dp"
-        android:padding="@dimen/dp_10">
-        <EditText
-            android:id="@+id/et_username"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="请输入新的昵称"
-            android:textSize="15sp"
-            android:textColor="#333333"
-            android:background="@null"/>
-
+        >
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/color_custom_01"
-            android:layout_marginTop="5dp"/>
+            android:background="@color/color_custom_06"
+            />
 
+        <EditText
+            android:id="@+id/et_username"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="请输入新的昵称"
+            android:textSize="15sp"
+            android:textColor="#333333"
+            android:background="@null"
+            android:textCursorDrawable="@drawable/my_cursor"
+            android:textColorHint="@color/color_custom_06"
+            android:layout_marginLeft="10dp"
+            />
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_custom_06"
+        />
 
-    <Button
+   <!-- <Button
         android:id="@+id/btn_save"
         android:layout_width="match_parent"
         android:layout_height="47dp"
@@ -37,7 +45,24 @@
         android:background="@drawable/btn_blue"
         android:text="保存"
         android:textColor="@color/white"
-        android:textSize="15sp"/>
+        android:textSize="15sp"/>-->
+
+
+    <TextView
+        android:id="@+id/tv_change_username"
+        android:layout_marginTop="20dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="修改"
+        android:textColor="@color/white"
+        android:textSize="19sp"
+        android:background="@drawable/bg_register"
+        />
 
 
 </LinearLayout>

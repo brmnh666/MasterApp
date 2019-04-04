@@ -1,5 +1,6 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
@@ -48,8 +50,10 @@ public class ChagePasswordActivity extends BaseActivity<InfoManagePresenter, Inf
     EditText mEtNewPassword;
     @BindView(R.id.et_new_password_again)
     EditText mEtNewPasswordAgain;
-    @BindView(R.id.btn_save)
-    Button mBtnSave;
+
+    @BindView(R.id.tv_change_password)
+    TextView mTv_change_password;
+
 
     private String old_password;
     private String new_password;
@@ -81,7 +85,7 @@ public class ChagePasswordActivity extends BaseActivity<InfoManagePresenter, Inf
     @Override
     protected void setListener() {
         mLlReturn.setOnClickListener(this);
-        mBtnSave.setOnClickListener(this);
+        mTv_change_password.setOnClickListener(this);
     }
 
     @Override
@@ -97,7 +101,7 @@ public class ChagePasswordActivity extends BaseActivity<InfoManagePresenter, Inf
                 ChagePasswordActivity.this.finish();
                 break;
                //修改密码
-               case R.id.btn_save:
+               case R.id.tv_change_password:
                    old_password=mEtOldPassword.getText().toString();
                    new_password=mEtNewPassword.getText().toString();
                    new_password_again=mEtNewPasswordAgain.getText().toString();
@@ -143,7 +147,6 @@ public class ChagePasswordActivity extends BaseActivity<InfoManagePresenter, Inf
    switch (baseResult.getStatusCode()){
        case 200:
            userInfoDean=baseResult.getData().getData().get(0);
-           //Log.d("用户的密码为",userInfoDean.getPassWord());
 
            break;
            default:
@@ -170,7 +173,13 @@ public class ChagePasswordActivity extends BaseActivity<InfoManagePresenter, Inf
     public void UpdatePassword(BaseResult<Data> baseResult) {
      switch (baseResult.getStatusCode()){
          case 200:
-             ChagePasswordActivity.this.finish();
+             if (baseResult.getData().isItem1()){
+                 startActivity(new Intent(ChagePasswordActivity.this,Login_New_Activity.class));
+                 spUtils.put("passWord","");
+                 spUtils.put("isLogin", false);
+
+                 ActivityUtils.finishAllActivities();
+             }
              break;
              default:
                  break;

@@ -102,7 +102,8 @@
             android:inputType="numberDecimal"
             android:maxLength="11"
             android:textCursorDrawable="@drawable/my_cursor"
-            android:textColorHint="@color/color_custom_06" />
+            android:textColorHint="@color/color_custom_06"
+            />
 
     </LinearLayout>
     <View

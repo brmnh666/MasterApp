@@ -209,4 +209,8 @@ dependencies {
     implementation 'com.paradigm:BotLib:2.+'
     implementation 'com.paradigm:BotKit:2.+'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.15'
+
+
+    /*6.0后权限管理RxPermissions */
+    implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
 }

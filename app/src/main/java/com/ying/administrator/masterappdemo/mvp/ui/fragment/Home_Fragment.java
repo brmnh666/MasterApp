@@ -61,7 +61,9 @@ import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.AllWorkOrdersContract;
 import com.ying.administrator.masterappdemo.mvp.model.AllWorkOrdersModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.AllWorkOrdersPresenter;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.ForgetPasswordActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.LoginActivity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.Login_New_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_Receiving_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Personal_Information_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.VerifiedUpdateActivity;
@@ -393,16 +395,20 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                     dialog.setMessage("账号在别处登录是否重新登录")
                             //.setImageResId(R.mipmap.ic_launcher)
                             .setTitle("提示")
-                            .setSingle(true).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
+                            .setSingle(false)
+                            .setNegtive("重设密码")
+                            .setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
                         @Override
                         public void onPositiveClick() {//重新登录
 
-                            startActivity(new Intent(getActivity(), LoginActivity.class));
+                            startActivity(new Intent(getActivity(), Login_New_Activity.class));
                             getActivity().finish();
                         }
 
                         @Override
                         public void onNegtiveClick() {//取消
+                            startActivity(new Intent(mActivity, ForgetPasswordActivity.class));
+                            getActivity().finish();
                             dialog.dismiss();
                             // Toast.makeText(MainActivity.this,"ssss",Toast.LENGTH_SHORT).show();
                         }
@@ -441,27 +447,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
     }
 
 
-  /*  @Override
-    public void AddGrabsheetapply(BaseResult<Data> baseResult) {
-        Data data = baseResult.getData();
-        switch (baseResult.getStatusCode()) {
-            case 200://200
-                if (data.isItem1()) {//抢单成功
-                    Toast.makeText(getActivity(), "抢单成功", Toast.LENGTH_SHORT).show();
-                } else if (!data.isItem1()) {
 
-                    if (data.getItem2().equals("该用户未进行实名认证")) {
-
-                        Toast.makeText(getActivity(), "用户未进行实名认证", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                }
-                break;
-
-            default:
-                break;
-        }
-    }*/
 
     @Override
     public void GetUserInfo(BaseResult<String> baseResult) {
