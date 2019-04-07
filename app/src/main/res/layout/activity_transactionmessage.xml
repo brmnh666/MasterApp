@@ -4,21 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F6F6F6"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="#1690ff"
-        >
+        android:background="#1690ff">
+
         <ImageView
             android:id="@+id/img_actionbar_return"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_marginLeft="10dp"
-            android:src="@mipmap/left"
             android:layout_centerVertical="true"
-            />
+            android:layout_marginLeft="10dp"
+            android:src="@mipmap/left" />
 
         <TextView
             android:id="@+id/tv_title"
@@ -26,9 +25,8 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="交易消息"
-            android:textSize="20sp"
             android:textColor="@color/color_white"
-            />
+            android:textSize="20sp" />
 
     </RelativeLayout>
 
@@ -37,15 +35,119 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:srlAccentColor="#00000000"
-        app:srlPrimaryColor="#00000000"
         app:srlEnablePreviewInEditMode="true"
-        >
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_transactionmessage"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        app:srlPrimaryColor="#00000000">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
 
-    </android.support.v7.widget.RecyclerView>
+                <RelativeLayout
+                    android:id="@+id/rl_new_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="@dimen/dp_10">
+
+                    <TextView
+                        android:id="@+id/tv_message_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:text="1条新消息"
+                        android:textColor="#999"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/textView1"
+                        android:layout_width="40dip"
+                        android:layout_height="1dip"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@id/tv_message_number"
+                        android:background="#999" />
+
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="40dip"
+                        android:layout_height="1dip"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/tv_message_number"
+                        android:background="#999" />
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:descendantFocusability="blocksDescendants">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_transactionmessage"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+
+                    </android.support.v7.widget.RecyclerView>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_old_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="@dimen/dp_10">
+
+                    <TextView
+                        android:id="@+id/tv_old_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:text="以下是历史消息"
+                        android:textColor="#999"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="40dip"
+                        android:layout_height="1dip"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@id/tv_old_number"
+                        android:background="#999" />
+
+                    <TextView
+                        android:id="@+id/textView4"
+                        android:layout_width="40dip"
+                        android:layout_height="1dip"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/tv_old_number"
+                        android:background="#999" />
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:descendantFocusability="blocksDescendants">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_transactionmessage_historical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false">
+
+                    </android.support.v7.widget.RecyclerView>
+                </RelativeLayout>
+            </LinearLayout>
+        </ScrollView>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </LinearLayout>

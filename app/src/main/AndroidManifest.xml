@@ -249,7 +249,7 @@
         <activity android:name=".mvp.ui.activity.RegisterActivity" android:theme="@style/Theme.AppCompat.NoActionBar" android:launchMode="singleTask"/>
         <!--添加配件-->
         <!--完成工单-->
-        <activity android:name=".mvp.ui.activity.CompleteWorkOrderActivity" android:theme="@style/AppTheme.NoActionBar" android:launchMode="singleTask"/>
+        <activity android:name=".mvp.ui.activity.CompleteWorkOrderActivity" android:theme="@style/AppTheme.NoActionBar" android:launchMode="singleTask" android:windowSoftInputMode="stateHidden"/>
         <!--添加配件-->
         <activity android:name=".mvp.ui.activity.Order_Add_Accessories_Activity" android:theme="@style/AppTheme.NoActionBar" android:launchMode="singleTask"/>
         <!--子账号管理-->
