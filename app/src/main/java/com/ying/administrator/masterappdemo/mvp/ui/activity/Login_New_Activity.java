@@ -1,8 +1,15 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -11,6 +18,7 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.tencent.android.tpush.XGPushConfig;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
@@ -24,6 +32,7 @@ import com.zyao89.view.zloading.Z_TYPE;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.functions.Consumer;
 
 public class Login_New_Activity extends BaseActivity<LoginPresenter, LoginModel> implements View.OnClickListener, LoginContract.View {
 
@@ -38,14 +47,16 @@ public class Login_New_Activity extends BaseActivity<LoginPresenter, LoginModel>
     TextView mTvForgetPassword;
     @BindView(R.id.tv_register)
     TextView mTvRegister;
-    @BindView(R.id.img_login_back)
-    ImageView mImg_login_back;
+
+    @BindView(R.id.tv_note_login)
+    TextView mTv_note_login;
 
     private boolean isLogin;
     private String userName;
     private String passWord;
     private SPUtils spUtils;
     ZLoadingDialog dialog = new ZLoadingDialog(this); //loading
+
     @Override
     protected int setLayoutId() {
         return R.layout.activity_login_new;
@@ -57,7 +68,7 @@ public class Login_New_Activity extends BaseActivity<LoginPresenter, LoginModel>
         String userName = spUtils.getString("userName");
         String password = spUtils.getString("passWord");
         isLogin = spUtils.getBoolean("isLogin");
-        if (userName != null&&password!=null) {
+        if (userName != null && password != null) {
             mEtLoginUsername.setText(userName);
             mEtLoginPassword.setText(password);
         }
@@ -66,6 +77,23 @@ public class Login_New_Activity extends BaseActivity<LoginPresenter, LoginModel>
     @Override
     protected void initView() {
 
+       /* RxPermissions rxPermissions = new RxPermissions(this);
+        rxPermissions.request(Manifest.permission.READ_PHONE_STATE)
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean aBoolean) throws Exception {
+                        if (aBoolean) {
+                            // 获取全部权限成功
+
+
+
+                        } else {
+                            // 获取全部权限失败
+                            Log.d("=====>", "权限获取失败");
+                        }
+                    }
+                });
+*/
 
     }
 
@@ -74,19 +102,29 @@ public class Login_New_Activity extends BaseActivity<LoginPresenter, LoginModel>
         mTvLogin.setOnClickListener(this);
         mTvForgetPassword.setOnClickListener(this);
         mTvRegister.setOnClickListener(this);
-        mImg_login_back.setOnClickListener(this);
-
-
+        mTv_note_login.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
       switch (v.getId()){
-          case R.id.img_login_back:
-              Login_New_Activity.this.finish();
+          case R.id.tv_note_login://验证码登陆
+              String phone=mEtLoginUsername.getText().toString();
+              Intent intent=new Intent(mActivity, ToteLoginActivity.class);
+
+              if (phone!=null){
+                  intent.putExtra("phone",phone);
+              }else {
+                  intent.putExtra("phone","");
+              }
+              startActivity(intent);
+
+
               break;
+
+
           case R.id.tv_forget_password:
-                  String phone=mEtLoginUsername.getText().toString();
+                /*  String phone=mEtLoginUsername.getText().toString();
                   Intent intent=new Intent(mActivity, ForgetPasswordActivity.class);
 
               if (phone!=null){
@@ -95,7 +133,7 @@ public class Login_New_Activity extends BaseActivity<LoginPresenter, LoginModel>
                   intent.putExtra("phone","");
               }
 
-              startActivity(intent);
+              startActivity(intent);*/
 
               break;
           case R.id.tv_register:
@@ -156,6 +194,21 @@ public class Login_New_Activity extends BaseActivity<LoginPresenter, LoginModel>
 
     @Override
     public void AddAndUpdatePushAccount(BaseResult<Data<String>> baseResult) {
+
+    }
+
+    @Override
+    public void GetCode(BaseResult<Data<String>> baseResult) {
+
+    }
+
+    @Override
+    public void ValidateUserName(BaseResult<String> baseResult) {
+
+    }
+
+    @Override
+    public void LoginOnMessage(BaseResult<Data<String>> baseResult) {
 
     }
 

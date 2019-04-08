@@ -184,10 +184,10 @@ switch (baseResult.getStatusCode()){
             case 200:
                 if (baseResult.getData().isItem1()){
 
-                }
+        }
                 else {
-                    Toast.makeText(this,"频繁请求验证码请稍后再试",Toast.LENGTH_SHORT).show();
-                }
+            Toast.makeText(this,"频繁请求验证码请稍后再试",Toast.LENGTH_SHORT).show();
+        }
                 break;
             default:
                 break;
@@ -221,7 +221,7 @@ switch (baseResult.getStatusCode()){
                 if ("true".equals(baseResult.getData())){
                     TimeCount timeCount=new TimeCount(60000,1000);
                     timeCount.start();
-                    mPresenter.GetCode(Phone);
+                    mPresenter.GetCode(Phone,"Reg");
                 }else {
                     ToastUtils.showShort("手机号已经注册！");
                 }

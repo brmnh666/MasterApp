@@ -19,12 +19,6 @@ public class LoginModel implements LoginContract.Model {
                 .subscribeOn(Schedulers.io());
     }
 
-    @Override
-    public Observable<BaseResult<String>> GetUserInfo(RequestBody json) {
-        return ApiRetrofit.getDefault().GetUserInfo(json)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io());
-    }
 
     @Override
     public Observable<BaseResult<String>> GetUserInfo(String userName) {
@@ -37,6 +31,28 @@ public class LoginModel implements LoginContract.Model {
     @Override
     public Observable<BaseResult<Data<String>>> AddAndUpdatePushAccount(String token, String type, String UserID) {
         return ApiRetrofit.getDefault().AddAndUpdatePushAccount(token,type,UserID)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<BaseResult<String>> ValidateUserName(String userName) {
+        return ApiRetrofit.getDefault().ValidateUserName(userName)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<BaseResult<Data<String>>> GetCode(String userName, String type) {
+        return ApiRetrofit.getDefault().GetCode(userName,type,"worker")
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+
+    }
+
+    @Override
+    public Observable<BaseResult<Data<String>>> LoginOnMessage(String mobile, String code) {
+        return ApiRetrofit.getDefault().LoginOnMessage(mobile,code,"7")
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

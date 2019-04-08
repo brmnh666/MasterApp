@@ -20,16 +20,6 @@ public class LoginPresenter extends LoginContract.Presenter {
                 });
     }
 
-    @Override
-    public void GetUserInfo(RequestBody json) {
-        mModel.GetUserInfo(json)
-                .subscribe(new BaseObserver<String>() {
-                    @Override
-                    protected void onHandleSuccess(BaseResult<String> value) {
-                        mView.GetUserInfo(value);
-                    }
-                });
-    }
 
     @Override
     public void GetUserInfo(String userName) {
@@ -43,6 +33,16 @@ public class LoginPresenter extends LoginContract.Presenter {
     }
 
     @Override
+    public void GetCode(String userName, String type) {
+        mModel.GetCode(userName,type).subscribe(new BaseObserver<Data<String>>() {
+            @Override
+            protected void onHandleSuccess(BaseResult<Data<String>> value) {
+                mView.GetCode(value);
+            }
+        });
+    }
+
+    @Override
     public void AddAndUpdatePushAccount(String token, String type, String UserID) {
 
         mModel.AddAndUpdatePushAccount(token,type,UserID)
@@ -50,6 +50,27 @@ public class LoginPresenter extends LoginContract.Presenter {
             @Override
             protected void onHandleSuccess(BaseResult<Data<String>> value) {
                   mView.AddAndUpdatePushAccount(value);
+            }
+        });
+    }
+
+    @Override
+    public void ValidateUserName(String userName) {
+        mModel.ValidateUserName(userName).subscribe(new BaseObserver<String>() {
+            @Override
+            protected void onHandleSuccess(BaseResult<String> value) {
+                mView.ValidateUserName(value);
+            }
+        });
+
+    }
+
+    @Override
+    public void LoginOnMessage(String mobile, String code) {
+        mModel.LoginOnMessage(mobile,code).subscribe(new BaseObserver<Data<String>>() {
+            @Override
+            protected void onHandleSuccess(BaseResult<Data<String>> value) {
+                mView.LoginOnMessage(value);
             }
         });
     }

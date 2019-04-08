@@ -85,11 +85,8 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
     private String searchKey = "";
     private LatLonPoint searchLatlonPoint;
 
-
     private List<PoiItem> resultData;
-
     private SearchResultAdapter searchResultAdapter;
-
     private boolean isItemClickAction;
 
     private List<Tip> autoTips;
@@ -408,7 +405,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
         dismissDialog();
         if (rCode == AMapException.CODE_AMAP_SUCCESS) {
             if (result != null && result.getRegeocodeAddress() != null
-                    && result.getRegeocodeAddress().getFormatAddress() != null) {
+                && result.getRegeocodeAddress().getFormatAddress() != null) {
                 address=result.getRegeocodeAddress().getFormatAddress();
                 Province=result.getRegeocodeAddress().getProvince();
                 City=result.getRegeocodeAddress().getCity();

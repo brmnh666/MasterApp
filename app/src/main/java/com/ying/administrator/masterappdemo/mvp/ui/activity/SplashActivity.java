@@ -73,7 +73,7 @@ public class SplashActivity extends BaseActivity<LoginPresenter, LoginModel> imp
             @Override
             public void run() {
                 /*调转到主界面界面*/
-                if (userName!=null&&password!=null&&isLogin){ //存在用户名说明登录过 直接登录到主界面
+                if (userName!=null&&isLogin){ //存在用户名说明登录过 直接登录到主界面
                     Intent intent =new Intent(SplashActivity.this,MainActivity.class);
                     startActivity(intent);
                     SplashActivity.this.finish();
@@ -115,7 +115,7 @@ public class SplashActivity extends BaseActivity<LoginPresenter, LoginModel> imp
             case R.id.tv_splash_skin:
 
                 /*调转到主界面界面*/
-                if (userName!=null&&password!=null&&isLogin){ //存在用户名说明登录过 直接登录到主界面
+                if (userName!=null&&isLogin){ //存在用户名说明登录过 直接登录到主界面
                     Intent intent =new Intent(SplashActivity.this,MainActivity.class);
                     startActivity(intent);
                     SplashActivity.this.finish();
@@ -150,6 +150,22 @@ public class SplashActivity extends BaseActivity<LoginPresenter, LoginModel> imp
 
     @Override
     public void AddAndUpdatePushAccount(BaseResult<Data<String>> baseResult) {
+
+    }
+
+
+    @Override
+    public void GetCode(BaseResult<Data<String>> baseResult) {
+
+    }
+
+    @Override
+    public void ValidateUserName(BaseResult<String> baseResult) {
+
+    }
+
+    @Override
+    public void LoginOnMessage(BaseResult<Data<String>> baseResult) {
 
     }
 

@@ -51,6 +51,8 @@ public class TransactionMessageActivity extends BaseActivity<MyMessagePresenter,
     @Override
     protected void initData() {
         mRvTransactionmessage.setLayoutManager(new LinearLayoutManager(mActivity));
+        mRvTransactionmessage.setHasFixedSize(true);
+        mRvTransactionmessage.setNestedScrollingEnabled(false);
         messageAdapter = new MessageAdapter(R.layout.item_message, list);
         mRvTransactionmessage.setAdapter(messageAdapter);
 

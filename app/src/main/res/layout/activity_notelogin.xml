@@ -81,19 +81,30 @@
 
             <EditText
                 android:layout_toRightOf="@+id/img_login_password"
-                android:id="@+id/et_login_password"
+                android:id="@+id/et_login_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:background="@null"
-                android:hint="请输入密码"
+                android:hint="请输入验证码"
                 android:textSize="17sp"
-                android:inputType="textPassword"
+                android:inputType="number"
+                android:maxLength="6"
                 android:textColor="@color/color_black"
                 android:textColorHint="@color/color_custom_06"
                 android:textCursorDrawable="@drawable/my_cursor"
                 android:singleLine="true"/>
 
+            <TextView
+                android:id="@+id/tv_yzm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="发送验证码"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:textSize="16sp"
+                />
         </RelativeLayout>
 
     </LinearLayout>
@@ -108,9 +119,9 @@
         android:id="@+id/tv_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="登陆"
+        android:text="验证码登陆"
         android:textColor="@color/white"
-        android:textSize="19sp"
+        android:textSize="18sp"
         android:background="@drawable/bg_register"
         />
 
@@ -119,32 +130,11 @@
         android:layout_width="match_parent"
         android:layout_height="50dp">
 
-<TextView
-    android:visibility="gone"
-    android:id="@+id/tv_forget_password"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="忘记密码"
-    android:layout_marginLeft="20dp"
-    android:layout_marginTop="20dp"
-    android:textSize="15sp"
-    />
-
         <TextView
-            android:id="@+id/tv_note_login"
+            android:id="@+id/tv_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="验证码登陆"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:textSize="15sp"
-            />
-
-        <TextView
-            android:id="@+id/tv_register"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="立即注册"
+            android:text="账号密码登陆"
             android:layout_alignParentRight="true"
             android:layout_marginRight="20dp"
             android:layout_marginTop="20dp"

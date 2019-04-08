@@ -182,7 +182,7 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter, RegisterMo
                 if ("true".equals(baseResult.getData())){
                     TimeCount timeCount=new TimeCount(60000,1000);
                     timeCount.start();
-                    mPresenter.GetCode(userName);
+                    mPresenter.GetCode(userName,"Reg");
                 }else {
                     ToastUtils.showShort("手机号已经注册！");
                 }

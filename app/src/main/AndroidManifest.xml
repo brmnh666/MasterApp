@@ -438,6 +438,13 @@
             android:launchMode="singleTask"
             />
 
+       <!--验证码登陆-->
+
+        <activity android:name=".mvp.ui.activity.ToteLoginActivity"
+            android:theme="@style/AppTheme.Splash"
+            android:launchMode="singleTask"
+            />
+
 
        <!-- <activity android:name="io.card.payment.CardIOActivity" android:configChanges="keyboardHidden|orientation" />
         <activity android:name="io.card.payment.DataEntryActivity" />

@@ -138,11 +138,11 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginModel> impl
                 if (mLlCode.getVisibility()==View.GONE){
                     mLlCode.setVisibility(View.VISIBLE);
                     mRlInputPassword.setVisibility(View.GONE);
-                    mTvChange.setText("密码登录>");
+                    mTvChange.setText("密码登录");
                 }else{
                     mLlCode.setVisibility(View.GONE);
                     mRlInputPassword.setVisibility(View.VISIBLE);
-                    mTvChange.setText("短信验证码登录>");
+                    mTvChange.setText("短信验证码登录");
                 }
                 break;
         }
@@ -197,6 +197,21 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginModel> impl
                 }
                 break;
         }
+    }
+
+    @Override
+    public void GetCode(BaseResult<Data<String>> baseResult) {
+
+    }
+
+    @Override
+    public void ValidateUserName(BaseResult<String> baseResult) {
+
+    }
+
+    @Override
+    public void LoginOnMessage(BaseResult<Data<String>> baseResult) {
+
     }
 
     public void showLoading(){

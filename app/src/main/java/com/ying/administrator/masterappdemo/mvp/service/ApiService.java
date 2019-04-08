@@ -68,6 +68,15 @@ public interface ApiService {
                                             );
 
 
+    /*短信登陆*/
+    @FormUrlEncoded
+    @POST("Account/LoginOnMessage")
+    Observable<BaseResult<Data<String>>> LoginOnMessage(@Field("mobile") String mobile,
+                                                        @Field("code") String code,
+                                                        @Field("roleType") String roleType);
+
+
+
     /**
      * app用户登录
      */

@@ -60,9 +60,10 @@ public class OrderMessageActivity extends BaseActivity<MyMessagePresenter, MyMes
     @Override
     protected void initData() {
         mRvOrdermessage.setLayoutManager(new LinearLayoutManager(mActivity));
+        mRvOrdermessage.setHasFixedSize(true);
+        mRvOrdermessage.setNestedScrollingEnabled(false);
         messageAdapter = new MessageAdapter(R.layout.item_message, list);
         mRvOrdermessage.setAdapter(messageAdapter);
-
         SPUtils spUtils = SPUtils.getInstance("token");
         userId = spUtils.getString("userName");
         mPresenter.GetMessageList(userId, "2", "0","10", "1");

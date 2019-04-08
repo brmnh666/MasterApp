@@ -17,8 +17,8 @@ public class RegisterPresenter extends RegisterContract.Presenter {
     }
 
     @Override
-    public void GetCode(String userName) {
-        mModel.GetCode(userName).subscribe(new BaseObserver<Data<String>>() {
+    public void GetCode(String userName,String type) {
+        mModel.GetCode(userName,type).subscribe(new BaseObserver<Data<String>>() {
             @Override
             protected void onHandleSuccess(BaseResult<Data<String>> value) {
                 mView.GetCode(value);
