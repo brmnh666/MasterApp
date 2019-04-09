@@ -29,7 +29,7 @@ public class HWReceiver extends PushReceiver {
     @Override
     public void onPushMsg(Context context, byte[] arg1, String arg2) {
         openAssetMusics(context,"new_order_voice.mp3");
-        EventBus.getDefault().post(0);
+        EventBus.getDefault().post("0");
         super.onPushMsg(context, arg1, arg2);
     }
 

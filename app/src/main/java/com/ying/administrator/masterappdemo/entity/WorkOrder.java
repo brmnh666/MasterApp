@@ -192,6 +192,11 @@ public class WorkOrder implements Serializable {
         private String AppointmentMessage;
         private String AppointmentState;
         private String  IsPressFactory ;
+
+        private String  IsReturn ;
+        private String  AddressBack ;
+        private String  PostPayType ;
+
         private List<GAccessory> OrderAccessroyDetail; //所选配件详情
         private List<GService> OrderServiceDetail;  //所选配件详情
         private List<ReturnaccessoryImg> ReturnaccessoryImg;//返件图片
@@ -204,6 +209,30 @@ public class WorkOrder implements Serializable {
         private int page;
         private int limit;
         private int Version;
+
+        public String getIsReturn() {
+            return IsReturn;
+        }
+
+        public void setIsReturn(String isReturn) {
+            IsReturn = isReturn;
+        }
+
+        public String getAddressBack() {
+            return AddressBack;
+        }
+
+        public void setAddressBack(String addressBack) {
+            AddressBack = addressBack;
+        }
+
+        public String getPostPayType() {
+            return PostPayType;
+        }
+
+        public void setPostPayType(String postPayType) {
+            PostPayType = postPayType;
+        }
 
         public List<SendOrderBean> getSendOrderList() {
             return SendOrderList;

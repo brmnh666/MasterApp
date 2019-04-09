@@ -43,7 +43,7 @@ public class XMReceiver extends XMPushMessageReceiver {
     public void onNotificationMessageArrived(Context context, MiPushMessage miPushMessage) {
         super.onNotificationMessageArrived(context, miPushMessage);
         openAssetMusics(context,"new_order_voice.mp3");
-        EventBus.getDefault().post(0);
+        EventBus.getDefault().post("0");
     }
 
     @Override

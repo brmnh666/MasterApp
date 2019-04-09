@@ -706,7 +706,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                     distance = Double.parseDouble(data.getDistance());
                     money = distance - Service_range;
                     if (money < 0) {
-                        ToastUtils.showShort("未超出正常服务范围");
+                        MyUtils.showToast(mActivity,"未超出正常服务范围，距离如果有误，请自行填写超出公里数");
                         return;
                     }
                 } else {

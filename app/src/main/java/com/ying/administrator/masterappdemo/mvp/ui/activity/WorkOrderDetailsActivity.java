@@ -24,6 +24,8 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
@@ -264,6 +266,16 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
     TextView mTvSelectTime2;
     @BindView(R.id.view_select_time_point2)
     ImageView mViewSelectTimePoint2;
+    @BindView(R.id.tv_addressback)
+    TextView mTvAddressback;
+    @BindView(R.id.ll_address_info)
+    LinearLayout mLlAddressInfo;
+    @BindView(R.id.ll_old_accessory)
+    LinearLayout mLlOldAccessory;
+    @BindView(R.id.tv_yn)
+    TextView mTvYn;
+    @BindView(R.id.tv_postpaytype)
+    TextView mTvPostpaytype;
     private String OrderID;
     private WorkOrder.DataBean data;
     private ReturnAccessoryAdapter returnAccessoryAdapter;
@@ -381,10 +393,10 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                 switch (view.getId()) {
                     case R.id.iv_accessories_delete:
                         mPre_order_add_ac_adapter.remove(position);
-                        if (mPre_order_add_ac_adapter.getData().size()>0){
+                        if (mPre_order_add_ac_adapter.getData().size() > 0) {
                             mTvSubmitAddAccessories.setBackgroundResource(R.drawable.ed_order_detail_submit);
                             mTvSubmitAddAccessories.setTextColor(Color.WHITE);
-                        }else{
+                        } else {
                             mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
                             mTvSubmitAddAccessories.setTextColor(Color.BLACK);
                         }
@@ -405,10 +417,10 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                 switch (view.getId()) {
                     case R.id.iv_service_delete:
                         mPre_order_Add_Service_Adapter.remove(position);
-                        if (mPre_order_Add_Service_Adapter.getData().size()>0){
+                        if (mPre_order_Add_Service_Adapter.getData().size() > 0) {
                             mTvSubmitAddService.setBackgroundResource(R.drawable.ed_order_detail_submit);
                             mTvSubmitAddService.setTextColor(Color.WHITE);
-                        }else{
+                        } else {
                             mTvSubmitAddService.setBackgroundResource(R.drawable.tv_order_detail_btn);
                             mTvSubmitAddService.setTextColor(Color.BLACK);
                         }
@@ -430,6 +442,29 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
         mAdd_Service_Adapter = new Add_Service_Adapter(R.layout.item_addservice, mList_service);
 
         myClipboard = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
+
+        mEtOrderBeyondKm.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if ("".equals(s.toString())) {
+                    mTvSubmitBeyond.setBackgroundResource(R.drawable.tv_order_detail_btn);
+                    mTvSubmitBeyond.setTextColor(Color.BLACK);
+                } else {
+                    mTvSubmitBeyond.setBackgroundResource(R.drawable.ed_order_detail_submit);
+                    mTvSubmitBeyond.setTextColor(Color.WHITE);
+                }
+            }
+        });
     }
 
 
@@ -477,6 +512,7 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
         mViewSelectTimePoint.setOnClickListener(this);
         mViewSelectTimePoint2.setOnClickListener(this);
     }
+
     /**
      * 选择上门时间
      */
@@ -488,14 +524,14 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
         TimeSelector timeSelector = new TimeSelector(mActivity, new TimeSelector.ResultHandler() {
             @Override
             public void handle(String time) {
-                if ("请选择结束时间".equals(title)){
-                    Integer i=startTime.compareTo(time);
-                    if (i>0){
-                        MyUtils.showToast(mActivity,"结束时间应大于开始时间");
+                if ("请选择结束时间".equals(title)) {
+                    Integer i = startTime.compareTo(time);
+                    if (i > 0) {
+                        MyUtils.showToast(mActivity, "结束时间应大于开始时间");
                         return;
                     }
-                    mPresenter.UpdateSendOrderUpdateTime(OrderID,startTime,time);
-                }else{
+                    mPresenter.UpdateSendOrderUpdateTime(OrderID, startTime, time);
+                } else {
                     mTvSelectTime2.setText("");
                 }
                 tv.setText(time);
@@ -505,19 +541,20 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
         timeSelector.setTitle(title);
         timeSelector.show();
     }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.view_select_time_point:
-                chooseTime(mTvSelectTime,"请选择开始时间");
+                chooseTime(mTvSelectTime, "请选择开始时间");
                 break;
             case R.id.view_select_time_point2:
-                startTime=mTvSelectTime.getText().toString();
-                if ("".equals(startTime)){
-                    MyUtils.showToast(mActivity,"请先选择开始时间");
+                startTime = mTvSelectTime.getText().toString();
+                if ("".equals(startTime)) {
+                    MyUtils.showToast(mActivity, "请先选择开始时间");
                     return;
                 }
-                chooseTime(mTvSelectTime2,"请选择结束时间");
+                chooseTime(mTvSelectTime2, "请选择结束时间");
                 break;
             case R.id.tv_submit_add_accessories:
                 submit(1);
@@ -557,10 +594,10 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                     mIvSelfbuyingUser.setSelected(false);
                     mPre_order_add_ac_adapter.setNewData(fAcList);
                     mRecyclerViewAddAccessories.setVisibility(View.VISIBLE);
-                    if (mPre_order_add_ac_adapter.getData().size()>0){
+                    if (mPre_order_add_ac_adapter.getData().size() > 0) {
                         mTvSubmitAddAccessories.setBackgroundResource(R.drawable.ed_order_detail_submit);
                         mTvSubmitAddAccessories.setTextColor(Color.WHITE);
-                    }else{
+                    } else {
                         mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
                         mTvSubmitAddAccessories.setTextColor(Color.BLACK);
                     }
@@ -582,10 +619,10 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                     mIvSelfbuyingUser.setSelected(false);
                     mPre_order_add_ac_adapter.setNewData(mAcList);
                     mRecyclerViewAddAccessories.setVisibility(View.VISIBLE);
-                    if (mPre_order_add_ac_adapter.getData().size()>0){
+                    if (mPre_order_add_ac_adapter.getData().size() > 0) {
                         mTvSubmitAddAccessories.setBackgroundResource(R.drawable.ed_order_detail_submit);
                         mTvSubmitAddAccessories.setTextColor(Color.WHITE);
-                    }else{
+                    } else {
                         mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
                         mTvSubmitAddAccessories.setTextColor(Color.BLACK);
                     }
@@ -607,10 +644,10 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                     mIvSelfbuyingUser.setSelected(true);
                     mPre_order_add_ac_adapter.setNewData(sAcList);
                     mRecyclerViewAddAccessories.setVisibility(View.VISIBLE);
-                    if (mPre_order_add_ac_adapter.getData().size()>0){
+                    if (mPre_order_add_ac_adapter.getData().size() > 0) {
                         mTvSubmitAddAccessories.setBackgroundResource(R.drawable.ed_order_detail_submit);
                         mTvSubmitAddAccessories.setTextColor(Color.WHITE);
-                    }else{
+                    } else {
                         mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
                         mTvSubmitAddAccessories.setTextColor(Color.BLACK);
                     }
@@ -898,10 +935,10 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                 num = "";
                 price = "";
                 servicePrice = "";
-                if (mPre_order_add_ac_adapter.getData().size()>0){
+                if (mPre_order_add_ac_adapter.getData().size() > 0) {
                     mTvSubmitAddAccessories.setBackgroundResource(R.drawable.ed_order_detail_submit);
                     mTvSubmitAddAccessories.setTextColor(Color.WHITE);
-                }else{
+                } else {
                     mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
                     mTvSubmitAddAccessories.setTextColor(Color.BLACK);
                 }
@@ -960,10 +997,10 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
             @SuppressLint("ResourceAsColor")
             @Override
             public void onDismiss(DialogInterface dialog) {
-                if (mPre_order_Add_Service_Adapter.getData().size()>0){
+                if (mPre_order_Add_Service_Adapter.getData().size() > 0) {
                     mTvSubmitAddService.setBackgroundResource(R.drawable.ed_order_detail_submit);
                     mTvSubmitAddService.setTextColor(Color.WHITE);
-                }else{
+                } else {
                     mTvSubmitAddService.setBackgroundResource(R.drawable.tv_order_detail_btn);
                     mTvSubmitAddService.setTextColor(Color.BLACK);
                 }
@@ -1018,7 +1055,7 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                     distance = Double.parseDouble(data.getDistance());
                     money = distance - Service_range;
                     if (money < 0) {
-                        ToastUtils.showShort("未超出正常服务范围");
+                        MyUtils.showToast(mActivity, "未超出正常服务范围，距离如果有误，请自行填写超出公里数");
                         return;
                     }
                 } else {
@@ -1052,7 +1089,7 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                 mTvCauseOfIssue.setText(data.getMemo());
                 mTvProductType.setText(data.getCategoryName() + "/" + data.getBrandName() + "/" + data.getSubCategoryName());
 
-                if (data.getSendOrderList().size()!=0){
+                if (data.getSendOrderList().size() != 0) {
                     mTvSelectTime.setText(data.getSendOrderList().get(0).getServiceDate());
                     mTvSelectTime2.setText(data.getSendOrderList().get(0).getServiceDate2());
                 }
@@ -1076,8 +1113,12 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                 distance = Double.parseDouble(data.getDistance());
                 if (Service_range >= distance) {
                     mTvRemoteKm.setText("0km");
+                    mTvSubmitBeyond.setBackgroundResource(R.drawable.tv_order_detail_btn);
+                    mTvSubmitBeyond.setTextColor(Color.BLACK);
                 } else {
                     mTvRemoteKm.setText(String.format("%.2f", distance - Service_range) + "km");
+                    mTvSubmitBeyond.setBackgroundResource(R.drawable.ed_order_detail_submit);
+                    mTvSubmitBeyond.setTextColor(Color.WHITE);
                 }
                 if (data.getBeyondState() == null) {
                     mLlApproveBeyondMoney.setVisibility(View.GONE);
@@ -1184,7 +1225,7 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
 
 
                 if (data.getOrderAccessroyDetail().size() != 0) {
-                    returnAccessoryAdapter = new ReturnAccessoryAdapter(R.layout.item_returned, data.getOrderAccessroyDetail(),Integer.parseInt(data.getAccessoryState()));
+                    returnAccessoryAdapter = new ReturnAccessoryAdapter(R.layout.item_returned, data.getOrderAccessroyDetail(), Integer.parseInt(data.getAccessoryState()));
                     mRvReturnInformation.setLayoutManager(new LinearLayoutManager(mActivity));
                     mRvReturnInformation.setAdapter(returnAccessoryAdapter);
                     mLlAccessory.setVisibility(View.VISIBLE);
@@ -1226,8 +1267,26 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                     mLlAddService.setVisibility(View.VISIBLE);
                 }
 
+                if ("1".equals(data.getAccessoryApplyState())){
+                    mLlOldAccessory.setVisibility(View.VISIBLE);
+                    if ("1".equals(data.getIsReturn())){
+                        mTvYn.setText("是");
+                        mLlAddressInfo.setVisibility(View.VISIBLE);
+                        mTvAddressback.setText(data.getAddressBack());
+                        if ("1".equals(data.getPostPayType())){
+                            mTvPostpaytype.setText("厂商到付");
+                        }else{
+                            mTvPostpaytype.setText("维修商现付");
+                        }
+                    }else{
+                        mTvYn.setText("否");
+                        mLlAddressInfo.setVisibility(View.GONE);
+                    }
+                }else{
+                    mLlOldAccessory.setVisibility(View.GONE);
+                }
 
-                if ("5".equals(data.getState())||"6".equals(data.getState())||"7".equals(data.getState())) {
+                if ("5".equals(data.getState()) || "6".equals(data.getState()) || "7".equals(data.getState())) {
                     mBtnCompleteSubmit.setVisibility(View.GONE);
                     mBtnTrial.setVisibility(View.GONE);
                     mLlAddAccessory.setVisibility(View.GONE);
@@ -1247,16 +1306,18 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
 
                     mViewSelectTimePoint.setVisibility(View.GONE);
                     mViewSelectTimePoint2.setVisibility(View.GONE);
-                    if ("5".equals(data.getState())){
-                        if ("".equals(data.getReturnAccessoryMsg())||data.getReturnAccessoryMsg()==null){
+                    if ("5".equals(data.getState())) {
+                        if ("".equals(data.getReturnAccessoryMsg()) || data.getReturnAccessoryMsg() == null) {
                             mRlExpressno.setVisibility(View.VISIBLE);
-                        }else{
+                        } else {
                             mRlExpressno.setVisibility(View.GONE);
                         }
-                    }else{
+                    } else {
                         mRlExpressno.setVisibility(View.GONE);
                     }
                     mLlReturnInformation.setVisibility(View.VISIBLE);
+
+
                     Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(0).getUrl()).into(mIvBarCode);
                     Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(1).getUrl()).into(mIvMachine);
                     Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(2).getUrl()).into(mIvFaultLocation);
@@ -1550,7 +1611,7 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(String name) {
-        if (!"WorkOrderDetailsActivity".equals(name)){
+        if (!"WorkOrderDetailsActivity".equals(name)) {
             return;
         }
         mPresenter.GetOrderInfo(OrderID);
