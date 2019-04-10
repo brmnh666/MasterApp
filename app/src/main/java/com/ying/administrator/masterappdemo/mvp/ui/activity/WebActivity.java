@@ -51,6 +51,7 @@ public class WebActivity extends BaseActivity {
         WebSettings webSettings = mWebview.getSettings();
         webSettings.setDomStorageEnabled(true);
         webSettings.setJavaScriptEnabled(true);
+        webSettings.setUseWideViewPort(true);
         // 设置允许JS弹窗
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
         mWebview.setWebViewClient(new WebViewClient() {

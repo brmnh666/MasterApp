@@ -86,7 +86,7 @@ public class AboutUsActivity extends BaseActivity implements View.OnClickListene
                 break;
             case R.id.tv_user_Agreement:
                 intent =new Intent(mActivity,WebActivity.class);
-                intent.putExtra("Url","file:////android_asset/agreement.html");
+                intent.putExtra("Url","http://47.96.126.145:8080/Agreement");
                 intent.putExtra("Title","用户协议");
                 startActivity(intent);
                 break;

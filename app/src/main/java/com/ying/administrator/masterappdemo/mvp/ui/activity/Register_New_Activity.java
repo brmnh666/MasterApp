@@ -1,11 +1,9 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -16,7 +14,6 @@ import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.tencent.android.tpush.XGPushConfig;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
@@ -46,11 +43,15 @@ public class Register_New_Activity extends BaseActivity<RegisterPresenter, Regis
     ImageView mImg_agreement;
     @BindView(R.id.img_register_back)
     ImageView mImg_register_back;
+    @BindView(R.id.tv_agreement)
+    TextView mTvAgreement;
 
     private String Phone;
     private String password;
     private String code;
     private SPUtils spUtils;
+    private Intent intent;
+
     @Override
     protected int setLayoutId() {
         return R.layout.activity_register_new;
@@ -93,29 +94,30 @@ public class Register_New_Activity extends BaseActivity<RegisterPresenter, Regis
         mImg_agreement.setOnClickListener(this);
         mImg_agreement.setSelected(true);
         mImg_register_back.setOnClickListener(this);
+        mTvAgreement.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-        case R.id.tv_send_yzm:
-            Phone=mEtRegisterPhone.getText().toString();
-            if (Phone.isEmpty()){
-                ToastUtils.showShort("请输入手机号");
-                return;
-            }
-            if (!RegexUtils.isMobileExact(Phone)){
-                ToastUtils.showShort("手机格式不正确！");
-                return;
-            }
-            mPresenter.ValidateUserName(Phone);
+        switch (v.getId()) {
+            case R.id.tv_send_yzm:
+                Phone = mEtRegisterPhone.getText().toString();
+                if (Phone.isEmpty()) {
+                    ToastUtils.showShort("请输入手机号");
+                    return;
+                }
+                if (!RegexUtils.isMobileExact(Phone)) {
+                    ToastUtils.showShort("手机格式不正确！");
+                    return;
+                }
+                mPresenter.ValidateUserName(Phone);
 
-        break;
+                break;
 
             case R.id.img_agreement:
-                if (mImg_agreement.isSelected()){
+                if (mImg_agreement.isSelected()) {
                     mImg_agreement.setSelected(false);
-                }else {
+                } else {
                     mImg_agreement.setSelected(true);
                 }
                 break;
@@ -124,70 +126,76 @@ public class Register_New_Activity extends BaseActivity<RegisterPresenter, Regis
                 break;
 
             case R.id.tv_register:
-                Phone=mEtRegisterPhone.getText().toString();
-                code=mEtRegisterYzm.getText().toString();
-                password=mEtRegisterPassword.getText().toString();
+                Phone = mEtRegisterPhone.getText().toString();
+                code = mEtRegisterYzm.getText().toString();
+                password = mEtRegisterPassword.getText().toString();
 
-                if (Phone.isEmpty()){
+                if (Phone.isEmpty()) {
                     ToastUtils.showShort("请输入手机号！");
                     return;
                 }
-                if (code.isEmpty()){
+                if (code.isEmpty()) {
                     ToastUtils.showShort("请输入验证码！");
                     return;
                 }
 
-                if (password.isEmpty()){
+                if (password.isEmpty()) {
                     ToastUtils.showShort("请输入密码");
                     return;
                 }
 
-                if (!mImg_agreement.isSelected()){
+                if (!mImg_agreement.isSelected()) {
                     ToastUtils.showShort("请阅读并同意用户协议");
                     return;
 
                 }
 
-                mPresenter.Reg(Phone,code,password);
+                mPresenter.Reg(Phone, code, password);
 
 
                 break;
 
-}
+            case R.id.tv_agreement:
+                intent = new Intent(mActivity, WebActivity.class);
+                intent.putExtra("Url","http://47.96.126.145:8080/Agreement");
+                intent.putExtra("Title","用户协议");
+                startActivity(intent);
+                break;
+
+        }
     }
 
 
     @Override
     public void Reg(BaseResult<Data<String>> baseResult) {
 
-switch (baseResult.getStatusCode()){
-    case 200:
-        if (baseResult.getData().isItem1()){
-            Register_New_Activity.this.finish();
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                if (baseResult.getData().isItem1()) {
+                    Register_New_Activity.this.finish();
 
-            mPresenter.Login(Phone,password);
-        }else {
-            Toast.makeText(this,"验证码出错",Toast.LENGTH_SHORT).show();
+                    mPresenter.Login(Phone, password);
+                } else {
+                    Toast.makeText(this, "验证码出错", Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+            default:
+                break;
         }
-        break;
-
-        default:
-            break;
-}
 
 
     }
 
     @Override
     public void GetCode(BaseResult<Data<String>> baseResult) {
-        switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData().isItem1()){
+                if (baseResult.getData().isItem1()) {
 
-        }
-                else {
-            Toast.makeText(this,"频繁请求验证码请稍后再试",Toast.LENGTH_SHORT).show();
-        }
+                } else {
+                    Toast.makeText(this, "频繁请求验证码请稍后再试", Toast.LENGTH_SHORT).show();
+                }
                 break;
             default:
                 break;
@@ -198,17 +206,17 @@ switch (baseResult.getStatusCode()){
     public void Login(BaseResult<Data<String>> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-                Data<String> data=baseResult.getData();
-                if (data.isItem1()){
+                Data<String> data = baseResult.getData();
+                if (data.isItem1()) {
                     spUtils = SPUtils.getInstance("token");
                     spUtils.put("adminToken", data.getItem2());
                     spUtils.put("userName", Phone);
                     spUtils.put("passWord", password);
                     spUtils.put("isLogin", true);
-                    mPresenter.AddAndUpdatePushAccount(XGPushConfig.getToken(this),"7",Phone);
+                    mPresenter.AddAndUpdatePushAccount(XGPushConfig.getToken(this), "7", Phone);
                     startActivity(new Intent(mActivity, MainActivity.class));
                     ActivityUtils.finishAllActivities();
-                }else{
+                } else {
                 }
                 break;
         }
@@ -216,13 +224,13 @@ switch (baseResult.getStatusCode()){
 
     @Override
     public void ValidateUserName(BaseResult<String> baseResult) {
-        switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
-                if ("true".equals(baseResult.getData())){
-                    TimeCount timeCount=new TimeCount(60000,1000);
+                if ("true".equals(baseResult.getData())) {
+                    TimeCount timeCount = new TimeCount(60000, 1000);
                     timeCount.start();
-                    mPresenter.GetCode(Phone,"Reg");
-                }else {
+                    mPresenter.GetCode(Phone, "Reg");
+                } else {
                     ToastUtils.showShort("手机号已经注册！");
                 }
                 break;
@@ -245,7 +253,6 @@ switch (baseResult.getStatusCode()){
     }
 
 
-
     class TimeCount extends CountDownTimer {
         public TimeCount(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);
@@ -254,17 +261,17 @@ switch (baseResult.getStatusCode()){
         @SuppressLint("ResourceAsColor")
         @Override
         public void onTick(long millisUntilFinished) {
-            if (mTvSendYzm==null){
+            if (mTvSendYzm == null) {
                 return;
             }
             mTvSendYzm.setClickable(false);
             mTvSendYzm.setTextColor(R.color.color_custom_06);
-            mTvSendYzm.setText(millisUntilFinished/1000+"秒后重新获取");
+            mTvSendYzm.setText(millisUntilFinished / 1000 + "秒后重新获取");
         }
 
         @Override
         public void onFinish() {
-            if (mTvSendYzm==null){
+            if (mTvSendYzm == null) {
                 return;
             }
             mTvSendYzm.setText("重新获取验证码");
@@ -277,10 +284,6 @@ switch (baseResult.getStatusCode()){
     protected void onDestroy() {
         super.onDestroy();
     }
-
-
-
-
 
 
 }
