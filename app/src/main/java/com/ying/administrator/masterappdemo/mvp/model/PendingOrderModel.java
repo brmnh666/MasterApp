@@ -123,4 +123,10 @@ public class PendingOrderModel implements PendingOrderContract.Model {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }
+    @Override
+    public Observable<BaseResult<Data<String>>> UpdateOrderState(String OrderID, String State) {
+        return ApiRetrofit.getDefault().UpdateOrderState(OrderID,State)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
 }

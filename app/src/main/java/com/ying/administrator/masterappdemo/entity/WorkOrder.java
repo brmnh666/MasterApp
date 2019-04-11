@@ -598,6 +598,9 @@ public class WorkOrder implements Serializable {
                 case "7":
                     status="已完成";
                     break;
+                case "8":
+                    status="服务中待返件";
+                    break;
             }
             return status;
         }

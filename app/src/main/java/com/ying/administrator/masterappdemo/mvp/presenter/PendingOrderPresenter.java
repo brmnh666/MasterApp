@@ -165,4 +165,13 @@ public class PendingOrderPresenter extends PendingOrderContract.Presenter {
             }
         });
     }
+    @Override
+    public void UpdateOrderState(String OrderID, String State) {
+        mModel.UpdateOrderState(OrderID,State).subscribe(new BaseObserver<Data<String>>() {
+            @Override
+            protected void onHandleSuccess(BaseResult<Data<String>> value) {
+                mView.UpdateOrderState(value);
+            }
+        });
+    }
 }

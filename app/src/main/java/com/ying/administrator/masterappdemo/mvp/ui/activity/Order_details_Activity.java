@@ -1146,6 +1146,11 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
     }
 
+    @Override
+    public void UpdateOrderState(BaseResult<Data<String>> baseResult) {
+
+    }
+
     //计算价格
     private double gettotalPrice(List<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> list,
                                  List<FService.OrderServiceStrBean.OrderServiceBean> list2) {

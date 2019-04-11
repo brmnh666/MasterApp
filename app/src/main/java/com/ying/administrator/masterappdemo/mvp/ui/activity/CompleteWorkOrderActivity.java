@@ -253,11 +253,11 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
         switch (baseResult.getStatusCode()) {
             case 200:
                 if (baseResult.getData().isItem1()) {//图片上传成功
-                    if ("0".equals(data.getAccessorySearchState())){
-                        mPresenter.UpdateOrderState(orderID, "7");
-                    }else{
-                        mPresenter.UpdateOrderState(orderID, "5");
-                    }
+//                    if ("0".equals(data.getAccessorySearchState())){
+//                        mPresenter.UpdateOrderState(orderID, "7");
+//                    }else{
+//                        mPresenter.UpdateOrderState(orderID, "5");
+//                    }
                 } else {
                     cancleLoading();
                 }
@@ -273,11 +273,17 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
         switch (baseResult.getStatusCode()) {
             case 200:
                 if (baseResult.getData().isItem1()) {//图片上传成功
-                    if ("0".equals(data.getAccessorySearchState())){
-                        mPresenter.UpdateOrderState(orderID, "7");
-                    }else{
+//                    if ("0".equals(data.getAccessorySearchState())){
+//                        mPresenter.UpdateOrderState(orderID, "7");
+//                    }else{
+
+                    if (!"1".equals(data.getIsReturn())){//不需要返件
                         mPresenter.UpdateOrderState(orderID, "5");
+                    }else{
+                        mPresenter.UpdateOrderState(orderID, "8");
                     }
+
+//                    }
 
                 } else {
                     cancleLoading();
@@ -308,7 +314,11 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                     if ("0".equals(data.getAccessorySearchState())){
                         EventBus.getDefault().post(4);
                     }else{
-                        EventBus.getDefault().post(3);
+                        if (!"1".equals(data.getIsReturn())){//不需要返件
+                            EventBus.getDefault().post(4);
+                        }else{
+                            EventBus.getDefault().post(3);
+                        }
                     }
                 }
                 break;

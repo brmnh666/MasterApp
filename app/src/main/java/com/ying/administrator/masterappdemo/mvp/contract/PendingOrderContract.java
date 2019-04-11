@@ -58,6 +58,9 @@ public interface PendingOrderContract {
         Observable<BaseResult<Data<String>>> PressFactoryAccount(String OrderID,String Content);
         //提交快递信息
         Observable<BaseResult<Data<String>>> AddReturnAccessory(String OrderID,String ReturnAccessoryMsg);
+
+        //修改订单状态
+        Observable<BaseResult<Data<String>>> UpdateOrderState(String OrderID,String State);
     }
 
     interface View extends BaseView{
@@ -99,6 +102,9 @@ public interface PendingOrderContract {
         void ApplyBeyondMoney(BaseResult<Data<String>> baseResult);
         void PressFactoryAccount(BaseResult<Data<String>> baseResult);
         void AddReturnAccessory(BaseResult<Data<String>> baseResult);
+
+        //修改订单状态
+        void UpdateOrderState(BaseResult<Data<String>> baseResult);
     }
 
     abstract  class Presenter extends BasePresenter<View,Model>{
@@ -132,6 +138,8 @@ public interface PendingOrderContract {
         public abstract void ApplyBeyondMoney(String OrderID,String BeyondMoney,String BeyondDistance);
         public abstract void PressFactoryAccount(String OrderID,String Content);
         public abstract void AddReturnAccessory(String OrderID,String ReturnAccessoryMsg);
+
+        public abstract void UpdateOrderState(String OrderID,String State);
     }
 
 

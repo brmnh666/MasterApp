@@ -1306,27 +1306,31 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
 
                     mViewSelectTimePoint.setVisibility(View.GONE);
                     mViewSelectTimePoint2.setVisibility(View.GONE);
-                    if ("5".equals(data.getState())) {
-                        if ("".equals(data.getReturnAccessoryMsg()) || data.getReturnAccessoryMsg() == null) {
-                            mRlExpressno.setVisibility(View.VISIBLE);
-                        } else {
-                            mRlExpressno.setVisibility(View.GONE);
-                        }
-                    } else {
-                        mRlExpressno.setVisibility(View.GONE);
-                    }
+
                     mLlReturnInformation.setVisibility(View.VISIBLE);
 
-
-                    Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(0).getUrl()).into(mIvBarCode);
-                    Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(1).getUrl()).into(mIvMachine);
-                    Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(2).getUrl()).into(mIvFaultLocation);
-                    Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(3).getUrl()).into(mIvNewAndOldAccessories);
+                    if (data.getTypeID() == 1||data.getTypeID()==3) {//维修
+                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(0).getUrl()).into(mIvBarCode);
+                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(1).getUrl()).into(mIvMachine);
+                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(2).getUrl()).into(mIvFaultLocation);
+                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(3).getUrl()).into(mIvNewAndOldAccessories);
+                    } else {
+                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/FinishOrder/" + data.getOrderImg().get(0).getUrl()).into(mIvBarCode);
+                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/FinishOrder/" + data.getOrderImg().get(1).getUrl()).into(mIvMachine);
+                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/FinishOrder/" + data.getOrderImg().get(2).getUrl()).into(mIvFaultLocation);
+                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/FinishOrder/" + data.getOrderImg().get(3).getUrl()).into(mIvNewAndOldAccessories);
+                    }
                 } else {
                     mLlReturnInformation.setVisibility(View.GONE);
                     mRlExpressno.setVisibility(View.GONE);
                     mViewSelectTimePoint.setVisibility(View.VISIBLE);
                     mViewSelectTimePoint2.setVisibility(View.VISIBLE);
+                }
+                if ("8".equals(data.getState())) {
+                    mRlExpressno.setVisibility(View.VISIBLE);
+                    mBtnCompleteSubmit.setVisibility(View.GONE);
+                } else {
+                    mRlExpressno.setVisibility(View.GONE);
                 }
                 break;
 
@@ -1600,12 +1604,25 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                 if (data.isItem1()) {
                     push_dialog.dismiss();
                     ToastUtils.showShort("提交成功");
-                    finish();
-                    EventBus.getDefault().post(4);
+                    mPresenter.UpdateOrderState(OrderID, "5");
                 } else {
                     ToastUtils.showShort(data.getItem2());
                 }
                 break;
+        }
+    }
+
+    @Override
+    public void UpdateOrderState(BaseResult<Data<String>> baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                if (baseResult.getData().isItem1()) {
+                    finish();
+                    EventBus.getDefault().post("WorkOrderDetailsActivity");
+                    EventBus.getDefault().post(4);
+                }
+                break;
+
         }
     }
 
