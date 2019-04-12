@@ -95,7 +95,7 @@
                 <TextView
                     android:id="@+id/tv_cate"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="所有工单"
                     android:textColor="@drawable/tab_mall_text"
@@ -170,9 +170,10 @@
             android:src="@mipmap/icon_home_add" />
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:text="所有订单"
             android:textColor="#333333"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:layout_marginBottom="8dp"/>
     </LinearLayout>
 </FrameLayout>
