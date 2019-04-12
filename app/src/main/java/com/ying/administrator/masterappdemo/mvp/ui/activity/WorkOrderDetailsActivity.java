@@ -1319,6 +1319,7 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                         Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/FinishOrder/" + data.getOrderImg().get(1).getUrl()).into(mIvMachine);
                         Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/FinishOrder/" + data.getOrderImg().get(2).getUrl()).into(mIvFaultLocation);
                         Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/FinishOrder/" + data.getOrderImg().get(3).getUrl()).into(mIvNewAndOldAccessories);
+                        mLlOldAccessory.setVisibility(View.GONE);
                     }
                 } else {
                     mLlReturnInformation.setVisibility(View.GONE);
