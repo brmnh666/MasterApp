@@ -16,6 +16,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.Message;
 import com.ying.administrator.masterappdemo.entity.MessageData;
 import com.ying.administrator.masterappdemo.mvp.contract.MyMessageContract;
@@ -66,7 +67,7 @@ public class OrderMessageActivity extends BaseActivity<MyMessagePresenter, MyMes
         mRvOrdermessage.setAdapter(messageAdapter);
         SPUtils spUtils = SPUtils.getInstance("token");
         userId = spUtils.getString("userName");
-        mPresenter.GetMessageList(userId, "2", "0","10", "1");
+        mPresenter.GetMessageList(userId, "2", "0","10", "1","1");
         //mPresenter.GetMessageList(userId,"1","10","1");
 
 
@@ -90,7 +91,7 @@ public class OrderMessageActivity extends BaseActivity<MyMessagePresenter, MyMes
                 }*/
                 pageIndex=1;
                 //list.clear();
-                mPresenter.GetMessageList(userId, "2","0", "10", Integer.toString(pageIndex));
+                mPresenter.GetMessageList(userId, "2","0", "10", Integer.toString(pageIndex),"1");
                 messageAdapter.notifyDataSetChanged();
                 refreshlayout.finishRefresh();
             }
@@ -103,7 +104,7 @@ public class OrderMessageActivity extends BaseActivity<MyMessagePresenter, MyMes
             public void onLoadmore(RefreshLayout refreshlayout) {
                 pageIndex++; //页数加1
               //  mPresenter.WorkerGetOrderList(userID,"1",Integer.toString(pageIndex),"5");
-                mPresenter.GetMessageList(userId, "2","0", "10", Integer.toString(pageIndex));
+                mPresenter.GetMessageList(userId, "2","0", "10", Integer.toString(pageIndex),"1");
                 messageAdapter.notifyDataSetChanged();
                 refreshlayout.finishLoadmore();
             }
@@ -136,6 +137,18 @@ public class OrderMessageActivity extends BaseActivity<MyMessagePresenter, MyMes
             default:
                 break;
         }
+    }
+
+    /*更新消息为已读*/
+    @Override
+    public void AddOrUpdatemessage(BaseResult<Data<String>> baseResult) {
+     switch (baseResult.getStatusCode()){
+         case 200:
+             if (baseResult.getData().isItem1()){
+
+             }
+             break;
+     }
     }
 
     @Override

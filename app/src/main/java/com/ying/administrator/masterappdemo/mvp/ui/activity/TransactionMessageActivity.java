@@ -15,6 +15,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.Message;
 import com.ying.administrator.masterappdemo.entity.MessageData;
 import com.ying.administrator.masterappdemo.mvp.contract.MyMessageContract;
@@ -58,7 +59,9 @@ public class TransactionMessageActivity extends BaseActivity<MyMessagePresenter,
 
         SPUtils spUtils = SPUtils.getInstance("token");
         userId = spUtils.getString("userName");
-        mPresenter.GetMessageList(userId, "1","0", "10", "1");
+        mPresenter.GetMessageList(userId, "1","0", "10", "1","1");
+
+       // mPresenter.GetMessageList(userId, "1","0", "", "","1");
     }
 
     @Override
@@ -79,7 +82,7 @@ public class TransactionMessageActivity extends BaseActivity<MyMessagePresenter,
                 }*/
                 pageIndex=1;
                 //list.clear();
-                mPresenter.GetMessageList(userId, "1","0",  "10", Integer.toString(pageIndex));
+                mPresenter.GetMessageList(userId, "1","0",  "10", Integer.toString(pageIndex),"1");
                 messageAdapter.notifyDataSetChanged();
                 refreshlayout.finishRefresh();
             }
@@ -92,7 +95,7 @@ public class TransactionMessageActivity extends BaseActivity<MyMessagePresenter,
             public void onLoadmore(RefreshLayout refreshlayout) {
                 pageIndex++; //页数加1
                 //  mPresenter.WorkerGetOrderList(userID,"1",Integer.toString(pageIndex),"5");
-                mPresenter.GetMessageList(userId, "1", "0", "10", Integer.toString(pageIndex));
+                mPresenter.GetMessageList(userId, "1", "0", "10", Integer.toString(pageIndex),"1");
                 messageAdapter.notifyDataSetChanged();
                 refreshlayout.finishLoadmore();
             }
@@ -135,6 +138,11 @@ public class TransactionMessageActivity extends BaseActivity<MyMessagePresenter,
             default:
                 break;
         }
+    }
+
+    @Override
+    public void AddOrUpdatemessage(BaseResult<Data<String>> baseResult) {
+
     }
 
     @Override

@@ -609,7 +609,8 @@ public interface ApiService {
                                                                       @Field("Type") String Type,
                                                                       @Field("SubType") String SubType,
                                                                       @Field("limit") String limit,
-                                                                      @Field("page") String page);
+                                                                      @Field("page") String page,
+                                                                      @Field("IsLook") String IsLook);
 
 
 
@@ -638,5 +639,13 @@ public interface ApiService {
     Observable<BaseResult<Data<String>>> AddOpinion(@Field("UserID") String UserID,
                                                   @Field("BackType") String BackType,
                                                   @Field("Content") String Content);
+
+
+
+    /*更新消息状态点击后*/
+    @FormUrlEncoded
+    @POST("Cms/AddOrUpdatemessage")
+    Observable<BaseResult<Data<String>>> AddOrUpdatemessage(@Field("MessageID") String MessageID,
+                                                            @Field("IsLook") String IsLook);
 
 }

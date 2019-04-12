@@ -35,15 +35,15 @@
                     android:orientation="horizontal">
                     <ImageView
                         android:id="@+id/iv_bank_card"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
                         android:padding="2dp" />
 
                     <TextView
                         android:id="@+id/tv_bank_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="20sp"
+                        android:textSize="15sp"
                         android:layout_margin="10dp"
                         android:layout_gravity="center"
                         />

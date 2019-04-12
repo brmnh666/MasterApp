@@ -61,15 +61,15 @@ public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> im
     @BindView(R.id.tv_add_card_bankname)
     TextView mTvAddCardBankname;
     @BindView(R.id.et_add_card_phone)
-    TextView met_add_card_phone;
+    EditText met_add_card_phone;
 /*    @BindView(R.id.et_add_card_verification_code)
     EditText mEtAddCardVerificationCode;*/
    /* @BindView(R.id.ll_choose_bank)
     LinearLayout mLlChooseBank;*/
     /*@BindView(R.id.tv_getcode)
     TextView mtv_getcode;*/
-    @BindView(R.id.btn_bind_card)
-    Button mbtn_bind_card;
+    @BindView(R.id.tv_bind_card)
+    TextView mtv_bind_card;
     @BindView(R.id.et_banknumber)
     EditText met_banknumber;
 
@@ -117,7 +117,7 @@ public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> im
        // mLlChooseBank.setOnClickListener(this);
         mImgActionbarReturn.setOnClickListener(this);
       /*  mtv_getcode.setOnClickListener(this);*/
-        mbtn_bind_card.setOnClickListener(this);
+        mtv_bind_card.setOnClickListener(this);
         /*mimg_scan_card.setOnClickListener(this);*/
         met_banknumber.addTextChangedListener(new TextWatcher() {
             @Override
@@ -135,7 +135,6 @@ public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> im
             public void afterTextChanged(Editable s) {
 
                 if (s.toString().length()==6){
-
                     Log.d("======>count","输入数等于6了");
 
                     mPresenter.GetBankNameByCardNo(s.toString());
@@ -189,7 +188,7 @@ public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> im
        /*     case R.id.tv_getcode:
                 time.start();
                 break;*/
-            case R.id.btn_bind_card:
+            case R.id.tv_bind_card:
 
                 if (mTvAddCardBankname.getText().toString().length()==0||met_banknumber.getText().toString().length()==0||met_add_card_phone.getText()==null){
                     Toast.makeText(this,"请选择银行并输入卡号和手机号",Toast.LENGTH_SHORT).show();
@@ -219,6 +218,12 @@ public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> im
                          return;
                      }else {
                          mTvAddCardName.setText(userInfo.getTrueName());
+                         if (userInfo.getPhone()==null){
+                             return;
+                         }else {
+                             met_add_card_phone.setText(userInfo.getPhone());
+                         }
+
                      }
 
 
@@ -295,6 +300,7 @@ public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> im
                     break;
         }
     }
+
 
 
 

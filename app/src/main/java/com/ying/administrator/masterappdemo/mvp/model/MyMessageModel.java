@@ -19,8 +19,15 @@ import io.reactivex.schedulers.Schedulers;
 public class MyMessageModel implements MyMessageContract.Model {
 
     @Override
-    public Observable<BaseResult<MessageData<List<Message>>>> GetMessageList(String UserID, String Type,String SubType, String limit, String page) {
-        return ApiRetrofit.getDefault().GetMessageList(UserID, Type,SubType,limit,page)
+    public Observable<BaseResult<MessageData<List<Message>>>> GetMessageList(String UserID, String Type,String SubType, String limit, String page,String IsLook) {
+        return ApiRetrofit.getDefault().GetMessageList(UserID, Type,SubType,limit,page,IsLook)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<BaseResult<Data<String>>> AddOrUpdatemessage(String MessageID, String IsLook) {
+        return ApiRetrofit.getDefault().AddOrUpdatemessage(MessageID,IsLook)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }
