@@ -213,13 +213,13 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                 mTvReasonPendingAppointment.setText(data.getMemo());
                 mTvServiceGoods.setText(data.getCategoryName() + "/" + data.getBrandName() + "/" + data.getSubCategoryName());
 
-                if (data.getTypeID() == 1) {//维修
+                if ("1".equals(data.getTypeID())) {//维修
                     mTvService.setText(data.getTypeName() + "/" + data.getGuaranteeText());
                     mTvService.setBackgroundResource(R.color.color_custom_01);
                     mLlReturnInformation.setVisibility(View.VISIBLE);
                     mLlServiceProcess.setVisibility(View.GONE);
 
-                } else if (data.getTypeID() == 2) {
+                } else if ("2".equals(data.getTypeID())) {
                     mTvService.setText(data.getTypeName() + "/" + data.getGuaranteeText());
                     mTvService.setBackgroundResource(R.color.color_custom_04);
                     mLlReturnInformation.setVisibility(View.GONE);
@@ -409,7 +409,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                      }
 
                     }*/
-                if (data.getTypeID() == 2) {//安装
+                if ("2".equals(data.getTypeID())) {//安装
                     if (service_img_map.size() < 4) {
                         Toast.makeText(CompleteWorkOrderActivity.this, "请添加四张服务图片", Toast.LENGTH_SHORT).show();
                     } else {

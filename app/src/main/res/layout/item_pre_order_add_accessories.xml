@@ -23,6 +23,7 @@
                 android:layout_height="wrap_content"
                 android:text="数量："
                 android:textSize="15sp"
+                android:visibility="gone"
                 android:textColor="#6A6A6A" />
             <TextView
                 android:id="@+id/tv_accessories_number"

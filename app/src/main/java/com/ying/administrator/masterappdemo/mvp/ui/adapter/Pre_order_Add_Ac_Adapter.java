@@ -20,7 +20,7 @@ public class Pre_order_Add_Ac_Adapter extends BaseQuickAdapter<FAccessory.OrderA
     @Override
     protected void convert(BaseViewHolder helper, FAccessory.OrderAccessoryStrBean.OrderAccessoryBean item) {
         helper.setText(R.id.tv_accessories_name,item.getFAccessoryName());
-        helper.setText(R.id.tv_accessories_number,item.getQuantity());
+        helper.setText(R.id.tv_accessories_number,"￥"+item.getDiscountPrice()+"/"+item.getQuantity()+"个");
         helper.addOnClickListener(R.id.iv_accessories_delete);
            if (item.getSendState()==null){
                helper.setGone(R.id.tv_accessories_sendstate,false);

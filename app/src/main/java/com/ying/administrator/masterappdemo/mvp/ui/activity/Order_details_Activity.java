@@ -928,12 +928,12 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                 tv_order_details_reason.setText(data.getMemo());
                 tv_order_details_product_name.setText(data.getCategoryName() + "/" + data.getBrandName() + "/" + data.getSubCategoryName());
 
-                if (data.getTypeID() == 1) {//维修
+                if ("1".equals(data.getTypeID())) {//维修
                     tv_order_details_status.setText(data.getTypeName() + "/" + data.getGuaranteeText());
                     tv_order_details_status.setBackgroundResource(R.color.color_custom_01);
                  /*   mll_return_information.setVisibility(View.VISIBLE);
                     mll_service_process.setVisibility(View.GONE);*/
-                } else if (data.getTypeID() == 2) {
+                } else if ("2".equals(data.getTypeID())) {
                     tv_order_details_status.setText(data.getTypeName() + "/" + data.getGuaranteeText());
                     tv_order_details_status.setBackgroundResource(R.color.color_custom_04);
                    /* mll_return_information.setVisibility(View.GONE);
@@ -944,7 +944,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                 }
                 tv_order_details_adress.setText(data.getAddress());
                 mTvNum.setText("数量：" + data.getNum() + "台");
-                Money = data.getOrderMoney() - data.getInitMoney();
+                Money = Double.parseDouble(data.getOrderMoney()) - Double.parseDouble(data.getInitMoney());
                 tv_total_price.setText("服务金额:¥" + gettotalPrice(mPre_order_add_ac_adapter.getData(), fList_service));
                 if ("Y".equals(data.getGuarantee())) {//保内
                     mLlManufacturers.setVisibility(View.VISIBLE);

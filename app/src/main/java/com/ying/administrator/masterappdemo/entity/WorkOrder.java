@@ -124,18 +124,18 @@ public class WorkOrder implements Serializable {
          * Version : 0
          */
 
-        private int Id;
+        private String Id;
         private String OrderID;
-        private int TypeID;
+        private String TypeID;
         private String TypeName;
-        private int SubTypeID;
+        private String SubTypeID;
         private String SubTypeName;
-        private int CategoryID;
+        private String CategoryID;
         private String CategoryName;
-        private int SubCategoryID;
+        private String SubCategoryID;
         private String SubCategoryName;
         private String Memo;
-        private int BrandID;
+        private String BrandID;
         private String BrandName;
         private String ProductType;
         private String Num;
@@ -158,16 +158,16 @@ public class WorkOrder implements Serializable {
         private String StateHtml;
         private String Extra;
         private String ExtraTime;
-        private double ExtraFee;
+        private String ExtraFee;
         private String IsUse;
         private String SendUser;
         private String OrgSendUser;
         private String LoginUser;
         private String IsPay;
-        private double OrderMoney;
-        private double InitMoney;
-        private double BeyondMoney;
-        private int BeyondID;
+        private String OrderMoney;
+        private String InitMoney;
+        private String BeyondMoney;
+        private String BeyondID;
         private String BeyondState;
         private String BeyondDistance;
         private String Accessory;
@@ -177,9 +177,9 @@ public class WorkOrder implements Serializable {
         private String AccessoryState;
         private String AccessorySendState;
         private String AccessorySearchState;
-        private int AccessoryMoney;
+        private String AccessoryMoney;
         private String Service;
-        private int ServiceMoney;
+        private String ServiceMoney;
         private String ReturnAccessory;
         private String ReturnAccessoryMsg;
         private String ApplyCancel;
@@ -187,7 +187,7 @@ public class WorkOrder implements Serializable {
         private String OrderPayStr;
         private String ThirdPartyNo;
         private String ExpressNo;
-        private int RecycleOrderHour;
+        private String RecycleOrderHour;
         private String IsRecevieGoods;
         private String AppointmentMessage;
         private String AppointmentState;
@@ -206,9 +206,9 @@ public class WorkOrder implements Serializable {
         private String Distance;//返回距离
         private String ProductTypeID;
         private String ServiceApplyState;
-        private int page;
-        private int limit;
-        private int Version;
+        private String page;
+        private String limit;
+        private String Version;
 
         public String getIsReturn() {
             return IsReturn;
@@ -320,11 +320,11 @@ public class WorkOrder implements Serializable {
             OrderServiceDetail = orderServiceDetail;
         }
 
-        public int getId() {
+        public String getId() {
             return Id;
         }
 
-        public void setId(int Id) {
+        public void setId(String Id) {
             this.Id = Id;
         }
 
@@ -336,11 +336,11 @@ public class WorkOrder implements Serializable {
             this.OrderID = OrderID;
         }
 
-        public int getTypeID() {
+        public String getTypeID() {
             return TypeID;
         }
 
-        public void setTypeID(int TypeID) {
+        public void setTypeID(String TypeID) {
             this.TypeID = TypeID;
         }
 
@@ -352,11 +352,11 @@ public class WorkOrder implements Serializable {
             this.TypeName = TypeName;
         }
 
-        public int getSubTypeID() {
+        public String getSubTypeID() {
             return SubTypeID;
         }
 
-        public void setSubTypeID(int SubTypeID) {
+        public void setSubTypeID(String SubTypeID) {
             this.SubTypeID = SubTypeID;
         }
 
@@ -368,11 +368,11 @@ public class WorkOrder implements Serializable {
             this.SubTypeName = SubTypeName;
         }
 
-        public int getCategoryID() {
+        public String getCategoryID() {
             return CategoryID;
         }
 
-        public void setCategoryID(int CategoryID) {
+        public void setCategoryID(String CategoryID) {
             this.CategoryID = CategoryID;
         }
 
@@ -384,11 +384,11 @@ public class WorkOrder implements Serializable {
             this.CategoryName = CategoryName;
         }
 
-        public int getSubCategoryID() {
+        public String getSubCategoryID() {
             return SubCategoryID;
         }
 
-        public void setSubCategoryID(int SubCategoryID) {
+        public void setSubCategoryID(String SubCategoryID) {
             this.SubCategoryID = SubCategoryID;
         }
 
@@ -408,11 +408,11 @@ public class WorkOrder implements Serializable {
             this.Memo = Memo;
         }
 
-        public int getBrandID() {
+        public String getBrandID() {
             return BrandID;
         }
 
-        public void setBrandID(int BrandID) {
+        public void setBrandID(String BrandID) {
             this.BrandID = BrandID;
         }
 
@@ -632,11 +632,11 @@ public class WorkOrder implements Serializable {
             this.ExtraTime = ExtraTime;
         }
 
-        public double getExtraFee() {
+        public String getExtraFee() {
             return ExtraFee;
         }
 
-        public void setExtraFee(double ExtraFee) {
+        public void setExtraFee(String ExtraFee) {
             this.ExtraFee = ExtraFee;
         }
 
@@ -680,35 +680,35 @@ public class WorkOrder implements Serializable {
             this.IsPay = IsPay;
         }
 
-        public double getOrderMoney() {
+        public String getOrderMoney() {
             return OrderMoney;
         }
 
-        public void setOrderMoney(double OrderMoney) {
+        public void setOrderMoney(String OrderMoney) {
             this.OrderMoney = OrderMoney;
         }
 
-        public double getInitMoney() {
+        public String getInitMoney() {
             return InitMoney;
         }
 
-        public void setInitMoney(double InitMoney) {
+        public void setInitMoney(String InitMoney) {
             this.InitMoney = InitMoney;
         }
 
-        public double getBeyondMoney() {
+        public String getBeyondMoney() {
             return BeyondMoney;
         }
 
-        public void setBeyondMoney(double BeyondMoney) {
+        public void setBeyondMoney(String BeyondMoney) {
             this.BeyondMoney = BeyondMoney;
         }
 
-        public int getBeyondID() {
+        public String getBeyondID() {
             return BeyondID;
         }
 
-        public void setBeyondID(int BeyondID) {
+        public void setBeyondID(String BeyondID) {
             this.BeyondID = BeyondID;
         }
 
@@ -787,11 +787,11 @@ public class WorkOrder implements Serializable {
             this.AccessorySendState = AccessorySendState;
         }
 
-        public int getAccessoryMoney() {
+        public String getAccessoryMoney() {
             return AccessoryMoney;
         }
 
-        public void setAccessoryMoney(int AccessoryMoney) {
+        public void setAccessoryMoney(String AccessoryMoney) {
             this.AccessoryMoney = AccessoryMoney;
         }
 
@@ -803,11 +803,11 @@ public class WorkOrder implements Serializable {
             this.Service = Service;
         }
 
-        public int getServiceMoney() {
+        public String getServiceMoney() {
             return ServiceMoney;
         }
 
-        public void setServiceMoney(int ServiceMoney) {
+        public void setServiceMoney(String ServiceMoney) {
             this.ServiceMoney = ServiceMoney;
         }
 
@@ -867,11 +867,11 @@ public class WorkOrder implements Serializable {
             this.ExpressNo = ExpressNo;
         }
 
-        public int getRecycleOrderHour() {
+        public String getRecycleOrderHour() {
             return RecycleOrderHour;
         }
 
-        public void setRecycleOrderHour(int RecycleOrderHour) {
+        public void setRecycleOrderHour(String RecycleOrderHour) {
             this.RecycleOrderHour = RecycleOrderHour;
         }
 
@@ -907,27 +907,27 @@ public class WorkOrder implements Serializable {
             Distance = distance;
         }
 
-        public int getPage() {
+        public String getPage() {
             return page;
         }
 
-        public void setPage(int page) {
+        public void setPage(String page) {
             this.page = page;
         }
 
-        public int getLimit() {
+        public String getLimit() {
             return limit;
         }
 
-        public void setLimit(int limit) {
+        public void setLimit(String limit) {
             this.limit = limit;
         }
 
-        public int getVersion() {
+        public String getVersion() {
             return Version;
         }
 
-        public void setVersion(int Version) {
+        public void setVersion(String Version) {
             this.Version = Version;
         }
     }

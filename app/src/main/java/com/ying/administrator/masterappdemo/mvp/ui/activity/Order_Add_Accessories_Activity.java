@@ -769,10 +769,10 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                     mTvRemoteKm.setText(String.format("%.2f", distance - Service_range) + "km");
                 }
 
-                if (data.getTypeID() == 1) {//维修
+                if ("1".equals(data.getTypeID())) {//维修
                     tv_order_details_status.setText(data.getTypeName() + "/" + data.getGuaranteeText());
                     tv_order_details_status.setBackgroundResource(R.color.color_custom_01);
-                } else if (data.getTypeID() == 2) {
+                } else if ("2".equals(data.getTypeID())) {
                     tv_order_details_status.setText(data.getTypeName() + "/" + data.getGuaranteeText());
                     tv_order_details_status.setBackgroundResource(R.color.color_custom_04);
                 } else {
@@ -783,7 +783,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
 
 
                 // Log.d("====>", String.valueOf(data.getOrderAccessroyDetail().size()));
-                Money = data.getOrderMoney() - data.getInitMoney();
+                Money = Double.parseDouble(data.getOrderMoney())-Double.parseDouble(data.getInitMoney());
                 switch (type) {
                     case 1:
                         accessory();

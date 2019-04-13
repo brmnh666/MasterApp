@@ -276,6 +276,14 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
     TextView mTvYn;
     @BindView(R.id.tv_postpaytype)
     TextView mTvPostpaytype;
+    @BindView(R.id.tv_beyond_money)
+    TextView mTvBeyondMoney;
+    @BindView(R.id.tv_accessory_money)
+    TextView mTvAccessoryMoney;
+    @BindView(R.id.tv_service_money)
+    TextView mTvServiceMoney;
+    @BindView(R.id.tv_order_money)
+    TextView mTvOrderMoney;
     private String OrderID;
     private WorkOrder.DataBean data;
     private ReturnAccessoryAdapter returnAccessoryAdapter;
@@ -1078,7 +1086,14 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
             case 200:
                 data = baseResult.getData();
                 mTvStatus.setText(data.getStateStr());
-                mTvTotalPrice.setText("服务金额：￥" + data.getOrderMoney());
+
+                mTvBeyondMoney.setText("￥"+data.getBeyondMoney()+"");
+                mTvAccessoryMoney.setText("￥"+data.getAccessoryMoney());
+                mTvServiceMoney.setText("￥"+data.getServiceMoney());
+                mTvOrderMoney.setText("￥"+data.getOrderMoney()+"");
+
+                mTvTotalPrice.setVisibility(View.GONE);
+//                mTvTotalPrice.setText("服务金额：￥" + data.getOrderMoney());
                 mTvAccessoryMemo.setText("备注：" + data.getAccessoryMemo());
                 mTvAccessorySequency.setText(data.getAccessorySequencyStr());
                 mTvName.setText(data.getUserName());
@@ -1093,7 +1108,7 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                     mTvSelectTime.setText(data.getSendOrderList().get(0).getServiceDate());
                     mTvSelectTime2.setText(data.getSendOrderList().get(0).getServiceDate2());
                 }
-                if (data.getTypeID() == 1) {//维修
+                if ("1".equals(data.getTypeID())) {//维修
                     mTvType.setText(data.getTypeName() + "/" + data.getGuaranteeText());
                     mTvType.setBackgroundResource(R.color.color_custom_01);
 //                    mll_return_information.setVisibility(View.VISIBLE);
@@ -1267,22 +1282,22 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                     mLlAddService.setVisibility(View.VISIBLE);
                 }
 
-                if ("1".equals(data.getAccessoryApplyState())){
+                if ("1".equals(data.getAccessoryApplyState())) {
                     mLlOldAccessory.setVisibility(View.VISIBLE);
-                    if ("1".equals(data.getIsReturn())){
+                    if ("1".equals(data.getIsReturn())) {
                         mTvYn.setText("是");
                         mLlAddressInfo.setVisibility(View.VISIBLE);
                         mTvAddressback.setText(data.getAddressBack());
-                        if ("1".equals(data.getPostPayType())){
+                        if ("1".equals(data.getPostPayType())) {
                             mTvPostpaytype.setText("厂商到付");
-                        }else{
+                        } else {
                             mTvPostpaytype.setText("维修商现付");
                         }
-                    }else{
+                    } else {
                         mTvYn.setText("否");
                         mLlAddressInfo.setVisibility(View.GONE);
                     }
-                }else{
+                } else {
                     mLlOldAccessory.setVisibility(View.GONE);
                 }
 
@@ -1309,7 +1324,7 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
 
                     mLlReturnInformation.setVisibility(View.VISIBLE);
 
-                    if (data.getTypeID() == 1||data.getTypeID()==3) {//维修
+                    if ("1".equals(data.getTypeID()) || "3".equals(data.getTypeID())) {//维修
                         Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(0).getUrl()).into(mIvBarCode);
                         Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(1).getUrl()).into(mIvMachine);
                         Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(2).getUrl()).into(mIvFaultLocation);
