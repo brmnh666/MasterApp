@@ -169,7 +169,7 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                         } else if (snsPlatform.mShowWord.equals("复制链接")) {
                             Toast.makeText(mActivity, "已复制", Toast.LENGTH_LONG).show();
                         } else {
-                            UMWeb web = new UMWeb("http://47.96.126.145:8080/sign?phone="+userID);
+                            UMWeb web = new UMWeb("http://47.96.126.145:8080/sign?phone="+userID+"&type=7");
                             web.setTitle("西瓜鱼");
                             web.setDescription("注册送西瓜币了！！！！！");
                             web.setThumb(new UMImage(mActivity, R.drawable.icon));
