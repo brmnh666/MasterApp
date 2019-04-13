@@ -20,7 +20,7 @@ public class Message implements Serializable {
      */
 
     private int Id;
-    private int MessageID;
+    private String MessageID;
     private String UserID;
     private String Nowtime;
     private String Content;
@@ -39,11 +39,11 @@ public class Message implements Serializable {
         this.Id = Id;
     }
 
-    public int getMessageID() {
+    public String getMessageID() {
         return MessageID;
     }
 
-    public void setMessageID(int MessageID) {
+    public void setMessageID(String MessageID) {
         this.MessageID = MessageID;
     }
 

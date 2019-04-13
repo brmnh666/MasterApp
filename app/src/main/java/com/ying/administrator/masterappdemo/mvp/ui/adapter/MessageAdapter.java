@@ -20,5 +20,8 @@ public class MessageAdapter extends BaseQuickAdapter<Message, BaseViewHolder> {
               StringBuilder stringBuilder = new StringBuilder(item.getNowtime());
               String time = "" + stringBuilder.replace(10, 11, " "); //替换"T"为" "
             helper.setText(R.id.tv_order_time,"时间:"+time);
+
+             helper.addOnClickListener(R.id.ll_order_message);
+
     }
 }

@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.SPUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
@@ -61,7 +62,7 @@ public class TransactionMessageActivity extends BaseActivity<MyMessagePresenter,
         userId = spUtils.getString("userName");
         mPresenter.GetMessageList(userId, "1","0", "10", "1","1");
 
-       // mPresenter.GetMessageList(userId, "1","0", "", "","1");
+
     }
 
     @Override
@@ -100,6 +101,20 @@ public class TransactionMessageActivity extends BaseActivity<MyMessagePresenter,
                 refreshlayout.finishLoadmore();
             }
         });
+
+        messageAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+
+                switch (view.getId()){
+                    case R.id.ll_order_message:
+                mPresenter.AddOrUpdatemessage(((Message)adapter.getData().get(position)).getMessageID(),"2");
+                        break;
+
+                }
+            }
+        });
+
     }
 
     @Override
@@ -142,7 +157,12 @@ public class TransactionMessageActivity extends BaseActivity<MyMessagePresenter,
 
     @Override
     public void AddOrUpdatemessage(BaseResult<Data<String>> baseResult) {
-
+     switch (baseResult.getStatusCode()){
+    case 200:
+        break;
+        default:
+            break;
+}
     }
 
     @Override
