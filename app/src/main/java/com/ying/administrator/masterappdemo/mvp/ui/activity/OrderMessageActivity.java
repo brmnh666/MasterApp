@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.SPUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
@@ -23,6 +24,8 @@ import com.ying.administrator.masterappdemo.mvp.contract.MyMessageContract;
 import com.ying.administrator.masterappdemo.mvp.model.MyMessageModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.MyMessagePresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.MessageAdapter;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,13 +42,22 @@ public class OrderMessageActivity extends BaseActivity<MyMessagePresenter, MyMes
     TextView mTvTitle;
     @BindView(R.id.rv_ordermessage)
     RecyclerView mRvOrdermessage;
+
+    @BindView(R.id.rv_ordermessage_historical)
+    RecyclerView mRv_ordermessage_historical;//已读
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout mRefreshLayout;
+
+    @BindView(R.id.tv_message_number)
+    TextView mTv_message_number;
+
     private MessageAdapter messageAdapter;
+    private MessageAdapter messagereadAdapter;
     private int pageIndex=1;
 
     private String userId;
-    private List<Message> list = new ArrayList<>();
+    private List<Message> list = new ArrayList<>();//未读
+    private List<Message> readlist=new ArrayList<>();//已读
 
     @Override
     protected int setLayoutId() {
@@ -59,18 +71,32 @@ public class OrderMessageActivity extends BaseActivity<MyMessagePresenter, MyMes
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
     protected void initData() {
         mRvOrdermessage.setLayoutManager(new LinearLayoutManager(mActivity));
         mRvOrdermessage.setHasFixedSize(true);
         mRvOrdermessage.setNestedScrollingEnabled(false);
         messageAdapter = new MessageAdapter(R.layout.item_message, list);
         mRvOrdermessage.setAdapter(messageAdapter);
+
+
+        mRv_ordermessage_historical.setLayoutManager(new LinearLayoutManager(mActivity));
+        mRv_ordermessage_historical.setHasFixedSize(true);
+        mRv_ordermessage_historical.setNestedScrollingEnabled(false);
+        messagereadAdapter=new MessageAdapter(R.layout.item_message, readlist);
+        mRv_ordermessage_historical.setAdapter(messagereadAdapter);
+
+
         SPUtils spUtils = SPUtils.getInstance("token");
         userId = spUtils.getString("userName");
-        mPresenter.GetMessageList(userId, "2", "0","10", "1","1");
+        mPresenter.GetMessageList(userId, "2", "0","999", "1");
         //mPresenter.GetMessageList(userId,"1","10","1");
 
-
+        mPresenter.GetReadMessageList(userId, "2","0", "999", "1");
     }
 
     @Override
@@ -91,7 +117,7 @@ public class OrderMessageActivity extends BaseActivity<MyMessagePresenter, MyMes
                 }*/
                 pageIndex=1;
                 //list.clear();
-                mPresenter.GetMessageList(userId, "2","0", "10", Integer.toString(pageIndex),"1");
+                mPresenter.GetMessageList(userId, "2","0", "999", Integer.toString(pageIndex));
                 messageAdapter.notifyDataSetChanged();
                 refreshlayout.finishRefresh();
             }
@@ -104,9 +130,25 @@ public class OrderMessageActivity extends BaseActivity<MyMessagePresenter, MyMes
             public void onLoadmore(RefreshLayout refreshlayout) {
                 pageIndex++; //页数加1
               //  mPresenter.WorkerGetOrderList(userID,"1",Integer.toString(pageIndex),"5");
-                mPresenter.GetMessageList(userId, "2","0", "10", Integer.toString(pageIndex),"1");
+                mPresenter.GetMessageList(userId, "2","0", "10", Integer.toString(pageIndex));
                 messageAdapter.notifyDataSetChanged();
                 refreshlayout.finishLoadmore();
+            }
+        });
+
+
+        messageAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+
+                switch (view.getId()){
+                    case R.id.ll_order_message:
+                        mPresenter.AddOrUpdatemessage(((Message)adapter.getData().get(position)).getMessageID(),"2");
+
+
+                        break;
+
+                }
             }
         });
     }
@@ -117,26 +159,51 @@ public class OrderMessageActivity extends BaseActivity<MyMessagePresenter, MyMes
         switch (baseResult.getStatusCode()) {
             case 200:
                 if (baseResult.getData().getData()==null){
-                    if (pageIndex==1){
-                        list.clear();
-                        messageAdapter.notifyDataSetChanged();
-                    }
+
+                    mTv_message_number.setText("暂无新消息");
+                    return;
+
                 }else {
-                    if (pageIndex==1){
-                        list.clear();
-                        list.addAll(baseResult.getData().getData());
-                        messageAdapter.notifyDataSetChanged();
+                    list.clear();
+                    list.addAll(baseResult.getData().getData());
+
+                    if (baseResult.getData().getData().size()>99){
+                        mTv_message_number.setText("您有99+条新消息");
+                    }else if (baseResult.getData().getData().size()==0){
+                        mTv_message_number.setText("暂无新消息");
+
                     }else {
-                        list.addAll(baseResult.getData().getData());
-                        messageAdapter.setNewData(list);
+                        mTv_message_number.setText("您有"+baseResult.getData().getData().size()+"条新消息");
                     }
 
+                    messageAdapter.notifyDataSetChanged();
+                }
+
+
+
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void GetReadMessageList(BaseResult<MessageData<List<Message>>> baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                if (baseResult.getData().getData()==null){
+                    return;
+
+                }else {
+                    messagereadAdapter.setNewData(baseResult.getData().getData());
+                    messagereadAdapter.notifyDataSetChanged();
                 }
 
                 break;
             default:
                 break;
         }
+
     }
 
     /*更新消息为已读*/
@@ -146,6 +213,9 @@ public class OrderMessageActivity extends BaseActivity<MyMessagePresenter, MyMes
          case 200:
              if (baseResult.getData().isItem1()){
 
+                 EventBus.getDefault().post("order_num");
+                 mPresenter.GetMessageList(userId, "2","0", "999", "1");
+                 mPresenter.GetReadMessageList(userId, "2","0", "999", "1");
              }
              break;
      }

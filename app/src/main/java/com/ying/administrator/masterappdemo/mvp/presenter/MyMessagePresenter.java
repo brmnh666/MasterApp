@@ -16,12 +16,23 @@ public class MyMessagePresenter extends MyMessageContract.Presenter {
 
 
     @Override
-    public void GetMessageList(String UserID, String Type,String SubType,String limit,String page,String IsLook) {
-        mModel.GetMessageList(UserID, Type,SubType,limit,page,IsLook)
+    public void GetMessageList(String UserID, String Type,String SubType,String limit,String page) {
+        mModel.GetMessageList(UserID, Type,SubType,limit,page)
                 .subscribe(new BaseObserver<MessageData<List<Message>>>() {
                     @Override
                     protected void onHandleSuccess(BaseResult<MessageData<List<Message>>> value) {
                         mView.GetMessageList(value);
+                    }
+                });
+    }
+
+    @Override
+    public void GetReadMessageList(String UserID, String Type, String SubType, String limit, String page) {
+        mModel.GetReadMessageList(UserID, Type,SubType,limit,page)
+                .subscribe(new BaseObserver<MessageData<List<Message>>>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<MessageData<List<Message>>> value) {
+                        mView.GetReadMessageList(value);
                     }
                 });
     }

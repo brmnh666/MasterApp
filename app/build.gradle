@@ -213,4 +213,8 @@ dependencies {
 
     /*6.0后权限管理RxPermissions */
     implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
+
+
+    /*badgeview*/
+    implementation 'q.rorbin:badgeview:1.1.3'
 }

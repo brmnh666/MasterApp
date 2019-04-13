@@ -6,7 +6,7 @@ public class MessageData<T> implements Serializable {
 
     private String code;
     private String msg;
-    private String count;
+    private int count;
     private T data;
 
     public String getCode() {
@@ -25,11 +25,11 @@ public class MessageData<T> implements Serializable {
         this.msg = msg;
     }
 
-    public String getCount() {
+    public int getCount() {
         return count;
     }
 
-    public void setCount(String count) {
+    public void setCount(int count) {
         this.count = count;
     }
 

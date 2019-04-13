@@ -10,6 +10,8 @@ import android.widget.LinearLayout;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Article;
+import com.ying.administrator.masterappdemo.entity.Message;
+import com.ying.administrator.masterappdemo.entity.MessageData;
 import com.ying.administrator.masterappdemo.mvp.contract.ArticleContract;
 import com.ying.administrator.masterappdemo.mvp.model.ArticleModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.ArticlePresenter;
@@ -18,6 +20,8 @@ import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLaz
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -96,6 +100,16 @@ public class NoticeFragment extends BaseLazyFragment<ArticlePresenter, ArticleMo
 
     @Override
     public void GetListCategoryContentByCategoryID(BaseResult<Article> baseResult) {
+
+    }
+
+    @Override
+    public void GetOrderMessageList(BaseResult<MessageData<List<Message>>> baseResult) {
+
+    }
+
+    @Override
+    public void GetTransactionMessageList(BaseResult<MessageData<List<Message>>> baseResult) {
 
     }
 

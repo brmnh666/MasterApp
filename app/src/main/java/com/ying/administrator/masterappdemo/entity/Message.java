@@ -27,9 +27,27 @@ public class Message implements Serializable {
     private int Type;
     private int SubType;
     private String IsUse;
+    private String OrderID;
+    private String IsLook;
     private int page;
     private int limit;
     private int Version;
+
+    public String getOrderID() {
+        return OrderID;
+    }
+
+    public void setOrderID(String orderID) {
+        OrderID = orderID;
+    }
+
+    public String getIsLook() {
+        return IsLook;
+    }
+
+    public void setIsLook(String isLook) {
+        IsLook = isLook;
+    }
 
     public int getId() {
         return Id;

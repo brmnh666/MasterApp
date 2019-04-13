@@ -15,6 +15,8 @@ import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Article;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.Message;
+import com.ying.administrator.masterappdemo.entity.MessageData;
 import com.ying.administrator.masterappdemo.mvp.contract.ArticleContract;
 import com.ying.administrator.masterappdemo.mvp.model.ArticleModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.ArticlePresenter;
@@ -98,5 +100,15 @@ public class ArticleActivity extends BaseActivity<ArticlePresenter, ArticleModel
             default:
                 break;
         }
+    }
+
+    @Override
+    public void GetOrderMessageList(BaseResult<MessageData<List<Message>>> baseResult) {
+
+    }
+
+    @Override
+    public void GetTransactionMessageList(BaseResult<MessageData<List<Message>>> baseResult) {
+
     }
 }

@@ -62,7 +62,6 @@
                         android:layout_centerInParent="true"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
-                        android:text="1条新消息"
                         android:textColor="#999"
                         android:textSize="14sp" />
 
