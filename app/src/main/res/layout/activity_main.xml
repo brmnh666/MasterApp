@@ -6,7 +6,7 @@
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="50dp"/>
+        android:layout_marginBottom="60dp"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -32,7 +32,15 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical">
-
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center"
+                        android:visibility="invisible"
+                        android:gravity="center" />
                 <ImageView
                     android:id="@+id/img_home"
                     android:layout_width="20dp"
@@ -41,6 +49,7 @@
                     android:background="@drawable/tab_home_selector"
                     android:gravity="center" />
 
+                </FrameLayout>
                 <TextView
                     android:id="@+id/tv_home"
                     android:layout_width="wrap_content"
@@ -57,6 +66,16 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical">
+           <FrameLayout
+               android:layout_width="match_parent"
+               android:layout_height="match_parent">
+                <ImageView
+                    android:id="@+id/img_message_invisible"
+                    android:layout_width="40dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:visibility="invisible"
+                    android:gravity="center" />
 
                 <ImageView
                     android:id="@+id/img_message"
@@ -65,7 +84,7 @@
                     android:layout_gravity="center"
                     android:background="@drawable/tab_message_selector"
                     android:gravity="center" />
-
+                </FrameLayout>
                 <TextView
                     android:id="@+id/tv_message"
                     android:layout_width="wrap_content"
@@ -74,6 +93,8 @@
                     android:text="消息"
                     android:textColor="@drawable/tab_mall_text"
                     android:textSize="12sp" />
+
+
             </LinearLayout>
 
             <LinearLayout
@@ -109,6 +130,15 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center"
+                        android:visibility="invisible"
+                        android:gravity="center" />
                 <ImageView
                     android:id="@+id/img_cart"
                     android:layout_width="20dp"
@@ -116,7 +146,7 @@
                     android:layout_gravity="center"
                     android:background="@drawable/tab_accessories_shop_selector"
                     android:gravity="center" />
-
+                    </FrameLayout>
                 <TextView
                     android:id="@+id/tv_cart"
                     android:layout_width="wrap_content"
@@ -133,7 +163,15 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical">
-
+             <FrameLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="match_parent">
+                 <ImageView
+                 android:layout_width="40dp"
+                 android:layout_height="25dp"
+                 android:layout_gravity="center"
+                 android:visibility="invisible"
+                 android:gravity="center" />
                 <ImageView
                     android:id="@+id/img_my"
                     android:layout_width="20dp"
@@ -141,7 +179,7 @@
                     android:layout_gravity="center"
                     android:background="@drawable/tab_me_selector"
                     android:gravity="center" />
-
+</FrameLayout>
                 <TextView
                     android:id="@+id/tv_my"
                     android:layout_width="wrap_content"
@@ -163,6 +201,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical">
+
         <ImageView
             android:layout_width="55dp"
             android:layout_height="55dp"
@@ -174,6 +213,6 @@
             android:text="所有订单"
             android:textColor="#333333"
             android:textSize="12sp"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="3dp"/>
     </LinearLayout>
 </FrameLayout>

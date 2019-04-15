@@ -118,7 +118,7 @@ public class TransactionMessageActivity extends BaseActivity<MyMessagePresenter,
         //没满屏时禁止上拉
         mRefreshLayout.setEnableLoadmoreWhenContentNotFull(false);
         //上拉加载更多
-        mRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
+       /* mRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 pageIndex++; //页数加1
@@ -127,7 +127,7 @@ public class TransactionMessageActivity extends BaseActivity<MyMessagePresenter,
                 messageAdapter.notifyDataSetChanged();
                 refreshlayout.finishLoadmore();
             }
-        });
+        });*/
 
         messageAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
@@ -179,10 +179,13 @@ public class TransactionMessageActivity extends BaseActivity<MyMessagePresenter,
                         mTv_message_number.setText("您有"+baseResult.getData().getData().size()+"条新消息");
                     }
 
-
                     messageAdapter.notifyDataSetChanged();
                 }
+                if (baseResult.getData().getCount()==0){
 
+                    EventBus.getDefault().post("transactionempty");
+
+                }
 
 
                 break;

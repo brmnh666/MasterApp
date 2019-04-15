@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,8 @@ import com.umeng.socialize.UMShareAPI;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.Message;
+import com.ying.administrator.masterappdemo.entity.MessageData;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.mvp.contract.MainContract;
 import com.ying.administrator.masterappdemo.mvp.model.MainModel;
@@ -42,6 +45,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import q.rorbin.badgeview.QBadgeView;
 
 public class MainActivity extends BaseActivity<MainPresenter, MainModel> implements MainContract.View, View.OnClickListener {
 
@@ -59,6 +63,10 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
     TextView mTvMessage;
     @BindView(R.id.ll_message)
     LinearLayout mLlMessage;
+
+
+    @BindView(R.id.img_message_invisible)
+    ImageView mImg_message_invisible;
     @BindView(R.id.img_cate)
     ImageView mImgCate;
     @BindView(R.id.tv_cate)
@@ -92,13 +100,14 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
     private AlertDialog underReviewDialog;
     private CustomDialog customDialog;
     private Button btn_verified_update;
+    private QBadgeView qBadgeView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // requestWindowFeature(Window.FEATURE_NO_TITLE);
         //setContentView(R.layout.activity_main);
-        initView();
+       // initView();
         EventBus.getDefault().register(this);
     }
 
@@ -111,6 +120,17 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
     protected void initData() {
         userID = spUtils.getString("userName"); //获取用户id
         mPresenter.GetUserInfoList(userID, "1");
+
+        qBadgeView= new QBadgeView(mActivity);
+        qBadgeView.bindTarget(mImg_message_invisible);
+        qBadgeView.setBadgeGravity(Gravity.END|Gravity.TOP);
+        qBadgeView.setBadgeTextSize(0,false);
+
+
+        mPresenter.GetMessageList(userID,"0","999","0");
+        mPresenter.GetTransactionMessageList(userID,"0","999","0");
+
+
 
     }
 
@@ -288,12 +308,53 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
         }
     }
 
+    @Override
+    public void GetMessageList(BaseResult<MessageData<List<Message>>> baseResult) {
+        switch (baseResult.getStatusCode()){
+            case 200:
+                if (baseResult.getData().getCount()==0){
+                    qBadgeView.hide(true);
+
+                }else {
+                    qBadgeView.setBadgeNumber(1);
+
+                }
+                break;
+                default:
+                    break;
+        }
+    }
+
+    @Override
+    public void GetTransactionMessageList(BaseResult<MessageData<List<Message>>> baseResult) {
+        switch (baseResult.getStatusCode()){
+            case 200:
+                if (baseResult.getData().getCount()==0){
+                    qBadgeView.hide(true);
+                }else {
+                    qBadgeView.setBadgeNumber(1);
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(String message) {
-        if (!"GetUserInfoList".equals(message)){
-            return;
+        switch (message){
+            case "GetUserInfoList":
+                mPresenter.GetUserInfoList(userID, "1");
+                break;
+            case "orderempty":
+                mPresenter.GetMessageList(userID,"0","999","1");
+                break;
+            case "transactionempty":
+                mPresenter.GetTransactionMessageList(userID, "0", "999", "1");
+                break;
         }
-        mPresenter.GetUserInfoList(userID, "1");
+
+
     }
 
     @Override

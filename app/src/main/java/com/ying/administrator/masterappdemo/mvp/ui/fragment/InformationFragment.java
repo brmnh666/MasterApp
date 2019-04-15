@@ -69,7 +69,8 @@ public class InformationFragment extends BaseLazyFragment<ArticlePresenter, Arti
     private QBadgeView transactionqBadgeView;
     private View view;
     private String mContentText;
-    private String userId;
+    private SPUtils spUtils = SPUtils.getInstance("token");
+    private String userId= spUtils.getString("userName");
 
     public InformationFragment() {
         // Required empty public constructor
@@ -109,21 +110,6 @@ public class InformationFragment extends BaseLazyFragment<ArticlePresenter, Arti
         EventBus.getDefault().unregister(this);
     }
 
-    //    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                             Bundle savedInstanceState) {
-//        if (view == null) {
-//
-//            view = inflater.inflate(R.layout.fragment_information, container, false);
-//            initListner();
-//
-//        }
-//
-//
-//        unbinder = ButterKnife.bind(this, view);
-//        return view;
-//    }
-
     @Override
     protected int setLayoutId() {
         return R.layout.fragment_information;
@@ -132,8 +118,7 @@ public class InformationFragment extends BaseLazyFragment<ArticlePresenter, Arti
     @Override
     protected void initData() {
 
-        SPUtils spUtils = SPUtils.getInstance("token");
-        userId = spUtils.getString("userName");
+
 
         workqBadgeView = new QBadgeView(mActivity);
         workqBadgeView.bindTarget(MLl_workmessage);
@@ -145,8 +130,8 @@ public class InformationFragment extends BaseLazyFragment<ArticlePresenter, Arti
          transactionqBadgeView.setBadgeGravity(Gravity.CENTER|Gravity.END);
 
 
-        mPresenter.GetOrderMessageList(userId,"0","99","1");
-        mPresenter.GetTransactionMessageList(userId,"0","99","1");
+       mPresenter.GetOrderMessageList(userId,"0","99","1");
+       mPresenter.GetTransactionMessageList(userId,"0","99","1");
     }
 
     @Override
@@ -255,4 +240,6 @@ public class InformationFragment extends BaseLazyFragment<ArticlePresenter, Arti
        }
 
     }
+
+
 }

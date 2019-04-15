@@ -122,10 +122,12 @@ public class OrderMessageActivity extends BaseActivity<MyMessagePresenter, MyMes
                 refreshlayout.finishRefresh();
             }
         });
-        //没满屏时禁止上拉
+
+
+       //没满屏时禁止上拉
         mRefreshLayout.setEnableLoadmoreWhenContentNotFull(false);
         //上拉加载更多
-        mRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
+    /*     mRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 pageIndex++; //页数加1
@@ -135,7 +137,7 @@ public class OrderMessageActivity extends BaseActivity<MyMessagePresenter, MyMes
                 refreshlayout.finishLoadmore();
             }
         });
-
+*/
 
         messageAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
@@ -181,6 +183,11 @@ public class OrderMessageActivity extends BaseActivity<MyMessagePresenter, MyMes
 
 
 
+                if (baseResult.getData().getCount()==0){
+
+                    EventBus.getDefault().post("orderempty");
+
+                }
                 break;
             default:
                 break;
@@ -198,6 +205,7 @@ public class OrderMessageActivity extends BaseActivity<MyMessagePresenter, MyMes
                     messagereadAdapter.setNewData(baseResult.getData().getData());
                     messagereadAdapter.notifyDataSetChanged();
                 }
+
 
                 break;
             default:

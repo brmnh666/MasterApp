@@ -25,7 +25,6 @@ import com.paradigm.botkit.BotKitClient;
 import com.paradigm.botkit.ChatActivity;
 import com.paradigm.botlib.BotLibClient;
 import com.paradigm.botlib.MenuItem;
-import com.paradigm.botlib.Message;
 import com.paradigm.botlib.VisitorInfo;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
@@ -38,6 +37,8 @@ import com.umeng.socialize.utils.ShareBoardlistener;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.common.Config;
+import com.ying.administrator.masterappdemo.entity.Message;
+import com.ying.administrator.masterappdemo.entity.MessageData;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.mvp.contract.MainContract;
 import com.ying.administrator.masterappdemo.mvp.model.MainModel;
@@ -60,6 +61,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -237,6 +239,16 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                 break;
 
         }
+
+    }
+
+    @Override
+    public void GetMessageList(BaseResult<MessageData<List<Message>>> baseResult) {
+
+    }
+
+    @Override
+    public void GetTransactionMessageList(BaseResult<MessageData<List<Message>>> baseResult) {
 
     }
 
