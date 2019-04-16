@@ -23,6 +23,7 @@ import com.ying.administrator.masterappdemo.entity.Service;
 import com.ying.administrator.masterappdemo.entity.Skill;
 import com.ying.administrator.masterappdemo.entity.SubUserInfo;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
+import com.ying.administrator.masterappdemo.entity.WXpayInfo;
 import com.ying.administrator.masterappdemo.entity.WithDrawMoney;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 
@@ -527,6 +528,26 @@ public interface ApiService {
     Observable<BaseResult<Data<String>>> GetOrderStr(@Field("UserID") String UserID,
                                                      @Field("TotalAmount") String TotalAmount,
                                                      @Field("Type") String Type);
+    /**
+     * 充值信息
+     * @param UserID 账号
+     * @param TotalAmount 金额
+     * @param Type  1余额 2 诚意金
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("Pay/GetWXOrderStr")
+    Observable<BaseResult<Data<WXpayInfo>>> GetWXOrderStr(@Field("UserID") String UserID,
+                                                          @Field("TotalAmount") String TotalAmount,
+                                                          @Field("Type") String Type);
+    /**
+     * 微信人工回调OutTradeNo
+     * @param OutTradeNo
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("Pay/WXNotifyManual")
+    Observable<BaseResult<Data<String>>> WXNotifyManual(@Field("OutTradeNo") String OutTradeNo);
 
     /**
      * 完成工单（返件列表）

@@ -108,7 +108,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
         // requestWindowFeature(Window.FEATURE_NO_TITLE);
         //setContentView(R.layout.activity_main);
        // initView();
-        EventBus.getDefault().register(this);
+//        EventBus.getDefault().register(this);
     }
 
     @Override

@@ -148,7 +148,7 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
-        EventBus.getDefault().register(this);
+//        EventBus.getDefault().register(this);
     }
 
     @Override
