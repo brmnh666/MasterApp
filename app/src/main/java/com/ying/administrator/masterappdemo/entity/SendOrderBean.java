@@ -131,7 +131,7 @@ public class SendOrderBean implements Serializable {
     }
 
     public String getServiceDate() {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         return ServiceDate==null?"":format.format(TimeUtils.string2Date(ServiceDate.replace("T"," ")));
     }
 
@@ -140,7 +140,7 @@ public class SendOrderBean implements Serializable {
     }
 
     public String getServiceDate2() {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         return ServiceDate2==null?"":format.format(TimeUtils.string2Date(ServiceDate2.replace("T"," ")));
     }
 

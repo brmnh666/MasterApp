@@ -193,28 +193,26 @@ dependencies {
     implementation 'com.yalantis:ucrop:1.4.1'
 
     //基础工具库
-    implementation "com.github.vondear.RxTool:RxKit:v2.2.7"
+    implementation 'com.github.vondear.RxTool:RxKit:v2.2.7'
 
     //UI库
-    implementation "com.github.vondear.RxTool:RxUI:v2.2.7"
-
-
+    implementation 'com.github.vondear.RxTool:RxUI:v2.2.7'
     implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
-    /*识别card*/
-/*    implementation 'io.card:android-sdk:5.5.1'*/
 
+    /*识别card*/
+
+    /*    implementation 'io.card:android-sdk:5.5.1'*/
 
     /*第四范式智能客服*/
-
     implementation 'com.paradigm:BotLib:2.+'
     implementation 'com.paradigm:BotKit:2.+'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.15'
 
-
     /*6.0后权限管理RxPermissions */
     implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
 
-
     /*badgeview*/
     implementation 'q.rorbin:badgeview:1.1.3'
+
+    implementation 'com.wx.wheelview:wheelview:1.3.3'
 }

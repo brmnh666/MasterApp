@@ -281,6 +281,11 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTask"
             android:windowSoftInputMode="stateHidden"/>
+        <!--订单详情-->
+        <activity android:name=".mvp.ui.activity.WorkOrderDetailsActivity2"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".mvp.ui.activity.ArticleActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTask"

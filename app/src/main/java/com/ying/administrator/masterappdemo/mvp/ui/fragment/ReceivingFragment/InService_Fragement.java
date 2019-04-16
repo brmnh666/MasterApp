@@ -39,6 +39,7 @@ import com.ying.administrator.masterappdemo.mvp.ui.activity.CompleteWorkOrderAct
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_Add_Accessories_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_details_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.WorkOrderDetailsActivity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.WorkOrderDetailsActivity2;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.In_Service_Adapter;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseFragment;
 import com.ying.administrator.masterappdemo.R;
@@ -147,7 +148,7 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
             public void onItemChildClick(BaseQuickAdapter adapter, View view, final int position) {
                 switch (view.getId()){
                     case R.id.tv_see_detail://完成服务
-                        Intent intent=new Intent(getActivity(), WorkOrderDetailsActivity.class);
+                        Intent intent=new Intent(getActivity(), WorkOrderDetailsActivity2.class);
                         //传递工单号
                         intent.putExtra("OrderID",((WorkOrder.DataBean)adapter.getItem(position)).getOrderID());
                         startActivity(intent);

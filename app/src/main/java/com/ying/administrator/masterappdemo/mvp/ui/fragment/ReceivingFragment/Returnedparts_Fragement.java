@@ -41,6 +41,7 @@ import com.ying.administrator.masterappdemo.mvp.ui.activity.CompleteWorkOrderAct
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_Add_Accessories_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_details_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.WorkOrderDetailsActivity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.WorkOrderDetailsActivity2;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Return_Sheet_Adapter;
 
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Redeploy_Adapter;
@@ -192,7 +193,7 @@ public class Returnedparts_Fragement extends BaseFragment<GetOrderListForMePrese
                         startActivity(intent);
                         break;
                     case R.id.tv_see_detail://查看详情
-                        intent=new Intent(getActivity(), WorkOrderDetailsActivity.class);
+                        intent=new Intent(getActivity(), WorkOrderDetailsActivity2.class);
                         intent.putExtra("OrderID",list.get(position).getOrderID());
                         startActivity(intent);
                         break;
