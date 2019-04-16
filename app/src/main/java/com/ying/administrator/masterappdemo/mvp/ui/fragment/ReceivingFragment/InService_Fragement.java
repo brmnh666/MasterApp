@@ -438,7 +438,7 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
         startActivity(intent);
     }
 
-    /*@Override
+   @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser){
@@ -448,14 +448,14 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
             mPresenter.WorkerGetOrderList(userID,"2",Integer.toString(pageIndex),"5");
         }
 
-    }*/
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    }
+    /*@Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(String message) {
         if (!"2".equals(message)){
             return;
         }
         mPresenter.WorkerGetOrderList(userID, "2", Integer.toString(pageIndex), "5");
-    }
+    }*/
 
     /**
      * 跳转腾讯地图

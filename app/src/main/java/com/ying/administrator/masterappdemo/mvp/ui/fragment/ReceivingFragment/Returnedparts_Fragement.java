@@ -2,6 +2,7 @@ package com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -49,6 +50,8 @@ import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseFra
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 import com.ying.administrator.masterappdemo.widget.CustomDialog_Redeploy;
 import com.ying.administrator.masterappdemo.widget.CustomDialog_UnSuccess;
+import com.zyao89.view.zloading.ZLoadingDialog;
+import com.zyao89.view.zloading.Z_TYPE;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -78,7 +81,8 @@ public class Returnedparts_Fragement extends BaseFragment<GetOrderListForMePrese
     private String SubUserID; //用于存放主账号将要发送子账号的userid
     private String OrderId;//用于记录当前 工单的id
     private Intent intent;
-
+    private boolean isfristin;
+    private ZLoadingDialog dialog;
     public Returnedparts_Fragement() {
         // Required empty public constructor
     }
@@ -109,6 +113,7 @@ public class Returnedparts_Fragement extends BaseFragment<GetOrderListForMePrese
     }
 
     public void initView() {
+        dialog =new ZLoadingDialog(mActivity);
         customDialog_redeploy=new CustomDialog_Redeploy(mActivity);
         recyclerView=view.findViewById(R.id.recyclerview_order_receiving);
         tv_pending_appointment_redeploy=view.findViewById(R.id.tv_pending_appointment_redeploy);
@@ -231,7 +236,8 @@ public class Returnedparts_Fragement extends BaseFragment<GetOrderListForMePrese
 
 
                 }
-
+                isfristin=true;
+                cancleLoading();
 
                 break;
             case 401:
@@ -375,11 +381,43 @@ public class Returnedparts_Fragement extends BaseFragment<GetOrderListForMePrese
                 break;
         }
     }
-    @Subscribe(threadMode = ThreadMode.MAIN)
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser){
+            if (isfristin==false){
+                showLoading();
+            }
+            mPresenter.WorkerGetOrderList(userID,"3",Integer.toString(pageIndex),"5");
+        }
+
+    }
+    /*@Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(String message) {
         if (!"3".equals(message)){
             return;
         }
         mPresenter.WorkerGetOrderList(userID, "3", Integer.toString(pageIndex), "5");
+    }*/
+
+
+
+    public void showLoading(){
+        dialog.setLoadingBuilder(Z_TYPE.ROTATE_CIRCLE)//设置类型
+                .setLoadingColor(Color.BLACK)//颜色
+                .setHintText("正在加载工单...")
+                .setHintTextSize(14) // 设置字体大小 dp
+                .setHintTextColor(Color.BLACK)  // 设置字体颜色
+                .setDurationTime(1) // 设置动画时间百分比 - 0.5倍
+                .setCanceledOnTouchOutside(false)//点击外部无法取消
+                .show();
     }
+
+    public void cancleLoading(){
+        dialog.dismiss();
+
+    }
+
+
 }

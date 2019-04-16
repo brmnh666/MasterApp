@@ -1,5 +1,6 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -147,6 +148,25 @@ public class OrderMessageActivity extends BaseActivity<MyMessagePresenter, MyMes
                     case R.id.ll_order_message:
                         mPresenter.AddOrUpdatemessage(((Message)adapter.getData().get(position)).getMessageID(),"2");
 
+                        Intent intent=new Intent(mActivity,WorkOrderDetailsActivity.class);
+                        intent.putExtra("OrderID",((Message)adapter.getData().get(position)).getOrderID());
+                        startActivity(intent);
+
+                        break;
+
+                }
+            }
+        });
+
+
+        messagereadAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                switch (view.getId()){
+                    case R.id.ll_order_message:
+                        Intent intent=new Intent(mActivity,WorkOrderDetailsActivity.class);
+                        intent.putExtra("OrderID",((Message)adapter.getData().get(position)).getOrderID());
+                        startActivity(intent);
 
                         break;
 

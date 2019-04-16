@@ -376,15 +376,13 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
             case R.id.normal_dfk_ll:
                 bundle = new Bundle();
                 bundle.putString("intent", "pending_appointment");
-                bundle.putInt("position", position);
                 intent = new Intent(mActivity, Order_Receiving_Activity.class);
                 intent.putExtras(bundle);
                 ActivityUtils.startActivity(intent);
                 break;
-            case R.id.normal_dfh_ll:
+            case R.id.normal_dfh_ll:   //待返件
                 bundle = new Bundle();
-                bundle.putString("intent", "return");
-                bundle.putInt("position", 2);
+                bundle.putString("intent", "wait_return");
                 intent = new Intent(mActivity, Order_Receiving_Activity.class);
                 intent.putExtras(bundle);
                 ActivityUtils.startActivity(intent);
@@ -392,7 +390,6 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
             case R.id.normal_dsh_ll:
                 bundle = new Bundle();
                 bundle.putString("intent", "quality");
-                bundle.putInt("position", 4);
                 intent = new Intent(mActivity, Order_Receiving_Activity.class);
                 intent.putExtras(bundle);
                 ActivityUtils.startActivity(intent);
@@ -400,7 +397,6 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
             case R.id.normal_all_ll:
                 bundle = new Bundle();
                 bundle.putString("intent", "completed");
-                bundle.putInt("position", 6);
                 intent = new Intent(mActivity, Order_Receiving_Activity.class);
                 intent.putExtras(bundle);
                 ActivityUtils.startActivity(intent);
