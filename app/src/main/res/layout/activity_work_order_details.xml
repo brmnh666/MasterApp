@@ -137,7 +137,6 @@
                             android:id="@+id/tv_order_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="2018-12-16  13:53:08"
                             android:textColor="#6A6A6A"
                             android:textSize="15sp" />
                     </LinearLayout>
@@ -160,7 +159,6 @@
                             android:id="@+id/tv_work_order_number"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="132165465464"
                             android:textColor="#6A6A6A"
                             android:textSize="15sp" />
 
@@ -185,10 +183,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:textStyle="bold"
-                            android:text="热水器不通电"
                             android:textColor="@color/black"
-                            android:textSize="18sp" />
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:visibility="gone"
@@ -240,7 +237,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="9dp"
-                            android:text="即热式热水器/储水式热水器"
                             android:textColor="#A4A4A4"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -279,7 +275,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="14dp"
-                                android:text="刘波"
                                 android:textColor="@color/black"
                                 android:textSize="15sp" />
 
@@ -289,7 +284,6 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="20dp"
                                 android:layout_marginTop="14dp"
-                                android:text="86-13963560259"
                                 android:textColor="#898989"
                                 android:textSize="15sp" />
                         </LinearLayout>
@@ -300,7 +294,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
                             android:layout_marginRight="20dp"
-                            android:text="山东/聊城市/东昌府区/水城雅居一号楼一单元5楼东户"
                             android:textColor="#333333"
                             android:textSize="15dp" />
                     </LinearLayout>
