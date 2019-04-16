@@ -5,19 +5,12 @@ package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.v4.content.FileProvider;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,10 +36,12 @@ import com.ying.administrator.masterappdemo.mvp.model.WithDrawModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.WithDrawPresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.PopwidowBankAdapter;
 import com.ying.administrator.masterappdemo.util.MyUtils;
+import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,7 +56,7 @@ public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
     @BindView(R.id.tv_title)
     TextView mTvTitle;
     @BindView(R.id.all_withdraw_tv)  //累计提现
-    TextView mAllWithdrawTv;
+            TextView mAllWithdrawTv;
     @BindView(R.id.withdraw_ll)
     LinearLayout mWithdrawLl;
     @BindView(R.id.income_tv)  //累计收入
@@ -76,7 +71,6 @@ public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
             TextView mWithdrawTv;
     @BindView(R.id.amount_to_be_confirmed_tv) //待确认
             TextView mAmountToBeConfirmedTv;
-
 
 
     @BindView(R.id.money_et)
@@ -107,7 +101,6 @@ public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
 */
 
 
-
     @BindView(R.id.wechat_pay_ll)
     LinearLayout mWechatPayLl;
     @BindView(R.id.alipay_ll)
@@ -118,25 +111,34 @@ public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
     LinearLayout mll_choose_withdraw_bank;
     @BindView(R.id.tv_hint)
     TextView mtv_hint;
+    @BindView(R.id.img_wechat)
+    ImageView mImgWechat;
+    @BindView(R.id.img_alipay)
+    ImageView mImgAlipay;
+    @BindView(R.id.img_bank)
+    ImageView mImgBank;
+    @BindView(R.id.view)
+    View mView;
 
 
     private PopwidowBankAdapter popwidowBankAdapter;
     private ImageView img_bankcancle;
     private String userId;
-    private WithDrawMoney withDrawMoney=new WithDrawMoney();
-    private View popupWindow_view ;
+    private WithDrawMoney withDrawMoney = new WithDrawMoney();
+    private View popupWindow_view;
     private View popipwinow_addcard;
     private PopupWindow mPopupWindow;
-    private List<BankCard> list=new ArrayList<>();//获取银行卡列表
+    private List<BankCard> list = new ArrayList<>();//获取银行卡列表
 
 
     private String DrawMoney;
     private String CardNo;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -155,7 +157,7 @@ public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
     @Override
     protected void initView() {
         popupWindow_view = LayoutInflater.from(mActivity).inflate(R.layout.popwindow_choosebank, null);
-        popipwinow_addcard=LayoutInflater.from(mActivity).inflate(R.layout.popwindow_foot_add,null);
+        popipwinow_addcard = LayoutInflater.from(mActivity).inflate(R.layout.popwindow_foot_add, null);
 
         mPopupWindow = new PopupWindow(popupWindow_view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
@@ -291,85 +293,107 @@ public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
                 mMoneyEt.setSelection(mMoneyEt.getText().toString().length()); //光标移到最后
                 break;
             case R.id.ll_choose_withdraw_bank://选择银行
-                showPopupWindow();
-            break;
+                if (list.size()==0){
+                    final CommonDialog_Home dialog = new CommonDialog_Home(mActivity);
+                    dialog.setMessage("是否去添加银行卡")
+                            //.setImageResId(R.mipmap.ic_launcher)
+                            .setTitle("提示")
+                            .setSingle(false).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
+                        @Override
+                        public void onPositiveClick() {//添加银行卡
+                            dialog.dismiss();
+                            startActivity(new Intent(mActivity,Add_Card_Activity.class));
+                        }
+
+                        @Override
+                        public void onNegtiveClick() {//取消
+                            dialog.dismiss();
+                            // Toast.makeText(MainActivity.this,"ssss",Toast.LENGTH_SHORT).show();
+                        }
+                    }).show();
+                }else {
+                    showPopupWindow();
+                }
+
+                break;
             case R.id.confirm_withdrawal_btn: //提交
 
-                if (mMoneyEt.getText().toString().isEmpty()||CardNo==null){
-                    Toast.makeText(WithDrawActivity.this,"请输入金额并选择银行卡",Toast.LENGTH_SHORT).show();
-                }else {
-                    double money= Double.parseDouble(mMoneyEt.getText().toString());
-                    if (money==0){
-                        Toast.makeText(WithDrawActivity.this,"不能提现0元",Toast.LENGTH_SHORT).show();
-                    }else {
-                        DrawMoney=mMoneyEt.getText().toString();
-                        mPresenter.WithDraw(DrawMoney,CardNo,userId);
+                if (mMoneyEt.getText().toString().isEmpty() || CardNo == null) {
+                    Toast.makeText(WithDrawActivity.this, "请输入金额并选择银行卡", Toast.LENGTH_SHORT).show();
+                } else {
+                    double money = Double.parseDouble(mMoneyEt.getText().toString());
+                    if (money == 0) {
+                        Toast.makeText(WithDrawActivity.this, "不能提现0元", Toast.LENGTH_SHORT).show();
+                    } else {
+                        DrawMoney = mMoneyEt.getText().toString();
+                        mPresenter.WithDraw(DrawMoney, CardNo, userId);
                     }
 
-                    }
-
+                }
 
 
                 break;
 
         }
 
-        if (mImgWithdrawBank.isSelected()){
+        if (mImgWithdrawBank.isSelected()) {
             mll_choose_withdraw_bank.setVisibility(View.VISIBLE);
-        }else {
+            mView.setVisibility(View.VISIBLE);
+        } else {
             mll_choose_withdraw_bank.setVisibility(View.GONE);
+            mView.setVisibility(View.GONE);
         }
     }
 
     @Override
     public void GetDepositMoneyDisplay(BaseResult<WithDrawMoney> baseResult) {
-switch (baseResult.getStatusCode()){
-       case 200:
-           if (baseResult.getData()==null){
-               return;
-           }else {
-               withDrawMoney=baseResult.getData();
-               mMarginAmountTv.setText(baseResult.getData().getBzj());
-               mCashWithdrawalAmountTv.setText(baseResult.getData().getKtx());
-               if (baseResult.getData().getTxz()==null){
-                   mWithdrawTv.setText("0.00");
-               }else {
-                   mWithdrawTv.setText(baseResult.getData().getTxz());
-               }
-               //累计提现
-               if (baseResult.getData().getLjtx()==null){
-                   mAllWithdrawTv.setText("0.00");
-               }else {
-                   mAllWithdrawTv.setText(baseResult.getData().getLjtx());
-               }
-               //累计收入
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                if (baseResult.getData() == null) {
+                    return;
+                } else {
+                    withDrawMoney = baseResult.getData();
+                    mMarginAmountTv.setText(baseResult.getData().getBzj());
+                    mCashWithdrawalAmountTv.setText(baseResult.getData().getKtx());
+                    if (baseResult.getData().getTxz() == null) {
+                        mWithdrawTv.setText("0.00");
+                    } else {
+                        mWithdrawTv.setText(baseResult.getData().getTxz());
+                    }
+                    //累计提现
+                    if (baseResult.getData().getLjtx() == null) {
+                        mAllWithdrawTv.setText("0.00");
+                    } else {
+                        mAllWithdrawTv.setText(baseResult.getData().getLjtx());
+                    }
+                    //累计收入
 
-               if (baseResult.getData().getLjsr()==null){
-                   mIncomeTv.setText("0.00");
-               }else {
-                   mIncomeTv.setText(baseResult.getData().getLjsr());
-               }
+                    if (baseResult.getData().getLjsr() == null) {
+                        mIncomeTv.setText("0.00");
+                    } else {
+                        mIncomeTv.setText(baseResult.getData().getLjsr());
+                    }
 
-               mAmountToBeConfirmedTv.setText(baseResult.getData().getDqr());
-           }
+                    mAmountToBeConfirmedTv.setText(baseResult.getData().getDqr());
+                }
 
-        break;
-        default:
-            break;
-}
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
     public void GetAccountPayInfoList(BaseResult<List<BankCard>> baseResult) {
-        switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData()==null){
+                if (baseResult.getData() == null) {
                     return;
-                }else {
+                } else {
                     list.addAll(baseResult.getData());
                     final RecyclerView recyclerView = popupWindow_view.findViewById(R.id.rv_popwindow_bank);
                     recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
-                    popwidowBankAdapter=new PopwidowBankAdapter(R.layout.item_popwindow_bank,list);
+                    popwidowBankAdapter = new PopwidowBankAdapter(R.layout.item_popwindow_bank, list);
                     recyclerView.setAdapter(popwidowBankAdapter);
                     //popwidowBankAdapter.addFooterView(popipwinow_addcard);
 
@@ -384,25 +408,25 @@ switch (baseResult.getStatusCode()){
                         @Override
                         public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
 
-                            for (int i=0;i<list.size();i++){
+                            for (int i = 0; i < list.size(); i++) {
                                 list.get(i).setIscheck(false);
                             }
                             popwidowBankAdapter.notifyDataSetChanged();
 
-                            switch (view.getId()){
+                            switch (view.getId()) {
                                 case R.id.rl_popwindow_bank:
-                                     if (list.get(position).isIscheck()){
-                                         popwidowBankAdapter.notifyDataSetChanged();
-                                     }else {
-                                         list.get(position).setIscheck(true);
-                                         popwidowBankAdapter.notifyDataSetChanged();
+                                    if (list.get(position).isIscheck()) {
+                                        popwidowBankAdapter.notifyDataSetChanged();
+                                    } else {
+                                        list.get(position).setIscheck(true);
+                                        popwidowBankAdapter.notifyDataSetChanged();
 
-                                         mtv_withdraw_bankname.setText(((BankCard)adapter.getData().get(position)).getPayInfoName());
-                                         String cardNo=((BankCard)adapter.getData().get(position)).getPayNo();
-                                         CardNo=cardNo;//赋值给全局变量
-                                         mtv_withdraw_banknum.setText("("+cardNo.substring(cardNo.length()-4,cardNo.length())+")");
-                                         mPopupWindow.dismiss();
-                                     }
+                                        mtv_withdraw_bankname.setText(((BankCard) adapter.getData().get(position)).getPayInfoName());
+                                        String cardNo = ((BankCard) adapter.getData().get(position)).getPayNo();
+                                        CardNo = cardNo;//赋值给全局变量
+                                        mtv_withdraw_banknum.setText("(" + cardNo.substring(cardNo.length() - 4, cardNo.length()) + ")");
+                                        mPopupWindow.dismiss();
+                                    }
 
                                     break;
 
@@ -412,26 +436,26 @@ switch (baseResult.getStatusCode()){
 
                 }
                 break;
-                default:
-                    break;
+            default:
+                break;
         }
     }
 
     @Override
     public void WithDraw(BaseResult<Data<String>> baseResult) {
-    switch (baseResult.getStatusCode()){
-    case 200:
-        if (baseResult.getData().isItem1()){
-            Toast.makeText(this,baseResult.getData().getItem2(),Toast.LENGTH_SHORT).show();
-            EventBus.getDefault().post("GetUserInfoList");
-            WithDrawActivity.this.finish();
-        }else {
-            Toast.makeText(this,baseResult.getData().getItem2(),Toast.LENGTH_SHORT).show();
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                if (baseResult.getData().isItem1()) {
+                    Toast.makeText(this, baseResult.getData().getItem2(), Toast.LENGTH_SHORT).show();
+                    EventBus.getDefault().post("GetUserInfoList");
+                    WithDrawActivity.this.finish();
+                } else {
+                    Toast.makeText(this, baseResult.getData().getItem2(), Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+                break;
         }
-        break;
-        default:
-            break;
-}
 
 
     }
@@ -442,7 +466,7 @@ switch (baseResult.getStatusCode()){
      */
     public void showPopupWindow() {
 
-        img_bankcancle=popupWindow_view.findViewById(R.id.img_bankcancle);
+        img_bankcancle = popupWindow_view.findViewById(R.id.img_bankcancle);
         mPopupWindow.setAnimationStyle(R.style.popwindow_anim_style);
         mPopupWindow.setBackgroundDrawable(new BitmapDrawable(getResources()));
         mPopupWindow.setFocusable(true);
@@ -460,10 +484,25 @@ switch (baseResult.getStatusCode()){
 
         img_bankcancle.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)  {
+            public void onClick(View v) {
                 mPopupWindow.dismiss();
             }
         });
 
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(String message) {
+        if (!"GetAccountPayInfoList".equals(message)){
+            return;
+        }
+        mPresenter.GetAccountPayInfoList(userId);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }
