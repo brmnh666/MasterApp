@@ -313,7 +313,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
     @Override
     protected void initData() {
-        EventBus.getDefault().register(this);
+//        EventBus.getDefault().register(this);
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.ying.administrator.masterappdemo.mvp.model;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
+import com.ying.administrator.masterappdemo.entity.WXpayInfo;
 import com.ying.administrator.masterappdemo.mvp.contract.RechargeContract;
 import com.ying.administrator.masterappdemo.mvp.service.ApiRetrofit;
 
@@ -20,6 +21,18 @@ public class RechargeModel implements RechargeContract.Model {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }
+    @Override
+    public Observable<BaseResult<Data<WXpayInfo>>> GetWXOrderStr(String userid, String TotalAmount) {
+        return ApiRetrofit.getDefault().GetWXOrderStr(userid, TotalAmount,"1")
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+    @Override
+    public Observable<BaseResult<Data<String>>> WXNotifyManual(String OutTradeNo) {
+        return ApiRetrofit.getDefault().WXNotifyManual(OutTradeNo)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
 
     @Override
     public Observable<BaseResult<UserInfo>> GetUserInfoList(String UserID, String limit) {
@@ -27,4 +40,5 @@ public class RechargeModel implements RechargeContract.Model {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }
+
 }

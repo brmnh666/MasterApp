@@ -10,7 +10,6 @@ import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
-import com.xiaomi.mipush.sdk.Constants;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -25,7 +24,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.pay_result);
         
-    	api = WXAPIFactory.createWXAPI(this, Constants.APP_ID);
+    	api = WXAPIFactory.createWXAPI(this, "wxd22da3eb42259071");
         api.handleIntent(getIntent(), this);
     }
 
@@ -44,5 +43,6 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 	public void onResp(BaseResp resp) {
 		Log.d(TAG, "onPayFinish, errCode = " + resp.errCode);
 		EventBus.getDefault().post(resp);
+		finish();
 	}
 }

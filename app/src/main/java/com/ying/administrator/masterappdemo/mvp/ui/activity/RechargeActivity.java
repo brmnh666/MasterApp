@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.alipay.sdk.app.PayTask;
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
@@ -33,6 +34,7 @@ import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.FaceValue;
 import com.ying.administrator.masterappdemo.entity.PayResult;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
+import com.ying.administrator.masterappdemo.entity.WXpayInfo;
 import com.ying.administrator.masterappdemo.mvp.contract.RechargeContract;
 import com.ying.administrator.masterappdemo.mvp.model.RechargeModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.RechargePresenter;
@@ -94,6 +96,7 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
     private String userID;
     private String orderinfo;
     private UserInfo.UserInfoDean userInfo = new UserInfo.UserInfoDean();
+    private WXpayInfo wXpayInfo;
 
     @Override
     protected int setLayoutId() {
@@ -113,7 +116,7 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
     protected void initData() {
         spUtils = SPUtils.getInstance("token");
         userID = spUtils.getString("userName");
-        api = WXAPIFactory.createWXAPI(this, Constants.APP_ID);
+        api = WXAPIFactory.createWXAPI(this, "wxd22da3eb42259071");
         mPresenter.GetUserInfoList(userID, "1");
 
 
@@ -238,6 +241,7 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
 //                        alipay();
                         break;
                     case 2:
+                        mPresenter.GetWXOrderStr(userID,value);
 //                        WXpay();
                         break;
                 }
@@ -279,16 +283,17 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
     /**
      * 微信支付
      */
-    public void WXpay() {
+    public void WXpay(){
+        api.registerApp("wxd22da3eb42259071");
         PayReq req = new PayReq();
-//        req.appId			= json.getString("appid");
-//        req.partnerId		= json.getString("partnerid");
-//        req.prepayId		= json.getString("prepayid");
-//        req.nonceStr		= json.getString("noncestr");
-//        req.timeStamp		= json.getString("timestamp");
-//        req.packageValue	= json.getString("package");
-//        req.sign			= json.getString("sign");
-        req.extData = "app data"; // optional
+        req.appId			= wXpayInfo.getAppid();
+        req.partnerId		= wXpayInfo.getPartnerid();
+        req.prepayId		= wXpayInfo.getPrepayid();
+        req.nonceStr		= wXpayInfo.getNoncestr();
+        req.timeStamp		= wXpayInfo.getTimestamp();
+        req.packageValue	= wXpayInfo.getPackageX();
+        req.sign			= wXpayInfo.getSign();
+        //req.extData			= "app data"; // optional
         api.sendReq(req);
     }
 
@@ -335,6 +340,7 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
     public void Event(BaseResp resp) {
         switch (resp.errCode) {
             case 0:
+                mPresenter.WXNotifyManual(wXpayInfo.getOut_trade_no());
                 ToastUtils.showShort("支付成功");
                 break;
             case -1:
@@ -363,6 +369,30 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
                 ToastUtils.showShort("获取支付信息失败！");
                 break;
         }
+    }
+
+    @Override
+    public void GetWXOrderStr(BaseResult<Data<WXpayInfo>> baseResult) {
+        switch(baseResult.getStatusCode()){
+            case 200:
+                if (baseResult.getData().isItem1()){
+                    wXpayInfo = baseResult.getData().getItem2();
+                    if (wXpayInfo!=null){
+                        WXpay();
+                    }
+                }else{
+                    ToastUtils.showShort("获取支付信息失败！");
+                }
+                break;
+            default:
+                ToastUtils.showShort("获取支付信息失败！");
+                break;
+        }
+    }
+
+    @Override
+    public void WXNotifyManual(BaseResult<Data<String>> baseResult) {
+
     }
 
     @Override

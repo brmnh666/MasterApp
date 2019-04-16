@@ -384,7 +384,7 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
 
     @Override
     protected void initData() {
-        EventBus.getDefault().register(this);
+//        EventBus.getDefault().register(this);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.ying.administrator.masterappdemo.mvp.presenter;
 
 
 import com.ying.administrator.masterappdemo.entity.UserInfo;
+import com.ying.administrator.masterappdemo.entity.WXpayInfo;
 import com.ying.administrator.masterappdemo.mvp.contract.RechargeContract;
 import com.ying.administrator.masterappdemo.base.BaseObserver;
 import com.ying.administrator.masterappdemo.base.BaseResult;
@@ -17,6 +18,26 @@ public class RechargePresenter extends RechargeContract.Presenter {
                     @Override
                     protected void onHandleSuccess(BaseResult<Data<String>> value) {
                         mView.GetOrderStr(value);
+                    }
+                });
+    }
+    @Override
+    public void GetWXOrderStr(String userid, String TotalAmount) {
+        mModel.GetWXOrderStr(userid, TotalAmount)
+                .subscribe(new BaseObserver<Data<WXpayInfo>>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<Data<WXpayInfo>> value) {
+                        mView.GetWXOrderStr(value);
+                    }
+                });
+    }
+    @Override
+    public void WXNotifyManual(String OutTradeNo) {
+        mModel.WXNotifyManual(OutTradeNo)
+                .subscribe(new BaseObserver<Data<String>>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<Data<String>> value) {
+                        mView.WXNotifyManual(value);
                     }
                 });
     }

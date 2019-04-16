@@ -11,6 +11,8 @@ import android.view.inputmethod.InputMethodManager;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.util.TUtil;
 
+import org.greenrobot.eventbus.EventBus;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -33,6 +35,13 @@ public abstract class BaseActivity<P extends BasePresenter, M extends BaseModel>
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 //        EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX);
         super.onCreate(savedInstanceState);
+        try {
+            if (!EventBus.getDefault().isRegistered(this)){
+                EventBus.getDefault().register(this);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 //        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); //竖屏
         setContentView(setLayoutId());
         this.mActivity=this;
@@ -77,6 +86,7 @@ public abstract class BaseActivity<P extends BasePresenter, M extends BaseModel>
       if (mPresenter!=null){
           mPresenter.onDestroy();
       }
+      EventBus.getDefault().unregister(this);
      /*     this.imm = null;
         if (mImmersionBar != null)
             mImmersionBar.destroy();  //在BaseActivity里销毁*/

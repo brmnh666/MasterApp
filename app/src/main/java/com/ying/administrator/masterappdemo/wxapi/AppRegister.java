@@ -7,7 +7,6 @@ import android.content.Intent;
 
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
-import com.xiaomi.mipush.sdk.Constants;
 
 public class AppRegister extends BroadcastReceiver {
 
@@ -15,6 +14,6 @@ public class AppRegister extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		final IWXAPI msgApi = WXAPIFactory.createWXAPI(context, null);
 
-		msgApi.registerApp(Constants.APP_ID);
+		msgApi.registerApp("wxd22da3eb42259071");
 	}
 }
