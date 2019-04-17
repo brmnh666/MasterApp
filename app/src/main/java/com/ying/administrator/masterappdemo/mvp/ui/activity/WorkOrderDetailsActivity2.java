@@ -481,7 +481,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
             public void afterTextChanged(Editable s) {
                 if ("".equals(s.toString())) {
                     mTvSubmitBeyond.setBackgroundResource(R.drawable.tv_order_detail_btn);
-                    mTvSubmitBeyond.setTextColor(Color.BLACK);
+                    mTvSubmitBeyond.setTextColor(Color.parseColor("#6a6a6a"));
                 } else {
                     mTvSubmitBeyond.setBackgroundResource(R.drawable.ed_order_detail_submit);
                     mTvSubmitBeyond.setTextColor(Color.WHITE);
@@ -1121,10 +1121,21 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 mTvProductType.setText(data.getCategoryName() + "/" + data.getBrandName() + "/" + data.getSubCategoryName());
 
                 if (data.getSendOrderList().size() != 0) {
-                    mLlSelectTime.setVisibility(View.VISIBLE);
-                    mView.setVisibility(View.VISIBLE);
-                    mTvSelectTime.setText(data.getSendOrderList().get(0).getServiceDate()+" ~ "+data.getSendOrderList().get(0).getServiceDate2());
-                    mTvSelectTime2.setText(data.getSendOrderList().get(0).getServiceDate2());
+//                    mLlSelectTime.setVisibility(View.VISIBLE);
+//                    mView.setVisibility(View.VISIBLE);
+                    if (data.getSendOrderList().get(0).getServiceDate().isEmpty()) {
+                        mLlSelectTime.setVisibility(View.GONE);
+                        mView.setVisibility(View.GONE);
+                    } else {
+                        mLlSelectTime.setVisibility(View.VISIBLE);
+                        mView.setVisibility(View.VISIBLE);
+                        mTvSelectTime.setText(data.getSendOrderList().get(0).getServiceDate() + " ~ " + data.getSendOrderList().get(0).getServiceDate2());
+                    }
+
+//                    mTvSelectTime2.setText(data.getSendOrderList().get(0).getServiceDate2());
+                } else if (data.getSendOrderList().size() == 0) {
+                    mLlSelectTime.setVisibility(View.GONE);
+                    mView.setVisibility(View.GONE);
                 }
                 if ("1".equals(data.getTypeID())) {//维修
                     mTvType.setText(data.getTypeName() + "/" + data.getGuaranteeText());
@@ -1147,7 +1158,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 if (Service_range >= distance) {
                     mTvRemoteKm.setText("0km");
                     mTvSubmitBeyond.setBackgroundResource(R.drawable.tv_order_detail_btn);
-                    mTvSubmitBeyond.setTextColor(Color.BLACK);
+                    mTvSubmitBeyond.setTextColor(Color.parseColor("#6a6a6a"));
                 } else {
                     mTvRemoteKm.setText(String.format("%.2f", distance - Service_range) + "km");
                     mTvSubmitBeyond.setBackgroundResource(R.drawable.ed_order_detail_submit);
