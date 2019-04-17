@@ -21,6 +21,8 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -52,6 +54,7 @@ import com.google.gson.Gson;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.vondear.rxui.view.dialog.RxDialogScaleView;
 import com.wx.wheelview.widget.WheelView;
 import com.ying.administrator.masterappdemo.R;
@@ -79,6 +82,8 @@ import com.ying.administrator.masterappdemo.mvp.ui.adapter.Pre_order_Add_Ac_Adap
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Pre_order_Add_Service_Adapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.ReturnAccessoryAdapter;
 import com.ying.administrator.masterappdemo.util.MyUtils;
+import com.ying.administrator.masterappdemo.util.calendarutil.CalendarEvent;
+import com.ying.administrator.masterappdemo.util.calendarutil.CalendarProviderManager;
 import com.ying.administrator.masterappdemo.widget.BottomDialog;
 import com.ying.administrator.masterappdemo.widget.ClearEditText;
 import com.ying.administrator.masterappdemo.widget.HideSoftInputDialog;
@@ -89,6 +94,8 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -99,6 +106,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.functions.Consumer;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -300,7 +308,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     @BindView(R.id.rl_complete_submit)
     RelativeLayout mRlCompleteSubmit;
     private String OrderID;
-    private WorkOrder.DataBean data;
+    private WorkOrder.DataBean data=new WorkOrder.DataBean();
     private ReturnAccessoryAdapter returnAccessoryAdapter;
     private GServiceAdapter gServiceAdapter;
     private Intent intent;
@@ -309,7 +317,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     private String ServiceApplyState;
     private String BeyondState;
     private int select_state = -1;
-
+    private long recommendedtime;//上门预约毫秒数
     /*  配件*/
     private List<Accessory> mList = new ArrayList<>();   //存放返回的list
     private Map<Integer, FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> map = new HashMap<>(); //用于存放dialog里选择的配件
@@ -400,6 +408,16 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     @Override
     protected void initData() {
         //EventBus.getDefault().register(this);
+
+   /*     if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_CALENDAR,
+                            Manifest.permission.READ_CALENDAR}, 1);
+        }*/
+
+
+
     }
 
     @Override
@@ -539,7 +557,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     /**
      * 选择上门时间
      */
-    public void chooseTime(final TextView tv, final String title) {
+  /*  public void chooseTime(final TextView tv, final String title) {
         Date date = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String format1 = format.format(date);
@@ -563,22 +581,40 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
 
         timeSelector.setTitle(title);
         timeSelector.show();
-    }
+    }*/
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.view_select_time_point:
+                RxPermissions rxPermissions = new RxPermissions(this);
+                rxPermissions.request(Manifest.permission.WRITE_CALENDAR,Manifest.permission.READ_CALENDAR)
+                        .subscribe(new Consumer<Boolean>() {
+                            @Override
+                            public void accept(Boolean aBoolean) throws Exception {
+                                if (aBoolean) {
+                                    // 获取全部权限成功
+                                    dialogtime();
+
+                                } else {
+                                    // 获取全部权限失败
+                                    Log.d("=====>", "权限获取失败");
+                                }
+                            }
+                        });
+
+
+
 //                chooseTime(mTvSelectTime, "请选择开始时间");
-                dialogtime();
+
                 break;
             case R.id.view_select_time_point2:
-                startTime = mTvSelectTime.getText().toString();
+              /*  startTime = mTvSelectTime.getText().toString();
                 if ("".equals(startTime)) {
                     showToast(mActivity, "请先选择开始时间");
                     return;
-                }
-                chooseTime(mTvSelectTime2, "请选择结束时间");
+                }*/
+                //chooseTime(mTvSelectTime2, "请选择结束时间");
                 break;
             case R.id.tv_submit_add_accessories:
                 submit(1);
@@ -1561,6 +1597,37 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         switch (baseResult.getStatusCode()) {
             case 200:
 
+                if (baseResult.getData().isItem1()){
+
+
+                    if (data.getAddress()==null){
+                        Log.d("=====>","地址为空");
+                    }else {
+                        Log.d("=====>",data.getAddress());
+                    }
+                    CalendarEvent calendarEvent = new CalendarEvent(
+                            data.getTypeName()+"工单号："+data.getOrderID(),
+                            "客户名:"+data.getUserName()+" 客户手机号:"+data.getPhone()+"故障原因"+data.getMemo(),
+                            data.getAddress(),
+                            recommendedtime+43200000,  //暂时从12点开始
+                            recommendedtime + 43260000,   //往后延1分钟
+                            60, null    //提前一个小时提醒  单位分钟
+                    );
+
+                    // 添加事件
+                    int result = CalendarProviderManager.addCalendarEvent(this, calendarEvent);
+                    if (result == 0) {
+                        Toast.makeText(this, "已为您添加行程至日历", Toast.LENGTH_SHORT).show();
+                    } else if (result == -1) {
+                        Toast.makeText(this, "插入失败", Toast.LENGTH_SHORT).show();
+                    } else if (result == -2) {
+                        Toast.makeText(this, "没有权限", Toast.LENGTH_SHORT).show();
+                    }
+
+
+                }
+
+
                 break;
             default:
                 break;
@@ -2043,6 +2110,19 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                             if (endday - startday >= 0) {
                                 start_time = startyear + "/" + startmonth2 + "/" + startday2;
 
+
+                                /*格式化时间*/
+                                DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+                                try {
+                                    recommendedtime = format.parse(start_time).getTime();
+                                } catch (ParseException e) {
+                               // TODO Auto-generated catch block
+                                    e.printStackTrace();
+                                }
+
+
+
+
                                 end_time = endyear + "/" + endmonth2 + "/" + endday2;
 
 //                                Log.e(TAG, "starttime: " + start_time + "/n" + "endtime:" + end_time);
@@ -2084,6 +2164,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 bottomDialog.dismiss();
             }
         });
+
         //防止弹出两个窗口
         if (bottomDialog != null && bottomDialog.isShowing()) {
             return;

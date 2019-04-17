@@ -77,23 +77,8 @@ public class Login_New_Activity extends BaseActivity<LoginPresenter, LoginModel>
     @Override
     protected void initView() {
 
-       /* RxPermissions rxPermissions = new RxPermissions(this);
-        rxPermissions.request(Manifest.permission.READ_PHONE_STATE)
-                .subscribe(new Consumer<Boolean>() {
-                    @Override
-                    public void accept(Boolean aBoolean) throws Exception {
-                        if (aBoolean) {
-                            // 获取全部权限成功
 
 
-
-                        } else {
-                            // 获取全部权限失败
-                            Log.d("=====>", "权限获取失败");
-                        }
-                    }
-                });
-*/
 
     }
 
