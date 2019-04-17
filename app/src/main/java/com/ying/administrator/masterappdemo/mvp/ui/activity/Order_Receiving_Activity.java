@@ -26,6 +26,7 @@ import com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment.Wa
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
@@ -81,9 +82,14 @@ public class Order_Receiving_Activity extends BaseActivity implements View.OnCli
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-/*        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_order_receiving);*/
-        EventBus.getDefault().register(this);
+/*
+
+        if (!EventBus.getDefault().isRegistered(this))
+        {
+            EventBus.getDefault().register(this);
+        }
+*/
+
         ButterKnife.bind(this);
     }
 
@@ -287,15 +293,11 @@ public class Order_Receiving_Activity extends BaseActivity implements View.OnCli
         mReceivingViewpager.setOffscreenPageLimit(mFragments.size());
         mTabReceivingLayout.setViewPager(mReceivingViewpager);
 
+        mTabReceivingLayout.showDot(1);
+        mTabReceivingLayout.showDot(2);
+        mTabReceivingLayout.showDot(3);
         mTabReceivingLayout.showDot(4);
-
-        mTabReceivingLayout.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-            @Override
-            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-
-            }
-        });
-
+        mTabReceivingLayout.showDot(5);
 
         String intent = getIntent().getStringExtra("intent");
         switch (intent){
@@ -355,7 +357,7 @@ public class Order_Receiving_Activity extends BaseActivity implements View.OnCli
 
 
     //任意写一个方法，给这个方法一个@Subscribe注解，参数类型可以自定义，但是一定要与你发出的类型相同
-    @Subscribe
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void getEventBus(Integer num) {
         switch (num) {
             case 2:

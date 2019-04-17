@@ -138,7 +138,7 @@ public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-        EventBus.getDefault().register(this);
+        //EventBus.getDefault().register(this);
     }
 
     @Override

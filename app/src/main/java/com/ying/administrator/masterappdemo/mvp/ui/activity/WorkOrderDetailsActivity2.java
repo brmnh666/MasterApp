@@ -399,7 +399,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
 
     @Override
     protected void initData() {
-        EventBus.getDefault().register(this);
+        //EventBus.getDefault().register(this);
     }
 
     @Override
