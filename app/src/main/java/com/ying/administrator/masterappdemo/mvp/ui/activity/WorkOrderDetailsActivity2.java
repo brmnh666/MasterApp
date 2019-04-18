@@ -1160,13 +1160,12 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 mTvAccessoryMoney.setText("￥" + data.getAccessoryMoney());
                 mTvServiceMoney.setText("￥" + data.getServiceMoney());
                 mTvOrderMoney.setText("￥" + data.getOrderMoney() + "");
-
-                mTvTotalPrice.setVisibility(View.GONE);
-                if ("1".equals(data.getAccessoryApplyState())){
-                    mTvServiceAmount.setText("服务金额：￥" + data.getAccessoryMoney());
+                if (data.getAccessoryMoney()!=null&&!"0.00".equals(data.getAccessoryMoney())){
+                    mTvServiceAmount.setText("服务金额：￥" + (Double.parseDouble(data.getAccessoryMoney())+Double.parseDouble(data.getBeyondMoney())+Double.parseDouble(data.getPostMoney())) + "");
                 }else{
-                    mTvServiceAmount.setText("服务金额：￥" + data.getOrderMoney());
+                    mTvServiceAmount.setText("服务金额：￥" + data.getOrderMoney() + "");
                 }
+                mTvTotalPrice.setVisibility(View.GONE);
                 if (!"0.00".equals(data.getPostMoney())&&data.getPostMoney()!=null){
                     mLlPostMoney.setVisibility(View.VISIBLE);
                     mTvPostMoney.setText("￥" +data.getPostMoney());
