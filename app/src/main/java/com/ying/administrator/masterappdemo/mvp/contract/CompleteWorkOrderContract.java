@@ -29,7 +29,7 @@ public interface CompleteWorkOrderContract {
         Observable<BaseResult<Data<String>>> UpdateOrderState(String OrderID,String State);
 
         //提交快递信息
-        Observable<BaseResult<Data<String>>> AddReturnAccessory(String OrderID,String ReturnAccessoryMsg);
+        Observable<BaseResult<Data<String>>> AddReturnAccessory(String OrderID,String ReturnAccessoryMsg,String PostMoney);
     }
 
     interface View extends BaseView{
@@ -71,6 +71,6 @@ public interface CompleteWorkOrderContract {
        public abstract void UpdateOrderState(String OrderID,String State);
 
        //提交快递信息
-       public abstract void AddReturnAccessory(String OrderID,String ReturnAccessoryMsg);
+       public abstract void AddReturnAccessory(String OrderID,String ReturnAccessoryMsg,String PostMoney);
    }
 }

@@ -182,6 +182,7 @@ public class WorkOrder implements Serializable {
         private String ServiceMoney;
         private String ReturnAccessory;
         private String ReturnAccessoryMsg;
+        private String PostMoney;
         private String ApplyCancel;
         private String UpdateTime;
         private String OrderPayStr;
@@ -209,6 +210,14 @@ public class WorkOrder implements Serializable {
         private String page;
         private String limit;
         private String Version;
+
+        public String getPostMoney() {
+            return PostMoney;
+        }
+
+        public void setPostMoney(String postMoney) {
+            PostMoney = postMoney;
+        }
 
         public String getIsReturn() {
             return IsReturn;

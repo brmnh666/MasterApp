@@ -118,8 +118,8 @@ public class PendingOrderModel implements PendingOrderContract.Model {
                 .subscribeOn(Schedulers.io());
     }
     @Override
-    public Observable<BaseResult<Data<String>>> AddReturnAccessory(String OrderID,String ReturnAccessoryMsg) {
-        return ApiRetrofit.getDefault().AddReturnAccessory(OrderID, ReturnAccessoryMsg)
+    public Observable<BaseResult<Data<String>>> AddReturnAccessory(String OrderID,String ReturnAccessoryMsg,String PostMoney) {
+        return ApiRetrofit.getDefault().AddReturnAccessory(OrderID, ReturnAccessoryMsg, PostMoney)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

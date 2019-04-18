@@ -425,9 +425,9 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 
                     } else {
 
-                        if (!mEtExpressName.getText().toString().equals("") && mEtSingleNumber.getText().toString().equals("")) {
-                            mPresenter.AddReturnAccessory(orderID, mEtSingleNumber.getText().toString() + mEtExpressName.getText().toString());
-                        }
+//                        if (!mEtExpressName.getText().toString().equals("") && mEtSingleNumber.getText().toString().equals("")) {
+//                            mPresenter.AddReturnAccessory(orderID, mEtSingleNumber.getText().toString() + mEtExpressName.getText().toString());
+//                        }
                         ReuturnAccessoryPicUpload(return_img_map);
                     }
                 }

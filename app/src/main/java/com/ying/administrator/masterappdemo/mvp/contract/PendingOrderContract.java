@@ -57,7 +57,7 @@ public interface PendingOrderContract {
 
         Observable<BaseResult<Data<String>>> PressFactoryAccount(String OrderID,String Content);
         //提交快递信息
-        Observable<BaseResult<Data<String>>> AddReturnAccessory(String OrderID,String ReturnAccessoryMsg);
+        Observable<BaseResult<Data<String>>> AddReturnAccessory(String OrderID,String ReturnAccessoryMsg,String PostMoney);
 
         //修改订单状态
         Observable<BaseResult<Data<String>>> UpdateOrderState(String OrderID,String State);
@@ -137,7 +137,7 @@ public interface PendingOrderContract {
         //申请远程费
         public abstract void ApplyBeyondMoney(String OrderID,String BeyondMoney,String BeyondDistance);
         public abstract void PressFactoryAccount(String OrderID,String Content);
-        public abstract void AddReturnAccessory(String OrderID,String ReturnAccessoryMsg);
+        public abstract void AddReturnAccessory(String OrderID,String ReturnAccessoryMsg,String PostMoney);
 
         public abstract void UpdateOrderState(String OrderID,String State);
     }

@@ -21,8 +21,6 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -88,7 +86,6 @@ import com.ying.administrator.masterappdemo.widget.BottomDialog;
 import com.ying.administrator.masterappdemo.widget.ClearEditText;
 import com.ying.administrator.masterappdemo.widget.HideSoftInputDialog;
 
-import org.feezu.liuli.timeselector.TimeSelector;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -307,8 +304,12 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     TextView mTvServiceAmount;
     @BindView(R.id.rl_complete_submit)
     RelativeLayout mRlCompleteSubmit;
+    @BindView(R.id.tv_post_money)
+    TextView mTvPostMoney;
+    @BindView(R.id.ll_post_money)
+    LinearLayout mLlPostMoney;
     private String OrderID;
-    private WorkOrder.DataBean data=new WorkOrder.DataBean();
+    private WorkOrder.DataBean data = new WorkOrder.DataBean();
     private ReturnAccessoryAdapter returnAccessoryAdapter;
     private GServiceAdapter gServiceAdapter;
     private Intent intent;
@@ -392,12 +393,15 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     private TextView tv_message;
     private EditText etContent;
     private AlertDialog push_dialog;
-    private TextView et_expressno;
+    private EditText et_expressno;
     private LinearLayout ll_scan;
     private String expressno;
 
     private String startTime;
     private String endTime;
+    private EditText et_post_money;
+    private String post_money;
+    private LinearLayout ll_post_money;
 
 
     @Override
@@ -415,7 +419,6 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     new String[]{Manifest.permission.WRITE_CALENDAR,
                             Manifest.permission.READ_CALENDAR}, 1);
         }*/
-
 
 
     }
@@ -582,13 +585,12 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         timeSelector.setTitle(title);
         timeSelector.show();
     }*/
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.view_select_time_point:
                 RxPermissions rxPermissions = new RxPermissions(this);
-                rxPermissions.request(Manifest.permission.WRITE_CALENDAR,Manifest.permission.READ_CALENDAR)
+                rxPermissions.request(Manifest.permission.WRITE_CALENDAR, Manifest.permission.READ_CALENDAR)
                         .subscribe(new Consumer<Boolean>() {
                             @Override
                             public void accept(Boolean aBoolean) throws Exception {
@@ -602,7 +604,6 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                                 }
                             }
                         });
-
 
 
 //                chooseTime(mTvSelectTime, "请选择开始时间");
@@ -759,12 +760,19 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 btn_positive = puchsh_view.findViewById(R.id.positive);
                 tv_title = puchsh_view.findViewById(R.id.title);
                 et_expressno = puchsh_view.findViewById(R.id.et_expressno);
+                et_post_money = puchsh_view.findViewById(R.id.et_post_money);
+                ll_post_money = puchsh_view.findViewById(R.id.ll_post_money);
                 ll_scan = puchsh_view.findViewById(R.id.ll_scan);
                 push_dialog = new AlertDialog.Builder(mActivity)
                         .setView(puchsh_view)
                         .create();
                 push_dialog.show();
                 tv_title.setText("填写快递单号");
+                if ("2".equals(data.getPostPayType())) {
+                    ll_post_money.setVisibility(View.VISIBLE);
+                } else {
+                    ll_post_money.setVisibility(View.GONE);
+                }
                 btn_negtive.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -775,11 +783,20 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     @Override
                     public void onClick(View v) {
                         expressno = et_expressno.getText().toString().trim();
+                        if ("2".equals(data.getPostPayType())) {
+                            post_money = et_post_money.getText().toString().trim();
+                            if ("".equals(post_money)) {
+                                showToast(mActivity, "请填写邮费");
+                                return;
+                            }
+                        } else {
+                            post_money = "0";
+                        }
                         if ("".equals(expressno)) {
                             showToast(mActivity, "请填写快递单号");
                             return;
                         }
-                        mPresenter.AddReturnAccessory(OrderID, expressno);
+                        mPresenter.AddReturnAccessory(OrderID, expressno, post_money);
                     }
                 });
 
@@ -1145,7 +1162,18 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 mTvOrderMoney.setText("￥" + data.getOrderMoney() + "");
 
                 mTvTotalPrice.setVisibility(View.GONE);
-//                mTvTotalPrice.setText("服务金额：￥" + data.getOrderMoney());
+                if ("1".equals(data.getAccessoryApplyState())){
+                    mTvServiceAmount.setText("服务金额：￥" + data.getAccessoryMoney());
+                }else{
+                    mTvServiceAmount.setText("服务金额：￥" + data.getOrderMoney());
+                }
+                if (!"0.00".equals(data.getPostMoney())&&data.getPostMoney()!=null){
+                    mLlPostMoney.setVisibility(View.VISIBLE);
+                    mTvPostMoney.setText("￥" +data.getPostMoney());
+                }else{
+                    mLlPostMoney.setVisibility(View.GONE);
+                }
+
                 mTvAccessoryMemo.setText("备注：" + data.getAccessoryMemo());
                 mTvAccessorySequency.setText(data.getAccessorySequencyStr());
                 mTvName.setText(data.getUserName());
@@ -1597,19 +1625,19 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         switch (baseResult.getStatusCode()) {
             case 200:
 
-                if (baseResult.getData().isItem1()){
+                if (baseResult.getData().isItem1()) {
 
 
-                    if (data.getAddress()==null){
-                        Log.d("=====>","地址为空");
-                    }else {
-                        Log.d("=====>",data.getAddress());
+                    if (data.getAddress() == null) {
+                        Log.d("=====>", "地址为空");
+                    } else {
+                        Log.d("=====>", data.getAddress());
                     }
                     CalendarEvent calendarEvent = new CalendarEvent(
-                            data.getTypeName()+"工单号："+data.getOrderID(),
-                            "客户名:"+data.getUserName()+" 客户手机号:"+data.getPhone()+"故障原因"+data.getMemo(),
+                            data.getTypeName() + "工单号：" + data.getOrderID(),
+                            "客户名:" + data.getUserName() + " 客户手机号:" + data.getPhone() + "故障原因" + data.getMemo(),
                             data.getAddress(),
-                            recommendedtime+43200000,  //暂时从12点开始
+                            recommendedtime + 43200000,  //暂时从12点开始
                             recommendedtime + 43260000,   //往后延1分钟
                             60, null    //提前一个小时提醒  单位分钟
                     );
@@ -2116,11 +2144,9 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                                 try {
                                     recommendedtime = format.parse(start_time).getTime();
                                 } catch (ParseException e) {
-                               // TODO Auto-generated catch block
+                                    // TODO Auto-generated catch block
                                     e.printStackTrace();
                                 }
-
-
 
 
                                 end_time = endyear + "/" + endmonth2 + "/" + endday2;

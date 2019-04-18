@@ -75,8 +75,8 @@ public class CompleteWorkOrderPresenter extends CompleteWorkOrderContract.Presen
     }
 
     @Override
-    public void AddReturnAccessory(String OrderID, String ReturnAccessoryMsg) {
-        mModel.AddReturnAccessory(OrderID,ReturnAccessoryMsg).subscribe(new BaseObserver<Data<String>>() {
+    public void AddReturnAccessory(String OrderID, String ReturnAccessoryMsg,String PostMoney) {
+        mModel.AddReturnAccessory(OrderID,ReturnAccessoryMsg, PostMoney).subscribe(new BaseObserver<Data<String>>() {
             @Override
             protected void onHandleSuccess(BaseResult<Data<String>> value) {
                 mView.AddReturnAccessory(value);

@@ -312,7 +312,9 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("Order/AddReturnAccessory")
     Observable<BaseResult<Data<String>>> AddReturnAccessory(@Field("OrderID") String OrderID,
-                                                            @Field("ReturnAccessoryMsg") String ReturnAccessoryMsg);
+                                                            @Field("ReturnAccessoryMsg") String ReturnAccessoryMsg,
+                                                            @Field("PostMoney") String PostMoney
+    );
 
      @FormUrlEncoded
     @POST("Order/UpdateOrderState")
