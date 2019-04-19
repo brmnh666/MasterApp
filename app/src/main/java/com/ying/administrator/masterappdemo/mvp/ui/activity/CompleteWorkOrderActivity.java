@@ -258,6 +258,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 //                    }else{
 //                        mPresenter.UpdateOrderState(orderID, "5");
 //                    }
+                    mPresenter.UpdateOrderState(orderID, "5");
                 } else {
                     cancleLoading();
                 }

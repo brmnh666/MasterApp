@@ -1392,25 +1392,29 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     mLlService.setVisibility(View.GONE);
                     mLlAddService.setVisibility(View.VISIBLE);
                 }
-
-                if ("1".equals(data.getAccessoryApplyState())) {
-                    mLlOldAccessory.setVisibility(View.VISIBLE);
-                    if ("1".equals(data.getIsReturn())) {
-                        mTvYn.setText("是");
-                        mLlAddressInfo.setVisibility(View.VISIBLE);
-                        mTvAddressback.setText(data.getAddressBack());
-                        if ("1".equals(data.getPostPayType())) {
-                            mTvPostpaytype.setText("厂商到付");
+                if ("2".equals(data.getTypeID())){
+                    mLlOldAccessory.setVisibility(View.GONE);
+                }else{
+                    if ("1".equals(data.getAccessoryApplyState())) {
+                        mLlOldAccessory.setVisibility(View.VISIBLE);
+                        if ("1".equals(data.getIsReturn())) {
+                            mTvYn.setText("是");
+                            mLlAddressInfo.setVisibility(View.VISIBLE);
+                            mTvAddressback.setText(data.getAddressBack());
+                            if ("1".equals(data.getPostPayType())) {
+                                mTvPostpaytype.setText("厂商到付");
+                            } else {
+                                mTvPostpaytype.setText("维修商现付");
+                            }
                         } else {
-                            mTvPostpaytype.setText("维修商现付");
+                            mTvYn.setText("否");
+                            mLlAddressInfo.setVisibility(View.GONE);
                         }
                     } else {
-                        mTvYn.setText("否");
-                        mLlAddressInfo.setVisibility(View.GONE);
+                        mLlOldAccessory.setVisibility(View.GONE);
                     }
-                } else {
-                    mLlOldAccessory.setVisibility(View.GONE);
                 }
+
 
                 if ("5".equals(data.getState()) || "6".equals(data.getState()) || "7".equals(data.getState())) {
                     mBtnCompleteSubmit.setVisibility(View.GONE);
