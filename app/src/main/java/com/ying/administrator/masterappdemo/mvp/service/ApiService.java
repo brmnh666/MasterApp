@@ -19,6 +19,7 @@ import com.ying.administrator.masterappdemo.entity.IDCard;
 import com.ying.administrator.masterappdemo.entity.Message;
 import com.ying.administrator.masterappdemo.entity.MessageData;
 import com.ying.administrator.masterappdemo.entity.Province;
+import com.ying.administrator.masterappdemo.entity.RedPointData;
 import com.ying.administrator.masterappdemo.entity.Service;
 import com.ying.administrator.masterappdemo.entity.Skill;
 import com.ying.administrator.masterappdemo.entity.SubUserInfo;
@@ -670,5 +671,19 @@ public interface ApiService {
     @POST("Cms/AddOrUpdatemessage")
     Observable<BaseResult<Data<String>>> AddOrUpdatemessage(@Field("MessageID") String MessageID,
                                                             @Field("IsLook") String IsLook);
+
+
+    /*获取状态改变小红点*/
+    @FormUrlEncoded
+    @POST("Order/WorkerGetOrderRed")
+    Observable<BaseResult<RedPointData>> WorkerGetOrderRed(@Field("UserID") String UserID);
+
+    /*更新工单消息为已读*/
+
+
+    @FormUrlEncoded
+    @POST("Order/UpdateOrderIsLook")
+    Observable<BaseResult<Data<String>>> UpdateOrderIsLook(@Field("OrderID") String OrderID,
+                                                           @Field("IsLook") String IsLook);
 
 }

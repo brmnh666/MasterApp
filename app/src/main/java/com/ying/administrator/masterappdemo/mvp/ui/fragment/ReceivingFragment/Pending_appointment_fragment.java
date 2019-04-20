@@ -573,6 +573,11 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
 
     }
 
+    @Override
+    public void UpdateOrderIsLook(BaseResult<Data<String>> baseResult) {
+
+    }
+
 
     @Override
     public void contentLoading() {

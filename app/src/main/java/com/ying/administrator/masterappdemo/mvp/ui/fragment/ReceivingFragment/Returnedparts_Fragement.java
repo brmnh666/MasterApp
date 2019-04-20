@@ -31,6 +31,7 @@ import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.SubUserInfo;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
@@ -53,6 +54,7 @@ import com.ying.administrator.masterappdemo.widget.CustomDialog_UnSuccess;
 import com.zyao89.view.zloading.ZLoadingDialog;
 import com.zyao89.view.zloading.Z_TYPE;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -198,6 +200,8 @@ public class Returnedparts_Fragement extends BaseFragment<GetOrderListForMePrese
                         startActivity(intent);
                         break;
                     case R.id.tv_see_detail://查看详情
+
+                        mPresenter.UpdateOrderIsLook(list.get(position).getOrderID(),"2");
                         intent=new Intent(getActivity(), WorkOrderDetailsActivity2.class);
                         intent.putExtra("OrderID",list.get(position).getOrderID());
                         startActivity(intent);
@@ -380,6 +384,21 @@ public class Returnedparts_Fragement extends BaseFragment<GetOrderListForMePrese
                 }
                 break;
         }
+    }
+
+    @Override
+    public void UpdateOrderIsLook(BaseResult<Data<String>> baseResult) {
+        switch (baseResult.getStatusCode()){
+            case 200:
+                if (baseResult.getData().isItem1()){
+                    EventBus.getDefault().post(Config.ORDER_READ);
+                }
+                break;
+                default:
+                    break;
+        }
+
+
     }
 
     @Override

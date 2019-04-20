@@ -37,7 +37,7 @@ public interface GetOrderListForMeContract {
         Observable<BaseResult<Data<String>>> UpdateContinueServiceState(String OrderID);
         Observable<BaseResult<Data<String>>> PressFactoryAccount(String OrderID,String Content);
 
-
+         Observable<BaseResult<Data<String>>> UpdateOrderIsLook(String OrderID,String IsLook);
 
     }
 
@@ -66,6 +66,8 @@ public interface GetOrderListForMeContract {
 
         void UpdateContinueServiceState(BaseResult<Data<String>> baseResult);
         void PressFactoryAccount(BaseResult<Data<String>> baseResult);
+
+        void UpdateOrderIsLook(BaseResult<Data<String>> baseResult);
     }
 
     abstract class Presenter extends BasePresenter<View,Model> {
@@ -86,5 +88,7 @@ public interface GetOrderListForMeContract {
 
         public abstract void UpdateContinueServiceState(String OrderID);
         public abstract void PressFactoryAccount(String OrderID,String Content);
+
+        public abstract void UpdateOrderIsLook(String OrderID,String IsLook);
     }
 }

@@ -112,4 +112,15 @@ public class GetOrderListForMePresenter extends GetOrderListForMeContract.Presen
                     }
                 });
     }
+
+    @Override
+    public void UpdateOrderIsLook(String OrderID, String IsLook) {
+        mModel.UpdateOrderIsLook(OrderID, IsLook)
+                .subscribe(new BaseObserver<Data<String>>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<Data<String>> value) {
+                        mView.UpdateOrderIsLook(value);
+                    }
+                });
+    }
 }

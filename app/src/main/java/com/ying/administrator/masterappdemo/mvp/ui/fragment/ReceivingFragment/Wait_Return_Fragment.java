@@ -365,6 +365,11 @@ public class Wait_Return_Fragment extends BaseFragment<GetOrderListForMePresente
         }
     }
 
+    @Override
+    public void UpdateOrderIsLook(BaseResult<Data<String>> baseResult) {
+
+    }
+
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {

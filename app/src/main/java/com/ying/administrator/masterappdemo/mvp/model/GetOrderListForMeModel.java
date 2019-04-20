@@ -81,4 +81,11 @@ public class GetOrderListForMeModel implements GetOrderListForMeContract.Model {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }
+
+    @Override
+    public Observable<BaseResult<Data<String>>> UpdateOrderIsLook(String OrderID, String IsLook) {
+        return  ApiRetrofit.getDefault().UpdateOrderIsLook(OrderID, IsLook)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
 }

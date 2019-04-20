@@ -295,6 +295,11 @@ public class Completed_Fragement extends BaseFragment<GetOrderListForMePresenter
 
     }
 
+    @Override
+    public void UpdateOrderIsLook(BaseResult<Data<String>> baseResult) {
+
+    }
+
 
     @Override
     public void contentLoading() {
