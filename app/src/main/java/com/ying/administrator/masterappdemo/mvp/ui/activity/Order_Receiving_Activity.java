@@ -238,21 +238,17 @@ public class Order_Receiving_Activity extends BaseActivity<ReceivingPresenter, R
                  if (baseResult.getData()!=null){
                      String data=baseResult.getData().getData();
                      for (int i =0;i<data.length();i++){
-
                          char c=baseResult.getData().getData().charAt(i);
-                         if (c!='n'){
+                          if (c!='n'){
                              mTabReceivingLayout.showDot(i);
-                         }else {
-                             mTabReceivingLayout.hideMsg(i);
-                         }
-
+                          }else {
+                              mTabReceivingLayout.hideMsg(i);
+                          }
                      }
                  }
                  else {
                         return;
                  }
-
-
                 break;
                 default:
                     break;

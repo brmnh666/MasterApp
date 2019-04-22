@@ -319,6 +319,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     private String BeyondState;
     private int select_state = -1;
     private long recommendedtime;//上门预约毫秒数
+    private long finishrecomendedtime;//结束时间毫秒数
     /*  配件*/
     private List<Accessory> mList = new ArrayList<>();   //存放返回的list
     private Map<Integer, FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> map = new HashMap<>(); //用于存放dialog里选择的配件
@@ -413,12 +414,6 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     protected void initData() {
         //EventBus.getDefault().register(this);
 
-   /*     if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.WRITE_CALENDAR,
-                            Manifest.permission.READ_CALENDAR}, 1);
-        }*/
 
 
     }
@@ -1640,8 +1635,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                             data.getTypeName() + "工单号：" + data.getOrderID(),
                             "客户名:" + data.getUserName() + " 客户手机号:" + data.getPhone() + "故障原因" + data.getMemo(),
                             data.getAddress(),
-                            recommendedtime + 43200000,  //暂时从12点开始
-                            recommendedtime + 43260000,   //往后延1分钟
+                            recommendedtime,
+                            finishrecomendedtime,
                             60, null    //提前一个小时提醒  单位分钟
                     );
 
@@ -2042,33 +2037,43 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
 
     private void dialogtime() {
         WheelView.WheelViewStyle style = new WheelView.WheelViewStyle();
-        style.selectedTextColor = Color.parseColor("#1A1A1A");//选中字体颜色
+        WheelView.WheelViewStyle style2 = new WheelView.WheelViewStyle();
+        style.selectedTextColor = Color.parseColor("#1690FF");//选中字体颜色
         style.textColor = Color.parseColor("#ABABAB");//未选中字体颜色
 
-
+        style2.selectedTextColor=Color.parseColor("#FF0000");//结束选中时间颜色
+        style2.textColor = Color.parseColor("#ABABAB");//未选中字体颜色
         View out_view = LayoutInflater.from(mActivity).inflate(R.layout.dialog_time, null);
         //日期滚轮
         final WheelView start_year = out_view.findViewById(R.id.start_year);
         final WheelView start_month = out_view.findViewById(R.id.start_month);
         final WheelView start_day = out_view.findViewById(R.id.start_day);
+        final WheelView start_hour =out_view.findViewById(R.id.start_hour);
+
         final WheelView end_year = out_view.findViewById(R.id.end_year);
         final WheelView end_month = out_view.findViewById(R.id.end_month);
         final WheelView end_day = out_view.findViewById(R.id.end_day);
+        final WheelView end_hour = out_view.findViewById(R.id.end_hour);
+
         TextView tv_ok = out_view.findViewById(R.id.tv_ok);
         TextView tv_cancel = out_view.findViewById(R.id.tv_cancel);
         start_year.setStyle(style);
         start_month.setStyle(style);
         start_day.setStyle(style);
-        end_year.setStyle(style);
-        end_month.setStyle(style);
-        end_day.setStyle(style);
+        start_hour.setStyle(style);
+
+        end_year.setStyle(style2);
+        end_month.setStyle(style2);
+        end_day.setStyle(style2);
+        end_hour.setStyle(style2);
 
         // 格式化当前时间，并转换为年月日整型数据
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH", Locale.getDefault());
         String[] split = sdf.format(new Date()).split("-");
         int currentYear = Integer.parseInt(split[0]);
         int currentMonth = Integer.parseInt(split[1]);
         int currentDay = Integer.parseInt(split[2]);
+        int currentHour = Integer.parseInt(split[3]);
         //开始时间
         start_year.setWheelAdapter(new MyWheelAdapter(mActivity));
         start_year.setWheelData(getYearData(currentYear));
@@ -2079,6 +2084,10 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         start_day.setWheelAdapter(new MyWheelAdapter(mActivity));
         start_day.setWheelData(getDayData(getLastDay(currentYear, currentMonth)));
         start_day.setSelection(currentDay - 1);
+        start_hour.setWheelAdapter(new MyWheelAdapter(mActivity));
+        start_hour.setWheelData(getHourData());
+        start_hour.setSelection(currentHour - 1);
+
         //结束时间
         end_year.setWheelAdapter(new MyWheelAdapter(mActivity));
         end_year.setWheelData(getYearData(currentYear));
@@ -2090,6 +2099,9 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         end_day.setWheelData(getDayData(getLastDay(currentYear, currentMonth)));
         end_day.setSelection(currentDay - 1);
 
+        end_hour.setWheelAdapter(new MyWheelAdapter(mActivity));
+        end_hour.setWheelData(getHourData());
+        end_hour.setSelection(currentHour - 1);
 
         //确定
         tv_ok.setOnClickListener(new View.OnClickListener() {
@@ -2097,95 +2109,81 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
             public void onClick(View v) {
                 bottomDialog.dismiss();
                 String start_time;
-                String end_time;
-                Object startyear1 = start_year.getSelectionItem();
-                Object startmonth1 = start_month.getSelectionItem();
-                Object startday1 = start_day.getSelectionItem();
-                Object endyear1 = end_year.getSelectionItem();
-                Object endmonth1 = end_month.getSelectionItem();
-                Object endday1 = end_day.getSelectionItem();
-                int startyear = Integer.valueOf(String.valueOf(startyear1));
-                int startmonth = Integer.valueOf(String.valueOf(startmonth1));
-                int startday = Integer.valueOf(String.valueOf(startday1));
-                String startmonth2;
-                if (startmonth < 10) {
-                    startmonth2 = "0" + String.valueOf(+startmonth);
-                } else {
-                    startmonth2 = String.valueOf(startmonth);
-                }
-                String startday2;
-                if (startday < 10) {
-                    startday2 = "0" + String.valueOf(startday);
-                } else {
-                    startday2 = String.valueOf(startday);
-                }
-                int endyear = Integer.valueOf(String.valueOf(endyear1));
-                int endmonth = Integer.valueOf(String.valueOf(endmonth1));
-                int endday = Integer.valueOf(String.valueOf(endday1));
-                String endmonth2;
-                if (endmonth < 10) {
-                    endmonth2 = "0" + String.valueOf(endmonth);
-                } else {
-                    endmonth2 = String.valueOf(endmonth);
-                }
-                String endday2;
-                if (endday < 10) {
-                    endday2 = "0" + String.valueOf(endday);
-                } else {
-                    endday2 = String.valueOf(endday);
+                String startyear = String.valueOf(start_year.getSelectionItem());
+                String startmonth = String.valueOf(start_month.getSelectionItem());
+
+                if ( Integer.parseInt(startmonth)<10){
+                    startmonth="0"+startmonth;
                 }
 
-                if (endyear - startyear == 0) {
-                    if (endmonth - startmonth <= 2 && endmonth - startmonth >= 0) {
-                        if (endmonth - startmonth == 0) {
-                            if (endday - startday >= 0) {
-                                start_time = startyear + "/" + startmonth2 + "/" + startday2;
+                String startday = String.valueOf(start_day.getSelectionItem());
+
+                if ( Integer.parseInt(startday)<10){
+                    startday="0"+startday;
+                }
+
+                String starthour= String.valueOf(start_hour.getSelectionItem());
+
+                if ( Integer.parseInt(starthour)<10){
+                    starthour="0"+starthour;
+                }
+
+                start_time=startyear+startmonth+startday+starthour;
+
+                        //*格式化时间*//*
+                DateFormat format = new SimpleDateFormat("yyyyMMddHH");
+                try {
+                    recommendedtime = format.parse(start_time).getTime();
+                } catch (ParseException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                String endyear = String.valueOf(end_year.getSelectionItem());
+                String endmonth = String.valueOf(end_month.getSelectionItem());
+
+                if ( Integer.parseInt(endmonth)<10){
+                    endmonth="0"+endmonth;
+                }
+
+                String endday = String.valueOf(end_day.getSelectionItem());
+
+                if ( Integer.parseInt(endday)<10){
+                    endday="0"+endday;
+                }
+
+                String endhour= String.valueOf(end_hour.getSelectionItem());
+
+                if (Integer.parseInt(endhour)<10){
+                    endhour="0"+endhour;
+                }
+
+                String end_time=endyear+endmonth+endday+endhour;
 
 
-                                /*格式化时间*/
-                                DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
-                                try {
-                                    recommendedtime = format.parse(start_time).getTime();
-                                } catch (ParseException e) {
-                                    // TODO Auto-generated catch block
-                                    e.printStackTrace();
-                                }
+                try {
+                    finishrecomendedtime = format.parse(end_time).getTime();
+                } catch (ParseException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
 
 
-                                end_time = endyear + "/" + endmonth2 + "/" + endday2;
+                Log.d("======>", start_time);
+                Log.d("======>", end_time);
+                int compare = end_time.compareTo(start_time);
+                if (compare>=0){
+                    mView.setVisibility(View.VISIBLE);
+                    mLlSelectTime.setVisibility(View.VISIBLE);
+                    mTvSelectTime.setText( startyear+"-"+startmonth+"-"+startday+"-"+ " 至 " +
+                                           endyear+"-"+endmonth+"-"+endday);
+                    mPresenter.UpdateSendOrderUpdateTime(OrderID, startyear+"/"+startmonth+"/"+startday, endyear+"/"+endmonth+"/"+endday);
 
-//                                Log.e(TAG, "starttime: " + start_time + "/n" + "endtime:" + end_time);
-//                                showToast(mActivity, "starttime: " + start_time + "/n" + "endtime:" + end_time);
-                                mView.setVisibility(View.VISIBLE);
-                                mLlSelectTime.setVisibility(View.VISIBLE);
-                                mTvSelectTime.setText(start_time + " ~ " + end_time);
-                                mPresenter.UpdateSendOrderUpdateTime(OrderID, start_time, end_time);
-
-                            } else {
-                                showToast(mActivity, "当月起始日期不能大于结束日期");
-                            }
-                        } else {
-                            start_time = startyear + "/" + startmonth2 + "/" + startday2;
-
-                            end_time = endyear + "/" + endmonth2 + "/" + endday2;
-
-//                            Log.e(TAG, "starttime: " + start_time + "/n" + "endtime:" + end_time);
-//                            showToast(mActivity, "starttime: " + start_time + "/n" + "endtime:" + end_time);
-                            mView.setVisibility(View.VISIBLE);
-                            mLlSelectTime.setVisibility(View.VISIBLE);
-                            mTvSelectTime.setText(start_time + " ~ " + end_time);
-                            mPresenter.UpdateSendOrderUpdateTime(OrderID, start_time, end_time);
-                        }
-                    } else if (endmonth < startmonth) {
-                        showToast(mActivity, "起始时间不能大于结束时间");
-                    } else {
-                        showToast(mActivity, "请选择两个月");
-                    }
-                } else {
-                    showToast(mActivity, "请输入正确的年份");
+                }else {//<0
+                    showToast(mActivity, "当月起始日期不能大于结束日期");
                 }
             }
         });
+
         //取消
         tv_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -2229,6 +2227,16 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         //ignore condition
         ArrayList<String> list = new ArrayList<>();
         for (int i = 1; i <= lastDay; i++) {
+            list.add(String.valueOf(i));
+        }
+        return list;
+    }
+
+
+    //小时
+    private ArrayList<String> getHourData(){
+        ArrayList<String> list = new ArrayList<>();
+        for (int i = 1; i <= 24; i++){
             list.add(String.valueOf(i));
         }
         return list;

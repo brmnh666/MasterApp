@@ -135,11 +135,17 @@ public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> im
             public void afterTextChanged(Editable s) {
 
                 if (s.toString().length()==6){
-                    Log.d("======>count","输入数等于6了");
 
                     mPresenter.GetBankNameByCardNo(s.toString());
-                }else if (s.toString().length()<6){
+                }else if (s.toString().length()>=16){
 
+                    String num=s.toString();
+                    String substring = num.substring(0, 6);
+
+                    mPresenter.GetBankNameByCardNo(substring);
+                }
+
+                else {
                     mTvAddCardBankname.setText("");
                 }
 

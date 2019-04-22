@@ -679,8 +679,6 @@ public interface ApiService {
     Observable<BaseResult<RedPointData>> WorkerGetOrderRed(@Field("UserID") String UserID);
 
     /*更新工单消息为已读*/
-
-
     @FormUrlEncoded
     @POST("Order/UpdateOrderIsLook")
     Observable<BaseResult<Data<String>>> UpdateOrderIsLook(@Field("OrderID") String OrderID,

@@ -12,8 +12,6 @@ import com.ying.administrator.masterappdemo.mvp.contract.ReceivingContract;
 import java.util.List;
 
 public class ReceivingPresenter extends ReceivingContract.Presenter {
-
-
     @Override
     public void WorkerGetOrderRed(String UserId) {
         mModel.WorkerGetOrderRed(UserId)
