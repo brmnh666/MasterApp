@@ -49,6 +49,7 @@ import com.amap.api.services.help.InputtipsQuery;
 import com.amap.api.services.help.Tip;
 import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
+import com.example.lenovo.drawerlibrary.DrawerLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
     private String District;
     private double Longitude;
     private double Dimension;
-
+    private DrawerLayout mDrawerLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,6 +119,26 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
     }
 
     private void initView() {
+        mDrawerLayout = findViewById(R.id.dial_drawer);
+        mDrawerLayout.setInitialState(DrawerLayout.State.Close);
+        mDrawerLayout.setDrawerListener(new DrawerLayout.DrawerListener()
+        {
+            @Override
+            public void drawerOpened()
+            {
+                Log.d("=====>","打开");
+            }
+
+            @Override
+            public void drawerClosed()
+            {
+                Log.d("=====>","关闭");
+            }
+        });
+
+
+
+
 
         ll_return =  (LinearLayout) findViewById(R.id.ll_return);
         iv_confirm =  (ImageView) findViewById(R.id.iv_confirm);
@@ -144,30 +165,8 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
 
         listView.setOnItemClickListener(onItemClickListener);
 
-        mSegmentedGroup = (SegmentedGroup) findViewById(R.id.segmented_group);
-        mSegmentedGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                searchType = items[0];
-                if (checkedId == R.id.radio0) {
-                    searchType = items[0];
 
-                } else if (checkedId == R.id.radio1) {
-                    searchType = items[1];
-
-                } else if (checkedId == R.id.radio2) {
-                    searchType = items[2];
-
-                } else if (checkedId == R.id.radio3) {
-//                    searchType = items[3];
-                    searchType = "130103";
-
-                }
-                doSearchQuery();
-//                geoAddress();
-            }
-        });
-
+        /*搜索地址*/
         searchText = (AutoCompleteTextView) findViewById(R.id.keyWord);
         searchText.addTextChangedListener(new TextWatcher() {
             @Override

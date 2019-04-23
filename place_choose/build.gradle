@@ -43,4 +43,5 @@ dependencies {
     implementation 'com.amap.api:search:latest.integration'
     implementation 'com.amap.api:3dmap:latest.integration'
     testImplementation 'junit:junit:4.12'
+    implementation project(':drawerlibrary')
 }

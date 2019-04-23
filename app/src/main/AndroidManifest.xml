@@ -247,8 +247,10 @@
             android:launchMode="singleTask"/>
 
         <activity android:name="com.amap.searchdemo.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppTheme.Splash"
             android:launchMode="singleTask">
+
+
         </activity>
         <activity android:name=".mvp.ui.activity.ScanActivity" android:launchMode="singleTask"/>
         <!--我的技能-->
