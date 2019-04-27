@@ -304,8 +304,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     TextView mTvServiceAmount;
     @BindView(R.id.rl_complete_submit)
     RelativeLayout mRlCompleteSubmit;
-    @BindView(R.id.tv_post_money)
-    TextView mTvPostMoney;
+    @BindView(R.id.et_post_money)
+    EditText mTvPostMoney;
     @BindView(R.id.ll_post_money)
     LinearLayout mLlPostMoney;
     private String OrderID;
