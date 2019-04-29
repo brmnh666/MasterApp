@@ -88,7 +88,12 @@ public interface ApiService {
                                                  @Field("passWord") String passWord,
                                                  @Field("RoleType") String RoleType);
 
-
+    /**
+     * 退出登录
+     */
+    @FormUrlEncoded
+    @POST("Account/LoginOut")
+    Observable<BaseResult<Data<String>>> LoginOut(@Field("UserID") String UserID,@Field("Type") String type);
     /**
      * app获取用户信息
      */

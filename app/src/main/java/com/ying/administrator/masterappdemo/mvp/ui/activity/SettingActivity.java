@@ -16,15 +16,21 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
+import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.mvp.contract.LoginContract;
+import com.ying.administrator.masterappdemo.mvp.model.LoginModel;
+import com.ying.administrator.masterappdemo.mvp.presenter.LoginPresenter;
 import com.ying.administrator.masterappdemo.util.DataCleanManager;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SettingActivity extends BaseActivity {
+public class SettingActivity extends BaseActivity<LoginPresenter, LoginModel> implements LoginContract.View {
     @BindView(R.id.img_actionbar_return)
     ImageView mImgActionbarReturn;
     @BindView(R.id.tv_actionbar_return)
@@ -57,6 +63,7 @@ public class SettingActivity extends BaseActivity {
     ImageView img_clean_cache;
 
     private SPUtils spUtils;
+    private String UserID;
 
 
 
@@ -98,6 +105,53 @@ public class SettingActivity extends BaseActivity {
         ButterKnife.bind(this);
     }
 
+    @Override
+    public void Login(BaseResult<Data<String>> baseResult) {
+
+    }
+
+    @Override
+    public void GetUserInfo(BaseResult<String> baseResult) {
+
+    }
+
+    @Override
+    public void AddAndUpdatePushAccount(BaseResult<Data<String>> baseResult) {
+
+    }
+
+    @Override
+    public void GetCode(BaseResult<Data<String>> baseResult) {
+
+    }
+
+    @Override
+    public void ValidateUserName(BaseResult<String> baseResult) {
+
+    }
+
+    @Override
+    public void LoginOnMessage(BaseResult<Data<String>> baseResult) {
+
+    }
+
+    @Override
+    public void LoginOut(BaseResult<Data<String>> baseResult) {
+        switch(baseResult.getStatusCode()){
+            case 200:
+                if (baseResult.getData().isItem1()){
+                    spUtils.put("isLogin", false);
+                    startActivity(new Intent(mActivity, Login_New_Activity.class));
+                    ActivityUtils.finishAllActivities();
+                }else{
+                    ToastUtils.showShort("退出失败");
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
 
     public class CustomOnclickLister implements View.OnClickListener {
         @Override
@@ -115,9 +169,8 @@ public class SettingActivity extends BaseActivity {
                         @Override
                         public void onPositiveClick() {
                             dialog.dismiss();
-                            spUtils.put("isLogin", false);
-                            startActivity(new Intent(mActivity, Login_New_Activity.class));
-                            ActivityUtils.finishAllActivities();
+                            UserID=spUtils.getString("userName");
+                            mPresenter.LoginOut(UserID);
                         }
 
                         @Override

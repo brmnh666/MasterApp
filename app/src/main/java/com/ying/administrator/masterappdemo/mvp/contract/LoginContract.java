@@ -20,6 +20,7 @@ public interface LoginContract {
         Observable<BaseResult<String>> ValidateUserName(String userName);
         Observable<BaseResult<Data<String>>> GetCode(String userName,String type);
         Observable<BaseResult<Data<String>>> LoginOnMessage(String mobile,String code);
+        Observable<BaseResult<Data<String>>> LoginOut(String UserID);
     }
 
     interface View extends BaseView {
@@ -29,6 +30,7 @@ public interface LoginContract {
         void GetCode(BaseResult<Data<String>> baseResult);
         void ValidateUserName(BaseResult<String> baseResult);
         void LoginOnMessage(BaseResult<Data<String>> baseResult);
+        void LoginOut(BaseResult<Data<String>> baseResult);
     }
 
     abstract class Presenter extends BasePresenter<View,Model> {
@@ -38,5 +40,6 @@ public interface LoginContract {
         public abstract void AddAndUpdatePushAccount(String token,String type,String UserID);
         public abstract void ValidateUserName(String userName);
         public abstract void LoginOnMessage(String mobile,String code);
+        public abstract void LoginOut(String UserID);
     }
 }
