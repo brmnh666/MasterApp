@@ -74,10 +74,10 @@
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:srlAccentColor="#6A6A6A00"
+        app:srlAccentColor="#00000000"
         app:srlEnableLoadmore="false"
         app:srlEnablePreviewInEditMode="true"
-        app:srlPrimaryColor="#6A6A6A00">
+        app:srlPrimaryColor="#00000000">
 
         <ScrollView
             android:layout_width="match_parent"

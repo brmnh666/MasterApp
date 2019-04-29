@@ -304,8 +304,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     TextView mTvServiceAmount;
     @BindView(R.id.rl_complete_submit)
     RelativeLayout mRlCompleteSubmit;
-    @BindView(R.id.et_post_money)
-    EditText mTvPostMoney;
+    @BindView(R.id.tv_post_money)
+    TextView mTvPostMoney;
     @BindView(R.id.ll_post_money)
     LinearLayout mLlPostMoney;
     private String OrderID;
@@ -1364,7 +1364,11 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     }
                 } else {
                     mLlAccessory.setVisibility(View.GONE);
-                    mLlAddAccessory.setVisibility(View.VISIBLE);
+                    if ("2".equals(data.getTypeID())){
+                        mLlAddAccessory.setVisibility(View.GONE);
+                    }else{
+                        mLlAddAccessory.setVisibility(View.VISIBLE);
+                    }
 //                    mLlMemo.setVisibility(View.VISIBLE);
                 }
                 if (data.getOrderServiceDetail().size() != 0) {
@@ -1385,7 +1389,12 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     }
                 } else {
                     mLlService.setVisibility(View.GONE);
-                    mLlAddService.setVisibility(View.VISIBLE);
+                    if ("2".equals(data.getTypeID())){
+                        mLlAddService.setVisibility(View.GONE);
+                    }else{
+                        mLlAddService.setVisibility(View.VISIBLE);
+                    }
+
                 }
                 if ("2".equals(data.getTypeID())){
                     mLlOldAccessory.setVisibility(View.GONE);
