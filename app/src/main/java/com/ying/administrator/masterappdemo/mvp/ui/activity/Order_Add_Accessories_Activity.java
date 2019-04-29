@@ -786,10 +786,10 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                 Money = Double.parseDouble(data.getOrderMoney())-Double.parseDouble(data.getInitMoney());
                 switch (type) {
                     case 1:
-                        accessory();
+//                        accessory();
                         break;
                     case 2:
-                        service();
+//                        service();
                         break;
                     default:
                         break;
