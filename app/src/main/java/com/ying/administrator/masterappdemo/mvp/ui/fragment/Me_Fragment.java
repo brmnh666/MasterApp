@@ -6,8 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,9 +23,10 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.paradigm.botkit.BotKitClient;
 import com.paradigm.botkit.ChatActivity;
-import com.paradigm.botlib.BotLibClient;
-import com.paradigm.botlib.MenuItem;
 import com.paradigm.botlib.VisitorInfo;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareConfig;
@@ -46,13 +45,13 @@ import com.ying.administrator.masterappdemo.mvp.contract.MainContract;
 import com.ying.administrator.masterappdemo.mvp.model.MainModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.MainPresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.AboutUsActivity;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.CustomChatActivity;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.IntelligentCustomerServiceActivity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.MySkillsActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Opinion_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_Receiving_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Personal_Information_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.RechargeActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.SettingActivity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.StudyActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.SubAccountManagementActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Wallet_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.WithDrawActivity;
@@ -63,7 +62,6 @@ import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -112,6 +110,10 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
     @BindView(R.id.tv_recharge)
     TextView mTvRecharge;
     Unbinder unbinder;
+    @BindView(R.id.refreshLayout)
+    SmartRefreshLayout mRefreshLayout;
+    @BindView(R.id.ll_study)
+    LinearLayout mLlStudy;
 
     private Home_Fragment.CustomShareListener mShareListener;
     private ShareAction mShareAction;
@@ -175,7 +177,7 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                         } else if (snsPlatform.mShowWord.equals("复制链接")) {
                             Toast.makeText(mActivity, "已复制", Toast.LENGTH_LONG).show();
                         } else {
-                            UMWeb web = new UMWeb("http://47.96.126.145:8080/sign?phone="+userID+"&type=7");
+                            UMWeb web = new UMWeb("http://47.96.126.145:8080/sign?phone=" + userID + "&type=7");
                             web.setTitle("西瓜鱼");
                             web.setDescription("注册送西瓜币了！！！！！");
                             web.setThumb(new UMImage(mActivity, R.drawable.icon));
@@ -188,6 +190,14 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                 });
         userID = spUtils.getString("userName"); //获取用户id
         mPresenter.GetUserInfoList(userID, "1");//根据 手机号码获取用户详细信息
+        mRefreshLayout.setEnableLoadmore(false);
+        mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                mPresenter.GetUserInfoList(userID, "1");//根据 手机号码获取用户详细信息
+                refreshlayout.finishRefresh(1000);
+            }
+        });
     }
 
     @Override
@@ -214,6 +224,7 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
         mTvRecharge.setOnClickListener(this);
         mImgMeHead.setOnClickListener(this);
         mTv_me_message.setOnClickListener(this);
+        mLlStudy.setOnClickListener(this);
 
     }
 
@@ -234,7 +245,7 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                 }
                 /*显示余额*/
                 String format = String.format("%.2f", userInfo.getTotalMoney() - userInfo.getFrozenMoney());
-               // String can_withdraw = Double.toString(userInfo.getTotalMoney() - userInfo.getFrozenMoney());//可提现余额=总金额-冻结金额
+                // String can_withdraw = Double.toString(userInfo.getTotalMoney() - userInfo.getFrozenMoney());//可提现余额=总金额-冻结金额
                 mTv_me_withdraw.setText(format);
 
 
@@ -283,6 +294,9 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
 
 
                 break;
+            case R.id.ll_study:  //学习考试
+                startActivity(new Intent(getActivity(), StudyActivity.class));
+                break;
             case R.id.ll_me_mywallet:  //我的钱包
                 startActivity(new Intent(getActivity(), Wallet_Activity.class));
                 break;
@@ -330,7 +344,7 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
 //                btn_share_two = dialog_share.findViewById(R.id.btn_share_two);
 
                 iv_code_one = dialog_share.findViewById(R.id.iv_code_one);
-                Bitmap bitmap = ZXingUtils.createQRImage("http://47.96.126.145:8080/sign?phone="+userID+"&type=7", 600, 600, BitmapFactory.decodeResource(getResources(), R.drawable.icon));
+                Bitmap bitmap = ZXingUtils.createQRImage("http://47.96.126.145:8080/sign?phone=" + userID + "&type=7", 600, 600, BitmapFactory.decodeResource(getResources(), R.drawable.icon));
                 iv_code_one.setImageBitmap(bitmap);
                 btn_share_one.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -376,7 +390,7 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                 BotKitClient.getInstance().setVisitor(visitorInfo);
 
                 Intent intent = new Intent();
-             //   intent.setClass(mActivity, ChatActivity.class);
+                //   intent.setClass(mActivity, ChatActivity.class);
                 intent.setClass(mActivity, ChatActivity.class);
                 startActivity(intent);
 
@@ -419,7 +433,7 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(String message) {
-        if (!"GetUserInfoList".equals(message)){
+        if (!"GetUserInfoList".equals(message)) {
             return;
         }
         mPresenter.GetUserInfoList(userID, "1");

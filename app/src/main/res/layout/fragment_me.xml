@@ -18,8 +18,13 @@
             <include layout="@layout/fragment_me_order_option" />
 
         </RelativeLayout>
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            android:id="@+id/refreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <include layout="@layout/fragment_me_option" />
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
-        <include layout="@layout/fragment_me_option" />
 
         <View
             android:layout_width="wrap_content"

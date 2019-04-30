@@ -19,6 +19,7 @@ import com.ying.administrator.masterappdemo.entity.IDCard;
 import com.ying.administrator.masterappdemo.entity.Message;
 import com.ying.administrator.masterappdemo.entity.MessageData;
 import com.ying.administrator.masterappdemo.entity.Province;
+import com.ying.administrator.masterappdemo.entity.QuestBean;
 import com.ying.administrator.masterappdemo.entity.RedPointData;
 import com.ying.administrator.masterappdemo.entity.Service;
 import com.ying.administrator.masterappdemo.entity.Skill;
@@ -688,5 +689,14 @@ public interface ApiService {
     @POST("Order/UpdateOrderIsLook")
     Observable<BaseResult<Data<String>>> UpdateOrderIsLook(@Field("OrderID") String OrderID,
                                                            @Field("IsLook") String IsLook);
+
+    /**
+     * 根据大分类id获取题目
+     * @param QuesCategory
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("cms/GetQuestionBycategory")
+    Observable<BaseResult<Data<List<QuestBean>>>> GetQuestionBycategory(@Field("QuesCategory") String QuesCategory);
 
 }
