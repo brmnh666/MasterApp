@@ -25,7 +25,7 @@ public class MessageAdapter extends BaseQuickAdapter<Message, BaseViewHolder> {
 
             if (item.getIsLook().equals("2")){
                 helper.getView(R.id.iv_new).setVisibility(View.INVISIBLE);
-                helper.getView(R.id.ll_all_message).setBackgroundResource(R.drawable.bg_messageread);
+//                helper.getView(R.id.ll_all_message).setBackgroundResource(R.drawable.bg_messageread);
             }
 
 

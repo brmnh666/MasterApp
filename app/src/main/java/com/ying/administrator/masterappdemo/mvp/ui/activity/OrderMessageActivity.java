@@ -7,13 +7,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
@@ -51,14 +51,28 @@ public class OrderMessageActivity extends BaseActivity<MyMessagePresenter, MyMes
 
     @BindView(R.id.tv_message_number)
     TextView mTv_message_number;
+    @BindView(R.id.textView1)
+    TextView mTextView1;
+    @BindView(R.id.textView2)
+    TextView mTextView2;
+    @BindView(R.id.rl_new_message)
+    RelativeLayout mRlNewMessage;
+    @BindView(R.id.tv_old_number)
+    TextView mTvOldNumber;
+    @BindView(R.id.textView3)
+    TextView mTextView3;
+    @BindView(R.id.textView4)
+    TextView mTextView4;
+    @BindView(R.id.rl_old_message)
+    RelativeLayout mRlOldMessage;
 
     private MessageAdapter messageAdapter;
     private MessageAdapter messagereadAdapter;
-    private int pageIndex=1;
+    private int pageIndex = 1;
 
     private String userId;
     private List<Message> list = new ArrayList<>();//未读
-    private List<Message> readlist=new ArrayList<>();//已读
+    private List<Message> readlist = new ArrayList<>();//已读
 
     @Override
     protected int setLayoutId() {
@@ -88,16 +102,16 @@ public class OrderMessageActivity extends BaseActivity<MyMessagePresenter, MyMes
         mRv_ordermessage_historical.setLayoutManager(new LinearLayoutManager(mActivity));
         mRv_ordermessage_historical.setHasFixedSize(true);
         mRv_ordermessage_historical.setNestedScrollingEnabled(false);
-        messagereadAdapter=new MessageAdapter(R.layout.item_message, readlist);
+        messagereadAdapter = new MessageAdapter(R.layout.item_message, readlist);
         mRv_ordermessage_historical.setAdapter(messagereadAdapter);
 
 
         SPUtils spUtils = SPUtils.getInstance("token");
         userId = spUtils.getString("userName");
-        mPresenter.GetMessageList(userId, "2", "0","999", "1");
+        mPresenter.GetMessageList(userId, "2", "0", "999", "1");
         //mPresenter.GetMessageList(userId,"1","10","1");
 
-        mPresenter.GetReadMessageList(userId, "2","0", "999", "1");
+        mPresenter.GetReadMessageList(userId, "2", "0", "999", "1");
     }
 
     @Override
@@ -116,16 +130,16 @@ public class OrderMessageActivity extends BaseActivity<MyMessagePresenter, MyMes
           /*      if (!list.isEmpty()){ //当有数据的时候
                     ll_empty.setVisibility(View.INVISIBLE);//隐藏空的界面
                 }*/
-                pageIndex=1;
+                pageIndex = 1;
                 //list.clear();
-                mPresenter.GetMessageList(userId, "2","0", "999", Integer.toString(pageIndex));
+                mPresenter.GetMessageList(userId, "2", "0", "999", Integer.toString(pageIndex));
                 messageAdapter.notifyDataSetChanged();
                 refreshlayout.finishRefresh();
             }
         });
 
 
-       //没满屏时禁止上拉
+        //没满屏时禁止上拉
         mRefreshLayout.setEnableLoadmoreWhenContentNotFull(false);
         //上拉加载更多
     /*     mRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
@@ -144,12 +158,12 @@ public class OrderMessageActivity extends BaseActivity<MyMessagePresenter, MyMes
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
 
-                switch (view.getId()){
+                switch (view.getId()) {
                     case R.id.ll_order_message:
-                        mPresenter.AddOrUpdatemessage(((Message)adapter.getData().get(position)).getMessageID(),"2");
+                        mPresenter.AddOrUpdatemessage(((Message) adapter.getData().get(position)).getMessageID(), "2");
 
-                        Intent intent=new Intent(mActivity,WorkOrderDetailsActivity.class);
-                        intent.putExtra("OrderID",((Message)adapter.getData().get(position)).getOrderID());
+                        Intent intent = new Intent(mActivity, WorkOrderDetailsActivity.class);
+                        intent.putExtra("OrderID", ((Message) adapter.getData().get(position)).getOrderID());
                         startActivity(intent);
 
                         break;
@@ -162,10 +176,10 @@ public class OrderMessageActivity extends BaseActivity<MyMessagePresenter, MyMes
         messagereadAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                switch (view.getId()){
+                switch (view.getId()) {
                     case R.id.ll_order_message:
-                        Intent intent=new Intent(mActivity,WorkOrderDetailsActivity.class);
-                        intent.putExtra("OrderID",((Message)adapter.getData().get(position)).getOrderID());
+                        Intent intent = new Intent(mActivity, WorkOrderDetailsActivity.class);
+                        intent.putExtra("OrderID", ((Message) adapter.getData().get(position)).getOrderID());
                         startActivity(intent);
 
                         break;
@@ -180,30 +194,30 @@ public class OrderMessageActivity extends BaseActivity<MyMessagePresenter, MyMes
     public void GetMessageList(BaseResult<MessageData<List<Message>>> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData().getData()==null){
+                if (baseResult.getData().getData() == null) {
 
                     mTv_message_number.setText("暂无新消息");
+                    mRlNewMessage.setVisibility(View.GONE);
                     return;
 
-                }else {
+                } else {
                     list.clear();
                     list.addAll(baseResult.getData().getData());
 
-                    if (baseResult.getData().getData().size()>99){
+                    if (baseResult.getData().getData().size() > 99) {
                         mTv_message_number.setText("您有99+条新消息");
-                    }else if (baseResult.getData().getData().size()==0){
+                    } else if (baseResult.getData().getData().size() == 0) {
                         mTv_message_number.setText("暂无新消息");
-
-                    }else {
-                        mTv_message_number.setText("您有"+baseResult.getData().getData().size()+"条新消息");
+                        mRlNewMessage.setVisibility(View.GONE);
+                    } else {
+                        mTv_message_number.setText("您有" + baseResult.getData().getData().size() + "条新消息");
                     }
 
                     messageAdapter.notifyDataSetChanged();
                 }
 
 
-
-                if (baseResult.getData().getCount()==0){
+                if (baseResult.getData().getCount() == 0) {
 
                     EventBus.getDefault().post("orderempty");
 
@@ -218,10 +232,10 @@ public class OrderMessageActivity extends BaseActivity<MyMessagePresenter, MyMes
     public void GetReadMessageList(BaseResult<MessageData<List<Message>>> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData().getData()==null){
+                if (baseResult.getData().getData() == null) {
                     return;
 
-                }else {
+                } else {
                     messagereadAdapter.setNewData(baseResult.getData().getData());
                     messagereadAdapter.notifyDataSetChanged();
                 }
@@ -237,16 +251,16 @@ public class OrderMessageActivity extends BaseActivity<MyMessagePresenter, MyMes
     /*更新消息为已读*/
     @Override
     public void AddOrUpdatemessage(BaseResult<Data<String>> baseResult) {
-     switch (baseResult.getStatusCode()){
-         case 200:
-             if (baseResult.getData().isItem1()){
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                if (baseResult.getData().isItem1()) {
 
-                 EventBus.getDefault().post("order_num");
-                 mPresenter.GetMessageList(userId, "2","0", "999", "1");
-                 mPresenter.GetReadMessageList(userId, "2","0", "999", "1");
-             }
-             break;
-     }
+                    EventBus.getDefault().post("order_num");
+                    mPresenter.GetMessageList(userId, "2", "0", "999", "1");
+                    mPresenter.GetReadMessageList(userId, "2", "0", "999", "1");
+                }
+                break;
+        }
     }
 
     @Override

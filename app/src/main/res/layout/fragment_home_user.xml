@@ -18,34 +18,150 @@
         android:layout_height="match_parent">
 
 
+        <!--<TextView
+            android:layout_alignParentRight="true"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:text="2级"
+            android:textSize="10sp"
+            android:textColor="@color/white"
+            android:background="@drawable/bg_home_level"/>
 
-<!--<TextView
-    android:layout_alignParentRight="true"
-    android:layout_width="40dp"
-    android:layout_height="40dp"
-    android:text="2级"
-    android:textSize="10sp"
-    android:textColor="@color/white"
-    android:background="@drawable/bg_home_level"/>
-
-        -->
+                -->
 
         <ImageView
             android:id="@+id/img_home_head"
-            android:layout_width="74dp"
-            android:layout_height="74dp"
-            android:layout_marginLeft="20dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="30dp"
             android:layout_marginTop="20dp"
-            android:src="@mipmap/icon_head"
-             />
+            android:src="@mipmap/icon_head" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="30dp"
+            android:layout_toRightOf="@+id/img_home_head"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="慈溪正海科技"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
+
+                    <ImageView
+                        android:id="@+id/img_un_certification"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/weishiming" />
+
+                    <ImageView
+                        android:id="@+id/img_certification"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/yishiming"
+                        android:visibility="gone" />
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/tv_certification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="未实名认证"
+                    android:textColor="@color/red"
+                    android:textSize="13sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="西瓜币"
+                    android:textColor="#7D7D7D"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="21dp"
+                    android:layout_height="21dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="24dp"
+                    android:src="@mipmap/money"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="￥"
+                        android:textColor="#1690FF"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/tv_money"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="123000.00"
+                        android:textColor="#1690FF"
+                        android:textSize="18sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@+id/img_home_head"
+            android:text="一元等于一西瓜币"
+            android:textSize="16sp"
+            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/ll_money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="50dp"
-            android:orientation="vertical">
+            android:layout_marginRight="10dp"
+            android:gravity="right"
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -126,37 +242,57 @@
             </LinearLayout>
         </LinearLayout>
 
+        <!--<TextView-->
+        <!--android:id="@+id/tv_certification"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_marginRight="20dp"-->
+        <!--android:padding="@dimen/dp_10"-->
+        <!--android:layout_marginTop="40dp"-->
+        <!--android:text="未实名认证"-->
+        <!--android:textColor="@color/color_custom_01"-->
+        <!--android:textSize="13sp" />-->
+
+        <!--<ImageView-->
+        <!--android:id="@+id/img_certification"-->
+        <!--android:layout_width="14dp"-->
+        <!--android:layout_height="14dp"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_toLeftOf="@+id/tv_certification"-->
+        <!--android:layout_marginBottom="15dp"-->
+        <!--android:layout_marginTop="53dp"-->
+        <!--android:layout_marginLeft="25dp"-->
+        <!--android:src="@drawable/dun" />-->
+
         <TextView
-            android:id="@+id/tv_certification"
+            android:id="@+id/tv_edemption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="5dp"
             android:layout_marginRight="20dp"
-            android:padding="@dimen/dp_10"
-            android:text="未实名认证"
-            android:textColor="@color/color_custom_01"
-            android:textSize="13sp" />
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/blue_chat_shape"
+            android:paddingLeft="5dp"
+            android:paddingTop="2dp"
+            android:paddingRight="5dp"
+            android:paddingBottom="2dp"
+            android:text="立即换购"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:visibility="gone" />
 
-        <ImageView
-            android:id="@+id/img_certification"
-            android:layout_width="14dp"
-            android:layout_height="14dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="10dp"
-            android:layout_toLeftOf="@+id/tv_certification"
-            android:src="@mipmap/icon_name_authentication" />
-
-        <ImageView
-            android:id="@+id/img_un_certification"
-            android:layout_width="14dp"
-            android:layout_height="14dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="10dp"
-            android:layout_toLeftOf="@+id/tv_certification"
-            android:src="@mipmap/icon_home_un_certification"
-            android:visibility="invisible" />
+        <!--<ImageView-->
+        <!--android:id="@+id/img_un_certification"-->
+        <!--android:layout_width="14dp"-->
+        <!--android:layout_height="14dp"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_marginBottom="10dp"-->
+        <!--android:layout_toLeftOf="@+id/tv_certification"-->
+        <!--android:src="@mipmap/icon_home_un_certification"-->
+        <!--android:visibility="invisible" />-->
 
         <ImageView
             android:id="@+id/img_home_location"
@@ -167,7 +303,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginBottom="10dp"
             android:src="@mipmap/icon_home_location"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_home_location"
@@ -176,14 +312,13 @@
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="25dp"
-            android:layout_toLeftOf="@+id/img_certification"
             android:layout_toRightOf="@+id/img_home_location"
             android:padding="@dimen/dp_10"
             android:singleLine="true"
             android:text="宁波市.江北区"
             android:textSize="11sp"
-            android:visibility="gone"/>
-
+            android:visibility="gone" />
+        <!--android:layout_toLeftOf="@+id/img_certification"-->
 
     </RelativeLayout>
 </android.support.v7.widget.CardView>

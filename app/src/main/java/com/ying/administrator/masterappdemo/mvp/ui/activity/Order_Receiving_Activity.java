@@ -64,7 +64,7 @@ public class Order_Receiving_Activity extends BaseActivity<ReceivingPresenter, R
     private String userid;
     private final String[] mTitles = {
             "已接待预约", "服务中", "配件单"
-            , "待返件", "质保单", "完成代取机",
+            , "待返件", "质保单", "完成待取机",
             "已完成","预约不成功"
     };
 

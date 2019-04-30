@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -53,11 +55,15 @@ import com.ying.administrator.masterappdemo.mvp.ui.activity.RechargeActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.SettingActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.StudyActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.SubAccountManagementActivity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.VerifiedUpdateActivity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.Verified_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Wallet_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.WithDrawActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
 import com.ying.administrator.masterappdemo.util.ZXingUtils;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
+import com.ying.administrator.masterappdemo.widget.CustomDialog;
+import com.ying.administrator.masterappdemo.widget.GlideCircleWithBorder;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -110,6 +116,12 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
     @BindView(R.id.tv_recharge)
     TextView mTvRecharge;
     Unbinder unbinder;
+    @BindView(R.id.ll_share_code)
+    LinearLayout mLlShareCode;
+    @BindView(R.id.tv_name)
+    TextView mTvName;
+    @BindView(R.id.tv_certification)
+    TextView mTvCertification;
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout mRefreshLayout;
     @BindView(R.id.ll_study)
@@ -131,6 +143,11 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
     private Bundle bundle;
     private Intent intent;
     private ImageView iv_code_one;
+    private View under_review;
+    private Button btnConfirm;
+    private Button btn_verified_update;
+    private AlertDialog underReviewDialog;
+    private CustomDialog customDialog;
 
     public Me_Fragment() {
         // Required empty public constructor
@@ -224,6 +241,8 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
         mTvRecharge.setOnClickListener(this);
         mImgMeHead.setOnClickListener(this);
         mTv_me_message.setOnClickListener(this);
+        mLlShareCode.setOnClickListener(this);
+        mTvCertification.setOnClickListener(this);
         mLlStudy.setOnClickListener(this);
 
     }
@@ -238,17 +257,45 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                 if (userInfo.getAvator() == null) {//显示初始头像
                     return;
                 } else {
+                    RequestOptions myOptions = new RequestOptions().transform(new GlideCircleWithBorder(this, 1, Color.parseColor("#DCDCDC")));
                     Glide.with(mActivity)
                             .load(Config.HEAD_URL + userInfo.getAvator())
                             .apply(RequestOptions.bitmapTransform(new CircleCrop()))
+                            .apply(myOptions)
                             .into(mImgMeHead);
                 }
                 /*显示余额*/
                 String format = String.format("%.2f", userInfo.getTotalMoney() - userInfo.getFrozenMoney());
                 // String can_withdraw = Double.toString(userInfo.getTotalMoney() - userInfo.getFrozenMoney());//可提现余额=总金额-冻结金额
                 mTv_me_withdraw.setText(format);
+                mTvName.setText(userInfo.getTrueName());
+                /*设置实名认证状态*/
+                if (userInfo.getIfAuth() == null) {
+                    mTvCertification.setText("未实名认证");
+//                    mImg_un_certification.setVisibility(View.VISIBLE);
+//                    mImgCertification.setVisibility(View.INVISIBLE);
+                    mTvCertification.setTextColor(Color.rgb(92, 92, 92));
 
+                } else if (userInfo.getIfAuth().equals("0")) {
+                    mTvCertification.setText("审核中");
+                    mTvCertification.setTextColor(Color.RED);
+//                    mImg_un_certification.setVisibility(View.VISIBLE);
+//                    mImgCertification.setVisibility(View.INVISIBLE);
 
+                } else if (userInfo.getIfAuth().equals("-1")) {
+                    mTvCertification.setText("审核不通过");
+                    mTvCertification.setTextColor(Color.RED);
+//                    mImg_un_certification.setVisibility(View.VISIBLE);
+//                    mImgCertification.setVisibility(View.INVISIBLE);
+
+                } else if (userInfo.getIfAuth().equals("1")) {
+                    mTvCertification.setText("已实名认证");
+//                    mImg_un_certification.setVisibility(View.INVISIBLE);
+//                    mImgCertification.setVisibility(View.VISIBLE);
+                } else {
+
+                    return;
+                }
                 break;
             default:
                 break;
@@ -271,6 +318,57 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.tv_certification:
+                if (userInfo.getIfAuth() != null) {
+                    if (userInfo.getIfAuth().equals("1")) {
+                        under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_successful_review, null);
+                        btnConfirm = under_review.findViewById(R.id.btn_confirm);
+                        btn_verified_update = under_review.findViewById(R.id.btn_verified_update);
+                        btnConfirm.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                underReviewDialog.dismiss();
+                            }
+                        });
+                        btn_verified_update.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                underReviewDialog.dismiss();
+                                startActivity(new Intent(mActivity, VerifiedUpdateActivity.class));
+                            }
+                        });
+                        underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review).create();
+                        underReviewDialog.show();
+                    } else if (userInfo.getIfAuth().equals("0")) {
+                        under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_under_review, null);
+                        btnConfirm = under_review.findViewById(R.id.btn_confirm);
+                        btnConfirm.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                underReviewDialog.dismiss();
+                            }
+                        });
+                        underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review).create();
+                        underReviewDialog.show();
+                    } else if (userInfo.getIfAuth().equals("-1")) {
+                        under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_audit_failure, null);
+                        btnConfirm = under_review.findViewById(R.id.btn_confirm);
+                        btnConfirm.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                underReviewDialog.dismiss();
+                                startActivity(new Intent(mActivity, Verified_Activity.class));
+                            }
+                        });
+                        underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review).create();
+                        underReviewDialog.show();
+                    } else {
+                        showVerifiedDialog();
+                    }
+                } else {
+                    showVerifiedDialog();
+                }
+                break;
             case R.id.tv_me_withdraw_deposit: //提现
                /*     if (userInfo.getTotalMoney()==0){
                         dialog.setMessage("您暂未实名认证,是否进行认证")
@@ -378,6 +476,47 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
 //                window.setDimAmount(0.1f);
                 window.setBackgroundDrawable(new ColorDrawable());
                 break;
+            case R.id.ll_share_code:
+                dialog_share = LayoutInflater.from(mActivity).inflate(R.layout.dialog_share, null);
+                btn_share_one = dialog_share.findViewById(R.id.btn_share_one);
+//                btn_share_two = dialog_share.findViewById(R.id.btn_share_two);
+
+                iv_code_one = dialog_share.findViewById(R.id.iv_code_one);
+                Bitmap bitmap1 = ZXingUtils.createQRImage("http://47.96.126.145:8080/sign?phone=" + userID + "&type=7", 600, 600, BitmapFactory.decodeResource(getResources(), R.drawable.icon));
+                iv_code_one.setImageBitmap(bitmap1);
+                btn_share_one.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogShare.dismiss();
+                        mShareAction.open();
+                    }
+                });
+//                btn_share_two.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        dialogShare.dismiss();
+//                        mShareAction.open();
+//                    }
+//                });
+                dialogShare = new AlertDialog.Builder(mActivity).setView(dialog_share)
+                        .create();
+                dialogShare.show();
+                window = dialogShare.getWindow();
+//                window.setContentView(dialog_share);
+                WindowManager.LayoutParams lp2 = window.getAttributes();
+//                lp.alpha = 0.5f;
+                // 也可按屏幕宽高比例进行设置宽高
+//                Display display = mActivity.getWindowManager().getDefaultDisplay();
+//                lp.width = (int) (display.getWidth() * 0.6);
+//                lp.height = dialog_share.getHeight();
+//                lp.width = 300;
+//                lp.height = 400;
+
+                window.setAttributes(lp2);
+//                window.setDimAmount(0.1f);
+                window.setBackgroundDrawable(new ColorDrawable());
+                break;
+
             case R.id.ll_online_consultation: //在线咨询
                 //startActivity(new Intent(getActivity(), IntelligentCustomerServiceActivity.class));
 
@@ -429,6 +568,37 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
             default:
                 break;
         }
+    }
+
+    public void showVerifiedDialog() {
+        customDialog = new CustomDialog(getContext());
+        customDialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        customDialog.setTitle("实名认证");
+        customDialog.show();
+        customDialog.setYesOnclickListener("确定", new CustomDialog.onYesOnclickListener() {
+            @Override
+            public void onYesClick() {
+                //Toast.makeText(getContext(), "点击了--去认证--按钮", Toast.LENGTH_LONG).show();
+                customDialog.dismiss();
+                startActivity(new Intent(mActivity, Verified_Activity.class));
+            }
+        });
+
+        customDialog.setNoOnclickListener("取消", new CustomDialog.onNoOnclickListener() {
+            @Override
+            public void onNoClick() {
+                //Toast.makeText(getContext(), "点击了--再想想--按钮", Toast.LENGTH_LONG).show();
+                customDialog.dismiss();
+            }
+        });
+
+        customDialog.setNoOnclickListener("取消", new CustomDialog.onNoOnclickListener() {
+            @Override
+            public void onNoClick() {
+                // Toast.makeText(getContext(), "点击了--关闭-按钮", Toast.LENGTH_LONG).show();
+                customDialog.dismiss();
+            }
+        });
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -76,8 +76,11 @@ import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLaz
 import com.ying.administrator.masterappdemo.receiver.XGPushReceiver;
 import com.ying.administrator.masterappdemo.util.ZXingUtils;
 import com.ying.administrator.masterappdemo.util.imageutil.BitmapUtil;
+import com.ying.administrator.masterappdemo.widget.AdDialog;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 import com.ying.administrator.masterappdemo.widget.CustomDialog;
+import com.ying.administrator.masterappdemo.widget.GlideCircleWithBorder;
+import com.ying.administrator.masterappdemo.widget.GlideCircleWithBorder_Home;
 import com.ying.administrator.masterappdemo.widget.ShareDialog;
 import com.zyao89.view.zloading.ZLoadingDialog;
 import com.zyao89.view.zloading.Z_TYPE;
@@ -250,6 +253,9 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
     private Window window;
     private Button btn_verified_update;
     private ImageView iv_code_one;
+    private ImageView iv_close;
+    private AdDialog adDialog;
+    private TextView tv_go;
 
 
     public Home_Fragment() {
@@ -497,9 +503,11 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 if (userInfo.getAvator() == null) {//显示默认头像
                     return;
                 } else {
+                    RequestOptions myOptions = new RequestOptions().transform(new GlideCircleWithBorder_Home(this,1, Color.parseColor("#808080")));
                     Glide.with(mActivity)
                             .load(Config.HEAD_URL + userInfo.getAvator())
                             .apply(RequestOptions.bitmapTransform(new CircleCrop()))
+                            .apply(myOptions)
                             .into(mImgHomeHead);
 
                 }
@@ -822,9 +830,44 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
     protected int setLayoutId() {
         return R.layout.fragment_home;
     }
+    public void showAd(){
+        under_review=LayoutInflater.from(mActivity).inflate(R.layout.dialog_ad,null);
+        iv_close = under_review.findViewById(R.id.iv_close);
+        tv_go = under_review.findViewById(R.id.tv_go);
+        iv_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                underReviewDialog.dismiss();
+            }
+        });
+        tv_go.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                underReviewDialog.dismiss();
+                mShareAction.open();
+            }
+        });
+        underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review)
+                .create();
+        underReviewDialog.show();
+        window = underReviewDialog.getWindow();
+//                window.setContentView(under_review);
+        WindowManager.LayoutParams lp = window.getAttributes();
+//                lp.alpha = 0.5f;
+        // 也可按屏幕宽高比例进行设置宽高
+//                Display display = mActivity.getWindowManager().getDefaultDisplay();
+//                lp.width = (int) (display.getWidth() * 0.6);
+//                lp.height = under_review.getHeight();
+//                lp.width = 300;
+//                lp.height = 400;
 
+        window.setAttributes(lp);
+//                window.setDimAmount(0.1f);
+        window.setBackgroundDrawable(new ColorDrawable());
+    }
     @Override
     protected void initData() {
+
         UMShareConfig config = new UMShareConfig();
         config.isNeedAuthOnGetUserInfo(true);
         UMShareAPI.get(mActivity).setShareConfig(config);
@@ -928,6 +971,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
 
             }
         });
+        showAd();
     }
 
     @Override

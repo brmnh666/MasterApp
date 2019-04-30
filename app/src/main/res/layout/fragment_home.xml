@@ -1,53 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!--适配于1920*1080手机-->
-<!--<jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout
+<!--适配于1920*1080手机--><!--<jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/home_swipe"
     >-->
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/color_custom_08"
-    >
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="250dp">
+    android:orientation="vertical">
 
-    <include layout="@layout/actionbar_home_layout"/>
-
-    <include layout="@layout/fragment_home_user"/>
-
-    <include layout="@layout/fragment_home_realtime_neworder"/>
-
-</RelativeLayout>
-   <!-- <View
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="10dp"
+        android:layout_height="250dp">
+
+        <include layout="@layout/actionbar_home_layout" />
+
+        <include layout="@layout/fragment_home_user" />
+
+
+        <include layout="@layout/fragment_home_realtime_neworder" />
+
+
+
+
+    </RelativeLayout>
+    <!-- <View
+         android:layout_width="match_parent"
+         android:layout_height="10dp"
+         android:background="@color/color_custom_08"/>-->
+
+    <!--实时订单-->
+
+    <!--实时订单-->
+    <!--<View
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
         android:background="@color/color_custom_08"/>-->
 
-    <!--实时订单-->
 
-    <!--实时订单-->
-<!--<View
-    android:layout_width="match_parent"
-    android:layout_height="5dp"
-    android:background="@color/color_custom_08"/>-->
+    <include layout="@layout/fragment_order_receiving" />
+
+</LinearLayout><!--用于填充布局-->
 
 
-
-        <include layout="@layout/fragment_order_receiving" />
-
-</LinearLayout>
-    <!--用于填充布局-->
-
-
-
-
-<!--
-</jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout>-->
+    <!--
+    </jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout>-->

@@ -88,7 +88,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="7dp"
-                        android:text="赠 额"
+                        android:text="西瓜币"
                         android:textColor="@color/white"
                         android:textSize="16sp" />
 
