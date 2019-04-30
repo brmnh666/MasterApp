@@ -254,8 +254,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
     private Button btn_verified_update;
     private ImageView iv_code_one;
     private ImageView iv_close;
-    private AdDialog adDialog;
-    private TextView tv_go;
+    private TextView tv_share;
 
 
     public Home_Fragment() {
@@ -833,14 +832,14 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
     public void showAd(){
         under_review=LayoutInflater.from(mActivity).inflate(R.layout.dialog_ad,null);
         iv_close = under_review.findViewById(R.id.iv_close);
-        tv_go = under_review.findViewById(R.id.tv_go);
+        tv_share = under_review.findViewById(R.id.tv_share);
         iv_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 underReviewDialog.dismiss();
             }
         });
-        tv_go.setOnClickListener(new View.OnClickListener() {
+        tv_share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 underReviewDialog.dismiss();
