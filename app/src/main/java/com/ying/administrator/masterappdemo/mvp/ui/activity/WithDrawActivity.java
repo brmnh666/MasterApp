@@ -465,7 +465,6 @@ public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
      * 弹出Popupwindow
      */
     public void showPopupWindow() {
-
         img_bankcancle = popupWindow_view.findViewById(R.id.img_bankcancle);
         mPopupWindow.setAnimationStyle(R.style.popwindow_anim_style);
         mPopupWindow.setBackgroundDrawable(new BitmapDrawable(getResources()));
@@ -488,7 +487,6 @@ public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
                 mPopupWindow.dismiss();
             }
         });
-
     }
 
 

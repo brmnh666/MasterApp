@@ -1,6 +1,7 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -86,6 +87,10 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
     TextView mTvPresentationMoney;
     @BindView(R.id.tv_total_money)
     TextView mTvTotalMoney;
+
+    @BindView(R.id.img_agree)
+    ImageView mImgagree;
+
     private List<FaceValue> faceValueList = new ArrayList<>();
     private FaceValueAdapter faceValueAdapter;
     private String[] faceValues = new String[]{"100", "300", "500", "1000", "2000", "3000"};
@@ -114,6 +119,7 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
 
     @Override
     protected void initData() {
+        mImgagree.setSelected(true);
         spUtils = SPUtils.getInstance("token");
         userID = spUtils.getString("userName");
         api = WXAPIFactory.createWXAPI(this, "wxd22da3eb42259071");
@@ -158,6 +164,9 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
 
     @Override
     protected void setListener() {
+
+
+        mImgagree.setOnClickListener(this);
         mImgActionbarReturn.setOnClickListener(this);
         mLlAlipay.setOnClickListener(this);
         mLlWxpay.setOnClickListener(this);
@@ -214,6 +223,14 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.img_agree:
+               if(mImgagree.isSelected()){
+                   mImgagree.setSelected(false);
+               }else {
+                   mImgagree.setSelected(true);
+               }
+                break;
+
             case R.id.img_actionbar_return:
                 finish();
                 break;
@@ -228,13 +245,22 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
                 mIvWechat.setSelected(true);
                 break;
             case R.id.tv_recharge_agreement:
-
+                Intent intent=new Intent(mActivity,WebActivity.class);
+                intent.putExtra("Url","http://47.96.126.145:8080/Agreement");
+                intent.putExtra("Title","充值协议");
+                startActivity(intent);
                 break;
             case R.id.bt_recharge:
                 if (value == null || "0".equals(value)) {
-                    ToastUtils.showShort("请选择或输入充值金额");
+                    ToastUtils.showShort("请选择或输入充值金额！！");
                     return;
                 }
+
+                if (!mImgagree.isSelected()){
+                    ToastUtils.showShort("同意充值协议才能进行充值！！");
+                    return;
+                }
+
                 switch (payway) {
                     case 1:
                         mPresenter.GetOrderStr(userID, value);

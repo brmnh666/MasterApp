@@ -340,10 +340,16 @@
                 android:orientation="horizontal"
                 android:layout_marginBottom="30dp">
 
+                <ImageView
+                    android:id="@+id/img_agree"
+                    android:layout_width="19dp"
+                    android:layout_height="19dp"
+                    android:background="@drawable/pay_check_selector"
+                    />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="点击充值即表示你已同意"
+                    android:text="我同意并阅读"
                     android:textColor="#999999"
                     android:textSize="14sp" />
 
