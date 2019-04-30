@@ -53,8 +53,24 @@ public class ArticleActivity extends BaseActivity<ArticlePresenter, ArticleModel
 
     @Override
     protected void initData() {
-        mTvActionbarTitle.setText("文章");
+
         CategoryID =getIntent().getStringExtra("CategoryID");
+        switch(CategoryID){
+            case "7":
+                mTvActionbarTitle.setText("系统消息");
+                break;
+            case "8":
+                mTvActionbarTitle.setText("平台政策");
+                break;
+            case "9":
+                mTvActionbarTitle.setText("平台新闻");
+                break;
+            case "10":
+                mTvActionbarTitle.setText("接单必读");
+                break;
+            default:
+                break;
+        }
         mPresenter.GetListCategoryContentByCategoryID(CategoryID);
     }
 
@@ -86,6 +102,7 @@ public class ArticleActivity extends BaseActivity<ArticlePresenter, ArticleModel
                 list =baseResult.getData().getData();
                 ArticleAdapter articleAdapter=new ArticleAdapter(R.layout.item_order_must_read, list);
                 mRvArticle.setLayoutManager(new LinearLayoutManager(mActivity));
+                articleAdapter.setEmptyView(getEmptyView());
                 mRvArticle.setAdapter(articleAdapter);
                 articleAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                     @Override
