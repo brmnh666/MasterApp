@@ -323,7 +323,7 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
             case R.id.ll_recommended_gift:
                 dialog_share = LayoutInflater.from(mActivity).inflate(R.layout.dialog_share, null);
                 btn_share_one = dialog_share.findViewById(R.id.btn_share_one);
-                btn_share_two = dialog_share.findViewById(R.id.btn_share_two);
+//                btn_share_two = dialog_share.findViewById(R.id.btn_share_two);
                 btn_share_one.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -331,13 +331,13 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                         mShareAction.open();
                     }
                 });
-                btn_share_two.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialogShare.dismiss();
-                        mShareAction.open();
-                    }
-                });
+//                btn_share_two.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        dialogShare.dismiss();
+//                        mShareAction.open();
+//                    }
+//                });
                 dialogShare = new AlertDialog.Builder(mActivity).setView(dialog_share)
                         .create();
                 dialogShare.show();
@@ -346,8 +346,8 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                 WindowManager.LayoutParams lp = window.getAttributes();
 //                lp.alpha = 0.5f;
                 // 也可按屏幕宽高比例进行设置宽高
-                Display display = mActivity.getWindowManager().getDefaultDisplay();
-                lp.width = (int) (display.getWidth() * 0.6);
+//                Display display = mActivity.getWindowManager().getDefaultDisplay();
+//                lp.width = (int) (display.getWidth() * 0.6);
 //                lp.height = dialog_share.getHeight();
 //                lp.width = 300;
 //                lp.height = 400;

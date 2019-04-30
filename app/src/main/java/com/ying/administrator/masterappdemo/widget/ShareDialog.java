@@ -11,9 +11,9 @@ import com.ying.administrator.masterappdemo.R;
 
 public class ShareDialog extends Dialog {
     private TextView btn_share_one;
-    private TextView btn_share_two;
+//    private TextView btn_share_two;
     private ImageView iv_code_one;
-    private ImageView iv_code_two;
+//    private ImageView iv_code_two;
     private String titleStr;
     private String messageStr;
     private String yesStr, noStr;
@@ -93,14 +93,14 @@ public class ShareDialog extends Dialog {
             }
         });
         //设置取消按钮被点击后，向外界提供监听
-        btn_share_two.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (noOnclickListener != null) {
-                    noOnclickListener.onNoClick();
-                }
-            }
-        });
+//        btn_share_two.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (noOnclickListener != null) {
+//                    noOnclickListener.onNoClick();
+//                }
+//            }
+//        });
 
 
     }
@@ -121,9 +121,9 @@ public class ShareDialog extends Dialog {
         if (yesStr != null) {
             btn_share_one.setText(yesStr);
         }
-        if (noStr != null) {
-            btn_share_two.setText(noStr);
-        }
+//        if (noStr != null) {
+//            btn_share_two.setText(noStr);
+//        }
 
 
 
@@ -133,9 +133,9 @@ public class ShareDialog extends Dialog {
      */
     private void initView() {
         btn_share_one =  findViewById(R.id.btn_share_one);
-        btn_share_two = findViewById(R.id.btn_share_two);
+//        btn_share_two = findViewById(R.id.btn_share_two);
         iv_code_one = findViewById(R.id.iv_code_one);
-        iv_code_two =  findViewById(R.id.iv_code_two);
+//        iv_code_two =  findViewById(R.id.iv_code_two);
 
     }
     /*  ---------------------------------- set方法 传值-------------------------------------  */

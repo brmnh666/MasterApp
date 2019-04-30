@@ -242,7 +242,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
     private ShareAction mShareAction;
     private CustomShareListener mShareListener;
     private View btn_share_one;
-    private View btn_share_two;
+//    private View btn_share_two;
     private Window window;
     private Button btn_verified_update;
 
@@ -605,7 +605,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
             case R.id.img_home_qr_code:
                 under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_share, null);
                 btn_share_one = under_review.findViewById(R.id.btn_share_one);
-                btn_share_two = under_review.findViewById(R.id.btn_share_two);
+//                btn_share_two = under_review.findViewById(R.id.btn_share_two);
                 btn_share_one.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -613,13 +613,13 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                         mShareAction.open();
                     }
                 });
-                btn_share_two.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        underReviewDialog.dismiss();
-                        mShareAction.open();
-                    }
-                });
+//                btn_share_two.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        underReviewDialog.dismiss();
+//                        mShareAction.open();
+//                    }
+//                });
                 underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review)
                         .create();
                 underReviewDialog.show();
@@ -628,8 +628,8 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 WindowManager.LayoutParams lp = window.getAttributes();
 //                lp.alpha = 0.5f;
                 // 也可按屏幕宽高比例进行设置宽高
-                Display display = mActivity.getWindowManager().getDefaultDisplay();
-                lp.width = (int) (display.getWidth() * 0.6);
+//                Display display = mActivity.getWindowManager().getDefaultDisplay();
+//                lp.width = (int) (display.getWidth() * 0.6);
 //                lp.height = under_review.getHeight();
 //                lp.width = 300;
 //                lp.height = 400;
