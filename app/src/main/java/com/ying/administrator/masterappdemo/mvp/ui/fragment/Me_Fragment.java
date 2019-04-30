@@ -2,6 +2,8 @@ package com.ying.administrator.masterappdemo.mvp.ui.fragment;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -55,6 +57,7 @@ import com.ying.administrator.masterappdemo.mvp.ui.activity.SubAccountManagement
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Wallet_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.WithDrawActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
+import com.ying.administrator.masterappdemo.util.ZXingUtils;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -125,6 +128,7 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
     int position = 0;
     private Bundle bundle;
     private Intent intent;
+    private ImageView iv_code_one;
 
     public Me_Fragment() {
         // Required empty public constructor
@@ -324,6 +328,10 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                 dialog_share = LayoutInflater.from(mActivity).inflate(R.layout.dialog_share, null);
                 btn_share_one = dialog_share.findViewById(R.id.btn_share_one);
 //                btn_share_two = dialog_share.findViewById(R.id.btn_share_two);
+
+                iv_code_one = dialog_share.findViewById(R.id.iv_code_one);
+                Bitmap bitmap = ZXingUtils.createQRImage("http://47.96.126.145:8080/sign?phone="+userID+"&type=7", 600, 600, BitmapFactory.decodeResource(getResources(), R.drawable.icon));
+                iv_code_one.setImageBitmap(bitmap);
                 btn_share_one.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

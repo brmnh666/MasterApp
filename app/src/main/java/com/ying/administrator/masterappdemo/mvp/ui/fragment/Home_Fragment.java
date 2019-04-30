@@ -6,6 +6,8 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -72,6 +74,8 @@ import com.ying.administrator.masterappdemo.mvp.ui.activity.Wallet_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.GrabsheetAdapter;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
 import com.ying.administrator.masterappdemo.receiver.XGPushReceiver;
+import com.ying.administrator.masterappdemo.util.ZXingUtils;
+import com.ying.administrator.masterappdemo.util.imageutil.BitmapUtil;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 import com.ying.administrator.masterappdemo.widget.CustomDialog;
 import com.ying.administrator.masterappdemo.widget.ShareDialog;
@@ -245,6 +249,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
 //    private View btn_share_two;
     private Window window;
     private Button btn_verified_update;
+    private ImageView iv_code_one;
 
 
     public Home_Fragment() {
@@ -605,7 +610,9 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
             case R.id.img_home_qr_code:
                 under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_share, null);
                 btn_share_one = under_review.findViewById(R.id.btn_share_one);
-//                btn_share_two = under_review.findViewById(R.id.btn_share_two);
+                iv_code_one = under_review.findViewById(R.id.iv_code_one);
+                Bitmap bitmap = ZXingUtils.createQRImage("http://47.96.126.145:8080/sign?phone="+userID+"&type=7", 600, 600, BitmapFactory.decodeResource(getResources(), R.drawable.icon));
+                iv_code_one.setImageBitmap(bitmap);
                 btn_share_one.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
