@@ -170,6 +170,11 @@ public class SplashActivity extends BaseActivity<LoginPresenter, LoginModel> imp
     }
 
     @Override
+    public void LoginOut(BaseResult<Data<String>> baseResult) {
+
+    }
+
+    @Override
     public void contentLoading() {
 
     }

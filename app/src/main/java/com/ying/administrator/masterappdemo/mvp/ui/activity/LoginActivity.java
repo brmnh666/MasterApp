@@ -214,6 +214,11 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginModel> impl
 
     }
 
+    @Override
+    public void LoginOut(BaseResult<Data<String>> baseResult) {
+
+    }
+
     public void showLoading(){
         dialog.setLoadingBuilder(Z_TYPE.SINGLE_CIRCLE)//设置类型
                 .setLoadingColor(Color.BLACK)//颜色

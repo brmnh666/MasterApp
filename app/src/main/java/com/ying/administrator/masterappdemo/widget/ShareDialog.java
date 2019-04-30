@@ -2,12 +2,15 @@ package com.ying.administrator.masterappdemo.widget;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ying.administrator.masterappdemo.R;
+import com.ying.administrator.masterappdemo.util.imageutil.BitmapUtil;
 
 public class ShareDialog extends Dialog {
     private TextView btn_share_one;
@@ -136,7 +139,8 @@ public class ShareDialog extends Dialog {
 //        btn_share_two = findViewById(R.id.btn_share_two);
         iv_code_one = findViewById(R.id.iv_code_one);
 //        iv_code_two =  findViewById(R.id.iv_code_two);
-
+//        Bitmap bitmap = BitmapUtil.createQRImage(url, 600, 600, BitmapFactory.decodeResource(getResources(), R.drawable.call));
+//        iv_code_one.setImageBitmap(bitmap);
     }
     /*  ---------------------------------- set方法 传值-------------------------------------  */
 //为外界设置一些public 公开的方法，来向自定义的dialog传递值

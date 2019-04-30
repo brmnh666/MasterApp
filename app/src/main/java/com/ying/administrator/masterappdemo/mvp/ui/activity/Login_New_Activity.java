@@ -198,6 +198,11 @@ public class Login_New_Activity extends BaseActivity<LoginPresenter, LoginModel>
     }
 
     @Override
+    public void LoginOut(BaseResult<Data<String>> baseResult) {
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
