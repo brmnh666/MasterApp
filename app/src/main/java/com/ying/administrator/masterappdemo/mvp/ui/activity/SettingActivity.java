@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.tencent.bugly.beta.Beta;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
@@ -96,6 +97,7 @@ public class SettingActivity extends BaseActivity<LoginPresenter, LoginModel> im
         mBtnSignOutOfYourAccount.setOnClickListener(new CustomOnclickLister());
         mSwitcherAllowNotification.setOnClickListener(new CustomOnclickLister());
         img_clean_cache.setOnClickListener(new CustomOnclickLister());
+        mLlUpdate.setOnClickListener(new CustomOnclickLister());
     }
 
     @Override
@@ -182,6 +184,9 @@ public class SettingActivity extends BaseActivity<LoginPresenter, LoginModel> im
                     break;
                 case R.id.switcher_allow_notification:
                     toSelfSetting(mActivity);
+                    break;
+                case R.id.ll_update:
+                    Beta.checkUpgrade();
                     break;
                 case R.id.img_clean_cache:
 
