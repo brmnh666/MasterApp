@@ -4,18 +4,21 @@ import java.io.Serializable;
 
 public class QuestBean implements Serializable {
 
+
     /**
-     * Id : 16
-     * QuesID : 16
+     * Id : 1
+     * QuesID : 1
      * QuesType : 1
-     * QuesCategory : 311
-     * Content : 测试
-     * Case1 : 测试1
-     * Case2 : 测试2
-     * Case3 : null
-     * Case4 : null
-     * Case5 : null
-     * Answer : 测试1
+     * QuesCategory : 287
+     * Content : 灭霸怎么死的
+     * Case1 : A
+     * Case2 : B
+     * Case3 : C
+     * Case4 : D
+     * Case5 : E
+     * Answer : A
+     * Jieshi : null
+     * UseAnswer : B
      * Value : 5
      * IsUse : Y
      * page : 1
@@ -34,20 +37,13 @@ public class QuestBean implements Serializable {
     private String Case4;
     private String Case5;
     private String Answer;
-    private String MyAnswer;
+    private String Jieshi;
+    private String UseAnswer;
     private String Value;
     private String IsUse;
     private String page;
     private String limit;
     private String Version;
-
-    public String getMyAnswer() {
-        return MyAnswer;
-    }
-
-    public void setMyAnswer(String myAnswer) {
-        MyAnswer = myAnswer;
-    }
 
     public String getId() {
         return Id;
@@ -135,6 +131,22 @@ public class QuestBean implements Serializable {
 
     public void setAnswer(String Answer) {
         this.Answer = Answer;
+    }
+
+    public String getJieshi() {
+        return Jieshi;
+    }
+
+    public void setJieshi(String Jieshi) {
+        this.Jieshi = Jieshi;
+    }
+
+    public String getUseAnswer() {
+        return UseAnswer;
+    }
+
+    public void setUseAnswer(String UseAnswer) {
+        this.UseAnswer = UseAnswer;
     }
 
     public String getValue() {

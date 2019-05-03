@@ -20,6 +20,7 @@ import com.ying.administrator.masterappdemo.entity.Message;
 import com.ying.administrator.masterappdemo.entity.MessageData;
 import com.ying.administrator.masterappdemo.entity.Province;
 import com.ying.administrator.masterappdemo.entity.QuestBean;
+import com.ying.administrator.masterappdemo.entity.QuestResult;
 import com.ying.administrator.masterappdemo.entity.RedPointData;
 import com.ying.administrator.masterappdemo.entity.Service;
 import com.ying.administrator.masterappdemo.entity.Skill;
@@ -698,5 +699,14 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("cms/GetQuestionBycategory")
     Observable<BaseResult<Data<List<QuestBean>>>> GetQuestionBycategory(@Field("QuesCategory") String QuesCategory);
+
+    /**
+     * 交卷
+     * @param Answer
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("cms/Calculate")
+    Observable<BaseResult<QuestResult>> Calculate(@Field("Answer") String Answer);
 
 }

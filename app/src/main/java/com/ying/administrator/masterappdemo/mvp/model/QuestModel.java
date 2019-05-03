@@ -3,6 +3,7 @@ package com.ying.administrator.masterappdemo.mvp.model;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.QuestBean;
+import com.ying.administrator.masterappdemo.entity.QuestResult;
 import com.ying.administrator.masterappdemo.mvp.contract.QuestContract;
 import com.ying.administrator.masterappdemo.mvp.service.ApiRetrofit;
 
@@ -18,6 +19,12 @@ public class QuestModel implements QuestContract.Model {
     @Override
     public Observable<BaseResult<Data<List<QuestBean>>>> GetQuestionBycategory(String id) {
         return  ApiRetrofit.getDefault().GetQuestionBycategory(id)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+    @Override
+    public Observable<BaseResult<QuestResult>> Calculate(String Answer) {
+        return  ApiRetrofit.getDefault().Calculate(Answer)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

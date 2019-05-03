@@ -2,48 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
     <include layout="@layout/actionbar_receiving_layout"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/yellow"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="@dimen/dp_10">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="距离考试结束还有"
-            android:textSize="20sp" />
-
-        <cn.iwgang.countdownview.CountdownView
-            android:id="@+id/countdownview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:padding="5dp"
-            android:layout_gravity="center"
-            app:isHideTimeBackground="true"
-            app:isShowDay="false"
-            app:isShowHour="false"
-            app:isShowMillisecond="false"
-            app:isShowMinute="true"
-            app:isShowSecond="true"
-            app:isShowTimeBgDivisionLine="false"
-            app:isTimeTextBold="true"
-            app:suffixGravity="center"
-            app:suffix=":"
-            app:suffixTextColor="#FF5656"
-            app:suffixTextSize="20sp"
-            app:timeBgColor="#ffffff"
-            app:timeBgRadius="3dp"
-            app:timeTextColor="#FF5656"
-            app:timeTextSize="20sp" />
-    </LinearLayout>
     <com.ying.administrator.masterappdemo.widget.CustomViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"

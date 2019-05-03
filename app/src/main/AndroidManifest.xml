@@ -258,6 +258,8 @@
         <activity android:name=".mvp.ui.activity.StudyActivity" android:theme="@style/AppTheme.NoActionBar" android:launchMode="singleTask"/>
         <activity android:name=".mvp.ui.activity.ExamActivity" android:theme="@style/AppTheme.NoActionBar" android:launchMode="singleTask"/>
         <activity android:name=".mvp.ui.activity.AnswerActivity" android:theme="@style/AppTheme.NoActionBar" android:launchMode="singleTask"/>
+        <activity android:name=".mvp.ui.activity.GradeActivity" android:theme="@style/AppTheme.NoActionBar" android:launchMode="singleTask"/>
+        <activity android:name=".mvp.ui.activity.ViewTheAnswerActivity" android:theme="@style/AppTheme.NoActionBar" android:launchMode="singleTask"/>
         <activity android:name=".UpgradeActivity" android:theme="@style/CustomDialog" android:launchMode="singleTask"/>
         <!--注册界面-->
         <activity android:name=".mvp.ui.activity.RegisterActivity" android:theme="@style/Theme.AppCompat.NoActionBar" android:launchMode="singleTask"/>

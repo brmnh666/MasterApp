@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal">
+    <include layout="@layout/actionbar_receiving_layout" />
+
+    <TextView
+        android:id="@+id/tv_grade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="50dp"
+        android:text="60分"
+        android:textColor="@color/red"
+        android:textSize="30sp"/>
+    <TextView
+        android:id="@+id/tv_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:padding="30dp"
+        android:text="很遗憾！未通过卫浴大类认证考试"/>
+    <Button
+        android:id="@+id/btn_view_the_answer"
+        android:layout_width="100dp"
+        android:layout_height="48dp"
+        android:background="@drawable/btn_blue"
+        android:layout_margin="10dp"
+        android:text="查看答案"
+        android:textColor="@color/color_white"
+        android:textSize="20sp"/>
+    <Button
+        android:id="@+id/btn_restart"
+        android:layout_width="100dp"
+        android:layout_height="48dp"
+        android:background="@drawable/btn_blue"
+        android:layout_margin="10dp"
+        android:text="重新考试"
+        android:textColor="@color/color_white"
+        android:textSize="20sp"/>
+</LinearLayout>

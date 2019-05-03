@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -19,7 +18,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.blankj.utilcode.util.ToastUtils;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
@@ -30,6 +28,7 @@ import com.ying.administrator.masterappdemo.mvp.contract.QuestContract;
 import com.ying.administrator.masterappdemo.mvp.model.QuestModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.QuestPresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.AnswerFragment;
+import com.ying.administrator.masterappdemo.mvp.ui.fragment.ViewTheAnswerFragment;
 import com.ying.administrator.masterappdemo.widget.CustomViewPager;
 
 import java.io.Serializable;
@@ -40,7 +39,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.iwgang.countdownview.CountdownView;
 
-public class AnswerActivity extends BaseActivity<QuestPresenter, QuestModel> implements View.OnClickListener, QuestContract.View {
+public class ViewTheAnswerActivity extends BaseActivity<QuestPresenter, QuestModel> implements View.OnClickListener, QuestContract.View {
 
     @BindView(R.id.viewPager)
     CustomViewPager vp_answer;
@@ -63,8 +62,6 @@ public class AnswerActivity extends BaseActivity<QuestPresenter, QuestModel> imp
 
     @BindView(R.id.btn_submit)
     Button mBtnSubmit;
-    @BindView(R.id.countdownview)
-    CountdownView mCountdownview;
     private List<Fragment> fragmentlists = new ArrayList<>();
     private int minute = 0;
     private int second = 0;
@@ -79,7 +76,7 @@ public class AnswerActivity extends BaseActivity<QuestPresenter, QuestModel> imp
 
     @Override
     protected int setLayoutId() {
-        return R.layout.activity_answer;
+        return R.layout.activity_view_the_answer;
     }
 
     @Override
@@ -94,16 +91,14 @@ public class AnswerActivity extends BaseActivity<QuestPresenter, QuestModel> imp
     @Override
     protected void initView() {
 // 获取传递来的变量
-        messages = (List<QuestBean>) getIntent().getExtras().get("list");
+        messages = (List<QuestBean>) getIntent().getExtras().get("list2");
         name = getIntent().getExtras().get("name").toString().trim();
         mTvActionbarTitle.setText(name);
         for (int i = 0; i < messages.size(); i++) {
-            fragmentlists.add(AnswerFragment.newInstance(messages.get(i), i));
-            vp_answer.setAdapter(new AnswerActivity.MainAdapter(getSupportFragmentManager()));
+            fragmentlists.add(ViewTheAnswerFragment.newInstance(messages.get(i), i));
+            vp_answer.setAdapter(new ViewTheAnswerActivity.MainAdapter(getSupportFragmentManager()));
             vp_answer.setOffscreenPageLimit(messages.size());
         }
-// 联网获取数据
-//        initNet(type);
 
 
 
@@ -111,13 +106,6 @@ public class AnswerActivity extends BaseActivity<QuestPresenter, QuestModel> imp
         mBtnSubmit.setOnClickListener(this);
         btn_next.setOnClickListener(this);
         vp_answer.setOnPageChangeListener(new MyOnPageChangeListener());
-        mCountdownview.start(3600000);
-        mCountdownview.setOnCountdownEndListener(new CountdownView.OnCountdownEndListener() {
-            @Override
-            public void onEnd(CountdownView cv) {
-                startActivity(new Intent(mActivity,GradeActivity.class));
-            }
-        });
     }
 
     @Override
@@ -132,59 +120,28 @@ public class AnswerActivity extends BaseActivity<QuestPresenter, QuestModel> imp
             case R.id.btn_pre:
 // 如果是第一题，则谈吐司提醒，否则上移一道题
                 if (nowpager == 0) {
-                    Toast.makeText(AnswerActivity.this, "已经到头啦!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ViewTheAnswerActivity.this, "已经到头啦!", Toast.LENGTH_SHORT).show();
                 } else {
                     vp_answer.setCurrentItem(--nowpager);
                 }
-                break;
-// 点击提交按钮
-            case R.id.btn_submit:
-// 简答题不进行提交评分
-//                if (type.equals("3")) {
-//                    Toast.makeText(this, "简答题目前暂不支持评分", Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-// 否则初始化并展示提交对话框
-                initAlertDialog();
-                builder.show();
                 break;
 // 点击下一题按钮
             case R.id.btn_next:
 // 如果是最后一题，则谈吐司提醒，否则下移一道题
                 if (nowpager == fragmentlists.size()) {
-                    mBtnSubmit.setVisibility(View.VISIBLE);
-                    Toast.makeText(AnswerActivity.this, "已经是最后一题了!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ViewTheAnswerActivity.this, "已经是最后一题了!", Toast.LENGTH_SHORT).show();
                 } else {
-                    mBtnSubmit.setVisibility(View.GONE);
                     vp_answer.setCurrentItem(++nowpager);
                 }
                 break;
             case R.id.ll_return:
-                builder = new AlertDialog.Builder(AnswerActivity.this);
-                builder.setTitle("提示");
-                builder.setMessage("是否结束考试?");
-                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        finish();
-                    }
-
-                });
-                builder.setNegativeButton("取消", null);
-                builder.create().show();
+                finish();
                 break;
             default:
                 break;
         }
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 
     @Override
     public void GetQuestionBycategory(BaseResult<Data<List<QuestBean>>> baseResult) {
@@ -193,24 +150,7 @@ public class AnswerActivity extends BaseActivity<QuestPresenter, QuestModel> imp
 
     @Override
     public void Calculate(BaseResult<QuestResult> baseResult) {
-        switch (baseResult.getStatusCode()) {
-            case 200:
-                grade = baseResult.getData().getItem1();
-                messages = baseResult.getData().getItem2();
-                // 传递分数
-                Intent intent = new Intent(AnswerActivity.this, GradeActivity.class);
-                intent.putExtra("grade", grade);
-                intent.putExtra("name", name);
-                intent.putExtra("id", id);
-// 传递题目列表
-                intent.putExtra("list", (Serializable) messages);
-                startActivity(intent);
-                finish();
-                break;
-            default:
-//                ToastUtils.showShort(baseResult.getData());
-                break;
-        }
+
     }
 
 
@@ -234,30 +174,6 @@ public class AnswerActivity extends BaseActivity<QuestPresenter, QuestModel> imp
         public int getCount() {
             return fragmentlists.size();
         }
-    }
-
-    // 弹出是否确认交卷的对话框
-    private void initAlertDialog() {
-//新建对话框
-        builder = new AlertDialog.Builder(AnswerActivity.this);
-        builder.setTitle("提示");
-        builder.setMessage("是否确定交卷?");
-        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-// TODO: 2017/6/14 交卷操作
-// 计算分数
-                int grade = 0;
-                for (int i = 0; i < messages.size(); i++) {
-                    Answer += messages.get(i).getId()+","+messages.get(i).getUseAnswer()+"|";
-                }
-                Answer=Answer.substring(0,Answer.lastIndexOf("|"));
-                mPresenter.Calculate(Answer);
-
-            }
-
-        });
-        builder.setNegativeButton("取消", null);
     }
 
     /**
