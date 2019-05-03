@@ -91,7 +91,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_weight="1"
-                            android:text="昵称"
+                            android:text="店铺名称"
                             android:textColor="#858585"
                             android:textSize="14sp" />
 

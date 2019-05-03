@@ -206,14 +206,12 @@
 <TextView
 
     android:layout_marginTop="20dp"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
     android:gravity="center"
     android:id="@+id/tv_register"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="50dp"
     android:text="注册并登陆"
     android:textColor="@color/white"
     android:textSize="19sp"

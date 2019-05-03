@@ -11,7 +11,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="220dp">
+            android:layout_height="215dp">
 
             <include layout="@layout/actionbar_me_layout" />
 

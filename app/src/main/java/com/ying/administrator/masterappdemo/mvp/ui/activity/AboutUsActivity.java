@@ -1,6 +1,9 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -53,6 +56,24 @@ public class AboutUsActivity extends BaseActivity implements View.OnClickListene
     protected void initData() {
         mTvActionbarTitle.setText("关于我们");
         mImgActionbarMessage.setVisibility(View.INVISIBLE);
+        PackageManager manager = mActivity.getPackageManager();
+//        int code = 0;
+//        try {
+//            PackageInfo info = manager.getPackageInfo(mActivity.getPackageName(), 0);
+//            code = info.versionCode;
+//        } catch (PackageManager.NameNotFoundException e) {
+//            e.printStackTrace();
+//        }
+
+        String name = null;
+        try {
+            PackageInfo info = manager.getPackageInfo(mActivity.getPackageName(), 0);
+            name = info.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        mTvVersionNumber.setText("V "+name);
     }
 
     @Override
@@ -92,4 +113,6 @@ public class AboutUsActivity extends BaseActivity implements View.OnClickListene
                 break;
         }
     }
+
+
 }

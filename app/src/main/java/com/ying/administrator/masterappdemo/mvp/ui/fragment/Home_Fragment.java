@@ -475,7 +475,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                     mTvCertification.setText("未实名认证");
                     mImg_un_certification.setVisibility(View.VISIBLE);
                     mImgCertification.setVisibility(View.INVISIBLE);
-                    mTvCertification.setTextColor(Color.rgb(92, 92, 92));
+                    mTvCertification.setTextColor(Color.rgb(255, 0, 0));
 
                 } else if (userInfo.getIfAuth().equals("0")) {
                     mTvCertification.setText("审核中");

@@ -8,10 +8,10 @@
 
         <ImageView
             android:id="@+id/img_actionbar_return"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginLeft="10dp"
-            android:src="@mipmap/left"
+            android:layout_width="10dp"
+            android:layout_height="19dp"
+            android:layout_marginLeft="16dp"
+            android:src="@mipmap/icon_actionbar_return"
             android:layout_centerVertical="true"
             />
 

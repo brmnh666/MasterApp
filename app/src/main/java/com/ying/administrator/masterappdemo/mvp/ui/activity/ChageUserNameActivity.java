@@ -61,7 +61,7 @@ public class ChageUserNameActivity extends BaseActivity<InfoManagePresenter, Inf
 
     @Override
     public void initView() {
-        mTvActionbarTitle.setText("修改昵称");
+        mTvActionbarTitle.setText("修改店铺名称");
         mImgActionbarMessage.setVisibility(View.INVISIBLE);
 
 

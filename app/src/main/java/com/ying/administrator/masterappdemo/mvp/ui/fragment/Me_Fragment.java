@@ -47,7 +47,6 @@ import com.ying.administrator.masterappdemo.mvp.contract.MainContract;
 import com.ying.administrator.masterappdemo.mvp.model.MainModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.MainPresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.AboutUsActivity;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.MySkillsActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Opinion_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_Receiving_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Personal_Information_Activity;
@@ -126,6 +125,12 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
     SmartRefreshLayout mRefreshLayout;
     @BindView(R.id.ll_study)
     LinearLayout mLlStudy;
+    @BindView(R.id.ll_setting)
+    LinearLayout mLlSetting;
+    @BindView(R.id.img_un_certification)
+    ImageView mImgUnCertification;
+    @BindView(R.id.img_certification)
+    ImageView mImgCertification;
 
     private Home_Fragment.CustomShareListener mShareListener;
     private ShareAction mShareAction;
@@ -244,6 +249,7 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
         mLlShareCode.setOnClickListener(this);
         mTvCertification.setOnClickListener(this);
         mLlStudy.setOnClickListener(this);
+        mLlSetting.setOnClickListener(this);
 
     }
 
@@ -268,30 +274,30 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                 String format = String.format("%.2f", userInfo.getTotalMoney() - userInfo.getFrozenMoney());
                 // String can_withdraw = Double.toString(userInfo.getTotalMoney() - userInfo.getFrozenMoney());//可提现余额=总金额-冻结金额
                 mTv_me_withdraw.setText(format);
-                mTvName.setText(userInfo.getTrueName());
+                mTvName.setText(userInfo.getNickName());
                 /*设置实名认证状态*/
                 if (userInfo.getIfAuth() == null) {
                     mTvCertification.setText("未实名认证");
-//                    mImg_un_certification.setVisibility(View.VISIBLE);
-//                    mImgCertification.setVisibility(View.INVISIBLE);
-                    mTvCertification.setTextColor(Color.rgb(92, 92, 92));
+                    mImgUnCertification.setVisibility(View.VISIBLE);
+                    mImgCertification.setVisibility(View.INVISIBLE);
+                    mTvCertification.setTextColor(Color.rgb(255, 0, 0));
 
                 } else if (userInfo.getIfAuth().equals("0")) {
                     mTvCertification.setText("审核中");
                     mTvCertification.setTextColor(Color.RED);
-//                    mImg_un_certification.setVisibility(View.VISIBLE);
-//                    mImgCertification.setVisibility(View.INVISIBLE);
+                    mImgUnCertification.setVisibility(View.VISIBLE);
+                    mImgCertification.setVisibility(View.INVISIBLE);
 
                 } else if (userInfo.getIfAuth().equals("-1")) {
                     mTvCertification.setText("审核不通过");
                     mTvCertification.setTextColor(Color.RED);
-//                    mImg_un_certification.setVisibility(View.VISIBLE);
-//                    mImgCertification.setVisibility(View.INVISIBLE);
+                    mImgUnCertification.setVisibility(View.VISIBLE);
+                    mImgCertification.setVisibility(View.INVISIBLE);
 
                 } else if (userInfo.getIfAuth().equals("1")) {
                     mTvCertification.setText("已实名认证");
-//                    mImg_un_certification.setVisibility(View.INVISIBLE);
-//                    mImgCertification.setVisibility(View.VISIBLE);
+                    mImgUnCertification.setVisibility(View.INVISIBLE);
+                    mImgCertification.setVisibility(View.VISIBLE);
                 } else {
 
                     return;
@@ -401,6 +407,7 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
             case R.id.img_me_head:  //头像
                 startActivity(new Intent(getActivity(), Personal_Information_Activity.class));
                 break;
+            case R.id.ll_setting:
             case R.id.img_me_setting: //设置
                 startActivity(new Intent(getActivity(), SettingActivity.class));
                 break;

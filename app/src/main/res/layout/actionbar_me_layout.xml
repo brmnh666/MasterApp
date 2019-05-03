@@ -33,22 +33,23 @@
         android:layout_marginRight="21dp"
         android:src="@drawable/shezhi"
         android:layout_marginBottom="5dp"
-        android:padding="10dp"/>
+        android:padding="10dp"
+        android:visibility="gone"/>
 
 
     <ImageView
         android:id="@+id/img_me_head"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="35dp"
-        android:src="@mipmap/icon_head" />
+        android:layout_marginTop="20dp"
+        android:src="@mipmap/icon_head"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="30dp"
         android:layout_toRightOf="@+id/img_me_head"
         android:orientation="vertical">
 
@@ -58,20 +59,36 @@
             android:layout_height="wrap_content"
             android:text="慈溪正海科技"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:textStyle="bold"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center">
 
-            <ImageView
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_gravity="center"
-                android:src="@drawable/shiming" />
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+
+                <ImageView
+                    android:id="@+id/img_un_certification"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/all_weishiming" />
+
+                <ImageView
+                    android:id="@+id/img_certification"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/me_yishiming"
+                    android:visibility="gone" />
+            </FrameLayout>
 
             <TextView
                 android:id="@+id/tv_certification"
@@ -80,7 +97,8 @@
                 android:text="未实名认证"
                 android:textColor="@color/white"
                 android:textSize="13sp"
-                android:layout_marginLeft="5dp"/>
+                android:layout_marginLeft="5dp"
+                android:layout_gravity="center"/>
         </LinearLayout>
 
     </LinearLayout>
@@ -132,7 +150,7 @@
         android:text="充  值"
         android:textColor="@color/color_white"
         android:textSize="16sp"
-
+        android:layout_marginTop="40dp"
         />
 
     <TextView

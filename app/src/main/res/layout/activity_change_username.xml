@@ -21,7 +21,7 @@
             android:id="@+id/et_username"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="请输入新的昵称"
+            android:hint="请输入新的店铺名称"
             android:textSize="15sp"
             android:textColor="#333333"
             android:background="@null"

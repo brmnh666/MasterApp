@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:layout_marginTop="@dimen/dp_10"
-        android:text="V 1.1.0"
+        android:text="V 4.0.1"
         android:gravity="center"
         android:textColor="#AFAFAF"/>
     <TextView
@@ -42,8 +42,8 @@
         android:text="用户协议"
         android:gravity="center"
         android:layout_gravity="center"
-        android:textColor="#AFAFAF"
-        android:background="@drawable/gray_shape"/>
+        android:textColor="#808080"
+        android:background="@drawable/black_shape"/>
 
     <TextView
         android:visibility="gone"
@@ -52,10 +52,10 @@
         android:layout_height="34dp"
         android:layout_gravity="center"
         android:layout_marginTop="17dp"
-        android:background="@drawable/gray_shape"
+        android:background="@drawable/black_shape"
         android:gravity="center"
         android:text="关于APP"
-        android:textColor="#AFAFAF"
+        android:textColor="#808080"
         android:textSize="16sp" />
     <TextView
         android:id="@+id/tv_opinion"
@@ -66,8 +66,8 @@
         android:text="意见反馈"
         android:gravity="center"
         android:layout_gravity="center"
-        android:textColor="#AFAFAF"
-        android:background="@drawable/gray_shape"/>
+        android:textColor="#808080"
+        android:background="@drawable/black_shape"/>
 
     <TextView
         android:id="@+id/tv_net"

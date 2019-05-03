@@ -71,14 +71,14 @@
                         android:layout_width="15dp"
                         android:layout_height="15dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/weishiming" />
+                        android:src="@drawable/all_weishiming" />
 
                     <ImageView
                         android:id="@+id/img_certification"
                         android:layout_width="15dp"
                         android:layout_height="15dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/yishiming"
+                        android:src="@drawable/home_yishiming"
                         android:visibility="gone" />
                 </FrameLayout>
 
@@ -88,7 +88,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:text="未实名认证"
-                    android:textColor="@color/red"
+                    android:textColor="#1690FF"
                     android:textSize="13sp" />
             </LinearLayout>
             <LinearLayout
@@ -119,23 +119,24 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:orientation="horizontal"
-                    android:layout_marginLeft="5dp">
+                    android:layout_marginLeft="5dp"
+                    android:layout_gravity="center">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
+                        android:layout_gravity="bottom"
                         android:text="￥"
-                        android:textColor="#1690FF"
-                        android:textSize="18sp" />
+                        android:textColor="#7D7D7D"
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/tv_money"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
+                        android:layout_gravity="bottom"
                         android:text="123000.00"
-                        android:textColor="#1690FF"
+                        android:textColor="#7D7D7D"
                         android:textSize="18sp" />
                 </LinearLayout>
             </LinearLayout>
