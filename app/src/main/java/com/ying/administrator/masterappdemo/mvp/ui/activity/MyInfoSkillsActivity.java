@@ -81,6 +81,7 @@ public class MyInfoSkillsActivity extends BaseActivity<AddSkillsPresenter, AddSk
     @Override
     protected void initData() {
         userID = spUtils.getString("userName"); //获取用户id
+        showLoading();
         mPresenter.GetFactoryCategory();
 
     }
@@ -163,6 +164,7 @@ public class MyInfoSkillsActivity extends BaseActivity<AddSkillsPresenter, AddSk
                 } else {
                     ToastUtils.showShort("获取分类失败！");
                 }
+                cancleLoading();
                 break;
             case 401:
 //                ToastUtils.showShort(baseResult.getData());
@@ -217,7 +219,7 @@ public class MyInfoSkillsActivity extends BaseActivity<AddSkillsPresenter, AddSk
     public void showLoading(){
         dialog.setLoadingBuilder(Z_TYPE.SINGLE_CIRCLE)//设置类型
                 .setLoadingColor(Color.BLACK)//颜色
-                .setHintText("提交中请稍后...")
+                .setHintText("正在加载...")
                 .setHintTextSize(14) // 设置字体大小 dp
                 .setHintTextColor(Color.BLACK)  // 设置字体颜色
                 .setDurationTime(0.5) // 设置动画时间百分比 - 0.5倍

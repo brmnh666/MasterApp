@@ -142,7 +142,7 @@ public class QuestBean implements Serializable {
     }
 
     public String getUseAnswer() {
-        return UseAnswer;
+        return UseAnswer==null?"":UseAnswer;
     }
 
     public void setUseAnswer(String UseAnswer) {

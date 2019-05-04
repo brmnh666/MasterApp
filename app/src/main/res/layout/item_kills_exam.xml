@@ -30,18 +30,29 @@
                 android:id="@+id/iv_choose"
                 android:layout_width="21dp"
                 android:layout_height="21dp"
-                android:src="@drawable/check_kill_selector"/>
+                android:src="@drawable/check_kill_selector"
+                android:visibility="gone"/>
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:text="开始考试"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:background="@drawable/blue_chat_shape"
+                android:textColor="@color/white"/>
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="10dp"
-            android:background="#E4E4E4"/>
+            android:background="#E4E4E4"
+            android:visibility="gone"/>
         <FrameLayout
             android:id="@+id/fl_drop_down"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:visibility="gone">
             <TextView
                 android:visibility="gone"
                 android:id="@+id/tv_kill_detail_one"

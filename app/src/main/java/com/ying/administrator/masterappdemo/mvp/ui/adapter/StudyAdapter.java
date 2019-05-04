@@ -12,7 +12,7 @@ import java.util.List;
 public class StudyAdapter extends BaseQuickAdapter<MySkills,BaseViewHolder> {
 
     public StudyAdapter(int layoutResId, @Nullable List<MySkills> data) {
-        super(R.layout.item_kills, data);
+        super(layoutResId, data);
     }
 
     @Override

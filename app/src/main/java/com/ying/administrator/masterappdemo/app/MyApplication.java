@@ -189,7 +189,14 @@ public class MyApplication extends Application {
 
         /*在application中初始化时设置监听，监听策略的收取*/
         Beta.upgradeListener = new UpgradeListener() {
-
+            /**
+             * 接收到更新策略
+             * @param ret  0:正常 －1:请求失败
+             * @param strategy 更新策略
+             * @param isManual true:手动请求 false:自动请求
+             * @param isSilence true:不弹窗 false:弹窗
+             * @return 是否放弃SDK处理此策略，true:SDK将不会弹窗，策略交由app自己处理
+             */
             @Override
             public void onUpgrade(int ret, UpgradeInfo strategy, boolean isManual, boolean isSilence) {
                 if (strategy != null) {
@@ -201,11 +208,13 @@ public class MyApplication extends Application {
                             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(i);
                         }
-                    }, 3000);
+                    }, 1000);
 
                 } else {
 //                    Log.e("bugly", "不需要更新,没有更新策略");
-                    ToastUtils.showShort("已经是最新版本");
+                    if (isManual){
+                        ToastUtils.showShort("已经是最新版本");
+                    }
                 }
             }
         };

@@ -96,6 +96,7 @@ public class AnswerActivity extends BaseActivity<QuestPresenter, QuestModel> imp
 // 获取传递来的变量
         messages = (List<QuestBean>) getIntent().getExtras().get("list");
         name = getIntent().getExtras().get("name").toString().trim();
+        id = getIntent().getExtras().get("id").toString().trim();
         mTvActionbarTitle.setText(name);
         for (int i = 0; i < messages.size(); i++) {
             fragmentlists.add(AnswerFragment.newInstance(messages.get(i), i));
@@ -107,6 +108,12 @@ public class AnswerActivity extends BaseActivity<QuestPresenter, QuestModel> imp
 
 
 
+
+    }
+
+    @Override
+    protected void setListener() {
+        mLlReturn.setOnClickListener(this);
         btn_previous.setOnClickListener(this);
         mBtnSubmit.setOnClickListener(this);
         btn_next.setOnClickListener(this);
@@ -118,11 +125,6 @@ public class AnswerActivity extends BaseActivity<QuestPresenter, QuestModel> imp
                 startActivity(new Intent(mActivity,GradeActivity.class));
             }
         });
-    }
-
-    @Override
-    protected void setListener() {
-
     }
 
     @Override
@@ -152,10 +154,8 @@ public class AnswerActivity extends BaseActivity<QuestPresenter, QuestModel> imp
             case R.id.btn_next:
 // 如果是最后一题，则谈吐司提醒，否则下移一道题
                 if (nowpager == fragmentlists.size()) {
-                    mBtnSubmit.setVisibility(View.VISIBLE);
                     Toast.makeText(AnswerActivity.this, "已经是最后一题了!", Toast.LENGTH_SHORT).show();
                 } else {
-                    mBtnSubmit.setVisibility(View.GONE);
                     vp_answer.setCurrentItem(++nowpager);
                 }
                 break;
@@ -277,5 +277,22 @@ public class AnswerActivity extends BaseActivity<QuestPresenter, QuestModel> imp
         public void onPageScrollStateChanged(int state) {
 
         }
+    }
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+        builder = new AlertDialog.Builder(AnswerActivity.this);
+        builder.setTitle("提示");
+        builder.setMessage("是否结束考试?");
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                finish();
+            }
+
+        });
+        builder.setNegativeButton("取消", null);
+        builder.create().show();
     }
 }

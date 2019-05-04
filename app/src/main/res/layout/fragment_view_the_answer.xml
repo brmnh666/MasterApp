@@ -18,6 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:textColor="@color/black"
             android:text="选项A"
             android:textSize="18sp" />
 
@@ -26,6 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:textColor="@color/black"
             android:text="选项B"
             android:textSize="18sp" />
 
@@ -34,6 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:textColor="@color/black"
             android:text="选项C"
             android:textSize="18sp" />
 
@@ -42,6 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:textColor="@color/black"
             android:text="选项D"
             android:textSize="18sp" />
 

@@ -88,7 +88,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="考试时间未60分钟，总分100分，60分及格！"/>
+                android:text="考试时间为60分钟，总分100分，60分及格！"/>
         </LinearLayout>
         <Button
             android:id="@+id/btn_start"

@@ -1,6 +1,7 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,6 +25,8 @@ import com.ying.administrator.masterappdemo.mvp.contract.AddSkillsContract;
 import com.ying.administrator.masterappdemo.mvp.model.AddSkillsModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.AddSkillsPresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.StudyAdapter;
+import com.zyao89.view.zloading.ZLoadingDialog;
+import com.zyao89.view.zloading.Z_TYPE;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +60,7 @@ public class StudyActivity extends BaseActivity<AddSkillsPresenter, AddSkillsMod
     private List<Category> subList;
     private String skills;
     private String NodeIds="";
+    ZLoadingDialog dialog = new ZLoadingDialog(this); //loading
 
 //    @Override
 //    protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,6 +77,7 @@ public class StudyActivity extends BaseActivity<AddSkillsPresenter, AddSkillsMod
 
     @Override
     protected void initData() {
+        showLoading();
         mPresenter.GetFactoryCategory();
     }
     @Override
@@ -112,6 +117,7 @@ public class StudyActivity extends BaseActivity<AddSkillsPresenter, AddSkillsMod
     public void GetFactoryCategory(BaseResult<CategoryData> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
+
                 CategoryData data = baseResult.getData();
                 if ("0".equals(data.getCode())) {
                     popularList = data.getData();
@@ -132,7 +138,7 @@ public class StudyActivity extends BaseActivity<AddSkillsPresenter, AddSkillsMod
                             }
                             mySkillsList.get(i).setCategoryArrayList(subList);
                         }
-                        studyAdapter=new StudyAdapter(R.layout.item_kills,mySkillsList);
+                        studyAdapter=new StudyAdapter(R.layout.item_kills_exam,mySkillsList);
                         mRvKills.setLayoutManager(new LinearLayoutManager(mActivity));
                         mRvKills.setAdapter(studyAdapter);
                         studyAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -147,6 +153,7 @@ public class StudyActivity extends BaseActivity<AddSkillsPresenter, AddSkillsMod
                 } else {
                     ToastUtils.showShort("获取分类失败！");
                 }
+                cancleLoading();
                 break;
             case 401:
 //                ToastUtils.showShort(baseResult.getData());
@@ -162,5 +169,19 @@ public class StudyActivity extends BaseActivity<AddSkillsPresenter, AddSkillsMod
     @Override
     public void UpdateAccountSkillData(BaseResult<String> baseResult) {
 
+    }
+    public void showLoading(){
+        dialog.setLoadingBuilder(Z_TYPE.SINGLE_CIRCLE)//设置类型
+                .setLoadingColor(Color.BLACK)//颜色
+                .setHintText("正在加载...")
+                .setHintTextSize(14) // 设置字体大小 dp
+                .setHintTextColor(Color.BLACK)  // 设置字体颜色
+                .setDurationTime(0.5) // 设置动画时间百分比 - 0.5倍
+                .setCanceledOnTouchOutside(false)//点击外部无法取消
+                .show();
+    }
+
+    public void cancleLoading(){
+        dialog.dismiss();
     }
 }

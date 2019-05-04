@@ -77,20 +77,6 @@ public class AnswerFragment extends BaseLazyFragment implements RadioGroup.OnChe
 //            mEtAnswer.setVisibility(View.VISIBLE);
 //            mRgBase.setVisibility(View.GONE);
 //        }
-    }
-
-    @Override
-    protected void setListener() {
-
-    }
-
-    @Override
-    protected int setLayoutId() {
-        return R.layout.fragment_quest;
-    }
-
-    @Override
-    public void initData() {
         mTvTitle.setText((num+1)+"、" + questBean.getContent());
         //如果没有传递数据，则退出
         if (questBean == null) {
@@ -115,16 +101,43 @@ public class AnswerFragment extends BaseLazyFragment implements RadioGroup.OnChe
     }
 
     @Override
+    protected void setListener() {
+
+    }
+
+    @Override
+    protected int setLayoutId() {
+        return R.layout.fragment_quest;
+    }
+
+    @Override
+    public void initData() {
+
+    }
+
+    @Override
     public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-        if (checkedId == mRbOptionA.getId()) {
-            option = "A";
-        } else if (checkedId == mRbOptionB.getId()) {
-            option = "B";
-        } else if (checkedId == mRbOptionC.getId()) {
-            option = "C";
-        } else if (checkedId == mRbOptionD.getId()) {
-            option = "D";
+        //        如果是选择题，对应选项赋值
+        if ("1".equals(questBean.getQuesType() + "")) {
+            if (checkedId == mRbOptionA.getId()) {
+                option = "A";
+            } else if (checkedId == mRbOptionB.getId()) {
+                option = "B";
+            } else if (checkedId == mRbOptionC.getId()) {
+                option = "C";
+            } else if (checkedId == mRbOptionD.getId()) {
+                option = "D";
+            }
         }
+//        如果是判断题，AB设置为对，错。
+        else if ("2".equals(questBean.getQuesType() + "")) {
+            if (checkedId == mRbOptionA.getId()) {
+                option = "对";
+            } else if (checkedId == mRbOptionB.getId()) {
+                option = "错";
+            }
+        }
+
 //        设置答案
         questBean.setUseAnswer(option);
     }

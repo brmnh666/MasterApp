@@ -2,6 +2,8 @@ package com.ying.administrator.masterappdemo.widget;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,6 +15,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
+import com.ying.administrator.masterappdemo.util.ZXingUtils;
 
 public class QRCodeDialog extends Dialog {
 
@@ -74,10 +77,11 @@ public class QRCodeDialog extends Dialog {
      */
     private void initData() {
 
-        Glide.with(context)
-                .load(Config.SUB_ACCOUNT_QRCODE+UserId)
-                .into(img_qrcode);
-
-
+//        Glide.with(context)
+//                .load(Config.SUB_ACCOUNT_QRCODE+UserId)
+//                .into(img_qrcode);
+//        http://manage.xigyu.com/regchildaccount?ParentUserID=17855837725
+        Bitmap bitmap = ZXingUtils.createQRImage("http://manage.xigyu.com/regchildaccount?ParentUserID="+UserId, 600, 600, BitmapFactory.decodeResource(context.getResources(), R.drawable.icon));
+        img_qrcode.setImageBitmap(bitmap);
     }
 }

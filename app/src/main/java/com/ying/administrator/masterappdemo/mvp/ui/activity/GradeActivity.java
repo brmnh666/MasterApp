@@ -125,6 +125,7 @@ public class GradeActivity extends BaseActivity<QuestPresenter, QuestModel> impl
                     }else{
                         Intent intent = new Intent(mActivity, AnswerActivity.class);
                         intent.putExtra("name", name);
+                        intent.putExtra("id", id);
                         intent.putExtra("list", (Serializable) messages);
                         startActivity(intent);
                         finish();

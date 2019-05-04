@@ -97,6 +97,7 @@ public class ExamActivity extends BaseActivity<QuestPresenter, QuestModel> imple
                 if (messages.size() > 0) {
                     Intent intent = new Intent(mActivity, AnswerActivity.class);
                     intent.putExtra("name", skills.getCategory().getFCategoryName());
+                    intent.putExtra("id", skills.getCategory().getFCategoryID());
                     intent.putExtra("list", (Serializable) messages);
                     startActivity(intent);
                     finish();

@@ -84,7 +84,7 @@ public class ZXingUtils {
         }
 
         //logo大小为二维码整体大小的1/5
-        float scaleFactor = srcWidth * 1.0f / 5 / logoWidth;
+        float scaleFactor = srcWidth * 1.0f / 6 / logoWidth;
         Bitmap bitmap = Bitmap.createBitmap(srcWidth, srcHeight, Bitmap.Config.ARGB_8888);
         try {
             Canvas canvas = new Canvas(bitmap);

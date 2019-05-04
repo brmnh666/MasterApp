@@ -99,18 +99,15 @@ public class ViewTheAnswerActivity extends BaseActivity<QuestPresenter, QuestMod
             vp_answer.setAdapter(new ViewTheAnswerActivity.MainAdapter(getSupportFragmentManager()));
             vp_answer.setOffscreenPageLimit(messages.size());
         }
-
-
-
-        btn_previous.setOnClickListener(this);
-        mBtnSubmit.setOnClickListener(this);
-        btn_next.setOnClickListener(this);
-        vp_answer.setOnPageChangeListener(new MyOnPageChangeListener());
     }
 
     @Override
     protected void setListener() {
-
+        btn_previous.setOnClickListener(this);
+        mBtnSubmit.setOnClickListener(this);
+        btn_next.setOnClickListener(this);
+        mLlReturn.setOnClickListener(this);
+        vp_answer.setOnPageChangeListener(new MyOnPageChangeListener());
     }
 
     @Override
@@ -194,4 +191,5 @@ public class ViewTheAnswerActivity extends BaseActivity<QuestPresenter, QuestMod
 
         }
     }
+
 }
