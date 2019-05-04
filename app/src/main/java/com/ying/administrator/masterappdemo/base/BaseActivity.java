@@ -160,6 +160,10 @@ public abstract class BaseActivity<P extends BasePresenter, M extends BaseModel>
         return  LayoutInflater.from(mActivity).inflate(R.layout.layout_no_data,null);
     }
 
+    public View getEmptyViewCz() {
+        return  LayoutInflater.from(mActivity).inflate(R.layout.layout_no_data_cz,null);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();

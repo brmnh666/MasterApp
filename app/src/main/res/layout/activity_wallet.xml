@@ -431,42 +431,20 @@
 
                 </LinearLayout>
 
-                <FrameLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent"
+                    android:descendantFocusability="blocksDescendants">
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/rv_income_and_expenditure_details"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false">
 
                     </android.support.v7.widget.RecyclerView>
 
-                    <LinearLayout
-                        android:id="@+id/ll_income_and_expenditure_details"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:visibility="gone">
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginLeft="16dp"
-                            android:layout_marginRight="18dp"
-                            android:background="#E7E7E7" />
-                        <ImageView
-                            android:id="@+id/iv_income_and_expenditure_details"
-                            android:layout_width="match_parent"
-                            android:layout_height="80dp"
-                            android:src="@drawable/zanwu"
-                            android:layout_marginBottom="30dp"
-                            android:layout_marginTop="30dp"
-                            />
-                    </LinearLayout>
-
-
-                </FrameLayout>
-
+                </RelativeLayout>
 
             </LinearLayout>
 
@@ -510,37 +488,18 @@
                         android:textSize="14sp" />
                 </LinearLayout>
 
-                <FrameLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
+                    android:layout_height="match_parent"
+                    android:descendantFocusability="blocksDescendants">
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/rv_withdrawals_record"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false">
 
                     </android.support.v7.widget.RecyclerView>
-                    <LinearLayout
-                        android:id="@+id/ll_withdrawals_record"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:visibility="gone">
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="18dp"
-                        android:background="#E7E7E7" />
-                    <ImageView
-                        android:id="@+id/iv_withdrawals_record"
-                        android:layout_width="match_parent"
-                        android:layout_height="80dp"
-                        android:src="@drawable/zanwu"
-                        android:layout_marginBottom="30dp"
-                        android:layout_marginTop="30dp"/>
-                    </LinearLayout>
-                </FrameLayout>
+                </RelativeLayout>
 
             </LinearLayout>
 
@@ -585,37 +544,18 @@
                         android:textSize="14sp" />
                 </LinearLayout>
 
-                <FrameLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
+                    android:layout_height="match_parent"
+                    android:descendantFocusability="blocksDescendants">
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/rv_recharge_record"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false">
 
                     </android.support.v7.widget.RecyclerView>
-                    <LinearLayout
-                        android:id="@+id/ll_recharge_record"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:visibility="gone">
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="18dp"
-                        android:background="#E7E7E7" />
-                    <ImageView
-                        android:id="@+id/iv_recharge_record"
-                        android:layout_width="match_parent"
-                        android:layout_height="80dp"
-                        android:src="@drawable/zanwu"
-                        android:layout_marginBottom="30dp"
-                        android:layout_marginTop="30dp"/>
-                    </LinearLayout>
-                </FrameLayout>
+                </RelativeLayout>
 
             </LinearLayout>
 
