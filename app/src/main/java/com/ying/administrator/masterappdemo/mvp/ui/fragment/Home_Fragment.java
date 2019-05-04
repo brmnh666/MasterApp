@@ -17,7 +17,6 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,7 +63,6 @@ import com.ying.administrator.masterappdemo.mvp.contract.AllWorkOrdersContract;
 import com.ying.administrator.masterappdemo.mvp.model.AllWorkOrdersModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.AllWorkOrdersPresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.ForgetPasswordActivity;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.LoginActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Login_New_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_Receiving_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Personal_Information_Activity;
@@ -73,13 +71,9 @@ import com.ying.administrator.masterappdemo.mvp.ui.activity.Verified_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Wallet_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.GrabsheetAdapter;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
-import com.ying.administrator.masterappdemo.receiver.XGPushReceiver;
 import com.ying.administrator.masterappdemo.util.ZXingUtils;
-import com.ying.administrator.masterappdemo.util.imageutil.BitmapUtil;
-import com.ying.administrator.masterappdemo.widget.AdDialog;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 import com.ying.administrator.masterappdemo.widget.CustomDialog;
-import com.ying.administrator.masterappdemo.widget.GlideCircleWithBorder;
 import com.ying.administrator.masterappdemo.widget.GlideCircleWithBorder_Home;
 import com.ying.administrator.masterappdemo.widget.ShareDialog;
 import com.zyao89.view.zloading.ZLoadingDialog;
@@ -125,11 +119,11 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
     @BindView(R.id.tv_home_giving_money)
     TextView mTvHomeGivingMoney;      //赠送金额
     @BindView(R.id.tv_certification) //实名认证
-    TextView mTvCertification;
+            TextView mTvCertification;
     @BindView(R.id.img_certification)//实名认证图片
-    ImageView mImgCertification;
+            ImageView mImgCertification;
     @BindView(R.id.img_un_certification) //未实名认证图片
-    ImageView mImg_un_certification;
+            ImageView mImg_un_certification;
     @BindView(R.id.img_home_location)
     ImageView mImgHomeLocation;
     @BindView(R.id.tv_home_location)
@@ -153,6 +147,12 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
     @BindView(R.id.ll_money)
     LinearLayout mLlMoney;
     Unbinder unbinder1;
+    @BindView(R.id.tv_name)
+    TextView mTvName;
+    @BindView(R.id.tv_money)
+    TextView mTvMoney;
+    @BindView(R.id.tv_edemption)
+    TextView mTvEdemption;
 
     // private WaveSwipeRefreshLayout mWaveSwipeRefreshLayout;
     private String mContentText;
@@ -160,7 +160,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
 
     private GrabsheetAdapter grabsheetAdapter;
     private WorkOrder workOrder;
-    private List<WorkOrder.DataBean> list= new ArrayList<>();
+    private List<WorkOrder.DataBean> list = new ArrayList<>();
     private int pageIndex = 1;  //默认当前页数为1
     private String userID;//用户id
     SPUtils spUtils = SPUtils.getInstance("token");
@@ -249,7 +249,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
     private ShareAction mShareAction;
     private CustomShareListener mShareListener;
     private View btn_share_one;
-//    private View btn_share_two;
+    //    private View btn_share_two;
     private Window window;
     private Button btn_verified_update;
     private ImageView iv_code_one;
@@ -294,7 +294,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
 
     @Override
     protected void initView() {
-        dialog=new ZLoadingDialog(mActivity);
+        dialog = new ZLoadingDialog(mActivity);
         vibrator = (Vibrator) getActivity().getSystemService(getActivity().VIBRATOR_SERVICE);
         mPresenter.WorkerGetOrderList(userID, "0", Integer.toString(pageIndex), "10");
     }
@@ -338,8 +338,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 animator.start();
 
 
-
-                animator_order = ObjectAnimator.ofFloat(mImgNewOrder, "rotation", 0f, -30f,30f,0f);
+                animator_order = ObjectAnimator.ofFloat(mImgNewOrder, "rotation", 0f, -30f, 30f, 0f);
                 animator_order.setDuration(1000);
                 animator_order.start();
 
@@ -376,18 +375,18 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 if (baseResult.getData().getData() == null) {
                     // Toast.makeText(getActivity(),"咱无新工单",Toast.LENGTH_SHORT).show();
                     Log.d("===>", "暂无新工单");
-              if (pageIndex==1){
-                  list.clear();
-                  grabsheetAdapter.notifyDataSetChanged();
-              }
+                    if (pageIndex == 1) {
+                        list.clear();
+                        grabsheetAdapter.notifyDataSetChanged();
+                    }
 
                 } else {
-                    if (pageIndex==1){
+                    if (pageIndex == 1) {
                         list.clear();
                         workOrder = baseResult.getData();
                         list.addAll(workOrder.getData());
                         grabsheetAdapter.notifyDataSetChanged();
-                    }else {
+                    } else {
                         workOrder = baseResult.getData();
                         list.addAll(workOrder.getData());
                         grabsheetAdapter.setNewData(list);
@@ -401,28 +400,28 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 break;
 
             case 406:
-                    final CommonDialog_Home dialog = new CommonDialog_Home(getActivity());
-                    dialog.setMessage("账号在别处登录是否重新登录")
-                            //.setImageResId(R.mipmap.ic_launcher)
-                            .setTitle("提示")
-                            .setSingle(false)
-                            .setNegtive("重设密码")
-                            .setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
-                        @Override
-                        public void onPositiveClick() {//重新登录
+                final CommonDialog_Home dialog = new CommonDialog_Home(getActivity());
+                dialog.setMessage("账号在别处登录是否重新登录")
+                        //.setImageResId(R.mipmap.ic_launcher)
+                        .setTitle("提示")
+                        .setSingle(false)
+                        .setNegtive("重设密码")
+                        .setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
+                            @Override
+                            public void onPositiveClick() {//重新登录
 
-                            startActivity(new Intent(getActivity(), Login_New_Activity.class));
-                            getActivity().finish();
-                        }
+                                startActivity(new Intent(getActivity(), Login_New_Activity.class));
+                                getActivity().finish();
+                            }
 
-                        @Override
-                        public void onNegtiveClick() {//取消
-                            startActivity(new Intent(mActivity, ForgetPasswordActivity.class));
-                            getActivity().finish();
-                            dialog.dismiss();
-                            // Toast.makeText(MainActivity.this,"ssss",Toast.LENGTH_SHORT).show();
-                        }
-                    }).show();
+                            @Override
+                            public void onNegtiveClick() {//取消
+                                startActivity(new Intent(mActivity, ForgetPasswordActivity.class));
+                                getActivity().finish();
+                                dialog.dismiss();
+                                // Toast.makeText(MainActivity.this,"ssss",Toast.LENGTH_SHORT).show();
+                            }
+                        }).show();
 
                 break;
 
@@ -442,9 +441,9 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                     intent.putExtra("intent", "pending_appointment");
                     startActivity(intent);
                     cancleLoading();
-                } else  {
-                        Toast.makeText(getActivity(), (CharSequence) data.getItem2(), Toast.LENGTH_SHORT).show();
-                        cancleLoading();
+                } else {
+                    Toast.makeText(getActivity(), (CharSequence) data.getItem2(), Toast.LENGTH_SHORT).show();
+                    cancleLoading();
 
                 }
 
@@ -455,8 +454,6 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 break;
         }
     }
-
-
 
 
     @Override
@@ -502,7 +499,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 if (userInfo.getAvator() == null) {//显示默认头像
                     return;
                 } else {
-                    RequestOptions myOptions = new RequestOptions().transform(new GlideCircleWithBorder_Home(this,1, Color.parseColor("#808080")));
+                    RequestOptions myOptions = new RequestOptions().transform(new GlideCircleWithBorder_Home(this, 1, Color.parseColor("#808080")));
                     Glide.with(mActivity)
                             .load(Config.HEAD_URL + userInfo.getAvator())
                             .apply(RequestOptions.bitmapTransform(new CircleCrop()))
@@ -513,11 +510,12 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 /*设置金额*/
                 String TotalMoney = String.valueOf(userInfo.getTotalMoney());
                 String FrozenMoney = String.valueOf(userInfo.getFrozenMoney());//冻结金额
-               // String can_withdraw = String.valueOf(userInfo.getTotalMoney() - userInfo.getFrozenMoney());//可提现余额=总金额-冻结金额
+                // String can_withdraw = String.valueOf(userInfo.getTotalMoney() - userInfo.getFrozenMoney());//可提现余额=总金额-冻结金额
                 String format = String.format("%.2f", userInfo.getTotalMoney() - userInfo.getFrozenMoney());
                 mTvHomeAvailableBalance.setText("可提现余额: " + format + "元");
                 mTvHomeOutstandingAmount.setText("未完结金额: " + FrozenMoney + "元");
                 mTvHomeGivingMoney.setText("赠 送 金 额: 暂无");
+                mTvName.setText(userInfo.getNickName());
                 break;
 
             default:
@@ -618,7 +616,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_share, null);
                 btn_share_one = under_review.findViewById(R.id.btn_share_one);
                 iv_code_one = under_review.findViewById(R.id.iv_code_one);
-                Bitmap bitmap = ZXingUtils.createQRImage("http://47.96.126.145:8080/sign?phone="+userID+"&type=7", 600, 600, BitmapFactory.decodeResource(getResources(), R.drawable.icon));
+                Bitmap bitmap = ZXingUtils.createQRImage("http://47.96.126.145:8080/sign?phone=" + userID + "&type=7", 600, 600, BitmapFactory.decodeResource(getResources(), R.drawable.icon));
                 iv_code_one.setImageBitmap(bitmap);
                 btn_share_one.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -829,8 +827,9 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
     protected int setLayoutId() {
         return R.layout.fragment_home;
     }
-    public void showAd(){
-        under_review=LayoutInflater.from(mActivity).inflate(R.layout.dialog_ad,null);
+
+    public void showAd() {
+        under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_ad, null);
         iv_close = under_review.findViewById(R.id.iv_close);
         tv_share = under_review.findViewById(R.id.tv_share);
         iv_close.setOnClickListener(new View.OnClickListener() {
@@ -864,6 +863,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
 //                window.setDimAmount(0.1f);
         window.setBackgroundDrawable(new ColorDrawable());
     }
+
     @Override
     protected void initData() {
 
@@ -886,7 +886,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                             Toast.makeText(mActivity, "已复制", Toast.LENGTH_LONG).show();
 
                         } else {
-                            UMWeb web = new UMWeb("http://47.96.126.145:8080/sign?phone="+userID+"&type=7");
+                            UMWeb web = new UMWeb("http://47.96.126.145:8080/sign?phone=" + userID + "&type=7");
                             web.setTitle("西瓜鱼");
                             web.setDescription("注册送西瓜币了！！！！！");
                             web.setThumb(new UMImage(mActivity, R.drawable.icon));
@@ -931,9 +931,9 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                         if (userInfo.getIfAuth() != null) {
                             if (userInfo.getIfAuth().equals("1")) {
                                 showLoading();
-                                grabposition=position;
-                               // mPresenter.AddGrabsheetapply(((WorkOrder.DataBean) adapter.getItem(position)).getOrderID(), userID);
-                               mPresenter.UpdateSendOrderState(((WorkOrder.DataBean) adapter.getItem(position)).getOrderID(),"1");
+                                grabposition = position;
+                                // mPresenter.AddGrabsheetapply(((WorkOrder.DataBean) adapter.getItem(position)).getOrderID(), userID);
+                                mPresenter.UpdateSendOrderState(((WorkOrder.DataBean) adapter.getItem(position)).getOrderID(), "1");
 
 
                             } else if (userInfo.getIfAuth().equals("0")) {
@@ -1010,16 +1010,15 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(String message) {
-        if ("GetUserInfoList".equals(message)){
+        if ("GetUserInfoList".equals(message)) {
             mPresenter.GetUserInfoList(userID, "1");
-        }else if ("0".equals(message)){
+        } else if ("0".equals(message)) {
             mPresenter.WorkerGetOrderList(userID, "0", Integer.toString(pageIndex), "10");
         }
     }
 
 
-
-    public void showLoading(){
+    public void showLoading() {
         dialog.setLoadingBuilder(Z_TYPE.ROTATE_CIRCLE)//设置类型
                 .setLoadingColor(Color.BLACK)//颜色
                 .setHintText("接单中请稍后...")
@@ -1030,7 +1029,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 .show();
     }
 
-    public void cancleLoading(){
+    public void cancleLoading() {
         dialog.dismiss();
 
     }

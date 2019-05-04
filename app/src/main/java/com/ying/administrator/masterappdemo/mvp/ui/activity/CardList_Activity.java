@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.SPUtils;
@@ -37,10 +38,15 @@ public class CardList_Activity extends BaseActivity<CardPresenter, CardModel> im
     TextView mTvAddCard;
     @BindView(R.id.rv_card_list)
     RecyclerView mRvCardList;
+    @BindView(R.id.ll_add_card)
+    LinearLayout mLlAddCard;
+    @BindView(R.id.tv_tips)
+    TextView mTvTips;
 
 
-private String userId;
-private MyCardAdapter myCardAdapter;
+    private String userId;
+    private MyCardAdapter myCardAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +61,7 @@ private MyCardAdapter myCardAdapter;
 
     @Override
     protected void initData() {
-        SPUtils spUtils=SPUtils.getInstance("token");
+        SPUtils spUtils = SPUtils.getInstance("token");
         userId = spUtils.getString("userName");
         mPresenter.GetAccountPayInfoList(userId);
     }
@@ -69,20 +75,21 @@ private MyCardAdapter myCardAdapter;
     protected void setListener() {
         mImgActionbarReturn.setOnClickListener(this);
         mTvAddCard.setOnClickListener(this);
+        mLlAddCard.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
 
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.img_actionbar_return:
                 CardList_Activity.this.finish();
                 break;
+            case R.id.ll_add_card:
             case R.id.tv_add_card:
-                startActivityForResult(new Intent(this,Add_Card_Activity.class),2002);
+                startActivityForResult(new Intent(this, Add_Card_Activity.class), 2002);
                 //startActivity(new Intent(this,Add_Card_Activity.class));
                 break;
-
 
 
         }
@@ -103,19 +110,19 @@ private MyCardAdapter myCardAdapter;
     /*获取银行卡*/
     @Override
     public void GetAccountPayInfoList(BaseResult<List<BankCard>> baseResult) {
-     switch (baseResult.getStatusCode()){
-         case 200:
-             if (baseResult.getData()==null){
-                 return;
-             }else {
-                 mRvCardList.setLayoutManager(new LinearLayoutManager(mActivity));
-                 myCardAdapter=new MyCardAdapter(R.layout.item_mycard,baseResult.getData(),mActivity);
-                 mRvCardList.setAdapter(myCardAdapter);
-             }
-             break;
-             default:
-                 break;
-     }
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                if (baseResult.getData() == null) {
+                    return;
+                } else {
+                    mRvCardList.setLayoutManager(new LinearLayoutManager(mActivity));
+                    myCardAdapter = new MyCardAdapter(R.layout.item_mycard, baseResult.getData(), mActivity);
+                    mRvCardList.setAdapter(myCardAdapter);
+                }
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
@@ -127,10 +134,10 @@ private MyCardAdapter myCardAdapter;
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode==2000){
-          if (requestCode==2002){//添加卡的请求
-              mPresenter.GetAccountPayInfoList(userId);
-          }
+        if (resultCode == 2000) {
+            if (requestCode == 2002) {//添加卡的请求
+                mPresenter.GetAccountPayInfoList(userId);
+            }
         }
     }
 }

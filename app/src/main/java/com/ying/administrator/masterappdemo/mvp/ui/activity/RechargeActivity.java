@@ -20,14 +20,12 @@ import android.widget.TextView;
 
 import com.alipay.sdk.app.PayTask;
 import com.blankj.utilcode.util.SPUtils;
-import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
-import com.xiaomi.mipush.sdk.Constants;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
@@ -57,8 +55,6 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
 
     @BindView(R.id.img_actionbar_return)
     ImageView mImgActionbarReturn;
-    @BindView(R.id.tv_money)
-    TextView mTvMoney;
     @BindView(R.id.rl_recharge_amount)
     RecyclerView mRlRechargeAmount;
     @BindView(R.id.et_any_amount)
@@ -81,15 +77,17 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
     TextView mTvTitle;
 
 
-    @BindView(R.id.tv_freeze_money)
-    TextView mTvFreezeMoney;
-    @BindView(R.id.tv_presentation_money)
-    TextView mTvPresentationMoney;
     @BindView(R.id.tv_total_money)
     TextView mTvTotalMoney;
 
     @BindView(R.id.img_agree)
     ImageView mImgagree;
+    @BindView(R.id.tv_can_withdraw)
+    TextView mTvCanWithdraw;
+    @BindView(R.id.tv_unfinished)
+    TextView mTvUnfinished;
+    @BindView(R.id.tv_margin)
+    TextView mTvMargin;
 
     private List<FaceValue> faceValueList = new ArrayList<>();
     private FaceValueAdapter faceValueAdapter;
@@ -224,11 +222,11 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_agree:
-               if(mImgagree.isSelected()){
-                   mImgagree.setSelected(false);
-               }else {
-                   mImgagree.setSelected(true);
-               }
+                if (mImgagree.isSelected()) {
+                    mImgagree.setSelected(false);
+                } else {
+                    mImgagree.setSelected(true);
+                }
                 break;
 
             case R.id.img_actionbar_return:
@@ -245,9 +243,9 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
                 mIvWechat.setSelected(true);
                 break;
             case R.id.tv_recharge_agreement:
-                Intent intent=new Intent(mActivity,WebActivity.class);
-                intent.putExtra("Url","http://47.96.126.145:8080/Agreement");
-                intent.putExtra("Title","充值协议");
+                Intent intent = new Intent(mActivity, WebActivity.class);
+                intent.putExtra("Url", "http://47.96.126.145:8080/Agreement");
+                intent.putExtra("Title", "充值协议");
                 startActivity(intent);
                 break;
             case R.id.bt_recharge:
@@ -256,7 +254,7 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
                     return;
                 }
 
-                if (!mImgagree.isSelected()){
+                if (!mImgagree.isSelected()) {
                     ToastUtils.showShort("同意充值协议才能进行充值！！");
                     return;
                 }
@@ -267,7 +265,7 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
 //                        alipay();
                         break;
                     case 2:
-                        mPresenter.GetWXOrderStr(userID,value);
+                        mPresenter.GetWXOrderStr(userID, value);
 //                        WXpay();
                         break;
                 }
@@ -309,16 +307,16 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
     /**
      * 微信支付
      */
-    public void WXpay(){
+    public void WXpay() {
         api.registerApp("wxd22da3eb42259071");
         PayReq req = new PayReq();
-        req.appId			= wXpayInfo.getAppid();
-        req.partnerId		= wXpayInfo.getPartnerid();
-        req.prepayId		= wXpayInfo.getPrepayid();
-        req.nonceStr		= wXpayInfo.getNoncestr();
-        req.timeStamp		= wXpayInfo.getTimestamp();
-        req.packageValue	= wXpayInfo.getPackageX();
-        req.sign			= wXpayInfo.getSign();
+        req.appId = wXpayInfo.getAppid();
+        req.partnerId = wXpayInfo.getPartnerid();
+        req.prepayId = wXpayInfo.getPrepayid();
+        req.nonceStr = wXpayInfo.getNoncestr();
+        req.timeStamp = wXpayInfo.getTimestamp();
+        req.packageValue = wXpayInfo.getPackageX();
+        req.sign = wXpayInfo.getSign();
         //req.extData			= "app data"; // optional
         api.sendReq(req);
     }
@@ -399,14 +397,14 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
 
     @Override
     public void GetWXOrderStr(BaseResult<Data<WXpayInfo>> baseResult) {
-        switch(baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData().isItem1()){
+                if (baseResult.getData().isItem1()) {
                     wXpayInfo = baseResult.getData().getItem2();
-                    if (wXpayInfo!=null){
+                    if (wXpayInfo != null) {
                         WXpay();
                     }
-                }else{
+                } else {
                     ToastUtils.showShort("获取支付信息失败！");
                 }
                 break;
@@ -429,12 +427,14 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
                     return;
                 } else {
                     userInfo = baseResult.getData().getData().get(0);
-                    String format = String.format("%.2f", userInfo.getTotalMoney() - userInfo.getFrozenMoney());
-                    mTvMoney.setText(format);
-                    String FrozenMoney= String.valueOf(userInfo.getFrozenMoney());
-                    mTvFreezeMoney.setText(FrozenMoney);
+                    String format = String.format("%.1f", userInfo.getTotalMoney() - userInfo.getFrozenMoney());
+                    mTvTotalMoney.setText(userInfo.getTotalMoney().toString());
+                    mTvCanWithdraw.setText(format);
+                    String FrozenMoney = String.valueOf(userInfo.getFrozenMoney());
+                    mTvMargin.setText(userInfo.getRemainMoney().toString());
+                    mTvUnfinished.setText(FrozenMoney);
                     //赠送金额暂无
-                    String TotalMoney= String.valueOf(userInfo.getTotalMoney());
+                    String TotalMoney = String.valueOf(userInfo.getTotalMoney());
                     mTvTotalMoney.setText(TotalMoney);
 
 

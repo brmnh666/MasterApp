@@ -81,7 +81,7 @@
             android:id="@+id/img_authentication_cancel"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@mipmap/icon_cross"
+            android:src="@drawable/close"
             android:layout_marginTop="5dp"
 
             />

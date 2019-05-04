@@ -16,4 +16,21 @@
     <color name="color_custom_08">#F0F0F0</color>
     <color name="color_custom_09">#F7F7F7</color>
     <color name="color_custom_10">#6A6A6A</color>
+
+    <color name="bank_01">#8B658B</color>
+    <color name="bank_02">	#B22222</color>
+    <color name="bank_03">#EE6363</color>
+    <color name="bank_04">	#FF0000</color>
+    <color name="bank_05">	#1E90FF</color>
+    <color name="bank_06">#4169E1</color>
+    <color name="bank_07">#00BFFF</color>
+    <color name="bank_08">	#FFF68F</color>
+    <color name="bank_09">	#00CED1</color>
+    <color name="bank_10">	#0000CD</color>
+    <color name="bank_11">#1E90FF</color>
+    <color name="bank_12">#006400</color>
+    <color name="bank_13">	#EE7942</color>
+    <color name="bank_14">#FFD700</color>
+    <color name="bank_15">	#8B3A3A</color>
+    <color name="bank_16">	#EE2C2C</color>
 </resources>

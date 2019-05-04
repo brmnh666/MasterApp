@@ -42,7 +42,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="余额"
+                        android:text="总金额"
                         android:textColor="@color/white"
                         android:textSize="23sp" />
 
@@ -61,7 +61,7 @@
                             android:textSize="17sp" />
 
                         <TextView
-                            android:id="@+id/tv_money"
+                            android:id="@+id/tv_total_money"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="0.00"
@@ -80,7 +80,15 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="冻结金额"
+                        android:text="可提现"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:text="未完结"
                         android:textColor="@color/white"
                         android:textSize="16sp" />
 
@@ -89,14 +97,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="7dp"
                         android:text="西瓜币"
-                        android:textColor="@color/white"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="7dp"
-                        android:text="总金额"
                         android:textColor="@color/white"
                         android:textSize="16sp" />
 
@@ -130,7 +130,7 @@
                             android:textSize="16sp" />
 
                         <TextView
-                            android:id="@+id/tv_freeze_money"
+                            android:id="@+id/tv_can_withdraw"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/white"
@@ -147,12 +147,12 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="¥0.00"
+                            android:text="¥"
                             android:textColor="@color/white"
                             android:textSize="16sp" />
 
                         <TextView
-                            android:id="@+id/tv_presentation_money"
+                            android:id="@+id/tv_unfinished"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/white"
@@ -174,7 +174,7 @@
                             android:textSize="16sp" />
 
                         <TextView
-                            android:id="@+id/tv_total_money"
+                            android:id="@+id/tv_margin"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/white"
