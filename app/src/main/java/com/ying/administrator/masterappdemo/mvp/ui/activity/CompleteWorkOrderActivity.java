@@ -3,6 +3,7 @@ package com.ying.administrator.masterappdemo.mvp.ui.activity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -41,9 +42,12 @@ import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.CompleteWorkOrderContract;
 import com.ying.administrator.masterappdemo.mvp.model.CompleteWorkOrderModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.CompleteWorkOrderPresenter;
+import com.ying.administrator.masterappdemo.util.Glide4Engine;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.util.imageutil.CompressHelper;
 import com.ying.administrator.masterappdemo.widget.ViewExampleDialog;
+import com.zhihu.matisse.Matisse;
+import com.zhihu.matisse.MimeType;
 import com.zyao89.view.zloading.ZLoadingDialog;
 import com.zyao89.view.zloading.Z_TYPE;
 
@@ -52,6 +56,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -156,6 +161,8 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 
 
     ZLoadingDialog dialog = new ZLoadingDialog(this);
+    private List<Uri> mSelected;
+    private Uri uri;
 
     @Override
     protected int setLayoutId() {
@@ -494,10 +501,20 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
             @Override
             public void onClick(View view) {
                 if (requestPermissions()) {
-                    Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-                    i.addCategory(Intent.CATEGORY_OPENABLE);
-                    i.setType("image/*");
-                    startActivityForResult(Intent.createChooser(i, "test"), code2);
+//                    Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+//                    i.addCategory(Intent.CATEGORY_OPENABLE);
+//                    i.setType("image/*");
+//                    startActivityForResult(Intent.createChooser(i, "test"), code2);
+                    Matisse.from(CompleteWorkOrderActivity.this)
+                            .choose(MimeType.ofImage())
+                            .countable(true)
+                            .maxSelectable(1)
+//                            .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
+//                            .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
+                            .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                            .thumbnailScale(0.85f)
+                            .imageEngine(new Glide4Engine())
+                            .forResult(code2);
                     mPopupWindow.dismiss();
                 } else {
                     requestPermissions(permissions.toArray(new String[permissions.size()]), 10002);
@@ -584,7 +601,11 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
             //相册
             case 102:
                 if (data != null) {
-                    Uri uri = data.getData();
+                    mSelected = Matisse.obtainResult(data);
+                    if (mSelected.size()==1){
+                        uri = mSelected.get(0);
+                    }
+//                    Uri uri = data.getData();
                     Glide.with(mActivity).load(uri).into(mIvBarCode);
                     file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
                 }
@@ -608,7 +629,11 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
             //相册
             case 202:
                 if (data != null) {
-                    Uri uri = data.getData();
+                    mSelected = Matisse.obtainResult(data);
+                    if (mSelected.size()==1){
+                        uri = mSelected.get(0);
+                    }
+//                    Uri uri = data.getData();
                     Glide.with(mActivity).load(uri).into(mIvMachine);
                     file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
                 }
@@ -633,7 +658,11 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
             //相册
             case 303:
                 if (data != null) {
-                    Uri uri = data.getData();
+                    mSelected = Matisse.obtainResult(data);
+                    if (mSelected.size()==1){
+                        uri = mSelected.get(0);
+                    }
+//                    Uri uri = data.getData();
                     Glide.with(mActivity).load(uri).into(mIvFaultLocation);
                     file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
                 }
@@ -657,7 +686,11 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
             //相册
             case 404:
                 if (data != null) {
-                    Uri uri = data.getData();
+                    mSelected = Matisse.obtainResult(data);
+                    if (mSelected.size()==1){
+                        uri = mSelected.get(0);
+                    }
+//                    Uri uri = data.getData();
                     Glide.with(mActivity).load(uri).into(mIvNewAndOldAccessories);
                     file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
                 }
@@ -682,7 +715,11 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
             //相册
             case 505:
                 if (data != null) {
-                    Uri uri = data.getData();
+                    mSelected = Matisse.obtainResult(data);
+                    if (mSelected.size()==1){
+                        uri = mSelected.get(0);
+                    }
+//                    Uri uri = data.getData();
                     Glide.with(mActivity).load(uri).into(mIvOne);
                     file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
                 }
@@ -712,7 +749,11 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
             //相册
             case 606:
                 if (data != null) {
-                    Uri uri = data.getData();
+                    mSelected = Matisse.obtainResult(data);
+                    if (mSelected.size()==1){
+                        uri = mSelected.get(0);
+                    }
+//                    Uri uri = data.getData();
                     Glide.with(mActivity).load(uri).into(mIvTwo);
                     file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
                 }
@@ -735,7 +776,11 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
             //相册
             case 707:
                 if (data != null) {
-                    Uri uri = data.getData();
+                    mSelected = Matisse.obtainResult(data);
+                    if (mSelected.size()==1){
+                        uri = mSelected.get(0);
+                    }
+//                    Uri uri = data.getData();
                     Glide.with(mActivity).load(uri).into(mIvThree);
                     file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
                 }
@@ -758,7 +803,11 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
             //相册
             case 808:
                 if (data != null) {
-                    Uri uri = data.getData();
+                    mSelected = Matisse.obtainResult(data);
+                    if (mSelected.size()==1){
+                        uri = mSelected.get(0);
+                    }
+//                    Uri uri = data.getData();
                     Glide.with(mActivity).load(uri).into(mIvFour);
                     file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
                 }

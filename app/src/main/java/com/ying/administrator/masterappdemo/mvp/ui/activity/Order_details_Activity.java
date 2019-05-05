@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
@@ -63,9 +64,12 @@ import com.ying.administrator.masterappdemo.mvp.ui.adapter.Add_Ac_Adapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Add_Service_Adapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Pre_order_Add_Ac_Adapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Pre_order_Add_Service_Adapter;
+import com.ying.administrator.masterappdemo.util.Glide4Engine;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.widget.HideSoftInputDialog;
 import com.ying.administrator.masterappdemo.widget.ViewExampleDialog;
+import com.zhihu.matisse.Matisse;
+import com.zhihu.matisse.MimeType;
 
 import org.feezu.liuli.timeselector.TimeSelector;
 import org.greenrobot.eventbus.EventBus;
@@ -307,6 +311,8 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     private TextView message;
     private Button negtive;
     private Button positive;
+    private Uri uri;
+    private List<Uri> mSelected;
 
     @Override
     protected int setLayoutId() {
@@ -1238,10 +1244,20 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
             @Override
             public void onClick(View view) {
                 if (requestPermissions()) {
-                    Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-                    i.addCategory(Intent.CATEGORY_OPENABLE);
-                    i.setType("image/*");
-                    startActivityForResult(Intent.createChooser(i, "test"), code2);
+//                    Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+//                    i.addCategory(Intent.CATEGORY_OPENABLE);
+//                    i.setType("image/*");
+//                    startActivityForResult(Intent.createChooser(i, "test"), code2);
+                    Matisse.from(Order_details_Activity.this)
+                            .choose(MimeType.ofImage())
+                            .countable(true)
+                            .maxSelectable(1)
+//                            .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
+//                            .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
+                            .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                            .thumbnailScale(0.85f)
+                            .imageEngine(new Glide4Engine())
+                            .forResult(code2);
                     mPopupWindow.dismiss();
                 } else {
                     requestPermissions(permissions.toArray(new String[permissions.size()]), 10002);
@@ -1325,7 +1341,11 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
             //相册
             case 102:
                 if (data != null) {
-                    Uri uri = data.getData();
+                    mSelected = Matisse.obtainResult(data);
+                    if (mSelected.size()==1){
+                        uri = mSelected.get(0);
+                    }
+//                    uri = data.getData();
                     Glide.with(mActivity).load(uri).into(iv_bar_code);
                     file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
                 }
@@ -1350,7 +1370,11 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
             //相册
             case 202:
                 if (data != null) {
-                    Uri uri = data.getData();
+                    mSelected = Matisse.obtainResult(data);
+                    if (mSelected.size()==1){
+                        uri = mSelected.get(0);
+                    }
+//                    uri = data.getData();
                     Glide.with(mActivity).load(uri).into(iv_machine);
                     file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
                 }
@@ -1375,7 +1399,11 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
             //相册
             case 303:
                 if (data != null) {
-                    Uri uri = data.getData();
+                    mSelected = Matisse.obtainResult(data);
+                    if (mSelected.size()==1){
+                        uri = mSelected.get(0);
+                    }
+//                    uri = data.getData();
                     Glide.with(mActivity).load(uri).into(iv_fault_location);
                     file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
                 }
@@ -1400,7 +1428,11 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
             //相册
             case 404:
                 if (data != null) {
-                    Uri uri = data.getData();
+                    mSelected = Matisse.obtainResult(data);
+                    if (mSelected.size()==1){
+                        uri = mSelected.get(0);
+                    }
+//                    uri = data.getData();
                     Glide.with(mActivity).load(uri).into(iv_new_and_old_accessories);
                     file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
                 }
@@ -1424,7 +1456,11 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
             //相册
             case 505:
                 if (data != null) {
-                    Uri uri = data.getData();
+                    mSelected = Matisse.obtainResult(data);
+                    if (mSelected.size()==1){
+                        uri = mSelected.get(0);
+                    }
+//                    uri = data.getData();
                     Glide.with(mActivity).load(uri).into(iv_one);
                     file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
                 }
@@ -1448,7 +1484,11 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
             //相册
             case 606:
                 if (data != null) {
-                    Uri uri = data.getData();
+                    mSelected = Matisse.obtainResult(data);
+                    if (mSelected.size()==1){
+                        uri = mSelected.get(0);
+                    }
+//                    uri = data.getData();
                     Glide.with(mActivity).load(uri).into(iv_two);
                     file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
                 }
@@ -1471,7 +1511,11 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
             //相册
             case 707:
                 if (data != null) {
-                    Uri uri = data.getData();
+                    mSelected = Matisse.obtainResult(data);
+                    if (mSelected.size()==1){
+                        uri = mSelected.get(0);
+                    }
+//                    uri = data.getData();
                     Glide.with(mActivity).load(uri).into(iv_three);
                     file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
                 }
@@ -1494,7 +1538,11 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
             //相册
             case 808:
                 if (data != null) {
-                    Uri uri = data.getData();
+                    mSelected = Matisse.obtainResult(data);
+                    if (mSelected.size()==1){
+                        uri = mSelected.get(0);
+                    }
+//                    uri = data.getData();
                     Glide.with(mActivity).load(uri).into(iv_four);
                     file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
                 }
@@ -1518,7 +1566,11 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
             //相册
             case 909:
                 if (data != null) {
-                    Uri uri = data.getData();
+                    mSelected = Matisse.obtainResult(data);
+                    if (mSelected.size()==1){
+                        uri = mSelected.get(0);
+                    }
+//                    uri = data.getData();
                     Glide.with(mActivity).load(uri).into(mIvMap1);
                     file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
                 }
@@ -1543,7 +1595,11 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
             //相册
             case 1002:
                 if (data != null) {
-                    Uri uri = data.getData();
+                    mSelected = Matisse.obtainResult(data);
+                    if (mSelected.size()==1){
+                        uri = mSelected.get(0);
+                    }
+//                    uri = data.getData();
                     Glide.with(mActivity).load(uri).into(mIvMap2);
                     file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
                 }

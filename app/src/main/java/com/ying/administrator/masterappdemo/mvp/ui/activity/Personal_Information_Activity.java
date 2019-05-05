@@ -3,6 +3,7 @@ package com.ying.administrator.masterappdemo.mvp.ui.activity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -47,9 +48,12 @@ import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.mvp.contract.InfoManageContract;
 import com.ying.administrator.masterappdemo.mvp.model.InfoMangeModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.InfoManagePresenter;
+import com.ying.administrator.masterappdemo.util.Glide4Engine;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.util.imageutil.CompressHelper;
 import com.ying.administrator.masterappdemo.util.imageutil.FileUtil;
+import com.zhihu.matisse.Matisse;
+import com.zhihu.matisse.MimeType;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -102,6 +106,8 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
     private CheckBox cb_under_warranty;
     private LinearLayout ll_outside_the_warranty;
     private CheckBox cb_outside_the_warranty;
+    private List<Uri> mSelected;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -443,10 +449,20 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
             @Override
             public void onClick(View view) {
                 if (requestPermissions()) {
-                    Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-                    i.addCategory(Intent.CATEGORY_OPENABLE);
-                    i.setType("image/*");
-                    startActivityForResult(Intent.createChooser(i, "test"), code2);
+//                    Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+//                    i.addCategory(Intent.CATEGORY_OPENABLE);
+//                    i.setType("image/*");
+//                    startActivityForResult(Intent.createChooser(i, "test"), code2);
+                    Matisse.from(Personal_Information_Activity.this)
+                            .choose(MimeType.ofImage())
+                            .countable(true)
+                            .maxSelectable(1)
+//                            .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
+//                            .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
+                            .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                            .thumbnailScale(0.85f)
+                            .imageEngine(new Glide4Engine())
+                            .forResult(code2);
                     mPopupWindow.dismiss();
                 } else {
                     requestPermissions(permissions.toArray(new String[permissions.size()]), 10002);
@@ -551,7 +567,11 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
             //从相册中获取
             case 102:
                 if (data != null) {
-                    Uri uri = data.getData();
+                    mSelected = Matisse.obtainResult(data);
+                    if (mSelected.size()==1){
+                        uri = mSelected.get(0);
+                    }
+//                    Uri uri = data.getData();
                     Glide.with(mActivity).load(uri).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(iv_avatar);
                     file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
                    startCrop(Uri.fromFile(file));

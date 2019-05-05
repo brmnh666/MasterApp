@@ -8,6 +8,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -76,9 +77,12 @@ import com.ying.administrator.masterappdemo.mvp.ui.adapter.GServiceAdapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Pre_order_Add_Ac_Adapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Pre_order_Add_Service_Adapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.ReturnAccessoryAdapter;
+import com.ying.administrator.masterappdemo.util.Glide4Engine;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.widget.ClearEditText;
 import com.ying.administrator.masterappdemo.widget.HideSoftInputDialog;
+import com.zhihu.matisse.Matisse;
+import com.zhihu.matisse.MimeType;
 
 import org.feezu.liuli.timeselector.TimeSelector;
 import org.greenrobot.eventbus.EventBus;
@@ -1753,10 +1757,20 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
             @Override
             public void onClick(View view) {
                 if (requestPermissions()) {
-                    Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-                    i.addCategory(Intent.CATEGORY_OPENABLE);
-                    i.setType("image/*");
-                    startActivityForResult(Intent.createChooser(i, "test"), code2);
+//                    Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+//                    i.addCategory(Intent.CATEGORY_OPENABLE);
+//                    i.setType("image/*");
+//                    startActivityForResult(Intent.createChooser(i, "test"), code2);
+                    Matisse.from(WorkOrderDetailsActivity.this)
+                            .choose(MimeType.ofImage())
+                            .countable(true)
+                            .maxSelectable(1)
+//                            .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
+//                            .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
+                            .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                            .thumbnailScale(0.85f)
+                            .imageEngine(new Glide4Engine())
+                            .forResult(code2);
                     mPopupWindow.dismiss();
                 } else {
                     requestPermissions(permissions.toArray(new String[permissions.size()]), 10002);
