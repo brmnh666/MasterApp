@@ -268,7 +268,7 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
                     userInfo = baseResult.getData().getData().get(0);
                     mTvMoney.setText(userInfo.getTotalMoney().toString());
                     mTvUnfinished.setText(userInfo.getFrozenMoney().toString() + "元");
-                    String CanWithdraw=String.format("%.1f",userInfo.getTotalMoney()-userInfo.getFrozenMoney());
+                    String CanWithdraw=String.format("0.1%",userInfo.getTotalMoney()-userInfo.getFrozenMoney());
                     mTvCanWithdraw.setText(CanWithdraw);
 
                 }

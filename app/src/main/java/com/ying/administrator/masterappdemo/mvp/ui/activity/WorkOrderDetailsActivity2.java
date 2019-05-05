@@ -1187,6 +1187,11 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 mTvWorkOrderNumber.setText(data.getOrderID());
                 mTvOrderTime.setText(data.getAudDate().replace("T", " ")); //将T替换为空格
                 mTvCauseOfIssue.setText(data.getMemo());
+                if (("Y").equals(data.getGuaranteeText())){
+                    mTvPaymentMethod.setText("客户付款");
+                }else {
+                    mTvPaymentMethod.setText("平台代付");
+                }
                 mTvProductType.setText(data.getCategoryName() + "/" + data.getBrandName() + "/" + data.getSubCategoryName());
 
                 if (data.getSendOrderList().size() != 0) {
@@ -1452,9 +1457,11 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
 
                     mViewSelectTimePoint.setVisibility(View.GONE);
                     mViewSelectTimePoint2.setVisibility(View.GONE);
-
+//                    if (mTvSelectTime.toString().isEmpty()){
+                        mRlSelectTime.setVisibility(View.GONE);
+//                    }
                     mLlReturnInformation.setVisibility(View.VISIBLE);
-
+                    mTvPrompt.setText("服务已完成");
                     if ("1".equals(data.getTypeID()) || "3".equals(data.getTypeID())) {//维修
                         Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(0).getUrl()).into(mIvBarCode);
                         Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(1).getUrl()).into(mIvMachine);
@@ -1485,6 +1492,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     }
                     mTvPrompt.setText("请务必认真填写返件快递单号");
                     mTvAccessoryMessage.setText("配件信息");
+                    mLlReturnInformation.setVisibility(View.VISIBLE);
                     mRlExpressno.setVisibility(View.VISIBLE);
                     mRlSelectTime.setVisibility(View.GONE);
                     mLlApplyAgain.setVisibility(View.GONE);
@@ -1492,6 +1500,18 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     mLlApplyAgainBeyond.setVisibility(View.GONE);
                     mBtnCompleteSubmit.setVisibility(View.GONE);
                     mRlCompleteSubmit.setVisibility(View.GONE);
+                    if ("1".equals(data.getTypeID()) || "3".equals(data.getTypeID())) {//维修
+                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(0).getUrl()).into(mIvBarCode);
+                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(1).getUrl()).into(mIvMachine);
+                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(2).getUrl()).into(mIvFaultLocation);
+                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(3).getUrl()).into(mIvNewAndOldAccessories);
+                    } else {
+                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/FinishOrder/" + data.getOrderImg().get(0).getUrl()).into(mIvBarCode);
+                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/FinishOrder/" + data.getOrderImg().get(1).getUrl()).into(mIvMachine);
+                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/FinishOrder/" + data.getOrderImg().get(2).getUrl()).into(mIvFaultLocation);
+                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/FinishOrder/" + data.getOrderImg().get(3).getUrl()).into(mIvNewAndOldAccessories);
+                        mLlOldAccessory.setVisibility(View.GONE);
+                    }
                 } else {
                     mRlExpressno.setVisibility(View.GONE);
                 }

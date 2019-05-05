@@ -118,7 +118,7 @@
                             android:id="@+id/tv_payment_method"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="平台代付"
+                            android:text=""
                             android:textColor="#FF5F5F"
                             android:textSize="15sp" />
                     </LinearLayout>
@@ -1170,7 +1170,8 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/white_shape"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/white"
                     android:orientation="vertical">
 
                     <TextView
@@ -1179,6 +1180,7 @@
                         android:layout_marginLeft="12dp"
                         android:layout_marginTop="13dp"
                         android:text="完结图片"
+                        android:textStyle="bold"
                         android:textColor="#6A6A6A"
                         android:textSize="16sp" />
 

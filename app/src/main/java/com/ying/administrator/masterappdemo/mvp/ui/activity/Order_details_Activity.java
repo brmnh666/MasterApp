@@ -238,6 +238,8 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     LinearLayout mLlApproveBeyondMoney;
     @BindView(R.id.et_memo)
     EditText mEtMemo;
+    @BindView(R.id.tv_payment_method)
+    TextView mTvPaymentMethod;
 
     private WorkOrder.DataBean data = new WorkOrder.DataBean();
     private List<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> fAcList = new ArrayList<>();// 工厂自购件
@@ -923,6 +925,11 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                 mTvName.setText(data.getUserName());
                 mTvPhone.setText(data.getPhone());
                 mTvAddress.setText(data.getAddress());
+                if (("Y").equals(data.getGuaranteeText())){
+                    mTvPaymentMethod.setText("客户付款");
+                }else {
+                    mTvPaymentMethod.setText("平台代付");
+                }
                 tv_order_details_orderid.setText(data.getOrderID());
                 tv_order_details_receiving_time.setText(data.getAudDate().replace("T", " ")); //将T替换为空格
                 tv_order_details_reason.setText(data.getMemo());
@@ -974,11 +981,11 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                 if ("0".equals(baseResult.getData().getCode())) {
                     ac_list = baseResult.getData().getData();
                     if (ac_list == null) {
-                        MyUtils.showToast(mActivity,"无配件，请联系管理员");
+                        MyUtils.showToast(mActivity, "无配件，请联系管理员");
                         return;
                     }
                     if (ac_list.size() == 0) {
-                        MyUtils.showToast(mActivity,"无配件，请联系管理员");
+                        MyUtils.showToast(mActivity, "无配件，请联系管理员");
                         return;
                     }
                     ac_list_adapter = new Ac_List_Adapter(R.layout.item_accessory, ac_list);
@@ -1005,9 +1012,9 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                 if ("0".equals(baseResult.getData().getCode())) {
                     mList_service = baseResult.getData().getData();
                     mAdd_Service_Adapter.setNewData(mList_service);
-                    if (mList_service.size()==0){
-                        MyUtils.showToast(mActivity,"无服务，请联系管理员");
-                    }else{
+                    if (mList_service.size() == 0) {
+                        MyUtils.showToast(mActivity, "无服务，请联系管理员");
+                    } else {
                         addService();
                     }
                 } else {
@@ -1045,7 +1052,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
             case 200:
                 if (!baseResult.getData().isItem1()) {
 
-                    if ("支付错误,添加失败".equals(baseResult.getData().getItem2())){
+                    if ("支付错误,添加失败".equals(baseResult.getData().getItem2())) {
                         customdialog_home_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_home, null);
                         customdialog_home_dialog = new AlertDialog.Builder(mActivity)
                                 .setView(customdialog_home_view)
@@ -1068,12 +1075,12 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                         positive.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                startActivity(new Intent(mActivity,RechargeActivity.class));
+                                startActivity(new Intent(mActivity, RechargeActivity.class));
                                 customdialog_home_dialog.dismiss();
                             }
                         });
-                    }else{
-                        ToastUtils.showShort( baseResult.getData().getItem2());
+                    } else {
+                        ToastUtils.showShort(baseResult.getData().getItem2());
                     }
                 } else {
                     //Intent intent=new Intent();
@@ -1653,7 +1660,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(String name) {
-        if (!"GetOrderInfo".equals(name)){
+        if (!"GetOrderInfo".equals(name)) {
             return;
         }
         mPresenter.GetOrderInfo(orderID);

@@ -47,11 +47,12 @@
             android:text="付款方式: "
             />
         <TextView
+            android:id="@+id/tv_payment_method"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:textColor="#6A6A6A"
-            android:text="平台代付"
+            android:text=""
             />
     </LinearLayout>
 

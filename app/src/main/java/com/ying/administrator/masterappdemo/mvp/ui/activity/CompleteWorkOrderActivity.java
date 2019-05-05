@@ -210,6 +210,11 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 
                 mTvWorkOrderNumber.setText(data.getOrderID());
                 mTvOrderTime.setText(data.getAudDate().replace("T", " ")); //将T替换为空格
+                if (("Y").equals(data.getGuaranteeText())){
+                    mTvPaymentMethod.setText("客户付款");
+                }else {
+                    mTvPaymentMethod.setText("平台代付");
+                }
                 mTvReasonPendingAppointment.setText(data.getMemo());
                 mTvServiceGoods.setText(data.getCategoryName() + "/" + data.getBrandName() + "/" + data.getSubCategoryName());
 
@@ -311,6 +316,9 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
             case 200:
                 if (baseResult.getData().isItem1()) {
                     CompleteWorkOrderActivity.this.finish();
+                    EventBus.getDefault().post("6");
+                    EventBus.getDefault().post("8");
+//                    EventBus.getDefault().post("");
                     EventBus.getDefault().post("WorkOrderDetailsActivity");
                     if ("0".equals(data.getAccessorySearchState())){
                         EventBus.getDefault().post(4);
