@@ -42,7 +42,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
-                    android:text="已返件"
+                    android:text="已寄件"
                     android:textColor="#979797"
                     android:layout_marginLeft="5dp"/>
             </LinearLayout>
@@ -82,7 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="9dp"
-                android:text="【运输中】快件已从南昌转运中心发出，准备....."
+                android:text="【已揽收】包裹正在揽收....."
                 android:textSize="12sp"
                 android:textColor="#818181"/>
         </LinearLayout>
