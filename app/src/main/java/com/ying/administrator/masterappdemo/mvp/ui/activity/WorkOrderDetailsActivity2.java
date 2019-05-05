@@ -1784,7 +1784,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     push_dialog.dismiss();
                     ToastUtils.showShort("催审成功");
                 } else {
-                    ToastUtils.showShort(data.getItem2());
+                    ToastUtils.showShort("催审失败！请联系客服4006262365");
                 }
                 break;
         }

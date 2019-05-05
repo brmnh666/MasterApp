@@ -42,8 +42,10 @@ public class XMReceiver extends XMPushMessageReceiver {
     @Override
     public void onNotificationMessageArrived(Context context, MiPushMessage miPushMessage) {
         super.onNotificationMessageArrived(context, miPushMessage);
-        openAssetMusics(context,"new_order_voice.mp3");
-        EventBus.getDefault().post("0");
+        if ("您有新工单".equals(miPushMessage.getTitle())){
+            openAssetMusics(context,"new_order_voice.mp3");
+            EventBus.getDefault().post("0");
+        }
     }
 
     @Override
