@@ -100,6 +100,10 @@ public class MyApplication extends Application {
         XGPushManager.setTag(this,"XINGE");
 
 //        initUpgradeDialog();
+        /**
+         * 只允许在MainActivity上显示更新弹窗，其他activity上不显示弹窗; 不设置会默认所有activity都可以显示弹窗;
+         */
+        Beta.canShowUpgradeActs.add(MainActivity.class);
         // 这里实现SDK初始化，appId替换成你的在Bugly平台申请的appId
         // 调试时，将第三个参数改为true
         Bugly.init(this, "de9b3cd02b", true);

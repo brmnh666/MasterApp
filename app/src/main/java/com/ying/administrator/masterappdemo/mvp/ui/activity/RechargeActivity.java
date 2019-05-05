@@ -427,7 +427,7 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
                     return;
                 } else {
                     userInfo = baseResult.getData().getData().get(0);
-                    String format = String.format("%.1f", userInfo.getTotalMoney() - userInfo.getFrozenMoney());
+                    String format = String.format("%.2f", userInfo.getTotalMoney() - userInfo.getFrozenMoney());
                     mTvTotalMoney.setText(userInfo.getTotalMoney().toString());
                     mTvCanWithdraw.setText(format);
                     String FrozenMoney = String.valueOf(userInfo.getFrozenMoney());
