@@ -1,98 +1,127 @@
 <?xml version="1.0" encoding="utf-8"?><!--旧件收货信息-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_old_accessory"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:layout_marginTop="10dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
     android:background="@color/white"
-    android:padding="@dimen/dp_10"
-    android:layout_margin="@dimen/dp_10"
-    android:id="@+id/ll_old_accessory">
+    android:orientation="vertical"
+    android:padding="@dimen/dp_10">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="是否需要旧件返厂："/>
+            android:text="是否需要旧件返厂："
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
         <TextView
             android:id="@+id/tv_yn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
             android:layout_marginRight="10dp"
-            android:textColor="@color/black"
-            android:text="否"/>
+            android:text="否"
+
+            android:textSize="16sp" />
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/ll_address_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@color/white">
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@color/white">
+            android:background="@color/white"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="寄送至："
-                android:textSize="16sp"/>
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
             <TextView
                 android:id="@+id/tv_addressback"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="浙江省宁波市江北区企协大厦"
-                android:textColor="@color/black"
-                android:textSize="16sp"/>
+
+                android:textSize="16sp" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="邮费支付方式："/>
+                android:text="邮费支付方式："
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
             <TextView
                 android:id="@+id/tv_postpaytype"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
                 android:layout_marginRight="10dp"
-                android:textColor="@color/black"
-                android:text="厂商到付"/>
+                android:text="厂商到付"
+
+                android:textSize="16sp" />
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/ll_post_money"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="邮费："/>
+                android:text="邮费："
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
             <TextView
                 android:id="@+id/tv_post_money"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
                 android:layout_marginRight="10dp"
+                android:text=""
                 android:textColor="@color/red"
-                android:text=""/>
+                android:textSize="16sp" />
         </LinearLayout>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="现付：由师傅暂代付邮费，到付：由您收到旧配件时自行支付邮费"
-            android:textColor="@color/red"
-            android:textSize="16sp"/>
+
     </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="现付:由您暂代付邮费       到付:由工厂收到旧配件时自行支付邮费"
+        android:textColor="@color/red"
+        android:textSize="12sp" />
 </LinearLayout>

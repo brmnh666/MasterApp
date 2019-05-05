@@ -308,6 +308,16 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     TextView mTvPostMoney;
     @BindView(R.id.ll_post_money)
     LinearLayout mLlPostMoney;
+    @BindView(R.id.ll_apply_again)
+    LinearLayout mLlApplyAgain;
+    @BindView(R.id.ll_apply_again_service)
+    LinearLayout mLlApplyAgainService;
+    @BindView(R.id.ll_apply_again_beyond)
+    LinearLayout mLlApplyAgainBeyond;
+    @BindView(R.id.tv_accessory_message)
+    TextView mTvAccessoryMessage;
+    @BindView(R.id.tv_prompt)
+    TextView mTvPrompt;
     private String OrderID;
     private WorkOrder.DataBean data = new WorkOrder.DataBean();
     private ReturnAccessoryAdapter returnAccessoryAdapter;
@@ -413,7 +423,6 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     @Override
     protected void initData() {
         //EventBus.getDefault().register(this);
-
 
 
     }
@@ -1155,16 +1164,18 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 mTvAccessoryMoney.setText("￥" + data.getAccessoryMoney());
                 mTvServiceMoney.setText("￥" + data.getServiceMoney());
                 mTvOrderMoney.setText("￥" + data.getOrderMoney() + "");
-                if (data.getAccessoryMoney()!=null&&!"0.00".equals(data.getAccessoryMoney())){
-                    mTvServiceAmount.setText("服务金额：￥" + (Double.parseDouble(data.getAccessoryMoney())+Double.parseDouble(data.getBeyondMoney())+Double.parseDouble(data.getPostMoney())) + "");
-                }else{
+                if (data.getAccessoryMoney() != null && !"0.00".equals(data.getAccessoryMoney())) {
+                    mTvServiceAmount.setText("服务金额：￥" + (Double.parseDouble(data.getAccessoryMoney()) + Double.parseDouble(data.getBeyondMoney()) + Double.parseDouble(data.getPostMoney())) + "");
+                    mTvTotalPrice.setText("服务金额：￥" + (Double.parseDouble(data.getAccessoryMoney()) + Double.parseDouble(data.getBeyondMoney()) + Double.parseDouble(data.getPostMoney())) + "");
+                } else {
                     mTvServiceAmount.setText("服务金额：￥" + data.getOrderMoney() + "");
+                    mTvTotalPrice.setText("服务金额：￥" + data.getOrderMoney() + "");
                 }
-                mTvTotalPrice.setVisibility(View.GONE);
-                if (!"0.00".equals(data.getPostMoney())&&data.getPostMoney()!=null){
+//                mTvTotalPrice.setVisibility(View.GONE);
+                if (!"0.00".equals(data.getPostMoney()) && data.getPostMoney() != null) {
                     mLlPostMoney.setVisibility(View.VISIBLE);
-                    mTvPostMoney.setText("￥" +data.getPostMoney());
-                }else{
+                    mTvPostMoney.setText("￥" + data.getPostMoney());
+                } else {
                     mLlPostMoney.setVisibility(View.GONE);
                 }
 
@@ -1364,9 +1375,9 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     }
                 } else {
                     mLlAccessory.setVisibility(View.GONE);
-                    if ("2".equals(data.getTypeID())){
+                    if ("2".equals(data.getTypeID())) {
                         mLlAddAccessory.setVisibility(View.GONE);
-                    }else{
+                    } else {
                         mLlAddAccessory.setVisibility(View.VISIBLE);
                     }
 //                    mLlMemo.setVisibility(View.VISIBLE);
@@ -1389,16 +1400,16 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     }
                 } else {
                     mLlService.setVisibility(View.GONE);
-                    if ("2".equals(data.getTypeID())){
+                    if ("2".equals(data.getTypeID())) {
                         mLlAddService.setVisibility(View.GONE);
-                    }else{
+                    } else {
                         mLlAddService.setVisibility(View.VISIBLE);
                     }
 
                 }
-                if ("2".equals(data.getTypeID())){
+                if ("2".equals(data.getTypeID())) {
                     mLlOldAccessory.setVisibility(View.GONE);
-                }else{
+                } else {
                     if ("1".equals(data.getAccessoryApplyState())) {
                         mLlOldAccessory.setVisibility(View.VISIBLE);
                         if ("1".equals(data.getIsReturn())) {
@@ -1463,7 +1474,22 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     mViewSelectTimePoint2.setVisibility(View.VISIBLE);
                 }
                 if ("8".equals(data.getState())) {
+                    if (data.getOrderAccessroyDetail().size() == 0) {
+                        mLlAddAccessory.setVisibility(View.GONE);
+                    }
+                    if (data.getOrderServiceDetail().size() == 0) {
+                        mLlAddService.setVisibility(View.GONE);
+                    }
+                    if (data.getOrderBeyondImg().size() == 0) {
+                        mLlApplyBeyond.setVisibility(View.GONE);
+                    }
+                    mTvPrompt.setText("请务必认真填写返件快递单号");
+                    mTvAccessoryMessage.setText("配件信息");
                     mRlExpressno.setVisibility(View.VISIBLE);
+                    mRlSelectTime.setVisibility(View.GONE);
+                    mLlApplyAgain.setVisibility(View.GONE);
+                    mLlApplyAgainService.setVisibility(View.GONE);
+                    mLlApplyAgainBeyond.setVisibility(View.GONE);
                     mBtnCompleteSubmit.setVisibility(View.GONE);
                     mRlCompleteSubmit.setVisibility(View.GONE);
                 } else {
@@ -2050,14 +2076,14 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         style.selectedTextColor = Color.parseColor("#1690FF");//选中字体颜色
         style.textColor = Color.parseColor("#ABABAB");//未选中字体颜色
 
-        style2.selectedTextColor=Color.parseColor("#FF0000");//结束选中时间颜色
+        style2.selectedTextColor = Color.parseColor("#FF0000");//结束选中时间颜色
         style2.textColor = Color.parseColor("#ABABAB");//未选中字体颜色
         View out_view = LayoutInflater.from(mActivity).inflate(R.layout.dialog_time, null);
         //日期滚轮
         final WheelView start_year = out_view.findViewById(R.id.start_year);
         final WheelView start_month = out_view.findViewById(R.id.start_month);
         final WheelView start_day = out_view.findViewById(R.id.start_day);
-        final WheelView start_hour =out_view.findViewById(R.id.start_hour);
+        final WheelView start_hour = out_view.findViewById(R.id.start_hour);
 
         final WheelView end_year = out_view.findViewById(R.id.end_year);
         final WheelView end_month = out_view.findViewById(R.id.end_month);
@@ -2121,25 +2147,25 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 String startyear = String.valueOf(start_year.getSelectionItem());
                 String startmonth = String.valueOf(start_month.getSelectionItem());
 
-                if ( Integer.parseInt(startmonth)<10){
-                    startmonth="0"+startmonth;
+                if (Integer.parseInt(startmonth) < 10) {
+                    startmonth = "0" + startmonth;
                 }
 
                 String startday = String.valueOf(start_day.getSelectionItem());
 
-                if ( Integer.parseInt(startday)<10){
-                    startday="0"+startday;
+                if (Integer.parseInt(startday) < 10) {
+                    startday = "0" + startday;
                 }
 
-                String starthour= String.valueOf(start_hour.getSelectionItem());
+                String starthour = String.valueOf(start_hour.getSelectionItem());
 
-                if ( Integer.parseInt(starthour)<10){
-                    starthour="0"+starthour;
+                if (Integer.parseInt(starthour) < 10) {
+                    starthour = "0" + starthour;
                 }
 
-                start_time=startyear+startmonth+startday+starthour;
+                start_time = startyear + startmonth + startday + starthour;
 
-                        //*格式化时间*//*
+                //*格式化时间*//*
                 DateFormat format = new SimpleDateFormat("yyyyMMddHH");
                 try {
                     recommendedtime = format.parse(start_time).getTime();
@@ -2150,23 +2176,23 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 String endyear = String.valueOf(end_year.getSelectionItem());
                 String endmonth = String.valueOf(end_month.getSelectionItem());
 
-                if ( Integer.parseInt(endmonth)<10){
-                    endmonth="0"+endmonth;
+                if (Integer.parseInt(endmonth) < 10) {
+                    endmonth = "0" + endmonth;
                 }
 
                 String endday = String.valueOf(end_day.getSelectionItem());
 
-                if ( Integer.parseInt(endday)<10){
-                    endday="0"+endday;
+                if (Integer.parseInt(endday) < 10) {
+                    endday = "0" + endday;
                 }
 
-                String endhour= String.valueOf(end_hour.getSelectionItem());
+                String endhour = String.valueOf(end_hour.getSelectionItem());
 
-                if (Integer.parseInt(endhour)<10){
-                    endhour="0"+endhour;
+                if (Integer.parseInt(endhour) < 10) {
+                    endhour = "0" + endhour;
                 }
 
-                String end_time=endyear+endmonth+endday+endhour;
+                String end_time = endyear + endmonth + endday + endhour;
 
 
                 try {
@@ -2180,14 +2206,14 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 Log.d("======>", start_time);
                 Log.d("======>", end_time);
                 int compare = end_time.compareTo(start_time);
-                if (compare>=0){
+                if (compare >= 0) {
                     mView.setVisibility(View.VISIBLE);
                     mLlSelectTime.setVisibility(View.VISIBLE);
-                    mTvSelectTime.setText( startyear+"-"+startmonth+"-"+startday+"-"+ " 至 " +
-                                           endyear+"-"+endmonth+"-"+endday);
-                    mPresenter.UpdateSendOrderUpdateTime(OrderID, startyear+"/"+startmonth+"/"+startday, endyear+"/"+endmonth+"/"+endday);
+                    mTvSelectTime.setText(startyear + "-" + startmonth + "-" + startday + "-" + " 至 " +
+                            endyear + "-" + endmonth + "-" + endday);
+                    mPresenter.UpdateSendOrderUpdateTime(OrderID, startyear + "/" + startmonth + "/" + startday, endyear + "/" + endmonth + "/" + endday);
 
-                }else {//<0
+                } else {//<0
                     showToast(mActivity, "当月起始日期不能大于结束日期");
                 }
             }
@@ -2243,9 +2269,9 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
 
 
     //小时
-    private ArrayList<String> getHourData(){
+    private ArrayList<String> getHourData() {
         ArrayList<String> list = new ArrayList<>();
-        for (int i = 1; i <= 24; i++){
+        for (int i = 1; i <= 24; i++) {
             list.add(String.valueOf(i));
         }
         return list;

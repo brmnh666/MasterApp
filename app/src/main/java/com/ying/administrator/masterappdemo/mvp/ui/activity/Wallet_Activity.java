@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -93,11 +92,17 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
     @BindView(R.id.ll_wallet_sz_detail)
     LinearLayout mll_wallet_sz_detail;
 
-     @BindView(R.id.ll_withdraw)//提现记录
-     LinearLayout mll_withdraw;
+    @BindView(R.id.ll_withdraw)//提现记录
+            LinearLayout mll_withdraw;
 
-     @BindView(R.id.ll_recharge)//充值记录
-     LinearLayout mll_recharge;
+    @BindView(R.id.ll_recharge)//充值记录
+            LinearLayout mll_recharge;
+    @BindView(R.id.tv_can_withdraw)
+    TextView mTvCanWithdraw;
+    @BindView(R.id.tv_margin)
+    TextView mTvMargin;
+    @BindView(R.id.ll_card)
+    LinearLayout mLlCard;
 
     private Wallet_record_Adapter wallet_record_adapter1;
     private Wallet_record_Adapter wallet_record_adapter2;
@@ -196,7 +201,7 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
                             .setSingle(false).setOnClickBottomListener(new VerifiedDialog.OnClickBottomListener() {
                         @Override
                         public void onPositiveClick() {//去实名认证
-                            startActivity(new Intent(mActivity,Verified_Activity.class));
+                            startActivity(new Intent(mActivity, Verified_Activity.class));
                             dialog.dismiss();
                         }
 
@@ -234,22 +239,21 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
                 break;
 
             case R.id.ll_wallet_sz_detail:
-                Intent intent1=new Intent(this,DetailRecordActivity.class);
-                intent1.putExtra("openwhich","1");
+                Intent intent1 = new Intent(this, DetailRecordActivity.class);
+                intent1.putExtra("openwhich", "1");
                 startActivity(intent1);
                 break;
             case R.id.ll_withdraw:
-                Intent intent2=new Intent(this,DetailRecordActivity.class);
-                intent2.putExtra("openwhich","2");
+                Intent intent2 = new Intent(this, DetailRecordActivity.class);
+                intent2.putExtra("openwhich", "2");
                 startActivity(intent2);
                 break;
             case R.id.ll_recharge:
-                Intent intent3=new Intent(this,DetailRecordActivity.class);
-                intent3.putExtra("openwhich","3");
+                Intent intent3 = new Intent(this, DetailRecordActivity.class);
+                intent3.putExtra("openwhich", "3");
                 startActivity(intent3);
 
                 break;
-
 
 
         }
@@ -264,7 +268,8 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
                     userInfo = baseResult.getData().getData().get(0);
                     mTvMoney.setText(userInfo.getTotalMoney().toString());
                     mTvUnfinished.setText(userInfo.getFrozenMoney().toString() + "元");
-
+                    String CanWithdraw=String.format("%.1f",userInfo.getTotalMoney()-userInfo.getFrozenMoney());
+                    mTvCanWithdraw.setText(CanWithdraw);
 
                 }
 
@@ -283,11 +288,11 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
                         switch (baseResult.getData().getItem2().getData().get(0).getState()) {
                             case "1"://充值
                                 recharge_list.addAll(baseResult.getData().getItem2().getData());
-                                if (recharge_list.size()<=4){
+                                if (recharge_list.size() <= 4) {
                                     wallet_record_adapter2.setNewData(recharge_list);
-                                }else {
+                                } else {
                                     List<Bill.DataBean> list = new ArrayList<>();//充值记录
-                                    for (int i=0;i<4;i++){
+                                    for (int i = 0; i < 4; i++) {
                                         list.add(recharge_list.get(i));
                                     }
                                     wallet_record_adapter2.setNewData(list);
@@ -298,12 +303,12 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
                             case "2"://支出
                             case "5"://收入
                                 expend_income_list.addAll(baseResult.getData().getItem2().getData());
-                                if (withdraw_list.size()<=4){
+                                if (withdraw_list.size() <= 4) {
                                     wallet_record_adapter1.setNewData(expend_income_list);
-                                }else {
+                                } else {
                                     List<Bill.DataBean> list = new ArrayList<>();//提现记录
 
-                                    for (int i=0;i<4;i++){
+                                    for (int i = 0; i < 4; i++) {
                                         list.add(expend_income_list.get(i));
                                     }
                                     wallet_record_adapter1.setNewData(list);
@@ -311,19 +316,18 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
                                 }
 
 
-
                                 break;
                             case "3"://提现
                                 withdraw_list.addAll(baseResult.getData().getItem2().getData());
 
-                                if (withdraw_list.size()<=4){
+                                if (withdraw_list.size() <= 4) {
                                     wallet_record_adapter3.setNewData(withdraw_list);
-                                }else {
+                                } else {
                                     List<Bill.DataBean> list = new ArrayList<>();//提现记录
 
-                                   for (int i=0;i<4;i++){
-                                       list.add(withdraw_list.get(i));
-                                   }
+                                    for (int i = 0; i < 4; i++) {
+                                        list.add(withdraw_list.get(i));
+                                    }
                                     wallet_record_adapter3.setNewData(list);
                                 }
                                 break;
@@ -361,11 +365,12 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(String message) {
-        if (!"GetAccountPayInfoList".equals(message)){
+        if (!"GetAccountPayInfoList".equals(message)) {
             return;
         }
         mPresenter.GetAccountPayInfoList(userId);
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

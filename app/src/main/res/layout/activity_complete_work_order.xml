@@ -20,14 +20,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/dp_10"
-                android:background="@drawable/white_shape"
+                android:background="@color/white"
                 android:orientation="vertical"
                 android:padding="11dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -48,7 +49,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -69,7 +71,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -90,7 +93,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -120,8 +124,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="热水器不通电"
-                        android:textColor="#6A6A6A"
-                        android:textSize="14sp" />
+                        android:textColor="#000000"
+                        android:textSize="20sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -151,7 +155,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="10dp">
 
                     <TextView
                         android:id="@+id/tv_service"
@@ -178,63 +183,69 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="6dp"
-                    android:background="#DCDCDC" />
+                    android:background="#DCDCDC"
+                    android:visibility="gone"/>
+
+
+                </LinearLayout>
+            <LinearLayout
+                android:background="@color/white"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dp"
+                android:paddingBottom="@dimen/dp_20">
+
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="33dp"
+                    android:src="@drawable/address" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="33dp"
-                        android:src="@drawable/address" />
+                    android:layout_marginLeft="9dp"
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="9dp"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/tv_name"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="20dp"
-                                android:text="刘波"
-                                android:textColor="#333333"
-                                android:textSize="15sp" />
-
-                            <TextView
-                                android:id="@+id/tv_phone"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="20dp"
-                                android:layout_marginTop="20dp"
-                                android:text="86-13963560259"
-                                android:textColor="#898989"
-                                android:textSize="15sp" />
-                        </LinearLayout>
+                        android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/tv_address"
+                            android:id="@+id/tv_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginRight="20dp"
-                            android:text="山东/聊城市/东昌府区/水城雅居一号楼一单元5楼东户"
+                            android:layout_marginTop="20dp"
+                            android:text="刘波"
                             android:textColor="#333333"
-                            android:textSize="15dp" />
-                    </LinearLayout>
-                </LinearLayout>
+                            android:textSize="15sp" />
 
+                        <TextView
+                            android:id="@+id/tv_phone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="20dp"
+                            android:text="86-13963560259"
+                            android:textColor="#898989"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginRight="20dp"
+                        android:text="山东/聊城市/东昌府区/水城雅居一号楼一单元5楼东户"
+                        android:textColor="#333333"
+                        android:textSize="15dp" />
+                </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -265,7 +276,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:background="@drawable/white_shape"
+                android:background="@color/white"
                 android:orientation="vertical">
 
                 <TextView
@@ -273,11 +284,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
                     android:layout_marginTop="13dp"
-                    android:text="添加返件信息"
+                    android:text="添加完成信息"
                     android:textColor="#000000"
                     android:textSize="16sp" />
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="43dp"
                     android:layout_marginLeft="10dp"
@@ -397,7 +409,7 @@
                             android:layout_marginTop="13dp"
                             android:text="条形码"
                             android:textColor="#353535"
-                            android:textSize="10dp" />
+                            android:textSize="12sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -420,7 +432,7 @@
                             android:layout_marginTop="13dp"
                             android:text="整机"
                             android:textColor="#353535"
-                            android:textSize="10dp" />
+                            android:textSize="12sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -443,7 +455,7 @@
                             android:layout_marginTop="13dp"
                             android:text="故障位置"
                             android:textColor="#353535"
-                            android:textSize="10dp" />
+                            android:textSize="12sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -466,7 +478,7 @@
                             android:layout_marginTop="13dp"
                             android:text="新旧配件"
                             android:textColor="#353535"
-                            android:textSize="10dp" />
+                            android:textSize="12sp" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -572,12 +584,12 @@
             <Button
                 android:id="@+id/btn_complete_submit"
                 android:layout_width="match_parent"
-                android:layout_height="47dp"
+                android:layout_height="50dp"
                 android:layout_margin="10dp"
                 android:background="@drawable/btn_blue"
                 android:text="提   交"
                 android:textColor="@color/white"
-                android:textSize="15sp" />
+                android:textSize="20sp" />
 
         </LinearLayout>
     </ScrollView>
