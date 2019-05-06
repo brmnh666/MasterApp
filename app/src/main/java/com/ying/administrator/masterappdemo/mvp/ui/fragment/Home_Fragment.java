@@ -4,12 +4,17 @@ import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
@@ -254,6 +259,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
     private Button btn_verified_update;
     private ImageView iv_code_one;
     private ImageView iv_close;
+    private TextView iv_gotoshop;
     private TextView tv_share;
 
 
@@ -280,16 +286,6 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
 
     }
 
-/*
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d("===》", "页面重新刷新");
-        mRefreshLayout.autoRefresh();
-
-    }
-*/
 
 
     @Override
@@ -833,6 +829,18 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
         under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_ad, null);
         iv_close = under_review.findViewById(R.id.iv_close);
         tv_share = under_review.findViewById(R.id.tv_share);
+        iv_gotoshop =under_review.findViewById(R.id.tv_go);
+
+        iv_gotoshop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                openShopApp("com.zhenghaikj.shop");
+                underReviewDialog.dismiss();
+            }
+        });
+
+
         iv_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1032,6 +1040,60 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
 
     public void cancleLoading() {
         dialog.dismiss();
+
+    }
+
+    private boolean isInstalled(String packageName) {
+        PackageManager manager = mActivity.getPackageManager();
+        //获取所有已安装程序的包信息
+        List<PackageInfo> installedPackages = manager.getInstalledPackages(0);
+        if (installedPackages != null) {
+            for (PackageInfo info : installedPackages) {
+                if (info.packageName.equals(packageName))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+
+
+
+    private void openShopApp(String packageName) {
+
+        if (isInstalled(packageName)){
+            PackageInfo pi = null;
+            try {
+                pi = getActivity().getPackageManager().getPackageInfo(packageName, 0);
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+            Intent resolveIntent = new Intent(Intent.ACTION_MAIN, null);
+            resolveIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+            resolveIntent.setPackage(pi.packageName);
+
+            List<ResolveInfo> apps = getActivity().getPackageManager().queryIntentActivities(resolveIntent, 0);
+
+            ResolveInfo ri = apps.iterator().next();
+            if (ri != null ) {
+                packageName = ri.activityInfo.packageName;
+                String className = ri.activityInfo.name;
+
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_LAUNCHER);
+
+                ComponentName cn = new ComponentName(packageName, className);
+                intent.setComponent(cn);
+                startActivity(intent);
+            }
+
+
+        }else {
+
+            Toast.makeText(mActivity,"未安装商城app请前往下载安装",Toast.LENGTH_SHORT).show();
+        }
+
+
 
     }
 
