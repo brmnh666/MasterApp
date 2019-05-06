@@ -1388,6 +1388,11 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
 
 
                 if (data.getOrderAccessroyDetail().size() != 0) {
+                    for (int i = 0; i < data.getOrderAccessroyDetail().size(); i++) {
+                        if ("2".equals(data.getOrderAccessroyDetail().get(i).getState())){
+                            data.getOrderAccessroyDetail().remove(i);
+                        }
+                    }
                     returnAccessoryAdapter = new ReturnAccessoryAdapter(R.layout.item_returned, data.getOrderAccessroyDetail(), Integer.parseInt(data.getAccessoryState()));
                     mRvReturnInformation.setLayoutManager(new LinearLayoutManager(mActivity));
                     mRvReturnInformation.setAdapter(returnAccessoryAdapter);
