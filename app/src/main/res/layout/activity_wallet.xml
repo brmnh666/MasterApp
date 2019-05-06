@@ -34,8 +34,8 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="10dp"
                     android:orientation="vertical"
-                    app:cardElevation="5dp"
-                    app:cardCornerRadius="7dp">
+                    app:cardCornerRadius="7dp"
+                    app:cardElevation="5dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -97,7 +97,7 @@
                                             android:text="￥"
                                             android:textColor="#1690FF"
                                             android:textSize="30sp"
-                                            android:visibility="gone"/>
+                                            android:visibility="gone" />
 
                                         <TextView
                                             android:id="@+id/tv_money"
@@ -310,7 +310,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:orientation="horizontal"
-                    android:gravity="center">
+                    android:paddingLeft="20dp">
 
                     <ImageView
                         android:layout_width="14dp"
@@ -321,6 +321,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_marginLeft="5dp"
                         android:text="提现绑定"
                         android:textColor="#333333"
@@ -338,8 +339,8 @@
                     android:id="@+id/ll_card"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:paddingLeft="24dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:paddingLeft="24dp">
 
                     <ImageView
                         android:layout_width="21dp"
@@ -408,27 +409,47 @@
                     android:visibility="gone" />
 
                 <LinearLayout
-                    android:id="@+id/ll_wallet_sz_detail"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:gravity="center"
-                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <ImageView
-                        android:layout_width="12dp"
-                        android:layout_height="14dp"
+
+                    <LinearLayout
+                        android:id="@+id/ll_wallet_sz_detail"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
                         android:layout_gravity="center"
-                        android:src="@mipmap/bill" />
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        android:paddingLeft="20dp">
+
+                        <ImageView
+                            android:layout_width="12dp"
+                            android:layout_height="14dp"
+                            android:layout_gravity="center"
+                            android:src="@mipmap/bill" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5dp"
+                            android:text="收支明细"
+                            android:textColor="#333333"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
 
                     <TextView
+                        android:id="@+id/tv_wallet_sz_detail"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:text="收支明细"
-                        android:textColor="#333333"
+                        android:layout_height="60dp"
+                        android:gravity="center"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
+                        android:text="更多"
+                        android:textColor="#808080"
                         android:textSize="14sp" />
-
                 </LinearLayout>
 
                 <RelativeLayout
@@ -466,25 +487,45 @@
                     android:visibility="gone" />
 
                 <LinearLayout
-                    android:id="@+id/ll_withdraw"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:gravity="center"
-                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <ImageView
-                        android:layout_width="12dp"
-                        android:layout_height="14dp"
+
+                    <LinearLayout
+                        android:id="@+id/ll_withdraw"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
                         android:layout_gravity="center"
-                        android:src="@mipmap/record" />
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        android:paddingLeft="20dp">
+
+                        <ImageView
+                            android:layout_width="12dp"
+                            android:layout_height="14dp"
+                            android:layout_gravity="center"
+                            android:src="@mipmap/record" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5dp"
+                            android:text="提现记录"
+                            android:textColor="#333333"
+                            android:textSize="14sp" />
+                    </LinearLayout>
 
                     <TextView
+                        android:id="@+id/tv_withdraw_more"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:text="提现记录"
-                        android:textColor="#333333"
+                        android:layout_height="60dp"
+                        android:gravity="center"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
+                        android:text="更多"
+                        android:textColor="#808080"
                         android:textSize="14sp" />
                 </LinearLayout>
 
@@ -492,6 +533,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:descendantFocusability="blocksDescendants">
+
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/rv_withdrawals_record"
                         android:layout_width="match_parent"
@@ -522,25 +564,45 @@
                     android:visibility="gone" />
 
                 <LinearLayout
-                    android:id="@+id/ll_recharge"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:gravity="center"
-                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <ImageView
-                        android:layout_width="12dp"
-                        android:layout_height="14dp"
+
+                    <LinearLayout
+                        android:id="@+id/ll_recharge"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
                         android:layout_gravity="center"
-                        android:src="@mipmap/record" />
+                        android:layout_marginLeft="20dp"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="12dp"
+                            android:layout_height="14dp"
+                            android:layout_gravity="center"
+                            android:src="@mipmap/record" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5dp"
+                            android:text="充值记录"
+                            android:textColor="#333333"
+                            android:textSize="14sp" />
+                    </LinearLayout>
 
                     <TextView
+                        android:id="@+id/tv_recharge_more"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:text="充值记录"
-                        android:textColor="#333333"
+                        android:layout_height="60dp"
+                        android:gravity="center"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
+                        android:text="更多"
+                        android:textColor="#808080"
                         android:textSize="14sp" />
                 </LinearLayout>
 
@@ -548,6 +610,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:descendantFocusability="blocksDescendants">
+
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/rv_recharge_record"
                         android:layout_width="match_parent"

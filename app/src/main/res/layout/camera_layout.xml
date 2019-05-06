@@ -15,10 +15,11 @@
         android:background="@drawable/popwindow_shape">
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="60dp"
             android:textColor="@color/color_custom_01"
             android:gravity="center"
-            android:text="请选择"/>
+            android:text="请选择"
+            android:textSize="18sp"/>
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -29,7 +30,8 @@
             android:layout_height="50dp"
             android:background="@null"
             android:textColor="@color/color_black"
-            android:text="拍摄"/>
+            android:text="拍摄"
+            android:textSize="16sp"/>
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -40,7 +42,8 @@
             android:layout_height="50dp"
             android:background="@null"
             android:textColor="@color/color_black"
-            android:text="我的相册"/>
+            android:text="我的相册"
+            android:textSize="16sp"/>
     </LinearLayout>
     <Button
         android:id="@+id/cancel_btn"
@@ -51,5 +54,6 @@
         android:layout_marginBottom="10dp"
         android:background="@drawable/popwindow_shape"
         android:textColor="@color/color_black"
-        android:text="取消"/>
+        android:text="取消"
+        android:textSize="16sp"/>
 </LinearLayout>

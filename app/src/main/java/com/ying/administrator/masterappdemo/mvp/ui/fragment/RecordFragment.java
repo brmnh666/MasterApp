@@ -119,7 +119,6 @@ public class RecordFragment extends BaseFragment<WalletPresenter, WalletModel>im
                                 recyclerView.setNestedScrollingEnabled(false);*/
                                 wallet_record_adapter = new Wallet_record_Adapter(R.layout.item_withdrawals_record, expend_income_list);
                                 recyclerView.setAdapter(wallet_record_adapter);
-
                                 break;
                             case "3"://提现
                                 withdraw_list.addAll(baseResult.getData().getItem2().getData());

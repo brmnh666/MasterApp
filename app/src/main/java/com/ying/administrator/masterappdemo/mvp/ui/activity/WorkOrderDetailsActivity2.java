@@ -133,8 +133,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     RelativeLayout mActionbarLayout;
     @BindView(R.id.tv_payment_method)
     TextView mTvPaymentMethod;
-/*    @BindView(R.id.tv_order_time)
-    TextView mTvOrderTime;*/
+    @BindView(R.id.tv_order_time)
+    TextView mTvOrderTime;
     @BindView(R.id.tv_work_order_number)
     TextView mTvWorkOrderNumber;
     @BindView(R.id.tv_cause_of_issue)
@@ -1194,7 +1194,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 mTvPhone.setText(data.getPhone());
                 mTvAddress.setText(data.getAddress());
                 mTvWorkOrderNumber.setText(data.getOrderID());
-               // mTvOrderTime.setText(data.getAudDate().replace("T", " ")); //将T替换为空格
+                mTvOrderTime.setText(data.getAudDate().replace("T", " ")); //将T替换为空格
 
                 mTvCauseOfIssue.setText(data.getMemo());
                 if (("Y").equals(data.getGuaranteeText())){

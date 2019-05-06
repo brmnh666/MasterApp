@@ -75,6 +75,10 @@ public abstract class BaseFragment<P extends BasePresenter, M extends BaseModel>
         return  LayoutInflater.from(mActivity).inflate(R.layout.layout_empty,null);
     }
 
+    public View getEmptyViewZanwu() {
+        return  LayoutInflater.from(mActivity).inflate(R.layout.layout_empty,null);
+    }
+
 
 
 
