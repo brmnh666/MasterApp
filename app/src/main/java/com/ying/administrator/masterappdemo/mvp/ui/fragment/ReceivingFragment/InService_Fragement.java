@@ -28,6 +28,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.SubUserInfo;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
@@ -48,6 +49,7 @@ import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 import com.zyao89.view.zloading.ZLoadingDialog;
 import com.zyao89.view.zloading.Z_TYPE;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -147,11 +149,12 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, final int position) {
                 switch (view.getId()){
-                    case R.id.tv_see_detail://完成服务
+                    case R.id.tv_see_detail://查看详情
                         Intent intent=new Intent(getActivity(), WorkOrderDetailsActivity2.class);
                         //传递工单号
                         intent.putExtra("OrderID",((WorkOrder.DataBean)adapter.getItem(position)).getOrderID());
                         startActivity(intent);
+                        mPresenter.UpdateOrderIsLook(((WorkOrder.DataBean)adapter.getItem(position)).getOrderID(),"2");
                         break;
                     case R.id.tv_in_service_apply_parts: //申请配件
                         Intent intent2=new Intent(getActivity(),Order_Add_Accessories_Activity.class);
@@ -280,9 +283,19 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
 
     }
 
+    /*更新工单状态 去掉小红点*/
     @Override
     public void UpdateOrderIsLook(BaseResult<Data<String>> baseResult) {
 
+        switch (baseResult.getStatusCode()){
+            case 200:
+
+                if (baseResult.getData().isItem1()){
+                    EventBus.getDefault().post(Config.ORDER_READ);
+                }
+
+                break;
+        }
     }
 
     @Override
