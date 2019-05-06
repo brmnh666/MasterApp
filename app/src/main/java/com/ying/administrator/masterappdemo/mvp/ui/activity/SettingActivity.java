@@ -186,6 +186,7 @@ public class SettingActivity extends BaseActivity<LoginPresenter, LoginModel> im
                     toSelfSetting(mActivity);
                     break;
                 case R.id.ll_update:
+
                     Beta.checkUpgrade();
                     break;
                 case R.id.img_clean_cache:

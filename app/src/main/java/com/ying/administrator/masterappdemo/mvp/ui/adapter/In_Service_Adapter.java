@@ -1,6 +1,7 @@
 package com.ying.administrator.masterappdemo.mvp.ui.adapter;
 
 import android.support.annotation.Nullable;
+import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -24,6 +25,16 @@ public class In_Service_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,Base
         helper.setText(R.id.tv_reason_in_service,item.getMemo());//原因
         helper.setText(R.id.tv_address_in_service,item.getAddress()); //地址
         helper.setText(R.id.tv_in_service_job_number,"工单号:"+item.getOrderID());
+        if (item.getBeyondState()==null){
+            helper.setText(R.id.tv_review,"");
+        }else if ("0".equals(item.getBeyondState())) {
+            helper.setText(R.id.tv_review,"远程费审核中");
+        } else if ("1".equals(item.getBeyondState())) {
+            helper.setText(R.id.tv_review,"远程费审核通过");
+
+        } else {
+            helper.setText(R.id.tv_review,"远程费被拒");
+        }
 
 //         if (item.getBeyondState()==null){
 //         }else if (item.getBeyondState().equals("0")){//待审核

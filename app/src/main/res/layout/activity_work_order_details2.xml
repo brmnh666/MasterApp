@@ -1027,7 +1027,6 @@
                     android:layout_margin="@dimen/dp_10"
                     android:background="@color/white"
                     android:orientation="vertical"
-                    android:paddingTop="10dp"
                     android:paddingBottom="@dimen/dp_10">
 
                     <LinearLayout
@@ -1069,7 +1068,6 @@
                         android:layout_height="1dp"
                         android:layout_marginLeft="8dp"
                         android:layout_marginRight="14dp"
-                        android:layout_marginTop="10dp"
                         android:background="#eeeeee" />
 
                     <LinearLayout
@@ -1082,7 +1080,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginLeft="17dp"
+                            android:layout_marginLeft="5dp"
                             android:text="已超出正常范围"
                             android:textColor="#333"
                             android:textSize="15sp" />

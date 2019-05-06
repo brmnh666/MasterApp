@@ -1268,7 +1268,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     mLlApproveBeyondMoney.setVisibility(View.GONE);
                     mLlApplyBeyond.setVisibility(View.VISIBLE);
                 } else {
-                    mTvRange.setText(data.getBeyondDistance());
+                    mTvRange.setText(String.format("%.2f", distance - Service_range) + "km");
                     if (data.getOrderBeyondImg() == null) {
                         return;
                     }
@@ -1288,6 +1288,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     } else if ("1".equals(data.getBeyondState())) {
                         mTvBeyondState.setText("审核通过");
                         mTvBeyondApplication.setVisibility(View.VISIBLE);
+                        mLlApplyAgainBeyond.setVisibility(View.GONE);
                     } else {
                         mTvBeyondState.setText("被拒");
                         mTvBeyondApplication.setVisibility(View.VISIBLE);

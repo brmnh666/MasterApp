@@ -14,7 +14,8 @@
         android:layout_marginLeft="13dp"
         android:layout_marginTop="15dp"
         android:text="服务中"
-        android:textSize="12sp" />
+        android:textSize="12sp"
+        android:visibility="gone"/>
 
 
     <TextView
@@ -34,7 +35,7 @@
         android:id="@+id/tv_in_service_status_repair"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="15dp"
         android:layout_marginTop="17dp"
         android:layout_toRightOf="@+id/tv_in_service"
         android:background="@color/color_custom_04"
@@ -53,7 +54,8 @@
         android:layout_marginTop="15dp"
         android:layout_marginRight="19dp"
         android:text="工单号:1212412412412414124"
-        android:textSize="12sp" />
+        android:textSize="12sp"
+        android:visibility="gone"/>
 
 
     <TextView
@@ -117,9 +119,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_address_in_service"
         android:layout_marginLeft="13dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:text="提示:服务过程中需要申请配件请点击申请配件"
-        android:textColor="@color/color_custom_04"
         android:textSize="11sp" />
 
 

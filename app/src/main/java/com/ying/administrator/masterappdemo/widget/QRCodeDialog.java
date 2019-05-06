@@ -80,8 +80,8 @@ public class QRCodeDialog extends Dialog {
 //        Glide.with(context)
 //                .load(Config.SUB_ACCOUNT_QRCODE+UserId)
 //                .into(img_qrcode);
-//        http://manage.xigyu.com/regchildaccount?ParentUserID=17855837725
-        Bitmap bitmap = ZXingUtils.createQRImage("http://manage.xigyu.com/regchildaccount?ParentUserID="+UserId, 600, 600, BitmapFactory.decodeResource(context.getResources(), R.drawable.icon));
+//        http://admin.xigyu.com/regchildaccount?ParentUserID=17855837725
+        Bitmap bitmap = ZXingUtils.createQRImage("http://admin.xigyu.com/regchildaccount?ParentUserID="+UserId, 600, 600, BitmapFactory.decodeResource(context.getResources(), R.drawable.icon));
         img_qrcode.setImageBitmap(bitmap);
     }
 }

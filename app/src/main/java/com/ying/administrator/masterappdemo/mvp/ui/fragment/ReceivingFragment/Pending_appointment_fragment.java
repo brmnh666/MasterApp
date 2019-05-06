@@ -187,6 +187,7 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
         }, format1, "2022-1-1 24:00");
 
         timeSelector.setTitle(title);
+        timeSelector.setNextBtTip("确定");
         timeSelector.show();
     }
 

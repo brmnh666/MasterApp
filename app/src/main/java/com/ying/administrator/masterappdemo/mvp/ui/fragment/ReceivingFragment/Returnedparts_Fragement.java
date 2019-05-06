@@ -61,7 +61,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
-/*返件单*/
+/*配件单*/
 public class Returnedparts_Fragement extends BaseFragment<GetOrderListForMePresenter,GetOrderListForMeModel> implements GetOrderListForMeContract.View {
     private View view;
     private RecyclerView recyclerView;

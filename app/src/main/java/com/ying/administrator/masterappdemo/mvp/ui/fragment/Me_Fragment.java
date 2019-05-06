@@ -199,7 +199,7 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                         } else if (snsPlatform.mShowWord.equals("复制链接")) {
                             Toast.makeText(mActivity, "已复制", Toast.LENGTH_LONG).show();
                         } else {
-                            UMWeb web = new UMWeb("http://manage.xigyu.com/sign?phone=" + userID + "&type=7");
+                            UMWeb web = new UMWeb("http://admin.xigyu.com/sign?phone=" + userID + "&type=7");
                             web.setTitle("西瓜鱼");
                             web.setDescription("注册送西瓜币了！！！！！");
                             web.setThumb(new UMImage(mActivity, R.drawable.icon));
@@ -449,7 +449,7 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
 //                btn_share_two = dialog_share.findViewById(R.id.btn_share_two);
 
                 iv_code_one = dialog_share.findViewById(R.id.iv_code_one);
-                Bitmap bitmap = ZXingUtils.createQRImage("http://manage.xigyu.com/sign?phone=" + userID + "&type=7", 600, 600, BitmapFactory.decodeResource(getResources(), R.drawable.icon));
+                Bitmap bitmap = ZXingUtils.createQRImage("http://admin.xigyu.com/sign?phone=" + userID + "&type=7", 600, 600, BitmapFactory.decodeResource(getResources(), R.drawable.icon));
                 iv_code_one.setImageBitmap(bitmap);
                 btn_share_one.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -489,7 +489,7 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
 //                btn_share_two = dialog_share.findViewById(R.id.btn_share_two);
 
                 iv_code_one = dialog_share.findViewById(R.id.iv_code_one);
-                Bitmap bitmap1 = ZXingUtils.createQRImage("http://manage.xigyu.com/sign?phone=" + userID + "&type=7", 600, 600, BitmapFactory.decodeResource(getResources(), R.drawable.icon));
+                Bitmap bitmap1 = ZXingUtils.createQRImage("http://admin.xigyu.com/sign?phone=" + userID + "&type=7", 600, 600, BitmapFactory.decodeResource(getResources(), R.drawable.icon));
                 iv_code_one.setImageBitmap(bitmap1);
                 btn_share_one.setOnClickListener(new View.OnClickListener() {
                     @Override

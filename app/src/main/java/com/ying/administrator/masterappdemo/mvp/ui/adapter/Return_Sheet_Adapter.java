@@ -96,5 +96,37 @@ public class Return_Sheet_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,Ba
 //        baseViewHolder.addOnClickListener(R.id.tv_reminder);//催件
         baseViewHolder.addOnClickListener(R.id.tv_see_detail);//查看详情
 //        baseViewHolder.addOnClickListener(R.id.tv_telephone_reminder);//电话催件
+
+        if("".equals(item.getAccessoryApplyState())){
+            baseViewHolder.setText(R.id.tv_review,"");
+        } else if ("0".equals(item.getAccessoryApplyState())) {
+            baseViewHolder.setText(R.id.tv_review,"配件审核中");
+        } else if ("1".equals(item.getAccessoryApplyState())) {
+            baseViewHolder.setText(R.id.tv_review,"配件审核通过");
+        } else {
+            baseViewHolder.setText(R.id.tv_review,"配件被拒");
+        }
+        if("".equals(item.getServiceApplyState())){
+            baseViewHolder.setText(R.id.tv_review2,"");
+        } else if ("0".equals(item.getServiceApplyState())) {
+            baseViewHolder.setText(R.id.tv_review2,"服务审核中");
+        } else if ("1".equals(item.getServiceApplyState())) {
+            baseViewHolder.setText(R.id.tv_review2,"服务审核通过");
+        } else {
+            baseViewHolder.setText(R.id.tv_review2,"服务被拒");
+        }
+
+        if (item.getBeyondState()==null){
+            baseViewHolder.setText(R.id.tv_review3,"");
+        }else if ("0".equals(item.getBeyondState())) {
+            baseViewHolder.setText(R.id.tv_review3,"远程费审核中");
+        } else if ("1".equals(item.getBeyondState())) {
+            baseViewHolder.setText(R.id.tv_review3,"远程费审核通过");
+
+        } else {
+            baseViewHolder.setText(R.id.tv_review3,"远程费被拒");
+        }
     }
+
+
 }

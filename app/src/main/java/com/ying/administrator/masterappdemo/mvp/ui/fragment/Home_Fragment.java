@@ -613,7 +613,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_share, null);
                 btn_share_one = under_review.findViewById(R.id.btn_share_one);
                 iv_code_one = under_review.findViewById(R.id.iv_code_one);
-                Bitmap bitmap = ZXingUtils.createQRImage("http://manage.xigyu.com/sign?phone="+userID+"&type=7", 600, 600, BitmapFactory.decodeResource(getResources(), R.drawable.icon));
+                Bitmap bitmap = ZXingUtils.createQRImage("http://admin.xigyu.com/sign?phone="+userID+"&type=7", 600, 600, BitmapFactory.decodeResource(getResources(), R.drawable.icon));
                 iv_code_one.setImageBitmap(bitmap);
                 btn_share_one.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -895,7 +895,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                             Toast.makeText(mActivity, "已复制", Toast.LENGTH_LONG).show();
 
                         } else {
-                            UMWeb web = new UMWeb("http://manage.xigyu.com/sign?phone="+userID+"&type=7");
+                            UMWeb web = new UMWeb("http://admin.xigyu.com/sign?phone="+userID+"&type=7");
                             web.setTitle("西瓜鱼");
                             web.setDescription("注册送西瓜币了！！！！！");
                             web.setThumb(new UMImage(mActivity, R.drawable.icon));

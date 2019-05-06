@@ -18,7 +18,7 @@
         android:textSize="12sp"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="15dp"
-        />
+        android:visibility="gone"/>
 
 
 
@@ -31,7 +31,7 @@
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
         android:layout_marginTop="17dp"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="15dp"
         android:text="维修"
         android:textSize="10sp"
         android:textColor="@color/color_white"
@@ -48,7 +48,7 @@
         android:textSize="12sp"
         android:layout_marginRight="19dp"
         android:layout_marginTop="15dp"
-        />
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/tv_reason_complete"
@@ -57,7 +57,7 @@
         android:textSize="18sp"
         android:text="热水器不通电"
         android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
+        android:layout_marginRight="5dp"
         android:layout_marginTop="41dp"
         android:textColor="#333333"/>
 
