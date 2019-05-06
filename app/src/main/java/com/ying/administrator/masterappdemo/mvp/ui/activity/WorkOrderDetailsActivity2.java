@@ -856,16 +856,32 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 scaleview("http://47.96.126.145:8820/Pics/OrderByondImg/" + data.getOrderBeyondImg().get(1).getUrl());
                 break;
             case R.id.iv_bar_code:
-                scaleview("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(0).getUrl());
+                for (int i = 0; i < data.getReturnaccessoryImg().size(); i++) {
+                    if ("img1".equals(data.getReturnaccessoryImg().get(i).getRelation())){
+                        scaleview("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl());
+                    }
+                }
                 break;
             case R.id.iv_machine:
-                scaleview("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(1).getUrl());
+                for (int i = 0; i < data.getReturnaccessoryImg().size(); i++) {
+                    if ("img2".equals(data.getReturnaccessoryImg().get(i).getRelation())){
+                        scaleview("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl());
+                    }
+                }
                 break;
             case R.id.iv_fault_location:
-                scaleview("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(2).getUrl());
+                for (int i = 0; i < data.getReturnaccessoryImg().size(); i++) {
+                    if ("img3".equals(data.getReturnaccessoryImg().get(i).getRelation())){
+                        scaleview("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl());
+                    }
+                }
                 break;
             case R.id.iv_new_and_old_accessories:
-                scaleview("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(3).getUrl());
+                for (int i = 0; i < data.getReturnaccessoryImg().size(); i++) {
+                    if ("img4".equals(data.getReturnaccessoryImg().get(i).getRelation())){
+                        scaleview("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl());
+                    }
+                }
                 break;
             case R.id.iv_copy:
                 String id = data.getOrderID();
@@ -1473,10 +1489,37 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     mLlReturnInformation.setVisibility(View.VISIBLE);
                     mTvPrompt.setText("服务已完成");
                     if ("1".equals(data.getTypeID()) || "3".equals(data.getTypeID())) {//维修
-                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(0).getUrl()).into(mIvBarCode);
-                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(1).getUrl()).into(mIvMachine);
-                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(2).getUrl()).into(mIvFaultLocation);
-                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(3).getUrl()).into(mIvNewAndOldAccessories);
+                        List<String> list=new ArrayList<>();
+                        for (int i = 0; i < data.getReturnaccessoryImg().size(); i++) {
+                            if("img1".equals(data.getReturnaccessoryImg().get(i).getRelation())){
+                                Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl()).into(mIvBarCode);
+                            }
+                            if("img2".equals(data.getReturnaccessoryImg().get(i).getRelation())){
+                                Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl()).into(mIvMachine);
+                            }
+                            if("img3".equals(data.getReturnaccessoryImg().get(i).getRelation())){
+                                Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl()).into(mIvFaultLocation);
+                            }
+                            if("img4".equals(data.getReturnaccessoryImg().get(i).getRelation())){
+                                Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl()).into(mIvNewAndOldAccessories);
+                            }
+                            list.add(data.getReturnaccessoryImg().get(i).getRelation());
+                        }
+                        if (!list.contains("img1")){
+                            mLlBarCode.setVisibility(View.GONE);
+                        }
+                        if (!list.contains("img2")){
+                            mLlMachine.setVisibility(View.GONE);
+                        }
+                        if (!list.contains("img3")){
+                            mLlFaultLocation.setVisibility(View.GONE);
+                        }
+                        if (!list.contains("img4")){
+                            mLlNewAndOldAccessories.setVisibility(View.GONE);
+                        }
+//                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(1).getUrl()).into(mIvMachine);
+//                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(2).getUrl()).into(mIvFaultLocation);
+//                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(3).getUrl()).into(mIvNewAndOldAccessories);
                     } else {
                         Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/FinishOrder/" + data.getOrderImg().get(0).getUrl()).into(mIvBarCode);
                         Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/FinishOrder/" + data.getOrderImg().get(1).getUrl()).into(mIvMachine);
@@ -1511,10 +1554,38 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     mBtnCompleteSubmit.setVisibility(View.GONE);
                     mRlCompleteSubmit.setVisibility(View.GONE);
                     if ("1".equals(data.getTypeID()) || "3".equals(data.getTypeID())) {//维修
-                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(0).getUrl()).into(mIvBarCode);
-                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(1).getUrl()).into(mIvMachine);
-                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(2).getUrl()).into(mIvFaultLocation);
-                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(3).getUrl()).into(mIvNewAndOldAccessories);
+                        List<String> list=new ArrayList<>();
+                        for (int i = 0; i < data.getReturnaccessoryImg().size(); i++) {
+                            if("img1".equals(data.getReturnaccessoryImg().get(i).getRelation())){
+                                Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl()).into(mIvBarCode);
+                            }
+                            if("img2".equals(data.getReturnaccessoryImg().get(i).getRelation())){
+                                Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl()).into(mIvMachine);
+                            }
+                            if("img3".equals(data.getReturnaccessoryImg().get(i).getRelation())){
+                                Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl()).into(mIvFaultLocation);
+                            }
+                            if("img4".equals(data.getReturnaccessoryImg().get(i).getRelation())){
+                                Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl()).into(mIvNewAndOldAccessories);
+                            }
+                            list.add(data.getReturnaccessoryImg().get(i).getRelation());
+                        }
+                        if (!list.contains("img1")){
+                            mLlBarCode.setVisibility(View.GONE);
+                        }
+                        if (!list.contains("img2")){
+                            mLlMachine.setVisibility(View.GONE);
+                        }
+                        if (!list.contains("img3")){
+                            mLlFaultLocation.setVisibility(View.GONE);
+                        }
+                        if (!list.contains("img4")){
+                            mLlNewAndOldAccessories.setVisibility(View.GONE);
+                        }
+//                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(0).getUrl()).into(mIvBarCode);
+//                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(1).getUrl()).into(mIvMachine);
+//                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(2).getUrl()).into(mIvFaultLocation);
+//                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(3).getUrl()).into(mIvNewAndOldAccessories);
                     } else {
                         Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/FinishOrder/" + data.getOrderImg().get(0).getUrl()).into(mIvBarCode);
                         Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/FinishOrder/" + data.getOrderImg().get(1).getUrl()).into(mIvMachine);

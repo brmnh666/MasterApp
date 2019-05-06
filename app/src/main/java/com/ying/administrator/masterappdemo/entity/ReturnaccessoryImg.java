@@ -22,7 +22,7 @@ public class ReturnaccessoryImg implements Serializable {
     private int OrderID;
     private String CeateTime;
     private String Url;
-    private Object Relation;
+    private String Relation;
     private String IsUse;
     private int page;
     private int limit;
@@ -68,11 +68,11 @@ public class ReturnaccessoryImg implements Serializable {
         this.Url = Url;
     }
 
-    public Object getRelation() {
+    public String getRelation() {
         return Relation;
     }
 
-    public void setRelation(Object Relation) {
+    public void setRelation(String Relation) {
         this.Relation = Relation;
     }
 

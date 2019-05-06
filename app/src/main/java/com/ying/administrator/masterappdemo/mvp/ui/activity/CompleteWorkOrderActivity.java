@@ -31,6 +31,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -435,17 +436,30 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                     }
 
                 } else {//维修
-
-                    if (return_img_map.size() < 4) {
-                        Toast.makeText(CompleteWorkOrderActivity.this, "请添加四张返件图片", Toast.LENGTH_SHORT).show();
-
-                    } else {
-
-//                        if (!mEtExpressName.getText().toString().equals("") && mEtSingleNumber.getText().toString().equals("")) {
-//                            mPresenter.AddReturnAccessory(orderID, mEtSingleNumber.getText().toString() + mEtExpressName.getText().toString());
-//                        }
-                        ReuturnAccessoryPicUpload(return_img_map);
+                    if (data.getAccessory()==null||"".equals(data.getAccessory())){
+                        //没配件
+                        if (return_img_map.get(1)==null){
+                            MyUtils.showToast(mActivity,"整机图片必传！");
+                            return;
+                        }
+                    }else{
+                        //有配件
+                        if (return_img_map.get(1)==null||return_img_map.get(2)==null||return_img_map.get(3)==null){
+                            MyUtils.showToast(mActivity,"整机、故障位置、新旧配件图片必传！");
+                            return;
+                        }
                     }
+                    ReuturnAccessoryPicUpload(return_img_map);
+//                    if (return_img_map.size() < 4) {
+//                        Toast.makeText(CompleteWorkOrderActivity.this, "请添加四张返件图片", Toast.LENGTH_SHORT).show();
+//
+//                    } else {
+//
+////                        if (!mEtExpressName.getText().toString().equals("") && mEtSingleNumber.getText().toString().equals("")) {
+////                            mPresenter.AddReturnAccessory(orderID, mEtSingleNumber.getText().toString() + mEtExpressName.getText().toString());
+////                        }
+//                        ReuturnAccessoryPicUpload(return_img_map);
+//                    }
                 }
 
 
@@ -825,10 +839,18 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
     public void ReuturnAccessoryPicUpload(HashMap<Integer, File> map) {
         showLoading();
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
-        builder.addFormDataPart("img", map.get(0).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(0)));
-        builder.addFormDataPart("img", map.get(1).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(1)));
-        builder.addFormDataPart("img", map.get(2).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(2)));
-        builder.addFormDataPart("img", map.get(3).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(3)));
+        if (map.get(0)!=null){
+            builder.addFormDataPart("img1", map.get(0).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(0)));
+        }
+        if (map.get(1)!=null){
+            builder.addFormDataPart("img2", map.get(1).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(1)));
+        }
+        if (map.get(2)!=null){
+            builder.addFormDataPart("img3", map.get(2).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(2)));
+        }
+        if (map.get(3)!=null){
+            builder.addFormDataPart("img4", map.get(3).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(3)));
+        }
         builder.addFormDataPart("OrderID", orderID);
         MultipartBody requestBody = builder.build();
         mPresenter.ReuturnAccessoryPicUpload(requestBody);
