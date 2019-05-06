@@ -1,9 +1,13 @@
 package com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment;
 
+import android.Manifest;
+import android.app.AlertDialog;
 import android.arch.lifecycle.Lifecycle;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,6 +22,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +31,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
@@ -36,22 +42,34 @@ import com.ying.administrator.masterappdemo.mvp.contract.GetOrderListForMeContra
 import com.ying.administrator.masterappdemo.mvp.model.GetOrderListForMeModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.GetOrderListForMePresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_details_Activity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.WorkOrderDetailsActivity2;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Pending_Appointment_Adapter;
 
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Redeploy_Adapter;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseFragment;
+import com.ying.administrator.masterappdemo.util.calendarutil.CalendarEvent;
+import com.ying.administrator.masterappdemo.util.calendarutil.CalendarProviderManager;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 import com.ying.administrator.masterappdemo.widget.CustomDialog_Redeploy;
 import com.ying.administrator.masterappdemo.widget.CustomDialog_UnSuccess;
 import com.zyao89.view.zloading.ZLoadingDialog;
 import com.zyao89.view.zloading.Z_TYPE;
 
+import org.feezu.liuli.timeselector.TimeSelector;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import io.reactivex.functions.Consumer;
+
+import static android.widget.Toast.LENGTH_SHORT;
 
 /*待预约*/
 public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMePresenter, GetOrderListForMeModel> implements GetOrderListForMeContract.View {
@@ -59,9 +77,9 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
     private RecyclerView recyclerView;
     private Pending_Appointment_Adapter pending_appointment_adapter;
     private ArrayList<WorkOrder.DataBean> list;
-    private UserInfo.UserInfoDean userInfo=new UserInfo.UserInfoDean(); //获取当前账号详情
+    private UserInfo.UserInfoDean userInfo = new UserInfo.UserInfoDean(); //获取当前账号详情
     private ArrayList<SubUserInfo.SubUserInfoDean> subuserlist;//获取子账号列表
-
+    private WorkOrder.DataBean data = new WorkOrder.DataBean();
     private WorkOrder workOrder;
     private String phoneNuber;
     private Context mContext;
@@ -79,6 +97,12 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
     private int successposition;
 
     private ZLoadingDialog dialog;
+    private View under_review;
+    private ImageView view_select_time_point;
+    private AlertDialog underReviewDialog;
+    private Window window;
+    private long recommendedtime;//上门预约毫秒数
+    private long finishrecomendedtime;//结束时间毫秒数
 
     public Pending_appointment_fragment() {
         // Required empty public constructor
@@ -97,38 +121,82 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-       if (view==null){
-         view=inflater.inflate(R.layout.fragment_order_receiving,container,false);
-           SPUtils spUtils = SPUtils.getInstance("token");
-           userID = spUtils.getString("userName"); //获取用户id
-           initView();
-           initListener();
+        if (view == null) {
+            view = inflater.inflate(R.layout.fragment_order_receiving, container, false);
+            SPUtils spUtils = SPUtils.getInstance("token");
+            userID = spUtils.getString("userName"); //获取用户id
+            initView();
+            initListener();
 
-       }
+        }
 
-       return view;
+        return view;
     }
 
     public void initView() {
-        dialog=new ZLoadingDialog(mActivity);
-        customDialog_redeploy=new CustomDialog_Redeploy(mActivity);
-        recyclerView=view.findViewById(R.id.recyclerview_order_receiving);
-        tv_pending_appointment_redeploy=view.findViewById(R.id.tv_pending_appointment_redeploy);
-        mRefreshLayout=view.findViewById(R.id.refreshLayout);
-        list=new ArrayList<>();
-        subuserlist=new ArrayList<>();//获取子账号列表
-          mPresenter.GetUserInfoList(userID,"1"); //获取关于自己的信息
-          mPresenter.GetChildAccountByParentUserID(userID);//获取自己的子账号 如果没有返回空
-        pending_appointment_adapter=new Pending_Appointment_Adapter(R.layout.item_pending_appointment,list,userInfo,subuserlist);
+        dialog = new ZLoadingDialog(mActivity);
+        customDialog_redeploy = new CustomDialog_Redeploy(mActivity);
+        recyclerView = view.findViewById(R.id.recyclerview_order_receiving);
+        tv_pending_appointment_redeploy = view.findViewById(R.id.tv_pending_appointment_redeploy);
+        mRefreshLayout = view.findViewById(R.id.refreshLayout);
+        list = new ArrayList<>();
+        subuserlist = new ArrayList<>();//获取子账号列表
+        mPresenter.GetUserInfoList(userID, "1"); //获取关于自己的信息
+        mPresenter.GetChildAccountByParentUserID(userID);//获取自己的子账号 如果没有返回空
+        pending_appointment_adapter = new Pending_Appointment_Adapter(R.layout.item_pending_appointment, list, userInfo, subuserlist);
         recyclerView.setAdapter(pending_appointment_adapter);
         pending_appointment_adapter.setEmptyView(getEmptyView());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         showLoading();
-        mPresenter.WorkerGetOrderList(userID,"1",Integer.toString(pageIndex),"5");
+        mPresenter.WorkerGetOrderList(userID, "1", Integer.toString(pageIndex), "5");
 
     }
 
 
+    /**
+     * 选择上门时间
+     */
+    public void chooseTime(final int position,final String title) {
+        Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        String format1 = format.format(date);
+
+        TimeSelector timeSelector = new TimeSelector(mActivity, new TimeSelector.ResultHandler() {
+            @Override
+            public void handle(String time) {
+//                if ("请选择结束时间".equals(title)) {
+//                    Integer i = startTime.compareTo(time);
+//                    if (i > 0) {
+//                        showToast(mActivity, "结束时间应大于开始时间");
+//                        return;
+//                    }
+//                    mPresenter.UpdateSendOrderUpdateTime(OrderID, startTime, time);
+//                } else {
+//                    mTvSelectTime2.setText("");
+//                }
+//                tv.setText(time);
+                //*格式化时间*//*
+                DateFormat format = new SimpleDateFormat("yyyyMMddHH");
+                try {
+                    recommendedtime = format.parse(time).getTime();
+                } catch (ParseException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+               OrderId= workOrder.getData().get(position).getOrderID();
+                mPresenter.UpdateSendOrderUpdateTime(OrderId, time, "2019-05-20 17:33");
+                Intent intent=new Intent(mActivity, WorkOrderDetailsActivity2.class);
+                intent.putExtra("OrderID",OrderId);
+                intent.putExtra("time",time);
+                startActivity(intent);
+                successposition=position;
+                mPresenter.AddOrderSuccess(OrderId,"1","预约成功");
+            }
+        }, format1, "2022-1-1 24:00");
+
+        timeSelector.setTitle(title);
+        timeSelector.show();
+    }
 
 
     public void initListener() {
@@ -141,9 +209,9 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
           /*      if (!list.isEmpty()){ //当有数据的时候
                     ll_empty.setVisibility(View.INVISIBLE);//隐藏空的界面
                 }*/
-                pageIndex=1;
+                pageIndex = 1;
                 //list.clear();
-                mPresenter.WorkerGetOrderList(userID,"1",Integer.toString(pageIndex),"5");
+                mPresenter.WorkerGetOrderList(userID, "1", Integer.toString(pageIndex), "5");
                 pending_appointment_adapter.notifyDataSetChanged();
                 refreshlayout.finishRefresh();
             }
@@ -157,50 +225,81 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 pageIndex++; //页数加1
-                mPresenter.WorkerGetOrderList(userID,"1",Integer.toString(pageIndex),"5");
+                mPresenter.WorkerGetOrderList(userID, "1", Integer.toString(pageIndex), "5");
                 pending_appointment_adapter.notifyDataSetChanged();
                 refreshlayout.finishLoadmore();
             }
         });
 
 
-
-
-
         pending_appointment_adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(final BaseQuickAdapter adapter, View view, final int position) {
-                switch (view.getId()){
+                switch (view.getId()) {
                     case R.id.rl_pending_appointment:
-                        Intent intent1=new Intent(getActivity(),Order_details_Activity.class);
+                        Intent intent1 = new Intent(getActivity(), Order_details_Activity.class);
                         //传递工单号
-                        intent1.putExtra("OrderID",((WorkOrder.DataBean)adapter.getItem(position)).getOrderID());
-                        successposition=position;
+                        intent1.putExtra("OrderID", ((WorkOrder.DataBean) adapter.getItem(position)).getOrderID());
+                        successposition = position;
                         //startActivity(intent);
-                      //  intent1.putExtra("successposition",successposition);
-                       // startActivityForResult(intent1,22);
-                        startActivityForResult(intent1,1001);
+                        //  intent1.putExtra("successposition",successposition);
+                        // startActivityForResult(intent1,22);
+                        startActivityForResult(intent1, 1001);
                         break;
                     /*预约成功*/
                     case R.id.tv_pending_appointment_success:
-                      //  Intent intent=new Intent(getActivity(),Order_details_Activity.class);
+//                        under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_select_time, null);
+//                        view_select_time_point = under_review.findViewById(R.id.view_select_time_point);
+//                        view_select_time_point.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//                                RxPermissions rxPermissions = new RxPermissions(mActivity);
+//                                rxPermissions.request(Manifest.permission.WRITE_CALENDAR, Manifest.permission.READ_CALENDAR)
+//                                        .subscribe(new Consumer<Boolean>() {
+//                                            @Override
+//                                            public void accept(Boolean aBoolean) throws Exception {
+//                                                if (aBoolean) {
+//                                                    // 获取全部权限成功
+////                                    dialogtime();
+//                                                    chooseTime(position,"请选择上门时间");
+//
+//                                                } else {
+//                                                    // 获取全部权限失败
+//                                                    Log.d("=====>", "权限获取失败");
+//                                                }
+//                                            }
+//                                        });
+//
+//                            }
+//                        });
+//                        underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review)
+//                                .create();
+//                        underReviewDialog.show();
+//                        window = underReviewDialog.getWindow();
+////                window.setContentView(under_review);
+//                        WindowManager.LayoutParams lp = window.getAttributes();
+//                        window.setAttributes(lp);
+////                window.setDimAmount(0.1f);
+//                        window.setBackgroundDrawable(new ColorDrawable());
+                        //  Intent intent=new Intent(getActivity(),Order_details_Activity.class);
                         //传递工单号
-                       //    intent.putExtra("OrderID",((WorkOrder.DataBean)adapter.getItem(position)).getOrderID());
-                       //    successposition=position;
+                        //    intent.putExtra("OrderID",((WorkOrder.DataBean)adapter.getItem(position)).getOrderID());
+                        //    successposition=position;
                         //startActivity(intent);
-                       // intent.putExtra("successposition",successposition);
-                      //  startActivityForResult(intent,1001);
+                        // intent.putExtra("successposition",successposition);
+                        //  startActivityForResult(intent,1001);
                         //startActivityForResult(intent,22);
-                        successposition=position;
-                        mPresenter.AddOrderSuccess(((WorkOrder.DataBean)adapter.getItem(position)).getOrderID(),"1","预约成功");
 
 
+//                        successposition=position;
+//                        mPresenter.AddOrderSuccess(((WorkOrder.DataBean)adapter.getItem(position)).getOrderID(),"1","预约成功");
 
+                        chooseTime(position,"请选择上门时间");
                         break;
                     case R.id.tv_pending_appointment_failure:
 
                         /*预约未成功*/
-                        final CustomDialog_UnSuccess customDialog_unSuccess=new CustomDialog_UnSuccess(getContext());
+                        final CustomDialog_UnSuccess customDialog_unSuccess = new CustomDialog_UnSuccess(getContext());
                         customDialog_unSuccess.getWindow().setBackgroundDrawableResource(R.color.transparent);
                         customDialog_unSuccess.show();
 
@@ -208,11 +307,11 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                             @Override
                             public void onYesClick() {
                                 customDialog_unSuccess.dismiss(); //用户取消订单
-                                Toast.makeText(getActivity(),"用户订单取消",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "用户订单取消", LENGTH_SHORT).show();
 
                                 /*调用接口移除预约不成功的订单*/
                                 mPresenter.AddOrderfailureReason(
-                                        ((WorkOrder.DataBean)adapter.getItem(position)).getOrderID(),"-1","用户取消订单"
+                                        ((WorkOrder.DataBean) adapter.getItem(position)).getOrderID(), "-1", "用户取消订单"
                                 );
                                 pending_appointment_adapter.remove(position);
 
@@ -223,52 +322,52 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                             @Override
                             public void onNoClick() {
                                 customDialog_unSuccess.dismiss();//电话打不通
-                                Toast.makeText(getActivity(),"电话打不通",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "电话打不通", LENGTH_SHORT).show();
 
 
                                 /*调用接口移除预约不成功的订单*/
                                 mPresenter.AddOrderfailureReason(
-                                        ((WorkOrder.DataBean)adapter.getItem(position)).getOrderID(),"-1","电话打不通"
+                                        ((WorkOrder.DataBean) adapter.getItem(position)).getOrderID(), "-1", "电话打不通"
                                 );
                                 pending_appointment_adapter.remove(position);
                             }
                         });
                         /*其他原因*/
-                         customDialog_unSuccess.setOtherReasonOnclickListener("其他原因", new CustomDialog_UnSuccess.onOtherReasonListener() {
-                             @Override
-                             public void onOtherReasonClick() {
+                        customDialog_unSuccess.setOtherReasonOnclickListener("其他原因", new CustomDialog_UnSuccess.onOtherReasonListener() {
+                            @Override
+                            public void onOtherReasonClick() {
                                 customDialog_unSuccess.findViewById(R.id.ed_unsuccess_reason).setVisibility(View.VISIBLE);
-                                TextView tv_other_reason=customDialog_unSuccess.findViewById(R.id.tv_other_reason);
+                                TextView tv_other_reason = customDialog_unSuccess.findViewById(R.id.tv_other_reason);
                                 // tv_other_reason.setBackgroundColor(Color.RED);
-                                 tv_other_reason.setBackgroundResource(R.drawable.tv_unsuccess_reason_submit);
-                                 tv_other_reason.setText("提交");
+                                tv_other_reason.setBackgroundResource(R.drawable.tv_unsuccess_reason_submit);
+                                tv_other_reason.setText("提交");
                                 /*提交*/
                                 customDialog_unSuccess.setOtherReasonOnclickListener("提交", new CustomDialog_UnSuccess.onOtherReasonListener() {
                                     @Override
                                     public void onOtherReasonClick() {
-                                   customDialog_unSuccess.dismiss();
+                                        customDialog_unSuccess.dismiss();
 
                                         //未预约成功的原因
-                                       String unsuccess_reason=((EditText)customDialog_unSuccess.findViewById(R.id.ed_unsuccess_reason)).getText().toString();
+                                        String unsuccess_reason = ((EditText) customDialog_unSuccess.findViewById(R.id.ed_unsuccess_reason)).getText().toString();
                                         /*调用接口移除预约不成功的订单*/
                                         mPresenter.AddOrderfailureReason(
-                                                ((WorkOrder.DataBean)adapter.getItem(position)).getOrderID(),"-1",unsuccess_reason);
+                                                ((WorkOrder.DataBean) adapter.getItem(position)).getOrderID(), "-1", unsuccess_reason);
                                         pending_appointment_adapter.remove(position);
 
-                                        Toast.makeText(getActivity(),unsuccess_reason,Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getActivity(), unsuccess_reason, LENGTH_SHORT).show();
                                     }
                                 });
 
 
-                             }
-                         });
-                         /*其他原因*/
+                            }
+                        });
+                        /*其他原因*/
 
-                         /*叉叉退出*/
+                        /*叉叉退出*/
                         customDialog_unSuccess.setCancleOnclickListener("退出", new CustomDialog_UnSuccess.onCancleOnclickListener() {
                             @Override
                             public void onCancleClick() {
-                                Toast.makeText(getActivity(),"退出",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "退出", LENGTH_SHORT).show();
                                 customDialog_unSuccess.dismiss();
                             }
                         });
@@ -282,7 +381,7 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
 
                     /*电话预约*/
                     case R.id.img_pending_appointment_phone:
-                        call("tel:"+ ((WorkOrder.DataBean)adapter.getItem(position)).getPhone());
+                        call("tel:" + ((WorkOrder.DataBean) adapter.getItem(position)).getPhone());
 
                         break;
                     /*电话预约*/
@@ -291,7 +390,7 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                     /*转派订单*/
 
                     case R.id.tv_pending_appointment_redeploy:
-                        OrderId=((WorkOrder.DataBean)adapter.getData().get(position)).getOrderID();//获取工单号
+                        OrderId = ((WorkOrder.DataBean) adapter.getData().get(position)).getOrderID();//获取工单号
 
                         customDialog_redeploy.getWindow().setBackgroundDrawableResource(R.color.transparent);
                         customDialog_redeploy.show();
@@ -304,9 +403,9 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                         window.setAttributes(wlp);
 
 
-                        recyclerView_custom_redeploy=customDialog_redeploy.findViewById(R.id.recyclerView_custom_redeploy);
+                        recyclerView_custom_redeploy = customDialog_redeploy.findViewById(R.id.recyclerView_custom_redeploy);
                         recyclerView_custom_redeploy.setLayoutManager(new LinearLayoutManager(mActivity));
-                        redeploy_adapter=new Redeploy_Adapter(R.layout.item_redeploy,subuserlist,mActivity);
+                        redeploy_adapter = new Redeploy_Adapter(R.layout.item_redeploy, subuserlist, mActivity);
                         recyclerView_custom_redeploy.setAdapter(redeploy_adapter);
 
 
@@ -316,35 +415,33 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                             @Override
                             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
 
-                                switch (view.getId()){
+                                switch (view.getId()) {
                                     case R.id.rl_item_redeploy:
-                                   // case R.id.img_redeploy_unselect:
-                                   // case R.id.img_redeploy_select:
-                                        if (((SubUserInfo.SubUserInfoDean)adapter.getData().get(position)).isIscheck()==false){//当前选中选中
+                                        // case R.id.img_redeploy_unselect:
+                                        // case R.id.img_redeploy_select:
+                                        if (((SubUserInfo.SubUserInfoDean) adapter.getData().get(position)).isIscheck() == false) {//当前选中选中
 
-                                            for (int i=0;i<subuserlist.size();i++)
-                                            {
+                                            for (int i = 0; i < subuserlist.size(); i++) {
                                                 subuserlist.get(i).setIscheck(false);
                                             }
                                             subuserlist.get(position).setIscheck(true); //点击的为选中状态
-                                            SubUserID=subuserlist.get(position).getUserID();
-                                            Log.d("====>",SubUserID);
+                                            SubUserID = subuserlist.get(position).getUserID();
+                                            Log.d("====>", SubUserID);
                                             redeploy_adapter.notifyDataSetChanged();
 
-                                        }else { //点击的为已选中
+                                        } else { //点击的为已选中
 
-                                            for (int i=0;i<subuserlist.size();i++)
-                                            {
+                                            for (int i = 0; i < subuserlist.size(); i++) {
                                                 subuserlist.get(i).setIscheck(false);
                                             }
-                                            SubUserID=null;
+                                            SubUserID = null;
                                             redeploy_adapter.notifyDataSetChanged();
                                         }
 
 
                                         break;
-                                       default:
-                                           break;
+                                    default:
+                                        break;
                                 }
                             }
                         });
@@ -352,24 +449,22 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                         customDialog_redeploy.setYesOnclickListener("转派订单", new CustomDialog_Redeploy.onYesOnclickListener() {
                             @Override
                             public void onYesClick() {
-                              if (SubUserID==null){
-                              Toast.makeText(getActivity(),"您还没选择子账号进行转派",Toast.LENGTH_SHORT).show();
-                                //  customDialog_redeploy.dismiss(); //没选择人进行选派
-                              }
+                                if (SubUserID == null) {
+                                    Toast.makeText(getActivity(), "您还没选择子账号进行转派", LENGTH_SHORT).show();
+                                    //  customDialog_redeploy.dismiss(); //没选择人进行选派
+                                } else {
+                                    //转派成功状态恢复原状
 
-                              else {
-                                  //转派成功状态恢复原状
-
-                                  for (int i=0;i<subuserlist.size();i++){
-                                      subuserlist.get(i).setIscheck(false);
-                                  }
-                                  //转派成功 刷新当前页面
-                                  redeployposition=position;
-                                  mPresenter.ChangeSendOrder(OrderId,SubUserID);
-                                  customDialog_redeploy.dismiss();
-                                 // mRefreshLayout.autoRefresh();
-                                  SubUserID=null;
-                              }
+                                    for (int i = 0; i < subuserlist.size(); i++) {
+                                        subuserlist.get(i).setIscheck(false);
+                                    }
+                                    //转派成功 刷新当前页面
+                                    redeployposition = position;
+                                    mPresenter.ChangeSendOrder(OrderId, SubUserID);
+                                    customDialog_redeploy.dismiss();
+                                    // mRefreshLayout.autoRefresh();
+                                    SubUserID = null;
+                                }
 
                             }
                         });
@@ -378,11 +473,11 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                             @Override
                             public void onNoOnclick() {
                                 //点击了取消所谓状态恢复原状
-                                SubUserID=null;
-                                for (int i=0;i<subuserlist.size();i++){
+                                SubUserID = null;
+                                for (int i = 0; i < subuserlist.size(); i++) {
                                     subuserlist.get(i).setIscheck(false);
                                 }
-                              customDialog_redeploy.dismiss();
+                                customDialog_redeploy.dismiss();
                             }
                         });
                         break;
@@ -392,7 +487,7 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
 
                     /*取消订单*/
                     case R.id.tv_cancel_order:
-                        OrderId=((WorkOrder.DataBean)adapter.getData().get(position)).getOrderID();//获取工单号
+                        OrderId = ((WorkOrder.DataBean) adapter.getData().get(position)).getOrderID();//获取工单号
                         final CommonDialog_Home dialog = new CommonDialog_Home(getActivity());
                         dialog.setMessage("是否取消工单")
                                 //.setImageResId(R.mipmap.ic_launcher)
@@ -400,8 +495,8 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                                 .setSingle(false).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
                             @Override
                             public void onPositiveClick() {//取消订单
-                                mPresenter.UpdateSendOrderState(OrderId,"-1");
-                                cancleposition=position;
+                                mPresenter.UpdateSendOrderState(OrderId, "-1");
+                                cancleposition = position;
                                 dialog.dismiss();
                             }
 
@@ -414,8 +509,8 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
 
                         break;
 
-                        default:
-                            break;
+                    default:
+                        break;
 
                 }
 
@@ -430,27 +525,27 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
     public void WorkerGetOrderList(BaseResult<WorkOrder> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData().getData()==null){
-                    Log.d("===>","暂无预约工单");
-                    if (pageIndex==1){
+                if (baseResult.getData().getData() == null) {
+                    Log.d("===>", "暂无预约工单");
+                    if (pageIndex == 1) {
                         list.clear();
                         pending_appointment_adapter.notifyDataSetChanged();
                     }
-                   cancleLoading();
-                }else {
-                    if (pageIndex==1){
+                    cancleLoading();
+                } else {
+                    if (pageIndex == 1) {
                         list.clear();
                         workOrder = baseResult.getData();
                         list.addAll(workOrder.getData());
                         pending_appointment_adapter.notifyDataSetChanged();
-                    }else {
+                    } else {
                         workOrder = baseResult.getData();
                         list.addAll(workOrder.getData());
                         pending_appointment_adapter.setNewData(list);
                     }
 
                     cancleLoading();
-                   //  pending_appointment_adapter.notifyDataSetChanged();
+                    //  pending_appointment_adapter.notifyDataSetChanged();
 
                 }
 
@@ -463,12 +558,10 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
     }
 
 
-
-
     /**/
     @Override
     public void AddOrderfailureReason(BaseResult<Data> baseResult) {
-        switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
                 break;
             default:
@@ -479,14 +572,14 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
 
     @Override
     public void AddOrderSuccess(BaseResult<Data> baseResult) {
-        switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
 
             case 200:
-                if (baseResult.getData().isItem1()){
+                if (baseResult.getData().isItem1()) {
                     pending_appointment_adapter.remove(successposition);
-                     //Toast.makeText(getActivity(),"预约成功请到服务中",Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getActivity(),"预约成功请到服务中",Toast.LENGTH_SHORT).show();
                     EventBus.getDefault().post(2);//预约成功跳转到服务中
-                }else {
+                } else {
 
 
                 }
@@ -500,7 +593,7 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
 
     @Override
     public void GetUserInfoList(BaseResult<UserInfo> baseResult) {
-        switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
                 userInfo = baseResult.getData().getData().get(0);
                 pending_appointment_adapter.notifyDataSetChanged();
@@ -514,34 +607,34 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
     /*获取子账号*/
     @Override
     public void GetChildAccountByParentUserID(BaseResult<List<SubUserInfo.SubUserInfoDean>> baseResult) {
-              switch (baseResult.getStatusCode()){
-                  case 200:
-                      subuserlist.addAll(baseResult.getData());
-                      pending_appointment_adapter.notifyDataSetChanged();
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                subuserlist.addAll(baseResult.getData());
+                pending_appointment_adapter.notifyDataSetChanged();
 
-                      break;
-                      default:
-                          break;
-              }
+                break;
+            default:
+                break;
+        }
     }
 
     /*派单操作*/
     @Override
     public void ChangeSendOrder(BaseResult<Data> baseResult) {
-     switch (baseResult.getStatusCode()){
-         case 200:
-             if (baseResult.getData().isItem1()){
-                 Toast.makeText(getActivity(),"转派成功",Toast.LENGTH_SHORT).show();
-                 pending_appointment_adapter.remove(redeployposition);
-             }else {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                if (baseResult.getData().isItem1()) {
+                    Toast.makeText(getActivity(), "转派成功", LENGTH_SHORT).show();
+                    pending_appointment_adapter.remove(redeployposition);
+                } else {
 
-                 Toast.makeText(getActivity(),"转派失败",Toast.LENGTH_SHORT).show();
-             }
+                    Toast.makeText(getActivity(), "转派失败", LENGTH_SHORT).show();
+                }
 
-             break;
-             default:
-                 break;
-     }
+                break;
+            default:
+                break;
+        }
 
 
     }
@@ -549,18 +642,18 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
     /*取消订单 */
     @Override
     public void UpdateSendOrderState(BaseResult<Data> baseResult) {
-    switch (baseResult.getStatusCode()){
-         case 200:
-          if (baseResult.getData().isItem1()){
-           //mRefreshLayout.autoRefresh();
-           pending_appointment_adapter.remove(cancleposition);
-          }else {
-              Toast.makeText(getActivity(),"取消失败",Toast.LENGTH_LONG).show();
-          }
-         break;
-         default:
-         break;
-}
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                if (baseResult.getData().isItem1()) {
+                    //mRefreshLayout.autoRefresh();
+                    pending_appointment_adapter.remove(cancleposition);
+                } else {
+                    Toast.makeText(getActivity(), "取消失败", Toast.LENGTH_LONG).show();
+                }
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
@@ -578,66 +671,97 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
 
     }
 
-
     @Override
-    public void contentLoading() {
-    }
+    public void UpdateSendOrderUpdateTime(BaseResult<Data> baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
 
-    @Override
-    public void contentLoadingComplete(){
-    }
+                if (baseResult.getData().isItem1()) {
+                    if (data.getAddress() == null) {
+                        Log.d("=====>", "地址为空");
+                    } else {
+                        Log.d("=====>", data.getAddress());
+                    }
+                    CalendarEvent calendarEvent = new CalendarEvent(
+                            data.getTypeName() + "工单号：" + data.getOrderID(),
+                            "客户名:" + data.getUserName() + " 客户手机号:" + data.getPhone() + "故障原因" + data.getMemo(),
+                            data.getAddress(),
+                            recommendedtime,
+                            recommendedtime + 3600000,
+                            60, null    //提前一个小时提醒  单位分钟
+                    );
+                    // 添加事件
+                    int result = CalendarProviderManager.addCalendarEvent(mActivity, calendarEvent);
+                    if (result == 0) {
+                        Toast.makeText(mActivity, "已为您添加行程至日历", Toast.LENGTH_SHORT).show();
+                    } else if (result == -1) {
+                        Toast.makeText(mActivity, "插入失败", LENGTH_SHORT).show();
+                    } else if (result == -2) {
+                        Toast.makeText(mActivity, "没有权限", LENGTH_SHORT).show();
+                    }
+                }
+        }
 
-    @Override
-    public void contentLoadingError() {
-    }
-
-    @Override
-    public void contentLoadingEmpty() {
-    }
-
-    @Override
-    public void showProgress() {
-    }
-
-    @Override
-    public void hideProgress() {
-
-    }
+        }
 
 
+        @Override
+        public void contentLoading () {
+        }
+
+        @Override
+        public void contentLoadingComplete () {
+        }
+
+        @Override
+        public void contentLoadingError () {
+        }
+
+        @Override
+        public void contentLoadingEmpty () {
+        }
+
+        @Override
+        public void showProgress () {
+        }
+
+        @Override
+        public void hideProgress () {
+
+        }
 
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode==10001||resultCode==10002){
-            if (requestCode==1001){
-              pending_appointment_adapter.remove(successposition);
+        @Override
+        public void onActivityResult ( int requestCode, int resultCode, Intent data){
+            super.onActivityResult(requestCode, resultCode, data);
+            if (resultCode == 10001 || resultCode == 10002) {
+                if (requestCode == 1001) {
+                    pending_appointment_adapter.remove(successposition);
+                }
+
             }
+        }
+
+        public void showLoading () {
+            dialog.setLoadingBuilder(Z_TYPE.ROTATE_CIRCLE)//设置类型
+                    .setLoadingColor(Color.BLACK)//颜色
+                    .setHintText("正在加载工单...")
+                    .setHintTextSize(14) // 设置字体大小 dp
+                    .setHintTextColor(Color.BLACK)  // 设置字体颜色
+                    .setDurationTime(1) // 设置动画时间百分比 - 0.5倍
+                    .setCanceledOnTouchOutside(false)//点击外部无法取消
+                    .show();
+        }
+
+        public void cancleLoading () {
+            dialog.dismiss();
 
         }
-    }
-
-    public void showLoading(){
-        dialog.setLoadingBuilder(Z_TYPE.ROTATE_CIRCLE)//设置类型
-                .setLoadingColor(Color.BLACK)//颜色
-                .setHintText("正在加载工单...")
-                .setHintTextSize(14) // 设置字体大小 dp
-                .setHintTextColor(Color.BLACK)  // 设置字体颜色
-                .setDurationTime(1) // 设置动画时间百分比 - 0.5倍
-                .setCanceledOnTouchOutside(false)//点击外部无法取消
-                .show();
-    }
-
-    public void cancleLoading(){
-        dialog.dismiss();
-
-    }
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void Event(String message) {
-        if (!"1".equals(message)){
-            return;
+        @Subscribe(threadMode = ThreadMode.MAIN)
+        public void Event (String message){
+            if (!"1".equals(message)) {
+                return;
+            }
+            mPresenter.WorkerGetOrderList(userID, "1", Integer.toString(pageIndex), "5");
         }
-        mPresenter.WorkerGetOrderList(userID, "1", Integer.toString(pageIndex), "5");
     }
-}

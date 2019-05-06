@@ -431,12 +431,12 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
                     mTvTotalMoney.setText(userInfo.getTotalMoney().toString());
                     mTvCanWithdraw.setText(format);
                     String FrozenMoney = String.valueOf(userInfo.getFrozenMoney());
-                    mTvMargin.setText(userInfo.getRemainMoney().toString());
+//                    mTvMargin.setText(userInfo.getRemainMoney().toString());
                     mTvUnfinished.setText(FrozenMoney);
                     //赠送金额暂无
                     String TotalMoney = String.valueOf(userInfo.getTotalMoney());
                     mTvTotalMoney.setText(TotalMoney);
-
+                    mTvMargin.setText(userInfo.getCon().toString());
 
                 }
                 break;

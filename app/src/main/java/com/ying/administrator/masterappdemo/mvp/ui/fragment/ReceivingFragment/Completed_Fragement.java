@@ -306,6 +306,11 @@ public class Completed_Fragement extends BaseFragment<GetOrderListForMePresenter
 
     }
 
+    @Override
+    public void UpdateSendOrderUpdateTime(BaseResult<Data> baseResult) {
+
+    }
+
 
     @Override
     public void contentLoading() {

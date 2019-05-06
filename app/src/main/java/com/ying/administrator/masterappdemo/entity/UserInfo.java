@@ -124,6 +124,7 @@ public class UserInfo implements Serializable {
         private int page;
         private int limit;
         private int Version;
+        private Double Con;
 
         public String getId() {
             return Id;
@@ -429,6 +430,14 @@ public class UserInfo implements Serializable {
             this.Version = Version;
         }
 
+        public Double getCon() {
+            return Con;
+        }
+
+        public void setCon(Double con) {
+            Con = con;
+        }
+
         @Override
         public String toString() {
             return "UserInfoDean{" +
@@ -470,7 +479,10 @@ public class UserInfo implements Serializable {
                     ", page=" + page +
                     ", limit=" + limit +
                     ", Version=" + Version +
+                    ", Con=" + Con +
                     '}';
         }
     }
+
+
 }

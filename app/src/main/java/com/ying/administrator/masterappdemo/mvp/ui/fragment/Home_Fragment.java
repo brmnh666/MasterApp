@@ -516,6 +516,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 mTvHomeOutstandingAmount.setText("未完结金额: " + FrozenMoney + "元");
                 mTvHomeGivingMoney.setText("赠 送 金 额: 暂无");
                 mTvName.setText(userInfo.getNickName());
+                mTvMoney.setText(userInfo.getCon().toString());
                 break;
 
             default:

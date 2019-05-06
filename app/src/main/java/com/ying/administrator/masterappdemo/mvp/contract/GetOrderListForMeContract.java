@@ -39,6 +39,8 @@ public interface GetOrderListForMeContract {
 
          Observable<BaseResult<Data<String>>> UpdateOrderIsLook(String OrderID,String IsLook);
 
+        //更新时间
+        Observable<BaseResult<Data>> UpdateSendOrderUpdateTime(String OrderID,String UpdateDate,String EndDate);
     }
 
     interface View extends BaseView {
@@ -68,6 +70,9 @@ public interface GetOrderListForMeContract {
         void PressFactoryAccount(BaseResult<Data<String>> baseResult);
 
         void UpdateOrderIsLook(BaseResult<Data<String>> baseResult);
+
+        //更新时间
+        void UpdateSendOrderUpdateTime(BaseResult<Data> baseResult);
     }
 
     abstract class Presenter extends BasePresenter<View,Model> {
@@ -90,5 +95,8 @@ public interface GetOrderListForMeContract {
         public abstract void PressFactoryAccount(String OrderID,String Content);
 
         public abstract void UpdateOrderIsLook(String OrderID,String IsLook);
+
+        //更新时间
+        public abstract void UpdateSendOrderUpdateTime(String OrderID,String UpdateDate,String EndDate);
     }
 }

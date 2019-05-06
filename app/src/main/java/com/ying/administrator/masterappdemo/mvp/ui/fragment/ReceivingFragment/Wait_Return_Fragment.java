@@ -370,6 +370,11 @@ public class Wait_Return_Fragment extends BaseFragment<GetOrderListForMePresente
 
     }
 
+    @Override
+    public void UpdateSendOrderUpdateTime(BaseResult<Data> baseResult) {
+
+    }
+
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {

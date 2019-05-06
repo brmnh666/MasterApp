@@ -420,6 +420,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     private LinearLayout ll_post_money;
     private List<Uri> mSelected;
     private Uri uri;
+    private String time;
 
 
     @Override
@@ -438,6 +439,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     public void initView() {
         mTvActionbarTitle.setText("详情页");
         OrderID = getIntent().getStringExtra("OrderID");
+        time = getIntent().getStringExtra("time");
+        mTvSelectTime.setText(time);
         mPresenter.GetOrderInfo(OrderID);
         mPre_order_add_ac_adapter = new Pre_order_Add_Ac_Adapter(R.layout.item_pre_order_add_accessories, fAcList);
         mRecyclerViewAddAccessories.setLayoutManager(new LinearLayoutManager(mActivity));
@@ -1208,7 +1211,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mLlSelectTime.setVisibility(View.GONE);
                         mView.setVisibility(View.GONE);
                     } else {
-                        mLlSelectTime.setVisibility(View.VISIBLE);
+//                        mLlSelectTime.setVisibility(View.VISIBLE);
                         mView.setVisibility(View.VISIBLE);
 
                         mTvSelectTime.setText(data.getSendOrderList().get(0).getServiceDate());
@@ -1484,8 +1487,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 } else {
                     mLlReturnInformation.setVisibility(View.GONE);
                     mRlExpressno.setVisibility(View.GONE);
-                    mViewSelectTimePoint.setVisibility(View.VISIBLE);
-                    mViewSelectTimePoint2.setVisibility(View.VISIBLE);
+//                    mViewSelectTimePoint.setVisibility(View.VISIBLE);
+//                    mViewSelectTimePoint2.setVisibility(View.VISIBLE);
                 }
                 if ("8".equals(data.getState())) {
                     if (data.getOrderAccessroyDetail().size() == 0) {
@@ -2278,7 +2281,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 int compare = end_time.compareTo(start_time);
                 if (compare >= 0) {
                     mView.setVisibility(View.VISIBLE);
-                    mLlSelectTime.setVisibility(View.VISIBLE);
+//                    mLlSelectTime.setVisibility(View.VISIBLE);
                     mTvSelectTime.setText(startyear + "-" + startmonth + "-" + startday + " " + starthour+":00:00"+" 至 " +
                             endyear + "-" + endmonth + "-" + endday+" "+endhour+":00:00");
 //                    mPresenter.UpdateSendOrderUpdateTime(OrderID, startyear + "/" + startmonth + "/" + startday, endyear + "/" + endmonth + "/" + endday);

@@ -299,6 +299,11 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
     }
 
     @Override
+    public void UpdateSendOrderUpdateTime(BaseResult<Data> baseResult) {
+
+    }
+
+    @Override
     public void contentLoading() {
 
     }

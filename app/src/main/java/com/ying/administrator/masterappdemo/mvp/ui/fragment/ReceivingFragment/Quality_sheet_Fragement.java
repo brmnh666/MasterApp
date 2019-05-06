@@ -312,6 +312,11 @@ public class Quality_sheet_Fragement extends BaseFragment<GetOrderListForMePrese
 
     }
 
+    @Override
+    public void UpdateSendOrderUpdateTime(BaseResult<Data> baseResult) {
+
+    }
+
 
     @Override
     public void contentLoading() {

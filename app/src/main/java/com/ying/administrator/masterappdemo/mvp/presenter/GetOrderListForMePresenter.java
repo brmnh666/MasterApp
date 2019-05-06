@@ -123,4 +123,16 @@ public class GetOrderListForMePresenter extends GetOrderListForMeContract.Presen
                     }
                 });
     }
+
+    @Override
+    public void UpdateSendOrderUpdateTime(String OrderID, String UpdateDate,String EndDate) {
+        mModel.UpdateSendOrderUpdateTime(OrderID,UpdateDate,EndDate).subscribe(new BaseObserver<Data>() {
+            @Override
+            protected void onHandleSuccess(BaseResult<Data> value) {
+                mView.UpdateSendOrderUpdateTime(value);
+            }
+        });
+
+    }
+
 }

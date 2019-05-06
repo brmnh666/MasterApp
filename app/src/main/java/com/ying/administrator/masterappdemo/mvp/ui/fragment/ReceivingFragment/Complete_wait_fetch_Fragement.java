@@ -75,6 +75,11 @@ public class Complete_wait_fetch_Fragement extends BaseFragment<GetOrderListForM
 
     }
 
+    @Override
+    public void UpdateSendOrderUpdateTime(BaseResult<Data> baseResult) {
+
+    }
+
     private ArrayList<SubUserInfo.SubUserInfoDean> subuserlist;//获取子账号列表
 
     private WorkOrder workOrder;
