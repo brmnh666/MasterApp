@@ -164,18 +164,7 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
         TimeSelector timeSelector = new TimeSelector(mActivity, new TimeSelector.ResultHandler() {
             @Override
             public void handle(String time) {
-//                if ("请选择结束时间".equals(title)) {
-//                    Integer i = startTime.compareTo(time);
-//                    if (i > 0) {
-//                        showToast(mActivity, "结束时间应大于开始时间");
-//                        return;
-//                    }
-//                    mPresenter.UpdateSendOrderUpdateTime(OrderID, startTime, time);
-//                } else {
-//                    mTvSelectTime2.setText("");
-//                }
-//                tv.setText(time);
-                //*格式化时间*//*
+
                 DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                 try {
                     recommendedtime = format.parse(time).getTime();
@@ -183,13 +172,16 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
-               OrderId= workOrder.getData().get(position).getOrderID();
+                OrderId= workOrder.getData().get(position).getOrderID();
                 mPresenter.UpdateSendOrderUpdateTime(OrderId, time, time);
-                Intent intent=new Intent(mActivity, WorkOrderDetailsActivity2.class);
+
+
+               Intent intent=new Intent(mActivity, WorkOrderDetailsActivity2.class);
                 intent.putExtra("OrderID",OrderId);
                 intent.putExtra("time",time);
                 startActivity(intent);
                 successposition=position;
+
                 mPresenter.AddOrderSuccess(OrderId,"1","预约成功");
             }
         }, format1, "2022-1-1 24:00");
@@ -248,11 +240,14 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                         break;
                     /*预约成功*/
                     case R.id.tv_pending_appointment_success:
-//                        under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_select_time, null);
-//                        view_select_time_point = under_review.findViewById(R.id.view_select_time_point);
-//                        view_select_time_point.setOnClickListener(new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View v) {
+
+                        data.setOrderID(((WorkOrder.DataBean) adapter.getItem(position)).getOrderID());
+                        data.setTypeName(((WorkOrder.DataBean) adapter.getItem(position)).getTypeName());
+                        data.setAddress(((WorkOrder.DataBean) adapter.getItem(position)).getAddress());
+                        data.setUserName(((WorkOrder.DataBean) adapter.getItem(position)).getUserName());
+                        data.setPhone(((WorkOrder.DataBean) adapter.getItem(position)).getPhone());
+                        data.setMemo(((WorkOrder.DataBean) adapter.getItem(position)).getMemo());
+
                                 RxPermissions rxPermissions = new RxPermissions(mActivity);
                                 rxPermissions.request(Manifest.permission.WRITE_CALENDAR, Manifest.permission.READ_CALENDAR)
                                         .subscribe(new Consumer<Boolean>() {
@@ -260,41 +255,14 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                                             public void accept(Boolean aBoolean) throws Exception {
                                                 if (aBoolean) {
                                                     // 获取全部权限成功
-//                                    dialogtime();
-                                                    chooseTime(position,"请选择上门时间");
 
+                                                    chooseTime(position,"请选择上门时间");
                                                 } else {
                                                     // 获取全部权限失败
                                                     Log.d("=====>", "权限获取失败");
                                                 }
                                             }
                                         });
-//
-//                            }
-//                        });
-//                        underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review)
-//                                .create();
-//                        underReviewDialog.show();
-//                        window = underReviewDialog.getWindow();
-////                window.setContentView(under_review);
-//                        WindowManager.LayoutParams lp = window.getAttributes();
-//                        window.setAttributes(lp);
-////                window.setDimAmount(0.1f);
-//                        window.setBackgroundDrawable(new ColorDrawable());
-                        //  Intent intent=new Intent(getActivity(),Order_details_Activity.class);
-                        //传递工单号
-                        //    intent.putExtra("OrderID",((WorkOrder.DataBean)adapter.getItem(position)).getOrderID());
-                        //    successposition=position;
-                        //startActivity(intent);
-                        // intent.putExtra("successposition",successposition);
-                        //  startActivityForResult(intent,1001);
-                        //startActivityForResult(intent,22);
-
-
-//                        successposition=position;
-//                        mPresenter.AddOrderSuccess(((WorkOrder.DataBean)adapter.getItem(position)).getOrderID(),"1","预约成功");
-
-//                        chooseTime(position,"请选择上门时间");
                         break;
                     case R.id.tv_pending_appointment_failure:
 
@@ -525,8 +493,8 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
     public void WorkerGetOrderList(BaseResult<WorkOrder> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
+
                 if (baseResult.getData().getData() == null) {
-                    Log.d("===>", "暂无预约工单");
                     if (pageIndex == 1) {
                         list.clear();
                         pending_appointment_adapter.notifyDataSetChanged();
@@ -677,6 +645,7 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
             case 200:
 
                 if (baseResult.getData().isItem1()) {
+
                     if (data.getAddress() == null) {
                         Log.d("=====>", "地址为空");
                     } else {
@@ -687,18 +656,27 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                             "客户名:" + data.getUserName() + " 客户手机号:" + data.getPhone() + "故障原因" + data.getMemo(),
                             data.getAddress(),
                             recommendedtime,
-                            recommendedtime + 3600000,
+                            recommendedtime,
                             60, null    //提前一个小时提醒  单位分钟
                     );
                     // 添加事件
                     int result = CalendarProviderManager.addCalendarEvent(mActivity, calendarEvent);
                     if (result == 0) {
-                        Toast.makeText(mActivity, "已为您添加行程至日历", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mActivity, "已为您添加行程至日历,将提前一小时提醒您！！", Toast.LENGTH_SHORT).show();
                     } else if (result == -1) {
                         Toast.makeText(mActivity, "插入失败", LENGTH_SHORT).show();
                     } else if (result == -2) {
                         Toast.makeText(mActivity, "没有权限", LENGTH_SHORT).show();
                     }
+
+
+
+
+
+
+
+
+
                 }
         }
 
