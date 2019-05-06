@@ -176,7 +176,7 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
 //                }
 //                tv.setText(time);
                 //*格式化时间*//*
-                DateFormat format = new SimpleDateFormat("yyyyMMddHH");
+                DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                 try {
                     recommendedtime = format.parse(time).getTime();
                 } catch (ParseException e) {
@@ -184,7 +184,7 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                     e.printStackTrace();
                 }
                OrderId= workOrder.getData().get(position).getOrderID();
-                mPresenter.UpdateSendOrderUpdateTime(OrderId, time, "2019-05-20 17:33");
+                mPresenter.UpdateSendOrderUpdateTime(OrderId, time, time);
                 Intent intent=new Intent(mActivity, WorkOrderDetailsActivity2.class);
                 intent.putExtra("OrderID",OrderId);
                 intent.putExtra("time",time);
@@ -253,22 +253,22 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
 //                        view_select_time_point.setOnClickListener(new View.OnClickListener() {
 //                            @Override
 //                            public void onClick(View v) {
-//                                RxPermissions rxPermissions = new RxPermissions(mActivity);
-//                                rxPermissions.request(Manifest.permission.WRITE_CALENDAR, Manifest.permission.READ_CALENDAR)
-//                                        .subscribe(new Consumer<Boolean>() {
-//                                            @Override
-//                                            public void accept(Boolean aBoolean) throws Exception {
-//                                                if (aBoolean) {
-//                                                    // 获取全部权限成功
-////                                    dialogtime();
-//                                                    chooseTime(position,"请选择上门时间");
-//
-//                                                } else {
-//                                                    // 获取全部权限失败
-//                                                    Log.d("=====>", "权限获取失败");
-//                                                }
-//                                            }
-//                                        });
+                                RxPermissions rxPermissions = new RxPermissions(mActivity);
+                                rxPermissions.request(Manifest.permission.WRITE_CALENDAR, Manifest.permission.READ_CALENDAR)
+                                        .subscribe(new Consumer<Boolean>() {
+                                            @Override
+                                            public void accept(Boolean aBoolean) throws Exception {
+                                                if (aBoolean) {
+                                                    // 获取全部权限成功
+//                                    dialogtime();
+                                                    chooseTime(position,"请选择上门时间");
+
+                                                } else {
+                                                    // 获取全部权限失败
+                                                    Log.d("=====>", "权限获取失败");
+                                                }
+                                            }
+                                        });
 //
 //                            }
 //                        });
@@ -294,7 +294,7 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
 //                        successposition=position;
 //                        mPresenter.AddOrderSuccess(((WorkOrder.DataBean)adapter.getItem(position)).getOrderID(),"1","预约成功");
 
-                        chooseTime(position,"请选择上门时间");
+//                        chooseTime(position,"请选择上门时间");
                         break;
                     case R.id.tv_pending_appointment_failure:
 
