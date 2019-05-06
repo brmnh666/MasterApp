@@ -131,7 +131,7 @@ public class SendOrderBean implements Serializable {
     }
 
     public String getServiceDate() {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         return ServiceDate==null?"":format.format(TimeUtils.string2Date(ServiceDate.replace("T"," ")));
     }
 

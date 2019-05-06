@@ -133,8 +133,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     RelativeLayout mActionbarLayout;
     @BindView(R.id.tv_payment_method)
     TextView mTvPaymentMethod;
-    @BindView(R.id.tv_order_time)
-    TextView mTvOrderTime;
+/*    @BindView(R.id.tv_order_time)
+    TextView mTvOrderTime;*/
     @BindView(R.id.tv_work_order_number)
     TextView mTvWorkOrderNumber;
     @BindView(R.id.tv_cause_of_issue)
@@ -279,8 +279,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     TextView mTvDetailSubmit;
     @BindView(R.id.Rl_expressno)
     RelativeLayout mRlExpressno;
-    @BindView(R.id.tv_select_time2)
-    TextView mTvSelectTime2;
+  /*  @BindView(R.id.tv_select_time2)
+    TextView mTvSelectTime2;*/
     @BindView(R.id.view_select_time_point2)
     ImageView mViewSelectTimePoint2;
     @BindView(R.id.tv_addressback)
@@ -607,7 +607,6 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                             public void accept(Boolean aBoolean) throws Exception {
                                 if (aBoolean) {
                                     // 获取全部权限成功
-//                                    dialogtime();
                                     chooseTime(mTvSelectTime,"请选择上门时间");
 
                                 } else {
@@ -618,7 +617,6 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         });
 
 
-//                chooseTime(mTvSelectTime, "请选择开始时间");
 
                 break;
             case R.id.view_select_time_point2:
@@ -1193,7 +1191,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 mTvPhone.setText(data.getPhone());
                 mTvAddress.setText(data.getAddress());
                 mTvWorkOrderNumber.setText(data.getOrderID());
-                mTvOrderTime.setText(data.getAudDate().replace("T", " ")); //将T替换为空格
+               // mTvOrderTime.setText(data.getAudDate().replace("T", " ")); //将T替换为空格
+
                 mTvCauseOfIssue.setText(data.getMemo());
                 if (("Y").equals(data.getGuaranteeText())){
                     mTvPaymentMethod.setText("客户付款");
@@ -1211,11 +1210,10 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     } else {
                         mLlSelectTime.setVisibility(View.VISIBLE);
                         mView.setVisibility(View.VISIBLE);
+
                         mTvSelectTime.setText(data.getSendOrderList().get(0).getServiceDate());
-//                        mTvSelectTime.setText(data.getSendOrderList().get(0).getServiceDate() + " ~ " + data.getSendOrderList().get(0).getServiceDate2());
                     }
 
-//                    mTvSelectTime2.setText(data.getSendOrderList().get(0).getServiceDate2());
                 } else if (data.getSendOrderList().size() == 0) {
                     mLlSelectTime.setVisibility(View.GONE);
                     mView.setVisibility(View.GONE);
@@ -1700,14 +1698,14 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                             "客户名:" + data.getUserName() + " 客户手机号:" + data.getPhone() + "故障原因" + data.getMemo(),
                             data.getAddress(),
                             recommendedtime,
-                            recommendedtime+3600000,
+                            recommendedtime,
                             60, null    //提前一个小时提醒  单位分钟
                     );
 
                     // 添加事件
                     int result = CalendarProviderManager.addCalendarEvent(this, calendarEvent);
                     if (result == 0) {
-                        Toast.makeText(this, "已为您添加行程至日历", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "已为您添加行程至日历,将提前一小时提醒您！！", Toast.LENGTH_SHORT).show();
                     } else if (result == -1) {
                         Toast.makeText(this, "插入失败", Toast.LENGTH_SHORT).show();
                     } else if (result == -2) {
@@ -2128,26 +2126,16 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         TimeSelector timeSelector = new TimeSelector(mActivity, new TimeSelector.ResultHandler() {
             @Override
             public void handle(String time) {
-//                if ("请选择结束时间".equals(title)) {
-//                    Integer i = startTime.compareTo(time);
-//                    if (i > 0) {
-//                        showToast(mActivity, "结束时间应大于开始时间");
-//                        return;
-//                    }
-//                    mPresenter.UpdateSendOrderUpdateTime(OrderID, startTime, time);
-//                } else {
-//                    mTvSelectTime2.setText("");
-//                }
                 tv.setText(time);
                 //*格式化时间*//*
-                DateFormat format = new SimpleDateFormat("yyyyMMddHH");
+                DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                 try {
                     recommendedtime = format.parse(time).getTime();
                 } catch (ParseException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
-                mPresenter.UpdateSendOrderUpdateTime(OrderID, time, "2019-05-05 17:33");
+                mPresenter.UpdateSendOrderUpdateTime(OrderID, time, time);
             }
         }, format1, "2022-1-1 24:00");
 
@@ -2287,9 +2275,6 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     e.printStackTrace();
                 }
 
-
-                Log.d("======>", start_time);
-                Log.d("======>", end_time);
                 int compare = end_time.compareTo(start_time);
                 if (compare >= 0) {
                     mView.setVisibility(View.VISIBLE);
@@ -2304,6 +2289,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 }
             }
         });
+
 
         //取消
         tv_cancel.setOnClickListener(new View.OnClickListener() {
