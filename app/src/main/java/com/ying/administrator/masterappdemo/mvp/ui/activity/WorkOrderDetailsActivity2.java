@@ -90,6 +90,7 @@ import com.ying.administrator.masterappdemo.widget.HideSoftInputDialog;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 
+import org.feezu.liuli.timeselector.TimeSelector;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -606,7 +607,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                             public void accept(Boolean aBoolean) throws Exception {
                                 if (aBoolean) {
                                     // 获取全部权限成功
-                                    dialogtime();
+//                                    dialogtime();
+                                    chooseTime(mTvSelectTime,"请选择上门时间");
 
                                 } else {
                                     // 获取全部权限失败
@@ -1209,7 +1211,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     } else {
                         mLlSelectTime.setVisibility(View.VISIBLE);
                         mView.setVisibility(View.VISIBLE);
-                        mTvSelectTime.setText(data.getSendOrderList().get(0).getServiceDate() + " ~ " + data.getSendOrderList().get(0).getServiceDate2());
+                        mTvSelectTime.setText(data.getSendOrderList().get(0).getServiceDate());
+//                        mTvSelectTime.setText(data.getSendOrderList().get(0).getServiceDate() + " ~ " + data.getSendOrderList().get(0).getServiceDate2());
                     }
 
 //                    mTvSelectTime2.setText(data.getSendOrderList().get(0).getServiceDate2());
@@ -1697,7 +1700,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                             "客户名:" + data.getUserName() + " 客户手机号:" + data.getPhone() + "故障原因" + data.getMemo(),
                             data.getAddress(),
                             recommendedtime,
-                            finishrecomendedtime,
+                            recommendedtime+3600000,
                             60, null    //提前一个小时提醒  单位分钟
                     );
 
@@ -2114,6 +2117,44 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
 
     private BottomDialog bottomDialog;
 
+    /**
+     * 选择上门时间
+     */
+    public void chooseTime(final TextView tv, final String title) {
+        Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        String format1 = format.format(date);
+
+        TimeSelector timeSelector = new TimeSelector(mActivity, new TimeSelector.ResultHandler() {
+            @Override
+            public void handle(String time) {
+//                if ("请选择结束时间".equals(title)) {
+//                    Integer i = startTime.compareTo(time);
+//                    if (i > 0) {
+//                        showToast(mActivity, "结束时间应大于开始时间");
+//                        return;
+//                    }
+//                    mPresenter.UpdateSendOrderUpdateTime(OrderID, startTime, time);
+//                } else {
+//                    mTvSelectTime2.setText("");
+//                }
+                tv.setText(time);
+                //*格式化时间*//*
+                DateFormat format = new SimpleDateFormat("yyyyMMddHH");
+                try {
+                    recommendedtime = format.parse(time).getTime();
+                } catch (ParseException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                mPresenter.UpdateSendOrderUpdateTime(OrderID, time, "2019-05-05 17:33");
+            }
+        }, format1, "2022-1-1 24:00");
+
+        timeSelector.setTitle(title);
+        timeSelector.show();
+    }
+
     private void dialogtime() {
         WheelView.WheelViewStyle style = new WheelView.WheelViewStyle();
         WheelView.WheelViewStyle style2 = new WheelView.WheelViewStyle();
@@ -2253,9 +2294,10 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 if (compare >= 0) {
                     mView.setVisibility(View.VISIBLE);
                     mLlSelectTime.setVisibility(View.VISIBLE);
-                    mTvSelectTime.setText(startyear + "-" + startmonth + "-" + startday + "-" + " 至 " +
-                            endyear + "-" + endmonth + "-" + endday);
-                    mPresenter.UpdateSendOrderUpdateTime(OrderID, startyear + "/" + startmonth + "/" + startday, endyear + "/" + endmonth + "/" + endday);
+                    mTvSelectTime.setText(startyear + "-" + startmonth + "-" + startday + " " + starthour+":00:00"+" 至 " +
+                            endyear + "-" + endmonth + "-" + endday+" "+endhour+":00:00");
+//                    mPresenter.UpdateSendOrderUpdateTime(OrderID, startyear + "/" + startmonth + "/" + startday, endyear + "/" + endmonth + "/" + endday);
+                    mPresenter.UpdateSendOrderUpdateTime(OrderID, startyear + "-" + startmonth + "-" + startday + " " + starthour+":00:00", endyear + "-" + endmonth + "-" + endday+" "+endhour+":00:00");
 
                 } else {//<0
                     showToast(mActivity, "当月起始日期不能大于结束日期");
