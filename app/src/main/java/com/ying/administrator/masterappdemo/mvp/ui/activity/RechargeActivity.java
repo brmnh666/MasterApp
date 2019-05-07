@@ -428,15 +428,14 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
                 } else {
                     userInfo = baseResult.getData().getData().get(0);
                     String format = String.format("%.2f", userInfo.getTotalMoney() - userInfo.getFrozenMoney());
-                    mTvTotalMoney.setText(userInfo.getTotalMoney().toString());
                     mTvCanWithdraw.setText(format);
-                    String FrozenMoney = String.valueOf(userInfo.getFrozenMoney());
-//                    mTvMargin.setText(userInfo.getRemainMoney().toString());
+                    String TotalMoney = String.format("%.2f", userInfo.getTotalMoney());
+                    mTvTotalMoney.setText(TotalMoney);
+                    String FrozenMoney = String.format("%.2f",userInfo.getFrozenMoney());
                     mTvUnfinished.setText(FrozenMoney);
                     //赠送金额暂无
-                    String TotalMoney = String.valueOf(userInfo.getTotalMoney());
-                    mTvTotalMoney.setText(TotalMoney);
-                    mTvMargin.setText(userInfo.getCon().toString());
+                    String Con = String.format("%.2f",userInfo.getCon());
+                    mTvMargin.setText(Con);
 
                 }
                 break;

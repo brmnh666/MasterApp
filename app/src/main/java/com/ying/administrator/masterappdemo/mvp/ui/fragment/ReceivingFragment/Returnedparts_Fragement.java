@@ -94,11 +94,11 @@ public class Returnedparts_Fragement extends BaseFragment<GetOrderListForMePrese
         return fragment;
     }
 
-   /* @Override
+    @Override
     public void onResume() {
         super.onResume();
         mRefreshLayout.autoRefresh();  //返回的时候刷新页面
-    }*/
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

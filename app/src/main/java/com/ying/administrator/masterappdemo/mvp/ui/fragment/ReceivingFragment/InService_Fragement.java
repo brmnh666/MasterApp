@@ -96,12 +96,11 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
     return view;
     }
 
-   /* @Override
+    @Override
     public void onResume() {
         super.onResume();
         mRefreshLayout.autoRefresh();
     }
-*/
     public void initView() {
         dialog =new ZLoadingDialog(mActivity);
         list=new ArrayList<>();
@@ -115,9 +114,20 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
         popupWindow_view = LayoutInflater.from(mActivity).inflate(R.layout.popwindow_choosemap, null);
         mPopupWindow = new PopupWindow(popupWindow_view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-
        // mPresenter.WorkerGetOrderList(userID,"2",Integer.toString(pageIndex),"5");
     }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (hidden){
+            return;
+        }else {
+            list.clear();
+            mPresenter.WorkerGetOrderList(userID,"2",Integer.toString(pageIndex),"5");
+        }
+    }
+
     private void initListener() {
 
         /*下拉刷新*/

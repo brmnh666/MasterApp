@@ -162,7 +162,7 @@ public class OrderMessageActivity extends BaseActivity<MyMessagePresenter, MyMes
                     case R.id.ll_order_message:
                         mPresenter.AddOrUpdatemessage(((Message) adapter.getData().get(position)).getMessageID(), "2");
 
-                        Intent intent = new Intent(mActivity, WorkOrderDetailsActivity.class);
+                        Intent intent = new Intent(mActivity, WorkOrderDetailsActivity2.class);
                         intent.putExtra("OrderID", ((Message) adapter.getData().get(position)).getOrderID());
                         startActivity(intent);
 
@@ -178,7 +178,7 @@ public class OrderMessageActivity extends BaseActivity<MyMessagePresenter, MyMes
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 switch (view.getId()) {
                     case R.id.ll_order_message:
-                        Intent intent = new Intent(mActivity, WorkOrderDetailsActivity.class);
+                        Intent intent = new Intent(mActivity, WorkOrderDetailsActivity2.class);
                         intent.putExtra("OrderID", ((Message) adapter.getData().get(position)).getOrderID());
                         startActivity(intent);
 
