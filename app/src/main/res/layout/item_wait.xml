@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8"?><!--返件单item-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginRight="10dp"
+    android:background="@drawable/rr_shape"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/tv_returnedparts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="13dp"
+        android:layout_marginTop="15dp"
+        android:text="返件单"
+        android:textSize="12sp"
+        android:visibility="gone"/>
+
+
+
+
+    <TextView
+        android:id="@+id/tv_returnedparts_status_repair"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="17dp"
+        android:layout_marginRight="5dp"
+        android:layout_toRightOf="@+id/tv_returnedparts"
+        android:background="@color/color_custom_04"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:text="维修"
+        android:textColor="@color/color_white"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/tv_review"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/tv_review2"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:text="456"
+        android:textSize="12sp"
+        android:textColor="@color/red"/>
+    <TextView
+        android:id="@+id/tv_review2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/tv_review3"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="5dp"
+        android:text="123"
+        android:textSize="12sp"
+        android:textColor="@color/red"
+        android:layout_marginRight="5dp"/>
+    <TextView
+        android:id="@+id/tv_review3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="5dp"
+        android:text="123"
+        android:textSize="12sp"
+        android:textColor="@color/red"
+        android:layout_marginRight="19dp"/>
+    <TextView
+        android:id="@+id/tv_returnedparts_job_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="19dp"
+        android:text="工单号:1212412412412414124"
+        android:textSize="12sp"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/tv_reason_returnedparts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="41dp"
+        android:text="热水器不通电"
+        android:textColor="#333333"
+        android:textSize="18sp" />
+
+    <ImageView
+        android:id="@+id/img_loaction"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_below="@+id/tv_reason_returnedparts"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="5dp"
+        android:src="@mipmap/icon_loaction" />
+
+    <TextView
+        android:id="@+id/tv_loaction_returnedparts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_reason_returnedparts"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@+id/img_loaction"
+        android:text="距离 43.12KM"
+        android:textSize="14sp"
+
+        />
+
+    <TextView
+        android:id="@+id/tv_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_reason_returnedparts"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@+id/tv_loaction_returnedparts"
+        android:text="数量:2台"
+        android:textSize="14sp" />
+
+
+    <TextView
+        android:id="@+id/tv_address_returnedparts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_loaction_returnedparts"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="5dp"
+        android:text="宁波市江北区长阳路人才公寓5栋1701室"
+        android:textSize="14sp" />
+
+
+    <TextView
+        android:id="@+id/tv_hint_returnedparts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_address_returnedparts"
+        android:layout_marginLeft="13dp"
+        android:layout_marginTop="11dp"
+        android:text="提示:服务过程中需要申请配件请点击申请配件"
+        android:textColor="#FF4444"
+        android:textSize="11sp"
+        android:visibility="invisible"/>
+
+    <LinearLayout
+        android:id="@+id/ll_pending_appointment_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_address_returnedparts"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:paddingRight="10dp"
+        android:gravity="center_vertical"
+        android:visibility="visible">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="提示:"
+            android:textSize="12sp"
+            android:textColor="#FF4444"
+            android:visibility="gone"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="请在"
+            android:textSize="12sp" />
+
+        <cn.iwgang.countdownview.CountdownView
+            android:id="@+id/countdownview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            app:isHideTimeBackground="true"
+            app:isShowDay="true"
+            app:isShowHour="false"
+            app:isShowMillisecond="false"
+            app:isShowMinute="true"
+            app:isShowSecond="true"
+            app:isShowTimeBgDivisionLine="false"
+            app:isTimeTextBold="true"
+            app:suffix="："
+            app:suffixDay="天"
+            app:suffixGravity="center"
+            app:suffixMinute="分"
+            app:suffixSecond="秒"
+            app:suffixTextColor="#FF5656"
+            app:suffixTextSize="11sp"
+            app:timeBgColor="#ffffff"
+            app:timeBgRadius="3dp"
+            app:timeTextColor="#FF5656"
+            app:timeTextSize="11sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="之内完成返件，否则工单将自动作废"
+            android:textSize="12sp" />
+    </LinearLayout>
+    <!--   <TextView
+           android:id="@+id/tv_pending_receipt_cancel"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="工单将于59分39秒后取消,请及时联系客户"
+           android:textSize="12sp"
+           android:layout_below="@+id/tv_address_pending_receipt"
+           android:layout_marginTop="5dp"
+           android:layout_marginLeft="15sp"
+
+           />-->
+    <!--  <Button
+          android:layout_width="50dp"
+          android:layout_height="50dp"
+          android:text="电话"
+          android:layout_alignParentRight="true"
+          android:layout_marginRight="10dp"
+          />-->
+
+    <!--    <ImageView
+            android:id="@+id/img_pending_appointment_phone"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:src="@mipmap/icon_telphone"
+            android:layout_marginTop="64dp"
+            android:layout_marginRight="16dp"
+            android:layout_alignParentRight="true"/>
+
+        <TextView
+            android:id="@+id/tv_pending_appointment_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="预约"
+            android:layout_below="@+id/img_pending_appointment_phone"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="22dp"
+            />-->
+
+    <View
+        android:id="@+id/view_point"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/tv_hint_returnedparts"
+        android:layout_marginTop="10dp"
+        android:background="#eeeeee"></View>
+    <!--  <TextView
+          android:id="@+id/tv_pending_appointment_success"
+          android:layout_below="@+id/view_point"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="预约成功"
+          android:layout_alignParentRight="true"
+          android:layout_marginRight="79dp"
+          android:layout_marginBottom="11dp"
+          android:background="@drawable/tv_recevied"
+          android:layout_marginTop="10dp"
+          android:padding="5dp"
+          android:textSize="16sp"
+               />-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/view_point"
+        android:gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingRight="@dimen/dp_10">
+        <TextView
+            android:id="@+id/tv_returnedparts_apply_parts"
+            android:layout_width="87dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_10"
+            android:background="@drawable/tv_recevied"
+            android:padding="10dp"
+            android:text="申请配件"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:visibility="gone"
+            />
+        <TextView
+            android:id="@+id/tv_telephone_reminder"
+            android:layout_width="87dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_10"
+            android:background="@drawable/tv_recevied"
+            android:padding="10dp"
+            android:text="电话催件"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:visibility="gone"/>
+        <TextView
+            android:id="@+id/tv_reminder"
+            android:layout_width="87dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_10"
+            android:background="@drawable/tv_recevied"
+            android:padding="10dp"
+            android:text="催     件"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/tv_continue_service"
+            android:layout_width="87dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_10"
+            android:background="@drawable/tv_recevied"
+            android:padding="10dp"
+            android:text="完成工单"
+            android:visibility="gone"
+            android:textSize="16sp"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/tv_see_detail"
+            android:layout_width="87dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_10"
+            android:background="@drawable/tv_recevied"
+            android:padding="10dp"
+            android:text="查看详情"
+            android:textSize="16sp"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

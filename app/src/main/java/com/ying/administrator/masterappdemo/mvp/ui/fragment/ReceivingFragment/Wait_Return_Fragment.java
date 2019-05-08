@@ -36,6 +36,7 @@ import com.ying.administrator.masterappdemo.mvp.ui.activity.WorkOrderDetailsActi
 import com.ying.administrator.masterappdemo.mvp.ui.activity.WorkOrderDetailsActivity2;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Redeploy_Adapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Return_Sheet_Adapter;
+import com.ying.administrator.masterappdemo.mvp.ui.adapter.Wait_Adapter;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseFragment;
 import com.ying.administrator.masterappdemo.widget.CustomDialog_Redeploy;
 import com.zyao89.view.zloading.ZLoadingDialog;
@@ -51,7 +52,7 @@ import java.util.List;
 public class Wait_Return_Fragment extends BaseFragment<GetOrderListForMePresenter,GetOrderListForMeModel> implements GetOrderListForMeContract.View {
     private View view;
     private RecyclerView recyclerView;
-    private Return_Sheet_Adapter Return_Sheet_Adapter;
+    private Wait_Adapter Return_Sheet_Adapter;
     private ArrayList<WorkOrder.DataBean> list;
     private UserInfo.UserInfoDean userInfo=new UserInfo.UserInfoDean(); //获取当前账号详情
     private ArrayList<SubUserInfo.SubUserInfoDean> subuserlist;//获取子账号列表
@@ -115,7 +116,7 @@ public class Wait_Return_Fragment extends BaseFragment<GetOrderListForMePresente
 
 
 
-        Return_Sheet_Adapter=new Return_Sheet_Adapter(R.layout.item_returnedparts,list);
+        Return_Sheet_Adapter=new Wait_Adapter(R.layout.item_wait,list);
         recyclerView.setAdapter(Return_Sheet_Adapter);
         Return_Sheet_Adapter.setEmptyView(getEmptyView());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

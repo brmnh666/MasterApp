@@ -163,6 +163,8 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
     TextView mTvAddress;
     @BindView(R.id.et_memo)
     EditText mEtMemo;
+    @BindView(R.id.tv_payment_method)
+    TextView mTvPaymentMethod;
     private String orderID;//工单号
     private WorkOrder.DataBean data = new WorkOrder.DataBean();
     private ArrayList<GAccessory> gAccessories = new ArrayList<>();//获得工厂返回的已选配件
@@ -668,7 +670,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
         gson = new Gson();
         switch (type) {
             case 1:
-                AccessoryMemo =mEtMemo.getText().toString().trim();
+                AccessoryMemo = mEtMemo.getText().toString().trim();
                 if (select_state == -1) {
                     ToastUtils.showShort("请选择配件类型");
                 } else {
@@ -712,7 +714,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                     distance = Double.parseDouble(data.getDistance());
                     money = distance - Service_range;
                     if (money < 0) {
-                        MyUtils.showToast(mActivity,"未超出正常服务范围，距离如果有误，请自行填写超出公里数");
+                        MyUtils.showToast(mActivity, "未超出正常服务范围，距离如果有误，请自行填写超出公里数");
                         return;
                     }
                 } else {
@@ -739,6 +741,11 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                 mEtMemo.setText(data.getAccessoryMemo());
                 mTvPhone.setText(data.getPhone());
                 mTvAddress.setText(data.getAddress());
+                if (("Y").equals(data.getGuaranteeText())){
+                    mTvPaymentMethod.setText("客户付款");
+                }else {
+                    mTvPaymentMethod.setText("平台代付");
+                }
                 tv_order_details_state.setText(data.getStateStr());
                 /*判断是选中了那个*/
                 if (data.getAccessoryState() == null) {//未选择
@@ -789,7 +796,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
 
 
                 // Log.d("====>", String.valueOf(data.getOrderAccessroyDetail().size()));
-                Money = Double.parseDouble(data.getOrderMoney())-Double.parseDouble(data.getInitMoney());
+                Money = Double.parseDouble(data.getOrderMoney()) - Double.parseDouble(data.getInitMoney());
                 switch (type) {
                     case 1:
 //                        accessory();
@@ -877,11 +884,11 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                 if ("0".equals(baseResult.getData().getCode())) {
                     ac_list = baseResult.getData().getData();
                     if (ac_list == null) {
-                        MyUtils.showToast(mActivity,"无配件，请联系管理员");
+                        MyUtils.showToast(mActivity, "无配件，请联系管理员");
                         return;
                     }
                     if (ac_list.size() == 0) {
-                        MyUtils.showToast(mActivity,"无配件，请联系管理员");
+                        MyUtils.showToast(mActivity, "无配件，请联系管理员");
                         return;
                     }
                     ac_list_adapter = new Ac_List_Adapter(R.layout.item_accessory, ac_list);
@@ -903,9 +910,9 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                 if ("0".equals(baseResult.getData().getCode())) {
                     mList_service = baseResult.getData().getData();
                     mAdd_Service_Adapter.setNewData(mList_service);
-                    if (mList_service.size()==0){
-                        MyUtils.showToast(mActivity,"无服务，请联系管理员");
-                    }else{
+                    if (mList_service.size() == 0) {
+                        MyUtils.showToast(mActivity, "无服务，请联系管理员");
+                    } else {
                         addService();
                     }
                 } else {
@@ -930,7 +937,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                     EventBus.getDefault().post(5);
                     finish();
                 } else {
-                    if ("支付错误,添加失败".equals(baseResult.getData().getItem2())){
+                    if ("支付错误,添加失败".equals(baseResult.getData().getItem2())) {
                         customdialog_home_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_home, null);
                         customdialog_home_dialog = new AlertDialog.Builder(mActivity)
                                 .setView(customdialog_home_view)
@@ -953,11 +960,11 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                         positive.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                startActivity(new Intent(mActivity,RechargeActivity.class));
+                                startActivity(new Intent(mActivity, RechargeActivity.class));
                                 customdialog_home_dialog.dismiss();
                             }
                         });
-                    }else{
+                    } else {
                         ToastUtils.showShort((String) baseResult.getData().getItem2());
                     }
                 }
@@ -978,7 +985,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                     EventBus.getDefault().post(5);
                     finish();
                 } else {
-                    if ("支付错误,添加失败".equals(baseResult.getData().getItem2())){
+                    if ("支付错误,添加失败".equals(baseResult.getData().getItem2())) {
                         customdialog_home_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_home, null);
                         customdialog_home_dialog = new AlertDialog.Builder(mActivity)
                                 .setView(customdialog_home_view)
@@ -1001,11 +1008,11 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                         positive.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                startActivity(new Intent(mActivity,RechargeActivity.class));
+                                startActivity(new Intent(mActivity, RechargeActivity.class));
                                 customdialog_home_dialog.dismiss();
                             }
                         });
-                    }else{
+                    } else {
                         ToastUtils.showShort((String) baseResult.getData().getItem2());
                     }
                 }
@@ -1086,7 +1093,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                     EventBus.getDefault().post("WorkOrderDetailsActivity");
                     finish();
                 } else {
-                    if ("支付错误,添加失败".equals(baseResult.getData().getItem2())){
+                    if ("支付错误,添加失败".equals(baseResult.getData().getItem2())) {
                         customdialog_home_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_home, null);
                         customdialog_home_dialog = new AlertDialog.Builder(mActivity)
                                 .setView(customdialog_home_view)
@@ -1109,11 +1116,11 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                         positive.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                startActivity(new Intent(mActivity,RechargeActivity.class));
+                                startActivity(new Intent(mActivity, RechargeActivity.class));
                                 customdialog_home_dialog.dismiss();
                             }
                         });
-                    }else{
+                    } else {
                         ToastUtils.showShort(baseResult.getData().getItem2());
                     }
                 }
@@ -1150,13 +1157,13 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
             for (int i = 0; i < list2.size(); i++) {
                 servicprice = servicprice + list2.get(i).getDiscountPrice();
             }
-            return servicprice + Money;
+            return servicprice ;
         } else if (list != null && list2 == null)//有配件没服务
         {
             for (int i = 0; i < list.size(); i++) {
                 acprice = acprice + list.get(i).getDiscountPrice() * Double.parseDouble(list.get(i).getQuantity());
             }
-            return acprice + Money;
+            return acprice ;
         } else if (list != null && list2 != null)//都有
         {
             for (int i = 0; i < list.size(); i++) {
@@ -1165,7 +1172,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
             for (int i = 0; i < list2.size(); i++) {
                 servicprice = servicprice + list2.get(i).getDiscountPrice();
             }
-            return acprice + servicprice + Money;
+            return acprice + servicprice;
 
         } else { //都没有
             return Money;
@@ -1362,7 +1369,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
             case 909:
                 if (data != null) {
                     mSelected = Matisse.obtainResult(data);
-                    if (mSelected.size()==1){
+                    if (mSelected.size() == 1) {
                         uri = mSelected.get(0);
                     }
 //                    uri = data.getData();
@@ -1391,7 +1398,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
             case 1002:
                 if (data != null) {
                     mSelected = Matisse.obtainResult(data);
-                    if (mSelected.size()==1){
+                    if (mSelected.size() == 1) {
                         uri = mSelected.get(0);
                     }
 //                    uri = data.getData();
@@ -1420,4 +1427,10 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
         mPresenter.OrderByondImgPicUpload(requestBody);
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 }

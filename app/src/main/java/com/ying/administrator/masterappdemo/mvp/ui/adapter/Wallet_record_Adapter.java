@@ -50,7 +50,7 @@ public class Wallet_record_Adapter extends BaseQuickAdapter<Bill.DataBean, BaseV
             String time = "" + stringBuilder.replace(10, 11, " "); //去掉T
             helper.setText(R.id.tv_record_time,time);
 
-            if (item.getState().equals("2")){
+            if (item.getState().equals("5")){
                 helper.setText(R.id.tv_record_happen,"收入");
                 helper.setText(R.id.tv_record_add_reduce,"+");
                 helper.setText(R.id.tv_record_money,"¥"+item.getPayMoney());

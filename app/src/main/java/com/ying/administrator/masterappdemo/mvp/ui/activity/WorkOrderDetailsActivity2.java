@@ -50,6 +50,8 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -456,7 +458,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                             mTvSubmitAddAccessories.setTextColor(Color.WHITE);
                         } else {
                             mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
-                            mTvSubmitAddAccessories.setTextColor(Color.BLACK);
+                            mTvSubmitAddAccessories.setTextColor(Color.parseColor("#6a6a6a"));
                         }
                         break;
                     default:
@@ -480,7 +482,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                             mTvSubmitAddService.setTextColor(Color.WHITE);
                         } else {
                             mTvSubmitAddService.setBackgroundResource(R.drawable.tv_order_detail_btn);
-                            mTvSubmitAddService.setTextColor(Color.BLACK);
+                            mTvSubmitAddService.setTextColor(Color.parseColor("#6a6a6a"));
                         }
                         break;
                     default:
@@ -673,7 +675,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mTvSubmitAddAccessories.setTextColor(Color.WHITE);
                     } else {
                         mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
-                        mTvSubmitAddAccessories.setTextColor(Color.BLACK);
+                        mTvSubmitAddAccessories.setTextColor(Color.parseColor("#6a6a6a"));
                     }
                 } else {
                     select_state = -1;
@@ -682,7 +684,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     mIvSelfbuyingUser.setSelected(false);
                     mRecyclerViewAddAccessories.setVisibility(View.GONE);
                     mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
-                    mTvSubmitAddAccessories.setTextColor(Color.BLACK);
+                    mTvSubmitAddAccessories.setTextColor(Color.parseColor("#6a6a6a"));
                 }
                 break;
             case R.id.ll_selfbuying://师傅自购件
@@ -698,7 +700,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mTvSubmitAddAccessories.setTextColor(Color.WHITE);
                     } else {
                         mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
-                        mTvSubmitAddAccessories.setTextColor(Color.BLACK);
+                        mTvSubmitAddAccessories.setTextColor(Color.parseColor("#6a6a6a"));
                     }
                 } else {
                     select_state = -1;
@@ -707,7 +709,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     mIvSelfbuyingUser.setSelected(false);
                     mRecyclerViewAddAccessories.setVisibility(View.GONE);
                     mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
-                    mTvSubmitAddAccessories.setTextColor(Color.BLACK);
+                    mTvSubmitAddAccessories.setTextColor(Color.parseColor("#6a6a6a"));
                 }
                 break;
             case R.id.ll_selfbuying_user://用户自购件
@@ -723,7 +725,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mTvSubmitAddAccessories.setTextColor(Color.WHITE);
                     } else {
                         mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
-                        mTvSubmitAddAccessories.setTextColor(Color.BLACK);
+                        mTvSubmitAddAccessories.setTextColor(Color.parseColor("#6a6a6a"));
                     }
                 } else {
                     select_state = -1;
@@ -732,15 +734,99 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     mIvSelfbuyingUser.setSelected(false);
                     mRecyclerViewAddAccessories.setVisibility(View.GONE);
                     mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
-                    mTvSubmitAddAccessories.setTextColor(Color.BLACK);
+                    mTvSubmitAddAccessories.setTextColor(Color.parseColor("#6a6a6a"));
                 }
                 break;
             case R.id.ll_return:
                 finish();
                 break;
             case R.id.tv_accessory_information:
+                puchsh_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_push, null);
+                btn_negtive = puchsh_view.findViewById(R.id.negtive);
+                btn_positive = puchsh_view.findViewById(R.id.positive);
+                tv_title = puchsh_view.findViewById(R.id.title);
+                etContent = puchsh_view.findViewById(R.id.et_content);
+                push_dialog = new AlertDialog.Builder(mActivity)
+                        .setView(puchsh_view)
+                        .create();
+                push_dialog.show();
+                tv_title.setText("提示");
+                btn_negtive.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        push_dialog.dismiss();
+                    }
+                });
+                btn_positive.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Content = etContent.getText().toString().trim();
+                        if (Content.isEmpty()){
+                            Content="请尽快审核配件";
+                        }
+                        mPresenter.PressFactoryAccount(OrderID, Content);
+                        push_dialog.dismiss();
+                    }
+                });
+                break;
             case R.id.tv_service_information:
+                puchsh_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_push, null);
+                btn_negtive = puchsh_view.findViewById(R.id.negtive);
+                btn_positive = puchsh_view.findViewById(R.id.positive);
+                tv_title = puchsh_view.findViewById(R.id.title);
+                etContent = puchsh_view.findViewById(R.id.et_content);
+                push_dialog = new AlertDialog.Builder(mActivity)
+                        .setView(puchsh_view)
+                        .create();
+                push_dialog.show();
+                tv_title.setText("提示");
+                btn_negtive.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        push_dialog.dismiss();
+                    }
+                });
+                btn_positive.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Content = etContent.getText().toString().trim();
+                        if (Content.isEmpty()){
+                            Content="请尽快审核服务";
+                        }
+                        mPresenter.PressFactoryAccount(OrderID, Content);
+                        push_dialog.dismiss();
+                    }
+                });
+                break;
             case R.id.tv_remote_fee_information:
+                puchsh_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_push, null);
+                btn_negtive = puchsh_view.findViewById(R.id.negtive);
+                btn_positive = puchsh_view.findViewById(R.id.positive);
+                tv_title = puchsh_view.findViewById(R.id.title);
+                etContent = puchsh_view.findViewById(R.id.et_content);
+                push_dialog = new AlertDialog.Builder(mActivity)
+                        .setView(puchsh_view)
+                        .create();
+                push_dialog.show();
+                tv_title.setText("提示");
+                btn_negtive.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        push_dialog.dismiss();
+                    }
+                });
+                btn_positive.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Content = etContent.getText().toString().trim();
+                        if (Content.isEmpty()){
+                            Content="请尽快审核远程费";
+                        }
+                        mPresenter.PressFactoryAccount(OrderID, Content);
+                        push_dialog.dismiss();
+                    }
+                });
+                break;
             case R.id.btn_trial:
                 puchsh_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_push, null);
                 btn_negtive = puchsh_view.findViewById(R.id.negtive);
@@ -763,6 +849,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     public void onClick(View v) {
                         Content = etContent.getText().toString().trim();
                         mPresenter.PressFactoryAccount(OrderID, Content);
+                        push_dialog.dismiss();
                     }
                 });
 
@@ -790,6 +877,20 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     @Override
                     public void onClick(View v) {
                         push_dialog.dismiss();
+                    }
+                });
+                ll_scan.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        IntentIntegrator integrator = new IntentIntegrator(WorkOrderDetailsActivity2.this);
+                        // 设置要扫描的条码类型，ONE_D_CODE_TYPES：一维码，QR_CODE_TYPES-二维码
+                        integrator.setDesiredBarcodeFormats(IntentIntegrator.ONE_D_CODE_TYPES);
+                        integrator.setCaptureActivity(ScanActivity.class); //设置打开摄像头的Activity
+                        integrator.setPrompt("请扫描快递码"); //底部的提示文字，设为""可以置空
+                        integrator.setCameraId(0); //前置或者后置摄像头
+                        integrator.setBeepEnabled(true); //扫描成功的「哔哔」声，默认开启
+                        integrator.setBarcodeImageEnabled(true);
+                        integrator.initiateScan();
                     }
                 });
                 btn_positive.setOnClickListener(new View.OnClickListener() {
@@ -908,6 +1009,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 .load(url)
                 .into(simpleTarget);
     }
+
+
 
     /**
      * 添加配件
@@ -1046,7 +1149,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     mTvSubmitAddAccessories.setTextColor(Color.WHITE);
                 } else {
                     mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
-                    mTvSubmitAddAccessories.setTextColor(Color.BLACK);
+                    mTvSubmitAddAccessories.setTextColor(Color.parseColor("#6a6a6a"));
                 }
             }
         });
@@ -1190,8 +1293,14 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 mTvServiceMoney.setText("￥" + data.getServiceMoney());
                 mTvOrderMoney.setText("￥" + data.getOrderMoney() + "");
                 if (data.getAccessoryMoney() != null && !"0.00".equals(data.getAccessoryMoney())) {
-                    mTvServiceAmount.setText("服务金额：￥" + (Double.parseDouble(data.getAccessoryMoney()) + Double.parseDouble(data.getBeyondMoney()) + Double.parseDouble(data.getPostMoney())) + "");
-                    mTvTotalPrice.setText("服务金额：￥" + (Double.parseDouble(data.getAccessoryMoney()) + Double.parseDouble(data.getBeyondMoney()) + Double.parseDouble(data.getPostMoney())) + "");
+                    if ("1".equals(data.getBeyondState())){
+                        mTvServiceAmount.setText("服务金额：￥" + (Double.parseDouble(data.getAccessoryMoney()) + Double.parseDouble(data.getBeyondMoney()) + Double.parseDouble(data.getPostMoney())) + "");
+                        mTvTotalPrice.setText("服务金额：￥" + (Double.parseDouble(data.getAccessoryMoney()) + Double.parseDouble(data.getBeyondMoney()) + Double.parseDouble(data.getPostMoney())) + "");
+                    }else {
+                        mTvServiceAmount.setText("服务金额：￥" + (Double.parseDouble(data.getAccessoryMoney())+ Double.parseDouble(data.getPostMoney())) + "");
+                        mTvTotalPrice.setText("服务金额：￥" + (Double.parseDouble(data.getAccessoryMoney()) + Double.parseDouble(data.getPostMoney())) + "");
+                    }
+
                 } else {
                     mTvServiceAmount.setText("服务金额：￥" + data.getOrderMoney() + "");
                     mTvTotalPrice.setText("服务金额：￥" + data.getOrderMoney() + "");
@@ -1297,12 +1406,12 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 AccessoryApplyState = data.getAccessoryApplyState();
                 ServiceApplyState = data.getServiceApplyState();
                 BeyondState = data.getBeyondState();
-                if ("".equals(AccessoryApplyState) && "".equals(ServiceApplyState) && BeyondState == null) {
+                if ("".equals(AccessoryApplyState) && "".equals(ServiceApplyState)) {
                     //nnn  配件  服务  远程
                     mBtnCompleteSubmit.setVisibility(View.VISIBLE);
                     mRlCompleteSubmit.setVisibility(View.VISIBLE);
                     mBtnTrial.setVisibility(View.GONE);
-                } else if (!"".equals(AccessoryApplyState) && "".equals(ServiceApplyState) && BeyondState == null) {
+                } else if (!"".equals(AccessoryApplyState) && "".equals(ServiceApplyState)) {
                     //ynn
                     if ("1".equals(AccessoryApplyState)) {
                         if ("Y".equals(data.getAccessorySendState())) {
@@ -1316,7 +1425,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mBtnCompleteSubmit.setVisibility(View.GONE);
                         mRlCompleteSubmit.setVisibility(View.GONE);
                     }
-                } else if ("".equals(AccessoryApplyState) && !"".equals(ServiceApplyState) && BeyondState == null) {
+                } else if ("".equals(AccessoryApplyState) && !"".equals(ServiceApplyState)) {
                     //nyn
                     if ("1".equals(ServiceApplyState)) {
                         mBtnCompleteSubmit.setVisibility(View.VISIBLE);
@@ -1325,7 +1434,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mBtnCompleteSubmit.setVisibility(View.GONE);
                         mRlCompleteSubmit.setVisibility(View.GONE);
                     }
-                } else if ("".equals(AccessoryApplyState) && "".equals(ServiceApplyState) && BeyondState != null) {
+                } else if ("".equals(AccessoryApplyState) && "".equals(ServiceApplyState)) {
                     //nny
                     if ("1".equals(BeyondState)) {
                         mBtnCompleteSubmit.setVisibility(View.VISIBLE);
@@ -1334,7 +1443,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mBtnCompleteSubmit.setVisibility(View.GONE);
                         mRlCompleteSubmit.setVisibility(View.GONE);
                     }
-                } else if (!"".equals(AccessoryApplyState) && !"".equals(ServiceApplyState) && BeyondState == null) {
+                } else if (!"".equals(AccessoryApplyState) && !"".equals(ServiceApplyState)) {
                     //yyn
                     if ("1".equals(AccessoryApplyState) && "1".equals(ServiceApplyState)) {
                         if ("Y".equals(data.getAccessorySendState())) {
@@ -1348,7 +1457,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mBtnCompleteSubmit.setVisibility(View.GONE);
                         mRlCompleteSubmit.setVisibility(View.GONE);
                     }
-                } else if (!"".equals(AccessoryApplyState) && "".equals(ServiceApplyState) && BeyondState != null) {
+                } else if (!"".equals(AccessoryApplyState) && "".equals(ServiceApplyState) ) {
                     //yny
                     if ("1".equals(AccessoryApplyState) && "1".equals(BeyondState)) {
                         if ("Y".equals(data.getAccessorySendState())) {
@@ -1362,7 +1471,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mBtnCompleteSubmit.setVisibility(View.GONE);
                         mRlCompleteSubmit.setVisibility(View.GONE);
                     }
-                } else if ("".equals(AccessoryApplyState) && !"".equals(ServiceApplyState) && BeyondState != null) {
+                } else if ("".equals(AccessoryApplyState) && !"".equals(ServiceApplyState)) {
                     //nyy
                     if ("1".equals(ServiceApplyState) && "1".equals(ServiceApplyState)) {
                         mBtnCompleteSubmit.setVisibility(View.VISIBLE);
@@ -1373,7 +1482,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     }
                 } else {
                     //yyy
-                    if ("1".equals(AccessoryApplyState) && "1".equals(ServiceApplyState) && "1".equals(BeyondState)) {
+                    if ("1".equals(AccessoryApplyState) && "1".equals(ServiceApplyState) ) {
                         if ("Y".equals(data.getAccessorySendState())) {
                             mBtnCompleteSubmit.setVisibility(View.VISIBLE);
                             mRlCompleteSubmit.setVisibility(View.VISIBLE);
@@ -1440,7 +1549,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     if ("2".equals(data.getTypeID())) {
                         mLlAddService.setVisibility(View.GONE);
                     } else {
-                        mLlAddService.setVisibility(View.VISIBLE);
+//                        mLlAddService.setVisibility(View.VISIBLE);
                     }
 
                 }
@@ -1681,8 +1790,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         message = customdialog_home_view.findViewById(R.id.message);
                         negtive = customdialog_home_view.findViewById(R.id.negtive);
                         positive = customdialog_home_view.findViewById(R.id.positive);
-                        title.setText("提示");
-                        message.setText("余额不足，是否充值？");
+                        title.setText("温馨提示");
+                        message.setText("账户余额不足，添加配件需预支付该配件的金额，当工单完结后返还，是否充值？");
                         negtive.setText("否");
                         positive.setText("是");
                         negtive.setOnClickListener(new View.OnClickListener() {
@@ -2111,6 +2220,16 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (scanResult != null) {
+            String result = scanResult.getContents();
+            if (result == null) {
+                return;
+            } else {
+                et_expressno.setText(result);
+            }
+
+        }
         File file = null;
         switch (requestCode) {
             /* 地图1*/

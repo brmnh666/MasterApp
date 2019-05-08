@@ -47,8 +47,7 @@
         android:layout_alignParentRight="true"
         android:textSize="12sp"
         android:layout_marginRight="19dp"
-        android:layout_marginTop="15dp"
-        android:visibility="gone"/>
+        android:layout_marginTop="15dp" />
 
     <TextView
         android:id="@+id/tv_reason_complete"
@@ -104,10 +103,18 @@
         android:layout_below="@+id/tv_loaction_complete"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="5dp"
-        android:layout_marginBottom="15dp"
         />
 
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="提示：若用户在15日内未确认，工单将自动完结"
+        android:textSize="14sp"
+        android:layout_below="@+id/tv_address_complete"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="15dp"
+        />
 
 
 

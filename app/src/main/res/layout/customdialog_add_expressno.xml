@@ -17,11 +17,19 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
+        android:layout_marginTop="10dp"
         android:gravity="center"
         tools:text="填写快递单号"
         android:visibility="visible"
         android:textColor="#333333"
         android:textSize="18sp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="为避免产生不必要的纠纷，请填写正确的快递单号"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"/>
     <ImageView
         android:id="@+id/image"
         android:layout_gravity="center"
@@ -94,6 +102,8 @@
         </LinearLayout>
     </LinearLayout>
 
+
+
     <LinearLayout
         android:id="@+id/ll_post_money"
         android:layout_width="match_parent"
@@ -132,8 +142,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
             android:layout_weight="1"
             android:background="@null"
             android:gravity="center"
@@ -154,8 +164,8 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
             android:layout_weight="1"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
             android:background="@null"
             android:gravity="center"
             android:singleLine="true"

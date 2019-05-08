@@ -302,24 +302,24 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
                         switch (baseResult.getData().getItem2().getData().get(0).getState()) {
                             case "1"://充值
                                 recharge_list.addAll(baseResult.getData().getItem2().getData());
-//                                if (recharge_list.size() <= 4) {
-//                                    wallet_record_adapter2.setNewData(recharge_list);
-//                                } else {
+                                if (recharge_list.size() <= 4) {
+                                    wallet_record_adapter2.setNewData(recharge_list);
+                                } else {
                                 List<Bill.DataBean> list = new ArrayList<>();//充值记录
                                 for (int i = 0; i < 5; i++) {
                                     list.add(recharge_list.get(i));
                                 }
                                 wallet_record_adapter2.setNewData(list);
 
-//                                }
+                                }
 
                                 break;
                             case "2"://支出
                             case "5"://收入
                                 expend_income_list.addAll(baseResult.getData().getItem2().getData());
-//                                if (withdraw_list.size() <= 4) {
-//                                    wallet_record_adapter1.setNewData(expend_income_list);
-//                                } else {
+                                if (expend_income_list.size() <= 4) {
+                                    wallet_record_adapter1.setNewData(expend_income_list);
+                                } else {
                                 List<Bill.DataBean> list1 = new ArrayList<>();//提现记录
 
                                 for (int i = 0; i < 5; i++) {
@@ -327,23 +327,23 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
                                 }
                                 wallet_record_adapter1.setNewData(list1);
 
-//                                }
+                                }
 
 
                                 break;
                             case "3"://提现
                                 withdraw_list.addAll(baseResult.getData().getItem2().getData());
 //
-//                                if (withdraw_list.size() <= 4) {
-//                                    wallet_record_adapter3.setNewData(withdraw_list);
-//                                } else {
+                                if (withdraw_list.size() <= 4) {
+                                    wallet_record_adapter3.setNewData(withdraw_list);
+                                } else {
                                 List<Bill.DataBean> list2 = new ArrayList<>();//提现记录
 
                                 for (int i = 0; i < 5; i++) {
                                     list2.add(withdraw_list.get(i));
                                 }
                                 wallet_record_adapter3.setNewData(list2);
-//                                }
+                                }
                                 break;
                             case "4"://待支付
                                 break;
