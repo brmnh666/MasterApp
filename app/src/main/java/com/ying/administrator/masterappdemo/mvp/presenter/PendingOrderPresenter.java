@@ -6,6 +6,7 @@ import com.ying.administrator.masterappdemo.entity.Accessory;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.GAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
+import com.ying.administrator.masterappdemo.entity.Logistics;
 import com.ying.administrator.masterappdemo.entity.Service;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.PendingOrderContract;
@@ -173,5 +174,16 @@ public class PendingOrderPresenter extends PendingOrderContract.Presenter {
                 mView.UpdateOrderState(value);
             }
         });
+    }
+
+    @Override
+    public void GetExpressInfo(String ExpressNo) {
+        mModel.GetExpressInfo(ExpressNo)
+                .subscribe(new BaseObserver<Data<List<Logistics>>>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<Data<List<Logistics>>> value) {
+                        mView.GetExpressInfo(value);
+                    }
+                });
     }
 }

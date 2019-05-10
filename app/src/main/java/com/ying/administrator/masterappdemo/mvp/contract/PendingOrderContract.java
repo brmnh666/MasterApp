@@ -8,6 +8,7 @@ import com.ying.administrator.masterappdemo.entity.Accessory;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.GAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
+import com.ying.administrator.masterappdemo.entity.Logistics;
 import com.ying.administrator.masterappdemo.entity.Service;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 
@@ -61,6 +62,9 @@ public interface PendingOrderContract {
 
         //修改订单状态
         Observable<BaseResult<Data<String>>> UpdateOrderState(String OrderID,String State);
+
+        //物流信息
+        Observable<BaseResult<Data<List<Logistics>>>> GetExpressInfo( String ExpressNo);
     }
 
     interface View extends BaseView{
@@ -105,6 +109,8 @@ public interface PendingOrderContract {
 
         //修改订单状态
         void UpdateOrderState(BaseResult<Data<String>> baseResult);
+
+        void GetExpressInfo(BaseResult<Data<List<Logistics>>> baseResult);
     }
 
     abstract  class Presenter extends BasePresenter<View,Model>{
@@ -140,6 +146,8 @@ public interface PendingOrderContract {
         public abstract void AddReturnAccessory(String OrderID,String ReturnAccessoryMsg,String PostMoney);
 
         public abstract void UpdateOrderState(String OrderID,String State);
+
+        public abstract void GetExpressInfo(String ExpressNo);
     }
 
 

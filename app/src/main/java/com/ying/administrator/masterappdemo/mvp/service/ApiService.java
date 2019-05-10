@@ -16,6 +16,7 @@ import com.ying.administrator.masterappdemo.entity.GAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
 import com.ying.administrator.masterappdemo.entity.GetFactorySeviceData;
 import com.ying.administrator.masterappdemo.entity.IDCard;
+import com.ying.administrator.masterappdemo.entity.Logistics;
 import com.ying.administrator.masterappdemo.entity.Message;
 import com.ying.administrator.masterappdemo.entity.MessageData;
 import com.ying.administrator.masterappdemo.entity.Province;
@@ -219,6 +220,12 @@ public interface ApiService {
                                                       @Field("State") String State);
 
 
+/*
+* 快递信息
+* */
+    @FormUrlEncoded
+    @POST("Order/GetExpressInfo")
+    Observable<BaseResult<Data<List<Logistics>>>> GetExpressInfo(@Field("ExpressNo") String ExpressNo);
 
 
   /*  *//*获取派单列表*//*

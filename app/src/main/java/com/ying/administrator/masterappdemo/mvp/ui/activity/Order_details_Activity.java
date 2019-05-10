@@ -52,6 +52,7 @@ import com.ying.administrator.masterappdemo.entity.FAccessory;
 import com.ying.administrator.masterappdemo.entity.FService;
 import com.ying.administrator.masterappdemo.entity.GAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
+import com.ying.administrator.masterappdemo.entity.Logistics;
 import com.ying.administrator.masterappdemo.entity.SService;
 import com.ying.administrator.masterappdemo.entity.STotalAS;
 import com.ying.administrator.masterappdemo.entity.Service;
@@ -1161,6 +1162,11 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
     @Override
     public void UpdateOrderState(BaseResult<Data<String>> baseResult) {
+
+    }
+
+    @Override
+    public void GetExpressInfo(BaseResult<Data<List<Logistics>>> baseResult) {
 
     }
 

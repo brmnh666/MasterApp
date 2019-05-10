@@ -63,6 +63,7 @@ import com.ying.administrator.masterappdemo.entity.FAccessory;
 import com.ying.administrator.masterappdemo.entity.FService;
 import com.ying.administrator.masterappdemo.entity.GAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
+import com.ying.administrator.masterappdemo.entity.Logistics;
 import com.ying.administrator.masterappdemo.entity.SAccessory;
 import com.ying.administrator.masterappdemo.entity.SService;
 import com.ying.administrator.masterappdemo.entity.Service;
@@ -1644,6 +1645,11 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                 break;
 
         }
+    }
+
+    @Override
+    public void GetExpressInfo(BaseResult<Data<List<Logistics>>> baseResult) {
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
