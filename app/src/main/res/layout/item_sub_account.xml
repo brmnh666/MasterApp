@@ -60,14 +60,6 @@
                     android:textColor="#3E8BFD"
                     android:textSize="16sp" />
 
-                <TextView
-                    android:id="@+id/tv_skill"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="技能：大家电\小家电\冰洗"
-                    android:textColor="#6D6E6F"
-                    android:textSize="12sp"
-                    android:layout_marginTop="7dp"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/ll_logout_account"

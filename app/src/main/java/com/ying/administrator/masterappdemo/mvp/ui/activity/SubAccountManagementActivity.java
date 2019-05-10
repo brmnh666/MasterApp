@@ -11,6 +11,9 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
@@ -54,6 +57,8 @@ public class SubAccountManagementActivity extends BaseActivity<SubAccountPresent
     TextView mTv_add_sub_account;
     @BindView(R.id.iv_wu)
     ImageView mIvWu;
+    @BindView(R.id.smartrefresh)
+    SmartRefreshLayout mSmartrefresh;
 
     private ArrayList<SubAccount> subAccountArrayList;
     SPUtils spUtils = SPUtils.getInstance("token");
@@ -134,6 +139,15 @@ public class SubAccountManagementActivity extends BaseActivity<SubAccountPresent
         mImg_sub_account_qrcode.setOnClickListener(this);
         mTv_add_sub_account.setOnClickListener(this);
 
+        mSmartrefresh.setEnableLoadmoreWhenContentNotFull(false);
+        mSmartrefresh.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                  mPresenter.GetChildAccountByParentUserID(userID);
+                  mSmartrefresh.finishRefresh();
+
+            }
+        });
     }
 
     @Override
@@ -209,6 +223,7 @@ public class SubAccountManagementActivity extends BaseActivity<SubAccountPresent
                     mIvWu.setVisibility(View.VISIBLE);
                 }else {
                     mIvWu.setVisibility(View.GONE);
+                    subUserInfolist.clear();
                     subUserInfolist.addAll(baseResult.getData());
                     subAccountAdapter.notifyDataSetChanged();
                 }

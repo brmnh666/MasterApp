@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.scwang.smartrefresh.layout.SmartRefreshLayout
+    android:id="@+id/smartrefresh"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
+android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#E0E0E0">
 
     <include layout="@layout/actionbar_receiving_layout"/>
 
-    <!--<ScrollView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent">-->
-
-        <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:orientation="vertical">-->
-
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
 
                 <LinearLayout
                     android:id="@+id/ll_add_account"
@@ -45,10 +42,11 @@
                         android:textColor="@color/white"
                         android:textSize="16sp" />
                 </LinearLayout>
-                    <android.support.v7.widget.RecyclerView
+
+                <android.support.v7.widget.RecyclerView
                         android:id="@+id/rv_sub_account"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_marginTop="100dp"
                         android:layout_marginLeft="@dimen/dp_10"
                         android:layout_marginRight="@dimen/dp_10">
@@ -62,10 +60,7 @@
                     android:layout_marginTop="100dp"
                     android:src="@mipmap/wu"
                     android:visibility="gone"/>
-
             </FrameLayout>
 
-        <!--</LinearLayout>-->
-    <!--</ScrollView>-->
-
 </LinearLayout>
+</com.scwang.smartrefresh.layout.SmartRefreshLayout>

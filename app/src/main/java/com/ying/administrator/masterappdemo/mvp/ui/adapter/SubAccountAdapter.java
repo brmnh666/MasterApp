@@ -29,7 +29,13 @@ private ImageView img_avatar;
     protected void convert(BaseViewHolder helper, SubUserInfo.SubUserInfoDean item) {
         img_avatar=helper.getView(R.id.img_avatar);
          if (item.getAvator()==null){
-               return;  //没有头像不操作
+
+             RequestOptions options=new RequestOptions().error(R.mipmap.ic_launcher).bitmapTransform(new CircleCrop());
+             Glide.with(context)
+                     .load(Config.HEAD_URL+item.getAvator())
+                     .apply(options)
+                     .into(img_avatar);
+
          }else {
              helper.setVisible(R.id.img_avatar2,false);
              helper.setVisible(R.id.img_avatar3,false);
@@ -41,16 +47,11 @@ private ImageView img_avatar;
          }
 
         if (item.getTrueName()==null){
-            helper.setText(R.id.tv_name,"王大毛");
+            helper.setText(R.id.tv_name,"暂未实名认证");
         }else {
             helper.setText(R.id.tv_name,item.getTrueName());
         }
 
-        if (item.getSkills()==null){
-            helper.setText(R.id.tv_skill,"技能:");
-        }else {
-            helper.setText(R.id.tv_skill,"技能:"+item.getSkills());
-        }
         if (item.getServiceTotalMoney()==null){
             helper.setText(R.id.tv_completion_amount,"0");
         }else {

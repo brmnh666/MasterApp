@@ -411,6 +411,11 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                                 getActivity().finish();
                             }
 
+                            @Override
+                            public void onNegtiveClick() {
+
+                            }
+
                            /* @Override
                             public void onNegtiveClick() {//取消
                                 startActivity(new Intent(mActivity, ForgetPasswordActivity.class));
