@@ -261,6 +261,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
     private ImageView iv_close;
     private TextView iv_gotoshop;
     private TextView tv_share;
+    private Button btn_go_to_the_mall;
 
 
     public Home_Fragment() {
@@ -614,6 +615,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_share, null);
                 btn_share_one = under_review.findViewById(R.id.btn_share_one);
                 iv_code_one = under_review.findViewById(R.id.iv_code_one);
+                btn_go_to_the_mall = under_review.findViewById(R.id.btn_go_to_the_mall);
                 Bitmap bitmap = ZXingUtils.createQRImage("http://admin.xigyu.com/sign?phone="+userID+"&type=7", 600, 600, BitmapFactory.decodeResource(getResources(), R.drawable.icon));
                 iv_code_one.setImageBitmap(bitmap);
                 btn_share_one.setOnClickListener(new View.OnClickListener() {
@@ -621,6 +623,13 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                     public void onClick(View v) {
                         underReviewDialog.dismiss();
                         mShareAction.open();
+                    }
+                });
+                btn_go_to_the_mall.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        openShopApp("com.zhenghaikj.shop");
+                        underReviewDialog.dismiss();
                     }
                 });
 //                btn_share_two.setOnClickListener(new View.OnClickListener() {

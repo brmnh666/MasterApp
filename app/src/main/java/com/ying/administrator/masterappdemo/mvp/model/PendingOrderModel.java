@@ -5,6 +5,7 @@ import com.ying.administrator.masterappdemo.entity.Accessory;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.GAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
+import com.ying.administrator.masterappdemo.entity.Logistics;
 import com.ying.administrator.masterappdemo.entity.Service;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.PendingOrderContract;
@@ -126,6 +127,13 @@ public class PendingOrderModel implements PendingOrderContract.Model {
     @Override
     public Observable<BaseResult<Data<String>>> UpdateOrderState(String OrderID, String State) {
         return ApiRetrofit.getDefault().UpdateOrderState(OrderID,State)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<BaseResult<Data<List<Logistics>>>> GetExpressInfo(String ExpressNo) {
+        return ApiRetrofit.getDefault().GetExpressInfo(ExpressNo)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

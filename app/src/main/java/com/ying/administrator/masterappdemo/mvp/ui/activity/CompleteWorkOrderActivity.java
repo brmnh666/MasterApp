@@ -203,6 +203,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
         mIvThree.setOnClickListener(this);
         mIvFour.setOnClickListener(this);
         mBtnCompleteSubmit.setOnClickListener(this);
+        mLlViewExampleTwo.setOnClickListener(this);
 
     }
 
@@ -218,10 +219,10 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 
                 mTvWorkOrderNumber.setText(data.getOrderID());
                 mTvOrderTime.setText(data.getAudDate().replace("T", " ")); //将T替换为空格
-                if (("Y").equals(data.getGuaranteeText())){
-                    mTvPaymentMethod.setText("客户付款");
-                }else {
+                if (("Y").equals(data.getGuarantee())){
                     mTvPaymentMethod.setText("平台代付");
+                }else {
+                    mTvPaymentMethod.setText("客户付款");
                 }
                 mTvReasonPendingAppointment.setText(data.getMemo());
                 mTvServiceGoods.setText(data.getCategoryName() + "/" + data.getBrandName() + "/" + data.getSubCategoryName());
@@ -354,6 +355,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
             case R.id.ll_return:
                 CompleteWorkOrderActivity.this.finish();
                 break;
+            case R.id.ll_view_example_two:
             case R.id.ll_view_example:
                 final ViewExampleDialog viewExampleDialog = new ViewExampleDialog(mActivity);
                 viewExampleDialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
@@ -428,7 +430,8 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                     }*/
                 if ("2".equals(data.getTypeID())) {//安装
                     if (service_img_map.size() < 4) {
-                        Toast.makeText(CompleteWorkOrderActivity.this, "请添加四张服务图片", Toast.LENGTH_SHORT).show();
+                        MyUtils.showToast(mActivity,"请上传四张整机跟服务图片");
+                        return;
                     } else {
 
 
