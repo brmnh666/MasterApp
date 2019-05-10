@@ -147,6 +147,7 @@
             android:textSize="15sp"
             />
 
+
         <TextView
             android:id="@+id/tv_register"
             android:layout_width="wrap_content"
@@ -161,6 +162,16 @@
     </RelativeLayout>
 
 
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tv_forgetpassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="忘记密码"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:textSize="15sp"
+        />
 </LinearLayout>
 
     <ImageView

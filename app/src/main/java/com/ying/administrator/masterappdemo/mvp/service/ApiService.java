@@ -477,8 +477,29 @@ public interface ApiService {
             @Field("District") String District,
             @Field("Longitude") String Longitude,
             @Field("Dimension") String Dimension,
-            @Field("ServiceAreaJsonStr") String ServiceAreaJsonStr
+            @Field("ServiceAreaJsonStr") String ServiceAreaJsonStr,
+            @Field("ISwoker") String Iswoker
     );
+
+    @FormUrlEncoded
+    @POST("Account/ApplyAuthInfo")
+    Observable<BaseResult<Data<String>>> ApplyAuthInfoBysub(@Field("UserID") String UserID,
+                                                            @Field("TrueName") String TrueName,
+                                                            @Field("Sex") String Sex,
+                                                            @Field("IDCard") String IDCard,
+                                                            @Field("Address") String Address,
+                                                            @Field("Province") String Province,
+                                                            @Field("City") String City,
+                                                            @Field("Area") String Area,
+                                                            @Field("District") String District,
+                                                            @Field("Longitude") String Longitude,
+                                                            @Field("Dimension") String Dimension,
+                                                            @Field("ISwoker") String Iswoker
+                                                            );
+
+
+
+
       /*更新服务区域*/
     @FormUrlEncoded
     @POST("Account/AddorUpdateServiceArea")
@@ -708,5 +729,20 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("cms/Calculate")
     Observable<BaseResult<QuestResult>> Calculate(@Field("Answer") String Answer);
+
+
+
+    /*
+    * 忘记密码
+    * */
+    @FormUrlEncoded
+    @POST("Account/ForgetPassword")
+    Observable<BaseResult<Data<String>>> ForgetPassword(@Field("mobile") String mobile,
+                                                        @Field("type") String type,
+                                                        @Field("code") String code,
+                                                        @Field("roleType") String roleType,
+                                                        @Field("password") String password);
+
+
 
 }

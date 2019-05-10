@@ -51,6 +51,10 @@ public class Login_New_Activity extends BaseActivity<LoginPresenter, LoginModel>
     @BindView(R.id.tv_note_login)
     TextView mTv_note_login;
 
+    @BindView(R.id.tv_forgetpassword)
+    TextView tv_forgetpassword;
+
+
     private boolean isLogin;
     private String userName;
     private String passWord;
@@ -88,11 +92,20 @@ public class Login_New_Activity extends BaseActivity<LoginPresenter, LoginModel>
         mTvForgetPassword.setOnClickListener(this);
         mTvRegister.setOnClickListener(this);
         mTv_note_login.setOnClickListener(this);
+        tv_forgetpassword.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
       switch (v.getId()){
+
+          case R.id.tv_forgetpassword:
+
+              startActivity(new Intent(mActivity,ForgetPasswordActivity.class));
+
+              break;
+
+
           case R.id.tv_note_login://验证码登陆
               String phone=mEtLoginUsername.getText().toString();
               Intent intent=new Intent(mActivity, ToteLoginActivity.class);

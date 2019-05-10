@@ -121,10 +121,28 @@ public class UserInfo implements Serializable {
         private String IDCard;
         private String Sex;
         private String Phone;
+        private String Longitude;
+        private String Dimension;
         private int page;
         private int limit;
         private int Version;
         private Double Con;
+
+        public String getLongitude() {
+            return Longitude;
+        }
+
+        public void setLongitude(String longitude) {
+            Longitude = longitude;
+        }
+
+        public String getDimension() {
+            return Dimension;
+        }
+
+        public void setDimension(String dimension) {
+            Dimension = dimension;
+        }
 
         public String getId() {
             return Id;

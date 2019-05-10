@@ -43,6 +43,7 @@ import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.mvp.contract.VerifiedContract;
 import com.ying.administrator.masterappdemo.mvp.model.VerifiedModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.VerifiedPresenter;
@@ -363,10 +364,10 @@ public class VerifiedUpdateActivity extends BaseActivity<VerifiedPresenter, Veri
                 }
                 if ("Y".equals(Guarantee)) {
                     showLoading();
-                    mPresenter.ApplyAuthInfo(UserID, mActualName, Sex, mIdNumber, mAddress, NodeIds, mProvince, mCity, mDistrict, mStreet, Double.toString(mLongitude), Double.toString(mLatitude), codestr);
+                    mPresenter.ApplyAuthInfo(UserID, mActualName, Sex, mIdNumber, mAddress, NodeIds, mProvince, mCity, mDistrict, mStreet, Double.toString(mLongitude), Double.toString(mLatitude), codestr,"2");
                 }else{
                     showLoading();
-                    mPresenter.ApplyAuthInfo(UserID, mActualName, Sex, mIdNumber, mAddress, NodeIds, mProvince, mCity, mDistrict, mStreet, "", "", codestr);
+                    mPresenter.ApplyAuthInfo(UserID, mActualName, Sex, mIdNumber, mAddress, NodeIds, mProvince, mCity, mDistrict, mStreet, "", "", codestr,"2");
                 }
                 break;
             case R.id.ll_select_service_area:
@@ -720,6 +721,12 @@ public class VerifiedUpdateActivity extends BaseActivity<VerifiedPresenter, Veri
         }
     }
 
+    /*如果是子账号不选择地址*/
+    @Override
+    public void GetUserInfoList(BaseResult<UserInfo> baseResult) {
+
+    }
+
     @Override
     public void ApplyAuthInfo(BaseResult<Data<String>> baseResult) {
         switch (baseResult.getStatusCode()) {
@@ -739,6 +746,11 @@ public class VerifiedUpdateActivity extends BaseActivity<VerifiedPresenter, Veri
     }
 
     @Override
+    public void ApplyAuthInfoBysub(BaseResult<Data<String>> baseResult) {
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
@@ -747,13 +759,13 @@ public class VerifiedUpdateActivity extends BaseActivity<VerifiedPresenter, Veri
 
     public void showLoading(){
         dialog.setLoadingBuilder(Z_TYPE.ROTATE_CIRCLE)//设置类型
-                .setLoadingColor(Color.BLACK)//颜色
-                .setHintText("提交中请稍后...")
-                .setHintTextSize(14) // 设置字体大小 dp
-                .setHintTextColor(Color.BLACK)  // 设置字体颜色
-                .setDurationTime(1) // 设置动画时间百分比 - 0.5倍
-                .setCanceledOnTouchOutside(false)//点击外部无法取消
-                .show();
+        .setLoadingColor(Color.BLACK)//颜色
+        .setHintText("提交中请稍后...")
+        .setHintTextSize(14) // 设置字体大小 dp
+        .setHintTextColor(Color.BLACK)  // 设置字体颜色
+        .setDurationTime(1) // 设置动画时间百分比 - 0.5倍
+        .setCanceledOnTouchOutside(false)//点击外部无法取消
+        .show();
     }
 
     public void cancleLoading(){

@@ -28,6 +28,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -43,6 +44,7 @@ import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.mvp.contract.VerifiedContract;
 import com.ying.administrator.masterappdemo.mvp.model.VerifiedModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.VerifiedPresenter;
@@ -126,10 +128,17 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
     ImageView mImgFemaleSelect;
     @BindView(R.id.ll_female)
     LinearLayout mLlFemale;
+
+    @BindView(R.id.ll_serive_origin)
+    LinearLayout mLl_serive_origin;
+
+    private boolean issubaccount = false; //判断是不是子账号
     private View popupWindow_view;
     private String FilePath;
     private PopupWindow mPopupWindow;
     private ArrayList<String> permissions;
+
+    private UserInfo parentUserInfo;
     ArrayList<Media> select = new ArrayList<>();
     ZLoadingDialog dialog = new ZLoadingDialog(this); //loading
     //声明AMapLocationClient类对象
@@ -256,6 +265,11 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
         } else {
             requestPermissions(permissions.toArray(new String[permissions.size()]), 20002);
         }
+
+
+
+
+
     }
 
     @Override
@@ -263,6 +277,7 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
         mTvActionbarTitle.setText("实名认证");
         spUtils = SPUtils.getInstance("token");
         UserID = spUtils.getString("userName");
+        mPresenter.GetUserInfoList(UserID,"1");
     }
 
     @Override
@@ -275,10 +290,8 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
         mLlServiceSkill.setOnClickListener(this);
         mSubmitApplicationBt.setOnClickListener(this);
         mLlSelectServiceArea.setOnClickListener(this);
-
         mLlUnderWarranty.setOnClickListener(this);
         mLlOutsideTheWarranty.setOnClickListener(this);
-
         mLlMale.setOnClickListener(this);
         mLlFemale.setOnClickListener(this);
     }
@@ -339,62 +352,110 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                 startActivityForResult(new Intent(mActivity, MySkillsActivity.class), 1000);
                 break;
             case R.id.submit_application_bt:
+                if (issubaccount){//是子账号
+                    mActualName = mActualNameEt.getText().toString();
+                    mIdNumber = mIdNumberEt.getText().toString();
+                    if ("".equals(mActualName)) {
+                        ToastUtils.showShort("请输入真实姓名！");
+                        return;
+                    }
+                    if ("".equals(Sex)) {
+                        ToastUtils.showShort("请选择性别！");
+                        return;
+                    }
+                    if ("".equals(mIdNumber)) {
+                        ToastUtils.showShort("请输入身份证号码！");
+                        return;
+                    }
+                    if (!RegexUtils.isIDCard18Exact(mIdNumber)) {
+                        ToastUtils.showShort("身份证号码格式错误！");
+                        return;
+                    }
+                    if ("".equals(mPositiveCard)) {
+                        ToastUtils.showShort("请添加正面身份证照片！");
+                        return;
+                    }
+                    if ("".equals(mNegativeCard)) {
+                        ToastUtils.showShort("请添加反面身份证照片！");
+                        return;
+                    }
+                    if ("".equals(mSelfie)) {
+                        ToastUtils.showShort("请添加清晰自拍照！");
+                        return;
+                    }
 
-                mActualName = mActualNameEt.getText().toString();
-                mIdNumber = mIdNumberEt.getText().toString();
-
-                if ("".equals(mActualName)) {
-                    ToastUtils.showShort("请输入真实姓名！");
-                    return;
-                }
-                if ("".equals(Sex)) {
-                    ToastUtils.showShort("请选择性别！");
-                    return;
-                }
-                if ("".equals(mIdNumber)) {
-                    ToastUtils.showShort("请输入身份证号码！");
-                    return;
-                }
-                if (!RegexUtils.isIDCard18Exact(mIdNumber)) {
-                    ToastUtils.showShort("身份证号码格式错误！");
-                    return;
-                }
-                if ("".equals(mPositiveCard)) {
-                    ToastUtils.showShort("请添加正面身份证照片！");
-                    return;
-                }
-                if ("".equals(mNegativeCard)) {
-                    ToastUtils.showShort("请添加反面身份证照片！");
-                    return;
-                }
-                if ("".equals(mSelfie)) {
-                    ToastUtils.showShort("请添加清晰自拍照！");
-                    return;
-                }
-                if ("".equals(mSkills)) {
-                    ToastUtils.showShort("请添加你的服务技能！");
-                    return;
-                }
-                if ("".equals(mAddress)) {
-                    ToastUtils.showShort("未定位到店铺地址！");
-                    return;
-                }
-                if ("".equals(codestr)) {
-                    ToastUtils.showShort("请添加服务区域！");
-                    return;
-                }
-                if ("".equals(Guarantee)) {
-                    ToastUtils.showShort("请选择服务起点！");
-                    return;
-                }
-                if ("Y".equals(Guarantee)) {
                     showLoading();
-                    mPresenter.ApplyAuthInfo(UserID, mActualName, Sex, mIdNumber, mAddress, NodeIds, mProvince, mCity, mDistrict, mStreet, Double.toString(mLongitude), Double.toString(mLatitude), codestr);
+                    UserInfo.UserInfoDean parentuserInfoDean = parentUserInfo.getData().get(0);
+                    String districtCode = parentuserInfoDean.getDistrictCode();
+                    String provinceCode = parentuserInfoDean.getProvinceCode();
+                    String cityCode = parentuserInfoDean.getCityCode();
+                    String areaCode = parentuserInfoDean.getAreaCode();
+                    String address = parentuserInfoDean.getAddress();
+                    String Longitude=parentuserInfoDean.getLongitude();
+                    String Dimension=parentuserInfoDean.getDimension();
 
-                } else {
-                    showLoading();
-                    mPresenter.ApplyAuthInfo(UserID, mActualName, Sex, mIdNumber, mAddress, NodeIds, mProvince, mCity, mDistrict, mStreet, "", "", codestr);
+                    mPresenter.ApplyAuthInfoBysub(UserID,mActualName,Sex,mIdNumber,address,provinceCode,cityCode,areaCode,districtCode,Longitude,Dimension,"2");
+
+
+                }else {
+                    mActualName = mActualNameEt.getText().toString();
+                    mIdNumber = mIdNumberEt.getText().toString();
+
+                    if ("".equals(mActualName)) {
+                        ToastUtils.showShort("请输入真实姓名！");
+                        return;
+                    }
+                    if ("".equals(Sex)) {
+                        ToastUtils.showShort("请选择性别！");
+                        return;
+                    }
+                    if ("".equals(mIdNumber)) {
+                        ToastUtils.showShort("请输入身份证号码！");
+                        return;
+                    }
+                    if (!RegexUtils.isIDCard18Exact(mIdNumber)) {
+                        ToastUtils.showShort("身份证号码格式错误！");
+                        return;
+                    }
+                    if ("".equals(mPositiveCard)) {
+                        ToastUtils.showShort("请添加正面身份证照片！");
+                        return;
+                    }
+                    if ("".equals(mNegativeCard)) {
+                        ToastUtils.showShort("请添加反面身份证照片！");
+                        return;
+                    }
+                    if ("".equals(mSelfie)) {
+                        ToastUtils.showShort("请添加清晰自拍照！");
+                        return;
+                    }
+                    if ("".equals(mSkills)) {
+                        ToastUtils.showShort("请添加你的服务技能！");
+                        return;
+                    }
+                    if ("".equals(mAddress)) {
+                        ToastUtils.showShort("未定位到店铺地址！");
+                        return;
+                    }
+                    if ("".equals(codestr)) {
+                        ToastUtils.showShort("请添加服务区域！");
+                        return;
+                    }
+                    if ("".equals(Guarantee)) {
+                        ToastUtils.showShort("请选择服务起点！");
+                        return;
+                    }
+                    if ("Y".equals(Guarantee)) {
+                        showLoading();
+                        mPresenter.ApplyAuthInfo(UserID, mActualName, Sex, mIdNumber, mAddress, NodeIds, mProvince, mCity, mDistrict, mStreet, Double.toString(mLongitude), Double.toString(mLatitude), codestr,"1");
+
+                    } else {
+                        showLoading();
+                        mPresenter.ApplyAuthInfo(UserID, mActualName, Sex, mIdNumber, mAddress, NodeIds, mProvince, mCity, mDistrict, mStreet, "", "", codestr,"1");
+                    }
+
                 }
+
                 break;
             case R.id.ll_select_service_area:
                 startActivityForResult(new Intent(mActivity, AddServiceAreaActivity.class), 317);
@@ -759,6 +820,35 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
     }
 
     @Override
+    public void GetUserInfoList(BaseResult<UserInfo> baseResult) {
+
+        switch (baseResult.getStatusCode()){
+            case 200:
+                if (!baseResult.getData().getData().isEmpty()){
+                    if (baseResult.getData().getData().get(0).getParentUserID()!=null){
+
+                        issubaccount=true;
+                         //为子账号时隐藏位置选择框
+                        mLlSelectServiceArea.setVisibility(View.GONE);
+                        mLl_serive_origin.setVisibility(View.GONE);
+                        mLlShopAddress.setVisibility(View.GONE);
+                        mLlServiceSkill.setVisibility(View.GONE);
+                        mPresenter.GetUserInfoList(baseResult.getData().getData().get(0).getParentUserID(),"1");
+                    }else {
+
+                      parentUserInfo=baseResult.getData(); //存储父账号
+
+                    }
+
+
+
+                }
+
+                break;
+        }
+    }
+
+    @Override
     public void ApplyAuthInfo(BaseResult<Data<String>> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
@@ -773,6 +863,22 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                 ToastUtils.showShort("提交失败");
                 break;
         }
+    }
+
+    /*认证子账号*/
+    @Override
+    public void ApplyAuthInfoBysub(BaseResult<Data<String>> baseResult) {
+        switch (baseResult.getStatusCode()){
+            case 200:
+                if (baseResult.getData().isItem1()){
+                    Toast.makeText(mActivity,"提交成功",Toast.LENGTH_SHORT).show();
+                    EventBus.getDefault().post("GetUserInfoList");
+                    Verified_Activity.this.finish();
+
+                }
+                break;
+        }
+
     }
 
     @Override

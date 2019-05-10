@@ -79,7 +79,6 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
     ImageView mImgMeMessage;
     @BindView(R.id.tv_me_message)
     TextView mTv_me_message;
-
     @BindView(R.id.img_me_setting)
     ImageView mImgMeSetting;
     @BindView(R.id.img_me_head)
@@ -298,10 +297,17 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                     mTvCertification.setText("已实名认证");
                     mImgUnCertification.setVisibility(View.INVISIBLE);
                     mImgCertification.setVisibility(View.VISIBLE);
-                } else {
-
-                    return;
                 }
+
+                if (userInfo.getParentUserID()!=null){
+
+                    mLlSubAccountManagement.setVisibility(View.GONE);
+
+                }
+
+
+
+
                 break;
             default:
                 break;
