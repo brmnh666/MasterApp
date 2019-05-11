@@ -56,6 +56,8 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.tencent.android.tpush.XGPushClickedResult;
+import com.tencent.android.tpush.XGPushManager;
 import com.vondear.rxui.view.dialog.RxDialogScaleView;
 import com.wx.wheelview.widget.WheelView;
 import com.ying.administrator.masterappdemo.R;
@@ -97,6 +99,8 @@ import org.feezu.liuli.timeselector.TimeSelector;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.text.DateFormat;
@@ -434,6 +438,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     private List<Uri> mSelected;
     private Uri uri;
     private String time;
+    private XGPushClickedResult clickedResult;
 
 
     @Override
@@ -451,7 +456,24 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     @Override
     public void initView() {
         mTvActionbarTitle.setText("详情页");
-        OrderID = getIntent().getStringExtra("OrderID");
+        //this必须为点击消息要跳转到页面的上下文。
+        clickedResult = XGPushManager.onActivityStarted(this);
+        if (clickedResult !=null){
+            //获取消息附近参数
+            String ster = clickedResult.getCustomContent();
+            try {
+                JSONObject jsonObject=new JSONObject(ster);
+                OrderID=jsonObject.getString("OrderID");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+//获取消息标题
+//            String set = clickedResult.getTitle();
+//获取消息内容
+//            String s = clickedResult.getContent();
+        }else{
+            OrderID = getIntent().getStringExtra("OrderID");
+        }
         time = getIntent().getStringExtra("time");
         mTvSelectTime.setText(time);
         mPresenter.GetOrderInfo(OrderID);
@@ -584,6 +606,16 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         mViewSelectTimePoint2.setOnClickListener(this);
     }
 
+    @Override
+    public void onBackPressed() {
+        if (clickedResult!=null){
+            startActivity(new Intent(mActivity, MainActivity.class));
+            finish();
+        }else{
+            finish();
+        }
+    }
+
     /**
      * 选择上门时间
      */
@@ -612,6 +644,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         timeSelector.setTitle(title);
         timeSelector.show();
     }*/
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -748,7 +781,12 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 }
                 break;
             case R.id.ll_return:
-                finish();
+                if (clickedResult!=null){
+                    startActivity(new Intent(mActivity, MainActivity.class));
+                    finish();
+                }else{
+                    finish();
+                }
                 break;
             case R.id.tv_accessory_information:
                 puchsh_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_push, null);
