@@ -43,8 +43,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="预计1个工作日内审核完毕，审核
-结果会短信通知到您的手机上。"
+            android:text="预计1个工作日内审核完毕，审核结果会短信通知到您的手机上。"
             android:textSize="15sp"
             android:textColor="#333333"
             android:layout_marginTop="21dp"

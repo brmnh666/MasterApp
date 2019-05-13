@@ -47,6 +47,7 @@ import com.ying.administrator.masterappdemo.mvp.contract.MainContract;
 import com.ying.administrator.masterappdemo.mvp.model.MainModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.MainPresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.AboutUsActivity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.LoginActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Opinion_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_Receiving_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Personal_Information_Activity;
@@ -309,6 +310,8 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
 
 
                 break;
+
+
             default:
                 break;
 

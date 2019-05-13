@@ -21,6 +21,28 @@ public class GAccessory implements Serializable {
      * DiscountPrice : 35
      * IsUse : Y
      * Version : 0
+     *
+     *
+     * "Id":737,"
+     * AccessoryID":737,
+     * "FAccessoryID":22,
+     * "FAccessoryName":"更换门体",
+     * "SendState":"Y",
+     * "Quantity":1,
+     * "OrderID":2000001107,
+     * "CreateTime":2019-05-10T15:03:50",
+     * "Relation":"af8c7a57-39ec-425c-9459-60bb2e22f41e",
+     * "Price":66.00,
+     * "DiscountPrice":66.00,
+     * "IsUse":"Y",
+     * "IsPay":"Y",
+     * "ExpressNo":"123456789",
+     * "State":"1",
+     * "AccessoryState":"0",
+     * "TypeID":"1",
+     * "ApplyNum":1,
+     * "QApplyNum":0,
+     * "Version":0
      */
 
     private int Id;
@@ -37,7 +59,10 @@ public class GAccessory implements Serializable {
     private String IsUse;
     private String ExpressNo;
     private String State;
-
+    private String AccessoryState;
+    private String TypeID;
+    private String ApplyNum;
+    private String QApplyNum;
     private int Version;
 
 
@@ -159,5 +184,37 @@ public class GAccessory implements Serializable {
 
     public void setVersion(int Version) {
         this.Version = Version;
+    }
+
+    public String getAccessoryState() {
+        return AccessoryState;
+    }
+
+    public void setAccessoryState(String accessoryState) {
+        AccessoryState = accessoryState;
+    }
+
+    public String getTypeID() {
+        return TypeID;
+    }
+
+    public void setTypeID(String typeID) {
+        TypeID = typeID;
+    }
+
+    public String getApplyNum() {
+        return ApplyNum;
+    }
+
+    public void setApplyNum(String applyNum) {
+        ApplyNum = applyNum;
+    }
+
+    public String getQApplyNum() {
+        return QApplyNum;
+    }
+
+    public void setQApplyNum(String QApplyNum) {
+        this.QApplyNum = QApplyNum;
     }
 }

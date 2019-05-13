@@ -21,9 +21,11 @@ import com.ying.administrator.masterappdemo.mvp.contract.ArticleContract;
 import com.ying.administrator.masterappdemo.mvp.model.ArticleModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.ArticlePresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.ArticleActivity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.LoginActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.OrderMessageActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.TransactionMessageActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
+import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -194,6 +196,7 @@ public class InformationFragment extends BaseLazyFragment<ArticlePresenter, Arti
                  workqBadgeView.setBadgeNumber(baseResult.getData().getCount());
              }
              break;
+
              default:
                  break;
      }

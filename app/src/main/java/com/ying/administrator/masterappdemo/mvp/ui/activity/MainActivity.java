@@ -34,6 +34,7 @@ import com.ying.administrator.masterappdemo.mvp.ui.fragment.BlankFragment;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.Home_Fragment;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.Me_Fragment;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.NewsFragment;
+import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 import com.ying.administrator.masterappdemo.widget.CustomDialog;
 import com.ying.administrator.masterappdemo.widget.CustomViewPager;
 
@@ -298,6 +299,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
 
 
                 break;
+
 
             default:
                 break;

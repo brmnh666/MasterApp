@@ -299,6 +299,7 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
     private String ServiceApplyState;
     private String BeyondState;
     private int select_state = -1;
+    private List<Logistics> list = new ArrayList<>();
 
     /*  配件*/
     private List<Accessory> mList = new ArrayList<>();   //存放返回的list
@@ -380,6 +381,7 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
 
     private String startTime;
     private String endTime;
+    private String content;
 
 
     @Override
@@ -397,6 +399,8 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
         mTvActionbarTitle.setText("详情页");
         OrderID = getIntent().getStringExtra("OrderID");
         mPresenter.GetOrderInfo(OrderID);
+
+
         mPre_order_add_ac_adapter = new Pre_order_Add_Ac_Adapter(R.layout.item_pre_order_add_accessories, fAcList);
         mRecyclerViewAddAccessories.setLayoutManager(new LinearLayoutManager(mActivity));
         mRecyclerViewAddAccessories.setAdapter(mPre_order_add_ac_adapter);
@@ -1245,7 +1249,9 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
 
 
                 if (data.getOrderAccessroyDetail().size() != 0) {
-                    returnAccessoryAdapter = new ReturnAccessoryAdapter(R.layout.item_returned, data.getOrderAccessroyDetail(), Integer.parseInt(data.getAccessoryState()));
+
+
+                    returnAccessoryAdapter = new ReturnAccessoryAdapter(R.layout.item_returned, data.getOrderAccessroyDetail(), Integer.parseInt(data.getAccessoryState()),content);
                     mRvReturnInformation.setLayoutManager(new LinearLayoutManager(mActivity));
                     mRvReturnInformation.setAdapter(returnAccessoryAdapter);
                     mLlAccessory.setVisibility(View.VISIBLE);

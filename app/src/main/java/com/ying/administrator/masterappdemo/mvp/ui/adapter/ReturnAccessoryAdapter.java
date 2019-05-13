@@ -11,9 +11,21 @@ import java.util.List;
 
 public class ReturnAccessoryAdapter extends BaseQuickAdapter<GAccessory,BaseViewHolder> {
     private int state;
-    public ReturnAccessoryAdapter(int layoutResId, List<GAccessory> data,int state) {
+    private String content;
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+        notifyDataSetChanged();
+    }
+
+    public ReturnAccessoryAdapter(int layoutResId, List<GAccessory> data, int state, String content) {
         super(layoutResId, data);
         this.state=state;
+        this.content=content;
     }
     @Override
     protected void convert(BaseViewHolder helper, GAccessory item) {
@@ -35,5 +47,6 @@ public class ReturnAccessoryAdapter extends BaseQuickAdapter<GAccessory,BaseView
         }
         helper.setText(R.id.tv_accessory_name,item.getFAccessoryName()+"  ￥"+item.getDiscountPrice()+"/"+item.getQuantity()+"个");
         helper.setText(R.id.tv_accessory_name_n,item.getFAccessoryName()+"  ￥"+item.getDiscountPrice()+"/"+item.getQuantity()+"个");
+        helper.setText(R.id.tv_content,content);
     }
 }

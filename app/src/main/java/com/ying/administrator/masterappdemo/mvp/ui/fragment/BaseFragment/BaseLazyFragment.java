@@ -19,16 +19,21 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
+import com.blankj.utilcode.util.ActivityUtils;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseModel;
 import com.ying.administrator.masterappdemo.base.BasePresenter;
 import com.ying.administrator.masterappdemo.base.BaseView;
 import com.ying.administrator.masterappdemo.base.RxManager;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.LoginActivity;
 import com.ying.administrator.masterappdemo.util.HandleBackInterface;
 import com.ying.administrator.masterappdemo.util.HandleBackUtil;
 import com.ying.administrator.masterappdemo.util.TUtil;
+import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 
 import butterknife.ButterKnife;
@@ -317,5 +322,28 @@ public abstract class BaseLazyFragment<P extends BasePresenter, M extends BaseMo
     @Override
     public void hideProgress() {
 
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(String message) {
+        if ("账号在别处登录".equals(message)){
+            final CommonDialog_Home dialog = new CommonDialog_Home(mActivity);
+            dialog.setMessage("账号在别处登录是否重新登录")
+                    //.setImageResId(R.mipmap.ic_launcher)
+                    .setTitle("提示")
+                    .setSingle(true).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
+                @Override
+                public void onPositiveClick() {//重新登录
+                    ActivityUtils.finishAllActivities();
+                    startActivity(new Intent(mActivity, LoginActivity.class));
+//                    finish();
+                }
+
+                @Override
+                public void onNegtiveClick() {//取消
+                    dialog.dismiss();
+                    // Toast.makeText(MainActivity.this,"ssss",Toast.LENGTH_SHORT).show();
+                }
+            }).show();
+        }
     }
 }
