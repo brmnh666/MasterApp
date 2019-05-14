@@ -1081,7 +1081,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
             et__service_price.setVisibility(View.GONE);
         } else {//用户自购
             et_price.setVisibility(View.GONE);
-            et__service_price.setVisibility(View.VISIBLE);
+            et__service_price.setVisibility(View.GONE);
         }
         btn_add = choose_accessory_view.findViewById(R.id.btn_add);
         choose_accessory_dialog = new HideSoftInputDialog(mActivity);
@@ -1145,12 +1145,12 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     mfAccessory.setPrice(Double.parseDouble(price));
                     mfAccessory.setDiscountPrice(Double.parseDouble(price));
                 } else {//用户自购
-                    if ("".equals(servicePrice)) {
-                        ToastUtils.showShort("请输入服务价格");
-                        return;
-                    }
-                    mfAccessory.setPrice(Double.parseDouble(servicePrice));
-                    mfAccessory.setDiscountPrice(Double.parseDouble(servicePrice));
+//                    if ("".equals(servicePrice)) {
+//                        ToastUtils.showShort("请输入服务价格");
+//                        return;
+//                    }
+                    mfAccessory.setPrice(Double.parseDouble("0.00"));
+                    mfAccessory.setDiscountPrice(Double.parseDouble("0.00"));
                 }
 
                 if (select_state == 0) {//厂家自购
@@ -1393,12 +1393,21 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     mTvPaymentMethod.setText("平台代付");
                     mIvSelfbuying.setSelected(false);
                     mIvSelfbuyingUser.setSelected(false);
+                    mLlManufacturers.setVisibility(View.VISIBLE);
+                    mLlSelfbuying.setVisibility(View.VISIBLE);
+                    mLlSelfbuyingUser.setVisibility(View.GONE);
                 } else {
                     mTvPaymentMethod.setText("客户付款");
                     mIvSelfbuying.setSelected(true);
+                    mIvManufacturers.setEnabled(false);
                     select_state = 1;
                     mIvSelfbuyingUser.setSelected(false);
+                    mLlManufacturers.setVisibility(View.GONE);
+                    mLlSelfbuying.setVisibility(View.VISIBLE);
+                    mLlSelfbuyingUser.setVisibility(View.VISIBLE);
                 }
+
+
                 mTvProductType.setText(data.getCategoryName() + "/" + data.getBrandName() + "/" + data.getSubCategoryName());
 
                 if (data.getSendOrderList().size() != 0) {

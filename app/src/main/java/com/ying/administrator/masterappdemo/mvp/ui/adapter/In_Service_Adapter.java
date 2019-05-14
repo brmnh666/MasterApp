@@ -21,6 +21,7 @@ public class In_Service_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,Base
 
         helper.setText(R.id.tv_in_service,item.getStateStr());
         helper.setText(R.id.tv_in_service_status_repair,item.getTypeName()+"/"+item.getGuaranteeText());
+        helper.setText(R.id.tv_number,"数量:"+item.getNum()+"台");
         helper.setText(R.id.tv_loaction_in_service,"距离 "+item.getDistance()+"Km");
         helper.setText(R.id.tv_reason_in_service,item.getMemo());//原因
         helper.setText(R.id.tv_address_in_service,item.getAddress()); //地址

@@ -747,6 +747,16 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                 }else {
                     mTvPaymentMethod.setText("平台代付");
                 }
+
+                if ("Y".equals(data.getGuarantee())) {//保内
+                    mLlManufacturers.setVisibility(View.VISIBLE);
+                    mLlSelfbuying.setVisibility(View.VISIBLE);
+                    mLlSelfbuyingUser.setVisibility(View.GONE);
+                } else {//保外
+                    mLlManufacturers.setVisibility(View.GONE);
+                    mLlSelfbuying.setVisibility(View.VISIBLE);
+                    mLlSelfbuyingUser.setVisibility(View.VISIBLE);
+                }
                 tv_order_details_state.setText(data.getStateStr());
                 /*判断是选中了那个*/
                 if (data.getAccessoryState() == null) {//未选择
@@ -770,6 +780,8 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                     iv_selfbuying.setSelected(false);
                     mIvSelfbuyingUser.setSelected(true);
                 }
+
+
                 tv_order_details_orderid.setText(data.getOrderID());
                 mTvOrderDetailsReceivingTime.setText(data.getAudDate().replace("T", " ")); //将T替换为空格
                 tv_order_details_reason.setText(data.getMemo());

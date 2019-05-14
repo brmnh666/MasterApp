@@ -131,6 +131,7 @@ public class CalendarProviderManager {
         account.put(CalendarContract.Calendars.MAX_REMINDERS, 8);
         // 设置允许提醒的方式
         account.put(CalendarContract.Calendars.ALLOWED_REMINDERS, "0,1,2,3,4");
+        account.put(CalendarContract.Events.HAS_ALARM, 1);//设置有闹钟提醒
         // 设置日历支持的可用性类型
         account.put(CalendarContract.Calendars.ALLOWED_AVAILABILITY, "0,1,2");
         // 设置日历允许的出席者类型
