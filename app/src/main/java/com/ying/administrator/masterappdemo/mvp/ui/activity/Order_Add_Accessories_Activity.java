@@ -542,6 +542,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                 mfAccessory.setQuantity(num); //数量 默认数字为1
                 mfAccessory.setPrice(accessory.getAccessoryPrice());//原价
                 mfAccessory.setDiscountPrice(accessory.getAccessoryPrice());//折扣价
+                mfAccessory.setSizeID(accessory.getSizeID());//小修中修大修
                 mfAccessory.setSendState("N");
                 mfAccessory.setRelation("");
                 mfAccessory.setState("0");
@@ -1155,6 +1156,11 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
 
     @Override
     public void UpdateOrderState(BaseResult<Data<String>> baseResult) {
+
+    }
+
+    @Override
+    public void ConfirmtoFreezeByOrderID(BaseResult<Data<String>> baseResult) {
 
     }
 

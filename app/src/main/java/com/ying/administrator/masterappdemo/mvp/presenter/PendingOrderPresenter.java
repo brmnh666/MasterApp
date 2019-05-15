@@ -175,6 +175,15 @@ public class PendingOrderPresenter extends PendingOrderContract.Presenter {
             }
         });
     }
+    @Override
+    public void ConfirmtoFreezeByOrderID(String OrderID, String type) {
+        mModel.ConfirmtoFreezeByOrderID(OrderID,type).subscribe(new BaseObserver<Data<String>>() {
+            @Override
+            protected void onHandleSuccess(BaseResult<Data<String>> value) {
+                mView.ConfirmtoFreezeByOrderID(value);
+            }
+        });
+    }
 
     @Override
     public void GetExpressInfo(String ExpressNo) {

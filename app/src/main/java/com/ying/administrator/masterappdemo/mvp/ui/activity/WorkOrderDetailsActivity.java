@@ -1654,6 +1654,11 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
     }
 
     @Override
+    public void ConfirmtoFreezeByOrderID(BaseResult<Data<String>> baseResult) {
+
+    }
+
+    @Override
     public void GetExpressInfo(BaseResult<Data<List<Logistics>>> baseResult) {
 
     }

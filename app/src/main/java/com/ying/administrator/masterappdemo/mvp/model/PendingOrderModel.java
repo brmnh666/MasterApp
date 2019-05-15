@@ -130,6 +130,12 @@ public class PendingOrderModel implements PendingOrderContract.Model {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }
+    @Override
+    public Observable<BaseResult<Data<String>>> ConfirmtoFreezeByOrderID(String OrderID, String type) {
+        return ApiRetrofit.getDefault().ConfirmtoFreezeByOrderID(OrderID,type)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
 
     @Override
     public Observable<BaseResult<Data<List<Logistics>>>> GetExpressInfo(String ExpressNo) {

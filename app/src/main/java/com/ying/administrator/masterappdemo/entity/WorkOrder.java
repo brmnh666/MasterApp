@@ -210,6 +210,24 @@ public class WorkOrder implements Serializable {
         private String page;
         private String limit;
         private String Version;
+        private String NewMoney;
+        private String QuaMoney;
+
+        public String getQuaMoney() {
+            return QuaMoney;
+        }
+
+        public void setQuaMoney(String quaMoney) {
+            QuaMoney = quaMoney;
+        }
+
+        public String getNewMoney() {
+            return NewMoney;
+        }
+
+        public void setNewMoney(String newMoney) {
+            NewMoney = newMoney;
+        }
 
         public String getPostMoney() {
             return PostMoney;

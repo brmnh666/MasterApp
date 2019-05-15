@@ -75,8 +75,17 @@ public class FAccessory implements Serializable {
             private String IsPay;
             private String ExpressNo;
             private String State;
+            private String SizeID;
             private double Price;
             private double DiscountPrice;
+
+            public String getSizeID() {
+                return SizeID;
+            }
+
+            public void setSizeID(String sizeID) {
+                SizeID = sizeID;
+            }
 
             public String getState() {
                 return State;

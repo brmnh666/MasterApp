@@ -7,14 +7,12 @@ import com.ying.administrator.masterappdemo.entity.Area;
 import com.ying.administrator.masterappdemo.entity.Article;
 import com.ying.administrator.masterappdemo.entity.BankCard;
 import com.ying.administrator.masterappdemo.entity.Bill;
-import com.ying.administrator.masterappdemo.entity.Category;
 import com.ying.administrator.masterappdemo.entity.CategoryData;
 import com.ying.administrator.masterappdemo.entity.City;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.District;
 import com.ying.administrator.masterappdemo.entity.GAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
-import com.ying.administrator.masterappdemo.entity.GetFactorySeviceData;
 import com.ying.administrator.masterappdemo.entity.IDCard;
 import com.ying.administrator.masterappdemo.entity.Logistics;
 import com.ying.administrator.masterappdemo.entity.Message;
@@ -38,7 +36,6 @@ import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 public interface ApiService {
@@ -749,6 +746,13 @@ public interface ApiService {
                                                         @Field("code") String code,
                                                         @Field("roleType") String roleType,
                                                         @Field("password") String password);
+    /*
+    * 是否冻结
+    * */
+    @FormUrlEncoded
+    @POST("Order/ConfirmtoFreezeByOrderID")
+    Observable<BaseResult<Data<String>>> ConfirmtoFreezeByOrderID(@Field("OrderID") String OrderID,
+                                                        @Field("Type") String type);
 
 
 

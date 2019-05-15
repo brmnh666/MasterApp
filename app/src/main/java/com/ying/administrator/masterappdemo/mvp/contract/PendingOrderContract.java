@@ -62,6 +62,7 @@ public interface PendingOrderContract {
 
         //修改订单状态
         Observable<BaseResult<Data<String>>> UpdateOrderState(String OrderID,String State);
+        Observable<BaseResult<Data<String>>> ConfirmtoFreezeByOrderID(String OrderID,String type);
 
         //物流信息
         Observable<BaseResult<Data<List<Logistics>>>> GetExpressInfo( String ExpressNo);
@@ -109,6 +110,7 @@ public interface PendingOrderContract {
 
         //修改订单状态
         void UpdateOrderState(BaseResult<Data<String>> baseResult);
+        void ConfirmtoFreezeByOrderID(BaseResult<Data<String>> baseResult);
 
         void GetExpressInfo(BaseResult<Data<List<Logistics>>> baseResult);
     }
@@ -146,6 +148,7 @@ public interface PendingOrderContract {
         public abstract void AddReturnAccessory(String OrderID,String ReturnAccessoryMsg,String PostMoney);
 
         public abstract void UpdateOrderState(String OrderID,String State);
+        public abstract void ConfirmtoFreezeByOrderID(String OrderID,String type);
 
         public abstract void GetExpressInfo(String ExpressNo);
     }

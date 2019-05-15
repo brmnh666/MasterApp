@@ -33,11 +33,19 @@ public class Accessory {
     private String FCategoryName;
     private String IsUse;
     private String ParentName;
+    private String SizeID;
     private int ParentID;
     private int page;
     private int limit;
     private int Version;
 
+    public String getSizeID() {
+        return SizeID;
+    }
+
+    public void setSizeID(String sizeID) {
+        SizeID = sizeID;
+    }
 
     public boolean isIscheck() {
             return ischeck;
