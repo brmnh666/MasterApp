@@ -1677,9 +1677,12 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     returnAccessoryAdapter = new ReturnAccessoryAdapter(R.layout.item_returned, data.getOrderAccessroyDetail(), Integer.parseInt(data.getAccessoryState()), content);
                     mRvReturnInformation.setLayoutManager(new LinearLayoutManager(mActivity));
                     mRvReturnInformation.setAdapter(returnAccessoryAdapter);
-                    if (!"".equals(data.getOrderAccessroyDetail().get(0).getExpressNo())) {
-                        mPresenter.GetExpressInfo(data.getOrderAccessroyDetail().get(0).getExpressNo());
+                    if (data.getOrderAccessroyDetail().size()>0){
+                        if (!"".equals(data.getOrderAccessroyDetail().get(0).getExpressNo())) {
+                            mPresenter.GetExpressInfo(data.getOrderAccessroyDetail().get(0).getExpressNo());
+                        }
                     }
+
 
                     mLlAccessory.setVisibility(View.VISIBLE);
                     mLlAddAccessory.setVisibility(View.GONE);
@@ -2225,6 +2228,37 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
             case 200:
                 if (baseResult.getData().isItem1()) {
                     EventBus.getDefault().post("WorkOrderDetailsActivity");
+                }else{
+                    if ("支付错误,添加失败".equals(baseResult.getData().getItem2())) {
+                        customdialog_home_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_home, null);
+                        customdialog_home_dialog = new AlertDialog.Builder(mActivity)
+                                .setView(customdialog_home_view)
+                                .create();
+                        customdialog_home_dialog.show();
+                        title = customdialog_home_view.findViewById(R.id.title);
+                        message = customdialog_home_view.findViewById(R.id.message);
+                        negtive = customdialog_home_view.findViewById(R.id.negtive);
+                        positive = customdialog_home_view.findViewById(R.id.positive);
+                        title.setText("提示");
+                        message.setText("余额不足，是否充值？");
+                        negtive.setText("否");
+                        positive.setText("是");
+                        negtive.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                customdialog_home_dialog.dismiss();
+                            }
+                        });
+                        positive.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                startActivity(new Intent(mActivity, RechargeActivity.class));
+                                customdialog_home_dialog.dismiss();
+                            }
+                        });
+                    } else {
+                        ToastUtils.showShort((String) baseResult.getData().getItem2());
+                    }
                 }
                 break;
 

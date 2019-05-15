@@ -1,14 +1,8 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.SPUtils;
@@ -57,6 +51,10 @@ public class SplashActivity extends BaseActivity<LoginPresenter, LoginModel> imp
 
     @Override
     protected void initView() {
+        if((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0){
+            finish();
+            return;
+        }
         tv_splash_skin=findViewById(R.id.tv_splash_skin);
     }
 
