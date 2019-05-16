@@ -1585,15 +1585,18 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     }
                 } else if ("".equals(AccessoryApplyState) && "".equals(ServiceApplyState) && BeyondState != null) {
                     //nny
-                    mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                    mRlCompleteSubmit.setVisibility(View.VISIBLE);
-//                    if ("1".equals(BeyondState)) {
-//                        mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-//                        mRlCompleteSubmit.setVisibility(View.VISIBLE);
-//                    } else {
-//                        mBtnCompleteSubmit.setVisibility(View.GONE);
-//                        mRlCompleteSubmit.setVisibility(View.GONE);
-//                    }
+//                    mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+//                    mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                    if ("1".equals(BeyondState)) {
+                        mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                        mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                    } else if ("-1".equals(BeyondState)){
+                        mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                        mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                    }else {
+                        mBtnCompleteSubmit.setVisibility(View.GONE);
+                        mRlCompleteSubmit.setVisibility(View.GONE);
+                    }
                 } else if (!"".equals(AccessoryApplyState) && !"".equals(ServiceApplyState) && BeyondState == null) {
                     //yyn
                     if ("1".equals(AccessoryApplyState) && "1".equals(ServiceApplyState)) {
