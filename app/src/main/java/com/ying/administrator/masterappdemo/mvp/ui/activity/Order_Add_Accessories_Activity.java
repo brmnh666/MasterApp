@@ -365,6 +365,8 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
 
         mLlManufacturers.setOnClickListener(this);
         mLlSelfbuying.setOnClickListener(this);
+        mLlSelfbuyingUser.setOnClickListener(this);
+
         mIvSelfbuyingUser.setOnClickListener(this);
         tv_detail_submit.setOnClickListener(this);
 
@@ -494,7 +496,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
             et__service_price.setVisibility(View.GONE);
         } else {//用户自购
             et_price.setVisibility(View.GONE);
-            et__service_price.setVisibility(View.VISIBLE);
+            et__service_price.setVisibility(View.GONE);
         }
         btn_add = choose_accessory_view.findViewById(R.id.btn_add);
         choose_accessory_dialog = new HideSoftInputDialog(mActivity);
@@ -559,12 +561,14 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                     mfAccessory.setPrice(Double.parseDouble(price));
                     mfAccessory.setDiscountPrice(Double.parseDouble(price));
                 } else {//用户自购
-                    if ("".equals(servicePrice)) {
+                    /*if ("".equals(servicePrice)) {
                         ToastUtils.showShort("请输入服务价格");
                         return;
                     }
                     mfAccessory.setPrice(Double.parseDouble(servicePrice));
-                    mfAccessory.setDiscountPrice(Double.parseDouble(servicePrice));
+                    mfAccessory.setDiscountPrice(Double.parseDouble(servicePrice));*/
+                    mfAccessory.setPrice(Double.parseDouble("0.00"));
+                    mfAccessory.setDiscountPrice(Double.parseDouble("0.00"));
                 }
 
                 if (select_state == 0) {//厂家自购

@@ -1413,14 +1413,17 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     mTvServiceAmount.setText("服务金额：￥" + data.getQuaMoney() + "");
                     mTvTotalPrice.setText("服务金额：￥" + data.getQuaMoney() + "");
                 }else{
-                    if (data.getAccessoryMoney() != null && !"0.00".equals(data.getAccessoryMoney())) {
-                        if ("1".equals(data.getBeyondState())) {
-                            mTvServiceAmount.setText("服务金额：￥" + (Double.parseDouble(data.getAccessoryMoney()) + Double.parseDouble(data.getBeyondMoney()) + Double.parseDouble(data.getPostMoney())) + "");
-                            mTvTotalPrice.setText("服务金额：￥" + (Double.parseDouble(data.getAccessoryMoney()) + Double.parseDouble(data.getBeyondMoney()) + Double.parseDouble(data.getPostMoney())) + "");
-                        } else {
-                            mTvServiceAmount.setText("服务金额：￥" + (Double.parseDouble(data.getAccessoryMoney()) + Double.parseDouble(data.getPostMoney())) + "");
-                            mTvTotalPrice.setText("服务金额：￥" + (Double.parseDouble(data.getAccessoryMoney()) + Double.parseDouble(data.getPostMoney())) + "");
-                        }
+//                    if (data.getAccessoryMoney() != null && !"0.00".equals(data.getAccessoryMoney())) {
+//                        if ("1".equals(data.getBeyondState())) {
+//                            mTvServiceAmount.setText("服务金额：￥" + (Double.parseDouble(data.getAccessoryMoney()) + Double.parseDouble(data.getBeyondMoney()) + Double.parseDouble(data.getPostMoney())) + "");
+//                            mTvTotalPrice.setText("服务金额：￥" + (Double.parseDouble(data.getAccessoryMoney()) + Double.parseDouble(data.getBeyondMoney()) + Double.parseDouble(data.getPostMoney())) + "");
+//                        } else {
+//                            mTvServiceAmount.setText("服务金额：￥" + (Double.parseDouble(data.getAccessoryMoney()) + Double.parseDouble(data.getPostMoney())) + "");
+//                            mTvTotalPrice.setText("服务金额：￥" + (Double.parseDouble(data.getAccessoryMoney()) + Double.parseDouble(data.getPostMoney())) + "");
+//                        }
+                    if ("1".equals(data.getAccessoryApplyState())) {
+                        mTvServiceAmount.setText("服务金额：￥" + data.getQuaMoney() );
+                        mTvTotalPrice.setText("服务金额：￥" + data.getQuaMoney());
 
                     } else {
                         mTvServiceAmount.setText("服务金额：￥" + data.getOrderMoney() + "");
