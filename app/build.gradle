@@ -59,7 +59,7 @@ android {
         }
     }
 
-
+    aspectjx { exclude 'com.alipay' }
 
 }
 
