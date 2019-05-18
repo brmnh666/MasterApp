@@ -279,8 +279,17 @@ public interface ApiService {
   @POST("Upload/OrderByondImgPicUpload")
   Observable<BaseResult<Data<String>>> OrderByondImgPicUpload(@Body RequestBody body);
 
+    /**
+     * 配件图片
+     * @param body
+     * @return
+     */
+    @POST("Upload/ApplyAccessoryphotoUpload")
+    Observable<BaseResult<Data<String>>> ApplyAccessoryphotoUpload(@Body RequestBody body);
 
-     /*申请远程费距离*/
+
+
+    /*申请远程费距离*/
     @FormUrlEncoded
     @POST("Order/ApplyBeyondMoney")
     Observable<BaseResult<Data<String>>> ApplyBeyondMoney(@Field("OrderID") String OrderID,

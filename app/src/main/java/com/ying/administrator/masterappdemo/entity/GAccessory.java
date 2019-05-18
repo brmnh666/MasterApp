@@ -43,6 +43,8 @@ public class GAccessory implements Serializable {
      * "ApplyNum":1,
      * "QApplyNum":0,
      * "Version":0
+     * "Photo1":"46a346686b2e402992b1935c748addf8.jpg",
+     * "Photo2":"0bb425647ecf43548927cc6766b0a8ef.jpg"
      */
 
     private int Id;
@@ -64,7 +66,8 @@ public class GAccessory implements Serializable {
     private String ApplyNum;
     private String QApplyNum;
     private int Version;
-
+    private String Photo1;
+    private String Photo2;
 
     public String getState() {
         return State;
@@ -216,5 +219,21 @@ public class GAccessory implements Serializable {
 
     public void setQApplyNum(String QApplyNum) {
         this.QApplyNum = QApplyNum;
+    }
+
+    public String getPhoto1() {
+        return Photo1;
+    }
+
+    public void setPhoto1(String photo1) {
+        Photo1 = photo1;
+    }
+
+    public String getPhoto2() {
+        return Photo2;
+    }
+
+    public void setPhoto2(String photo2) {
+        Photo2 = photo2;
     }
 }

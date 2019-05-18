@@ -1143,6 +1143,11 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
 
     }
 
+    @Override
+    public void ApplyAccessoryphotoUpload(BaseResult<Data<String>> baseResult) {
+
+    }
+
     /*申请远程费*/
     @Override
     public void ApplyBeyondMoney(BaseResult<Data<String>> baseResult) {

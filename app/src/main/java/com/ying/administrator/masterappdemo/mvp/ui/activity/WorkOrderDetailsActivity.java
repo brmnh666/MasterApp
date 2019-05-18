@@ -1564,6 +1564,11 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
     }
 
     @Override
+    public void ApplyAccessoryphotoUpload(BaseResult<Data<String>> baseResult) {
+
+    }
+
+    @Override
     public void ApplyBeyondMoney(BaseResult<Data<String>> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:

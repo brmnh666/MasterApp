@@ -349,6 +349,24 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     TextView mTvConfirm;
     @BindView(R.id.ll_new_money)
     LinearLayout mLlNewMoney;
+    @BindView(R.id.btn_complete_submit_one)
+    TextView mBtnCompleteSubmitOne;
+    @BindView(R.id.iv_host)
+    ImageView mIvHost;
+    @BindView(R.id.ll_host)
+    LinearLayout mLlHost;
+    @BindView(R.id.iv_accessories)
+    ImageView mIvAccessories;
+    @BindView(R.id.ll_accessories)
+    LinearLayout mLlAccessories;
+    @BindView(R.id.iv_host_one)
+    ImageView mIvHostOne;
+    @BindView(R.id.ll_host_one)
+    LinearLayout mLlHostOne;
+    @BindView(R.id.iv_accessories_one)
+    ImageView mIvAccessoriesOne;
+    @BindView(R.id.ll_accessories_one)
+    LinearLayout mLlAccessoriesOne;
     private String OrderID;
     private WorkOrder.DataBean data = new WorkOrder.DataBean();
     private ReturnAccessoryAdapter returnAccessoryAdapter;
@@ -387,6 +405,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     private SService sService;
 
     private HashMap<Integer, File> files_map_remote = new HashMap<>();//申请远程费图片
+    private HashMap<Integer, File> accessories_picture = new HashMap<>();//申请配件图片
     private ArrayList<String> permissions;
     private String FilePath;
     private View popupWindow_view;
@@ -441,7 +460,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
 
     private String startTime;
     private String endTime;
-    private EditText et_post_money;
+    private TextView et_post_money;
     private String post_money;
     private LinearLayout ll_post_money;
     private List<Uri> mSelected;
@@ -452,6 +471,10 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     private List<Logistics> list = new ArrayList<>();
     private String content;
     private CommonDialog_Home reject;
+    private AlertDialog underReviewDialog;
+    private EditText et_accessories_name;
+    private Button btn_add1;
+
 
     @Override
     protected int setLayoutId() {
@@ -609,6 +632,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         mIvNewAndOldAccessories.setOnClickListener(this);
 
         mBtnCompleteSubmit.setOnClickListener(this);
+        mBtnCompleteSubmitOne.setOnClickListener(this);
 
         mBtnTrial.setOnClickListener(this);
 
@@ -621,6 +645,9 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
 
         mViewSelectTimePoint.setOnClickListener(this);
         mViewSelectTimePoint2.setOnClickListener(this);
+
+        mIvHost.setOnClickListener(this);
+        mIvAccessories.setOnClickListener(this);
     }
 
     @Override
@@ -674,7 +701,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     @Override
                     public void onPositiveClick() {
                         reject.dismiss();
-                        mPresenter.ConfirmtoFreezeByOrderID(OrderID,"1");
+                        mPresenter.ConfirmtoFreezeByOrderID(OrderID, "1");
                     }
 
                     @Override
@@ -693,7 +720,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     @Override
                     public void onPositiveClick() {
                         reject.dismiss();
-                        mPresenter.ConfirmtoFreezeByOrderID(OrderID,"2");
+                        mPresenter.ConfirmtoFreezeByOrderID(OrderID, "2");
                     }
 
                     @Override
@@ -728,6 +755,12 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     return;
                 }*/
                 //chooseTime(mTvSelectTime2, "请选择结束时间");
+                break;
+            case R.id.iv_host:
+                showPopupWindow(1101, 1102);
+                break;
+            case R.id.iv_accessories:
+                showPopupWindow(1201, 1202);
                 break;
             case R.id.tv_submit_add_accessories:
                 submit(1);
@@ -1000,11 +1033,11 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     public void onClick(View v) {
                         expressno = et_expressno.getText().toString().trim();
                         if ("2".equals(data.getPostPayType())) {
-                            post_money = et_post_money.getText().toString().trim();
-                            if ("".equals(post_money)) {
-                                showToast(mActivity, "请填写邮费");
-                                return;
-                            }
+                            post_money = "15";
+//                            if ("".equals(post_money)) {
+//                                showToast(mActivity, "请填写邮费");
+//                                return;
+//                            }
                         } else {
                             post_money = "0";
                         }
@@ -1035,6 +1068,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 intent.putExtra("type", 3);
                 startActivity(intent);
                 break;
+            case R.id.btn_complete_submit_one:
             case R.id.btn_complete_submit:
                 intent = new Intent(mActivity, CompleteWorkOrderActivity.class);
                 intent.putExtra("OrderID", data.getOrderID());
@@ -1123,6 +1157,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         et_num = choose_accessory_view.findViewById(R.id.et_num);
         et_price = choose_accessory_view.findViewById(R.id.et_price);
         et__service_price = choose_accessory_view.findViewById(R.id.et__service_price);
+
+
         if (select_state == 0) {//厂家自购
             et_price.setVisibility(View.GONE);
             et__service_price.setVisibility(View.GONE);
@@ -1159,13 +1195,15 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 mPresenter.GetFactoryAccessory(data.getSubCategoryID() + "");
             }
         });
+
+
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 num = et_num.getText().toString();
                 price = et_price.getText().toString();
                 servicePrice = et__service_price.getText().toString();
-                if (accessory == null) {
+                if ("".equals(tv_accessory_name.getText())) {
                     ToastUtils.showShort("请选择配件");
                     return;
                 }
@@ -1173,68 +1211,135 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     ToastUtils.showShort("请输入数量");
                     return;
                 }
-                mfAccessory = new FAccessory.OrderAccessoryStrBean.OrderAccessoryBean();
-                mfAccessory.setFAccessoryID(accessory.getFAccessoryID() + "");//获取id
-                mfAccessory.setFAccessoryName(accessory.getAccessoryName()); //获取名字
-                mfAccessory.setQuantity(num); //数量 默认数字为1
-                mfAccessory.setPrice(accessory.getAccessoryPrice());//原价
-                mfAccessory.setDiscountPrice(accessory.getAccessoryPrice());//折扣价
-                mfAccessory.setSizeID(accessory.getSizeID());//小修中修大修
-                mfAccessory.setSendState("N");
-                mfAccessory.setRelation("");
-                mfAccessory.setState("0");
-                mfAccessory.setIsPay("N");
-                mfAccessory.setExpressNo("");
-                if (select_state == 0) {//厂家自购
+//                Log.d(TAG,"数量"+ac_list.size());
+                if (ac_list.size() != 0) {
+                    mfAccessory = new FAccessory.OrderAccessoryStrBean.OrderAccessoryBean();
+                    mfAccessory.setFAccessoryID(accessory.getFAccessoryID() + "");//获取id
+                    mfAccessory.setFAccessoryName(accessory.getAccessoryName()); //获取名字
+                    mfAccessory.setQuantity(num); //数量 默认数字为1
                     mfAccessory.setPrice(accessory.getAccessoryPrice());//原价
-                    mfAccessory.setDiscountPrice(accessory.getAccessoryPrice());//原价
-                } else if (select_state == 1) {//师傅自购 还要判断保内保外
-                    if ("".equals(price)) {
-                        ToastUtils.showShort("请输入配件价格");
-                        return;
-                    }
-                    mfAccessory.setPrice(Double.parseDouble(price));
-                    mfAccessory.setDiscountPrice(Double.parseDouble(price));
-                } else {//用户自购
+                    mfAccessory.setDiscountPrice(accessory.getAccessoryPrice());//折扣价
+                    mfAccessory.setSizeID(accessory.getSizeID());//小修中修大修
+                    mfAccessory.setSendState("N");
+                    mfAccessory.setRelation("");
+                    mfAccessory.setState("0");
+                    mfAccessory.setIsPay("N");
+                    mfAccessory.setExpressNo("");
+                    if (select_state == 0) {//厂家自购
+                        mfAccessory.setPrice(accessory.getAccessoryPrice());//原价
+                        mfAccessory.setDiscountPrice(accessory.getAccessoryPrice());//原价
+                    } else if (select_state == 1) {//师傅自购 还要判断保内保外
+                        if ("".equals(price)) {
+                            ToastUtils.showShort("请输入配件价格");
+                            return;
+                        }
+                        mfAccessory.setPrice(Double.parseDouble(price));
+                        mfAccessory.setDiscountPrice(Double.parseDouble(price));
+                    } else {//用户自购
 //                    if ("".equals(servicePrice)) {
 //                        ToastUtils.showShort("请输入服务价格");
 //                        return;
 //                    }
-                    mfAccessory.setPrice(Double.parseDouble("0.00"));
-                    mfAccessory.setDiscountPrice(Double.parseDouble("0.00"));
+                        mfAccessory.setPrice(Double.parseDouble("0.00"));
+                        mfAccessory.setDiscountPrice(Double.parseDouble("0.00"));
+                    }
+
+                    if (select_state == 0) {//厂家自购
+                        if (fAcList.size() > 0) {
+                            for (int i = 0; i < fAcList.size(); i++) {
+                                if (mfAccessory.getFAccessoryName().equals(fAcList.get(i).getFAccessoryName())) {
+                                    fAcList.remove(i);
+                                }
+                            }
+                        }
+                        fAcList.add(mfAccessory);
+                        mPre_order_add_ac_adapter.setNewData(fAcList);
+                    } else if (select_state == 1) {//师傅自购 还要判断保内保外
+                        if (mAcList.size() > 0) {
+                            for (int i = 0; i < mAcList.size(); i++) {
+                                if (mfAccessory.getFAccessoryName().equals(mAcList.get(i).getFAccessoryName())) {
+                                    mAcList.remove(i);
+                                }
+                            }
+                        }
+                        mAcList.add(mfAccessory);
+                        mPre_order_add_ac_adapter.setNewData(mAcList);
+                    } else {//用户自购
+                        if (sAcList.size() > 0) {
+                            for (int i = 0; i < sAcList.size(); i++) {
+                                if (mfAccessory.getFAccessoryName().equals(sAcList.get(i).getFAccessoryName())) {
+                                    sAcList.remove(i);
+                                }
+                            }
+                        }
+                        sAcList.add(mfAccessory);
+                        mPre_order_add_ac_adapter.setNewData(sAcList);
+                    }
+                } else {
+                    mfAccessory = new FAccessory.OrderAccessoryStrBean.OrderAccessoryBean();
+                    mfAccessory.setFAccessoryID("0");//获取id
+                    mfAccessory.setFAccessoryName(tv_accessory_name.getText().toString()); //获取名字
+                    mfAccessory.setQuantity(num); //数量 默认数字为1
+                    mfAccessory.setPrice(Double.valueOf("0"));//原价
+                    mfAccessory.setDiscountPrice(Double.valueOf("0"));//折扣价
+                    mfAccessory.setSizeID("4");//小修中修大修
+                    mfAccessory.setSendState("N");
+                    mfAccessory.setRelation("");
+                    mfAccessory.setState("0");
+                    mfAccessory.setIsPay("N");
+                    mfAccessory.setExpressNo("");
+                    if (select_state == 0) {//厂家自购
+                        mfAccessory.setPrice(Double.valueOf("0"));//原价
+                        mfAccessory.setDiscountPrice(Double.valueOf("0"));//原价
+                    } else if (select_state == 1) {//师傅自购 还要判断保内保外
+                        if ("".equals(price)) {
+                            ToastUtils.showShort("请输入配件价格");
+                            return;
+                        }
+                        mfAccessory.setPrice(Double.parseDouble(price));
+                        mfAccessory.setDiscountPrice(Double.parseDouble(price));
+                    } else {//用户自购
+//                    if ("".equals(servicePrice)) {
+//                        ToastUtils.showShort("请输入服务价格");
+//                        return;
+//                    }
+                        mfAccessory.setPrice(Double.parseDouble("0.00"));
+                        mfAccessory.setDiscountPrice(Double.parseDouble("0.00"));
+                    }
+
+                    if (select_state == 0) {//厂家自购
+                        if (fAcList.size() > 0) {
+                            for (int i = 0; i < fAcList.size(); i++) {
+                                if (mfAccessory.getFAccessoryName().equals(fAcList.get(i).getFAccessoryName())) {
+                                    fAcList.remove(i);
+                                }
+                            }
+                        }
+                        fAcList.add(mfAccessory);
+                        mPre_order_add_ac_adapter.setNewData(fAcList);
+                    } else if (select_state == 1) {//师傅自购 还要判断保内保外
+                        if (mAcList.size() > 0) {
+                            for (int i = 0; i < mAcList.size(); i++) {
+                                if (mfAccessory.getFAccessoryName().equals(mAcList.get(i).getFAccessoryName())) {
+                                    mAcList.remove(i);
+                                }
+                            }
+                        }
+                        mAcList.add(mfAccessory);
+                        mPre_order_add_ac_adapter.setNewData(mAcList);
+                    } else {//用户自购
+                        if (sAcList.size() > 0) {
+                            for (int i = 0; i < sAcList.size(); i++) {
+                                if (mfAccessory.getFAccessoryName().equals(sAcList.get(i).getFAccessoryName())) {
+                                    sAcList.remove(i);
+                                }
+                            }
+                        }
+                        sAcList.add(mfAccessory);
+                        mPre_order_add_ac_adapter.setNewData(sAcList);
+                    }
                 }
 
-                if (select_state == 0) {//厂家自购
-                    if (fAcList.size() > 0) {
-                        for (int i = 0; i < fAcList.size(); i++) {
-                            if (mfAccessory.getFAccessoryName().equals(fAcList.get(i).getFAccessoryName())) {
-                                fAcList.remove(i);
-                            }
-                        }
-                    }
-                    fAcList.add(mfAccessory);
-                    mPre_order_add_ac_adapter.setNewData(fAcList);
-                } else if (select_state == 1) {//师傅自购 还要判断保内保外
-                    if (mAcList.size() > 0) {
-                        for (int i = 0; i < mAcList.size(); i++) {
-                            if (mfAccessory.getFAccessoryName().equals(mAcList.get(i).getFAccessoryName())) {
-                                mAcList.remove(i);
-                            }
-                        }
-                    }
-                    mAcList.add(mfAccessory);
-                    mPre_order_add_ac_adapter.setNewData(mAcList);
-                } else {//用户自购
-                    if (sAcList.size() > 0) {
-                        for (int i = 0; i < sAcList.size(); i++) {
-                            if (mfAccessory.getFAccessoryName().equals(sAcList.get(i).getFAccessoryName())) {
-                                sAcList.remove(i);
-                            }
-                        }
-                    }
-                    sAcList.add(mfAccessory);
-                    mPre_order_add_ac_adapter.setNewData(sAcList);
-                }
                 choose_accessory_dialog.dismiss();
             }
         });
@@ -1330,18 +1435,23 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     if (mPre_order_add_ac_adapter.getData().size() == 0) {
                         ToastUtils.showShort("请添加配件");
                     } else {
-                        orderAccessoryStrBean = new FAccessory.OrderAccessoryStrBean();
-                        orderAccessoryStrBean.setOrderAccessory(mPre_order_add_ac_adapter.getData());
-                        orderAccessoryStrBean.setAccessoryMemo(AccessoryMemo);
-                        String s1 = gson.toJson(orderAccessoryStrBean);
-                        sAccessory = new SAccessory();
-                        sAccessory.setOrderID(OrderID);
-                        sAccessory.setAccessorySequency(Integer.toString(select_state));
-                        sAccessory.setOrderAccessoryStr(s1);
-                        String s = gson.toJson(sAccessory);
-                        Log.d("添加的配件有", s);
-                        body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), s);
-                        mPresenter.AddOrderAccessory(body);
+                        if (accessories_picture.size() > 0) {
+                            orderAccessoryStrBean = new FAccessory.OrderAccessoryStrBean();
+                            orderAccessoryStrBean.setOrderAccessory(mPre_order_add_ac_adapter.getData());
+                            orderAccessoryStrBean.setAccessoryMemo(AccessoryMemo);
+                            String s1 = gson.toJson(orderAccessoryStrBean);
+                            sAccessory = new SAccessory();
+                            sAccessory.setOrderID(OrderID);
+                            sAccessory.setAccessorySequency(Integer.toString(select_state));
+                            sAccessory.setOrderAccessoryStr(s1);
+                            String s = gson.toJson(sAccessory);
+                            Log.d("添加的配件有", s);
+                            body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), s);
+                            mPresenter.AddOrderAccessory(body);
+                        } else {
+                            ToastUtils.showShort("请添加配件图片");
+                        }
+
                     }
                 }
                 break;
@@ -1409,10 +1519,10 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 mTvAccessoryMoney.setText("￥" + data.getAccessoryMoney());
                 mTvServiceMoney.setText("￥" + data.getServiceMoney());
                 mTvOrderMoney.setText("￥" + data.getOrderMoney() + "");
-                if ("3".equals(data.getTypeID())){
+                if ("3".equals(data.getTypeID())) {
                     mTvServiceAmount.setText("服务金额：￥" + data.getQuaMoney() + "");
                     mTvTotalPrice.setText("服务金额：￥" + data.getQuaMoney() + "");
-                }else{
+                } else {
 //                    if (data.getAccessoryMoney() != null && !"0.00".equals(data.getAccessoryMoney())) {
 //                        if ("1".equals(data.getBeyondState())) {
 //                            mTvServiceAmount.setText("服务金额：￥" + (Double.parseDouble(data.getAccessoryMoney()) + Double.parseDouble(data.getBeyondMoney()) + Double.parseDouble(data.getPostMoney())) + "");
@@ -1422,7 +1532,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
 //                            mTvTotalPrice.setText("服务金额：￥" + (Double.parseDouble(data.getAccessoryMoney()) + Double.parseDouble(data.getPostMoney())) + "");
 //                        }
                     if ("1".equals(data.getAccessoryApplyState())) {
-                        mTvServiceAmount.setText("服务金额：￥" + data.getQuaMoney() );
+                        mTvServiceAmount.setText("服务金额：￥" + data.getQuaMoney());
                         mTvTotalPrice.setText("服务金额：￥" + data.getQuaMoney());
 
                     } else {
@@ -1439,6 +1549,14 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     mLlPostMoney.setVisibility(View.GONE);
                 }
 
+                if (data.getOrderAccessroyDetail().size()>0){
+                    Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/Accessory/" + data.getOrderAccessroyDetail().get(0).getPhoto1()).into(mIvHostOne);
+                    Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/Accessory/" + data.getOrderAccessroyDetail().get(0).getPhoto2()).into(mIvAccessoriesOne);
+
+                }else {
+                    mLlHostOne.setVisibility(View.GONE);
+                    mLlAccessoriesOne.setVisibility(View.GONE);
+                }
 
                 mTvAccessoryMemo.setText("备注：" + data.getAccessoryMemo());
                 mTvAccessorySequency.setText(data.getAccessorySequencyStr());
@@ -1541,6 +1659,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mIvRangeOne.setVisibility(View.GONE);
                         mIvRangeTwo.setVisibility(View.GONE);
                     }
+
                     mLlApproveBeyondMoney.setVisibility(View.VISIBLE);
                     mLlApplyBeyond.setVisibility(View.GONE);
                     if ("0".equals(data.getBeyondState())) {
@@ -1561,7 +1680,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 if ("".equals(AccessoryApplyState) && "".equals(ServiceApplyState) && BeyondState == null) {
                     //nnn  配件  服务  远程
                     mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                    mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                    mRlCompleteSubmit.setVisibility(View.GONE);
+                    mBtnCompleteSubmitOne.setVisibility(View.VISIBLE);
                     mBtnTrial.setVisibility(View.GONE);
                 } else if (!"".equals(AccessoryApplyState) && "".equals(ServiceApplyState) && BeyondState == null) {
                     //ynn
@@ -1569,22 +1689,27 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         if ("Y".equals(data.getAccessorySendState())) {
                             mBtnCompleteSubmit.setVisibility(View.VISIBLE);
                             mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
                         } else {
                             mBtnCompleteSubmit.setVisibility(View.VISIBLE);
                             mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
                         }
                     } else {
                         mBtnCompleteSubmit.setVisibility(View.GONE);
                         mRlCompleteSubmit.setVisibility(View.GONE);
+                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
                     }
                 } else if ("".equals(AccessoryApplyState) && !"".equals(ServiceApplyState) && BeyondState == null) {
                     //nyn
                     if ("1".equals(ServiceApplyState)) {
                         mBtnCompleteSubmit.setVisibility(View.VISIBLE);
                         mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
                     } else {
                         mBtnCompleteSubmit.setVisibility(View.GONE);
                         mRlCompleteSubmit.setVisibility(View.GONE);
+                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
                     }
                 } else if ("".equals(AccessoryApplyState) && "".equals(ServiceApplyState) && BeyondState != null) {
                     //nny
@@ -1593,12 +1718,15 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     if ("1".equals(BeyondState)) {
                         mBtnCompleteSubmit.setVisibility(View.VISIBLE);
                         mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                    } else if ("-1".equals(BeyondState)){
+                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                    } else if ("-1".equals(BeyondState)) {
                         mBtnCompleteSubmit.setVisibility(View.VISIBLE);
                         mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                    }else {
+                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                    } else {
                         mBtnCompleteSubmit.setVisibility(View.GONE);
                         mRlCompleteSubmit.setVisibility(View.GONE);
+                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
                     }
                 } else if (!"".equals(AccessoryApplyState) && !"".equals(ServiceApplyState) && BeyondState == null) {
                     //yyn
@@ -1606,13 +1734,16 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         if ("Y".equals(data.getAccessorySendState())) {
                             mBtnCompleteSubmit.setVisibility(View.VISIBLE);
                             mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
                         } else {
                             mBtnCompleteSubmit.setVisibility(View.VISIBLE);
                             mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
                         }
                     } else {
                         mBtnCompleteSubmit.setVisibility(View.GONE);
                         mRlCompleteSubmit.setVisibility(View.GONE);
+                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
                     }
                 } else if (!"".equals(AccessoryApplyState) && "".equals(ServiceApplyState)) {
                     //yny
@@ -1620,33 +1751,41 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         if ("Y".equals(data.getAccessorySendState())) {
                             mBtnCompleteSubmit.setVisibility(View.VISIBLE);
                             mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
                         } else {
                             mBtnCompleteSubmit.setVisibility(View.VISIBLE);
                             mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
                         }
                     } else if ("1".equals(AccessoryApplyState) && "-1".equals(BeyondState)) {
                         if ("Y".equals(data.getAccessorySendState())) {
                             mBtnCompleteSubmit.setVisibility(View.VISIBLE);
                             mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
                         } else {
                             mBtnCompleteSubmit.setVisibility(View.VISIBLE);
                             mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
                         }
                     } else {
                         mBtnCompleteSubmit.setVisibility(View.GONE);
                         mRlCompleteSubmit.setVisibility(View.GONE);
+                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
                     }
                 } else if ("".equals(AccessoryApplyState) && !"".equals(ServiceApplyState) && BeyondState != null) {
                     //nyy
                     if ("1".equals(ServiceApplyState) && "1".equals(BeyondState)) {
                         mBtnCompleteSubmit.setVisibility(View.VISIBLE);
                         mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
                     } else if ("1".equals(ServiceApplyState) && "-1".equals(BeyondState)) {
                         mBtnCompleteSubmit.setVisibility(View.VISIBLE);
                         mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
                     } else {
                         mBtnCompleteSubmit.setVisibility(View.GONE);
                         mRlCompleteSubmit.setVisibility(View.GONE);
+                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
                     }
                 } else {
                     //yyy
@@ -1654,21 +1793,26 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         if ("Y".equals(data.getAccessorySendState())) {
                             mBtnCompleteSubmit.setVisibility(View.VISIBLE);
                             mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
                         } else {
                             mBtnCompleteSubmit.setVisibility(View.VISIBLE);
                             mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
                         }
                     } else if ("1".equals(AccessoryApplyState) && "1".equals(ServiceApplyState) && "-1".equals(BeyondState)) {
                         if ("Y".equals(data.getAccessorySendState())) {
                             mBtnCompleteSubmit.setVisibility(View.VISIBLE);
                             mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
                         } else {
                             mBtnCompleteSubmit.setVisibility(View.VISIBLE);
                             mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
                         }
                     } else {
                         mBtnCompleteSubmit.setVisibility(View.GONE);
                         mRlCompleteSubmit.setVisibility(View.GONE);
+                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
                     }
                 }
 
@@ -1683,7 +1827,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     returnAccessoryAdapter = new ReturnAccessoryAdapter(R.layout.item_returned, data.getOrderAccessroyDetail(), Integer.parseInt(data.getAccessoryState()), content);
                     mRvReturnInformation.setLayoutManager(new LinearLayoutManager(mActivity));
                     mRvReturnInformation.setAdapter(returnAccessoryAdapter);
-                    if (data.getOrderAccessroyDetail().size()>0){
+                    if (data.getOrderAccessroyDetail().size() > 0) {
                         if (!"".equals(data.getOrderAccessroyDetail().get(0).getExpressNo())) {
                             mPresenter.GetExpressInfo(data.getOrderAccessroyDetail().get(0).getExpressNo());
                         }
@@ -1764,6 +1908,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 if ("5".equals(data.getState()) || "6".equals(data.getState()) || "7".equals(data.getState())) {
                     mBtnCompleteSubmit.setVisibility(View.GONE);
                     mRlCompleteSubmit.setVisibility(View.GONE);
+                    mBtnCompleteSubmitOne.setVisibility(View.GONE);
                     mBtnTrial.setVisibility(View.GONE);
                     mLlAddAccessory.setVisibility(View.GONE);
                     mLlAddService.setVisibility(View.GONE);
@@ -1853,6 +1998,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     mLlApplyAgainBeyond.setVisibility(View.GONE);
                     mBtnCompleteSubmit.setVisibility(View.GONE);
                     mRlCompleteSubmit.setVisibility(View.GONE);
+                    mBtnCompleteSubmitOne.setVisibility(View.GONE);
                     if ("1".equals(data.getTypeID()) || "3".equals(data.getTypeID())) {//维修
                         List<String> list = new ArrayList<>();
                         for (int i = 0; i < data.getReturnaccessoryImg().size(); i++) {
@@ -1897,11 +2043,11 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     mRlExpressno.setVisibility(View.GONE);
                 }
 
-                if ("0.0".equals(data.getNewMoney())){
+                if ("0.0".equals(data.getNewMoney())) {
                     mLlNewMoney.setVisibility(View.GONE);
-                }else{
+                } else {
                     mLlNewMoney.setVisibility(View.VISIBLE);
-                    mTvNewMoney.setText("￥"+data.getNewMoney());
+                    mTvNewMoney.setText("￥" + data.getNewMoney());
                 }
                 break;
 
@@ -1920,11 +2066,66 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 if ("0".equals(baseResult.getData().getCode())) {
                     ac_list = baseResult.getData().getData();
                     if (ac_list == null) {
-                        showToast(mActivity, "无配件，请联系管理员");
+//                        showToast(mActivity, "无配件，请联系管理员");
+                        View under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_add_accessories, null);
+                        et_accessories_name = under_review.findViewById(R.id.et_accessories_name);
+                        btn_add1 = under_review.findViewById(R.id.btn_add);
+                        btn_add1.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                tv_accessory_name.setText(et_accessories_name.getText());
+                                underReviewDialog.dismiss();
+                            }
+                        });
+                        underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review)
+                                .create();
+                        underReviewDialog.show();
+                        window = underReviewDialog.getWindow();
+//                window.setContentView(under_review);
+                        WindowManager.LayoutParams lp = window.getAttributes();
+//                lp.alpha = 0.5f;
+                        // 也可按屏幕宽高比例进行设置宽高
+//                Display display = mActivity.getWindowManager().getDefaultDisplay();
+//                lp.width = (int) (display.getWidth() * 0.6);
+//                lp.height = under_review.getHeight();
+//                lp.width = 300;
+//                lp.height = 400;
+
+                        window.setAttributes(lp);
+//                window.setDimAmount(0.1f);
+                        window.setBackgroundDrawable(new ColorDrawable());
                         return;
                     }
                     if (ac_list.size() == 0) {
-                        showToast(mActivity, "无配件，请联系管理员");
+//                        showToast(mActivity, "无配件，请联系管理员");
+
+                        View under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_add_accessories, null);
+                        et_accessories_name = under_review.findViewById(R.id.et_accessories_name);
+                        btn_add1 = under_review.findViewById(R.id.btn_add);
+                        btn_add1.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                tv_accessory_name.setText(et_accessories_name.getText());
+                                underReviewDialog.dismiss();
+                            }
+                        });
+                        underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review)
+                                .create();
+                        underReviewDialog.show();
+                        window = underReviewDialog.getWindow();
+//                window.setContentView(under_review);
+                        WindowManager.LayoutParams lp = window.getAttributes();
+//                lp.alpha = 0.5f;
+                        // 也可按屏幕宽高比例进行设置宽高
+//                Display display = mActivity.getWindowManager().getDefaultDisplay();
+//                lp.width = (int) (display.getWidth() * 0.6);
+//                lp.height = under_review.getHeight();
+//                lp.width = 300;
+//                lp.height = 400;
+
+                        window.setAttributes(lp);
+//                window.setDimAmount(0.1f);
+                        window.setBackgroundDrawable(new ColorDrawable());
                         return;
                     }
                     ac_list_adapter = new Ac_List_Adapter(R.layout.item_accessory, ac_list);
@@ -1971,6 +2172,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     ToastUtils.showShort("提交成功");
                     EventBus.getDefault().post("WorkOrderDetailsActivity");
                     EventBus.getDefault().post(5);
+                    ApplyAccessoryphotoUpload(accessories_picture);
                 } else {
                     if ("支付错误,添加失败".equals(baseResult.getData().getItem2())) {
                         customdialog_home_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_home, null);
@@ -2139,6 +2341,21 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     }
 
     @Override
+    public void ApplyAccessoryphotoUpload(BaseResult<Data<String>> baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+//                if (baseResult.getData().isItem1()) {
+//                    submit(3);
+//                } else {
+//                    ToastUtils.showShort("远程费图片上传失败");
+//                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
     public void ApplyBeyondMoney(BaseResult<Data<String>> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
@@ -2234,7 +2451,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
             case 200:
                 if (baseResult.getData().isItem1()) {
                     EventBus.getDefault().post("WorkOrderDetailsActivity");
-                }else{
+                } else {
                     if ("支付错误,添加失败".equals(baseResult.getData().getItem2())) {
                         customdialog_home_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_home, null);
                         customdialog_home_dialog = new AlertDialog.Builder(mActivity)
@@ -2523,6 +2740,58 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     files_map_remote.put(1, file);
                 }
                 break;
+            //拍照
+            case 1101:
+                if (resultCode == -1) {
+                    Glide.with(mActivity).load(FilePath).into(mIvHost);
+                    file = new File(FilePath);
+                }
+                if (file != null) {
+                    accessories_picture.put(0, file);
+                }
+
+                break;
+            //相册
+            case 1102:
+                if (data != null) {
+                    mSelected = Matisse.obtainResult(data);
+                    if (mSelected.size() == 1) {
+                        uri = mSelected.get(0);
+                    }
+//                    Uri uri = data.getData();
+                    Glide.with(mActivity).load(uri).into(mIvHost);
+                    file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
+                }
+                if (file != null) {
+                    accessories_picture.put(0, file);
+                }
+                break;
+            //拍照
+            case 1201:
+                if (resultCode == -1) {
+                    Glide.with(mActivity).load(FilePath).into(mIvAccessories);
+                    file = new File(FilePath);
+                }
+                if (file != null) {
+                    accessories_picture.put(1, file);
+                }
+
+                break;
+            //相册
+            case 1202:
+                if (data != null) {
+                    mSelected = Matisse.obtainResult(data);
+                    if (mSelected.size() == 1) {
+                        uri = mSelected.get(0);
+                    }
+//                    Uri uri = data.getData();
+                    Glide.with(mActivity).load(uri).into(mIvAccessories);
+                    file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
+                }
+                if (file != null) {
+                    accessories_picture.put(1, file);
+                }
+                break;
         }
 
     }
@@ -2539,6 +2808,21 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         builder.addFormDataPart("OrderID", OrderID);
         MultipartBody requestBody = builder.build();
         mPresenter.OrderByondImgPicUpload(requestBody);
+    }
+
+
+    /**
+     * 添加配件图片
+     *
+     * @param map
+     */
+    public void ApplyAccessoryphotoUpload(HashMap<Integer, File> map) {
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        builder.addFormDataPart("img", map.get(0).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(0)));
+        builder.addFormDataPart("img", map.get(1).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(1)));
+        builder.addFormDataPart("OrderID", OrderID);
+        MultipartBody requestBody = builder.build();
+        mPresenter.ApplyAccessoryphotoUpload(requestBody);
     }
 
     @Override

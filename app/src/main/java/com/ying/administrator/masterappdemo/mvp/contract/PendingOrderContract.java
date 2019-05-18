@@ -53,6 +53,9 @@ public interface PendingOrderContract {
         //上传远程费图片
         Observable<BaseResult<Data<String>>> OrderByondImgPicUpload(RequestBody json);
 
+        //上传配件图片
+        Observable<BaseResult<Data<String>>> ApplyAccessoryphotoUpload(RequestBody json);
+
         //申请远程费
         Observable<BaseResult<Data<String>>> ApplyBeyondMoney(String OrderID,String BeyondMoney,String BeyondDistance);
 
@@ -103,6 +106,8 @@ public interface PendingOrderContract {
         //上传远程费图片
         void OrderByondImgPicUpload(BaseResult<Data<String>> baseResult);
 
+        void ApplyAccessoryphotoUpload(BaseResult<Data<String>> baseResult);
+
         //申请远程费
         void ApplyBeyondMoney(BaseResult<Data<String>> baseResult);
         void PressFactoryAccount(BaseResult<Data<String>> baseResult);
@@ -141,6 +146,8 @@ public interface PendingOrderContract {
         public abstract void FinishOrderPicUpload(RequestBody json);
         //上传远程费图片
         public abstract void OrderByondImgPicUpload(RequestBody json);
+
+        public abstract void ApplyAccessoryphotoUpload(RequestBody json);
 
         //申请远程费
         public abstract void ApplyBeyondMoney(String OrderID,String BeyondMoney,String BeyondDistance);

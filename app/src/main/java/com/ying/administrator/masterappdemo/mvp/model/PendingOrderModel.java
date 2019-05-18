@@ -105,6 +105,14 @@ public class PendingOrderModel implements PendingOrderContract.Model {
     }
 
     @Override
+    public Observable<BaseResult<Data<String>>> ApplyAccessoryphotoUpload(RequestBody json) {
+        return ApiRetrofit.getDefault().ApplyAccessoryphotoUpload(json)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
+
+    @Override
     public Observable<BaseResult<Data<String>>> ApplyBeyondMoney(String OrderID, String BeyondMoney, String BeyondDistance) {
         return ApiRetrofit.getDefault().ApplyBeyondMoney(OrderID,BeyondMoney,BeyondDistance)
                 .observeOn(AndroidSchedulers.mainThread())

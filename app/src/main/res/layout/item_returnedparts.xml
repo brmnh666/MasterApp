@@ -319,7 +319,16 @@
             android:visibility="gone"
             android:textSize="16sp"
             android:gravity="center" />
-
+        <TextView
+            android:id="@+id/tv_apply_for_an_extension"
+            android:layout_width="87dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_10"
+            android:background="@drawable/tv_recevied"
+            android:padding="10dp"
+            android:text="申请延期"
+            android:textSize="16sp"
+            android:gravity="center" />
         <TextView
             android:id="@+id/tv_see_detail"
             android:layout_width="87dp"

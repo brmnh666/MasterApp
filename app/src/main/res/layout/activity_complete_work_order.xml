@@ -638,7 +638,7 @@
                 android:layout_height="50dp"
                 android:layout_margin="10dp"
                 android:background="@drawable/btn_blue"
-                android:text="提   交"
+                android:text="完   成"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
 
