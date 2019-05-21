@@ -683,8 +683,13 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
 
         }
 
+    @Override
+    public void ApplyAccessoryLate(BaseResult<Data<String>> baseResult) {
 
-        @Override
+    }
+
+
+    @Override
         public void contentLoading () {
         }
 

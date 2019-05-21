@@ -765,4 +765,10 @@ public interface ApiService {
 
 
 
+    /*
+     * 申请延期
+     * */
+    @FormUrlEncoded
+    @POST("Order/ApplyAccessoryLater")
+    Observable<BaseResult<Data<String>>> ApplyAccessoryLate(@Field("OrderID") String OrderID);
 }

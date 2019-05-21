@@ -314,6 +314,11 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
     }
 
     @Override
+    public void ApplyAccessoryLate(BaseResult<Data<String>> baseResult) {
+
+    }
+
+    @Override
     public void contentLoading() {
 
     }

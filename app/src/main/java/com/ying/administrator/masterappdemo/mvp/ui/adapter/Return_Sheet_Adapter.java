@@ -29,6 +29,8 @@ public class Return_Sheet_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,Ba
     private long cancel;
     private long leftTime;
     private TextView tv_telephone_reminder;
+    private long cancel2;
+    private long leftTime2;
 
     public Return_Sheet_Adapter(int layoutResId, @Nullable List<WorkOrder.DataBean> data) {
         super(layoutResId, data);
@@ -73,6 +75,19 @@ public class Return_Sheet_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,Ba
             countdownview.stop();
             countdownview.allShowZero();
         }
+
+        cancel2 = TimeUtils.string2Millis(item.getAudDate())+20*24*60*60*1000;
+        leftTime2 = cancel2 -now;
+        if (item.getIsLate()!=null){
+            baseViewHolder.setGone(R.id.tv_apply_for_an_extension,false);
+            if (leftTime > 0) {
+                countdownview.start(leftTime2);
+            } else {
+                countdownview.stop();
+                countdownview.allShowZero();
+            }
+        }
+
 //        N未返件 Y已返件 P部分返件
         /*if ("N".equals(item.getAccessorySendState())||"P".equals(item.getAccessorySendState())){//未返件显示催件
             tv_returnedparts_apply_parts.setVisibility(View.GONE);
@@ -95,6 +110,7 @@ public class Return_Sheet_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,Ba
 //        baseViewHolder.addOnClickListener(R.id.tv_continue_service);//完成工单
 //        baseViewHolder.addOnClickListener(R.id.tv_reminder);//催件
         baseViewHolder.addOnClickListener(R.id.tv_see_detail);//查看详情
+        baseViewHolder.addOnClickListener(R.id.tv_apply_for_an_extension);//申请延期
 //        baseViewHolder.addOnClickListener(R.id.tv_telephone_reminder);//电话催件
 
         if("".equals(item.getAccessoryApplyState())){

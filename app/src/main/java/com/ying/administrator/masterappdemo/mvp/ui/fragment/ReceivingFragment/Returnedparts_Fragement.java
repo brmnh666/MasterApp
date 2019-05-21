@@ -206,6 +206,10 @@ public class Returnedparts_Fragement extends BaseFragment<GetOrderListForMePrese
                         intent.putExtra("OrderID",list.get(position).getOrderID());
                         startActivity(intent);
                         break;
+                    case R.id.tv_apply_for_an_extension://申请延期
+                        mPresenter.ApplyAccessoryLate(list.get(position).getOrderID());
+                        mRefreshLayout.autoRefresh();
+                        break;
                     default:
                         break;
                 }
@@ -236,8 +240,6 @@ public class Returnedparts_Fragement extends BaseFragment<GetOrderListForMePrese
                         list.addAll(workOrder.getData());
                         Return_Sheet_Adapter.setNewData(list);
                     }
-
-
 
                 }
                 isfristin=true;
@@ -404,6 +406,15 @@ public class Returnedparts_Fragement extends BaseFragment<GetOrderListForMePrese
     @Override
     public void UpdateSendOrderUpdateTime(BaseResult<Data> baseResult) {
 
+    }
+
+    @Override
+    public void ApplyAccessoryLate(BaseResult<Data<String>> baseResult) {
+        switch (baseResult.getStatusCode()){
+            case 200:
+                ToastUtils.showShort("延期成功");
+                break;
+        }
     }
 
     @Override

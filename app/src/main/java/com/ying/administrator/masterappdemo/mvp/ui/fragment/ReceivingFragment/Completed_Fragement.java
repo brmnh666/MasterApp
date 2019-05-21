@@ -311,6 +311,11 @@ public class Completed_Fragement extends BaseFragment<GetOrderListForMePresenter
 
     }
 
+    @Override
+    public void ApplyAccessoryLate(BaseResult<Data<String>> baseResult) {
+
+    }
+
 
     @Override
     public void contentLoading() {

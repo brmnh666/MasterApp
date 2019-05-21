@@ -135,4 +135,16 @@ public class GetOrderListForMePresenter extends GetOrderListForMeContract.Presen
 
     }
 
+    @Override
+    public void ApplyAccessoryLate(String OrderId) {
+        mModel.ApplyAccessoryLate(OrderId)
+                .subscribe(new BaseObserver<Data<String>>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<Data<String>> value) {
+                        mView.ApplyAccessoryLate(value);
+                    }
+                });
+    }
+
+
 }

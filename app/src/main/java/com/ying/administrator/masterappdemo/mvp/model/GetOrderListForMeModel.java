@@ -96,4 +96,11 @@ public class GetOrderListForMeModel implements GetOrderListForMeContract.Model {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }
+
+    @Override
+    public Observable<BaseResult<Data<String>>> ApplyAccessoryLate(String OrderID) {
+        return ApiRetrofit.getDefault().ApplyAccessoryLate(OrderID)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
 }

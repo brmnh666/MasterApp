@@ -119,6 +119,7 @@ public class WorkOrder implements Serializable {
          * IsRecevieGoods : string
          * AppointmentMessage : string
          * AppointmentState : string
+         * "IsLate":null
          * page : 0
          * limit : 0
          * Version : 0
@@ -193,6 +194,7 @@ public class WorkOrder implements Serializable {
         private String AppointmentMessage;
         private String AppointmentState;
         private String  IsPressFactory ;
+        private String IsLate;
 
         private String  IsReturn ;
         private String  AddressBack ;
@@ -212,6 +214,14 @@ public class WorkOrder implements Serializable {
         private String Version;
         private String NewMoney;
         private String QuaMoney;
+
+        public String getIsLate() {
+            return IsLate;
+        }
+
+        public void setIsLate(String isLate) {
+            IsLate = isLate;
+        }
 
         public String getQuaMoney() {
             return QuaMoney;

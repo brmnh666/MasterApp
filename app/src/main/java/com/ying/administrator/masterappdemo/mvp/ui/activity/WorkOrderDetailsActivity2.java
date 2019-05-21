@@ -648,6 +648,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
 
         mIvHost.setOnClickListener(this);
         mIvAccessories.setOnClickListener(this);
+        mIvAccessoriesOne.setOnClickListener(this);
+        mIvHostOne.setOnClickListener(this);
     }
 
     @Override
@@ -1082,6 +1084,24 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     return;
                 }
                 scaleview("http://47.96.126.145:8820/Pics/OrderByondImg/" + data.getOrderBeyondImg().get(0).getUrl());
+                break;
+            case R.id.iv_host_one:
+                if (data.getOrderAccessroyDetail()==null){
+                    return;
+                }
+                if (data.getOrderAccessroyDetail().size()==0){
+                    return;
+                }
+                scaleview("http://47.96.126.145:8820/Pics/Accessory/" + data.getOrderAccessroyDetail().get(0).getPhoto1());
+                break;
+            case R.id.iv_accessories_one:
+                if (data.getOrderAccessroyDetail()==null){
+                    return;
+                }
+                if (data.getOrderAccessroyDetail().size()==0){
+                    return;
+                }
+                scaleview("http://47.96.126.145:8820/Pics/Accessory/" + data.getOrderAccessroyDetail().get(0).getPhoto2());
                 break;
             case R.id.iv_range_two:
                 if (data.getOrderBeyondImg() == null) {
