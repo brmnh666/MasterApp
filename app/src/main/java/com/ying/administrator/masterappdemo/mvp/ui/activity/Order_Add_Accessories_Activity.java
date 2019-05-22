@@ -288,6 +288,9 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
     private Button positive;
     private Uri uri;
     private List<Uri> mSelected;
+    private EditText et_accessories_name;
+    private Button btn_add1;
+    private AlertDialog underReviewDialog;
 
     @Override
     protected int setLayoutId() {
@@ -551,7 +554,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                 num = et_num.getText().toString();
                 price = et_price.getText().toString();
                 servicePrice = et__service_price.getText().toString();
-                if (accessory == null) {
+                if ("".equals(tv_accessory_name.getText())) {
                     ToastUtils.showShort("请选择配件");
                     return;
                 }
@@ -559,7 +562,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                     ToastUtils.showShort("请输入数量");
                     return;
                 }
-                if (ac_list.size() != 0){
+                if (ac_list.size() != 0) {
                     mfAccessory = new FAccessory.OrderAccessoryStrBean.OrderAccessoryBean();
                     mfAccessory.setFAccessoryID(accessory.getFAccessoryID() + "");//获取id
                     mfAccessory.setFAccessoryName(accessory.getAccessoryName()); //获取名字
@@ -622,7 +625,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                         sAcList.add(mfAccessory);
                         mPre_order_add_ac_adapter.setNewData(sAcList);
                     }
-                }else {
+                } else {
                     mfAccessory = new FAccessory.OrderAccessoryStrBean.OrderAccessoryBean();
                     mfAccessory.setFAccessoryID("0");//获取id
                     mfAccessory.setFAccessoryName(tv_accessory_name.getText().toString()); //获取名字
@@ -991,11 +994,66 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                 if ("0".equals(baseResult.getData().getCode())) {
                     ac_list = baseResult.getData().getData();
                     if (ac_list == null) {
-                        MyUtils.showToast(mActivity, "无配件，请联系管理员");
+//                        showToast(mActivity, "无配件，请联系管理员");
+                        View under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_add_accessories, null);
+                        et_accessories_name = under_review.findViewById(R.id.et_accessories_name);
+                        btn_add1 = under_review.findViewById(R.id.btn_add);
+                        btn_add1.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                tv_accessory_name.setText(et_accessories_name.getText());
+                                underReviewDialog.dismiss();
+                            }
+                        });
+                        underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review)
+                                 .create();
+                        underReviewDialog.show();
+                        window = underReviewDialog.getWindow();
+//                window.setContentView(under_review);
+                        WindowManager.LayoutParams lp = window.getAttributes();
+//                lp.alpha = 0.5f;
+                        // 也可按屏幕宽高比例进行设置宽高
+//                Display display = mActivity.getWindowManager().getDefaultDisplay();
+//                lp.width = (int) (display.getWidth() * 0.6);
+//                lp.height = under_review.getHeight();
+//                lp.width = 300;
+//                lp.height = 400;
+
+                        window.setAttributes(lp);
+//                window.setDimAmount(0.1f);
+                        window.setBackgroundDrawable(new ColorDrawable());
                         return;
                     }
                     if (ac_list.size() == 0) {
-                        MyUtils.showToast(mActivity, "无配件，请联系管理员");
+//                        showToast(mActivity, "无配件，请联系管理员");
+
+                        View under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_add_accessories, null);
+                        et_accessories_name = under_review.findViewById(R.id.et_accessories_name);
+                        btn_add1 = under_review.findViewById(R.id.btn_add);
+                        btn_add1.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                tv_accessory_name.setText(et_accessories_name.getText());
+                                underReviewDialog.dismiss();
+                            }
+                        });
+                        underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review)
+                                .create();
+                        underReviewDialog.show();
+                        window = underReviewDialog.getWindow();
+//                window.setContentView(under_review);
+                        WindowManager.LayoutParams lp = window.getAttributes();
+//                lp.alpha = 0.5f;
+                        // 也可按屏幕宽高比例进行设置宽高
+//                Display display = mActivity.getWindowManager().getDefaultDisplay();
+//                lp.width = (int) (display.getWidth() * 0.6);
+//                lp.height = under_review.getHeight();
+//                lp.width = 300;
+//                lp.height = 400;
+
+                        window.setAttributes(lp);
+//                window.setDimAmount(0.1f);
+                        window.setBackgroundDrawable(new ColorDrawable());
                         return;
                     }
                     ac_list_adapter = new Ac_List_Adapter(R.layout.item_accessory, ac_list);
