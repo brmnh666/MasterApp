@@ -29,9 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -142,6 +140,8 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
     LinearLayout mLlServiceProcess;
     @BindView(R.id.btn_complete_submit)
     Button mBtnCompleteSubmit;
+    @BindView(R.id.et_memo)
+    EditText mEtMemo;
     private String orderID;
 
     /*工单详情*/
@@ -156,9 +156,6 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 
     private HashMap<Integer, File> return_img_map = new HashMap<>();//上传的返件图片
     private HashMap<Integer, File> service_img_map = new HashMap<>();//上传安装图片
-
-
-
 
 
     ZLoadingDialog dialog = new ZLoadingDialog(this);
@@ -219,9 +216,9 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 
                 mTvWorkOrderNumber.setText(data.getOrderID());
                 mTvOrderTime.setText(data.getAudDate().replace("T", " ")); //将T替换为空格
-                if (("Y").equals(data.getGuarantee())){
+                if (("Y").equals(data.getGuarantee())) {
                     mTvPaymentMethod.setText("平台代付");
-                }else {
+                } else {
                     mTvPaymentMethod.setText("客户付款");
                 }
                 mTvReasonPendingAppointment.setText(data.getMemo());
@@ -292,9 +289,9 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 //                        mPresenter.UpdateOrderState(orderID, "7");
 //                    }else{
 
-                    if (!"1".equals(data.getIsReturn())){//不需要返件
+                    if (!"1".equals(data.getIsReturn())) {//不需要返件
                         mPresenter.UpdateOrderState(orderID, "5");
-                    }else{
+                    } else {
                         mPresenter.UpdateOrderState(orderID, "8");
                     }
 
@@ -329,12 +326,12 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                     EventBus.getDefault().post("8");
 //                    EventBus.getDefault().post("");
                     EventBus.getDefault().post("WorkOrderDetailsActivity");
-                    if ("0".equals(data.getAccessorySearchState())){
+                    if ("0".equals(data.getAccessorySearchState())) {
                         EventBus.getDefault().post(4);
-                    }else{
-                        if (!"1".equals(data.getIsReturn())){//不需要返件
+                    } else {
+                        if (!"1".equals(data.getIsReturn())) {//不需要返件
                             EventBus.getDefault().post(4);
-                        }else{
+                        } else {
                             EventBus.getDefault().post(3);
                         }
                     }
@@ -430,29 +427,30 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                     }*/
                 if ("2".equals(data.getTypeID())) {//安装
                     if (service_img_map.size() < 4) {
-                        MyUtils.showToast(mActivity,"请上传四张整机跟服务图片");
+                        MyUtils.showToast(mActivity, "请上传四张整机跟服务图片");
                         return;
                     } else {
 
-
-                        ServiceOrderPicUpload(service_img_map);
+                        String EndRemark=mEtMemo.getText().toString();
+                        ServiceOrderPicUpload(service_img_map,EndRemark);
                     }
 
                 } else {//维修
-                    if (data.getAccessory()==null||"".equals(data.getAccessory())){
+                    if (data.getAccessory() == null || "".equals(data.getAccessory())) {
                         //没配件
-                        if (return_img_map.get(1)==null){
-                            MyUtils.showToast(mActivity,"整机图片必传！");
+                        if (return_img_map.get(1) == null) {
+                            MyUtils.showToast(mActivity, "整机图片必传！");
                             return;
                         }
-                    }else{
+                    } else {
                         //有配件
-                        if (return_img_map.get(1)==null||return_img_map.get(2)==null||return_img_map.get(3)==null){
-                            MyUtils.showToast(mActivity,"整机、故障位置、新旧配件图片必传！");
+                        if (return_img_map.get(1) == null || return_img_map.get(2) == null || return_img_map.get(3) == null) {
+                            MyUtils.showToast(mActivity, "整机、故障位置、新旧配件图片必传！");
                             return;
                         }
                     }
-                    ReuturnAccessoryPicUpload(return_img_map);
+                    String EndRemark=mEtMemo.getText().toString();
+                    ReuturnAccessoryPicUpload(return_img_map,EndRemark);
 //                    if (return_img_map.size() < 4) {
 //                        Toast.makeText(CompleteWorkOrderActivity.this, "请添加四张返件图片", Toast.LENGTH_SHORT).show();
 //
@@ -619,7 +617,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
             case 102:
                 if (data != null) {
                     mSelected = Matisse.obtainResult(data);
-                    if (mSelected.size()==1){
+                    if (mSelected.size() == 1) {
                         uri = mSelected.get(0);
                     }
 //                    Uri uri = data.getData();
@@ -647,7 +645,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
             case 202:
                 if (data != null) {
                     mSelected = Matisse.obtainResult(data);
-                    if (mSelected.size()==1){
+                    if (mSelected.size() == 1) {
                         uri = mSelected.get(0);
                     }
 //                    Uri uri = data.getData();
@@ -676,7 +674,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
             case 303:
                 if (data != null) {
                     mSelected = Matisse.obtainResult(data);
-                    if (mSelected.size()==1){
+                    if (mSelected.size() == 1) {
                         uri = mSelected.get(0);
                     }
 //                    Uri uri = data.getData();
@@ -704,7 +702,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
             case 404:
                 if (data != null) {
                     mSelected = Matisse.obtainResult(data);
-                    if (mSelected.size()==1){
+                    if (mSelected.size() == 1) {
                         uri = mSelected.get(0);
                     }
 //                    Uri uri = data.getData();
@@ -733,7 +731,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
             case 505:
                 if (data != null) {
                     mSelected = Matisse.obtainResult(data);
-                    if (mSelected.size()==1){
+                    if (mSelected.size() == 1) {
                         uri = mSelected.get(0);
                     }
 //                    Uri uri = data.getData();
@@ -767,7 +765,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
             case 606:
                 if (data != null) {
                     mSelected = Matisse.obtainResult(data);
-                    if (mSelected.size()==1){
+                    if (mSelected.size() == 1) {
                         uri = mSelected.get(0);
                     }
 //                    Uri uri = data.getData();
@@ -794,7 +792,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
             case 707:
                 if (data != null) {
                     mSelected = Matisse.obtainResult(data);
-                    if (mSelected.size()==1){
+                    if (mSelected.size() == 1) {
                         uri = mSelected.get(0);
                     }
 //                    Uri uri = data.getData();
@@ -821,7 +819,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
             case 808:
                 if (data != null) {
                     mSelected = Matisse.obtainResult(data);
-                    if (mSelected.size()==1){
+                    if (mSelected.size() == 1) {
                         uri = mSelected.get(0);
                     }
 //                    Uri uri = data.getData();
@@ -839,29 +837,30 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 
     }
 
-    public void ReuturnAccessoryPicUpload(HashMap<Integer, File> map) {
+    public void ReuturnAccessoryPicUpload(HashMap<Integer, File> map, String EndRemark) {
         showLoading();
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
-        if (map.get(0)!=null){
+        if (map.get(0) != null) {
             builder.addFormDataPart("img1", map.get(0).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(0)));
         }
-        if (map.get(1)!=null){
+        if (map.get(1) != null) {
             builder.addFormDataPart("img2", map.get(1).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(1)));
         }
-        if (map.get(2)!=null){
+        if (map.get(2) != null) {
             builder.addFormDataPart("img3", map.get(2).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(2)));
         }
-        if (map.get(3)!=null){
+        if (map.get(3) != null) {
             builder.addFormDataPart("img4", map.get(3).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(3)));
         }
         builder.addFormDataPart("OrderID", orderID);
+        builder.addFormDataPart("EndRemark",EndRemark);
         MultipartBody requestBody = builder.build();
         mPresenter.ReuturnAccessoryPicUpload(requestBody);
 
     }
 
     /*安装服务图片*/
-    public void ServiceOrderPicUpload(HashMap<Integer, File> map) {
+    public void ServiceOrderPicUpload(HashMap<Integer, File> map,String EndRemark ) {
         showLoading();
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("img", map.get(0).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(0)));
@@ -869,6 +868,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
         builder.addFormDataPart("img", map.get(2).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(2)));
         builder.addFormDataPart("img", map.get(3).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(3)));
         builder.addFormDataPart("OrderID", orderID);
+        builder.addFormDataPart("EndRemark",EndRemark);
         MultipartBody requestBody = builder.build();
         mPresenter.ServiceOrderPicUpload(requestBody);
     }
@@ -889,4 +889,10 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 }
