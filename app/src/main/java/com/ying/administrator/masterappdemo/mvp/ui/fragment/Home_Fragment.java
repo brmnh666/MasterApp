@@ -67,7 +67,6 @@ import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.AllWorkOrdersContract;
 import com.ying.administrator.masterappdemo.mvp.model.AllWorkOrdersModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.AllWorkOrdersPresenter;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.ForgetPasswordActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Login_New_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_Receiving_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Personal_Information_Activity;
@@ -286,7 +285,6 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
 
 
     }
-
 
 
     @Override
@@ -518,7 +516,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 mTvHomeOutstandingAmount.setText("未完结金额: " + FrozenMoney + "元");
                 mTvHomeGivingMoney.setText("赠 送 金 额: 暂无");
                 mTvName.setText(userInfo.getNickName());
-                String xigua = String.format("%.2f",userInfo.getCon());
+                String xigua = String.format("%.2f", userInfo.getCon());
                 mTvMoney.setText(xigua);
                 break;
 
@@ -621,7 +619,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 btn_share_one = under_review.findViewById(R.id.btn_share_one);
                 iv_code_one = under_review.findViewById(R.id.iv_code_one);
                 btn_go_to_the_mall = under_review.findViewById(R.id.btn_go_to_the_mall);
-                Bitmap bitmap = ZXingUtils.createQRImage("http://admin.xigyu.com/sign?phone="+userID+"&type=7", 600, 600, BitmapFactory.decodeResource(getResources(), R.drawable.icon));
+                Bitmap bitmap = ZXingUtils.createQRImage("http://admin.xigyu.com/sign?phone=" + userID + "&type=7", 600, 600, BitmapFactory.decodeResource(getResources(), R.drawable.icon));
                 iv_code_one.setImageBitmap(bitmap);
                 btn_share_one.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -845,7 +843,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
         under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_ad, null);
         iv_close = under_review.findViewById(R.id.iv_close);
         tv_share = under_review.findViewById(R.id.tv_share);
-        iv_gotoshop =under_review.findViewById(R.id.tv_go);
+        iv_gotoshop = under_review.findViewById(R.id.tv_go);
 
         iv_gotoshop.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -911,7 +909,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                             Toast.makeText(mActivity, "已复制", Toast.LENGTH_LONG).show();
 
                         } else {
-                            UMWeb web = new UMWeb("http://admin.xigyu.com/sign?phone="+userID+"&type=7");
+                            UMWeb web = new UMWeb("http://admin.xigyu.com/sign?phone=" + userID + "&type=7");
                             web.setTitle("西瓜鱼");
                             web.setDescription("注册送西瓜币了！！！！！");
                             web.setThumb(new UMImage(mActivity, R.drawable.icon));
@@ -1073,11 +1071,9 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
     }
 
 
-
-
     private void openShopApp(String packageName) {
 
-        if (isInstalled(packageName)){
+        if (isInstalled(packageName)) {
             PackageInfo pi = null;
             try {
                 pi = getActivity().getPackageManager().getPackageInfo(packageName, 0);
@@ -1091,7 +1087,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
             List<ResolveInfo> apps = getActivity().getPackageManager().queryIntentActivities(resolveIntent, 0);
 
             ResolveInfo ri = apps.iterator().next();
-            if (ri != null ) {
+            if (ri != null) {
                 packageName = ri.activityInfo.packageName;
                 String className = ri.activityInfo.name;
 
@@ -1104,14 +1100,33 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
             }
 
 
-        }else {
-
-            Toast.makeText(mActivity,"未安装商城app请前往下载安装",Toast.LENGTH_SHORT).show();
+        } else {
+            openBrowser(mActivity,"http://47.96.126.145:8820/Files/app.apk");
+//            Toast.makeText(mActivity, "未安装商城app请前往下载安装", Toast.LENGTH_SHORT).show();
         }
-
 
 
     }
 
-
+    /**
+     * 调用第三方浏览器打开
+     *
+     * @param context
+     * @param url     要浏览的资源地址
+     */
+    public static void openBrowser(Context context, String url) {
+        final Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(url));
+        context.startActivity(intent);
+        // 注意此处的判断intent.resolveActivity()可以返回显示该Intent的Activity对应的组件名
+        // 官方解释 : Name of the component implementing an activity that can display the intent
+//        if (intent.resolveActivity(context.getPackageManager()) != null) {
+//            final ComponentName componentName = intent.resolveActivity(context.getPackageManager());
+//            // 打印Log   ComponentName到底是什么
+//            context.startActivity(Intent.createChooser(intent, "请选择浏览器"));
+//        } else {
+//            Toast.makeText(context.getApplicationContext(), "请下载浏览器", Toast.LENGTH_SHORT).show();
+//        }
+    }
 }

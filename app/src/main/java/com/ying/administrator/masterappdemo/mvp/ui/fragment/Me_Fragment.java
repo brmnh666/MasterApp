@@ -1,11 +1,17 @@
 package com.ying.administrator.masterappdemo.mvp.ui.fragment;
 
 import android.app.AlertDialog;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,7 +53,6 @@ import com.ying.administrator.masterappdemo.mvp.contract.MainContract;
 import com.ying.administrator.masterappdemo.mvp.model.MainModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.MainPresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.AboutUsActivity;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.LoginActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Opinion_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_Receiving_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Personal_Information_Activity;
@@ -153,6 +158,7 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
     private Button btn_verified_update;
     private AlertDialog underReviewDialog;
     private CustomDialog customDialog;
+    private Button btn_go_to_the_mall;
 
     public Me_Fragment() {
         // Required empty public constructor
@@ -498,6 +504,7 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
 //                btn_share_two = dialog_share.findViewById(R.id.btn_share_two);
 
                 iv_code_one = dialog_share.findViewById(R.id.iv_code_one);
+                btn_go_to_the_mall = dialog_share.findViewById(R.id.btn_go_to_the_mall);
                 Bitmap bitmap1 = ZXingUtils.createQRImage("http://admin.xigyu.com/sign?phone=" + userID + "&type=7", 600, 600, BitmapFactory.decodeResource(getResources(), R.drawable.icon));
                 iv_code_one.setImageBitmap(bitmap1);
                 btn_share_one.setOnClickListener(new View.OnClickListener() {
@@ -505,6 +512,13 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                     public void onClick(View v) {
                         dialogShare.dismiss();
                         mShareAction.open();
+                    }
+                });
+                btn_go_to_the_mall.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        openShopApp("com.zhenghaikj.shop");
+                        dialogShare.dismiss();
                     }
                 });
 //                btn_share_two.setOnClickListener(new View.OnClickListener() {
@@ -638,6 +652,75 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
         super.onDestroyView();
         unbinder.unbind();
     }
+    private boolean isInstalled(String packageName) {
+        PackageManager manager = mActivity.getPackageManager();
+        //获取所有已安装程序的包信息
+        List<PackageInfo> installedPackages = manager.getInstalledPackages(0);
+        if (installedPackages != null) {
+            for (PackageInfo info : installedPackages) {
+                if (info.packageName.equals(packageName))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    private void openShopApp(String packageName) {
+
+        if (isInstalled(packageName)) {
+            PackageInfo pi = null;
+            try {
+                pi = getActivity().getPackageManager().getPackageInfo(packageName, 0);
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+            Intent resolveIntent = new Intent(Intent.ACTION_MAIN, null);
+            resolveIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+            resolveIntent.setPackage(pi.packageName);
+
+            List<ResolveInfo> apps = getActivity().getPackageManager().queryIntentActivities(resolveIntent, 0);
+
+            ResolveInfo ri = apps.iterator().next();
+            if (ri != null) {
+                packageName = ri.activityInfo.packageName;
+                String className = ri.activityInfo.name;
+
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_LAUNCHER);
+
+                ComponentName cn = new ComponentName(packageName, className);
+                intent.setComponent(cn);
+                startActivity(intent);
+            }
 
 
+        } else {
+            openBrowser(mActivity,"http://47.96.126.145:8820/Files/app.apk");
+//            Toast.makeText(mActivity, "未安装商城app请前往下载安装", Toast.LENGTH_SHORT).show();
+        }
+
+
+    }
+
+    /**
+     * 调用第三方浏览器打开
+     *
+     * @param context
+     * @param url     要浏览的资源地址
+     */
+    public static void openBrowser(Context context, String url) {
+        final Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(url));
+        context.startActivity(intent);
+        // 注意此处的判断intent.resolveActivity()可以返回显示该Intent的Activity对应的组件名
+        // 官方解释 : Name of the component implementing an activity that can display the intent
+//        if (intent.resolveActivity(context.getPackageManager()) != null) {
+//            final ComponentName componentName = intent.resolveActivity(context.getPackageManager());
+//            // 打印Log   ComponentName到底是什么
+//            context.startActivity(Intent.createChooser(intent, "请选择浏览器"));
+//        } else {
+//            Toast.makeText(context.getApplicationContext(), "请下载浏览器", Toast.LENGTH_SHORT).show();
+//        }
+    }
 }
