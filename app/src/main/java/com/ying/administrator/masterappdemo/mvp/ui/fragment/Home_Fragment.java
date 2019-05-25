@@ -1101,8 +1101,22 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
 
 
         } else {
-            openBrowser(mActivity,"http://47.96.126.145:8820/Files/app.apk");
-//            Toast.makeText(mActivity, "未安装商城app请前往下载安装", Toast.LENGTH_SHORT).show();
+            final CommonDialog_Home dialog = new CommonDialog_Home(getActivity());
+            dialog.setMessage("未安装商城app，是否请前往下载安装")
+                    //.setImageResId(R.mipmap.ic_launcher)
+                    .setTitle("提示")
+                    .setSingle(false).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
+                @Override
+                public void onPositiveClick() {//拨打电话
+                    dialog.dismiss();
+                    openBrowser(mActivity,"http://47.96.126.145:8820/Files/西瓜鱼商城.apk");
+                }
+
+                @Override
+                public void onNegtiveClick() {//取消
+                    dialog.dismiss();
+                }
+            }).show();
         }
 
 
