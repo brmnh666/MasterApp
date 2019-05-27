@@ -1236,6 +1236,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     mfAccessory = new FAccessory.OrderAccessoryStrBean.OrderAccessoryBean();
                     mfAccessory.setFAccessoryID(accessory.getFAccessoryID() + "");//获取id
                     mfAccessory.setFAccessoryName(accessory.getAccessoryName()); //获取名字
+                    mfAccessory.setFCategoryID(data.getCategoryID()); //分类id
                     mfAccessory.setQuantity(num); //数量 默认数字为1
                     mfAccessory.setPrice(accessory.getAccessoryPrice());//原价
                     mfAccessory.setDiscountPrice(accessory.getAccessoryPrice());//折扣价
@@ -1299,6 +1300,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     mfAccessory = new FAccessory.OrderAccessoryStrBean.OrderAccessoryBean();
                     mfAccessory.setFAccessoryID("0");//获取id
                     mfAccessory.setFAccessoryName(tv_accessory_name.getText().toString()); //获取名字
+                    mfAccessory.setFCategoryID(data.getCategoryID()); //分类id
                     mfAccessory.setQuantity(num); //数量 默认数字为1
                     mfAccessory.setPrice(Double.valueOf("0"));//原价
                     mfAccessory.setDiscountPrice(Double.valueOf("0"));//折扣价

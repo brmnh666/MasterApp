@@ -57,10 +57,38 @@ android {
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            crunchPngs false //关闭crunchPng优化, 以加快构建
+            //其他代码省略 ...
+        }
     }
 
     aspectjx { exclude 'com.alipay' }
+    //如果是构建debug包, 则禁用 "png cruncher" (默认cruncherEnabled=true, 禁用以加速构建)
+    def enableCruncher = { ->
+        return !isDebug()
+    }
 
+    aaptOptions { //禁用cruncher, 以加速编译
+        cruncherEnabled = enableCruncher()
+        cruncherProcesses = 0
+    }
+
+    dexOptions { //优化dex配置
+        dexInProcess true
+        preDexLibraries true
+        javaMaxHeapSize "2g"
+    }
+//跳过Lint和Test相关的task, 以加速编译
+    if (isDebug()) {
+        gradle.taskGraph.whenReady {
+            tasks.each { task ->
+                if (task.name.contains("Test") || task.name.contains("Lint")) {
+                    task.enabled = false
+                }
+            }
+        }
+    }
 }
 
 dependencies {

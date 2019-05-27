@@ -67,6 +67,7 @@ public class FAccessory implements Serializable {
              * DiscountPrice : 1
              */
 
+            private String FCategoryID;
             private String FAccessoryID;
             private String FAccessoryName;
             private String Quantity;
@@ -78,6 +79,14 @@ public class FAccessory implements Serializable {
             private String SizeID;
             private double Price;
             private double DiscountPrice;
+
+            public String getFCategoryID() {
+                return FCategoryID;
+            }
+
+            public void setFCategoryID(String FCategoryID) {
+                this.FCategoryID = FCategoryID;
+            }
 
             public String getSizeID() {
                 return SizeID;

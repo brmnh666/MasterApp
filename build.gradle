@@ -15,7 +15,16 @@ buildscript {
         // in the individual module build.gradle files
     }
 }
-
+//是否是执行Debug相关task (通用函数, 可供子module调用)
+def isDebug() {
+    def taskNames = gradle.startParameter.taskNames
+    for (tn in taskNames) {
+        if( (tn.contains("install") || tn.contains("assemble")) && tn.contains("Debug")) {
+            return true
+        }
+    }
+    return false
+}
 allprojects {
     repositories {
         google()
