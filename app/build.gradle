@@ -40,10 +40,10 @@ android {
     // 签名配置
     signingConfigs{
         release{
-                storeFile file("../mykeystore.jks")
-                storePassword "xiao123456"
-                keyAlias "key0"
-                keyPassword"xiao123456"
+            storeFile file("../mykeystore.jks")
+            storePassword "xiao123456"
+            keyAlias "key0"
+            keyPassword"xiao123456"
         }
 
 //        debug {

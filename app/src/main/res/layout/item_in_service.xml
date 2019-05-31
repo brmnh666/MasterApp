@@ -108,7 +108,8 @@
         android:layout_below="@+id/tv_reason_in_service"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="5dp"
-        android:layout_toRightOf="@+id/tv_loaction_in_service"
+       android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
         android:text="数量:2台"
         android:textSize="14sp" />
 
