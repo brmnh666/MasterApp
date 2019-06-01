@@ -261,6 +261,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
     private TextView iv_gotoshop;
     private TextView tv_share;
     private Button btn_go_to_the_mall;
+    private TextView content;
 
 
     public Home_Fragment() {
@@ -337,7 +338,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 animator_order.setDuration(1000);
                 animator_order.start();
 
-//                EventBus.getDefault().post("");
+                EventBus.getDefault().post("GetUserInfoList");
             }
         });
 
@@ -596,6 +597,8 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                         underReviewDialog.show();
                     } else if (userInfo.getIfAuth().equals("-1")) {
                         under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_audit_failure, null);
+                        content = under_review.findViewById(R.id.tv_content);
+                        content.setText(userInfo.getAuthMessage()+",有疑问请咨询客服电话。");
                         btnConfirm = under_review.findViewById(R.id.btn_confirm);
                         btnConfirm.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -973,6 +976,8 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                             } else if (userInfo.getIfAuth().equals("-1")) {
                                 under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_audit_failure, null);
                                 btnConfirm = under_review.findViewById(R.id.btn_confirm);
+                                content = under_review.findViewById(R.id.tv_content);
+                                content.setText(userInfo.getAuthMessage()+",有疑问请咨询客服电话。");
                                 btnConfirm.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {

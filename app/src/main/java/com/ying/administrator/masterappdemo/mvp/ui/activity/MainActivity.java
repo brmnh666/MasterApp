@@ -102,6 +102,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
     private CustomDialog customDialog;
     private Button btn_verified_update;
     private QBadgeView qBadgeView;
+    private TextView content;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,6 +166,8 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
     }
     public void showRejectDialog() {
         under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_audit_failure, null);
+        content = under_review.findViewById(R.id.tv_content);
+        content.setText(userInfo.getAuthMessage()+",有疑问请咨询客服电话。");
         btnConfirm = under_review.findViewById(R.id.btn_confirm);
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override

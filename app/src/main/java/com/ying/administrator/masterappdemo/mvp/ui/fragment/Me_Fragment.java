@@ -159,6 +159,7 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
     private AlertDialog underReviewDialog;
     private CustomDialog customDialog;
     private Button btn_go_to_the_mall;
+    private TextView content;
 
     public Me_Fragment() {
         // Required empty public constructor
@@ -373,6 +374,8 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                         underReviewDialog.show();
                     } else if (userInfo.getIfAuth().equals("-1")) {
                         under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_audit_failure, null);
+                        content = under_review.findViewById(R.id.tv_content);
+                        content.setText(userInfo.getAuthMessage()+",有疑问请咨询客服电话。");
                         btnConfirm = under_review.findViewById(R.id.btn_confirm);
                         btnConfirm.setOnClickListener(new View.OnClickListener() {
                             @Override

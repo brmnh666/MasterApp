@@ -39,12 +39,12 @@
         android:layout_marginRight="30dp"
         android:layout_marginBottom="15dp"
         android:text="点击刷新工单"
-        android:textSize="12sp" />
+        android:textSize="17sp" />
 
     <ImageView
         android:id="@+id/img_home_refresh"
-        android:layout_width="18dp"
-        android:layout_height="14dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_alignParentBottom="true"
         android:layout_marginRight="2dp"
         android:layout_marginBottom="15dp"
@@ -54,5 +54,13 @@
 
         />
 
+    <ImageView
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:src="@drawable/hongdian"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="25dp"
+        android:layout_marginRight="20dp"/>
 
 </RelativeLayout>
