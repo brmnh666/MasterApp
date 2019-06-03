@@ -94,7 +94,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:layout_gravity="center"
-                                            android:text="￥"
+                                            android:text="¥"
                                             android:textColor="#1690FF"
                                             android:textSize="30sp"
                                             android:visibility="gone" />
@@ -249,7 +249,37 @@
                                         android:textColor="#000000"
                                         android:textSize="14sp" />
                                 </LinearLayout>
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:orientation="vertical">
 
+                                    <ImageView
+                                        android:layout_width="15dp"
+                                        android:layout_height="15dp"
+                                        android:layout_gravity="center"
+                                        android:src="@mipmap/give"
+                                        android:visibility="gone" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:text="冻结配件"
+                                        android:textColor="#6A6A6A"
+                                        android:textSize="14sp" />
+
+                                    <TextView
+                                        android:id="@+id/tv_freeze"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:text="10000.00"
+                                        android:textColor="#000000"
+                                        android:textSize="14sp" />
+                                </LinearLayout>
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"

@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:gravity="center"
-            android:text="西瓜币可通过西瓜商城购买心仪的产品"
+            android:text="西瓜币可通过西瓜鱼商城购买心仪的产品"
             android:textColor="#808080"
             android:textSize="12sp"
             android:visibility="gone"/>
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:gravity="center"
-            android:text="扫描加入西瓜商城"
+            android:text="扫描加入西瓜鱼商城"
             android:textColor="#333"
             android:textSize="14sp" />
 

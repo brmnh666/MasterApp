@@ -1096,13 +1096,13 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                 data = baseResult.getData();
                 mTvStatus.setText(data.getStateStr());
 
-                mTvBeyondMoney.setText("￥"+data.getBeyondMoney()+"");
-                mTvAccessoryMoney.setText("￥"+data.getAccessoryMoney());
-                mTvServiceMoney.setText("￥"+data.getServiceMoney());
-                mTvOrderMoney.setText("￥"+data.getOrderMoney()+"");
+                mTvBeyondMoney.setText("¥"+data.getBeyondMoney()+"");
+                mTvAccessoryMoney.setText("¥"+data.getAccessoryMoney());
+                mTvServiceMoney.setText("¥"+data.getServiceMoney());
+                mTvOrderMoney.setText("¥"+data.getOrderMoney()+"");
 
                 mTvTotalPrice.setVisibility(View.GONE);
-//                mTvTotalPrice.setText("服务金额：￥" + data.getOrderMoney());
+//                mTvTotalPrice.setText("服务金额：¥" + data.getOrderMoney());
                 mTvAccessoryMemo.setText("备注：" + data.getAccessoryMemo());
                 mTvAccessorySequency.setText(data.getAccessorySequencyStr());
                 mTvName.setText(data.getUserName());

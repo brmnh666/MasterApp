@@ -58,7 +58,7 @@
                     android:id="@+id/tv_record_money"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="￥123.00"
+                    android:text="¥123.00"
                     android:textSize="15sp"
                     android:textColor="#FF3B3B"
                     android:layout_marginLeft="5dp"/>

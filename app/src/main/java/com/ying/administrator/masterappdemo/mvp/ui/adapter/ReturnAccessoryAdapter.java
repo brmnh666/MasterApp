@@ -45,8 +45,8 @@ public class ReturnAccessoryAdapter extends BaseQuickAdapter<GAccessory,BaseView
             helper.getView(R.id.ll_y).setVisibility(View.GONE);
             helper.getView(R.id.ll_n).setVisibility(View.VISIBLE);
         }
-        helper.setText(R.id.tv_accessory_name,item.getFAccessoryName()+"  ￥"+item.getDiscountPrice()+"/"+item.getQuantity()+"个");
-        helper.setText(R.id.tv_accessory_name_n,item.getFAccessoryName()+"  ￥"+item.getDiscountPrice()+"/"+item.getQuantity()+"个");
+        helper.setText(R.id.tv_accessory_name,item.getFAccessoryName()+"  ¥"+item.getDiscountPrice()+"/"+item.getQuantity()+"个");
+        helper.setText(R.id.tv_accessory_name_n,item.getFAccessoryName()+"  ¥"+item.getDiscountPrice()+"/"+item.getQuantity()+"个");
         helper.setText(R.id.tv_content,content);
     }
 }

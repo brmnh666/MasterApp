@@ -70,6 +70,7 @@ import com.ying.administrator.masterappdemo.mvp.ui.adapter.Pre_order_Add_Ac_Adap
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Pre_order_Add_Service_Adapter;
 import com.ying.administrator.masterappdemo.util.Glide4Engine;
 import com.ying.administrator.masterappdemo.util.MyUtils;
+import com.ying.administrator.masterappdemo.util.SingleClick;
 import com.ying.administrator.masterappdemo.widget.ClearEditText;
 import com.ying.administrator.masterappdemo.widget.HideSoftInputDialog;
 import com.zhihu.matisse.Matisse;
@@ -398,7 +399,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
         mRgOrderDetailsForRemoteFee.setVisibility(View.GONE);
     }
 
-
+    @SingleClick
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

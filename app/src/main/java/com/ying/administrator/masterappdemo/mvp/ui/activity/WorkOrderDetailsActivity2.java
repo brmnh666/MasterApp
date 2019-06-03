@@ -87,6 +87,7 @@ import com.ying.administrator.masterappdemo.mvp.ui.adapter.Pre_order_Add_Service
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.ReturnAccessoryAdapter;
 import com.ying.administrator.masterappdemo.util.Glide4Engine;
 import com.ying.administrator.masterappdemo.util.MyUtils;
+import com.ying.administrator.masterappdemo.util.SingleClick;
 import com.ying.administrator.masterappdemo.util.calendarutil.CalendarEvent;
 import com.ying.administrator.masterappdemo.util.calendarutil.CalendarProviderManager;
 import com.ying.administrator.masterappdemo.widget.BottomDialog;
@@ -690,6 +691,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         timeSelector.setTitle(title);
         timeSelector.show();
     }*/
+    @SingleClick
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -1086,19 +1088,19 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 scaleview("http://47.96.126.145:8820/Pics/OrderByondImg/" + data.getOrderBeyondImg().get(0).getUrl());
                 break;
             case R.id.iv_host_one:
-                if (data.getOrderAccessroyDetail()==null){
+                if (data.getOrderAccessroyDetail() == null) {
                     return;
                 }
-                if (data.getOrderAccessroyDetail().size()==0){
+                if (data.getOrderAccessroyDetail().size() == 0) {
                     return;
                 }
                 scaleview("http://47.96.126.145:8820/Pics/Accessory/" + data.getOrderAccessroyDetail().get(0).getPhoto1());
                 break;
             case R.id.iv_accessories_one:
-                if (data.getOrderAccessroyDetail()==null){
+                if (data.getOrderAccessroyDetail() == null) {
                     return;
                 }
-                if (data.getOrderAccessroyDetail().size()==0){
+                if (data.getOrderAccessroyDetail().size() == 0) {
                     return;
                 }
                 scaleview("http://47.96.126.145:8820/Pics/Accessory/" + data.getOrderAccessroyDetail().get(0).getPhoto2());
@@ -1537,47 +1539,47 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 data = baseResult.getData();
                 mTvStatus.setText(data.getStateStr());
 
-                mTvBeyondMoney.setText("￥" + data.getBeyondMoney() + "");
-                mTvAccessoryMoney.setText("￥" + data.getAccessoryMoney());
-                mTvServiceMoney.setText("￥" + data.getServiceMoney());
-                mTvOrderMoney.setText("￥" + data.getOrderMoney() + "");
+                mTvBeyondMoney.setText("¥" + data.getBeyondMoney() + "");
+                mTvAccessoryMoney.setText("¥" + data.getAccessoryMoney());
+                mTvServiceMoney.setText("¥" + data.getServiceMoney());
+                mTvOrderMoney.setText("¥" + data.getOrderMoney() + "");
                 if ("3".equals(data.getTypeID())) {
-                    mTvServiceAmount.setText("服务金额：￥" + data.getQuaMoney() + "");
-                    mTvTotalPrice.setText("服务金额：￥" + data.getQuaMoney() + "");
+                    mTvServiceAmount.setText("服务金额：¥" + data.getQuaMoney() + "");
+                    mTvTotalPrice.setText("服务金额：¥" + data.getQuaMoney() + "");
                 } else {
 //                    if (data.getAccessoryMoney() != null && !"0.00".equals(data.getAccessoryMoney())) {
 //                        if ("1".equals(data.getBeyondState())) {
-//                            mTvServiceAmount.setText("服务金额：￥" + (Double.parseDouble(data.getAccessoryMoney()) + Double.parseDouble(data.getBeyondMoney()) + Double.parseDouble(data.getPostMoney())) + "");
-//                            mTvTotalPrice.setText("服务金额：￥" + (Double.parseDouble(data.getAccessoryMoney()) + Double.parseDouble(data.getBeyondMoney()) + Double.parseDouble(data.getPostMoney())) + "");
+//                            mTvServiceAmount.setText("服务金额：¥" + (Double.parseDouble(data.getAccessoryMoney()) + Double.parseDouble(data.getBeyondMoney()) + Double.parseDouble(data.getPostMoney())) + "");
+//                            mTvTotalPrice.setText("服务金额：¥" + (Double.parseDouble(data.getAccessoryMoney()) + Double.parseDouble(data.getBeyondMoney()) + Double.parseDouble(data.getPostMoney())) + "");
 //                        } else {
-//                            mTvServiceAmount.setText("服务金额：￥" + (Double.parseDouble(data.getAccessoryMoney()) + Double.parseDouble(data.getPostMoney())) + "");
-//                            mTvTotalPrice.setText("服务金额：￥" + (Double.parseDouble(data.getAccessoryMoney()) + Double.parseDouble(data.getPostMoney())) + "");
+//                            mTvServiceAmount.setText("服务金额：¥" + (Double.parseDouble(data.getAccessoryMoney()) + Double.parseDouble(data.getPostMoney())) + "");
+//                            mTvTotalPrice.setText("服务金额：¥" + (Double.parseDouble(data.getAccessoryMoney()) + Double.parseDouble(data.getPostMoney())) + "");
 //                        }
                     if ("1".equals(data.getAccessoryApplyState())) {
-                        mTvServiceAmount.setText("服务金额：￥" + data.getQuaMoney());
-                        mTvTotalPrice.setText("服务金额：￥" + data.getQuaMoney());
+                        mTvServiceAmount.setText("服务金额：¥" + data.getQuaMoney());
+                        mTvTotalPrice.setText("服务金额：¥" + data.getQuaMoney());
 
                     } else {
-                        mTvServiceAmount.setText("服务金额：￥" + data.getOrderMoney() + "");
-                        mTvTotalPrice.setText("服务金额：￥" + data.getOrderMoney() + "");
+                        mTvServiceAmount.setText("服务金额：¥" + data.getOrderMoney() + "");
+                        mTvTotalPrice.setText("服务金额：¥" + data.getOrderMoney() + "");
                     }
                 }
 
 //                mTvTotalPrice.setVisibility(View.GONE);
                 if (!"0.00".equals(data.getPostMoney()) && data.getPostMoney() != null) {
                     mLlPostMoney.setVisibility(View.VISIBLE);
-                    mTvPostMoney.setText("￥" + data.getPostMoney());
+                    mTvPostMoney.setText("¥" + data.getPostMoney());
                 } else {
                     mLlPostMoney.setVisibility(View.GONE);
                 }
 
-                if (data.getOrderAccessroyDetail().size()>0){
+                if (data.getOrderAccessroyDetail().size() == 0) {
+                    mLlHostOne.setVisibility(View.GONE);
+                    mLlAccessoriesOne.setVisibility(View.GONE);
+                } else {
                     Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/Accessory/" + data.getOrderAccessroyDetail().get(0).getPhoto1()).into(mIvHostOne);
                     Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/Accessory/" + data.getOrderAccessroyDetail().get(0).getPhoto2()).into(mIvAccessoriesOne);
 
-                }else {
-                    mLlHostOne.setVisibility(View.GONE);
-                    mLlAccessoriesOne.setVisibility(View.GONE);
                 }
 
                 mTvAccessoryMemo.setText("备注：" + data.getAccessoryMemo());
@@ -2069,7 +2071,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     mLlNewMoney.setVisibility(View.GONE);
                 } else {
                     mLlNewMoney.setVisibility(View.VISIBLE);
-                    mTvNewMoney.setText("￥" + data.getNewMoney());
+                    mTvNewMoney.setText("¥" + data.getNewMoney());
                 }
                 break;
 

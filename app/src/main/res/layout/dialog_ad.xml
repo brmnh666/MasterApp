@@ -45,7 +45,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="个西瓜币凭西瓜币可到西瓜商城"
+            android:text="个西瓜币凭西瓜币可到西瓜鱼商城"
             android:textSize="18sp"
             android:textColor="@color/red"
             android:gravity="center"

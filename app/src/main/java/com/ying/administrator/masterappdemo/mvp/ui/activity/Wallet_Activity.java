@@ -109,6 +109,8 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
     TextView mTvWithdrawMore;
     @BindView(R.id.tv_recharge_more)
     TextView mTvRechargeMore;
+    @BindView(R.id.tv_freeze)
+    TextView mTvFreeze;
 
     private Wallet_record_Adapter wallet_record_adapter1;
     private Wallet_record_Adapter wallet_record_adapter2;
@@ -280,11 +282,12 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
                     String Money = String.format("%.2f", userInfo.getTotalMoney());
                     mTvMoney.setText(Money);
                     String Unfinished = String.format("%.2f", userInfo.getFrozenMoney());
-                    mTvUnfinished.setText( Unfinished+ "元");
+                    mTvUnfinished.setText(Unfinished + "元");
                     String CanWithdraw = String.format("%.2f", userInfo.getTotalMoney() - userInfo.getFrozenMoney());
                     mTvCanWithdraw.setText(CanWithdraw);
                     String Con = String.format("%.2f", userInfo.getCon());
                     mTvFreeGift.setText(Con);
+                    mTvFreeze.setText(String.format("%.2f",userInfo.getFrozenMoney()));
                 }
 
                 break;
@@ -305,11 +308,11 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
                                 if (recharge_list.size() <= 4) {
                                     wallet_record_adapter2.setNewData(recharge_list);
                                 } else {
-                                List<Bill.DataBean> list = new ArrayList<>();//充值记录
-                                for (int i = 0; i < 5; i++) {
-                                    list.add(recharge_list.get(i));
-                                }
-                                wallet_record_adapter2.setNewData(list);
+                                    List<Bill.DataBean> list = new ArrayList<>();//充值记录
+                                    for (int i = 0; i < 5; i++) {
+                                        list.add(recharge_list.get(i));
+                                    }
+                                    wallet_record_adapter2.setNewData(list);
 
                                 }
 
@@ -320,12 +323,12 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
                                 if (expend_income_list.size() <= 4) {
                                     wallet_record_adapter1.setNewData(expend_income_list);
                                 } else {
-                                List<Bill.DataBean> list1 = new ArrayList<>();//提现记录
+                                    List<Bill.DataBean> list1 = new ArrayList<>();//提现记录
 
-                                for (int i = 0; i < 5; i++) {
-                                    list1.add(expend_income_list.get(i));
-                                }
-                                wallet_record_adapter1.setNewData(list1);
+                                    for (int i = 0; i < 5; i++) {
+                                        list1.add(expend_income_list.get(i));
+                                    }
+                                    wallet_record_adapter1.setNewData(list1);
 
                                 }
 
@@ -337,12 +340,12 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
                                 if (withdraw_list.size() <= 4) {
                                     wallet_record_adapter3.setNewData(withdraw_list);
                                 } else {
-                                List<Bill.DataBean> list2 = new ArrayList<>();//提现记录
+                                    List<Bill.DataBean> list2 = new ArrayList<>();//提现记录
 
-                                for (int i = 0; i < 5; i++) {
-                                    list2.add(withdraw_list.get(i));
-                                }
-                                wallet_record_adapter3.setNewData(list2);
+                                    for (int i = 0; i < 5; i++) {
+                                        list2.add(withdraw_list.get(i));
+                                    }
+                                    wallet_record_adapter3.setNewData(list2);
                                 }
                                 break;
                             case "4"://待支付
