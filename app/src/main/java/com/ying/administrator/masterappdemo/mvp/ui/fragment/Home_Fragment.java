@@ -49,6 +49,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareConfig;
@@ -95,6 +96,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.reactivex.functions.Consumer;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -905,21 +907,36 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 .addButton("复制链接", "复制链接", "umeng_socialize_copyurl", "umeng_socialize_copyurl")
                 .setShareboardclickCallback(new ShareBoardlistener() {
                     @Override
-                    public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
+                    public void onclick(SnsPlatform snsPlatform, final SHARE_MEDIA share_media) {
                         if (snsPlatform.mShowWord.equals("复制文本")) {
                             Toast.makeText(mActivity, "已复制", Toast.LENGTH_LONG).show();
                         } else if (snsPlatform.mShowWord.equals("复制链接")) {
                             Toast.makeText(mActivity, "已复制", Toast.LENGTH_LONG).show();
 
                         } else {
-                            UMWeb web = new UMWeb("http://admin.xigyu.com/sign?phone=" + userID + "&type=7");
-                            web.setTitle("西瓜鱼");
-                            web.setDescription("注册送西瓜币了！！！！！");
-                            web.setThumb(new UMImage(mActivity, R.drawable.icon));
-                            new ShareAction(mActivity).withMedia(web)
-                                    .setPlatform(share_media)
-                                    .setCallback(mShareListener)
-                                    .share();
+                            RxPermissions rxPermissions = new RxPermissions(mActivity);
+                            rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
+                                    .subscribe(new Consumer<Boolean>() {
+                                        @Override
+                                        public void accept(Boolean aBoolean) throws Exception {
+                                            if (aBoolean) {
+                                                // 获取全部权限成功
+
+                                                UMWeb web = new UMWeb("http://admin.xigyu.com/sign?phone=" + userID + "&type=7");
+                                                web.setTitle("西瓜鱼");
+                                                web.setDescription("注册送西瓜币了！！！！！");
+                                                web.setThumb(new UMImage(mActivity, R.drawable.icon));
+                                                new ShareAction(mActivity).withMedia(web)
+                                                        .setPlatform(share_media)
+                                                        .setCallback(mShareListener)
+                                                        .share();
+                                            } else {
+                                                // 获取全部权限失败
+                                                ToastUtils.showShort("权限获取失败");
+                                            }
+                                        }
+                                    });
+
                         }
                     }
                 });

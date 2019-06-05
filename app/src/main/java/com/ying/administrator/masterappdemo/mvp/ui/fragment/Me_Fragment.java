@@ -1,5 +1,6 @@
 package com.ying.administrator.masterappdemo.mvp.ui.fragment;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
@@ -35,6 +37,7 @@ import com.paradigm.botlib.VisitorInfo;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareConfig;
@@ -78,6 +81,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.reactivex.functions.Consumer;
 
 public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> implements MainContract.View, View.OnClickListener {
     private static final String ARG_SHOW_TEXT = "text";
@@ -200,20 +204,34 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                 .addButton("复制链接", "复制链接", "umeng_socialize_copyurl", "umeng_socialize_copyurl")
                 .setShareboardclickCallback(new ShareBoardlistener() {
                     @Override
-                    public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
+                    public void onclick(SnsPlatform snsPlatform, final SHARE_MEDIA share_media) {
                         if (snsPlatform.mShowWord.equals("复制文本")) {
                             Toast.makeText(mActivity, "已复制", Toast.LENGTH_LONG).show();
                         } else if (snsPlatform.mShowWord.equals("复制链接")) {
                             Toast.makeText(mActivity, "已复制", Toast.LENGTH_LONG).show();
                         } else {
-                            UMWeb web = new UMWeb("http://admin.xigyu.com/sign?phone=" + userID + "&type=7");
-                            web.setTitle("西瓜鱼");
-                            web.setDescription("注册送西瓜币了！！！！！");
-                            web.setThumb(new UMImage(mActivity, R.drawable.icon));
-                            new ShareAction(mActivity).withMedia(web)
-                                    .setPlatform(share_media)
-                                    .setCallback(mShareListener)
-                                    .share();
+                            RxPermissions rxPermissions = new RxPermissions(mActivity);
+                            rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
+                                    .subscribe(new Consumer<Boolean>() {
+                                        @Override
+                                        public void accept(Boolean aBoolean) throws Exception {
+                                            if (aBoolean) {
+                                                // 获取全部权限成功
+
+                                                UMWeb web = new UMWeb("http://admin.xigyu.com/sign?phone=" + userID + "&type=7");
+                                                web.setTitle("西瓜鱼");
+                                                web.setDescription("注册送西瓜币了！！！！！");
+                                                web.setThumb(new UMImage(mActivity, R.drawable.icon));
+                                                new ShareAction(mActivity).withMedia(web)
+                                                        .setPlatform(share_media)
+                                                        .setCallback(mShareListener)
+                                                        .share();
+                                            } else {
+                                                // 获取全部权限失败
+                                                ToastUtils.showShort("权限获取失败");
+                                            }
+                                        }
+                                    });
                         }
                     }
                 });
