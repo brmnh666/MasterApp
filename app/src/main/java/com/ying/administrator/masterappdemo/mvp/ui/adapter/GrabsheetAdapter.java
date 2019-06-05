@@ -27,11 +27,15 @@ public class GrabsheetAdapter extends BaseQuickAdapter<WorkOrder.DataBean,BaseVi
 
         baseViewHolder.setText(R.id.tv_loaction,"距离:"+item.getDistance()+"Km");
         baseViewHolder.setText(R.id.tv_brand_name,item.getCategoryName()+" "+item.getBrandName()+" "+item.getSubCategoryName());
-      baseViewHolder.setText(R.id.tv_reason,"故障:"+item.getMemo()); //故障原因
+
       baseViewHolder.setText(R.id.tv_grabsheet_status_repair,item.getTypeName()+"/"+item.getGuaranteeText());
       baseViewHolder.setText(R.id.tv_address,item.getAddress()); //地址
       baseViewHolder.setText(R.id.tv_grabsheet_time, MyUtils.getTimebefore(item.getCreateDate()));//将订单生产的时间传入
-
       baseViewHolder.addOnClickListener(R.id.img_grabsheet);
+      if ("维修".equals(item.getTypeName())){
+          baseViewHolder.setText(R.id.tv_reason,"故障:"+item.getMemo()); //故障原因
+      }else {
+          baseViewHolder.setText(R.id.tv_reason,item.getMemo()); //故障原因
+      }
     }
 }
