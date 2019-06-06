@@ -1990,10 +1990,38 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
 //                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(2).getUrl()).into(mIvFaultLocation);
 //                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(3).getUrl()).into(mIvNewAndOldAccessories);
                     } else {
-                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/FinishOrder/" + data.getOrderImg().get(0).getUrl()).into(mIvBarCode);
-                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/FinishOrder/" + data.getOrderImg().get(1).getUrl()).into(mIvMachine);
-                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/FinishOrder/" + data.getOrderImg().get(2).getUrl()).into(mIvFaultLocation);
-                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/FinishOrder/" + data.getOrderImg().get(3).getUrl()).into(mIvNewAndOldAccessories);
+                        List<String> list = new ArrayList<>();
+                        for (int i = 0; i < data.getReturnaccessoryImg().size(); i++) {
+                            if ("img1".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
+                                Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(0).getUrl()).into(mIvBarCode);
+                            }
+                            if ("img2".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
+                                Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(1).getUrl()).into(mIvMachine);
+
+                            }
+                            if ("img3".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
+                                Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(2).getUrl()).into(mIvFaultLocation);
+
+                            }
+                            if ("img4".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
+                                Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(3).getUrl()).into(mIvNewAndOldAccessories);
+
+                            }
+                            list.add(data.getReturnaccessoryImg().get(i).getRelation());
+                        }
+//                        Log.d(TAG,"data.getReturnaccessoryImg().size()"+data.getReturnaccessoryImg().size());
+                        if (!list.contains("img1")) {
+                            mLlBarCode.setVisibility(View.GONE);
+                        }
+                        if (!list.contains("img2")) {
+                            mLlMachine.setVisibility(View.GONE);
+                        }
+                        if (!list.contains("img3")) {
+                            mLlFaultLocation.setVisibility(View.GONE);
+                        }
+                        if (!list.contains("img4")) {
+                            mLlNewAndOldAccessories.setVisibility(View.GONE);
+                        }
                         mLlOldAccessory.setVisibility(View.GONE);
                     }
                 } else {

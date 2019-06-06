@@ -557,7 +557,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="13dp"
-                            android:text="整机图片"
+                            android:text="安装前必填"
                             android:textColor="#353535"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -579,7 +579,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="13dp"
-                            android:text="服务过程"
+                            android:text="安装后必填"
                             android:textColor="#353535"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -599,7 +599,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="13dp"
-                            android:text="服务过程"
+                            android:text="安装后选填"
                             android:textColor="#353535"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -620,7 +620,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="13dp"
-                            android:text="服务过程"
+                            android:text="安装后选填"
                             android:textColor="#353535"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -638,8 +638,6 @@
                     android:id="@+id/et_memo"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="16dp"
                     android:layout_weight="1"
                     android:background="@drawable/edit_shape"
                     android:hint="备注"

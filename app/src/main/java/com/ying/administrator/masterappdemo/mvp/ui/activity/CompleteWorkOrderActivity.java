@@ -426,11 +426,10 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 
                     }*/
                 if ("2".equals(data.getTypeID())) {//安装
-                    if (service_img_map.size() < 4) {
-                        MyUtils.showToast(mActivity, "请上传四张整机跟服务图片");
+                    if (service_img_map.get(0)==null||service_img_map.get(1)==null) {
+                        MyUtils.showToast(mActivity, "请上传安装前照片以及安装后一张照片");
                         return;
                     } else {
-
                         String EndRemark=mEtMemo.getText().toString();
                         ServiceOrderPicUpload(service_img_map,EndRemark);
                     }
@@ -863,14 +862,23 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
     public void ServiceOrderPicUpload(HashMap<Integer, File> map,String EndRemark ) {
         showLoading();
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
-        builder.addFormDataPart("img", map.get(0).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(0)));
-        builder.addFormDataPart("img", map.get(1).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(1)));
-        builder.addFormDataPart("img", map.get(2).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(2)));
-        builder.addFormDataPart("img", map.get(3).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(3)));
+        if (map.get(0) != null) {
+            builder.addFormDataPart("img1", map.get(0).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(0)));
+        }
+        if (map.get(1) != null) {
+            builder.addFormDataPart("img2", map.get(1).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(1)));
+        }
+        if (map.get(2) != null) {
+            builder.addFormDataPart("img3", map.get(2).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(2)));
+        }
+        if (map.get(3) != null) {
+            builder.addFormDataPart("img4", map.get(3).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(3)));
+        }
         builder.addFormDataPart("OrderID", orderID);
         builder.addFormDataPart("EndRemark",EndRemark);
         MultipartBody requestBody = builder.build();
-        mPresenter.ServiceOrderPicUpload(requestBody);
+//        mPresenter.ServiceOrderPicUpload(requestBody);
+        mPresenter.ReuturnAccessoryPicUpload(requestBody);
     }
 
     public void showLoading() {
