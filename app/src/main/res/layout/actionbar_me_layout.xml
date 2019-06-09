@@ -68,7 +68,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:orientation="horizontal"
-            android:gravity="center">
+            android:gravity="center"
+            android:visibility="gone">
 
             <FrameLayout
                 android:layout_width="wrap_content"
@@ -101,6 +102,15 @@
                 android:layout_marginLeft="5dp"
                 android:layout_gravity="center"/>
         </LinearLayout>
+        <TextView
+            android:id="@+id/tv_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="慈溪正海科技"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:layout_marginTop="5dp"/>
+
 
     </LinearLayout>
 

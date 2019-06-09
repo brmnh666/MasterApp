@@ -140,6 +140,8 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
     ImageView mImgUnCertification;
     @BindView(R.id.img_certification)
     ImageView mImgCertification;
+    @BindView(R.id.tv_phone)
+    TextView mTvPhone;
 
     private Home_Fragment.CustomShareListener mShareListener;
     private ShareAction mShareAction;
@@ -295,6 +297,11 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                             .apply(myOptions)
                             .into(mImgMeHead);
                 }
+
+                String mobile = userInfo.getUserID();
+                String maskNumber = mobile.substring(0, 3) + "****" + mobile.substring(7, mobile.length());
+                mTvPhone.setText(maskNumber);
+
                 /*显示余额*/
                 String format = String.format("%.2f", userInfo.getTotalMoney() - userInfo.getFrozenMoney());
                 // String can_withdraw = Double.toString(userInfo.getTotalMoney() - userInfo.getFrozenMoney());//可提现余额=总金额-冻结金额
@@ -325,13 +332,11 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                     mImgCertification.setVisibility(View.VISIBLE);
                 }
 
-                if (userInfo.getParentUserID()!=null){
+                if (userInfo.getParentUserID() != null) {
 
                     mLlSubAccountManagement.setVisibility(View.GONE);
 
                 }
-
-
 
 
                 break;
@@ -393,7 +398,7 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                     } else if (userInfo.getIfAuth().equals("-1")) {
                         under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_audit_failure, null);
                         content = under_review.findViewById(R.id.tv_content);
-                        content.setText(userInfo.getAuthMessage()+",有疑问请咨询客服电话。");
+                        content.setText(userInfo.getAuthMessage() + ",有疑问请咨询客服电话。");
                         btnConfirm = under_review.findViewById(R.id.btn_confirm);
                         btnConfirm.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -673,6 +678,7 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
         super.onDestroyView();
         unbinder.unbind();
     }
+
     private boolean isInstalled(String packageName) {
         PackageManager manager = mActivity.getPackageManager();
         //获取所有已安装程序的包信息
@@ -724,7 +730,7 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                 @Override
                 public void onPositiveClick() {//拨打电话
                     dialog.dismiss();
-                    openBrowser(mActivity,"http://47.96.126.145:8820/Files/西瓜鱼商城.apk");
+                    openBrowser(mActivity, "http://47.96.126.145:8820/Files/西瓜鱼商城.apk");
                 }
 
                 @Override
