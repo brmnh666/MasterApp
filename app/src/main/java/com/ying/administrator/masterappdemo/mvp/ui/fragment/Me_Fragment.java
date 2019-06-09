@@ -528,6 +528,8 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                 dialog_share = LayoutInflater.from(mActivity).inflate(R.layout.dialog_share, null);
                 btn_share_one = dialog_share.findViewById(R.id.btn_share_one);
 //                btn_share_two = dialog_share.findViewById(R.id.btn_share_two);
+                TextView tv_title=dialog_share.findViewById(R.id.tv_title);
+                tv_title.setText("扫描加入西瓜鱼服务");
 
                 iv_code_one = dialog_share.findViewById(R.id.iv_code_one);
                 btn_go_to_the_mall = dialog_share.findViewById(R.id.btn_go_to_the_mall);
@@ -540,6 +542,7 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                         mShareAction.open();
                     }
                 });
+                btn_go_to_the_mall.setVisibility(View.GONE);
                 btn_go_to_the_mall.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
