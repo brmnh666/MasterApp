@@ -178,7 +178,7 @@ public class MyInfoSkillsActivity extends BaseActivity<AddSkillsPresenter, AddSk
             case 200:
                 mSkillList = baseResult.getData();
                 if (mSkillList.size() == 0) {
-                        ToastUtils.showShort("获取技能失败！");
+//                        ToastUtils.showShort("获取技能失败！");
                 } else {
                     for (int i = 0; i < mSkillList.size(); i++) {
                         for (int j = 0; j < mySkillsList.size(); j++) {

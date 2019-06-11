@@ -370,21 +370,21 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ll_car:
-                if (userInfo.getIfAuth() != null) {
-                    if (userInfo.getIfAuth().equals("1")) {
+//                if (userInfo.getIfAuth() != null) {
+//                    if (userInfo.getIfAuth().equals("1")) {
                         Intent intent = new Intent(MainActivity.this, Order_Receiving_Activity.class);
                         intent.putExtra("intent", "pending_appointment");
                         startActivityForResult(intent,20202);
-                    } else if (userInfo.getIfAuth().equals("0")) {
-                        showUnderDialog();
-                    } else if (userInfo.getIfAuth().equals("-1")) {
-                        showRejectDialog();
-                    } else {
-                        showVerifiedDialog();
-                    }
-                } else {
-                    showVerifiedDialog();
-                }
+//                    } else if (userInfo.getIfAuth().equals("0")) {
+//                        showUnderDialog();
+//                    } else if (userInfo.getIfAuth().equals("-1")) {
+//                        showRejectDialog();
+//                    } else {
+//                        showVerifiedDialog();
+//                    }
+//                } else {
+//                    showVerifiedDialog();
+//                }
                 break;
             case R.id.ll_home:
                 mViewPager.setCurrentItem(0);
