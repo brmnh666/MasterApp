@@ -29,6 +29,8 @@ import com.ying.administrator.masterappdemo.entity.WXpayInfo;
 import com.ying.administrator.masterappdemo.entity.WithDrawMoney;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 
+import org.json.JSONArray;
+
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -564,26 +566,35 @@ public interface ApiService {
      * 充值信息
      * @param UserID 账号
      * @param TotalAmount 金额
-     * @param Type  1余额 2 诚意金
+     * @param Type  1余额 2 诚意金 3订单支付
      * @return
      */
     @FormUrlEncoded
     @POST("Pay/GetOrderStr")
     Observable<BaseResult<Data<String>>> GetOrderStr(@Field("UserID") String UserID,
+                                                     @Field("BisId") String BisId,
+                                                     @Field("OrderId") String OrderId,
                                                      @Field("TotalAmount") String TotalAmount,
-                                                     @Field("Type") String Type);
+                                                     @Field("Type") String Type,
+                                                     @Field("JsonStr") JSONArray JsonStr
+    );
     /**
      * 充值信息
      * @param UserID 账号
      * @param TotalAmount 金额
-     * @param Type  1余额 2 诚意金
+     * @param Type  1余额 2 诚意金 3订单支付
+     * @param Style  工厂传factory 商城mall
      * @return
      */
     @FormUrlEncoded
     @POST("Pay/GetWXOrderStr")
     Observable<BaseResult<Data<WXpayInfo>>> GetWXOrderStr(@Field("UserID") String UserID,
+                                                          @Field("BisId") String BisId,
+                                                          @Field("OrderId") String OrderId,
                                                           @Field("TotalAmount") String TotalAmount,
-                                                          @Field("Type") String Type);
+                                                          @Field("Type") String Type,
+                                                          @Field("Style") String Style,
+                                                          @Field("JsonStr")JSONArray JsonStr);
     /**
      * 微信人工回调OutTradeNo
      * @param OutTradeNo

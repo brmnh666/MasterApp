@@ -7,6 +7,8 @@ import com.ying.administrator.masterappdemo.entity.WXpayInfo;
 import com.ying.administrator.masterappdemo.mvp.contract.RechargeContract;
 import com.ying.administrator.masterappdemo.mvp.service.ApiRetrofit;
 
+import org.json.JSONArray;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -17,13 +19,13 @@ public class RechargeModel implements RechargeContract.Model {
 
     @Override
     public Observable<BaseResult<Data<String>>> GetOrderStr(String userid, String TotalAmount) {
-        return ApiRetrofit.getDefault().GetOrderStr(userid, TotalAmount,"1")
+        return ApiRetrofit.getDefault().GetOrderStr(userid, "","",TotalAmount,"1",new JSONArray())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }
     @Override
     public Observable<BaseResult<Data<WXpayInfo>>> GetWXOrderStr(String userid, String TotalAmount) {
-        return ApiRetrofit.getDefault().GetWXOrderStr(userid, TotalAmount,"1")
+        return ApiRetrofit.getDefault().GetWXOrderStr(userid, "","",TotalAmount,"1","worker",new JSONArray())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

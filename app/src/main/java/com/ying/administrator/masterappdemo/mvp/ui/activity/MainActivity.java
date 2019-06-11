@@ -217,7 +217,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
         fragmentList = new ArrayList<>();
         fragmentList.add(Home_Fragment.newInstance(""));
         fragmentList.add(NewsFragment.newInstance(""));
-        fragmentList.add(BlankFragment.newInstance(""));
+//        fragmentList.add(BlankFragment.newInstance(""));
         fragmentList.add(Me_Fragment.newInstance(""));
 //        mFragmentSparseArray.append(R.id.workbench, Home_Fragment.newInstance("首页"));
 //        mFragmentSparseArray.append(R.id.message, NewsFragment.newInstance("消息"));
@@ -369,7 +369,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ll_order:
+            case R.id.ll_car:
                 if (userInfo.getIfAuth() != null) {
                     if (userInfo.getIfAuth().equals("1")) {
                         Intent intent = new Intent(MainActivity.this, Order_Receiving_Activity.class);
@@ -394,12 +394,12 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
                 mViewPager.setCurrentItem(1);
                 tabSelected(mLlMessage);
                 break;
-            case R.id.ll_car:
-                mViewPager.setCurrentItem(2);
-                tabSelected(mLlCar);
-                break;
+//            case R.id.ll_car:
+//                mViewPager.setCurrentItem(2);
+//                tabSelected(mLlCar);
+//                break;
             case R.id.ll_mine:
-                mViewPager.setCurrentItem(3);
+                mViewPager.setCurrentItem(2);
                 tabSelected(mLlMine);
                 break;
         }
