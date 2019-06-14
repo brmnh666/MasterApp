@@ -194,6 +194,11 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
 
     @Override
     protected void initData() {
+
+    }
+
+    @Override
+    protected void initView() {
         UMShareConfig config = new UMShareConfig();
         config.isNeedAuthOnGetUserInfo(true);
         UMShareAPI.get(mActivity).setShareConfig(config);
@@ -247,11 +252,6 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                 refreshlayout.finishRefresh(1000);
             }
         });
-    }
-
-    @Override
-    protected void initView() {
-
     }
 
     @Override

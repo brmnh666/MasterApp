@@ -340,7 +340,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 animator_order.setDuration(1000);
                 animator_order.start();
 
-                EventBus.getDefault().post("GetUserInfoList");
+//                EventBus.getDefault().post("GetUserInfoList");
             }
         });
 
