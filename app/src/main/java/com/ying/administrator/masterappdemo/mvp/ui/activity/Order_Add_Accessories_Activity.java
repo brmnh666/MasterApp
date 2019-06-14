@@ -71,6 +71,7 @@ import com.ying.administrator.masterappdemo.mvp.ui.adapter.Pre_order_Add_Service
 import com.ying.administrator.masterappdemo.util.Glide4Engine;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.util.SingleClick;
+import com.ying.administrator.masterappdemo.util.imageutil.CompressHelper;
 import com.ying.administrator.masterappdemo.widget.ClearEditText;
 import com.ying.administrator.masterappdemo.widget.HideSoftInputDialog;
 import com.zhihu.matisse.Matisse;
@@ -1556,7 +1557,8 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                     file = new File(FilePath);
                 }
                 if (file != null) {
-                    files_map_remote.put(0, file);
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    files_map_remote.put(0, newFile);
                 }
                 break;
             //相册
@@ -1571,7 +1573,8 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                     file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
                 }
                 if (file != null) {
-                    files_map_remote.put(0, file);
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    files_map_remote.put(0, newFile);
                 }
                 break;
 
@@ -1584,7 +1587,8 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                     file = new File(FilePath);
                 }
                 if (file != null) {
-                    files_map_remote.put(1, file);
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    files_map_remote.put(1, newFile);
                 }
 
                 break;
@@ -1600,7 +1604,8 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                     file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
                 }
                 if (file != null) {
-                    files_map_remote.put(1, file);
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    files_map_remote.put(1, newFile);
                 }
                 break;
 
@@ -1611,7 +1616,8 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                     file = new File(FilePath);
                 }
                 if (file != null) {
-                    accessories_picture.put(0, file);
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    accessories_picture.put(0, newFile);
                 }
 
                 break;
@@ -1627,7 +1633,8 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                     file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
                 }
                 if (file != null) {
-                    accessories_picture.put(0, file);
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    accessories_picture.put(0, newFile);
                 }
                 break;
             //拍照
@@ -1637,7 +1644,8 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                     file = new File(FilePath);
                 }
                 if (file != null) {
-                    accessories_picture.put(1, file);
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    accessories_picture.put(1, newFile);
                 }
 
                 break;
@@ -1653,7 +1661,8 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                     file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
                 }
                 if (file != null) {
-                    accessories_picture.put(1, file);
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    accessories_picture.put(1, newFile);
                 }
                 break;
         }

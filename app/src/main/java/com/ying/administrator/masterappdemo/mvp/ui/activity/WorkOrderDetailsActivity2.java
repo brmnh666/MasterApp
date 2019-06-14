@@ -90,6 +90,7 @@ import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.util.SingleClick;
 import com.ying.administrator.masterappdemo.util.calendarutil.CalendarEvent;
 import com.ying.administrator.masterappdemo.util.calendarutil.CalendarProviderManager;
+import com.ying.administrator.masterappdemo.util.imageutil.CompressHelper;
 import com.ying.administrator.masterappdemo.widget.BottomDialog;
 import com.ying.administrator.masterappdemo.widget.ClearEditText;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
@@ -1577,8 +1578,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     mLlHostOne.setVisibility(View.GONE);
                     mLlAccessoriesOne.setVisibility(View.GONE);
                 } else {
-                    Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/Accessory/" + data.getOrderAccessroyDetail().get(0).getPhoto1()).into(mIvHostOne);
-                    Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/Accessory/" + data.getOrderAccessroyDetail().get(0).getPhoto2()).into(mIvAccessoriesOne);
+                    Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/Accessory/" + data.getOrderAccessroyDetail().get(data.getOrderAccessroyDetail().size()-1).getPhoto1()).into(mIvHostOne);
+                    Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/Accessory/" + data.getOrderAccessroyDetail().get(data.getOrderAccessroyDetail().size()-1).getPhoto2()).into(mIvAccessoriesOne);
 
                 }
 
@@ -2745,7 +2746,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     file = new File(FilePath);
                 }
                 if (file != null) {
-                    files_map_remote.put(0, file);
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    files_map_remote.put(0, newFile);
                 }
                 break;
             //相册
@@ -2760,7 +2762,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
                 }
                 if (file != null) {
-                    files_map_remote.put(0, file);
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    files_map_remote.put(0, newFile);
                 }
                 break;
 
@@ -2773,7 +2776,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     file = new File(FilePath);
                 }
                 if (file != null) {
-                    files_map_remote.put(1, file);
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    files_map_remote.put(1, newFile);
                 }
 
                 break;
@@ -2789,7 +2793,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
                 }
                 if (file != null) {
-                    files_map_remote.put(1, file);
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    files_map_remote.put(1, newFile);
                 }
                 break;
             //拍照
@@ -2799,7 +2804,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     file = new File(FilePath);
                 }
                 if (file != null) {
-                    accessories_picture.put(0, file);
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    accessories_picture.put(0, newFile);
                 }
 
                 break;
@@ -2815,7 +2821,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
                 }
                 if (file != null) {
-                    accessories_picture.put(0, file);
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    accessories_picture.put(0, newFile);
                 }
                 break;
             //拍照
@@ -2825,7 +2832,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     file = new File(FilePath);
                 }
                 if (file != null) {
-                    accessories_picture.put(1, file);
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    accessories_picture.put(1, newFile);
                 }
 
                 break;
@@ -2841,7 +2849,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
                 }
                 if (file != null) {
-                    accessories_picture.put(1, file);
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    accessories_picture.put(1, newFile);
                 }
                 break;
         }
