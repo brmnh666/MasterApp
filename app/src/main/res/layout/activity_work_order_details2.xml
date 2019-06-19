@@ -414,7 +414,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="9dp"
-                                android:text="【已揽收】包裹正在揽收....."
+                                android:text=""
                                 android:textSize="12sp"
                                 android:textColor="#818181"/>
                         </LinearLayout>

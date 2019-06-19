@@ -67,7 +67,8 @@
                 android:background="@drawable/blue_chat_shape"
                 android:text="去商城"
                 android:textColor="@color/white"
-                android:textSize="16sp"/>
+                android:textSize="16sp"
+                android:layout_marginRight="15dp"/>
             <Button
                 android:id="@+id/btn_share_one"
                 android:layout_width="120dp"
@@ -78,8 +79,7 @@
                 android:background="@drawable/blue_chat_shape"
                 android:text="立即分享"
                 android:textColor="@color/white"
-                android:textSize="16sp"
-                android:layout_marginLeft="15dp"/>
+                android:textSize="16sp" />
         </LinearLayout>
 
     </LinearLayout>

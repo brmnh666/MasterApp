@@ -518,7 +518,11 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 mTvHomeAvailableBalance.setText("可提现余额: " + format + "元");
                 mTvHomeOutstandingAmount.setText("未完结金额: " + FrozenMoney + "元");
                 mTvHomeGivingMoney.setText("赠 送 金 额: 暂无");
-                mTvName.setText(userInfo.getNickName());
+                if (userInfo.getUserID().equals(userInfo.getNickName())){
+                    mTvName.setText("未设置昵称");
+                }else {
+                    mTvName.setText(userInfo.getNickName());
+                }
                 String xigua = String.format("%.2f", userInfo.getCon());
                 mTvMoney.setText(xigua);
                 break;

@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.multidex.MultiDex;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.blankj.utilcode.util.SPUtils;
@@ -37,6 +38,10 @@ import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.UpgradeActivity;
 import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.MainActivity;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class MyApplication extends Application {
     static {//static 代码段可以防止内存泄露
@@ -126,6 +131,35 @@ public class MyApplication extends Application {
         String accessKey = "[NTEwMyM5YTRkMDdhNC05YmNmLTQyZTktODIyOC1lZTY4ZmUwYjczM2EjM2Y1MDdkMTAtZjcxNC00YmQ3LWIzMWUtMWZlNDNlNGM5MWIwI2FkNGMxZGE0MGM1YzVjYzU3NzA5NzVjODllYTA2NDdl]";
         BotKitClient.getInstance().init(this, accessKey);
 
+    }
+
+    /**
+     * 获取进程号对应的进程名
+     *
+     * @param pid 进程号
+     * @return 进程名
+     */
+    private static String getProcessName(int pid) {
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new FileReader("/proc/" + pid + "/cmdline"));
+            String processName = reader.readLine();
+            if (!TextUtils.isEmpty(processName)) {
+                processName = processName.trim();
+            }
+            return processName;
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        } finally {
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
+        }
+        return null;
     }
 
 
