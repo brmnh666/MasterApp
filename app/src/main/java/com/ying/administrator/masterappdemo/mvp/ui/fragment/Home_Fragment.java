@@ -568,7 +568,6 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-
             case R.id.tv_certification:
                 if (userInfo.getIfAuth() != null) {
                     if (userInfo.getIfAuth().equals("1")) {
@@ -857,7 +856,6 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
         iv_gotoshop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 openShopApp("com.zhenghaikj.shop");
                 underReviewDialog.dismiss();
             }
@@ -890,7 +888,6 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
 //                lp.height = under_review.getHeight();
 //                lp.width = 300;
 //                lp.height = 400;
-
         window.setAttributes(lp);
 //                window.setDimAmount(0.1f);
         window.setBackgroundDrawable(new ColorDrawable());

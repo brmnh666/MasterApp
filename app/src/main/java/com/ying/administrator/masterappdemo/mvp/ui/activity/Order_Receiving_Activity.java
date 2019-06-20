@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,11 +17,9 @@ import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.common.Config;
-import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.RedPointData;
 import com.ying.administrator.masterappdemo.mvp.contract.ReceivingContract;
 import com.ying.administrator.masterappdemo.mvp.model.ReceivingModel;
-import com.ying.administrator.masterappdemo.mvp.presenter.MyMessagePresenter;
 import com.ying.administrator.masterappdemo.mvp.presenter.ReceivingPresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment.Appointment_failure_fragment;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment.Complete_wait_fetch_Fragement;
@@ -85,7 +82,6 @@ public class Order_Receiving_Activity extends BaseActivity<ReceivingPresenter, R
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         ButterKnife.bind(this);
     }
 

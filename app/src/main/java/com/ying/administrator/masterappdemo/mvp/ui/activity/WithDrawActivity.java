@@ -158,7 +158,6 @@ public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
     protected void initView() {
         popupWindow_view = LayoutInflater.from(mActivity).inflate(R.layout.popwindow_choosebank, null);
         popipwinow_addcard = LayoutInflater.from(mActivity).inflate(R.layout.popwindow_foot_add, null);
-
         mPopupWindow = new PopupWindow(popupWindow_view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
 

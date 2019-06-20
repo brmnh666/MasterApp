@@ -9,8 +9,8 @@ android {
         applicationId "com.ying.administrator.masterappdemo"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 33
-        versionName "1.3.2"
+        versionCode 28
+        versionName "1.2.7"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         applicationId "com.ying.administrator.masterappdemo"
@@ -40,10 +40,10 @@ android {
     // 签名配置
     signingConfigs{
         release{
-            storeFile file("../mykeystore.jks")
-            storePassword "xiao123456"
-            keyAlias "key0"
-            keyPassword"xiao123456"
+                storeFile file("../mykeystore.jks")
+                storePassword "xiao123456"
+                keyAlias "key0"
+                keyPassword"xiao123456"
         }
 
 //        debug {

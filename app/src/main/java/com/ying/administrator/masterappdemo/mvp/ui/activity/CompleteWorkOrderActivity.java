@@ -207,7 +207,6 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
     @Override
     public void GetOrderInfo(BaseResult<WorkOrder.DataBean> baseResult) {
         switch (baseResult.getStatusCode()) {
-
             case 200:
                 data = baseResult.getData();
                 mTvWorkOrderStatus.setText(data.getStateStr());

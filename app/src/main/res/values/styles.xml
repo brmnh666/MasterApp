@@ -49,7 +49,6 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowIsTranslucent">true</item>
-
     </style>
 
 

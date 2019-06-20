@@ -101,7 +101,7 @@
                 android:id="@+id/ll_category"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
+                android:visibility="invisible"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
@@ -147,13 +147,12 @@
                     android:background="@drawable/tab_accessories_shop_selector"
                     android:gravity="center" />
                     </FrameLayout>
-
                 <TextView
                     android:id="@+id/tv_cart"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:text="所有工单"
+                    android:text="配件商城"
                     android:textColor="@drawable/tab_mall_text"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -195,7 +194,6 @@
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/ll_order"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

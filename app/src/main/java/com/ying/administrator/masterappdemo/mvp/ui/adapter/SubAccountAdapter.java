@@ -7,11 +7,10 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
-import com.ying.administrator.masterappdemo.R;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.common.Config;
-import com.ying.administrator.masterappdemo.entity.SubAccount;
 import com.ying.administrator.masterappdemo.entity.SubUserInfo;
 
 import java.util.List;
@@ -70,8 +69,11 @@ private ImageView img_avatar;
         }else {
             helper.setText(R.id.tv_being_complain,item.getServiceComplaintNum());
         }
-
         helper.addOnClickListener(R.id.tv_close_account).addOnClickListener(R.id.img_tv_close_account);//注销账号
+
+
+
+
 
     }
 }
