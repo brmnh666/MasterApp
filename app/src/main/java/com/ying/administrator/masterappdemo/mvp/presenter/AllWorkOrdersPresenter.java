@@ -79,4 +79,34 @@ public class AllWorkOrdersPresenter extends AllWorkOrdersContract.Presenter {
     }
 
 
+    @Override
+    public void UpdateSendOrderUpdateTime(String OrderID, String UpdateDate,String EndDate) {
+        mModel.UpdateSendOrderUpdateTime(OrderID,UpdateDate,EndDate).subscribe(new BaseObserver<Data>() {
+            @Override
+            protected void onHandleSuccess(BaseResult<Data> value) {
+                mView.UpdateSendOrderUpdateTime(value);
+            }
+        });
+
+    }
+
+    @Override
+    public void AddOrderSuccess(String OrderID, String AppointmentState, String AppointmentMessage) {
+        mModel.AddOrderSuccess(OrderID,AppointmentState,AppointmentMessage).subscribe(new BaseObserver<Data>() {
+            @Override
+            protected void onHandleSuccess(BaseResult<Data> value) {
+                mView.AddOrderSuccess(value);
+            }
+        });
+    }
+
+    @Override
+    public void AddOrderfailureReason(String OrderID, String AppointmentState, String AppointmentMessage) {
+        mModel.AddOrderfailureReason(OrderID,AppointmentState,AppointmentMessage).subscribe(new BaseObserver<Data>() {
+            @Override
+            protected void onHandleSuccess(BaseResult<Data> value) {
+                mView.AddOrderfailureReason(value);
+            }
+        });
+    }
 }

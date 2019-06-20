@@ -22,12 +22,15 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -63,6 +66,7 @@ import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.SubUserInfo;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.AllWorkOrdersContract;
@@ -70,24 +74,36 @@ import com.ying.administrator.masterappdemo.mvp.model.AllWorkOrdersModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.AllWorkOrdersPresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Login_New_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_Receiving_Activity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_details_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Personal_Information_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.VerifiedUpdateActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Verified_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Wallet_Activity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.WorkOrderDetailsActivity2;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.GrabsheetAdapter;
+import com.ying.administrator.masterappdemo.mvp.ui.adapter.Pending_Adapter;
+import com.ying.administrator.masterappdemo.mvp.ui.adapter.Pending_Appointment_Adapter;
+import com.ying.administrator.masterappdemo.mvp.ui.adapter.Redeploy_Adapter;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
 import com.ying.administrator.masterappdemo.util.ZXingUtils;
+import com.ying.administrator.masterappdemo.util.calendarutil.CalendarEvent;
+import com.ying.administrator.masterappdemo.util.calendarutil.CalendarProviderManager;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 import com.ying.administrator.masterappdemo.widget.CustomDialog;
+import com.ying.administrator.masterappdemo.widget.CustomDialog_Redeploy;
+import com.ying.administrator.masterappdemo.widget.CustomDialog_UnSuccess;
 import com.ying.administrator.masterappdemo.widget.GlideCircleWithBorder_Home;
 import com.ying.administrator.masterappdemo.widget.ShareDialog;
 import com.zyao89.view.zloading.ZLoadingDialog;
 import com.zyao89.view.zloading.Z_TYPE;
 
+import org.feezu.liuli.timeselector.TimeSelector;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -100,6 +116,8 @@ import io.reactivex.functions.Consumer;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
+
+import static android.widget.Toast.LENGTH_SHORT;
 
 public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllWorkOrdersModel> implements AllWorkOrdersContract.View, View.OnClickListener, EasyPermissions.PermissionCallbacks {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -167,6 +185,8 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
     private GrabsheetAdapter grabsheetAdapter;
     private WorkOrder workOrder;
     private List<WorkOrder.DataBean> list = new ArrayList<>();
+    private List<WorkOrder.DataBean> Pendinglist = new ArrayList<>();
+    private WorkOrder.DataBean data = new WorkOrder.DataBean();
     private int pageIndex = 1;  //默认当前页数为1
     private String userID;//用户id
     SPUtils spUtils = SPUtils.getInstance("token");
@@ -264,6 +284,11 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
     private TextView tv_share;
     private Button btn_go_to_the_mall;
     private TextView content;
+    private Pending_Adapter pending_appointment_adapter;
+    private int successposition;
+    private long recommendedtime;
+    private String OrderId;
+    private int cancleposition;
 
 
     public Home_Fragment() {
@@ -294,7 +319,21 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
     protected void initView() {
         dialog = new ZLoadingDialog(mActivity);
         vibrator = (Vibrator) getActivity().getSystemService(getActivity().VIBRATOR_SERVICE);
-        mPresenter.WorkerGetOrderList(userID, "0", Integer.toString(pageIndex), "10");
+        mPresenter.GetUserInfoList(userID, "1");
+
+        if (userInfo.getParentUserID()==null){
+            mRecyclerviewOrderReceiving.setLayoutManager(new LinearLayoutManager(mActivity));
+            grabsheetAdapter = new GrabsheetAdapter(R.layout.item_grabsheet, list);
+            grabsheetAdapter.setEmptyView(getEmptyView());
+            mRecyclerviewOrderReceiving.setAdapter(grabsheetAdapter);
+            showGrabsheet();
+        }else {
+            mRecyclerviewOrderReceiving.setLayoutManager(new LinearLayoutManager(mActivity));
+            pending_appointment_adapter = new Pending_Adapter(R.layout.item_pending_appointment, Pendinglist, userInfo);
+            pending_appointment_adapter.setEmptyView(getEmptyView());
+            mRecyclerviewOrderReceiving.setAdapter(pending_appointment_adapter);
+            showPending();
+        }
     }
 
     @Override
@@ -324,8 +363,17 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
             public void onRefresh(RefreshLayout refreshlayout) {
                 pageIndex = 1;
                 //list.clear();
-                mPresenter.WorkerGetOrderList(userID, "0", Integer.toString(pageIndex), "10");
-                grabsheetAdapter.notifyDataSetChanged();
+                if (userInfo.getParentUserID()==null){
+                    mPresenter.WorkerGetOrderList(userID, "0", Integer.toString(pageIndex), "10");
+                }else {
+                    mPresenter.WorkerGetOrderList(userID, "1", Integer.toString(pageIndex), "5");
+                }
+                if (userInfo.getParentUserID()==null){
+//                    grabsheetAdapter.notifyDataSetChanged();
+                }else {
+//                    pending_appointment_adapter.notifyDataSetChanged();
+                }
+
                 refreshlayout.finishRefresh();
                 refreshlayout.setLoadmoreFinished(false);
 
@@ -355,8 +403,16 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
             public void onLoadmore(RefreshLayout refreshlayout) {
                 pageIndex++; //页数加1
                 Log.d("当前的单数", String.valueOf(list.size()));
-                mPresenter.WorkerGetOrderList(userID, "0", Integer.toString(pageIndex), "10");
-                grabsheetAdapter.notifyDataSetChanged();
+                if (userInfo.getParentUserID()==null){
+                    mPresenter.WorkerGetOrderList(userID, "0", Integer.toString(pageIndex), "10");
+                }else {
+                    mPresenter.WorkerGetOrderList(userID, "1", Integer.toString(pageIndex), "5");
+                }
+                if (userInfo.getParentUserID()==null){
+//                    grabsheetAdapter.notifyDataSetChanged();
+                }else {
+//                    pending_appointment_adapter.notifyDataSetChanged();
+                }
                 refreshlayout.finishLoadmore();
             }
         });
@@ -370,24 +426,73 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
     public void WorkerGetOrderList(BaseResult<WorkOrder> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData().getData() == null) {
-                    // Toast.makeText(getActivity(),"咱无新工单",Toast.LENGTH_SHORT).show();
-                    Log.d("===>", "暂无新工单");
-                    if (pageIndex == 1) {
-                        list.clear();
-                        grabsheetAdapter.notifyDataSetChanged();
+                if (userInfo.getParentUserID()==null){
+                    if (baseResult.getData().getData() == null) {
+                        // Toast.makeText(getActivity(),"咱无新工单",Toast.LENGTH_SHORT).show();
+                        Log.d("===>", "暂无新工单");
+                        if (pageIndex == 1) {
+                            list.clear();
+//                            grabsheetAdapter.notifyDataSetChanged();
+                        }
+
+                    } else {
+                        if (pageIndex == 1) {
+                            list.clear();
+                            workOrder = baseResult.getData();
+                            list.addAll(workOrder.getData());
+//                            grabsheetAdapter.notifyDataSetChanged();
+                            mRecyclerviewOrderReceiving.setLayoutManager(new LinearLayoutManager(mActivity));
+                            grabsheetAdapter = new GrabsheetAdapter(R.layout.item_grabsheet, list);
+                            mRecyclerviewOrderReceiving.setAdapter(grabsheetAdapter);
+                            grabsheetAdapter.setEmptyView(getEmptyView());
+                            showGrabsheet();
+                        } else {
+                            workOrder = baseResult.getData();
+                            list.addAll(workOrder.getData());
+//                            grabsheetAdapter.setNewData(list);
+                            mRecyclerviewOrderReceiving.setLayoutManager(new LinearLayoutManager(mActivity));
+                            grabsheetAdapter = new GrabsheetAdapter(R.layout.item_grabsheet, list);
+                            mRecyclerviewOrderReceiving.setAdapter(grabsheetAdapter);
+                            grabsheetAdapter.setEmptyView(getEmptyView());
+                            showGrabsheet();
+
+                        }
+
                     }
 
-                } else {
-                    if (pageIndex == 1) {
-                        list.clear();
-                        workOrder = baseResult.getData();
-                        list.addAll(workOrder.getData());
-                        grabsheetAdapter.notifyDataSetChanged();
+                }else {
+                    if (baseResult.getData().getData() == null) {
+                        if (pageIndex == 1) {
+                            Pendinglist.clear();
+//                            pending_appointment_adapter.notifyDataSetChanged();
+                        }
+                        cancleLoading();
                     } else {
-                        workOrder = baseResult.getData();
-                        list.addAll(workOrder.getData());
-                        grabsheetAdapter.setNewData(list);
+                        if (pageIndex == 1) {
+                            Pendinglist.clear();
+                            workOrder = baseResult.getData();
+                            Pendinglist.addAll(workOrder.getData());
+//                            pending_appointment_adapter.notifyDataSetChanged();
+                            mRecyclerviewOrderReceiving.setLayoutManager(new LinearLayoutManager(mActivity));
+                            pending_appointment_adapter = new Pending_Adapter(R.layout.item_pending_appointment, Pendinglist, userInfo);
+                            pending_appointment_adapter.setEmptyView(getEmptyView());
+                            mRecyclerviewOrderReceiving.setAdapter(pending_appointment_adapter);
+                            showPending();
+                        } else {
+                            workOrder = baseResult.getData();
+                            Pendinglist.addAll(workOrder.getData());
+//                            pending_appointment_adapter.setNewData(Pendinglist);
+                            mRecyclerviewOrderReceiving.setLayoutManager(new LinearLayoutManager(mActivity));
+                            pending_appointment_adapter = new Pending_Adapter(R.layout.item_pending_appointment, Pendinglist, userInfo);
+                            pending_appointment_adapter.setEmptyView(getEmptyView());
+                            mRecyclerviewOrderReceiving.setAdapter(pending_appointment_adapter);
+                            showPending();
+
+                        }
+
+                        cancleLoading();
+                        //  pending_appointment_adapter.notifyDataSetChanged();
+
                     }
 
                 }
@@ -431,6 +536,232 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
         }
     }
 
+    private void showPending() {
+        pending_appointment_adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(final BaseQuickAdapter adapter, View view, final int position) {
+                switch (view.getId()) {
+                    case R.id.rl_pending_appointment:
+                        Intent intent1 = new Intent(getActivity(), Order_details_Activity.class);
+                        //传递工单号
+                        intent1.putExtra("OrderID", ((WorkOrder.DataBean) adapter.getItem(position)).getOrderID());
+                        successposition = position;
+                        //startActivity(intent);
+                        //  intent1.putExtra("successposition",successposition);
+                        // startActivityForResult(intent1,22);
+                        startActivityForResult(intent1, 1001);
+                        break;
+                    /*预约成功*/
+                    case R.id.tv_pending_appointment_success:
+
+                        data.setOrderID(((WorkOrder.DataBean) adapter.getItem(position)).getOrderID());
+                        data.setTypeName(((WorkOrder.DataBean) adapter.getItem(position)).getTypeName());
+                        data.setAddress(((WorkOrder.DataBean) adapter.getItem(position)).getAddress());
+                        data.setUserName(((WorkOrder.DataBean) adapter.getItem(position)).getUserName());
+                        data.setPhone(((WorkOrder.DataBean) adapter.getItem(position)).getPhone());
+                        data.setMemo(((WorkOrder.DataBean) adapter.getItem(position)).getMemo());
+
+                        RxPermissions rxPermissions = new RxPermissions(mActivity);
+                        rxPermissions.request(Manifest.permission.WRITE_CALENDAR, Manifest.permission.READ_CALENDAR)
+                                .subscribe(new Consumer<Boolean>() {
+                                    @Override
+                                    public void accept(Boolean aBoolean) throws Exception {
+                                        if (aBoolean) {
+                                            // 获取全部权限成功
+
+                                            chooseTime(position,"请选择上门时间");
+                                        } else {
+                                            // 获取全部权限失败
+                                            Log.d("=====>", "权限获取失败");
+                                        }
+                                    }
+                                });
+                        break;
+                    case R.id.tv_pending_appointment_failure:
+
+                        /*预约未成功*/
+                        final CustomDialog_UnSuccess customDialog_unSuccess = new CustomDialog_UnSuccess(getContext());
+                        customDialog_unSuccess.getWindow().setBackgroundDrawableResource(R.color.transparent);
+                        customDialog_unSuccess.show();
+
+                        customDialog_unSuccess.setYesOnclickListener("用户取消订单", new CustomDialog_UnSuccess.onYesOnclickListener() {
+                            @Override
+                            public void onYesClick() {
+                                customDialog_unSuccess.dismiss(); //用户取消订单
+                                Toast.makeText(getActivity(), "用户订单取消", LENGTH_SHORT).show();
+
+                                /*调用接口移除预约不成功的订单*/
+                                mPresenter.AddOrderfailureReason(
+                                        ((WorkOrder.DataBean) adapter.getItem(position)).getOrderID(), "-1", "用户取消订单"
+                                );
+                                pending_appointment_adapter.remove(position);
+
+                            }
+                        });
+
+                        customDialog_unSuccess.setNoOnclickListener("电话打不通", new CustomDialog_UnSuccess.onNoOnclickListener() {
+                            @Override
+                            public void onNoClick() {
+                                customDialog_unSuccess.dismiss();//电话打不通
+                                Toast.makeText(getActivity(), "电话打不通", LENGTH_SHORT).show();
+
+
+                                /*调用接口移除预约不成功的订单*/
+                                mPresenter.AddOrderfailureReason(
+                                        ((WorkOrder.DataBean) adapter.getItem(position)).getOrderID(), "-1", "电话打不通"
+                                );
+                                pending_appointment_adapter.remove(position);
+                            }
+                        });
+                        /*其他原因*/
+                        customDialog_unSuccess.setOtherReasonOnclickListener("其他原因", new CustomDialog_UnSuccess.onOtherReasonListener() {
+                            @Override
+                            public void onOtherReasonClick() {
+                                customDialog_unSuccess.findViewById(R.id.ed_unsuccess_reason).setVisibility(View.VISIBLE);
+                                TextView tv_other_reason = customDialog_unSuccess.findViewById(R.id.tv_other_reason);
+                                // tv_other_reason.setBackgroundColor(Color.RED);
+                                tv_other_reason.setBackgroundResource(R.drawable.tv_unsuccess_reason_submit);
+                                tv_other_reason.setText("提交");
+                                /*提交*/
+                                customDialog_unSuccess.setOtherReasonOnclickListener("提交", new CustomDialog_UnSuccess.onOtherReasonListener() {
+                                    @Override
+                                    public void onOtherReasonClick() {
+                                        customDialog_unSuccess.dismiss();
+
+                                        //未预约成功的原因
+                                        String unsuccess_reason = ((EditText) customDialog_unSuccess.findViewById(R.id.ed_unsuccess_reason)).getText().toString();
+                                        /*调用接口移除预约不成功的订单*/
+                                        mPresenter.AddOrderfailureReason(
+                                                ((WorkOrder.DataBean) adapter.getItem(position)).getOrderID(), "-1", unsuccess_reason);
+                                        pending_appointment_adapter.remove(position);
+
+                                        Toast.makeText(getActivity(), unsuccess_reason, LENGTH_SHORT).show();
+                                    }
+                                });
+
+
+                            }
+                        });
+                        /*其他原因*/
+
+                        /*叉叉退出*/
+                        customDialog_unSuccess.setCancleOnclickListener("退出", new CustomDialog_UnSuccess.onCancleOnclickListener() {
+                            @Override
+                            public void onCancleClick() {
+                                Toast.makeText(getActivity(), "退出", LENGTH_SHORT).show();
+                                customDialog_unSuccess.dismiss();
+                            }
+                        });
+
+
+                        /*叉叉退出*/
+
+                        break;
+
+                    /*预约未成功*/
+
+                    /*电话预约*/
+                    case R.id.img_pending_appointment_phone:
+                        call("tel:" + ((WorkOrder.DataBean) adapter.getItem(position)).getPhone());
+
+                        break;
+                    /*电话预约*/
+
+
+                    /*转派订单*/
+
+                    case R.id.tv_pending_appointment_redeploy:
+                        break;
+                    /*转派订单*/
+
+
+
+                    /*取消订单*/
+                    case R.id.tv_cancel_order:
+                        OrderId = ((WorkOrder.DataBean) adapter.getData().get(position)).getOrderID();//获取工单号
+                        final CommonDialog_Home dialog = new CommonDialog_Home(getActivity());
+                        dialog.setMessage("是否取消工单")
+                                //.setImageResId(R.mipmap.ic_launcher)
+                                .setTitle("提示")
+                                .setSingle(false).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
+                            @Override
+                            public void onPositiveClick() {//取消订单
+                                mPresenter.UpdateSendOrderState(OrderId, "-1");
+                                cancleposition = position;
+                                dialog.dismiss();
+                            }
+
+                            @Override
+                            public void onNegtiveClick() {//放弃取消
+                                dialog.dismiss();
+                                // Toast.makeText(MainActivity.this,"ssss",Toast.LENGTH_SHORT).show();
+                            }
+                        }).show();
+
+                        break;
+
+                    default:
+                        break;
+
+                }
+
+            }
+        });
+    }
+
+    private void showGrabsheet() {
+        grabsheetAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                switch (view.getId()) {
+                    case R.id.img_grabsheet:
+                        vibrator.vibrate(100);
+                        if (userInfo.getIfAuth() != null) {
+                            if (userInfo.getIfAuth().equals("1")) {
+                                showLoading();
+                                grabposition = position;
+                                // mPresenter.AddGrabsheetapply(((WorkOrder.DataBean) adapter.getItem(position)).getOrderID(), userID);
+                                mPresenter.UpdateSendOrderState(((WorkOrder.DataBean) adapter.getItem(position)).getOrderID(), "1");
+
+
+                            } else if (userInfo.getIfAuth().equals("0")) {
+                                under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_under_review, null);
+                                btnConfirm = under_review.findViewById(R.id.btn_confirm);
+                                btnConfirm.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        underReviewDialog.dismiss();
+                                    }
+                                });
+                                underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review).create();
+                                underReviewDialog.show();
+                            } else if (userInfo.getIfAuth().equals("-1")) {
+                                under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_audit_failure, null);
+                                btnConfirm = under_review.findViewById(R.id.btn_confirm);
+                                content = under_review.findViewById(R.id.tv_content);
+                                content.setText(userInfo.getAuthMessage()+",有疑问请咨询客服电话。");
+                                btnConfirm.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        underReviewDialog.dismiss();
+                                        startActivity(new Intent(mActivity, Verified_Activity.class));
+                                    }
+                                });
+                                underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review).create();
+                                underReviewDialog.show();
+                            } else {
+                                showVerifiedDialog();
+                            }
+                        } else {
+                            showVerifiedDialog();
+                        }
+                        break;
+                }
+
+            }
+        });
+    }
+
     @Override
     public void UpdateSendOrderState(BaseResult<Data> baseResult) {
         Data data = baseResult.getData();
@@ -438,12 +769,19 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
             case 200://200
                 if (data.isItem1()) {//接单成功
 
-                    grabsheetAdapter.remove(grabposition);
-                    Toast.makeText(getActivity(), "接单成功", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getActivity(), Order_Receiving_Activity.class);
-                    intent.putExtra("intent", "pending_appointment");
-                    startActivity(intent);
-                    cancleLoading();
+                    if (userInfo.getParentUserID()==null){
+                        grabsheetAdapter.remove(grabposition);
+                        Toast.makeText(getActivity(), "接单成功", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getActivity(), Order_Receiving_Activity.class);
+                        intent.putExtra("intent", "pending_appointment");
+                        startActivity(intent);
+                        cancleLoading();
+                    }else {
+                        pending_appointment_adapter.remove(cancleposition);
+                    }
+
+
+
                 } else {
                     Toast.makeText(getActivity(), (CharSequence) data.getItem2(), Toast.LENGTH_SHORT).show();
                     cancleLoading();
@@ -469,7 +807,11 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
         switch (baseResult.getStatusCode()) {
             case 200:
                 userInfo = baseResult.getData().getData().get(0);
-
+                if (userInfo.getParentUserID()==null){
+                    mPresenter.WorkerGetOrderList(userID, "0", Integer.toString(pageIndex), "10");
+                }else {
+                    mPresenter.WorkerGetOrderList(userID, "1", Integer.toString(pageIndex), "5");
+                }
                 /*设置实名认证状态*/
                 if (userInfo.getIfAuth() == null) {
                     mTvCertification.setText("未实名认证");
@@ -502,10 +844,13 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 if (userInfo.getAvator() == null) {//显示默认头像
                     return;
                 } else {
-                    RequestOptions myOptions = new RequestOptions().transform(new GlideCircleWithBorder_Home(this, 1, Color.parseColor("#808080")));
+                    RequestOptions myOptions = new RequestOptions()
+                     .bitmapTransform(new CircleCrop())
+                    .transform(new GlideCircleWithBorder_Home(this, 1, Color.parseColor("#808080")))
+                    .error(R.drawable.icon);
+
                     Glide.with(mActivity)
                             .load(Config.HEAD_URL + userInfo.getAvator())
-                            .apply(RequestOptions.bitmapTransform(new CircleCrop()))
                             .apply(myOptions)
                             .into(mImgHomeHead);
 
@@ -527,6 +872,79 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 mTvMoney.setText(xigua);
                 break;
 
+            default:
+                break;
+
+        }
+    }
+
+    @Override
+    public void UpdateSendOrderUpdateTime(BaseResult<Data> baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+
+                if (baseResult.getData().isItem1()) {
+
+                    if (data.getAddress() == null) {
+                        Log.d("=====>", "地址为空");
+                    } else {
+                        Log.d("=====>", data.getAddress());
+                    }
+                    CalendarEvent calendarEvent = new CalendarEvent(
+                            data.getTypeName() + "工单号：" + data.getOrderID(),
+                            "客户名:" + data.getUserName() + " 客户手机号:" + data.getPhone() + "故障原因" + data.getMemo(),
+                            data.getAddress(),
+                            recommendedtime,
+                            recommendedtime,
+                            60, null    //提前一个小时提醒  单位分钟
+                    );
+                    // 添加事件
+                    int result = CalendarProviderManager.addCalendarEvent(mActivity, calendarEvent);
+                    if (result == 0) {
+                        Toast.makeText(mActivity, "已为您添加行程至日历,将提前一小时提醒您！！", Toast.LENGTH_SHORT).show();
+                    } else if (result == -1) {
+                        Toast.makeText(mActivity, "插入失败", LENGTH_SHORT).show();
+                    } else if (result == -2) {
+                        Toast.makeText(mActivity, "没有权限", LENGTH_SHORT).show();
+                    }
+
+
+
+
+
+
+
+
+
+                }
+        }
+    }
+
+    @Override
+    public void AddOrderSuccess(BaseResult<Data> baseResult) {
+        switch (baseResult.getStatusCode()) {
+
+            case 200:
+                if (baseResult.getData().isItem1()) {
+                    pending_appointment_adapter.remove(successposition);
+                    //Toast.makeText(getActivity(),"预约成功请到服务中",Toast.LENGTH_SHORT).show();
+                    EventBus.getDefault().post(2);//预约成功跳转到服务中
+                } else {
+
+
+                }
+                break;
+            default:
+                break;
+
+        }
+    }
+
+    @Override
+    public void AddOrderfailureReason(BaseResult<Data> baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                break;
             default:
                 break;
 
@@ -949,13 +1367,15 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
 
         methodRequiresPermission();
         /*模拟数据*/
-        mRecyclerviewOrderReceiving.setLayoutManager(new LinearLayoutManager(mActivity));
-        grabsheetAdapter = new GrabsheetAdapter(R.layout.item_grabsheet, list);
-        grabsheetAdapter.setEmptyView(getEmptyView());
-        mRecyclerviewOrderReceiving.setAdapter(grabsheetAdapter);
 
 
-        mPresenter.WorkerGetOrderList(userID, "0", Integer.toString(pageIndex), "5");
+
+
+        if (userInfo.getParentUserID()==null){
+            mPresenter.WorkerGetOrderList(userID, "0", Integer.toString(pageIndex), "10");
+        }else {
+            mPresenter.WorkerGetOrderList(userID, "1", Integer.toString(pageIndex), "5");
+        }
       /* if (list.isEmpty()){ //没有数据显示空
            contentLoadingEmpty();
 
@@ -966,57 +1386,47 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
 
 
         /*点击接单按钮*/
-        grabsheetAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                switch (view.getId()) {
-                    case R.id.img_grabsheet:
-                        vibrator.vibrate(100);
-                        if (userInfo.getIfAuth() != null) {
-                            if (userInfo.getIfAuth().equals("1")) {
-                                showLoading();
-                                grabposition = position;
-                                // mPresenter.AddGrabsheetapply(((WorkOrder.DataBean) adapter.getItem(position)).getOrderID(), userID);
-                                mPresenter.UpdateSendOrderState(((WorkOrder.DataBean) adapter.getItem(position)).getOrderID(), "1");
 
-
-                            } else if (userInfo.getIfAuth().equals("0")) {
-                                under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_under_review, null);
-                                btnConfirm = under_review.findViewById(R.id.btn_confirm);
-                                btnConfirm.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        underReviewDialog.dismiss();
-                                    }
-                                });
-                                underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review).create();
-                                underReviewDialog.show();
-                            } else if (userInfo.getIfAuth().equals("-1")) {
-                                under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_audit_failure, null);
-                                btnConfirm = under_review.findViewById(R.id.btn_confirm);
-                                content = under_review.findViewById(R.id.tv_content);
-                                content.setText(userInfo.getAuthMessage()+",有疑问请咨询客服电话。");
-                                btnConfirm.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        underReviewDialog.dismiss();
-                                        startActivity(new Intent(mActivity, Verified_Activity.class));
-                                    }
-                                });
-                                underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review).create();
-                                underReviewDialog.show();
-                            } else {
-                                showVerifiedDialog();
-                            }
-                        } else {
-                            showVerifiedDialog();
-                        }
-                        break;
-                }
-
-            }
-        });
         showAd();
+    }
+
+
+    /**
+     * 选择上门时间
+     */
+    public void chooseTime(final int position,final String title) {
+        Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        String format1 = format.format(date);
+
+        TimeSelector timeSelector = new TimeSelector(mActivity, new TimeSelector.ResultHandler() {
+            @Override
+            public void handle(String time) {
+
+                DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                try {
+                    recommendedtime = format.parse(time).getTime();
+                } catch (ParseException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                OrderId= workOrder.getData().get(position).getOrderID();
+                mPresenter.UpdateSendOrderUpdateTime(OrderId, time, time);
+
+
+                Intent intent=new Intent(mActivity, WorkOrderDetailsActivity2.class);
+                intent.putExtra("OrderID",OrderId);
+                intent.putExtra("time",time);
+                startActivity(intent);
+                successposition=position;
+
+                mPresenter.AddOrderSuccess(OrderId,"1","预约成功");
+            }
+        }, format1, "2022-1-1 24:00");
+
+        timeSelector.setTitle(title);
+        timeSelector.setNextBtTip("确定");
+        timeSelector.show();
     }
 
     @Override
@@ -1031,7 +1441,14 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                     }
                 }
                 break;
+            case 10001:
+            case 10002:
+                if (requestCode == 1001) {
+                    pending_appointment_adapter.remove(successposition);
+                }
+                break;
         }
+
     }
 
     @Override
@@ -1059,7 +1476,11 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
         if ("GetUserInfoList".equals(message)) {
             mPresenter.GetUserInfoList(userID, "1");
         } else if ("0".equals(message)) {
-            mPresenter.WorkerGetOrderList(userID, "0", Integer.toString(pageIndex), "10");
+            if (userInfo.getParentUserID()==null){
+                mPresenter.WorkerGetOrderList(userID, "0", Integer.toString(pageIndex), "10");
+            }else {
+                mPresenter.WorkerGetOrderList(userID, "1", Integer.toString(pageIndex), "5");
+            }
         }
     }
 
@@ -1166,4 +1587,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
 //            Toast.makeText(context.getApplicationContext(), "请下载浏览器", Toast.LENGTH_SHORT).show();
 //        }
     }
+
+
+
 }

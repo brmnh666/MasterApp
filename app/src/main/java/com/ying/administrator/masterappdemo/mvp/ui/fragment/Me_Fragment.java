@@ -306,7 +306,12 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                 String format = String.format("%.2f", userInfo.getTotalMoney() - userInfo.getFrozenMoney());
                 // String can_withdraw = Double.toString(userInfo.getTotalMoney() - userInfo.getFrozenMoney());//可提现余额=总金额-冻结金额
                 mTv_me_withdraw.setText(format);
-                mTvName.setText(userInfo.getNickName());
+                if (userInfo.getUserID().equals(userInfo.getNickName())){
+                    mTvName.setText("未设置昵称");
+                }else {
+                    mTvName.setText(userInfo.getNickName());
+                }
+//                mTvName.setText(userInfo.getNickName());
                 /*设置实名认证状态*/
                 if (userInfo.getIfAuth() == null) {
                     mTvCertification.setText("未实名认证");
