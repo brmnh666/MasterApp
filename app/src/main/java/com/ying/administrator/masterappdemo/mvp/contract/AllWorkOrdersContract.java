@@ -29,6 +29,13 @@ public interface AllWorkOrdersContract {
         //获取用户信息
         Observable<BaseResult<String>> GetUserInfo(String userName);
         Observable<BaseResult<UserInfo>> GetUserInfoList(String UserID,String limit);
+        //更新时间
+        Observable<BaseResult<Data>> UpdateSendOrderUpdateTime(String OrderID,String UpdateDate,String EndDate);
+        //预约成功
+        Observable<BaseResult<Data>> AddOrderSuccess(String OrderID, String AppointmentState, String AppointmentMessage);
+        //未预约成功
+        Observable<BaseResult<Data>> AddOrderfailureReason(String OrderID, String AppointmentState, String AppointmentMessage);
+
 
 
     }
@@ -47,6 +54,14 @@ public interface AllWorkOrdersContract {
         //获取用户信息
         void GetUserInfo(BaseResult<String> baseResult);
         void GetUserInfoList(BaseResult<UserInfo> baseResult);
+
+        //更新时间
+        void UpdateSendOrderUpdateTime(BaseResult<Data> baseResult);
+        //预约成功
+
+        void AddOrderSuccess(BaseResult<Data> baseResult);
+        //未预约成功
+        void AddOrderfailureReason(BaseResult<Data> baseResult);
     }
 
     abstract class Presenter extends BasePresenter<View,Model> {
@@ -64,5 +79,11 @@ public interface AllWorkOrdersContract {
         public abstract void GetUserInfo(String userName);
         public abstract void GetUserInfoList(String UserID,String limit);
 
+        //更新时间
+        public abstract void UpdateSendOrderUpdateTime(String OrderID,String UpdateDate,String EndDate);
+        //预约成功
+        public abstract void AddOrderSuccess(String OrderID,String AppointmentState,String AppointmentMessage);
+        //未预约成功
+        public abstract void AddOrderfailureReason(String OrderID,String AppointmentState,String AppointmentMessage);
     }
 }

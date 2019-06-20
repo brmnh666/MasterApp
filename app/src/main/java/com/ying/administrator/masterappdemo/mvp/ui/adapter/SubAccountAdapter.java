@@ -30,7 +30,7 @@ private ImageView img_avatar;
         img_avatar=helper.getView(R.id.img_avatar);
          if (item.getAvator()==null){
 
-             RequestOptions options=new RequestOptions().error(R.mipmap.ic_launcher).bitmapTransform(new CircleCrop());
+             RequestOptions options=new RequestOptions().error(R.drawable.avatar).bitmapTransform(new CircleCrop());
              Glide.with(context)
                      .load(Config.HEAD_URL+item.getAvator())
                      .apply(options)

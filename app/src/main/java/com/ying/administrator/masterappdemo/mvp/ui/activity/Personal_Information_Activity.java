@@ -279,7 +279,11 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
                     return;
 
                 }else {
-                    tv_nickname.setText(userInfo.getNickName());
+                    if (userInfo.getUserID().equals(userInfo.getNickName())){
+                        tv_nickname.setText("未设置昵称");
+                    }else {
+                        tv_nickname.setText(userInfo.getNickName());
+                    }
                 }
                 /*真实姓名*/
                 if (userInfo.getTrueName()==null){ //如果为空说明未认证

@@ -54,7 +54,7 @@ private Context context;
         /*设置手机号*/
 
         if (item.getPhone()==null){
-            helper.setText(R.id.tv_subaccount_phone,"空号");
+            helper.setText(R.id.tv_subaccount_phone,"");
         }else {
             helper.setText(R.id.tv_subaccount_phone,item.getPhone());
         }
