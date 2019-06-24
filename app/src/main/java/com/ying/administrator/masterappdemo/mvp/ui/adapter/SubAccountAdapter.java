@@ -58,10 +58,10 @@ private ImageView img_avatar;
             helper.setText(R.id.tv_completion_amount,item.getServiceTotalMoney());
         }
 
-        if (item.getServiceTotalOrderNum()==null){
+        if (item.getServiceTotalOrderNum()==null||"0".equals(item.getServiceTotalOrderNum())){
             helper.setText(R.id.tv_amount_completed,"0");
         }else {
-            helper.setText(R.id.tv_amount_completed,item.getServiceComplaintNum());
+            helper.setText(R.id.tv_amount_completed,item.getServiceTotalOrderNum());
         }
 
         if (item.getServiceComplaintNum()==null){
