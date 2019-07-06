@@ -1387,7 +1387,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
 
         /*点击接单按钮*/
 
-        showAd();
+//        showAd();
     }
 
 

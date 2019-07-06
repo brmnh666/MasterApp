@@ -200,6 +200,8 @@ public class WorkOrder implements Serializable {
         private String  AddressBack ;
         private String  PostPayType ;
 
+        private String MallID;
+
         private List<GAccessory> OrderAccessroyDetail; //所选配件详情
         private List<GService> OrderServiceDetail;  //所选配件详情
         private List<ReturnaccessoryImg> ReturnaccessoryImg;//返件图片
@@ -214,6 +216,14 @@ public class WorkOrder implements Serializable {
         private String Version;
         private String NewMoney;
         private String QuaMoney;
+
+        public String getMallID() {
+            return MallID;
+        }
+
+        public void setMallID(String mallID) {
+            MallID = mallID;
+        }
 
         public String getIsLate() {
             return IsLate;

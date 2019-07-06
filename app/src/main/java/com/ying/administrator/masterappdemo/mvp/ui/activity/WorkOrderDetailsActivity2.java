@@ -476,6 +476,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     private AlertDialog underReviewDialog;
     private EditText et_accessories_name;
     private Button btn_add1;
+    private int expressType;
 
 
     @Override
@@ -1521,10 +1522,15 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         switch (baseResult.getStatusCode()) {
             case 200:
                 if (baseResult.getData().getItem2() != null) {
-                    mTvContent.setText(baseResult.getData().getItem2().get(0).getContent());
-                    list.addAll(baseResult.getData().getItem2());
-                    content = list.get(0).getContent();
-                    returnAccessoryAdapter.setContent(content);
+                    if (expressType==1){
+                        mTvContent.setText(baseResult.getData().getItem2().get(0).getContent());
+                    }else {
+                        list.addAll(baseResult.getData().getItem2());
+                        content = list.get(0).getContent();
+//                    ToastUtils.showShort(content);
+                        returnAccessoryAdapter.setContent(content);
+                    }
+
                 }
                 break;
         }
@@ -1611,6 +1617,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 }
 
 
+
                 mTvProductType.setText(data.getCategoryName() + "/" + data.getBrandName() + "/" + data.getSubCategoryName());
 
                 if (data.getSendOrderList().size() != 0) {
@@ -1648,7 +1655,13 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mLlNumber.setVisibility(View.VISIBLE);
                         mViewSigning.setVisibility(View.VISIBLE);
                         mTvSigning.setText("否");
-                        mPresenter.GetExpressInfo(data.getExpressNo());
+                        expressType=1;
+                        if ("".equals(data.getExpressNo())||data.getExpressNo()==null){
+                            mTvContent.setText("暂无物流消息");
+                        }else {
+                             mPresenter.GetExpressInfo(data.getExpressNo());
+                        }
+
                     }
 //                    mll_return_information.setVisibility(View.GONE);
 //                    mll_service_process.setVisibility(View.VISIBLE);
@@ -1841,6 +1854,11 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     }
                 }
 
+                if ("2".equals(data.getTypeID())){
+                    if (!"0".equals(data.getMallID())){
+                        mLlApplyBeyond.setVisibility(View.GONE);
+                    }
+                }
 
                 if (data.getOrderAccessroyDetail().size() != 0) {
                     for (int i = 0; i < data.getOrderAccessroyDetail().size(); i++) {
@@ -1853,7 +1871,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     mRvReturnInformation.setLayoutManager(new LinearLayoutManager(mActivity));
                     mRvReturnInformation.setAdapter(returnAccessoryAdapter);
                     if (data.getOrderAccessroyDetail().size() > 0) {
-                        if (!"".equals(data.getOrderAccessroyDetail().get(0).getExpressNo())) {
+                        if (!"".equals(data.getOrderAccessroyDetail().get(0).getExpressNo())||data.getOrderAccessroyDetail().get(0).getExpressNo()!=null) {
+                            expressType = 2;
                             mPresenter.GetExpressInfo(data.getOrderAccessroyDetail().get(0).getExpressNo());
                         }
                     }
