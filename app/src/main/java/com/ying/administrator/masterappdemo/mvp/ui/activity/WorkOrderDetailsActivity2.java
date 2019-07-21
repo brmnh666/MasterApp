@@ -477,6 +477,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     private EditText et_accessories_name;
     private Button btn_add1;
     private int expressType;
+    private String[] money1;
 
 
     @Override
@@ -707,7 +708,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     @Override
                     public void onPositiveClick() {
                         reject.dismiss();
-                        mPresenter.ConfirmtoFreezeByOrderID(OrderID, "1");
+//                        mPresenter.ConfirmtoFreezeByOrderID(OrderID, "1",String.valueOf(data.getOrderAccessroyDetail().get(position).getId());
                     }
 
                     @Override
@@ -726,7 +727,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     @Override
                     public void onPositiveClick() {
                         reject.dismiss();
-                        mPresenter.ConfirmtoFreezeByOrderID(OrderID, "2");
+//                        mPresenter.ConfirmtoFreezeByOrderID(OrderID, "2",String.valueOf(data.getOrderAccessroyDetail().get(position).getId()));
                     }
 
                     @Override
@@ -1521,17 +1522,20 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     public void GetExpressInfo(BaseResult<Data<List<Logistics>>> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData().getItem2() != null) {
-                    if (expressType==1){
-                        mTvContent.setText(baseResult.getData().getItem2().get(0).getContent());
-                    }else {
-                        list.addAll(baseResult.getData().getItem2());
-                        content = list.get(0).getContent();
+                if (baseResult.getData().isItem1()){
+                    if (baseResult.getData().getItem2() != null) {
+                        if (expressType==1){
+                            mTvContent.setText(baseResult.getData().getItem2().get(0).getContent());
+                        }else {
+                            list.addAll(baseResult.getData().getItem2());
+                            content = list.get(0).getContent();
 //                    ToastUtils.showShort(content);
-                        returnAccessoryAdapter.setContent(content);
-                    }
+                            returnAccessoryAdapter.setContent(content);
+                        }
 
+                    }
                 }
+
                 break;
         }
     }
@@ -1866,16 +1870,72 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                             data.getOrderAccessroyDetail().remove(i);
                         }
                     }
+                    if (data.getNewMoney()!=null){
+                        String newMoney=data.getNewMoney().trim();
+                        money1 = newMoney.split("[|]+");
+                    }
 
-                    returnAccessoryAdapter = new ReturnAccessoryAdapter(R.layout.item_returned, data.getOrderAccessroyDetail(), Integer.parseInt(data.getAccessoryState()), content);
+//                    Log.d(TAG,"7777"+money1[0]);
+
+                    returnAccessoryAdapter = new ReturnAccessoryAdapter(R.layout.item_returned, data.getOrderAccessroyDetail(), Integer.parseInt(data.getAccessoryState()), content,money1);
                     mRvReturnInformation.setLayoutManager(new LinearLayoutManager(mActivity));
                     mRvReturnInformation.setAdapter(returnAccessoryAdapter);
                     if (data.getOrderAccessroyDetail().size() > 0) {
-                        if (!"".equals(data.getOrderAccessroyDetail().get(0).getExpressNo())||data.getOrderAccessroyDetail().get(0).getExpressNo()!=null) {
-                            expressType = 2;
-                            mPresenter.GetExpressInfo(data.getOrderAccessroyDetail().get(0).getExpressNo());
+                        for (int i=0;i<data.getOrderAccessroyDetail().size();i++){
+                            if ("".equals(data.getOrderAccessroyDetail().get(0).getExpressNo())) {
+
+                            }else {
+                                expressType = 2;
+                                mPresenter.GetExpressInfo(data.getOrderAccessroyDetail().get(0).getExpressNo());
+                            }
                         }
+
                     }
+                    returnAccessoryAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+                        @Override
+                        public void onItemChildClick(BaseQuickAdapter adapter, View view, final int position) {
+                            switch (view.getId()){
+                                case R.id.tv_pass:
+                                    reject = new CommonDialog_Home(mActivity);
+                                    reject.setMessage("该金额会在返旧件后解冻，是否同意冻结金额？")
+
+                                            //.setImageResId(R.mipmap.ic_launcher)
+                                            .setTitle("提示")
+                                            .setSingle(false).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
+                                        @Override
+                                        public void onPositiveClick() {
+                                            reject.dismiss();
+                                            mPresenter.ConfirmtoFreezeByOrderID(OrderID, "1",String.valueOf(data.getOrderAccessroyDetail().get(position).getId()));
+                                        }
+
+                                        @Override
+                                        public void onNegtiveClick() {//取消
+                                            reject.dismiss();
+                                        }
+                                    }).show();
+                                    break;
+                                case R.id.tv_reject:
+                                    reject = new CommonDialog_Home(mActivity);
+                                    reject.setMessage("该金额会在返旧件后解冻，是否取消冻结金额？")
+
+                                            //.setImageResId(R.mipmap.ic_launcher)
+                                            .setTitle("提示")
+                                            .setSingle(false).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
+                                        @Override
+                                        public void onPositiveClick() {
+                                            reject.dismiss();
+                                            mPresenter.ConfirmtoFreezeByOrderID(OrderID, "2",String.valueOf(data.getOrderAccessroyDetail().get(position).getId()));
+                                        }
+
+                                        @Override
+                                        public void onNegtiveClick() {//取消
+                                            reject.dismiss();
+                                        }
+                                    }).show();
+                                    break;
+                            }
+                        }
+                    });
 
 
                     mLlAccessory.setVisibility(View.VISIBLE);
@@ -2118,7 +2178,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 if ("0.0".equals(data.getNewMoney())) {
                     mLlNewMoney.setVisibility(View.GONE);
                 } else {
-                    mLlNewMoney.setVisibility(View.VISIBLE);
+                    mLlNewMoney.setVisibility(View.GONE);
                     mTvNewMoney.setText("¥" + data.getNewMoney());
                 }
                 break;

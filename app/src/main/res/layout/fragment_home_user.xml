@@ -5,7 +5,7 @@
     android:id="@+id/cv_home_user"
     android:layout_width="match_parent"
     android:layout_height="160dp"
-    android:layout_marginTop="40dp"
+    android:layout_marginTop="50dp"
     android:clickable="false"
     android:foreground="?android:attr/selectableItemBackground"
     app:cardCornerRadius="5dp"

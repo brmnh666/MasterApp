@@ -364,8 +364,10 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 pageIndex = 1;
                 //list.clear();
                 if (userInfo.getParentUserID()==null){
+                    list.clear();
                     mPresenter.WorkerGetOrderList(userID, "0", Integer.toString(pageIndex), "10");
                 }else {
+                    list.clear();
                     mPresenter.WorkerGetOrderList(userID, "1", Integer.toString(pageIndex), "5");
                 }
                 if (userInfo.getParentUserID()==null){
@@ -404,8 +406,10 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 pageIndex++; //页数加1
                 Log.d("当前的单数", String.valueOf(list.size()));
                 if (userInfo.getParentUserID()==null){
+                    list.clear();
                     mPresenter.WorkerGetOrderList(userID, "0", Integer.toString(pageIndex), "10");
                 }else {
+                    list.clear();
                     mPresenter.WorkerGetOrderList(userID, "1", Integer.toString(pageIndex), "5");
                 }
                 if (userInfo.getParentUserID()==null){
@@ -432,7 +436,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                         Log.d("===>", "暂无新工单");
                         if (pageIndex == 1) {
                             list.clear();
-//                            grabsheetAdapter.notifyDataSetChanged();
+                            grabsheetAdapter.notifyDataSetChanged();
                         }
 
                     } else {
@@ -440,7 +444,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                             list.clear();
                             workOrder = baseResult.getData();
                             list.addAll(workOrder.getData());
-//                            grabsheetAdapter.notifyDataSetChanged();
+                            grabsheetAdapter.notifyDataSetChanged();
                             mRecyclerviewOrderReceiving.setLayoutManager(new LinearLayoutManager(mActivity));
                             grabsheetAdapter = new GrabsheetAdapter(R.layout.item_grabsheet, list);
                             mRecyclerviewOrderReceiving.setAdapter(grabsheetAdapter);
@@ -449,7 +453,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                         } else {
                             workOrder = baseResult.getData();
                             list.addAll(workOrder.getData());
-//                            grabsheetAdapter.setNewData(list);
+                            grabsheetAdapter.setNewData(list);
                             mRecyclerviewOrderReceiving.setLayoutManager(new LinearLayoutManager(mActivity));
                             grabsheetAdapter = new GrabsheetAdapter(R.layout.item_grabsheet, list);
                             mRecyclerviewOrderReceiving.setAdapter(grabsheetAdapter);

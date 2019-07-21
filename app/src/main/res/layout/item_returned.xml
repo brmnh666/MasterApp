@@ -113,7 +113,8 @@
                 android:text="电脑板"
                 android:textColor="#6A6A6A"
                 android:textSize="16sp"
-                android:layout_marginLeft="10dp"/>
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center"/>
             <LinearLayout
                 android:id="@+id/ll_state_n"
                 android:layout_width="wrap_content"
@@ -123,14 +124,45 @@
                     android:layout_width="14dp"
                     android:layout_height="15dp"
                     android:src="@mipmap/wait"
-                    android:layout_gravity="center"/>
+                    android:layout_gravity="center"
+                    android:visibility="gone"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
                     android:text="待返件"
                     android:textColor="#979797"
-                    android:layout_marginLeft="5dp"/>
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone"/>
+                <TextView
+                    android:id="@+id/tv_reject"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/gray_background_shape"
+                    android:paddingLeft="@dimen/dp_10"
+                    android:paddingTop="5dp"
+                    android:paddingRight="@dimen/dp_10"
+                    android:paddingBottom="5dp"
+                    android:text="拒绝"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/tv_pass"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bule_shape"
+                    android:paddingLeft="@dimen/dp_10"
+                    android:paddingTop="5dp"
+                    android:paddingRight="@dimen/dp_10"
+                    android:paddingBottom="5dp"
+                    android:text="通过"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:visibility="gone"/>
             </LinearLayout>
         </LinearLayout>
         <View

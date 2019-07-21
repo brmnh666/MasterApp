@@ -186,8 +186,8 @@ public class PendingOrderPresenter extends PendingOrderContract.Presenter {
         });
     }
     @Override
-    public void ConfirmtoFreezeByOrderID(String OrderID, String type) {
-        mModel.ConfirmtoFreezeByOrderID(OrderID,type).subscribe(new BaseObserver<Data<String>>() {
+    public void ConfirmtoFreezeByOrderID(String OrderID, String type,String AccessoryId) {
+        mModel.ConfirmtoFreezeByOrderID(OrderID,type,AccessoryId).subscribe(new BaseObserver<Data<String>>() {
             @Override
             protected void onHandleSuccess(BaseResult<Data<String>> value) {
                 mView.ConfirmtoFreezeByOrderID(value);

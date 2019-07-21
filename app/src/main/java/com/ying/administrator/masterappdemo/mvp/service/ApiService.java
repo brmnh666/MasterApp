@@ -54,9 +54,8 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("Message/Send")
     Observable<BaseResult<Data<String>>> GetCode(@Field("mobile") String mobile,
-                                           @Field("type") String type,
-                                           @Field("roleType") String roleType);
-
+                                                 @Field("type") String type,
+                                                 @Field("roleType") String roleType);
 
 
     /**
@@ -69,7 +68,7 @@ public interface ApiService {
                                              @Field("code") String code,
                                              @Field("roleType") String roleType,
                                              @Field("password") String password
-                                            );
+    );
 
 
     /*短信登陆*/
@@ -78,7 +77,6 @@ public interface ApiService {
     Observable<BaseResult<Data<String>>> LoginOnMessage(@Field("mobile") String mobile,
                                                         @Field("code") String code,
                                                         @Field("roleType") String roleType);
-
 
 
     /**
@@ -95,14 +93,13 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST("Account/LoginOut")
-    Observable<BaseResult<Data<String>>> LoginOut(@Field("UserID") String UserID,@Field("Type") String type);
+    Observable<BaseResult<Data<String>>> LoginOut(@Field("UserID") String UserID, @Field("Type") String type);
+
     /**
      * app获取用户信息
      */
     @POST("Account/GetUserInfo")
     Observable<BaseResult<String>> GetUserInfo(@Body RequestBody json);
-
-
 
 
     /**
@@ -126,12 +123,13 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("Message/AddAndUpdatePushAccount")
     Observable<BaseResult<Data<String>>> AddAndUpdatePushAccount(@Field("token") String token,
-                                                           @Field("type") String type,
-                                                           @Field("UserID") String UserID);
-/*
+                                                                 @Field("type") String type,
+                                                                 @Field("UserID") String UserID);
+    /*
 
-    */
-/**
+     */
+
+    /**
      * 获取工单列表
      * 废除-1，待审核0，派单中1，服务中2，已完成3
      * 获取首页 的单子
@@ -159,12 +157,12 @@ public interface ApiService {
 6、已完成
 7、预约不成功
     * */
-   @FormUrlEncoded
-   @POST("Order/WorkerGetOrderList")
-   Observable<BaseResult<WorkOrder>> WorkerGetOrderList(@Field("UserID") String UserID,
-                                                        @Field("State") String State,
-                                                        @Field("page") String page,
-                                                        @Field("limit") String limit);
+    @FormUrlEncoded
+    @POST("Order/WorkerGetOrderList")
+    Observable<BaseResult<WorkOrder>> WorkerGetOrderList(@Field("UserID") String UserID,
+                                                         @Field("State") String State,
+                                                         @Field("page") String page,
+                                                         @Field("limit") String limit);
 
 
 /*
@@ -188,14 +186,13 @@ public interface ApiService {
     Observable<BaseResult<WorkOrder.DataBean>> GetOrderInfo(@Field("OrderID") String OrderID);
 
 
-
     /**
      * 提交抢单申请
      */
     @FormUrlEncoded
     @POST("Order/GrabOrder")
-    Observable<BaseResult<Data>> AddGrabsheetapply (@Field("OrderID") String OrderID,
-                                                    @Field("UserID") String UserID);
+    Observable<BaseResult<Data>> AddGrabsheetapply(@Field("OrderID") String OrderID,
+                                                   @Field("UserID") String UserID);
 
 
     /*主账号转派订单操作*/
@@ -203,7 +200,7 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("Order/ChangeSendOrder")
     Observable<BaseResult<Data>> ChangeSendOrder(@Field("OrderID") String OrderID,
-                                                @Field("UserID") String UserID);
+                                                 @Field("UserID") String UserID);
 
 
 
@@ -219,15 +216,15 @@ public interface ApiService {
                                                       @Field("State") String State);
 
 
-/*
-* 快递信息
-* */
+    /*
+     * 快递信息
+     * */
     @FormUrlEncoded
     @POST("Order/GetExpressInfo")
     Observable<BaseResult<Data<List<Logistics>>>> GetExpressInfo(@Field("ExpressNo") String ExpressNo);
 
 
-  /*  *//*获取派单列表*//*
+    /*  *//*获取派单列表*//*
     @FormUrlEncoded
     @POST("Order/GetSendOrderList")
     Observable<BaseResult<SendOrder>> GetSendOrderList(@Field())
@@ -246,6 +243,7 @@ public interface ApiService {
 
     /**
      * 订单维修图片
+     *
      * @param body
      * @return
      */
@@ -253,42 +251,42 @@ public interface ApiService {
     Observable<BaseResult<Data<String>>> ReuturnAccessoryPicUpload(@Body RequestBody body);
 
 
-
     /**
      * 订单完成维修图片
+     *
      * @param body
      * @return
      */
-  @POST("Upload/FinishOrderPicUpload")
-  Observable<BaseResult<Data<String>>> FinishOrderPicUpload(@Body RequestBody body);
+    @POST("Upload/FinishOrderPicUpload")
+    Observable<BaseResult<Data<String>>> FinishOrderPicUpload(@Body RequestBody body);
 
     /**
      * 订单服务图片
+     *
      * @param body
      * @return
      */
-  @POST("Upload/ServiceOrderPicUpload")
-  Observable<BaseResult<Data<String>>> ServiceOrderPicUpload(@Body RequestBody body);
-
-
+    @POST("Upload/ServiceOrderPicUpload")
+    Observable<BaseResult<Data<String>>> ServiceOrderPicUpload(@Body RequestBody body);
 
 
     /**
      * 远程费图片
+     *
      * @param body
      * @return
      */
-  @POST("Upload/OrderByondImgPicUpload")
-  Observable<BaseResult<Data<String>>> OrderByondImgPicUpload(@Body RequestBody body);
+    @POST("Upload/OrderByondImgPicUpload")
+    Observable<BaseResult<Data<String>>> OrderByondImgPicUpload(@Body RequestBody body);
 
     /**
      * 配件图片
+     *
      * @param body
      * @return
      */
     @POST("Upload/ApplyAccessoryphotoUpload")
     Observable<BaseResult<Data<String>>> ApplyAccessoryphotoUpload(@Body RequestBody body);
-
 
 
     /*申请远程费距离*/
@@ -299,9 +297,6 @@ public interface ApiService {
                                                           @Field("BeyondDistance") String BeyondDistance);
 
 
-
-
-
     /*获取返件图片*/
     @FormUrlEncoded
     @POST("Order/GetReturnAccessoryByOrderID")
@@ -309,7 +304,7 @@ public interface ApiService {
 
     /**
      * 提交师傅预约失败的原因
-     * **/
+     **/
     @FormUrlEncoded
     @POST("Order/UpdateSendOrderAppointmentState")
     Observable<BaseResult<Data>> AddOrderfailureReason(@Field("OrderID") String OrderID,
@@ -317,10 +312,9 @@ public interface ApiService {
                                                        @Field("AppointmentMessage") String AppointmentMessage);
 
 
-
     /**
      * 提交师傅预约预约成功
-     * **/
+     **/
     @FormUrlEncoded
     @POST("Order/UpdateSendOrderAppointmentState")
     Observable<BaseResult<Data>> AddOrderSuccess(@Field("OrderID") String OrderID,
@@ -339,10 +333,11 @@ public interface ApiService {
                                                             @Field("PostMoney") String PostMoney
     );
 
-     @FormUrlEncoded
+    @FormUrlEncoded
     @POST("Order/UpdateOrderState")
-    Observable<BaseResult<Data<String>>> UpdateOrderState (@Field("OrderID") String OrderID,
-                                                      @Field("State") String State);
+    Observable<BaseResult<Data<String>>> UpdateOrderState(@Field("OrderID") String OrderID,
+                                                          @Field("State") String State);
+
     /*
      *
      * 获取工厂配件信息
@@ -354,12 +349,12 @@ public interface ApiService {
     /*获取工厂服务信息*/
     @FormUrlEncoded
     @POST("FactoryConfig/GetFactoryService")
-    Observable<BaseResult<GetFactoryData<Service>>> GetFactoryService(@Field("FBrandID") String FBrandID,@Field("FCategoryID") String FCategoryID);
+    Observable<BaseResult<GetFactoryData<Service>>> GetFactoryService(@Field("FBrandID") String FBrandID, @Field("FCategoryID") String FCategoryID);
 
-/*
+    /*
 
-    */
-/*上传远程费*//*
+     */
+    /*上传远程费*//*
 
     @POST("Upload/OrderByondImgPicUpload")
     Observable<BaseResult<Data<String>>> OrderByondImgPicUpload(@Body RequestBody body);
@@ -367,50 +362,44 @@ public interface ApiService {
 */
 
 
-
-
-
-
-     /*根据工单号获取配件列表*/
+    /*根据工单号获取配件列表*/
     @FormUrlEncoded
     @POST("Order/GetOrderAccessoryByOrderID")
     Observable<BaseResult<List<GAccessory>>> GetOrderAccessoryByOrderID(@Field("OrderID") String OrderID);
 
 
-
     /**
      * 上传身份证以及清晰头像 UserID用户名Sort（1：正面，2：反面，3：清晰自拍照）
-     * */
+     */
     @POST("Upload/IDCardUpload")
     Observable<BaseResult<Data<String>>> IDCardUpload(@Body RequestBody json);
 
     /**
-    * 预接单提交配件信息  json
-    *
-    *
-    * {
-    "OrderID":"123",
-    "AccessorySequency":"0",
-    "OrderAccessoryStr":{
-    "OrderAccessory":[
-    {
-    "FAccessoryID":"1",
-    "FAccessoryName":"PC管",
-    "Quantity":"2",
-    "Price":"1",
-    "DiscountPrice":"1"
-    }
-    ]
-    }
-    }
-    *
-    * */
+     * 预接单提交配件信息  json
+     * <p>
+     * <p>
+     * {
+     * "OrderID":"123",
+     * "AccessorySequency":"0",
+     * "OrderAccessoryStr":{
+     * "OrderAccessory":[
+     * {
+     * "FAccessoryID":"1",
+     * "FAccessoryName":"PC管",
+     * "Quantity":"2",
+     * "Price":"1",
+     * "DiscountPrice":"1"
+     * }
+     * ]
+     * }
+     * }
+     */
     @POST("Order/AddOrderAccessory")
     Observable<BaseResult<Data>> AddOrderAccessory(@Body RequestBody json);
-     /*添加服务*/
+
+    /*添加服务*/
     @POST("Order/AddOrderService")
     Observable<BaseResult<Data>> AddOrderService(@Body RequestBody json);
-
 
 
     /*预接单页面提交上门时间 */
@@ -436,31 +425,34 @@ public interface ApiService {
 //    @POST("FactoryConfig/GetFactoryCategory")
 //    Observable<BaseResult<CategoryData>> GetChildFactoryCategory(@Field("ParentID") String ParentID);
 
-   /*获取账户的技能*/
+    /*获取账户的技能*/
     @FormUrlEncoded
     @POST("Account/GetAccountSkill")
     Observable<BaseResult<List<Skill>>> GetAccountSkill(@Field("UserID") String UserID);
 
     /**
      * 添加技能
+     *
      * @param UserID
      * @return
      */
     @FormUrlEncoded
     @POST("Account/UpdateAccountSkillData")
-    Observable<BaseResult<String>> UpdateAccountSkillData(@Field("UserID") String UserID,@Field("NodeIds") String NodeIds);
+    Observable<BaseResult<String>> UpdateAccountSkillData(@Field("UserID") String UserID, @Field("NodeIds") String NodeIds);
 
     /**
      * 获取省
      */
     @POST("Config/GetProvince")
     Observable<BaseResult<List<Province>>> GetProvince();
+
     /**
      * 获取市
      */
     @FormUrlEncoded
     @POST("Config/GetCity")
     Observable<BaseResult<Data<List<City>>>> GetCity(@Field("parentcode") String parentcode);
+
     /**
      * 获取区
      */
@@ -474,6 +466,7 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("Config/GetDistrict")
     Observable<BaseResult<Data<List<District>>>> GetDistrict(@Field("parentcode") String parentcode);
+
     /**
      * 提交认证申请
      */
@@ -510,17 +503,14 @@ public interface ApiService {
                                                             @Field("Longitude") String Longitude,
                                                             @Field("Dimension") String Dimension,
                                                             @Field("ISwoker") String Iswoker
-                                                            );
+    );
 
 
-
-
-      /*更新服务区域*/
+    /*更新服务区域*/
     @FormUrlEncoded
     @POST("Account/AddorUpdateServiceArea")
     Observable<BaseResult<Data<String>>> AddorUpdateServiceArea(@Field("UserID") String UserID,
                                                                 @Field("ServiceAreaJsonStr") String ServiceAreaJsonStr);
-
 
 
     /*
@@ -556,6 +546,7 @@ public interface ApiService {
     @POST("Account/UpdatePassword")
     Observable<BaseResult<Data>> UpdatePassword(@Field("UserID") String UserID,
                                                 @Field("Password") String Password);
+
     /*修改性别*/
     @FormUrlEncoded
     @POST("Account/UpdateSex")
@@ -564,9 +555,10 @@ public interface ApiService {
 
     /**
      * 充值信息
-     * @param UserID 账号
+     *
+     * @param UserID      账号
      * @param TotalAmount 金额
-     * @param Type  1余额 2 诚意金 3订单支付
+     * @param Type        1余额 2 诚意金 3订单支付
      * @return
      */
     @FormUrlEncoded
@@ -578,12 +570,14 @@ public interface ApiService {
                                                      @Field("Type") String Type,
                                                      @Field("JsonStr") JSONArray JsonStr
     );
+
     /**
      * 充值信息
-     * @param UserID 账号
+     *
+     * @param UserID      账号
      * @param TotalAmount 金额
-     * @param Type  1余额 2 诚意金 3订单支付
-     * @param Style  工厂传factory 商城mall
+     * @param Type        1余额 2 诚意金 3订单支付
+     * @param Style       工厂传factory 商城mall
      * @return
      */
     @FormUrlEncoded
@@ -594,9 +588,11 @@ public interface ApiService {
                                                           @Field("TotalAmount") String TotalAmount,
                                                           @Field("Type") String Type,
                                                           @Field("Style") String Style,
-                                                          @Field("JsonStr")JSONArray JsonStr);
+                                                          @Field("JsonStr") JSONArray JsonStr);
+
     /**
      * 微信人工回调OutTradeNo
+     *
      * @param OutTradeNo
      * @return
      */
@@ -606,6 +602,7 @@ public interface ApiService {
 
     /**
      * 完成工单（返件列表）
+     *
      * @param OrderID 订单id
      * @return
      */
@@ -615,6 +612,7 @@ public interface ApiService {
 
     /**
      * 催件
+     *
      * @param OrderID 订单id
      * @param Content 内容
      * @return
@@ -622,12 +620,13 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("Order/PressFactoryAccount")
     Observable<BaseResult<Data<String>>> PressFactoryAccount(@Field("OrderID") String OrderID,
-                                                     @Field("Content") String Content);
+                                                             @Field("Content") String Content);
 
     /**
      * 获取文章列表
      * 师傅端
      * 7系统消息 8平台政策 9平台新闻 10接单必读
+     *
      * @param CategoryID 栏目id
      * @return
      */
@@ -638,8 +637,8 @@ public interface ApiService {
     );
 
     /*
-    * 注销子账号
-    * */
+     * 注销子账号
+     * */
     @FormUrlEncoded
     @POST("Account/CancelChildAccount")
     Observable<BaseResult<Data<String>>> CancelChildAccount(@Field("UserID") String UserID,
@@ -658,10 +657,11 @@ public interface ApiService {
                                                                    @Field("PayInfoCode") String PayInfoCode,
                                                                    @Field("PayInfoName") String PayInfoName,
                                                                    @Field("PayNo") String PayNo);
+
     /*获取银行卡*/
     @FormUrlEncoded
     @POST("Account/GetAccountPayInfoList")
-    Observable <BaseResult<List<BankCard>>> GetAccountPayInfoList(@Field("UserID") String UserID);
+    Observable<BaseResult<List<BankCard>>> GetAccountPayInfoList(@Field("UserID") String UserID);
 
 
     /*获取服务区域*/
@@ -689,7 +689,6 @@ public interface ApiService {
                                                                       @Field("IsLook") String IsLook);
 
 
-
     /*提现页面获取提现页面的数据*/
     @FormUrlEncoded
     @POST("Account/GetDepositMoneyDisplay")
@@ -705,17 +704,17 @@ public interface ApiService {
 
     /**
      * 意见反馈
-     * @param UserID 用户id
-     * @param BackType  1.账号问题 2.支付问题 3.其他问题
-     * @param Content 描述
+     *
+     * @param UserID   用户id
+     * @param BackType 1.账号问题 2.支付问题 3.其他问题
+     * @param Content  描述
      * @return
      */
     @FormUrlEncoded
     @POST("Account/AddOpinion")
     Observable<BaseResult<Data<String>>> AddOpinion(@Field("UserID") String UserID,
-                                                  @Field("BackType") String BackType,
-                                                  @Field("Content") String Content);
-
+                                                    @Field("BackType") String BackType,
+                                                    @Field("Content") String Content);
 
 
     /*更新消息状态点击后*/
@@ -738,6 +737,7 @@ public interface ApiService {
 
     /**
      * 根据大分类id获取题目
+     *
      * @param QuesCategory
      * @return
      */
@@ -747,6 +747,7 @@ public interface ApiService {
 
     /**
      * 交卷
+     *
      * @param Answer
      * @return
      */
@@ -755,10 +756,9 @@ public interface ApiService {
     Observable<BaseResult<QuestResult>> Calculate(@Field("Answer") String Answer);
 
 
-
     /*
-    * 忘记密码
-    * */
+     * 忘记密码
+     * */
     @FormUrlEncoded
     @POST("Account/ForgetPassword")
     Observable<BaseResult<Data<String>>> ForgetPassword(@Field("mobile") String mobile,
@@ -766,14 +766,15 @@ public interface ApiService {
                                                         @Field("code") String code,
                                                         @Field("roleType") String roleType,
                                                         @Field("password") String password);
+
     /*
-    * 是否冻结
-    * */
+     * 是否冻结
+     * */
     @FormUrlEncoded
     @POST("Order/ConfirmtoFreezeByOrderID")
     Observable<BaseResult<Data<String>>> ConfirmtoFreezeByOrderID(@Field("OrderID") String OrderID,
-                                                        @Field("Type") String type);
-
+                                                                  @Field("Type") String type,
+                                                                  @Field("AccessoryId") String AccessoryId);
 
 
     /*

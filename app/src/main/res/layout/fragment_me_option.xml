@@ -161,7 +161,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_weight="1"
-            android:text="分享朋友成为师傅"
+            android:text="分享给朋友成为师傅"
             android:textColor="@color/color_black"
             android:textSize="15sp" />
 

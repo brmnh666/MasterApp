@@ -382,6 +382,7 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
     private String startTime;
     private String endTime;
     private String content;
+    private String[] money1;
 
 
     @Override
@@ -1247,11 +1248,15 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                     }
                 }
 
+                if (data.getNewMoney()!=null){
+                    String newMoney=data.getNewMoney().trim();
+                    money1 = newMoney.split("[|]+");
+                }
 
                 if (data.getOrderAccessroyDetail().size() != 0) {
 
 
-                    returnAccessoryAdapter = new ReturnAccessoryAdapter(R.layout.item_returned, data.getOrderAccessroyDetail(), Integer.parseInt(data.getAccessoryState()),content);
+                    returnAccessoryAdapter = new ReturnAccessoryAdapter(R.layout.item_returned, data.getOrderAccessroyDetail(), Integer.parseInt(data.getAccessoryState()),content,money1);
                     mRvReturnInformation.setLayoutManager(new LinearLayoutManager(mActivity));
                     mRvReturnInformation.setAdapter(returnAccessoryAdapter);
                     mLlAccessory.setVisibility(View.VISIBLE);
