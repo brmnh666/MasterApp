@@ -48,7 +48,7 @@ helper.setText(R.id.tv_loaction_appointment,"距离 "+item.getDistance()+"Km");
         helper.setText(R.id.tv_pending_appointment_job_number,"工单号:"+item.getOrderID());
         countdownView =helper.getView(R.id.countdownview);
         now =TimeUtils.getNowMills();
-        cancel =TimeUtils.string2Millis(item.getAudDate())+3600000;
+        cancel =TimeUtils.string2Millis(item.getAudDate())+7200000;
         leftTime=cancel-now;
         if (leftTime > 0) {
             countdownView.start(leftTime);
