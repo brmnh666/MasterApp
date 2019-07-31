@@ -132,7 +132,6 @@
                                         android:id="@+id/tv_withdraw"
                                         android:layout_width="62dp"
                                         android:layout_height="33dp"
-
                                         android:layout_marginTop="20dp"
                                         android:layout_marginRight="20dp"
                                         android:background="@drawable/gray_rr_shape"

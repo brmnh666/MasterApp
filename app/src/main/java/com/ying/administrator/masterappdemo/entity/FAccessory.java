@@ -79,6 +79,15 @@ public class FAccessory implements Serializable {
             private String SizeID;
             private double Price;
             private double DiscountPrice;
+            private String NeedPlatformAuth;
+
+            public String getNeedPlatformAuth() {
+                return NeedPlatformAuth;
+            }
+
+            public void setNeedPlatformAuth(String needPlatformAuth) {
+                NeedPlatformAuth = needPlatformAuth;
+            }
 
             public String getFCategoryID() {
                 return FCategoryID;
