@@ -1,6 +1,8 @@
 package com.ying.administrator.masterappdemo.entity;
 
-public class Accessory {
+import java.io.Serializable;
+
+public class Accessory implements Serializable {
    // private List<DataBean> data;
 
 
@@ -34,10 +36,19 @@ public class Accessory {
     private String IsUse;
     private String ParentName;
     private String SizeID;
+    private int count=1;
     private int ParentID;
     private int page;
     private int limit;
     private int Version;
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
 
     public String getSizeID() {
         return SizeID;

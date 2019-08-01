@@ -59,10 +59,10 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.tencent.android.tpush.XGPushClickedResult;
 import com.tencent.android.tpush.XGPushManager;
 import com.vondear.rxui.view.dialog.RxDialogScaleView;
-import com.wx.wheelview.widget.WheelView;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.Accessory;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.FAccessory;
@@ -81,7 +81,6 @@ import com.ying.administrator.masterappdemo.mvp.ui.adapter.Ac_List_Adapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Add_Ac_Adapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Add_Service_Adapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.GServiceAdapter;
-import com.ying.administrator.masterappdemo.mvp.ui.adapter.MyWheelAdapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Pre_order_Add_Ac_Adapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Pre_order_Add_Service_Adapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.ReturnAccessoryAdapter;
@@ -113,7 +112,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -606,50 +604,36 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     protected void setListener() {
         mTvConfirm.setOnClickListener(this);
         mTvReject.setOnClickListener(this);
-
         mLlReturn.setOnClickListener(this);
-
         mTvAccessoryApplication.setOnClickListener(this);
         mTvServiceApplication.setOnClickListener(this);
         mTvBeyondApplication.setOnClickListener(this);
-
         mIvRangeOne.setOnClickListener(this);
         mIvRangeTwo.setOnClickListener(this);
-
         mTvSubmitAddAccessories.setOnClickListener(this);
         mTvSubmitAddService.setOnClickListener(this);
         mTvSubmitBeyond.setOnClickListener(this);
-
         mTvOrderDetailsAddAccessories.setOnClickListener(this);
         mTvOrderDetailAddService.setOnClickListener(this);
-
         mLlManufacturers.setOnClickListener(this);
         mLlSelfbuying.setOnClickListener(this);
         mLlSelfbuyingUser.setOnClickListener(this);
-
         mIvMap1.setOnClickListener(this);
         mIvMap2.setOnClickListener(this);
-
         mIvBarCode.setOnClickListener(this);
         mIvMachine.setOnClickListener(this);
         mIvFaultLocation.setOnClickListener(this);
         mIvNewAndOldAccessories.setOnClickListener(this);
-
         mBtnCompleteSubmit.setOnClickListener(this);
         mBtnCompleteSubmitOne.setOnClickListener(this);
-
         mBtnTrial.setOnClickListener(this);
-
         mTvAccessoryInformation.setOnClickListener(this);
         mTvServiceInformation.setOnClickListener(this);
         mTvRemoteFeeInformation.setOnClickListener(this);
-
         mIvCopy.setOnClickListener(this);
         mTvDetailSubmit.setOnClickListener(this);
-
         mViewSelectTimePoint.setOnClickListener(this);
         mViewSelectTimePoint2.setOnClickListener(this);
-
         mIvHost.setOnClickListener(this);
         mIvAccessories.setOnClickListener(this);
         mIvAccessoriesOne.setOnClickListener(this);
@@ -666,34 +650,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         }
     }
 
-    /**
-     * 选择上门时间
-     */
-  /*  public void chooseTime(final TextView tv, final String title) {
-        Date date = new Date();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        String format1 = format.format(date);
 
-        TimeSelector timeSelector = new TimeSelector(mActivity, new TimeSelector.ResultHandler() {
-            @Override
-            public void handle(String time) {
-                if ("请选择结束时间".equals(title)) {
-                    Integer i = startTime.compareTo(time);
-                    if (i > 0) {
-                        showToast(mActivity, "结束时间应大于开始时间");
-                        return;
-                    }
-                    mPresenter.UpdateSendOrderUpdateTime(OrderID, startTime, time);
-                } else {
-                    mTvSelectTime2.setText("");
-                }
-                tv.setText(time);
-            }
-        }, format1, "2022-1-1 24:00");
-
-        timeSelector.setTitle(title);
-        timeSelector.show();
-    }*/
     @SingleClick
     @Override
     public void onClick(View v) {
@@ -792,7 +749,17 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 if (select_state == -1) {
                     Toast.makeText(this, "添加配件请选中类型", Toast.LENGTH_SHORT).show();
                 } else {
-                    addAccessory();
+
+                    /*厂家自购跳到新页面*/
+                    if (select_state == 0){
+                        Intent intent=new Intent(mActivity,NewAddAccessoriesActivity.class);
+                        intent.putExtra("SubCategoryID",data.getSubCategoryID()+"");
+                        startActivityForResult(intent,Config.APPLY_REQUEST);
+                    }else {
+                        addAccessory();
+                    }
+
+
                 }
                 break;
             /*添加服务*/
@@ -1551,7 +1518,6 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
             case 200:
                 data = baseResult.getData();
                 mTvStatus.setText(data.getStateStr());
-
                 mTvBeyondMoney.setText("¥" + data.getBeyondMoney() + "");
                 mTvAccessoryMoney.setText("¥" + data.getAccessoryMoney());
                 mTvServiceMoney.setText("¥" + data.getServiceMoney());
@@ -2934,6 +2900,42 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     accessories_picture.put(1, newFile);
                 }
                 break;
+
+
+
+                /*获取返回的配件*/
+            case Config.APPLY_REQUEST:
+                if (resultCode==Config.APPLY_RESULT){
+                   ArrayList<Accessory>list= (ArrayList<Accessory>) data.getSerializableExtra("list_collect");
+                    fAcList.clear();
+                      /*商城*/
+                    for (int i = 0; i < list.size(); i++) {
+                        mfAccessory = new FAccessory.OrderAccessoryStrBean.OrderAccessoryBean();
+                        mfAccessory.setFAccessoryID(list.get(i).getFAccessoryID());//获取id
+                        mfAccessory.setFAccessoryName(list.get(i).getAccessoryName()); //获取名字
+                        mfAccessory.setFCategoryID(list.get(i).getFCategoryID()+""); //分类id
+                        mfAccessory.setQuantity(list.get(i).getCount()+""); //数量 默认数字为1
+                        mfAccessory.setPrice(Double.valueOf("0"));//原价
+                        mfAccessory.setDiscountPrice(Double.valueOf("0"));//折扣价
+                        mfAccessory.setSizeID("1");//小修中修大修
+                        mfAccessory.setSendState("N");
+                        mfAccessory.setRelation("");
+                        mfAccessory.setState("0");
+                        mfAccessory.setIsPay("N");
+                        mfAccessory.setExpressNo("");
+                        mfAccessory.setNeedPlatformAuth("Y");
+                        if (select_state == 0) {//厂家自购
+                            mfAccessory.setPrice(list.get(i).getAccessoryPrice());//原价
+                            mfAccessory.setDiscountPrice(list.get(i).getAccessoryPrice());//原价
+                        }
+                        fAcList.add(mfAccessory);
+                    }
+                    mPre_order_add_ac_adapter.notifyDataSetChanged();
+
+
+                }
+                break;
+
         }
 
     }
@@ -3004,235 +3006,6 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         timeSelector.show();
     }
 
-    private void dialogtime() {
-        WheelView.WheelViewStyle style = new WheelView.WheelViewStyle();
-        WheelView.WheelViewStyle style2 = new WheelView.WheelViewStyle();
-        style.selectedTextColor = Color.parseColor("#1690FF");//选中字体颜色
-        style.textColor = Color.parseColor("#ABABAB");//未选中字体颜色
-
-        style2.selectedTextColor = Color.parseColor("#FF0000");//结束选中时间颜色
-        style2.textColor = Color.parseColor("#ABABAB");//未选中字体颜色
-        View out_view = LayoutInflater.from(mActivity).inflate(R.layout.dialog_time, null);
-        //日期滚轮
-        final WheelView start_year = out_view.findViewById(R.id.start_year);
-        final WheelView start_month = out_view.findViewById(R.id.start_month);
-        final WheelView start_day = out_view.findViewById(R.id.start_day);
-        final WheelView start_hour = out_view.findViewById(R.id.start_hour);
-
-        final WheelView end_year = out_view.findViewById(R.id.end_year);
-        final WheelView end_month = out_view.findViewById(R.id.end_month);
-        final WheelView end_day = out_view.findViewById(R.id.end_day);
-        final WheelView end_hour = out_view.findViewById(R.id.end_hour);
-
-        TextView tv_ok = out_view.findViewById(R.id.tv_ok);
-        TextView tv_cancel = out_view.findViewById(R.id.tv_cancel);
-        start_year.setStyle(style);
-        start_month.setStyle(style);
-        start_day.setStyle(style);
-        start_hour.setStyle(style);
-
-        end_year.setStyle(style2);
-        end_month.setStyle(style2);
-        end_day.setStyle(style2);
-        end_hour.setStyle(style2);
-
-        // 格式化当前时间，并转换为年月日整型数据
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH", Locale.getDefault());
-        String[] split = sdf.format(new Date()).split("-");
-        int currentYear = Integer.parseInt(split[0]);
-        int currentMonth = Integer.parseInt(split[1]);
-        int currentDay = Integer.parseInt(split[2]);
-        int currentHour = Integer.parseInt(split[3]);
-        //开始时间
-        start_year.setWheelAdapter(new MyWheelAdapter(mActivity));
-        start_year.setWheelData(getYearData(currentYear));
-        start_year.setSelection(0);
-        start_month.setWheelAdapter(new MyWheelAdapter(mActivity));
-        start_month.setWheelData(getMonthData());
-        start_month.setSelection(currentMonth - 1);
-        start_day.setWheelAdapter(new MyWheelAdapter(mActivity));
-        start_day.setWheelData(getDayData(getLastDay(currentYear, currentMonth)));
-        start_day.setSelection(currentDay - 1);
-        start_hour.setWheelAdapter(new MyWheelAdapter(mActivity));
-        start_hour.setWheelData(getHourData());
-        start_hour.setSelection(currentHour - 1);
-
-        //结束时间
-        end_year.setWheelAdapter(new MyWheelAdapter(mActivity));
-        end_year.setWheelData(getYearData(currentYear));
-        end_year.setSelection(0);
-        end_month.setWheelAdapter(new MyWheelAdapter(mActivity));
-        end_month.setWheelData(getMonthData());
-        end_month.setSelection(currentMonth - 1);
-        end_day.setWheelAdapter(new MyWheelAdapter(mActivity));
-        end_day.setWheelData(getDayData(getLastDay(currentYear, currentMonth)));
-        end_day.setSelection(currentDay - 1);
-
-        end_hour.setWheelAdapter(new MyWheelAdapter(mActivity));
-        end_hour.setWheelData(getHourData());
-        end_hour.setSelection(currentHour - 1);
-
-        //确定
-        tv_ok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bottomDialog.dismiss();
-                String start_time;
-                String startyear = String.valueOf(start_year.getSelectionItem());
-                String startmonth = String.valueOf(start_month.getSelectionItem());
-
-                if (Integer.parseInt(startmonth) < 10) {
-                    startmonth = "0" + startmonth;
-                }
-
-                String startday = String.valueOf(start_day.getSelectionItem());
-
-                if (Integer.parseInt(startday) < 10) {
-                    startday = "0" + startday;
-                }
-
-                String starthour = String.valueOf(start_hour.getSelectionItem());
-
-                if (Integer.parseInt(starthour) < 10) {
-                    starthour = "0" + starthour;
-                }
-
-                start_time = startyear + startmonth + startday + starthour;
-
-                //*格式化时间*//*
-                DateFormat format = new SimpleDateFormat("yyyyMMddHH");
-                try {
-                    recommendedtime = format.parse(start_time).getTime();
-                } catch (ParseException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                String endyear = String.valueOf(end_year.getSelectionItem());
-                String endmonth = String.valueOf(end_month.getSelectionItem());
-
-                if (Integer.parseInt(endmonth) < 10) {
-                    endmonth = "0" + endmonth;
-                }
-
-                String endday = String.valueOf(end_day.getSelectionItem());
-
-                if (Integer.parseInt(endday) < 10) {
-                    endday = "0" + endday;
-                }
-
-                String endhour = String.valueOf(end_hour.getSelectionItem());
-
-                if (Integer.parseInt(endhour) < 10) {
-                    endhour = "0" + endhour;
-                }
-
-                String end_time = endyear + endmonth + endday + endhour;
 
 
-                try {
-                    finishrecomendedtime = format.parse(end_time).getTime();
-                } catch (ParseException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-
-                int compare = end_time.compareTo(start_time);
-                if (compare >= 0) {
-                    mView.setVisibility(View.VISIBLE);
-//                    mLlSelectTime.setVisibility(View.VISIBLE);
-                    mTvSelectTime.setText(startyear + "-" + startmonth + "-" + startday + " " + starthour + ":00:00" + " 至 " +
-                            endyear + "-" + endmonth + "-" + endday + " " + endhour + ":00:00");
-//                    mPresenter.UpdateSendOrderUpdateTime(OrderID, startyear + "/" + startmonth + "/" + startday, endyear + "/" + endmonth + "/" + endday);
-                    mPresenter.UpdateSendOrderUpdateTime(OrderID, startyear + "-" + startmonth + "-" + startday + " " + starthour + ":00:00", endyear + "-" + endmonth + "-" + endday + " " + endhour + ":00:00");
-
-                } else {//<0
-                    showToast(mActivity, "当月起始日期不能大于结束日期");
-                }
-            }
-        });
-
-
-        //取消
-        tv_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bottomDialog.dismiss();
-            }
-        });
-
-        //防止弹出两个窗口
-        if (bottomDialog != null && bottomDialog.isShowing()) {
-            return;
-        }
-        bottomDialog = new BottomDialog(mActivity, R.style.ActionSheetDialogStyle);
-        //将布局设置给Dialog
-        bottomDialog.setContentView(out_view);
-        bottomDialog.show();//显示对话框
-
-    }
-
-    //设置年
-    private ArrayList<String> getYearData(int currentYear) {
-        ArrayList<String> list = new ArrayList<>();
-        for (int i = currentYear; i <= 2023; i++) {
-            list.add(String.valueOf(i));
-        }
-        return list;
-    }
-
-
-    //月
-    private ArrayList<String> getMonthData() {
-        ArrayList<String> list = new ArrayList<>();
-        for (int i = 1; i <= 12; i++) {
-            list.add(String.valueOf(i));
-        }
-        return list;
-    }
-
-    //日
-    private ArrayList<String> getDayData(int lastDay) {
-        //ignore condition
-        ArrayList<String> list = new ArrayList<>();
-        for (int i = 1; i <= lastDay; i++) {
-            list.add(String.valueOf(i));
-        }
-        return list;
-    }
-
-
-    //小时
-    private ArrayList<String> getHourData() {
-        ArrayList<String> list = new ArrayList<>();
-        for (int i = 1; i <= 24; i++) {
-            list.add(String.valueOf(i));
-        }
-        return list;
-    }
-
-    /**
-     * 判断是否闰年
-     *
-     * @param year
-     * @return
-     */
-    private boolean isLeapYear(int year) {
-        return (year % 100 == 0 && year % 400 == 0) || (year % 100 != 0 && year % 4 == 0);
-    }
-
-    /**
-     * 获取特定年月对应的天数
-     *
-     * @param year
-     * @param month
-     * @return
-     */
-    private int getLastDay(int year, int month) {
-        if (month == 2) {
-            // 2月闰年的话返回29，防止28
-            return isLeapYear(year) ? 29 : 28;
-        }
-        // 一三五七八十腊，三十一天永不差
-        return month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12 ? 31 : 30;
-    }
 }

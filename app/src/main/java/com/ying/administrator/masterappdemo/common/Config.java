@@ -23,7 +23,10 @@ public class Config {
     public static final String RETURN_IMG="http://47.96.126.145:8820/Pics/OldAccessory/";//返回返件路径
     public static final String Service_IMG="http://47.96.126.145:8820/Pics/FinishOrder/";//服务过程图片
 
-   public static  final int ORDER_READ=99;
+     public static  final int ORDER_READ=99;
+    public static  final int APPLY_REQUEST=12;
+    public static  final int APPLY_RESULT=13;
+
 
 
     public static boolean IS_DEBUG = true;

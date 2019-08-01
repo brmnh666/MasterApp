@@ -467,6 +467,12 @@
             android:launchMode="singleTask"
             />
 
+      <!--添加配件页面-->
+        <activity android:name=".mvp.ui.activity.NewAddAccessoriesActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
+            />
+
 
        <!-- <activity android:name="io.card.payment.CardIOActivity" android:configChanges="keyboardHidden|orientation" />
         <activity android:name="io.card.payment.DataEntryActivity" />
