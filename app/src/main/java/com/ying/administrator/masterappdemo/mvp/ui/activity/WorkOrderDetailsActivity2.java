@@ -2923,7 +2923,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mfAccessory.setState("0");
                         mfAccessory.setIsPay("N");
                         mfAccessory.setExpressNo("");
-                        mfAccessory.setNeedPlatformAuth("Y");
+                        mfAccessory.setNeedPlatformAuth("N");
                         if (select_state == 0) {//厂家自购
                             mfAccessory.setPrice(list.get(i).getAccessoryPrice());//原价
                             mfAccessory.setDiscountPrice(list.get(i).getAccessoryPrice());//原价
@@ -2931,7 +2931,6 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         fAcList.add(mfAccessory);
                     }
                     mPre_order_add_ac_adapter.notifyDataSetChanged();
-
 
                 }
                 break;

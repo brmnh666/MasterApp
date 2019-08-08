@@ -839,26 +839,8 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                     mTvCertification.setText("已实名认证");
                     mImg_un_certification.setVisibility(View.INVISIBLE);
                     mImgCertification.setVisibility(View.VISIBLE);
-                } else {
-
-                    return;
                 }
 
-                /*设置头像*/
-                if (userInfo.getAvator() == null) {//显示默认头像
-                    return;
-                } else {
-                    RequestOptions myOptions = new RequestOptions()
-                     .bitmapTransform(new CircleCrop())
-                    .transform(new GlideCircleWithBorder_Home(this, 1, Color.parseColor("#808080")))
-                    .error(R.drawable.icon);
-
-                    Glide.with(mActivity)
-                            .load(Config.HEAD_URL + userInfo.getAvator())
-                            .apply(myOptions)
-                            .into(mImgHomeHead);
-
-                }
                 /*设置金额*/
                 String TotalMoney = String.valueOf(userInfo.getTotalMoney());
                 String FrozenMoney = String.valueOf(userInfo.getFrozenMoney());//冻结金额
@@ -874,6 +856,23 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 }
                 String xigua = String.format("%.2f", userInfo.getCon());
                 mTvMoney.setText(xigua);
+
+                /*设置头像*/
+                if (userInfo.getAvator() != null) {//显示默认头像
+                    RequestOptions myOptions = new RequestOptions()
+                            .bitmapTransform(new CircleCrop())
+                            .transform(new GlideCircleWithBorder_Home(this, 1, Color.parseColor("#808080")))
+                            .error(R.drawable.icon);
+
+                    Glide.with(mActivity)
+                            .load(Config.HEAD_URL + userInfo.getAvator())
+                            .apply(myOptions)
+                            .into(mImgHomeHead);
+
+                } else {
+                    return;
+                }
+
                 break;
 
             default:
@@ -1049,7 +1048,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 btn_share_one = under_review.findViewById(R.id.btn_share_one);
                 iv_code_one = under_review.findViewById(R.id.iv_code_one);
                 btn_go_to_the_mall = under_review.findViewById(R.id.btn_go_to_the_mall);
-                Bitmap bitmap = ZXingUtils.createQRImage("http://admin.xigyu.com/sign?phone=" + userID + "&type=8", 600, 600, BitmapFactory.decodeResource(getResources(), R.drawable.shop));
+                Bitmap bitmap = ZXingUtils.createQRImage("http://admin.xigyu.com/NewSign?phone=" + userID + "&type=8", 500, 500, BitmapFactory.decodeResource(getResources(), R.drawable.shop));
                 iv_code_one.setImageBitmap(bitmap);
                 btn_share_one.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -1345,7 +1344,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                                             if (aBoolean) {
                                                 // 获取全部权限成功
 
-                                                UMWeb web = new UMWeb("http://admin.xigyu.com/sign?phone=" + userID + "&type=8");
+                                                UMWeb web = new UMWeb("http://admin.xigyu.com/NewSign?phone=" + userID + "&type=8");
                                                 web.setTitle("西瓜鱼");
                                                 web.setDescription("注册送西瓜币了！！！！！");
                                                 web.setThumb(new UMImage(mActivity, R.drawable.shop));

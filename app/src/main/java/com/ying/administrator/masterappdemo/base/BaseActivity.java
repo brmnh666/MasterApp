@@ -2,6 +2,8 @@ package com.ying.administrator.masterappdemo.base;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -36,7 +38,14 @@ public abstract class BaseActivity<P extends BasePresenter, M extends BaseModel>
     public P mPresenter;
     public M mModel;
     private RxManager mRxManage;
-
+    @Override
+    public Resources getResources() {
+        Resources res = super.getResources();
+        Configuration config=new Configuration();
+        config.setToDefaults();
+        res.updateConfiguration(config,res.getDisplayMetrics() );
+        return res;
+    }
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 //        EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX);
