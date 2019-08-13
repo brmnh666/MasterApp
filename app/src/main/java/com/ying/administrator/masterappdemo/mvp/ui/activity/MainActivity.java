@@ -13,12 +13,15 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.SPUtils;
+import com.ethanhua.skeleton.Skeleton;
+import com.ethanhua.skeleton.SkeletonScreen;
 import com.umeng.socialize.UMShareAPI;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
@@ -88,6 +91,8 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
     LinearLayout mTabMenu;
     @BindView(R.id.ll_order)
     LinearLayout mLlOrder;
+    @BindView(R.id.rootview)
+    FrameLayout  rootview;
     private List<Fragment> fragmentList;
     SPUtils spUtils = SPUtils.getInstance("token");
     private UserInfo.UserInfoDean userInfo = new UserInfo.UserInfoDean();
@@ -102,11 +107,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
     private QBadgeView qBadgeView;
     private TextView content;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
+    private SkeletonScreen skeletonScreen;
 
     @Override
     protected int setLayoutId() {
@@ -115,14 +116,14 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
 
     @Override
     protected void initData() {
+
+
         userID = spUtils.getString("userName"); //获取用户id
         mPresenter.GetUserInfoList(userID, "1");
-
         qBadgeView= new QBadgeView(mActivity);
         qBadgeView.bindTarget(mImg_message_invisible);
         qBadgeView.setBadgeGravity(Gravity.END|Gravity.TOP);
         qBadgeView.setBadgeTextSize(0,false);
-
 
         mPresenter.GetMessageList(userID,"0","999","0");
         mPresenter.GetTransactionMessageList(userID,"0","999","0");
@@ -212,6 +213,12 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
 
     @Override
     protected void initView() {
+        skeletonScreen=  Skeleton.bind(rootview)
+                .load(R.layout.skeleton_main)
+                .duration(2000)
+                .color(R.color.shimmer_color)
+                .angle(10)
+                .show();
         fragmentList = new ArrayList<>();
         fragmentList.add(Home_Fragment.newInstance(""));
         fragmentList.add(NewsFragment.newInstance(""));
@@ -295,6 +302,9 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
                         }else{
                             showVerifiedDialog();
                         }
+                    }
+                    if(skeletonScreen!=null){
+                        skeletonScreen.hide();
                     }
                 }
 

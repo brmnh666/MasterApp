@@ -51,11 +51,11 @@ public class SplashActivity extends BaseActivity<LoginPresenter, LoginModel> imp
 
     @Override
     protected void initView() {
+        tv_splash_skin=findViewById(R.id.tv_splash_skin);
         if((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0){
             finish();
             return;
         }
-        tv_splash_skin=findViewById(R.id.tv_splash_skin);
     }
 
     @Override

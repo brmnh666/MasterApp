@@ -310,8 +310,6 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
         if (getArguments() != null) {
             mContentText = getArguments().getString(ARG_SHOW_TEXT);
         }
-
-
     }
 
 

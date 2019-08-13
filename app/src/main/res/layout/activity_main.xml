@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/rootview">
     <com.ying.administrator.masterappdemo.widget.CustomViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
@@ -41,13 +42,14 @@
                         android:layout_gravity="center"
                         android:visibility="invisible"
                         android:gravity="center" />
-                <ImageView
-                    android:id="@+id/img_home"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/tab_home_selector"
-                    android:gravity="center" />
+
+                    <ImageView
+                        android:id="@+id/img_home"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/tab_home_selector"
+                        android:gravity="center" />
 
                 </FrameLayout>
                 <TextView
@@ -179,7 +181,7 @@
                     android:layout_gravity="center"
                     android:background="@drawable/tab_me_selector"
                     android:gravity="center" />
-</FrameLayout>
+                   </FrameLayout>
                 <TextView
                     android:id="@+id/tv_my"
                     android:layout_width="wrap_content"
