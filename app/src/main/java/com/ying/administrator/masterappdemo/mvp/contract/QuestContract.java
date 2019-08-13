@@ -18,7 +18,6 @@ public interface QuestContract {
     interface Model extends BaseModel {
         Observable<BaseResult<Data<List<QuestBean>>>> GetQuestionBycategory(String id);
         Observable<BaseResult<QuestResult>> Calculate(String Answer);
-
     }
 
     interface View extends BaseView {
@@ -30,8 +29,6 @@ public interface QuestContract {
     abstract class Presenter extends BasePresenter<View,Model> {
         public abstract void GetQuestionBycategory(String id);
         public abstract void Calculate(String Answer);
-
     }
-
 
 }

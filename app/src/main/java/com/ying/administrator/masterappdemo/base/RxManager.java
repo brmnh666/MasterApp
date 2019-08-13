@@ -11,7 +11,6 @@ import io.reactivex.disposables.Disposable;
  */
 public class RxManager {
     private CompositeDisposable mCompositeSubscription = new CompositeDisposable();
-
     /**
      * 单纯的Observables 和 Subscribers管理
      */

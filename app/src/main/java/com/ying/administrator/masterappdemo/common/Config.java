@@ -18,12 +18,12 @@ public class Config {
 //    public static final String BASE_URL = "http://192.168.101.11:8810/api/";//服务端地址
     public static final String BASE_URL = "http://47.96.126.145:8001/api/";//服务端地址
 //    public static final String BASE_URL = "http://admin.xigyu.com/api/";//服务端地址
-   public static final String HEAD_URL="http://47.96.126.145:8820/Pics/Avator/";//头像地址
-   public static final String SUB_ACCOUNT_QRCODE="http://admin.xigyu.com/api/VerifyCode/GetQrCodeToReg?ParentUserID=";//二维码
+    public static final String HEAD_URL="http://47.96.126.145:8820/Pics/Avator/";//头像地址
+    public static final String SUB_ACCOUNT_QRCODE="http://admin.xigyu.com/api/VerifyCode/GetQrCodeToReg?ParentUserID=";//二维码
     public static final String RETURN_IMG="http://47.96.126.145:8820/Pics/OldAccessory/";//返回返件路径
     public static final String Service_IMG="http://47.96.126.145:8820/Pics/FinishOrder/";//服务过程图片
 
-     public static  final int ORDER_READ=99;
+    public static  final int ORDER_READ=99;
     public static  final int APPLY_REQUEST=12;
     public static  final int APPLY_RESULT=13;
 
