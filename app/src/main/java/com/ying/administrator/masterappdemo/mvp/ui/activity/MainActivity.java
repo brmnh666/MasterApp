@@ -383,6 +383,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
                         Intent intent = new Intent(MainActivity.this, Order_Receiving_Activity.class);
                         intent.putExtra("intent", "pending_appointment");
                         startActivityForResult(intent,20202);
+                        overridePendingTransition(R.anim.anim_no, R.anim.anim_no);
                     } else if (userInfo.getIfAuth().equals("0")) {
                         showUnderDialog();
                     } else if (userInfo.getIfAuth().equals("-1")) {

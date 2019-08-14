@@ -604,6 +604,8 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                 intent = new Intent(mActivity, Order_Receiving_Activity.class);
                 intent.putExtras(bundle);
                 ActivityUtils.startActivity(intent);
+                mActivity.overridePendingTransition(R.anim.anim_no, R.anim.anim_no);
+
                 break;
             case R.id.normal_dfh_ll:   //待返件
                 bundle = new Bundle();
@@ -611,6 +613,7 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                 intent = new Intent(mActivity, Order_Receiving_Activity.class);
                 intent.putExtras(bundle);
                 ActivityUtils.startActivity(intent);
+                mActivity.overridePendingTransition(R.anim.anim_no, R.anim.anim_no);
                 break;
             case R.id.normal_dsh_ll:
                 bundle = new Bundle();
@@ -618,6 +621,7 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                 intent = new Intent(mActivity, Order_Receiving_Activity.class);
                 intent.putExtras(bundle);
                 ActivityUtils.startActivity(intent);
+                mActivity.overridePendingTransition(R.anim.anim_no, R.anim.anim_no);
                 break;
             case R.id.normal_all_ll:
                 bundle = new Bundle();
@@ -625,6 +629,7 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                 intent = new Intent(mActivity, Order_Receiving_Activity.class);
                 intent.putExtras(bundle);
                 ActivityUtils.startActivity(intent);
+                mActivity.overridePendingTransition(R.anim.anim_no, R.anim.anim_no);
                 break;
             case R.id.tv_recharge:
                 startActivity(new Intent(mActivity, RechargeActivity.class));
