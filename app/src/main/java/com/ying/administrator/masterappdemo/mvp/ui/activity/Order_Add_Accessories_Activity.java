@@ -336,7 +336,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                 mLlApproveBeyondMoney.setVisibility(View.VISIBLE);
                 break;
         }
-        mPre_order_add_ac_adapter = new Pre_order_Add_Ac_Adapter(R.layout.item_pre_order_add_accessories, fAcList);
+        mPre_order_add_ac_adapter = new Pre_order_Add_Ac_Adapter(R.layout.item_pre_order_add_accessories, fAcList,String.valueOf(select_state));
         mRecyclerViewAddAccessories.setLayoutManager(new LinearLayoutManager(mActivity));
         mRecyclerViewAddAccessories.setAdapter(mPre_order_add_ac_adapter);
         mPre_order_add_ac_adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
@@ -578,6 +578,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                     mfAccessory.setState("0");
                     mfAccessory.setIsPay("N");
                     mfAccessory.setExpressNo("");
+                    mfAccessory.setNeedPlatformAuth("N");
                     if (select_state == 0) {//厂家自购
                         mfAccessory.setPrice(accessory.getAccessoryPrice());//原价
                         mfAccessory.setDiscountPrice(accessory.getAccessoryPrice());//原价
@@ -642,6 +643,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                     mfAccessory.setState("0");
                     mfAccessory.setIsPay("N");
                     mfAccessory.setExpressNo("");
+                    mfAccessory.setNeedPlatformAuth("Y");
                     if (select_state == 0) {//厂家自购
                         mfAccessory.setPrice(Double.valueOf("0"));//原价
                         mfAccessory.setDiscountPrice(Double.valueOf("0"));//原价

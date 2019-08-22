@@ -1,5 +1,6 @@
 package com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -16,9 +17,12 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.SPUtils;
@@ -79,6 +83,9 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
     private LinearLayout ll_choose_gaodemap;
     private ZLoadingDialog dialog;
     private boolean isfristin;
+    private AlertDialog complaint_dialog;
+    private EditText et_content;
+
     public static InService_Fragement newInstance() {
         InService_Fragement fragment = new InService_Fragement();
         return fragment;
@@ -199,7 +206,35 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
                         //goToGaodeMap(((WorkOrder.DataBean)adapter.getData().get(position)).getAddress());
                         showPopupWindow(((WorkOrder.DataBean)adapter.getData().get(position)).getAddress());
                         break;
-
+                    case R.id.tv_complaint:
+                        View complaint_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_complaint, null);
+                        TextView title = complaint_view.findViewById(R.id.title);
+                        Button btn_negtive = complaint_view.findViewById(R.id.negtive);
+                        Button btn_positive = complaint_view.findViewById(R.id.positive);
+                        et_content = complaint_view.findViewById(R.id.et_content);
+                        title.setText("投诉");
+                        complaint_dialog = new AlertDialog.Builder(mActivity)
+                                .setView(complaint_view)
+                                .create();
+                        complaint_dialog.show();
+                        btn_negtive.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                complaint_dialog.dismiss();
+                            }
+                        });
+                        btn_positive.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                String content = et_content.getText().toString().trim();
+                                if ("".equals(content)){
+                                    MyUtils.showToast(mActivity,"请输入投诉原因");
+                                }else{
+                                    mPresenter.WorkerComplaint(workOrder.getData().get(position).getOrderID(),content);
+                                }
+                            }
+                        });
+                        break;
                         default:
                             break;
 
@@ -316,6 +351,23 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
     @Override
     public void ApplyAccessoryLate(BaseResult<Data<String>> baseResult) {
 
+    }
+
+    @Override
+    public void WorkerComplaint(BaseResult<Data<String>> baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                Data<String> data = baseResult.getData();
+                if (data.isItem1()) {
+                    ToastUtils.showShort(data.getItem2());
+                    complaint_dialog.dismiss();
+                } else {
+                    ToastUtils.showShort(data.getItem2());
+                }
+                break;
+            default:
+                break;
+        }
     }
 
     @Override

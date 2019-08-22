@@ -44,6 +44,9 @@ public interface GetOrderListForMeContract {
 
         //申请延期
         Observable<BaseResult<Data<String>>> ApplyAccessoryLate(String OrderID);
+
+        //投诉
+        Observable<BaseResult<Data<String>>> WorkerComplaint(String OrderID, String Content);
     }
 
     interface View extends BaseView {
@@ -78,6 +81,8 @@ public interface GetOrderListForMeContract {
         void UpdateSendOrderUpdateTime(BaseResult<Data> baseResult);
 
         void ApplyAccessoryLate(BaseResult<Data<String>> baseResult);
+
+        void WorkerComplaint(BaseResult<Data<String>> baseResult);
     }
 
     abstract class Presenter extends BasePresenter<View,Model> {
@@ -105,5 +110,7 @@ public interface GetOrderListForMeContract {
         public abstract void UpdateSendOrderUpdateTime(String OrderID,String UpdateDate,String EndDate);
 
         public abstract void ApplyAccessoryLate(String OrderId);
+
+        public abstract void WorkerComplaint(String OrderID, String Content);
     }
 }

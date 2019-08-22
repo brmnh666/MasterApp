@@ -783,4 +783,13 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("Order/ApplyAccessoryLater")
     Observable<BaseResult<Data<String>>> ApplyAccessoryLate(@Field("OrderID") String OrderID);
+    /*
+     * 投诉
+     * */
+    @FormUrlEncoded
+    @POST("Order/WorkerComplaint")
+    Observable<BaseResult<Data<String>>> WorkerComplaint(
+            @Field("OrderID") String OrderID,
+            @Field("Content") String Content
+    );
 }

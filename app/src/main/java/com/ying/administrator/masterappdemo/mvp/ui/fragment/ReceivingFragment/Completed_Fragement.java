@@ -316,6 +316,11 @@ public class Completed_Fragement extends BaseFragment<GetOrderListForMePresenter
 
     }
 
+    @Override
+    public void WorkerComplaint(BaseResult<Data<String>> baseResult) {
+
+    }
+
 
     @Override
     public void contentLoading() {

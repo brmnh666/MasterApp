@@ -25,6 +25,7 @@ import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -94,6 +95,7 @@ import com.ying.administrator.masterappdemo.widget.CustomDialog_Redeploy;
 import com.ying.administrator.masterappdemo.widget.CustomDialog_UnSuccess;
 import com.ying.administrator.masterappdemo.widget.GlideCircleWithBorder_Home;
 import com.ying.administrator.masterappdemo.widget.ShareDialog;
+import com.ying.administrator.masterappdemo.widget.WrapContentLinearLayoutManager;
 import com.zyao89.view.zloading.ZLoadingDialog;
 import com.zyao89.view.zloading.Z_TYPE;
 
@@ -320,18 +322,19 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
         mPresenter.GetUserInfoList(userID, "1");
 
         if (userInfo.getParentUserID()==null){
-            mRecyclerviewOrderReceiving.setLayoutManager(new LinearLayoutManager(mActivity));
+            mRecyclerviewOrderReceiving.setLayoutManager(new WrapContentLinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
             grabsheetAdapter = new GrabsheetAdapter(R.layout.item_grabsheet, list);
             grabsheetAdapter.setEmptyView(getEmptyView());
             mRecyclerviewOrderReceiving.setAdapter(grabsheetAdapter);
             showGrabsheet();
         }else {
-            mRecyclerviewOrderReceiving.setLayoutManager(new LinearLayoutManager(mActivity));
+            mRecyclerviewOrderReceiving.setLayoutManager(new WrapContentLinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
             pending_appointment_adapter = new Pending_Adapter(R.layout.item_pending_appointment, Pendinglist, userInfo);
             pending_appointment_adapter.setEmptyView(getEmptyView());
             mRecyclerviewOrderReceiving.setAdapter(pending_appointment_adapter);
             showPending();
         }
+
     }
 
     @Override
@@ -363,9 +366,11 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 //list.clear();
                 if (userInfo.getParentUserID()==null){
                     list.clear();
+                    grabsheetAdapter.notifyDataSetChanged();
                     mPresenter.WorkerGetOrderList(userID, "0", Integer.toString(pageIndex), "10");
                 }else {
-                    list.clear();
+                    Pendinglist.clear();
+                    pending_appointment_adapter.notifyDataSetChanged();
                     mPresenter.WorkerGetOrderList(userID, "1", Integer.toString(pageIndex), "5");
                 }
                 if (userInfo.getParentUserID()==null){
@@ -403,11 +408,14 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
             public void onLoadmore(RefreshLayout refreshlayout) {
                 pageIndex++; //页数加1
                 Log.d("当前的单数", String.valueOf(list.size()));
+//                list.clear();
                 if (userInfo.getParentUserID()==null){
-                    list.clear();
+//
+//                    grabsheetAdapter.notifyDataSetChanged();
                     mPresenter.WorkerGetOrderList(userID, "0", Integer.toString(pageIndex), "10");
                 }else {
-                    list.clear();
+//                    list.clear();
+//                    pending_appointment_adapter.notifyDataSetChanged();
                     mPresenter.WorkerGetOrderList(userID, "1", Integer.toString(pageIndex), "5");
                 }
                 if (userInfo.getParentUserID()==null){
@@ -440,23 +448,24 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                     } else {
                         if (pageIndex == 1) {
                             list.clear();
+                            grabsheetAdapter.notifyDataSetChanged();
                             workOrder = baseResult.getData();
                             list.addAll(workOrder.getData());
-                            grabsheetAdapter.notifyDataSetChanged();
-                            mRecyclerviewOrderReceiving.setLayoutManager(new LinearLayoutManager(mActivity));
-                            grabsheetAdapter = new GrabsheetAdapter(R.layout.item_grabsheet, list);
-                            mRecyclerviewOrderReceiving.setAdapter(grabsheetAdapter);
-                            grabsheetAdapter.setEmptyView(getEmptyView());
-                            showGrabsheet();
+                            grabsheetAdapter.setNewData(list);
+//                            mRecyclerviewOrderReceiving.setLayoutManager(new WrapContentLinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
+//                            grabsheetAdapter = new GrabsheetAdapter(R.layout.item_grabsheet, list);
+//                            mRecyclerviewOrderReceiving.setAdapter(grabsheetAdapter);
+//                            grabsheetAdapter.setEmptyView(getEmptyView());
+//                            showGrabsheet();
                         } else {
                             workOrder = baseResult.getData();
                             list.addAll(workOrder.getData());
                             grabsheetAdapter.setNewData(list);
-                            mRecyclerviewOrderReceiving.setLayoutManager(new LinearLayoutManager(mActivity));
-                            grabsheetAdapter = new GrabsheetAdapter(R.layout.item_grabsheet, list);
-                            mRecyclerviewOrderReceiving.setAdapter(grabsheetAdapter);
-                            grabsheetAdapter.setEmptyView(getEmptyView());
-                            showGrabsheet();
+//                            mRecyclerviewOrderReceiving.setLayoutManager(new WrapContentLinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
+//                            grabsheetAdapter = new GrabsheetAdapter(R.layout.item_grabsheet, list);
+//                            mRecyclerviewOrderReceiving.setAdapter(grabsheetAdapter);
+//                            grabsheetAdapter.setEmptyView(getEmptyView());
+//                            showGrabsheet();
 
                         }
 
@@ -472,23 +481,24 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                     } else {
                         if (pageIndex == 1) {
                             Pendinglist.clear();
+                            pending_appointment_adapter.notifyDataSetChanged();
                             workOrder = baseResult.getData();
                             Pendinglist.addAll(workOrder.getData());
-//                            pending_appointment_adapter.notifyDataSetChanged();
-                            mRecyclerviewOrderReceiving.setLayoutManager(new LinearLayoutManager(mActivity));
-                            pending_appointment_adapter = new Pending_Adapter(R.layout.item_pending_appointment, Pendinglist, userInfo);
-                            pending_appointment_adapter.setEmptyView(getEmptyView());
-                            mRecyclerviewOrderReceiving.setAdapter(pending_appointment_adapter);
-                            showPending();
+                            pending_appointment_adapter.setNewData(Pendinglist);
+//                            mRecyclerviewOrderReceiving.setLayoutManager(new WrapContentLinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
+//                            pending_appointment_adapter = new Pending_Adapter(R.layout.item_pending_appointment, Pendinglist, userInfo);
+//                            pending_appointment_adapter.setEmptyView(getEmptyView());
+//                            mRecyclerviewOrderReceiving.setAdapter(pending_appointment_adapter);
+//                            showPending();
                         } else {
                             workOrder = baseResult.getData();
                             Pendinglist.addAll(workOrder.getData());
-//                            pending_appointment_adapter.setNewData(Pendinglist);
-                            mRecyclerviewOrderReceiving.setLayoutManager(new LinearLayoutManager(mActivity));
-                            pending_appointment_adapter = new Pending_Adapter(R.layout.item_pending_appointment, Pendinglist, userInfo);
-                            pending_appointment_adapter.setEmptyView(getEmptyView());
-                            mRecyclerviewOrderReceiving.setAdapter(pending_appointment_adapter);
-                            showPending();
+                            pending_appointment_adapter.setNewData(Pendinglist);
+//                            mRecyclerviewOrderReceiving.setLayoutManager(new WrapContentLinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
+//                            pending_appointment_adapter = new Pending_Adapter(R.layout.item_pending_appointment, Pendinglist, userInfo);
+//                            pending_appointment_adapter.setEmptyView(getEmptyView());
+//                            mRecyclerviewOrderReceiving.setAdapter(pending_appointment_adapter);
+//                            showPending();
 
                         }
 

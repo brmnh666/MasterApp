@@ -1,5 +1,6 @@
 package com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -48,6 +50,7 @@ import com.ying.administrator.masterappdemo.mvp.ui.adapter.Return_Sheet_Adapter;
 
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Redeploy_Adapter;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseFragment;
+import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 import com.ying.administrator.masterappdemo.widget.CustomDialog_Redeploy;
 import com.ying.administrator.masterappdemo.widget.CustomDialog_UnSuccess;
@@ -85,6 +88,9 @@ public class Returnedparts_Fragement extends BaseFragment<GetOrderListForMePrese
     private Intent intent;
     private boolean isfristin;
     private ZLoadingDialog dialog;
+    private EditText et_content;
+    private AlertDialog complaint_dialog;
+
     public Returnedparts_Fragement() {
         // Required empty public constructor
     }
@@ -209,6 +215,35 @@ public class Returnedparts_Fragement extends BaseFragment<GetOrderListForMePrese
                     case R.id.tv_apply_for_an_extension://申请延期
                         mPresenter.ApplyAccessoryLate(list.get(position).getOrderID());
                         mRefreshLayout.autoRefresh();
+                        break;
+                    case R.id.tv_complaint:
+                        View complaint_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_complaint, null);
+                        TextView title = complaint_view.findViewById(R.id.title);
+                        Button btn_negtive = complaint_view.findViewById(R.id.negtive);
+                        Button btn_positive = complaint_view.findViewById(R.id.positive);
+                        et_content = complaint_view.findViewById(R.id.et_content);
+                        title.setText("投诉");
+                        complaint_dialog = new AlertDialog.Builder(mActivity)
+                                .setView(complaint_view)
+                                .create();
+                        complaint_dialog.show();
+                        btn_negtive.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                complaint_dialog.dismiss();
+                            }
+                        });
+                        btn_positive.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                String content = et_content.getText().toString().trim();
+                                if ("".equals(content)){
+                                    MyUtils.showToast(mActivity,"请输入投诉原因");
+                                }else{
+                                    mPresenter.WorkerComplaint(workOrder.getData().get(position).getOrderID(),content);
+                                }
+                            }
+                        });
                         break;
                     default:
                         break;
@@ -413,6 +448,23 @@ public class Returnedparts_Fragement extends BaseFragment<GetOrderListForMePrese
         switch (baseResult.getStatusCode()){
             case 200:
                 ToastUtils.showShort("延期成功");
+                break;
+        }
+    }
+
+    @Override
+    public void WorkerComplaint(BaseResult<Data<String>> baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                Data<String> data = baseResult.getData();
+                if (data.isItem1()) {
+                    ToastUtils.showShort(data.getItem2());
+                    complaint_dialog.dismiss();
+                } else {
+                    ToastUtils.showShort(data.getItem2());
+                }
+                break;
+            default:
                 break;
         }
     }

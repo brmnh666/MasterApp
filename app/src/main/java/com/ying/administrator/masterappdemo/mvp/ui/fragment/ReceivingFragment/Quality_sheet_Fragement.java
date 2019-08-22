@@ -670,6 +670,11 @@ public class Quality_sheet_Fragement extends BaseFragment<GetOrderListForMePrese
 
     }
 
+    @Override
+    public void WorkerComplaint(BaseResult<Data<String>> baseResult) {
+
+    }
+
 
     @Override
     public void contentLoading() {

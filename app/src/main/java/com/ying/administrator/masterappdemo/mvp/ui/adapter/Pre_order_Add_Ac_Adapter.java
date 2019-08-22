@@ -12,15 +12,21 @@ import java.util.Map;
 
 /*预接单的添加配置*/
 public class Pre_order_Add_Ac_Adapter extends BaseQuickAdapter<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean, BaseViewHolder>  {
-
-    public Pre_order_Add_Ac_Adapter(int layoutResId, @Nullable List<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> data) {
+    private String AccessoryState;
+    public Pre_order_Add_Ac_Adapter(int layoutResId, @Nullable List<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> data,String AccessoryState) {
         super(layoutResId, data);
+        this.AccessoryState=AccessoryState;
     }
 
     @Override
     protected void convert(BaseViewHolder helper, FAccessory.OrderAccessoryStrBean.OrderAccessoryBean item) {
         helper.setText(R.id.tv_accessories_name,item.getFAccessoryName());
-        helper.setText(R.id.tv_accessories_number,"¥"+item.getDiscountPrice()+"/"+item.getQuantity()+"个");
+        if ("0".equals(AccessoryState)){
+            helper.setText(R.id.tv_accessories_number,item.getQuantity()+"个");
+        }else {
+            helper.setText(R.id.tv_accessories_number,"¥"+item.getDiscountPrice()+"/"+item.getQuantity()+"个");
+        }
+
         helper.addOnClickListener(R.id.iv_accessories_delete);
            if (item.getSendState()==null){
                helper.setGone(R.id.tv_accessories_sendstate,false);

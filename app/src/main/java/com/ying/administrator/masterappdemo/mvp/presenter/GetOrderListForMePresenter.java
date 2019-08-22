@@ -146,5 +146,16 @@ public class GetOrderListForMePresenter extends GetOrderListForMeContract.Presen
                 });
     }
 
+    @Override
+    public void WorkerComplaint(String OrderID, String Content) {
+        mModel.WorkerComplaint(OrderID, Content)
+                .subscribe(new BaseObserver<Data<String>>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<Data<String>> value) {
+                        mView.WorkerComplaint(value);
+                    }
+                });
+    }
+
 
 }

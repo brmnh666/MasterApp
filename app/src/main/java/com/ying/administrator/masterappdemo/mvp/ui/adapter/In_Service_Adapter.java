@@ -53,6 +53,7 @@ public class In_Service_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,Base
       helper.addOnClickListener(R.id.tv_cancel_work_order);//取消工单
 
       helper.addOnClickListener(R.id.img_navigation);//导航图片
+        helper.addOnClickListener(R.id.tv_complaint);
     }
 
 

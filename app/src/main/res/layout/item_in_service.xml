@@ -163,7 +163,18 @@
         android:text="申请配件"
         android:visibility="gone"
         android:textSize="16sp" />
-
+    <TextView
+        android:id="@+id/tv_complaint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/tv_recevied"
+        android:padding="10dp"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:visibility="visible"
+        android:text="投诉"
+        android:textSize="16sp" />
     <TextView
         android:id="@+id/tv_see_detail"
         android:layout_width="wrap_content"

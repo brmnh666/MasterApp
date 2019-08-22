@@ -402,7 +402,7 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
         mPresenter.GetOrderInfo(OrderID);
 
 
-        mPre_order_add_ac_adapter = new Pre_order_Add_Ac_Adapter(R.layout.item_pre_order_add_accessories, fAcList);
+        mPre_order_add_ac_adapter = new Pre_order_Add_Ac_Adapter(R.layout.item_pre_order_add_accessories, fAcList,String.valueOf(select_state));
         mRecyclerViewAddAccessories.setLayoutManager(new LinearLayoutManager(mActivity));
         mRecyclerViewAddAccessories.setAdapter(mPre_order_add_ac_adapter);
         mPre_order_add_ac_adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {

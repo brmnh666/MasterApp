@@ -1,6 +1,7 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.TextView;
@@ -17,12 +18,16 @@ import com.ying.administrator.masterappdemo.mvp.presenter.LoginPresenter;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /*引导页*/
 public class SplashActivity extends BaseActivity<LoginPresenter, LoginModel> implements View.OnClickListener, LoginContract.View {
 
-    private int recLen=4; //倒计时3秒
-    private TextView tv_splash_skin;
-    Timer timer =new Timer();
+    @BindView(R.id.tv_splash_skin)
+    TextView mTvSplashSkin;
+    private int recLen = 4; //倒计时3秒
+    Timer timer = new Timer();
     private Handler handler;
     private Runnable runnable;
     private String userName;
@@ -38,10 +43,10 @@ public class SplashActivity extends BaseActivity<LoginPresenter, LoginModel> imp
     @Override
     protected void initData() {
         SPUtils spUtils = SPUtils.getInstance("token");
-        userName=spUtils.getString("userName");
+        userName = spUtils.getString("userName");
         password = spUtils.getString("passWord");
         isLogin = spUtils.getBoolean("isLogin");
-        admintoken=spUtils.getString("adminToken");
+        admintoken = spUtils.getString("adminToken");
 
    /*     Log.d("======>", userName);
         Log.d("======>", password);
@@ -51,8 +56,8 @@ public class SplashActivity extends BaseActivity<LoginPresenter, LoginModel> imp
 
     @Override
     protected void initView() {
-        tv_splash_skin=findViewById(R.id.tv_splash_skin);
-        if((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0){
+
+        if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {
             finish();
             return;
         }
@@ -60,73 +65,74 @@ public class SplashActivity extends BaseActivity<LoginPresenter, LoginModel> imp
 
     @Override
     protected void setListener() {
-        tv_splash_skin.setOnClickListener(this);
-        timer.schedule(task,0,1000);
+        mTvSplashSkin.setOnClickListener(this);
+        timer.schedule(task, 0, 1000);
 
         /**
          * 正常情况下不点击跳过
          */
-        handler =new Handler();
+        handler = new Handler();
         handler.postDelayed(runnable = new Runnable() {
             @Override
             public void run() {
                 /*调转到主界面界面*/
-                if (userName!=null&&isLogin){ //存在用户名说明登录过 直接登录到主界面
-                    Intent intent =new Intent(SplashActivity.this,MainActivity.class);
+                if (userName != null && isLogin) { //存在用户名说明登录过 直接登录到主界面
+                    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                     startActivity(intent);
                     SplashActivity.this.finish();
 
-                }else {
-                    Intent intent =new Intent(SplashActivity.this,Login_New_Activity.class);
+                } else {
+                    Intent intent = new Intent(SplashActivity.this, Login_New_Activity.class);
                     startActivity(intent);
                     SplashActivity.this.finish();
 
                 }
 
             }
-        },3000); //延时3秒后发送信息
+        }, 3000); //延时3秒后发送信息
 
 
     }
 
 
-    TimerTask task= new TimerTask() {
+    TimerTask task = new TimerTask() {
         @Override
         public void run() {
             runOnUiThread(new Runnable() { //主线程
                 @Override
                 public void run() {
                     recLen--;
-                    tv_splash_skin.setText("跳过 "+recLen);
-                    if (recLen<0){
+                    mTvSplashSkin.setText("跳过 " + recLen);
+                    if (recLen < 0) {
                         timer.cancel();
-                        tv_splash_skin.setVisibility(View.GONE); //倒计时到0隐藏字体
+                        mTvSplashSkin.setVisibility(View.GONE); //倒计时到0隐藏字体
                     }
                 }
             });
 
         }
     };
+
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.tv_splash_skin:
 
                 /*调转到主界面界面*/
-                if (userName!=null&&isLogin){ //存在用户名说明登录过 直接登录到主界面
-                    Intent intent =new Intent(SplashActivity.this,MainActivity.class);
+                if (userName != null && isLogin) { //存在用户名说明登录过 直接登录到主界面
+                    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                     startActivity(intent);
                     SplashActivity.this.finish();
 
-                }else {
-                    Intent intent =new Intent(SplashActivity.this,Login_New_Activity.class);
+                } else {
+                    Intent intent = new Intent(SplashActivity.this, Login_New_Activity.class);
                     startActivity(intent);
                     SplashActivity.this.finish();
 
                 }
 
 
-                if (runnable!=null){
+                if (runnable != null) {
                     handler.removeCallbacks(runnable);
                 }
 
@@ -200,5 +206,12 @@ public class SplashActivity extends BaseActivity<LoginPresenter, LoginModel> imp
     @Override
     public void hideProgress() {
 
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

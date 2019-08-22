@@ -476,6 +476,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     private Button btn_add1;
     private int expressType;
     private String[] money1;
+    private TextView tv_phone;
+    private TextView tv_phone1;
 
 
     @Override
@@ -516,7 +518,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         mTvSelectTime.setText(time);
         mPresenter.GetOrderInfo(OrderID);
 
-        mPre_order_add_ac_adapter = new Pre_order_Add_Ac_Adapter(R.layout.item_pre_order_add_accessories, fAcList);
+        mPre_order_add_ac_adapter = new Pre_order_Add_Ac_Adapter(R.layout.item_pre_order_add_accessories, fAcList,data.getAccessoryState());
         mRecyclerViewAddAccessories.setLayoutManager(new LinearLayoutManager(mActivity));
         mRecyclerViewAddAccessories.setAdapter(mPre_order_add_ac_adapter);
         mPre_order_add_ac_adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
@@ -855,6 +857,14 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 btn_positive = puchsh_view.findViewById(R.id.positive);
                 tv_title = puchsh_view.findViewById(R.id.title);
                 etContent = puchsh_view.findViewById(R.id.et_content);
+                tv_phone1 = puchsh_view.findViewById(R.id.tv_phone);
+                tv_phone1.setText(data.getUserID());
+                tv_phone1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        call("tel:" + data.getUserID());
+                    }
+                });
                 push_dialog = new AlertDialog.Builder(mActivity)
                         .setView(puchsh_view)
                         .create();
@@ -910,9 +920,18 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
             case R.id.tv_remote_fee_information:
                 puchsh_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_push, null);
                 btn_negtive = puchsh_view.findViewById(R.id.negtive);
+
                 btn_positive = puchsh_view.findViewById(R.id.positive);
                 tv_title = puchsh_view.findViewById(R.id.title);
                 etContent = puchsh_view.findViewById(R.id.et_content);
+                tv_phone1 = puchsh_view.findViewById(R.id.tv_phone);
+                tv_phone1.setText(data.getUserID());
+                tv_phone1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        call("tel:" + data.getUserID());
+                    }
+                });
                 push_dialog = new AlertDialog.Builder(mActivity)
                         .setView(puchsh_view)
                         .create();
@@ -1535,8 +1554,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
 //                            mTvTotalPrice.setText("服务金额：¥" + (Double.parseDouble(data.getAccessoryMoney()) + Double.parseDouble(data.getPostMoney())) + "");
 //                        }
                     if ("1".equals(data.getAccessoryApplyState())) {
-                        mTvServiceAmount.setText("服务金额：¥" + data.getQuaMoney());
-                        mTvTotalPrice.setText("服务金额：¥" + data.getQuaMoney());
+                        mTvServiceAmount.setText("服务金额：¥" + data.getOrderMoney());
+                        mTvTotalPrice.setText("服务金额：¥" + data.getOrderMoney());
 
                     } else {
                         mTvServiceAmount.setText("服务金额：¥" + data.getOrderMoney() + "");
@@ -1690,8 +1709,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 if ("".equals(AccessoryApplyState) && "".equals(ServiceApplyState) && BeyondState == null) {
                     //nnn  配件  服务  远程
                     mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                    mRlCompleteSubmit.setVisibility(View.GONE);
-                    mBtnCompleteSubmitOne.setVisibility(View.VISIBLE);
+                    mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                    mBtnCompleteSubmitOne.setVisibility(View.GONE);
                     mBtnTrial.setVisibility(View.GONE);
                 } else if (!"".equals(AccessoryApplyState) && "".equals(ServiceApplyState) && BeyondState == null) {
                     //ynn

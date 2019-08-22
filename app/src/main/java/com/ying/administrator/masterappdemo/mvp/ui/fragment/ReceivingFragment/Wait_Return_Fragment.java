@@ -381,6 +381,11 @@ public class Wait_Return_Fragment extends BaseFragment<GetOrderListForMePresente
 
     }
 
+    @Override
+    public void WorkerComplaint(BaseResult<Data<String>> baseResult) {
+
+    }
+
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {

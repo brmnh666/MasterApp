@@ -112,7 +112,7 @@ public class Return_Sheet_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,Ba
         baseViewHolder.addOnClickListener(R.id.tv_see_detail);//查看详情
         baseViewHolder.addOnClickListener(R.id.tv_apply_for_an_extension);//申请延期
 //        baseViewHolder.addOnClickListener(R.id.tv_telephone_reminder);//电话催件
-
+        baseViewHolder.addOnClickListener(R.id.tv_complaint);
         if("".equals(item.getAccessoryApplyState())){
             baseViewHolder.setText(R.id.tv_review,"");
         } else if ("0".equals(item.getAccessoryApplyState())) {

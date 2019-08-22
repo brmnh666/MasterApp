@@ -101,8 +101,8 @@
             android:layout_below="@+id/tv_order_details_select_time"
             android:layout_gravity="center"
             android:layout_marginLeft="15dp"
-            android:src="@mipmap/rili"
-            android:visibility="gone" />
+            android:padding="5dp"
+            android:src="@mipmap/rili" />
     </LinearLayout>
 
     <View

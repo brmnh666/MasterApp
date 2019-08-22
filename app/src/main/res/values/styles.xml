@@ -51,7 +51,13 @@
         <item name="android:windowIsTranslucent">true</item>
     </style>
 
-
+    <style name="NoActionBar">
+        <item name="android:background">@mipmap/icon_splash</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 
 
     <!--提现状态栏为白色-->

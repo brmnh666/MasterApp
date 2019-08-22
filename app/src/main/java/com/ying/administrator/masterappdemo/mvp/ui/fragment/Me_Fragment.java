@@ -63,6 +63,7 @@ import com.ying.administrator.masterappdemo.mvp.ui.activity.RechargeActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.SettingActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.StudyActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.SubAccountManagementActivity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.SubsidiaryAccountActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.VerifiedUpdateActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Verified_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Wallet_Activity;
@@ -142,6 +143,8 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
     ImageView mImgCertification;
     @BindView(R.id.tv_phone)
     TextView mTvPhone;
+    @BindView(R.id.ll_subsidiary_account)
+    LinearLayout mLlSubsidiaryAccount;
 
     private Home_Fragment.CustomShareListener mShareListener;
     private ShareAction mShareAction;
@@ -277,6 +280,7 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
         mTvCertification.setOnClickListener(this);
         mLlStudy.setOnClickListener(this);
         mLlSetting.setOnClickListener(this);
+        mLlSubsidiaryAccount.setOnClickListener(this);
 
     }
 
@@ -306,9 +310,9 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                 String format = String.format("%.2f", userInfo.getTotalMoney() - userInfo.getFrozenMoney());
                 // String can_withdraw = Double.toString(userInfo.getTotalMoney() - userInfo.getFrozenMoney());//可提现余额=总金额-冻结金额
                 mTv_me_withdraw.setText(format);
-                if (userInfo.getUserID().equals(userInfo.getNickName())){
+                if (userInfo.getUserID().equals(userInfo.getNickName())) {
                     mTvName.setText("未设置昵称");
-                }else {
+                } else {
                     mTvName.setText(userInfo.getNickName());
                 }
 //                mTvName.setText(userInfo.getNickName());
@@ -533,7 +537,7 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                 dialog_share = LayoutInflater.from(mActivity).inflate(R.layout.dialog_share, null);
                 btn_share_one = dialog_share.findViewById(R.id.btn_share_one);
 //                btn_share_two = dialog_share.findViewById(R.id.btn_share_two);
-                TextView tv_title=dialog_share.findViewById(R.id.tv_title);
+                TextView tv_title = dialog_share.findViewById(R.id.tv_title);
                 tv_title.setText("扫描加入西瓜鱼服务");
 
                 iv_code_one = dialog_share.findViewById(R.id.iv_code_one);
@@ -633,6 +637,9 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                 break;
             case R.id.tv_recharge:
                 startActivity(new Intent(mActivity, RechargeActivity.class));
+                break;
+            case R.id.ll_subsidiary_account:
+                startActivity(new Intent(mActivity, SubsidiaryAccountActivity.class));
                 break;
             default:
                 break;

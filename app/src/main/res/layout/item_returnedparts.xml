@@ -321,6 +321,18 @@
             android:textSize="16sp"
             android:gravity="center" />
         <TextView
+            android:id="@+id/tv_complaint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/tv_recevied"
+            android:padding="10dp"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:visibility="gone"
+            android:text="投诉"
+            android:textSize="16sp" />
+        <TextView
             android:id="@+id/tv_apply_for_an_extension"
             android:layout_width="87dp"
             android:layout_height="wrap_content"

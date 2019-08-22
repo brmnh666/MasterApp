@@ -218,7 +218,7 @@
         </activity>
         <!--引导页-->
         <activity android:name=".mvp.ui.activity.SplashActivity"
-            android:theme="@style/AppTheme.Splash"
+            android:theme="@style/NoActionBar"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -326,6 +326,16 @@
             android:windowSoftInputMode="stateHidden"/>
         <!--订单详情-->
         <activity android:name=".mvp.ui.activity.WorkOrderDetailsActivity2"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="stateHidden"/>
+        <!--附属账号-->
+        <activity android:name=".mvp.ui.activity.SubsidiaryAccountActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="stateHidden"/>
+        <!--附属账号列表-->
+        <activity android:name=".mvp.ui.activity.OrderListActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTask"
             android:windowSoftInputMode="stateHidden"/>
