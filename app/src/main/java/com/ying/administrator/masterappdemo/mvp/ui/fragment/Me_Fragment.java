@@ -344,6 +344,7 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                 if (userInfo.getParentUserID() != null) {
 
                     mLlSubAccountManagement.setVisibility(View.GONE);
+                    mLlSubsidiaryAccount.setVisibility(View.GONE);
 
                 }
 

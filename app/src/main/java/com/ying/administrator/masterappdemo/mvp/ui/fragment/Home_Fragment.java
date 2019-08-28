@@ -321,19 +321,6 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
         vibrator = (Vibrator) getActivity().getSystemService(getActivity().VIBRATOR_SERVICE);
         mPresenter.GetUserInfoList(userID, "1");
 
-        if (userInfo.getParentUserID()==null){
-            mRecyclerviewOrderReceiving.setLayoutManager(new WrapContentLinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
-            grabsheetAdapter = new GrabsheetAdapter(R.layout.item_grabsheet, list);
-            grabsheetAdapter.setEmptyView(getEmptyView());
-            mRecyclerviewOrderReceiving.setAdapter(grabsheetAdapter);
-            showGrabsheet();
-        }else {
-            mRecyclerviewOrderReceiving.setLayoutManager(new WrapContentLinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
-            pending_appointment_adapter = new Pending_Adapter(R.layout.item_pending_appointment, Pendinglist, userInfo);
-            pending_appointment_adapter.setEmptyView(getEmptyView());
-            mRecyclerviewOrderReceiving.setAdapter(pending_appointment_adapter);
-            showPending();
-        }
 
     }
 
@@ -876,6 +863,21 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                             .load(Config.HEAD_URL + userInfo.getAvator())
                             .apply(myOptions)
                             .into(mImgHomeHead);
+
+                    if (userInfo.getParentUserID()==null){
+                        mRecyclerviewOrderReceiving.setLayoutManager(new WrapContentLinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
+                        grabsheetAdapter = new GrabsheetAdapter(R.layout.item_grabsheet, list);
+                        grabsheetAdapter.setEmptyView(getEmptyView());
+                        mRecyclerviewOrderReceiving.setAdapter(grabsheetAdapter);
+                        showGrabsheet();
+                    }else {
+                        mRecyclerviewOrderReceiving.setLayoutManager(new WrapContentLinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
+                        pending_appointment_adapter = new Pending_Adapter(R.layout.item_pending_appointment, Pendinglist, userInfo);
+                        pending_appointment_adapter.setEmptyView(getEmptyView());
+                        mRecyclerviewOrderReceiving.setAdapter(pending_appointment_adapter);
+                        showPending();
+                    }
+
 
                 } else {
                     return;
