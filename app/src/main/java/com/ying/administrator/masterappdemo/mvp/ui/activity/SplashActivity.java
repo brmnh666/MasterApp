@@ -61,6 +61,8 @@ public class SplashActivity extends BaseActivity<LoginPresenter, LoginModel> imp
             finish();
             return;
         }
+
+        mTvSplashSkin.setText("跳过 " + recLen);
     }
 
     @Override
@@ -213,5 +215,11 @@ public class SplashActivity extends BaseActivity<LoginPresenter, LoginModel> imp
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        task.cancel();
     }
 }

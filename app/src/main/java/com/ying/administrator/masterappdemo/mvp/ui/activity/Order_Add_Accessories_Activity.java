@@ -1109,7 +1109,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                     ApplyAccessoryphotoUpload(accessories_picture);
                     finish();
                 } else {
-                    if ("支付错误,添加失败".equals(baseResult.getData().getItem2())) {
+                    if ("您账户余额不足，请尽快充值以免影响配件审核,充值最低金额为：200".equals(baseResult.getData().getItem2())) {
                         customdialog_home_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_home, null);
                         customdialog_home_dialog = new AlertDialog.Builder(mActivity)
                                 .setView(customdialog_home_view)
@@ -1120,7 +1120,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                         negtive = customdialog_home_view.findViewById(R.id.negtive);
                         positive = customdialog_home_view.findViewById(R.id.positive);
                         title.setText("提示");
-                        message.setText("余额不足，是否充值？");
+                        message.setText(baseResult.getData().getItem2()+"。当工单完结后返还，是否充值？");
                         negtive.setText("否");
                         positive.setText("是");
                         negtive.setOnClickListener(new View.OnClickListener() {
