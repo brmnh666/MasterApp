@@ -311,8 +311,10 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
 
                 break;
 
-
             default:
+                if(skeletonScreen!=null){
+                    skeletonScreen.hide();
+                }
                 break;
 
         }
