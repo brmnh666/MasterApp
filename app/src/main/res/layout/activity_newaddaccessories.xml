@@ -47,10 +47,21 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_weight="1">
 
     </android.support.v7.widget.RecyclerView>
-
+    <TextView
+        android:id="@+id/tv_choose"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="没有我想要的配件"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:visibility="gone"/>
 </LinearLayout>
 
     <RelativeLayout

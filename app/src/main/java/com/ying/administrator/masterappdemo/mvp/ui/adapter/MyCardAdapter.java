@@ -198,6 +198,12 @@ public class MyCardAdapter extends BaseQuickAdapter<BankCard, BaseViewHolder> {
                 break;
 
          default:
+             Glide.with(context)
+                     .load(R.drawable.avatar)
+                     .apply(RequestOptions.bitmapTransform(new CircleCrop()))
+                     .into((ImageView) helper.getView(R.id.iv_bank_card));
+             helper.setText(R.id.tv_bank_name,item.getPayInfoName());
+             cardView.setCardBackgroundColor(context.getResources().getColor(R.color.color_custom_01));
              break;
 
 

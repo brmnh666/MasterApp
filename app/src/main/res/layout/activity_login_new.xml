@@ -115,7 +115,7 @@
         android:id="@+id/tv_login"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="登陆"
+        android:text="登录"
         android:textColor="@color/white"
         android:textSize="19sp"
         android:background="@drawable/bg_register"

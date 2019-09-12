@@ -32,8 +32,8 @@ public class WithDrawModel implements WithDrawContract.Model {
     }
 
     @Override
-    public Observable<BaseResult<Data<String>>> WithDraw(String DrawMoney, String CardNo, String UserID) {
-        return ApiRetrofit.getDefault().WithDraw(DrawMoney,CardNo,UserID)
+    public Observable<BaseResult<Data<String>>> WithDraw(String DrawMoney, String CardNo, String UserID,String CardName) {
+        return ApiRetrofit.getDefault().WithDraw(DrawMoney,CardNo,UserID,CardName)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

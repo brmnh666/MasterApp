@@ -133,6 +133,7 @@ public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
 
     private String DrawMoney;
     private String CardNo;
+    private String payName;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -325,7 +326,7 @@ public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
                         Toast.makeText(WithDrawActivity.this, "不能提现0元", Toast.LENGTH_SHORT).show();
                     } else {
                         DrawMoney = mMoneyEt.getText().toString();
-                        mPresenter.WithDraw(DrawMoney, CardNo, userId);
+                        mPresenter.WithDraw(DrawMoney, CardNo, userId,payName);
                     }
 
                 }
@@ -423,6 +424,7 @@ public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
                                         mtv_withdraw_bankname.setText(((BankCard) adapter.getData().get(position)).getPayInfoName());
                                         String cardNo = ((BankCard) adapter.getData().get(position)).getPayNo();
                                         CardNo = cardNo;//赋值给全局变量
+                                        payName = ((BankCard) adapter.getData().get(position)).getPayName();
                                         mtv_withdraw_banknum.setText("(" + cardNo.substring(cardNo.length() - 4, cardNo.length()) + ")");
                                         mPopupWindow.dismiss();
                                     }

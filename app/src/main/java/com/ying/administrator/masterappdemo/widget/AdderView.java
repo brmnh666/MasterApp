@@ -2,11 +2,11 @@ package com.ying.administrator.masterappdemo.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 
 import com.ying.administrator.masterappdemo.R;
 
@@ -16,15 +16,15 @@ import butterknife.OnClick;
  * Created by Administrator on 2017/11/20.
  */
 
-public class adderView extends LinearLayout implements View.OnClickListener {
+public class AdderView extends LinearLayout implements View.OnClickListener {
 
 
     private int value = 1;
     private int minValue = 1;
-    private int maxValue = 10;
+    private int maxValue = 99999;
     private final TextView tvCount;
 
-    public adderView(Context context, AttributeSet attrs) {
+    public AdderView(Context context, AttributeSet attrs) {
         super(context, attrs);
         View view = View.inflate(context, R.layout.number_adder, this);
         ImageView btn_reduce = (ImageView) view.findViewById(R.id.btn_reduce);

@@ -19,7 +19,7 @@ public interface WithDrawContract {
     interface Model extends BaseModel{
         Observable<BaseResult<WithDrawMoney>> GetDepositMoneyDisplay(String UserId);
         Observable<BaseResult<List<BankCard>>> GetAccountPayInfoList(String UserId);
-        Observable<BaseResult<Data<String>>> WithDraw(String DrawMoney,String CardNo,String UserID);
+        Observable<BaseResult<Data<String>>> WithDraw(String DrawMoney,String CardNo,String UserID,String CardName);
 
     }
 
@@ -32,6 +32,6 @@ public interface WithDrawContract {
     abstract class Presenter extends BasePresenter<View,Model>{
         public abstract void GetDepositMoneyDisplay(String UserId);
         public abstract void GetAccountPayInfoList(String UserId);
-        public abstract void WithDraw(String DrawMoney,String CardNo,String UserID);
+        public abstract void WithDraw(String DrawMoney,String CardNo,String UserID,String CardName);
     }
 }

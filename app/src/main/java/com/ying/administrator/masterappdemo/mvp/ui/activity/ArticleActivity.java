@@ -71,7 +71,7 @@ public class ArticleActivity extends BaseActivity<ArticlePresenter, ArticleModel
             default:
                 break;
         }
-        mPresenter.GetListCategoryContentByCategoryID(CategoryID);
+        mPresenter.GetListCategoryContentByCategoryID(CategoryID,"1","999");
     }
 
     @Override

@@ -173,11 +173,15 @@ public class AddServiceAreaActivity extends BaseActivity<AddServicePresenter, Ad
                 mPresenter.GetArea(mCity.getCode());
                 break;
             case R.id.ll_town:
-                if (mArea == null) {
-                    ToastUtils.showShort("请选择区！");
-                    return;
+                if ("济源市".equals(mCity.getName())){
+                    mPresenter.GetDistrict("410881",0);
+                }else {
+                    if (mArea == null) {
+                        ToastUtils.showShort("请选择区！");
+                        return;
+                    }
+                    mPresenter.GetDistrict(mArea.getCode(),0);
                 }
-                mPresenter.GetDistrict(mArea.getCode(),0);
                 break;
             case R.id.iv_add:
                 if (mProvince == null) {
@@ -188,10 +192,10 @@ public class AddServiceAreaActivity extends BaseActivity<AddServicePresenter, Ad
                     ToastUtils.showShort("请选择市！");
                     return;
                 }
-                if (mArea == null) {
-                    ToastUtils.showShort("请选择区！");
-                    return;
-                }
+//                if (mArea == null) {
+//                    ToastUtils.showShort("请选择区！");
+//                    return;
+//                }
                 if (mDistrict == null) {
                     mPresenter.GetDistrict(mArea.getCode(),1);
                 }else{

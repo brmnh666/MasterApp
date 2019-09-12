@@ -32,8 +32,8 @@ public class WithDrawPresenter extends WithDrawContract.Presenter {
     }
 
     @Override
-    public void WithDraw(String DrawMoney, String CardNo, String UserID) {
-        mModel.WithDraw(DrawMoney,CardNo,UserID)
+    public void WithDraw(String DrawMoney, String CardNo, String UserID,String CardName) {
+        mModel.WithDraw(DrawMoney,CardNo,UserID,CardName)
                 .subscribe(new BaseObserver<Data<String>>() {
                     @Override
                     protected void onHandleSuccess(BaseResult<Data<String>> value) {

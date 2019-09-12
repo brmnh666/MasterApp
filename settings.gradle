@@ -1,1 +1,1 @@
-include ':app', 'place_choose', ':drawerlibrary'
+include ':app', 'place_choose', ':drawerlibrary', ':qimo'

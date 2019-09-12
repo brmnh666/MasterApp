@@ -18,7 +18,7 @@ import io.reactivex.Observable;
 
 public interface ArticleContract {
     interface Model extends BaseModel {
-        Observable<BaseResult<Article>> GetListCategoryContentByCategoryID(String CategoryID);
+        Observable<BaseResult<Article>> GetListCategoryContentByCategoryID(String CategoryID,String page, String limit);
         Observable<BaseResult<MessageData<List<Message>>>> GetOrderMessageList(String UserID, String SubType, String limit, String page);
         Observable<BaseResult<MessageData<List<Message>>>> GetTransactionMessageList(String UserID, String SubType, String limit, String page);
 
@@ -34,7 +34,7 @@ public interface ArticleContract {
     }
 
     abstract class Presenter extends BasePresenter<View,Model> {
-        public abstract void GetListCategoryContentByCategoryID(String CategoryID);
+        public abstract void GetListCategoryContentByCategoryID(String CategoryID,String page, String limit);
         public abstract void GetOrderMessageList(String UserID,String SubType,String limit,String page);
         public abstract void GetTransactionMessageList(String UserID,String SubType,String limit,String page);
     }

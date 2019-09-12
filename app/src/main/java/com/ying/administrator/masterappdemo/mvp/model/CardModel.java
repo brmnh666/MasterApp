@@ -24,8 +24,8 @@ public class CardModel implements CardContract.Model {
     }
 
     @Override
-    public Observable<BaseResult<Data<String>>> AddorUpdateAccountPayInfo(String UserId, String PayInfoCode, String PayInfoName,String PayNo) {
-        return ApiRetrofit.getDefault().AddorUpdateAccountPayInfo(UserId, PayInfoCode,PayInfoName,PayNo)
+    public Observable<BaseResult<Data<String>>> AddorUpdateAccountPayInfo(String UserId, String PayInfoCode, String PayInfoName,String PayNo,String PayName) {
+        return ApiRetrofit.getDefault().AddorUpdateAccountPayInfo(UserId, PayInfoCode,PayInfoName,PayNo,PayName)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

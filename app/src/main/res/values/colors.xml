@@ -17,6 +17,8 @@
     <color name="color_custom_09">#F7F7F7</color>
     <color name="color_custom_10">#6A6A6A</color>
     <color name="light_transparent">#16000000</color>
+    <color name="gray_two">#808080</color>
+    <color name="gray_three">#b2b2b2</color>
     <color name="bank_01">#8B658B</color>
     <color name="bank_02">	#B22222</color>
     <color name="bank_03">#EE6363</color>

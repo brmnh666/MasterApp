@@ -24,8 +24,8 @@ public class CardPresenter extends CardContract.Presenter {
     }
 
     @Override
-    public void AddorUpdateAccountPayInfo(String UserId, String PayInfoCode, String PayInfoName,String PayNo) {
-        mModel.AddorUpdateAccountPayInfo(UserId, PayInfoCode,PayInfoName,PayNo)
+    public void AddorUpdateAccountPayInfo(String UserId, String PayInfoCode, String PayInfoName,String PayNo,String PayName) {
+        mModel.AddorUpdateAccountPayInfo(UserId, PayInfoCode,PayInfoName,PayNo,PayName)
                 .subscribe(new BaseObserver<Data<String>>() {
                     @Override
                     protected void onHandleSuccess(BaseResult<Data<String>> value) {

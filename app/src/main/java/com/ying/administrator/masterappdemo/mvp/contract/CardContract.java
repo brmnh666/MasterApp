@@ -18,7 +18,7 @@ import io.reactivex.Observable;
 public interface CardContract {
     interface Model extends BaseModel{
         Observable<BaseResult<UserInfo>> GetUserInfoList(String UserId, String limit);
-        Observable<BaseResult<Data<String>>> AddorUpdateAccountPayInfo(String UserId,String PayInfoCode ,String PayInfoName,String PayNo);
+        Observable<BaseResult<Data<String>>> AddorUpdateAccountPayInfo(String UserId,String PayInfoCode ,String PayInfoName,String PayNo,String PayName);
         Observable<BaseResult<List<BankCard>>> GetAccountPayInfoList(String UserId);
         Observable<BaseResult<Data<String>>> GetBankNameByCardNo(String CardNo);
 
@@ -34,7 +34,7 @@ public interface CardContract {
 
     abstract class Presenter extends BasePresenter<View,Model>{
         public abstract void GetUserInfoList(String UserId,String limit);
-        public abstract void AddorUpdateAccountPayInfo(String UserId,String PayInfoCode ,String PayInfoName,String PayNo);
+        public abstract void AddorUpdateAccountPayInfo(String UserId,String PayInfoCode ,String PayInfoName,String PayNo,String PayName);
         public abstract void GetAccountPayInfoList(String UserId);
         public abstract void GetBankNameByCardNo(String CardNo);
     }

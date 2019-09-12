@@ -19,8 +19,8 @@ public class ArticleModel implements ArticleContract.Model {
 
 
     @Override
-    public Observable<BaseResult<Article>> GetListCategoryContentByCategoryID(String CategoryID) {
-        return  ApiRetrofit.getDefault().GetListCategoryContentByCategoryID(CategoryID)
+    public Observable<BaseResult<Article>> GetListCategoryContentByCategoryID(String CategoryID,String page, String limit) {
+        return  ApiRetrofit.getDefault().GetListCategoryContentByCategoryID(CategoryID,page,limit)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

@@ -29,6 +29,15 @@ public class BankCard implements Serializable {
     private int page;
     private int limit;
     private int Version;
+    private String PayName;
+
+    public String getPayName() {
+        return PayName;
+    }
+
+    public void setPayName(String payName) {
+        PayName = payName;
+    }
 
     public boolean isIscheck() {
         return ischeck;

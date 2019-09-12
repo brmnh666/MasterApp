@@ -1661,6 +1661,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 mTvServiceAddress.setText(data.getAddress());
                 mTvNumber.setText(data.getNum());
 
+
+
                 /*获取订单的距离*/
                 distance = Double.parseDouble(data.getDistance());
                 if (Service_range >= distance) {
@@ -1674,7 +1676,13 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 }
                 if (data.getBeyondState() == null) {
                     mLlApproveBeyondMoney.setVisibility(View.GONE);
-                    mLlApplyBeyond.setVisibility(View.VISIBLE);
+//                    mLlApplyBeyond.setVisibility(View.VISIBLE);
+                    if ("3".equals(data.getTypeID())){
+                        mLlApplyBeyond.setVisibility(View.GONE);
+                    }else {
+                        mLlApplyBeyond.setVisibility(View.VISIBLE);
+                    }
+
                 } else {
                     mTvRange.setText(String.format("%.2f", distance - Service_range) + "km");
                     if (data.getOrderBeyondImg() == null) {
@@ -1703,6 +1711,9 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mTvBeyondApplication.setVisibility(View.VISIBLE);
                     }
                 }
+
+
+
                 AccessoryApplyState = data.getAccessoryApplyState();
                 ServiceApplyState = data.getServiceApplyState();
                 BeyondState = data.getBeyondState();

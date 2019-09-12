@@ -176,10 +176,10 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                 mPresenter.UpdateSendOrderUpdateTime(OrderId, time, time);
 
 
-               Intent intent=new Intent(mActivity, WorkOrderDetailsActivity2.class);
-                intent.putExtra("OrderID",OrderId);
-                intent.putExtra("time",time);
-                startActivity(intent);
+//               Intent intent=new Intent(mActivity, WorkOrderDetailsActivity2.class);
+//                intent.putExtra("OrderID",OrderId);
+//                intent.putExtra("time",time);
+//                startActivity(intent);
                 successposition=position;
 
                 mPresenter.AddOrderSuccess(OrderId,"1","预约成功");

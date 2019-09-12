@@ -3,6 +3,7 @@ package com.ying.administrator.masterappdemo.mvp.service;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Accessory;
 import com.ying.administrator.masterappdemo.entity.Address;
+import com.ying.administrator.masterappdemo.entity.AddressList;
 import com.ying.administrator.masterappdemo.entity.Area;
 import com.ying.administrator.masterappdemo.entity.Article;
 import com.ying.administrator.masterappdemo.entity.BankCard;
@@ -633,7 +634,10 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("Cms/GetListCategoryContentByCategoryID")
     Observable<BaseResult<Article>> GetListCategoryContentByCategoryID(
-            @Field("CategoryID") String CategoryID
+            @Field("CategoryID") String CategoryID,
+            @Field("page") String page,
+            @Field("limit") String limit
+
     );
 
     /*
@@ -656,7 +660,8 @@ public interface ApiService {
     Observable<BaseResult<Data<String>>> AddorUpdateAccountPayInfo(@Field("UserID") String UserID,
                                                                    @Field("PayInfoCode") String PayInfoCode,
                                                                    @Field("PayInfoName") String PayInfoName,
-                                                                   @Field("PayNo") String PayNo);
+                                                                   @Field("PayNo") String PayNo,
+                                                                   @Field("PayName") String PayName);
 
     /*获取银行卡*/
     @FormUrlEncoded
@@ -700,7 +705,8 @@ public interface ApiService {
     @POST("Account/WithDraw")
     Observable<BaseResult<Data<String>>> WithDraw(@Field("DrawMoney") String DrawMoney,
                                                   @Field("CardNo") String CardNo,
-                                                  @Field("UserID") String UserID);
+                                                  @Field("UserID") String UserID,
+                                                  @Field("CardName") String CardName);
 
     /**
      * 意见反馈
@@ -792,4 +798,88 @@ public interface ApiService {
             @Field("OrderID") String OrderID,
             @Field("Content") String Content
     );
+
+    /*修改支付密码*/
+    @FormUrlEncoded
+    @POST("Account/ChangePayPassword")
+    Observable<BaseResult<Data>> ChangePayPassword(@Field("UserID") String UserID,
+                                                   @Field("OldPayPassword") String OldPayPassword,
+                                                   @Field("PayPassword") String PayPassword);
+
+
+    /**
+     * 添加收货地址
+     * @param UserID
+     * @param Province
+     * @param City
+     * @param Area
+     * @param Address
+     * @param Default
+     * @param UserName
+     * @param Phone
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("Account/AddAccountAddress")
+    Observable<BaseResult<Data<String>>> AddAccountAddress(
+            @Field("UserID") String UserID,
+            @Field("Province") String Province,
+            @Field("City") String City,
+            @Field("Area") String Area,
+            @Field("District") String District,
+            @Field("Address") String Address,
+            @Field("IsDefault") String Default,
+            @Field("UserName") String UserName,
+            @Field("Phone") String Phone
+    );
+    /**
+     * 修改收货地址
+     * @param ID
+     * @param UserID
+     * @param Province
+     * @param City
+     * @param Area
+     * @param Address
+     * @param Default
+     * @param UserName
+     * @param Phone
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("Account/UpdateAccountAddress")
+    Observable<BaseResult<Data<String>>> UpdateAccountAddress(
+            @Field("AccountAdressID") String ID,
+            @Field("UserID") String UserID,
+            @Field("Province") String Province,
+            @Field("City") String City,
+            @Field("Area") String Area,
+            @Field("District") String District,
+            @Field("Address") String Address,
+            @Field("IsDefault") String Default,
+            @Field("UserName") String UserName,
+            @Field("Phone") String Phone
+    );
+    /**
+     * 删除收货地址
+     * @param ID
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("Account/DeleteAccountAddress")
+    Observable<BaseResult<Data<String>>> DeleteAccountAddress(
+            @Field("AccountAdressID") String ID
+    );
+
+    /**
+     * 获取收货地址列表
+     * @param UserID
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("Account/GetAccountAddress")
+    Observable<BaseResult<List<AddressList>>> GetAccountAddress(
+            @Field("UserID") String UserID
+    );
+
+
 }

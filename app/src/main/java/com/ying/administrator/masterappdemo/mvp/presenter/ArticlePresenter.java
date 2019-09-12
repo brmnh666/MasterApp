@@ -14,8 +14,8 @@ import java.util.List;
 public class ArticlePresenter extends ArticleContract.Presenter {
 
     @Override
-    public void GetListCategoryContentByCategoryID(String CategoryID) {
-        mModel.GetListCategoryContentByCategoryID(CategoryID)
+    public void GetListCategoryContentByCategoryID(String CategoryID,String page, String limit) {
+        mModel.GetListCategoryContentByCategoryID(CategoryID,page,limit)
                 .subscribe(new BaseObserver<Article>() {
                     @Override
                     protected void onHandleSuccess(BaseResult<Article> value) {

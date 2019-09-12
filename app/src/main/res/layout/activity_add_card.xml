@@ -47,12 +47,22 @@
             android:text="姓名"
             android:textSize="15sp" />
 
-        <TextView
-            android:id="@+id/tv_add_card_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-           />
+        <!--<TextView-->
+            <!--android:id="@+id/tv_add_card_name"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_margin="15dp"-->
+           <!--/>-->
+        <EditText
+            android:id="@+id/et_add_card_name"
+            android:maxLength="19"
+            android:layout_width="274dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:background="@null"
+            android:textCursorDrawable="@drawable/my_cursor"
+            android:textSize="15sp"
+            android:maxLines="1"/>
     </LinearLayout>
 
     <LinearLayout
@@ -202,7 +212,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="12sp"
-        android:text="请认证校对银行卡号,卡号出错资金无法到账"
+        android:text="请认真校对银行卡号,卡号出错资金无法到账"
 
         />
 

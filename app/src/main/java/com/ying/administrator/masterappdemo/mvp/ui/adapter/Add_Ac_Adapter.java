@@ -1,25 +1,17 @@
 package com.ying.administrator.masterappdemo.mvp.ui.adapter;
 
 import android.support.annotation.Nullable;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.entity.Accessory;
-import com.ying.administrator.masterappdemo.entity.FAccessory;
-import com.ying.administrator.masterappdemo.entity.WorkOrder;
-import com.ying.administrator.masterappdemo.widget.adderView;
+import com.ying.administrator.masterappdemo.widget.AdderView;
 
-import java.util.IdentityHashMap;
 import java.util.List;
-import java.util.Map;
 
 
 /*dialog添加配件 的adpter*/
@@ -45,7 +37,7 @@ public class Add_Ac_Adapter extends BaseQuickAdapter<Accessory, BaseViewHolder> 
            helper.setVisible(R.id.img_ac_select,true);
            helper.setVisible(R.id.img_ac_unselect,false);
            helper.setVisible(R.id.adderView,true);
-           adderView adderView = helper.getView(R.id.adderView);
+           AdderView adderView = helper.getView(R.id.adderView);
            adderView.setValue(item.getCheckedcount());
        }else { //未选中状态
            helper.setVisible(R.id.img_ac_select,false);

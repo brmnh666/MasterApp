@@ -40,7 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLength="9"
-                android:text="慈溪正海科技"
+                android:text="未设置昵称"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -125,7 +125,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:text="123000.00"
+                        android:text="0.00"
                         android:textColor="#7D7D7D"
                         android:textSize="18sp" />
                 </LinearLayout>
