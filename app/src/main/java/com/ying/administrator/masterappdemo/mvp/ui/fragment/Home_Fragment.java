@@ -291,6 +291,10 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
     private long recommendedtime;
     private String OrderId;
     private int cancleposition;
+    private EditText et_message;
+    private Button negtive;
+    private Button positive;
+    private AlertDialog cancelDialog;
 
 
     public Home_Fragment() {
@@ -351,7 +355,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
             public void onRefresh(RefreshLayout refreshlayout) {
                 pageIndex = 1;
                 //list.clear();
-                if (userInfo.getParentUserID()==null){
+                if (userInfo.getParentUserID()==null||"".equals(userInfo.getParentUserID())){
                     list.clear();
                     grabsheetAdapter.notifyDataSetChanged();
                     mPresenter.WorkerGetOrderList(userID, "0", Integer.toString(pageIndex), "10");
@@ -360,7 +364,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                     pending_appointment_adapter.notifyDataSetChanged();
                     mPresenter.WorkerGetOrderList(userID, "1", Integer.toString(pageIndex), "5");
                 }
-                if (userInfo.getParentUserID()==null){
+                if (userInfo.getParentUserID()==null||"".equals(userInfo.getParentUserID())){
 //                    grabsheetAdapter.notifyDataSetChanged();
                 }else {
 //                    pending_appointment_adapter.notifyDataSetChanged();
@@ -396,7 +400,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 pageIndex++; //页数加1
                 Log.d("当前的单数", String.valueOf(list.size()));
 //                list.clear();
-                if (userInfo.getParentUserID()==null){
+                if (userInfo.getParentUserID()==null||"".equals(userInfo.getParentUserID())){
 //
 //                    grabsheetAdapter.notifyDataSetChanged();
                     mPresenter.WorkerGetOrderList(userID, "0", Integer.toString(pageIndex), "10");
@@ -405,7 +409,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
 //                    pending_appointment_adapter.notifyDataSetChanged();
                     mPresenter.WorkerGetOrderList(userID, "1", Integer.toString(pageIndex), "5");
                 }
-                if (userInfo.getParentUserID()==null){
+                if (userInfo.getParentUserID()==null||"".equals(userInfo.getParentUserID())){
 //                    grabsheetAdapter.notifyDataSetChanged();
                 }else {
 //                    pending_appointment_adapter.notifyDataSetChanged();
@@ -423,7 +427,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
     public void WorkerGetOrderList(BaseResult<WorkOrder> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-                if (userInfo.getParentUserID()==null){
+                if (userInfo.getParentUserID()==null||"".equals(userInfo.getParentUserID())){
                     if (baseResult.getData().getData() == null) {
                         // Toast.makeText(getActivity(),"咱无新工单",Toast.LENGTH_SHORT).show();
                         Log.d("===>", "暂无新工单");
@@ -678,25 +682,41 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                     /*取消订单*/
                     case R.id.tv_cancel_order:
                         OrderId = ((WorkOrder.DataBean) adapter.getData().get(position)).getOrderID();//获取工单号
-                        final CommonDialog_Home dialog = new CommonDialog_Home(getActivity());
-                        dialog.setMessage("是否取消工单")
-                                //.setImageResId(R.mipmap.ic_launcher)
-                                .setTitle("提示")
-                                .setSingle(false).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
+                        View Cancelview=LayoutInflater.from(mActivity).inflate(R.layout.dialog_cancel,null);
+                        et_message = Cancelview.findViewById(R.id.et_message);
+                        negtive = Cancelview.findViewById(R.id.negtive);
+                        positive = Cancelview.findViewById(R.id.positive);
+                        TextView title = Cancelview.findViewById(R.id.title);
+                        title.setText("是否取消工单");
+                        negtive.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onPositiveClick() {//取消订单
-                                mPresenter.UpdateSendOrderState(OrderId, "-1");
-                                cancleposition = position;
-                                dialog.dismiss();
+                            public void onClick(View v) {
+                                cancelDialog.dismiss();
                             }
+                        });
 
+                        positive.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onNegtiveClick() {//放弃取消
-                                dialog.dismiss();
-                                // Toast.makeText(MainActivity.this,"ssss",Toast.LENGTH_SHORT).show();
-                            }
-                        }).show();
+                            public void onClick(View v) {
+                                String message= et_message.getText().toString();
+                                if (message==null||"".equals(message)){
+                                    ToastUtils.showShort("请输入取消工单理由");
+                                }else {
+//                                    mPresenter.UpdateOrderState(OrderId, "-1",message);
+                                    mPresenter.UpdateSendOrderState(OrderId,"-1",message);
+                                    cancleposition = position;
+                                    cancelDialog.dismiss();
+                                }
 
+                            }
+                        });
+
+                        cancelDialog = new AlertDialog.Builder(mActivity).setView(Cancelview).create();
+                        cancelDialog.show();
+                        Window window1= cancelDialog.getWindow();
+                        WindowManager.LayoutParams layoutParams=window1.getAttributes();
+                        window1.setAttributes(layoutParams);
+                        window1.setBackgroundDrawable(new ColorDrawable());
                         break;
 
                     default:
@@ -720,7 +740,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                                 showLoading();
                                 grabposition = position;
                                 // mPresenter.AddGrabsheetapply(((WorkOrder.DataBean) adapter.getItem(position)).getOrderID(), userID);
-                                mPresenter.UpdateSendOrderState(((WorkOrder.DataBean) adapter.getItem(position)).getOrderID(), "1");
+                                mPresenter.UpdateSendOrderState(((WorkOrder.DataBean) adapter.getItem(position)).getOrderID(), "1","");
 
 
                             } else if (userInfo.getIfAuth().equals("0")) {
@@ -768,7 +788,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
             case 200://200
                 if (data.isItem1()) {//接单成功
 
-                    if (userInfo.getParentUserID()==null){
+                    if (userInfo.getParentUserID()==null||"".equals(userInfo.getParentUserID())){
                         grabsheetAdapter.remove(grabposition);
                         Toast.makeText(getActivity(), "接单成功", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getActivity(), Order_Receiving_Activity.class);
@@ -806,7 +826,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
         switch (baseResult.getStatusCode()) {
             case 200:
                 userInfo = baseResult.getData().getData().get(0);
-                if (userInfo.getParentUserID()==null){
+                if (userInfo.getParentUserID()==null||"".equals(userInfo.getParentUserID())){
                     mPresenter.WorkerGetOrderList(userID, "0", Integer.toString(pageIndex), "10");
                 }else {
                     mPresenter.WorkerGetOrderList(userID, "1", Integer.toString(pageIndex), "5");
@@ -864,7 +884,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                             .apply(myOptions)
                             .into(mImgHomeHead);
 
-                    if (userInfo.getParentUserID()==null){
+                    if (userInfo.getParentUserID()==null||"".equals(userInfo.getParentUserID())){
                         mRecyclerviewOrderReceiving.setLayoutManager(new WrapContentLinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
                         grabsheetAdapter = new GrabsheetAdapter(R.layout.item_grabsheet, list);
                         grabsheetAdapter.setEmptyView(getEmptyView());
@@ -1384,7 +1404,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
 
 
 
-        if (userInfo.getParentUserID()==null){
+        if (userInfo.getParentUserID()==null||"".equals(userInfo.getParentUserID())){
             mPresenter.WorkerGetOrderList(userID, "0", Integer.toString(pageIndex), "10");
         }else {
             mPresenter.WorkerGetOrderList(userID, "1", Integer.toString(pageIndex), "5");
@@ -1489,7 +1509,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
         if ("GetUserInfoList".equals(message)) {
             mPresenter.GetUserInfoList(userID, "1");
         } else if ("0".equals(message)) {
-            if (userInfo.getParentUserID()==null){
+            if (userInfo.getParentUserID()==null||"".equals(userInfo.getParentUserID())){
                 mPresenter.WorkerGetOrderList(userID, "0", Integer.toString(pageIndex), "10");
             }else {
                 mPresenter.WorkerGetOrderList(userID, "1", Integer.toString(pageIndex), "5");
@@ -1566,7 +1586,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 @Override
                 public void onPositiveClick() {//拨打电话
                     dialog.dismiss();
-                    openBrowser(mActivity,"http://47.96.126.145:8820/Files/西瓜鱼商城.apk");
+                    openBrowser(mActivity,"https://img.xigyu.com/Files/西瓜鱼商城.apk");
                 }
 
                 @Override

@@ -58,6 +58,7 @@ import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Accessory;
+import com.ying.administrator.masterappdemo.entity.AddressList;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.FAccessory;
 import com.ying.administrator.masterappdemo.entity.FService;
@@ -772,7 +773,7 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                 if (data.getOrderBeyondImg().size() == 0) {
                     return;
                 }
-                scaleview("http://47.96.126.145:8820/Pics/OrderByondImg/" + data.getOrderBeyondImg().get(0).getUrl());
+                scaleview("https://img.xigyu.com/Pics/OrderByondImg/" + data.getOrderBeyondImg().get(0).getUrl());
                 break;
             case R.id.iv_range_two:
                 if (data.getOrderBeyondImg() == null) {
@@ -781,19 +782,19 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                 if (data.getOrderBeyondImg().size() < 2) {
                     return;
                 }
-                scaleview("http://47.96.126.145:8820/Pics/OrderByondImg/" + data.getOrderBeyondImg().get(1).getUrl());
+                scaleview("https://img.xigyu.com/Pics/OrderByondImg/" + data.getOrderBeyondImg().get(1).getUrl());
                 break;
             case R.id.iv_bar_code:
-                scaleview("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(0).getUrl());
+                scaleview("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(0).getUrl());
                 break;
             case R.id.iv_machine:
-                scaleview("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(1).getUrl());
+                scaleview("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(1).getUrl());
                 break;
             case R.id.iv_fault_location:
-                scaleview("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(2).getUrl());
+                scaleview("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(2).getUrl());
                 break;
             case R.id.iv_new_and_old_accessories:
-                scaleview("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(3).getUrl());
+                scaleview("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(3).getUrl());
                 break;
             case R.id.iv_copy:
                 String id = data.getOrderID();
@@ -1154,8 +1155,8 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                         return;
                     }
                     if (data.getOrderBeyondImg().size() == 1) {
-                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OrderByondImg/" + data.getOrderBeyondImg().get(0).getUrl()).into(mIvRangeOne);
-//                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OrderByondImg/" + data.getOrderBeyondImg().get(1).getUrl()).into(mIvRangeTwo);
+                        Glide.with(mActivity).load("https://img.xigyu.com/Pics/OrderByondImg/" + data.getOrderBeyondImg().get(0).getUrl()).into(mIvRangeOne);
+//                        Glide.with(mActivity).load("https://img.xigyu.com/Pics/OrderByondImg/" + data.getOrderBeyondImg().get(1).getUrl()).into(mIvRangeTwo);
                         mIvRangeTwo.setVisibility(View.GONE);
                     } else {
                         mIvRangeOne.setVisibility(View.GONE);
@@ -1341,15 +1342,15 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                     mLlReturnInformation.setVisibility(View.VISIBLE);
 
                     if ("1".equals(data.getTypeID()) || "3".equals(data.getTypeID())) {//维修
-                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(0).getUrl()).into(mIvBarCode);
-                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(1).getUrl()).into(mIvMachine);
-                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(2).getUrl()).into(mIvFaultLocation);
-                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(3).getUrl()).into(mIvNewAndOldAccessories);
+                        Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(0).getUrl()).into(mIvBarCode);
+                        Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(1).getUrl()).into(mIvMachine);
+                        Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(2).getUrl()).into(mIvFaultLocation);
+                        Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(3).getUrl()).into(mIvNewAndOldAccessories);
                     } else {
-                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/FinishOrder/" + data.getOrderImg().get(0).getUrl()).into(mIvBarCode);
-                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/FinishOrder/" + data.getOrderImg().get(1).getUrl()).into(mIvMachine);
-                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/FinishOrder/" + data.getOrderImg().get(2).getUrl()).into(mIvFaultLocation);
-                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/FinishOrder/" + data.getOrderImg().get(3).getUrl()).into(mIvNewAndOldAccessories);
+                        Glide.with(mActivity).load("https://img.xigyu.com/Pics/FinishOrder/" + data.getOrderImg().get(0).getUrl()).into(mIvBarCode);
+                        Glide.with(mActivity).load("https://img.xigyu.com/Pics/FinishOrder/" + data.getOrderImg().get(1).getUrl()).into(mIvMachine);
+                        Glide.with(mActivity).load("https://img.xigyu.com/Pics/FinishOrder/" + data.getOrderImg().get(2).getUrl()).into(mIvFaultLocation);
+                        Glide.with(mActivity).load("https://img.xigyu.com/Pics/FinishOrder/" + data.getOrderImg().get(3).getUrl()).into(mIvNewAndOldAccessories);
                         mLlOldAccessory.setVisibility(View.GONE);
                     }
                 } else {
@@ -1641,7 +1642,7 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                 if (data.isItem1()) {
                     push_dialog.dismiss();
                     ToastUtils.showShort("提交成功");
-                    mPresenter.UpdateOrderState(OrderID, "5");
+                    mPresenter.UpdateOrderState(OrderID, "5","");
                 } else {
                     ToastUtils.showShort(data.getItem2());
                 }
@@ -1670,6 +1671,16 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
 
     @Override
     public void GetExpressInfo(BaseResult<Data<List<Logistics>>> baseResult) {
+
+    }
+
+    @Override
+    public void GetAccountAddress(BaseResult<List<AddressList>> baseResult) {
+
+    }
+
+    @Override
+    public void UpdateOrderAddressByOrderID(BaseResult<Data<String>> baseResult) {
 
     }
 

@@ -48,8 +48,8 @@ public class CompleteWorkOrderModel implements CompleteWorkOrderContract.Model {
     }*/
 
     @Override
-    public Observable<BaseResult<Data<String>>> UpdateOrderState(String OrderID, String State) {
-        return ApiRetrofit.getDefault().UpdateOrderState(OrderID,State)
+    public Observable<BaseResult<Data<String>>> UpdateOrderState(String OrderID, String State,String Reason) {
+        return ApiRetrofit.getDefault().UpdateOrderState(OrderID,State,Reason)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

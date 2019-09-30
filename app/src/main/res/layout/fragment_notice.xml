@@ -4,7 +4,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F6F6F6">
+    <LinearLayout
+        android:id="@+id/ll_news"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:background="@drawable/white_shape"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp">
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@mipmap/news"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="平台新闻"
+            android:textColor="#6a6a6a"
+            android:textSize="16sp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:src="@mipmap/right_arrow"
+            android:layout_gravity="center"
+            android:layout_marginRight="15dp"/>
 
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ll_platform_policy"
@@ -41,41 +75,7 @@
             android:layout_marginRight="15dp"/>
 
     </LinearLayout>
-    <LinearLayout
-        android:id="@+id/ll_news"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:orientation="horizontal"
-        android:background="@drawable/white_shape"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp">
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@mipmap/news"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="平台新闻"
-            android:textColor="#6a6a6a"
-            android:textSize="16sp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dp"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"/>
-        <ImageView
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:src="@mipmap/right_arrow"
-            android:layout_gravity="center"
-            android:layout_marginRight="15dp"/>
 
-    </LinearLayout>
     <LinearLayout
         android:id="@+id/ll_order_must_read"
         android:layout_width="match_parent"

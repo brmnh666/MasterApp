@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="vertical"
+android:layout_alignParentBottom="true">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#EEEEEE" />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:orientation="horizontal"
+    android:padding="@dimen/dp_10"
+    android:background="@color/white">
+    <CheckBox
+        android:id="@+id/cb_circle_cart"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center"
+        android:button="@null"
+        android:background="@drawable/cart_circle_selector"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="全选"
+        android:textColor="#4E4E4E"
+        android:textSize="14sp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/dp_10"/>
+
+    <LinearLayout
+        android:id="@+id/ll_calculation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="合计："
+            android:textSize="14sp"
+            android:textColor="#4E4E4E"/>
+        <TextView
+            android:id="@+id/tv_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¥0"
+            android:textSize="16sp"
+            android:textColor="@color/red"/>
+        <TextView
+            android:id="@+id/tv_settlement"
+            android:layout_width="78dp"
+            android:layout_height="32dp"
+            android:background="@drawable/btn_shape"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:text="结算(0)"
+            android:layout_marginLeft="21dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/ll_finish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:id="@+id/ll_clean_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center">
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/clean"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="清理"
+                android:textSize="14sp"
+                android:layout_gravity="center"/>
+        </LinearLayout>
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/tv_move_to_favorites"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/yellow_circle_shape"
+            android:paddingRight="@dimen/dp_10"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:text="移入收藏夹"
+            android:textSize="14sp"
+            android:textColor="#FFD81A"/>
+
+        <TextView
+            android:id="@+id/tv_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/red_order_shape"
+            android:paddingRight="@dimen/dp_10"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:text="删除"
+            android:textSize="14sp"
+            android:textColor="@color/red"/>
+    </LinearLayout>
+</LinearLayout>
+</LinearLayout>

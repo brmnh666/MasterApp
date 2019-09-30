@@ -39,6 +39,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -48,6 +49,7 @@ import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Accessory;
+import com.ying.administrator.masterappdemo.entity.AddressList;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.FAccessory;
 import com.ying.administrator.masterappdemo.entity.FService;
@@ -180,6 +182,12 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
     LinearLayout mLlAccessories;
     @BindView(R.id.ll_memo)
     LinearLayout mLlMemo;
+    @BindView(R.id.tv_message)
+    TextView mTvMessage;
+    @BindView(R.id.tv_address_return)
+    TextView mTvAddressReturn;
+    @BindView(R.id.tv_modify)
+    TextView mTvModify;
     private String orderID;//工单号
     private WorkOrder.DataBean data = new WorkOrder.DataBean();
     private ArrayList<GAccessory> gAccessories = new ArrayList<>();//获得工厂返回的已选配件
@@ -293,6 +301,10 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
     private EditText et_accessories_name;
     private Button btn_add1;
     private AlertDialog underReviewDialog;
+    private String AddressBack;
+    private String userId;
+    private List<AddressList> addressList;
+    private String returnAddress;
 
     @Override
     protected int setLayoutId() {
@@ -311,6 +323,9 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
         //接收传来的OrderID
         orderID = getIntent().getStringExtra("OrderID");
         type = getIntent().getIntExtra("type", 0);
+        SPUtils spUtils = SPUtils.getInstance("token");
+        userId = spUtils.getString("userName");
+        mPresenter.GetAccountAddress(userId);
         switch (type) {
             case 1:
                 tv_actionbar_title.setText("申请配件");
@@ -336,7 +351,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                 mLlApproveBeyondMoney.setVisibility(View.VISIBLE);
                 break;
         }
-        mPre_order_add_ac_adapter = new Pre_order_Add_Ac_Adapter(R.layout.item_pre_order_add_accessories, fAcList,String.valueOf(select_state));
+        mPre_order_add_ac_adapter = new Pre_order_Add_Ac_Adapter(R.layout.item_pre_order_add_accessories, fAcList, String.valueOf(select_state));
         mRecyclerViewAddAccessories.setLayoutManager(new LinearLayoutManager(mActivity));
         mRecyclerViewAddAccessories.setAdapter(mPre_order_add_ac_adapter);
         mPre_order_add_ac_adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
@@ -394,6 +409,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
 
         mIvHost.setOnClickListener(this);
         mIvAccessories.setOnClickListener(this);
+        mTvModify.setOnClickListener(this);
 
         mLlOutOfServiceTv.setVisibility(View.VISIBLE);
         mLlOutOfServiceImg.setVisibility(View.VISIBLE);
@@ -497,6 +513,11 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                 break;
             case R.id.iv_accessories:
                 showPopupWindow(1201, 1202);
+                break;
+            case R.id.tv_modify:
+                Intent intent = new Intent(mActivity, ShippingAddressActivity.class);
+                intent.putExtra("type", "0");
+                startActivityForResult(intent, 100);
                 break;
             default:
                 break;
@@ -770,11 +791,14 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
         switch (type) {
             case 1:
                 AccessoryMemo = mEtMemo.getText().toString().trim();
+                returnAddress = mTvAddressReturn.getText().toString().trim();
                 if (select_state == -1) {
                     ToastUtils.showShort("请选择配件类型");
                 } else {
                     if (mPre_order_add_ac_adapter.getData().size() == 0) {
                         ToastUtils.showShort("请添加配件");
+                    }else if ("".equals(returnAddress)){
+                        ToastUtils.showShort("请选择收货地址");
                     } else {
                         if (accessories_picture.size() > 0) {
                             orderAccessoryStrBean = new FAccessory.OrderAccessoryStrBean();
@@ -789,7 +813,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                             Log.d("添加的配件有", s);
                             body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), s);
                             mPresenter.AddOrderAccessory(body);
-
+                            mPresenter.UpdateOrderAddressByOrderID(orderID,returnAddress);
                         } else {
                             ToastUtils.showShort("请添加配件图片");
                         }
@@ -1012,7 +1036,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                             }
                         });
                         underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review)
-                                 .create();
+                                .create();
                         underReviewDialog.show();
                         window = underReviewDialog.getWindow();
 //                window.setContentView(under_review);
@@ -1120,7 +1144,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                         negtive = customdialog_home_view.findViewById(R.id.negtive);
                         positive = customdialog_home_view.findViewById(R.id.positive);
                         title.setText("提示");
-                        message.setText(baseResult.getData().getItem2()+"。当工单完结后返还，是否充值？");
+                        message.setText(baseResult.getData().getItem2() + "。当工单完结后返还，是否充值？");
                         negtive.setText("否");
                         positive.setText("是");
                         negtive.setOnClickListener(new View.OnClickListener() {
@@ -1339,6 +1363,40 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
 
     @Override
     public void GetExpressInfo(BaseResult<Data<List<Logistics>>> baseResult) {
+
+    }
+
+    @Override
+    public void GetAccountAddress(BaseResult<List<AddressList>> baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                addressList = baseResult.getData();
+                if (addressList.size() != 0) {
+                    for (int i = 0; i < addressList.size(); i++) {
+                        if ("1".equals(addressList.get(i).getIsDefault())) {
+                            AddressBack = addressList.get(i).getAddress() + "(" + addressList.get(i).getUserName() + "收)" + addressList.get(i).getPhone();
+                            mTvAddressReturn.setText(AddressBack);
+                            mTvModify.setText("修改地址");
+                        }else {
+                            AddressBack = "";
+                            mTvAddressReturn.setText(AddressBack);
+                            mTvModify.setText("添加地址");
+                        }
+                    }
+                } else {
+                    AddressBack = "";
+                    mTvAddressReturn.setText(AddressBack);
+                    mTvModify.setText("添加地址");
+                }
+                break;
+            default:
+                ToastUtils.showShort("获取失败");
+                break;
+        }
+    }
+
+    @Override
+    public void UpdateOrderAddressByOrderID(BaseResult<Data<String>> baseResult) {
 
     }
     //计算价格
@@ -1669,6 +1727,16 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                 break;
         }
 
+        if (requestCode == 100) {
+            if (data != null) {
+                AddressList address = (AddressList) data.getSerializableExtra("address");
+                if (address != null) {
+                    AddressBack =address.getProvince()+address.getCity()+address.getArea()+address.getDistrict()+ address.getAddress() + "(" + address.getUserName() + "收)" + address.getPhone();
+                    mTvAddressReturn.setText(AddressBack);
+                }
+            }
+        }
+
     }
 
     /**
@@ -1679,7 +1747,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
     public void OrderByondImgPicUpload(HashMap<Integer, File> map) {
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("img", map.get(0).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(0)));
-      //  builder.addFormDataPart("img", map.get(1).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(1)));
+        //  builder.addFormDataPart("img", map.get(1).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(1)));
         builder.addFormDataPart("OrderID", orderID);
         MultipartBody requestBody = builder.build();
         mPresenter.OrderByondImgPicUpload(requestBody);
@@ -1689,7 +1757,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
     public void ApplyAccessoryphotoUpload(HashMap<Integer, File> map) {
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("img", map.get(0).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(0)));
-       // builder.addFormDataPart("img", map.get(1).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(1)));
+        // builder.addFormDataPart("img", map.get(1).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(1)));
         builder.addFormDataPart("OrderID", orderID);
         MultipartBody requestBody = builder.build();
 //        Log.d(TAG,"啦啦啦"+requestBody);

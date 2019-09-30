@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    >
+    <android.support.v7.widget.Toolbar
+        android:gravity="top|left"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@color/color_custom_01"
+        android:visibility="gone">
+    </android.support.v7.widget.Toolbar>
+
+    <include layout="@layout/actionbar_receiving_layout"/>
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:src="@drawable/zhifuwancheng"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="订单支付成功"
+        android:textSize="20sp"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/tv_money"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text=""
+        android:textColor="@color/black"
+        android:textSize="15sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:gravity="center">
+        <TextView
+            android:id="@+id/tv_check_order"
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:text="查看订单"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:background="@drawable/gray_circle_mine_shape"/>
+
+        <TextView
+            android:id="@+id/tv_return_order"
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:text="返回订单"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:background="@drawable/gray_circle_mine_shape"
+            android:layout_marginLeft="20dp"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="温馨提示：若您购买的是店家提供安装服务的商品，当商品到货后，会有专门人员联系您上门安装。"
+        android:layout_margin="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:gravity="center"
+        android:textSize="13sp"
+        android:paddingTop="20dp"
+        android:lineSpacingExtra="5dp"/>
+
+
+
+</LinearLayout>

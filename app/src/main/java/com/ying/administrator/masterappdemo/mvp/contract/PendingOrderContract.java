@@ -5,6 +5,8 @@ import com.ying.administrator.masterappdemo.base.BasePresenter;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.base.BaseView;
 import com.ying.administrator.masterappdemo.entity.Accessory;
+import com.ying.administrator.masterappdemo.entity.Address;
+import com.ying.administrator.masterappdemo.entity.AddressList;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.GAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
@@ -64,11 +66,15 @@ public interface PendingOrderContract {
         Observable<BaseResult<Data<String>>> AddReturnAccessory(String OrderID,String ReturnAccessoryMsg,String PostMoney);
 
         //修改订单状态
-        Observable<BaseResult<Data<String>>> UpdateOrderState(String OrderID,String State);
+        Observable<BaseResult<Data<String>>> UpdateOrderState(String OrderID,String State,String Reason);
         Observable<BaseResult<Data<String>>> ConfirmtoFreezeByOrderID(String OrderID,String type,String AccessoryId);
 
         //物流信息
         Observable<BaseResult<Data<List<Logistics>>>> GetExpressInfo( String ExpressNo);
+
+        Observable<BaseResult<List<AddressList>>> GetAccountAddress(String UserId);
+
+        Observable<BaseResult<Data<String>>> UpdateOrderAddressByOrderID(String OrderID, String SendAddress);
     }
 
     interface View extends BaseView{
@@ -118,6 +124,9 @@ public interface PendingOrderContract {
         void ConfirmtoFreezeByOrderID(BaseResult<Data<String>> baseResult);
 
         void GetExpressInfo(BaseResult<Data<List<Logistics>>> baseResult);
+        void GetAccountAddress(BaseResult<List<AddressList>> baseResult);
+
+        void UpdateOrderAddressByOrderID(BaseResult<Data<String>> baseResult);
     }
 
     abstract  class Presenter extends BasePresenter<View,Model>{
@@ -154,10 +163,13 @@ public interface PendingOrderContract {
         public abstract void PressFactoryAccount(String OrderID,String Content);
         public abstract void AddReturnAccessory(String OrderID,String ReturnAccessoryMsg,String PostMoney);
 
-        public abstract void UpdateOrderState(String OrderID,String State);
+        public abstract void UpdateOrderState(String OrderID,String State,String Reason);
         public abstract void ConfirmtoFreezeByOrderID(String OrderID,String type,String AccessoryId);
 
         public abstract void GetExpressInfo(String ExpressNo);
+        public abstract void GetAccountAddress(String UserId);
+
+        public abstract void UpdateOrderAddressByOrderID(String OrderID, String SendAddress);
     }
 
 

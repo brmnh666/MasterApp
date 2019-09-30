@@ -216,6 +216,24 @@ public class WorkOrder implements Serializable {
         private String Version;
         private String NewMoney;
         private String QuaMoney;
+        private List<LeavemessageListBean> LeavemessageList;
+        private List<LeavemessageimgListBean> LeavemessageimgList;
+
+        public List<LeavemessageimgListBean> getLeavemessageimgList() {
+            return LeavemessageimgList;
+        }
+
+        public void setLeavemessageimgList(List<LeavemessageimgListBean> leavemessageimgList) {
+            LeavemessageimgList = leavemessageimgList;
+        }
+
+        public List<LeavemessageListBean> getLeavemessageList() {
+            return LeavemessageList;
+        }
+
+        public void setLeavemessageList(List<LeavemessageListBean> leavemessageList) {
+            LeavemessageList = leavemessageList;
+        }
 
         public String getMallID() {
             return MallID;
@@ -975,6 +993,229 @@ public class WorkOrder implements Serializable {
         }
 
         public void setVersion(String Version) {
+            this.Version = Version;
+        }
+    }
+
+    public static class LeavemessageListBean {
+        /**
+         * Id : 3
+         * LeaveMessageId : 3
+         * UserId : 15925897121
+         * Type : 1
+         * OrderId : 2000002062
+         * Content : 留言
+         * CreateDate : 2019-09-24T11:14:35
+         * IsUse : Y
+         * page : 1
+         * limit : 999
+         * Version : 0
+         */
+
+        private int Id;
+        private int LeaveMessageId;
+        private String UserId;
+        private String Type;
+        private int OrderId;
+        private String Content;
+        private String CreateDate;
+        private String IsUse;
+        private int page;
+        private int limit;
+        private int Version;
+
+        public int getId() {
+            return Id;
+        }
+
+        public void setId(int Id) {
+            this.Id = Id;
+        }
+
+        public int getLeaveMessageId() {
+            return LeaveMessageId;
+        }
+
+        public void setLeaveMessageId(int LeaveMessageId) {
+            this.LeaveMessageId = LeaveMessageId;
+        }
+
+        public String getUserId() {
+            return UserId;
+        }
+
+        public void setUserId(String UserId) {
+            this.UserId = UserId;
+        }
+
+        public String getType() {
+            return Type;
+        }
+
+        public void setType(String Type) {
+            this.Type = Type;
+        }
+
+        public int getOrderId() {
+            return OrderId;
+        }
+
+        public void setOrderId(int OrderId) {
+            this.OrderId = OrderId;
+        }
+
+        public String getContent() {
+            return Content;
+        }
+
+        public void setContent(String Content) {
+            this.Content = Content;
+        }
+
+        public String getCreateDate() {
+            return CreateDate;
+        }
+
+        public void setCreateDate(String CreateDate) {
+            this.CreateDate = CreateDate;
+        }
+
+        public String getIsUse() {
+            return IsUse;
+        }
+
+        public void setIsUse(String IsUse) {
+            this.IsUse = IsUse;
+        }
+
+        public int getPage() {
+            return page;
+        }
+
+        public void setPage(int page) {
+            this.page = page;
+        }
+
+        public int getLimit() {
+            return limit;
+        }
+
+        public void setLimit(int limit) {
+            this.limit = limit;
+        }
+
+        public int getVersion() {
+            return Version;
+        }
+
+        public void setVersion(int Version) {
+            this.Version = Version;
+        }
+    }
+
+    public static class LeavemessageimgListBean {
+
+        /**
+         * Id : 2
+         * LeaveMessageImgId : 2
+         * OrderId : 2000002062
+         * Url : f52a7a89203745dcb2b08c5991172dd9.jpg
+         * IsUse : Y
+         * UserId : 15925897121
+         * CreateDate : 2019-09-25T11:18:01
+         * page : 1
+         * limit : 999
+         * Version : 0
+         */
+
+        private int Id;
+        private int LeaveMessageImgId;
+        private int OrderId;
+        private String Url;
+        private String IsUse;
+        private String UserId;
+        private String CreateDate;
+        private int page;
+        private int limit;
+        private int Version;
+
+        public int getId() {
+            return Id;
+        }
+
+        public void setId(int Id) {
+            this.Id = Id;
+        }
+
+        public int getLeaveMessageImgId() {
+            return LeaveMessageImgId;
+        }
+
+        public void setLeaveMessageImgId(int LeaveMessageImgId) {
+            this.LeaveMessageImgId = LeaveMessageImgId;
+        }
+
+        public int getOrderId() {
+            return OrderId;
+        }
+
+        public void setOrderId(int OrderId) {
+            this.OrderId = OrderId;
+        }
+
+        public String getUrl() {
+            return Url;
+        }
+
+        public void setUrl(String Url) {
+            this.Url = Url;
+        }
+
+        public String getIsUse() {
+            return IsUse;
+        }
+
+        public void setIsUse(String IsUse) {
+            this.IsUse = IsUse;
+        }
+
+        public String getUserId() {
+            return UserId;
+        }
+
+        public void setUserId(String UserId) {
+            this.UserId = UserId;
+        }
+
+        public String getCreateDate() {
+            return CreateDate;
+        }
+
+        public void setCreateDate(String CreateDate) {
+            this.CreateDate = CreateDate;
+        }
+
+        public int getPage() {
+            return page;
+        }
+
+        public void setPage(int page) {
+            this.page = page;
+        }
+
+        public int getLimit() {
+            return limit;
+        }
+
+        public void setLimit(int limit) {
+            this.limit = limit;
+        }
+
+        public int getVersion() {
+            return Version;
+        }
+
+        public void setVersion(int Version) {
             this.Version = Version;
         }
     }

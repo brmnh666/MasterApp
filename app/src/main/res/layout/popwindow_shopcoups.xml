@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bg_pop_bank"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_choose"
+    >
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="35dp"
+    android:layout_marginTop="10dp">
+
+    <TextView
+        android:id="@+id/tv_coup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="店名"
+        android:textSize="15sp"
+        android:textColor="@color/black"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="20dp"
+        />
+    <ImageView
+        android:id="@+id/img_cha"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:src="@drawable/icon_cha"
+        />
+</RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_coup"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+    </android.support.v7.widget.RecyclerView>
+    <!--<TextView-->
+        <!--android:id="@+id/tv_close"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:textSize="15sp"-->
+        <!--android:text="关闭"-->
+        <!--android:background="#ED3D48"-->
+        <!--android:gravity="center"-->
+        <!--android:textColor="@color/white"-->
+        <!--android:visibility="gone"/>-->
+
+</LinearLayout>

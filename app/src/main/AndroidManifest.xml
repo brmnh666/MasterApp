@@ -339,6 +339,80 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTask"
             android:windowSoftInputMode="stateHidden"/>
+        <!--订单列表-->
+        <activity android:name=".mvp.ui.activity.OrderActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="stateHidden"/>
+        <!--订单列表-->
+        <activity android:name=".mvp.ui.activity.OrderDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="stateHidden"/>
+        <!--密码-->
+        <activity android:name=".mvp.ui.activity.AccountAndSecurityActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="stateHidden"/>
+        <!--支付密码-->
+        <activity android:name=".mvp.ui.activity.SettingPayPasswordActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="stateHidden"/>
+        <!--商品-->
+        <activity android:name=".mvp.ui.activity.GoodsDetailActivity2"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="stateHidden"/>
+        <!--退换货-->
+        <activity android:name=".mvp.ui.activity.ReturnActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="stateHidden"/>
+        <!--退换货详情页-->
+        <activity android:name=".mvp.ui.activity.AfterSaleDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="stateHidden"/>
+        <!--确认订单-->
+        <activity android:name=".mvp.ui.activity.ConfirmOrderActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="stateHidden"/>
+        <!--地址列表-->
+        <activity android:name=".mvp.ui.activity.ShippingAddressActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="stateHidden"/>
+        <!--添加地址-->
+        <activity android:name=".mvp.ui.activity.AddAddressActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="stateHidden"/>
+        <!--结算完成-->
+        <activity android:name=".mvp.ui.activity.PaymentSuccessActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="stateHidden"/>
+        <!--购物车-->
+        <activity android:name=".mvp.ui.activity.CartActivity"
+            android:theme="@style/AppTheme.Goods"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="stateHidden"/>
+        <!--退换货-->
+        <activity android:name=".mvp.ui.activity.AfterSalesTypeActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="stateHidden"/>
+        <!--退换货详情-->
+        <activity android:name=".mvp.ui.activity.ReturnGoodsActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="stateHidden"/>
+        <!--商品详情-->
+        <activity android:name=".mvp.ui.activity.GoodsDetailActivity"
+            android:theme="@style/AppTheme.Goods"
+            android:configChanges="orientation|screenSize"/>
         <activity android:name=".mvp.ui.activity.ArticleActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTask"
@@ -510,16 +584,23 @@
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustUnspecified|stateHidden"/>
 
+        <!--留言页面-->
+        <activity android:name=".mvp.ui.activity.MessageActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden"/>
+        <!--放大图片-->
+        <activity android:name=".mvp.ui.activity.PhotoViewActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden"/>
+
 
        <!-- <activity android:name="io.card.payment.CardIOActivity" android:configChanges="keyboardHidden|orientation" />
         <activity android:name="io.card.payment.DataEntryActivity" />
                     -->
 
 
-        <activity android:name=".mvp.ui.activity.CustomChatActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:launchMode="singleTask"
-            />
 
 
         <receiver

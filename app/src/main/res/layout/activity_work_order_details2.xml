@@ -544,7 +544,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                           >
 
                             <ImageView
                                 android:id="@+id/iv_host"
@@ -585,6 +586,38 @@
                         </LinearLayout>
 
                     </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="@color/white"
+                        android:layout_marginLeft="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="寄送至："
+                            android:textSize="16sp"/>
+                        <TextView
+                            android:id="@+id/tv_address_return"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text=""
+                            android:textColor="@color/black"
+                            android:textSize="16sp"/>
+
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/tv_modify"
+                        android:layout_width="match_parent"
+                        android:gravity="right"
+                        android:layout_height="match_parent"
+                        android:text="修改地址"
+                        android:textColor="#808080"
+                        android:textSize="14sp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"/>
                     <EditText
                         android:id="@+id/et_memo"
                         android:layout_width="match_parent"
@@ -598,6 +631,7 @@
                         android:padding="@dimen/dp_10"
                         android:textColor="#6A6A6A"
                         android:textSize="12sp" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -1703,7 +1737,7 @@
                         android:id="@+id/btn_complete_submit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="提交"
+                        android:text="完成工单"
                         android:textColor="@color/color_white"
                         android:background="@drawable/ed_order_detail_submit"
                         android:textSize="16sp"

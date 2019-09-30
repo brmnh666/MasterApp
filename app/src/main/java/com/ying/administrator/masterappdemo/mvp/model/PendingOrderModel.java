@@ -2,6 +2,8 @@ package com.ying.administrator.masterappdemo.mvp.model;
 
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Accessory;
+import com.ying.administrator.masterappdemo.entity.Address;
+import com.ying.administrator.masterappdemo.entity.AddressList;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.GAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
@@ -133,8 +135,8 @@ public class PendingOrderModel implements PendingOrderContract.Model {
                 .subscribeOn(Schedulers.io());
     }
     @Override
-    public Observable<BaseResult<Data<String>>> UpdateOrderState(String OrderID, String State) {
-        return ApiRetrofit.getDefault().UpdateOrderState(OrderID,State)
+    public Observable<BaseResult<Data<String>>> UpdateOrderState(String OrderID, String State,String Reason) {
+        return ApiRetrofit.getDefault().UpdateOrderState(OrderID,State,Reason)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }
@@ -148,6 +150,20 @@ public class PendingOrderModel implements PendingOrderContract.Model {
     @Override
     public Observable<BaseResult<Data<List<Logistics>>>> GetExpressInfo(String ExpressNo) {
         return ApiRetrofit.getDefault().GetExpressInfo(ExpressNo)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<BaseResult<List<AddressList>>> GetAccountAddress(String UserId) {
+        return ApiRetrofit.getDefault().GetAccountAddress(UserId)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<BaseResult<Data<String>>> UpdateOrderAddressByOrderID(String OrderID, String SendAddress) {
+        return ApiRetrofit.getDefault().UpdateOrderAddressByOrderID(OrderID, SendAddress)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

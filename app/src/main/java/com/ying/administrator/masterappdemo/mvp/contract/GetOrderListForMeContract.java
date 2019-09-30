@@ -33,7 +33,7 @@ public interface GetOrderListForMeContract {
         //主账号派单操作
         Observable<BaseResult<Data>> ChangeSendOrder(String OrderID,String UserID);
         //取消订单
-        Observable<BaseResult<Data>> UpdateSendOrderState(String OrderID,String State);//State为-1取消订单
+        Observable<BaseResult<Data>> UpdateSendOrderState(String OrderID,String State,String Reason);//State为-1取消订单
         Observable<BaseResult<Data<String>>> UpdateContinueServiceState(String OrderID);
         Observable<BaseResult<Data<String>>> PressFactoryAccount(String OrderID,String Content);
 
@@ -47,6 +47,8 @@ public interface GetOrderListForMeContract {
 
         //投诉
         Observable<BaseResult<Data<String>>> WorkerComplaint(String OrderID, String Content);
+        //修改订单状态
+        Observable<BaseResult<Data<String>>> UpdateOrderState(String OrderID,String State,String Reason);
     }
 
     interface View extends BaseView {
@@ -83,6 +85,8 @@ public interface GetOrderListForMeContract {
         void ApplyAccessoryLate(BaseResult<Data<String>> baseResult);
 
         void WorkerComplaint(BaseResult<Data<String>> baseResult);
+        //修改订单状态
+        void UpdateOrderState(BaseResult<Data<String>> baseResult);
     }
 
     abstract class Presenter extends BasePresenter<View,Model> {
@@ -99,7 +103,7 @@ public interface GetOrderListForMeContract {
         //主账号派单操作
         public abstract void ChangeSendOrder(String OrderID,String UserID);
         //取消订单
-        public abstract void UpdateSendOrderState(String OrderID,String State);
+        public abstract void UpdateSendOrderState(String OrderID,String State,String Reason);
 
         public abstract void UpdateContinueServiceState(String OrderID);
         public abstract void PressFactoryAccount(String OrderID,String Content);
@@ -112,5 +116,6 @@ public interface GetOrderListForMeContract {
         public abstract void ApplyAccessoryLate(String OrderId);
 
         public abstract void WorkerComplaint(String OrderID, String Content);
+        public abstract void UpdateOrderState(String OrderID,String State,String Reason);
     }
 }

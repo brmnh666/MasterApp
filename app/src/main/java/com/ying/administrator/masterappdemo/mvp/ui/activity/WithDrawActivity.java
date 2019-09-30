@@ -36,6 +36,7 @@ import com.ying.administrator.masterappdemo.mvp.model.WithDrawModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.WithDrawPresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.PopwidowBankAdapter;
 import com.ying.administrator.masterappdemo.util.MyUtils;
+import com.ying.administrator.masterappdemo.util.SingleClick;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 
 import org.greenrobot.eventbus.EventBus;
@@ -244,6 +245,7 @@ public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
     }
 
 
+    @SingleClick
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

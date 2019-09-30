@@ -17,9 +17,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.FileProvider;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,7 +49,6 @@ import com.ying.administrator.masterappdemo.mvp.presenter.InfoManagePresenter;
 import com.ying.administrator.masterappdemo.util.Glide4Engine;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.util.imageutil.CompressHelper;
-import com.ying.administrator.masterappdemo.util.imageutil.FileUtil;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 
@@ -64,11 +61,16 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 public class Personal_Information_Activity extends BaseActivity<InfoManagePresenter, InfoMangeModel> implements InfoManageContract.View, View.OnClickListener {
+    @BindView(R.id.tv_recipient_address)
+    TextView mTvRecipientAddress;
+    @BindView(R.id.ll_recipient_address)
+    LinearLayout mLlRecipientAddress;
     private LinearLayout ll_return;
     private LinearLayout ll_avatar;
     private LinearLayout ll_nickname;
@@ -98,9 +100,9 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
     private int size;
     private Uri uri;
     private ArrayList<String> permissions;
-    private ArrayList<IDCard.IDCardBean> idCardBeans=new ArrayList<>();
+    private ArrayList<IDCard.IDCardBean> idCardBeans = new ArrayList<>();
     SPUtils spUtils = SPUtils.getInstance("token");
-    private UserInfo.UserInfoDean userInfo=new UserInfo.UserInfoDean();
+    private UserInfo.UserInfoDean userInfo = new UserInfo.UserInfoDean();
     private LinearLayout ll_select_service_area;
     private LinearLayout ll_under_warranty;
     private CheckBox cb_under_warranty;
@@ -119,12 +121,13 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(String message) {
-        if (!"GetUserInfoList".equals(message)){
+        if (!"GetUserInfoList".equals(message)) {
             return;
         }
-        mPresenter.GetUserInfoList(userID,"1");
+        mPresenter.GetUserInfoList(userID, "1");
     }
 
     @Override
@@ -134,36 +137,36 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
 
     @Override
     protected void initData() {
-        userID=spUtils.getString("userName");
-        mPresenter.GetUserInfoList(userID,"1");
+        userID = spUtils.getString("userName");
+        mPresenter.GetUserInfoList(userID, "1");
         mPresenter.GetIDCardImg(userID);
     }
 
     @Override
     protected void initView() {
-        tv_actionbar_title=findViewById(R.id.tv_actionbar_title);
+        tv_actionbar_title = findViewById(R.id.tv_actionbar_title);
         tv_actionbar_title.setText("个人信息管理");
-        img_actionbar_message=findViewById(R.id.img_actionbar_message);
+        img_actionbar_message = findViewById(R.id.img_actionbar_message);
         img_actionbar_message.setVisibility(View.INVISIBLE);
-        ll_return=findViewById(R.id.ll_return);
-        iv_avatar=findViewById(R.id.iv_avatar);//头像
-        ll_avatar=findViewById(R.id.ll_avatar);//头像栏
-        tv_nickname=findViewById(R.id.tv_nickname);//昵称
-        tv_name=findViewById(R.id.tv_name);//真实姓名
-        tv_certification=findViewById(R.id.tv_certification);//已认证
-        tv_un_certification=findViewById(R.id.tv_un_certification);//未认证
-        tv_phone=findViewById(R.id.tv_phone);//手机号
-        tv_id_card=findViewById(R.id.tv_id_card);//身份证
-        tv_shop_address=findViewById(R.id.tv_shop_address);//店铺地址
-        img_male_select=findViewById(R.id.img_male_select);
-        img_male_unselect=findViewById(R.id.img_male_unselect);
-        img_female_select=findViewById(R.id.img_female_select);
-        img_female_unselect=findViewById(R.id.img_female_unselect);
-        ll_nickname=findViewById(R.id.ll_nickname);
-        ll_password=findViewById(R.id.ll_password);
-        ll_my_skills=findViewById(R.id.ll_my_skills);
-        ll_male=findViewById(R.id.ll_male);
-        ll_female=findViewById(R.id.ll_female);
+        ll_return = findViewById(R.id.ll_return);
+        iv_avatar = findViewById(R.id.iv_avatar);//头像
+        ll_avatar = findViewById(R.id.ll_avatar);//头像栏
+        tv_nickname = findViewById(R.id.tv_nickname);//昵称
+        tv_name = findViewById(R.id.tv_name);//真实姓名
+        tv_certification = findViewById(R.id.tv_certification);//已认证
+        tv_un_certification = findViewById(R.id.tv_un_certification);//未认证
+        tv_phone = findViewById(R.id.tv_phone);//手机号
+        tv_id_card = findViewById(R.id.tv_id_card);//身份证
+        tv_shop_address = findViewById(R.id.tv_shop_address);//店铺地址
+        img_male_select = findViewById(R.id.img_male_select);
+        img_male_unselect = findViewById(R.id.img_male_unselect);
+        img_female_select = findViewById(R.id.img_female_select);
+        img_female_unselect = findViewById(R.id.img_female_unselect);
+        ll_nickname = findViewById(R.id.ll_nickname);
+        ll_password = findViewById(R.id.ll_password);
+        ll_my_skills = findViewById(R.id.ll_my_skills);
+        ll_male = findViewById(R.id.ll_male);
+        ll_female = findViewById(R.id.ll_female);
         ll_select_service_area = findViewById(R.id.ll_select_service_area);
         ll_under_warranty = findViewById(R.id.ll_under_warranty);
         cb_under_warranty = findViewById(R.id.cb_under_warranty);
@@ -183,59 +186,60 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
         ll_select_service_area.setOnClickListener(this);
         ll_under_warranty.setOnClickListener(this);
         ll_outside_the_warranty.setOnClickListener(this);
+        mLlRecipientAddress.setOnClickListener(this);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onClick(View v) {
 
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.ll_return:
                 Personal_Information_Activity.this.finish();
                 break;
             case R.id.ll_avatar:
-                if (requestPermissions()){
+                if (requestPermissions()) {
                     showPopupWindow(101, 102);
-                }else{
+                } else {
                     requestPermissions(permissions.toArray(new String[permissions.size()]), 10001);
                 }
                 break;
 
             case R.id.ll_nickname:
                 //跳转到修改昵称的页面
-                startActivity(new Intent(this,ChageUserNameActivity.class));
+                startActivity(new Intent(this, ChageUserNameActivity.class));
                 break;
             case R.id.ll_password:
                 //跳转到修改密码的页面
-                startActivity(new Intent(this,ChagePasswordActivity.class));
+                startActivity(new Intent(this, AccountAndSecurityActivity.class));
                 break;
             case R.id.ll_my_skills:
 
-                if (userInfo.getIfAuth()==null){//未实名认证
-                 return;
-                }else {
-                    startActivity(new Intent(this,MyInfoSkillsActivity.class));
+                if (userInfo.getIfAuth() == null) {//未实名认证
+                    return;
+                } else {
+                    startActivity(new Intent(this, MyInfoSkillsActivity.class));
                 }
 
                 break;
             case R.id.ll_male: //选择了男性
-                if (userInfo.getSex()==null){//调用接口
+                if (userInfo.getSex() == null) {//调用接口
                     changeSex("男");
-                }else if (userInfo.getSex().equals("女")){//调用接口
+                } else if (userInfo.getSex().equals("女")) {//调用接口
                     changeSex("男");
-                }else { //原本是男性不操作
-                  return;
+                } else { //原本是男性不操作
+                    return;
                 }
 
-            break;
+                break;
 
             case R.id.ll_female: //选择了女性
 
-                if (userInfo.getSex()==null){//调用接口
+                if (userInfo.getSex() == null) {//调用接口
                     changeSex("女");
-                }else if (userInfo.getSex().equals("男")){//调用接口
+                } else if (userInfo.getSex().equals("男")) {//调用接口
                     changeSex("女");
-                }else { //原本是女性不操作
+                } else { //原本是女性不操作
                     return;
                 }
 
@@ -252,9 +256,11 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
                 cb_outside_the_warranty.setChecked(true);
                 cb_under_warranty.setChecked(false);
                 break;
-
-                default:
-                    break;
+            case R.id.ll_recipient_address:
+                startActivity(new Intent(mActivity,ShippingAddressActivity.class));
+                break;
+            default:
+                break;
         }
 
     }
@@ -262,91 +268,86 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
     /*获取个人信息*/
     @Override
     public void GetUserInfoList(BaseResult<UserInfo> baseResult) {
-        switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
-                userInfo=baseResult.getData().getData().get(0);
+                userInfo = baseResult.getData().getData().get(0);
                 /*设置头像*/
-                if (userInfo.getAvator()==null){//显示默认头像
+                if (userInfo.getAvator() == null) {//显示默认头像
                     return;
-                }else {
+                } else {
                     Glide.with(mActivity)
-                            .load(Config.HEAD_URL+userInfo.getAvator())
+                            .load(Config.HEAD_URL + userInfo.getAvator())
                             .apply(RequestOptions.bitmapTransform(new CircleCrop()))
                             .into(iv_avatar);
                 }
                 /*设置昵称*/
-                if (userInfo.getNickName()==null){//测试账号可能出现昵称为null的情况 这里暂不处理
+                if (userInfo.getNickName() == null) {//测试账号可能出现昵称为null的情况 这里暂不处理
                     return;
 
-                }else {
-                    if (userInfo.getUserID().equals(userInfo.getNickName())){
+                } else {
+                    if (userInfo.getUserID().equals(userInfo.getNickName())) {
                         tv_nickname.setText("未设置昵称");
-                    }else {
+                    } else {
                         tv_nickname.setText(userInfo.getNickName());
                     }
                 }
                 /*真实姓名*/
-                if (userInfo.getTrueName()==null){ //如果为空说明未认证
+                if (userInfo.getTrueName() == null) { //如果为空说明未认证
                     tv_name.setVisibility(View.INVISIBLE);
                     tv_certification.setVisibility(View.GONE);
                     tv_un_certification.setVisibility(View.VISIBLE);
 
-                }else {
+                } else {
                     tv_name.setText(userInfo.getTrueName());
                     tv_certification.setVisibility(View.VISIBLE);
                     tv_un_certification.setVisibility(View.GONE);
                 }
                 /*手机号*/
-                if (userInfo.getPhone()==null){
+                if (userInfo.getPhone() == null) {
                     tv_phone.setText("");
-                }else {
+                } else {
                     tv_phone.setText(userInfo.getPhone());
                 }
                 /*身份证*/
-                if (userInfo.getIDCard()==null){
+                if (userInfo.getIDCard() == null) {
                     tv_id_card.setText("");
-                }else {
-                    StringBuilder sb=new StringBuilder(userInfo.getIDCard());
-                    sb.replace(6,14,"********");
+                } else {
+                    StringBuilder sb = new StringBuilder(userInfo.getIDCard());
+                    sb.replace(6, 14, "********");
                     tv_id_card.setText(sb.toString());
                 }
                 /*店铺地址*/
-                if (userInfo.getAddress()==null){
+                if (userInfo.getAddress() == null) {
                     tv_shop_address.setText("");
-                }else {
+                } else {
                     tv_shop_address.setText(userInfo.getAddress());
                 }
                 /*性别*/
-                if (userInfo.getSex()==null){
+                if (userInfo.getSex() == null) {
                     img_male_unselect.setVisibility(View.VISIBLE);
                     img_male_select.setVisibility(View.GONE);
                     img_female_select.setVisibility(View.GONE);
                     img_female_unselect.setVisibility(View.VISIBLE);
-                }else if (userInfo.getSex().equals("男")){
+                } else if (userInfo.getSex().equals("男")) {
                     img_male_unselect.setVisibility(View.GONE);
                     img_male_select.setVisibility(View.VISIBLE);
                     img_female_unselect.setVisibility(View.VISIBLE);
                     img_female_select.setVisibility(View.GONE);
-                }else
-                {//女
+                } else {//女
                     img_male_unselect.setVisibility(View.VISIBLE);
                     img_male_select.setVisibility(View.GONE);
                     img_female_unselect.setVisibility(View.GONE);
                     img_female_select.setVisibility(View.VISIBLE);
 
                 }
-                if (baseResult.getData().getData().get(0).getParentUserID()!=null){
+                if (baseResult.getData().getData().get(0).getParentUserID() != null) {
                     ll_select_service_area.setVisibility(View.GONE);
                 }
 
 
-
-
-
-
                 break;
-                default:
-                    break;
+            default:
+                break;
         }
     }
 
@@ -354,40 +355,40 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
     @Override
     public void UploadAvator(BaseResult<Data<String>> baseResult) {
 
-        switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
-                if (!baseResult.getData().isItem1()){
+                if (!baseResult.getData().isItem1()) {
 
-                    Toast.makeText(Personal_Information_Activity.this,"图片上传失败",Toast.LENGTH_SHORT).show();
-                }else {
+                    Toast.makeText(Personal_Information_Activity.this, "图片上传失败", Toast.LENGTH_SHORT).show();
+                } else {
 
-                    Toast.makeText(Personal_Information_Activity.this,"图片上传成功",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Personal_Information_Activity.this, "图片上传成功", Toast.LENGTH_SHORT).show();
                     EventBus.getDefault().post("GetUserInfoList");
                 }
 
                 break;
 
-                default:
-                    Toast.makeText(mActivity,"修改失败",Toast.LENGTH_SHORT).show();
-                    break;
+            default:
+                Toast.makeText(mActivity, "修改失败", Toast.LENGTH_SHORT).show();
+                break;
         }
     }
 
     /*获取身份证图片*/
     @Override
     public void GetIDCardImg(BaseResult<List<IDCard.IDCardBean>> baseResult) {
-        switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData().isEmpty()){
+                if (baseResult.getData().isEmpty()) {
                     return;
-                }else {
+                } else {
                     idCardBeans.addAll(baseResult.getData());
-                   // Log.d("身份图片的张数", String.valueOf(idCardBeans.size()));
+                    // Log.d("身份图片的张数", String.valueOf(idCardBeans.size()));
                 }
 
                 break;
-                default:
-                    break;
+            default:
+                break;
         }
     }
 
@@ -403,15 +404,15 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
 
     @Override
     public void UpdateSex(BaseResult<Data> baseResult) {
-     switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
 
-         case 200:
+            case 200:
 
-             break;
-             default:
-                 Toast.makeText(Personal_Information_Activity.this,"性别修改失败",Toast.LENGTH_SHORT).show();
-                 break;
-     }
+                break;
+            default:
+                Toast.makeText(Personal_Information_Activity.this, "性别修改失败", Toast.LENGTH_SHORT).show();
+                break;
+        }
 
     }
 
@@ -534,20 +535,20 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         size = 0;
         for (int i = 0; i < grantResults.length; i++) {
-            if (grantResults[i]==PackageManager.PERMISSION_GRANTED){
+            if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
                 size++;
             }
         }
         switch (requestCode) {
             case 10001:
-                if (size ==grantResults.length) {//允许
+                if (size == grantResults.length) {//允许
                     showPopupWindow(101, 102);
                 } else {//拒绝
                     MyUtils.showToast(mActivity, "相关权限未开启");
                 }
                 break;
             case 10002:
-                if (size ==grantResults.length) {//允许
+                if (size == grantResults.length) {//允许
                     showPopupWindow(201, 202);
                 } else {//拒绝
                     MyUtils.showToast(mActivity, "相关权限未开启");
@@ -580,13 +581,13 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
             case 102:
                 if (data != null) {
                     mSelected = Matisse.obtainResult(data);
-                    if (mSelected.size()==1){
+                    if (mSelected.size() == 1) {
                         uri = mSelected.get(0);
                     }
 //                    Uri uri = data.getData();
                     Glide.with(mActivity).load(uri).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(iv_avatar);
                     file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
-                   startCrop(Uri.fromFile(file));
+                    startCrop(Uri.fromFile(file));
                 }
               /*  if (file!=null){
                     File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
@@ -596,17 +597,17 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
                 break;
             //裁剪后的效果
             case UCrop.REQUEST_CROP:
-                if (resultCode==RESULT_OK){
-                    Uri resultUri=UCrop.getOutput(data);
+                if (resultCode == RESULT_OK) {
+                    Uri resultUri = UCrop.getOutput(data);
 
                     try {
-                        Bitmap bitmap= BitmapFactory.decodeStream(getContentResolver().openInputStream(resultUri));
-                       // headimageView.setImageBitmap(bitmap);
+                        Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(resultUri));
+                        // headimageView.setImageBitmap(bitmap);
                         Glide.with(mActivity).load(bitmap).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(iv_avatar);
 
-                        File file1=uritoFile(resultUri);
+                        File file1 = uritoFile(resultUri);
 
-                        if (file1!=null){
+                        if (file1 != null) {
                             File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file1);
                             uploadImg(newFile);
                         }
@@ -617,15 +618,15 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
 
                 //错误裁剪的结果
             case UCrop.RESULT_ERROR:
-                if(resultCode==RESULT_OK){
+                if (resultCode == RESULT_OK) {
                     final Throwable cropError = UCrop.getError(data);
                     handleCropError(cropError);
                 }
                 break;
 
 
-                default:
-                    break;
+            default:
+                break;
         }
 
     }
@@ -657,36 +658,36 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
         mPresenter.UploadAvator(requestBody);
     }
 
-    public void changeSex(String target){
-       if (target.equals("男")){//变为男性
-           img_male_unselect.setVisibility(View.GONE);
-           img_male_select.setVisibility(View.VISIBLE);
-           img_female_unselect.setVisibility(View.VISIBLE);
-           img_female_select.setVisibility(View.GONE);
-           mPresenter.UpdateSex(userID,"男");
-           userInfo.setSex("男");
+    public void changeSex(String target) {
+        if (target.equals("男")) {//变为男性
+            img_male_unselect.setVisibility(View.GONE);
+            img_male_select.setVisibility(View.VISIBLE);
+            img_female_unselect.setVisibility(View.VISIBLE);
+            img_female_select.setVisibility(View.GONE);
+            mPresenter.UpdateSex(userID, "男");
+            userInfo.setSex("男");
 
-       }else {  //变为女性
-           img_male_unselect.setVisibility(View.VISIBLE);
-           img_male_select.setVisibility(View.GONE);
-           img_female_unselect.setVisibility(View.GONE);
-           img_female_select.setVisibility(View.VISIBLE);
-           mPresenter.UpdateSex(userID,"女");
-           userInfo.setSex("女");
-       }
+        } else {  //变为女性
+            img_male_unselect.setVisibility(View.VISIBLE);
+            img_male_select.setVisibility(View.GONE);
+            img_female_unselect.setVisibility(View.GONE);
+            img_female_select.setVisibility(View.VISIBLE);
+            mPresenter.UpdateSex(userID, "女");
+            userInfo.setSex("女");
+        }
 
     }
 
 
     //图片裁剪的方法
-    private void startCrop(Uri uri){
+    private void startCrop(Uri uri) {
         UCrop.Options options = new UCrop.Options();
         //裁剪后图片保存在文件夹中
         Uri destinationUri = Uri.fromFile(new File(getExternalCacheDir(), "uCrop.jpg"));
         UCrop uCrop = UCrop.of(uri, destinationUri);//第一个参数是裁剪前的uri,第二个参数是裁剪后的uri
-        uCrop.withAspectRatio(1,1);//设置裁剪框的宽高比例
+        uCrop.withAspectRatio(1, 1);//设置裁剪框的宽高比例
         //下面参数分别是缩放,旋转,裁剪框的比例
-        options.setAllowedGestures(UCropActivity.ALL,UCropActivity.NONE,UCropActivity.ALL);
+        options.setAllowedGestures(UCropActivity.ALL, UCropActivity.NONE, UCropActivity.ALL);
         options.setToolbarTitle("头像裁剪");//设置标题栏文字
         options.setCropGridStrokeWidth(2);//设置裁剪网格线的宽度(我这网格设置不显示，所以没效果)
         options.setCropFrameStrokeWidth(10);//设置裁剪框的宽度

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/actionbar_receiving_layout" />
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tab_order_layout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:background="@color/white"
+        android:fillViewport="false"
+        android:gravity="bottom"
+        app:tabGravity="fill"
+        app:tabIndicatorColor="#ED3D48"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="#ED3D48"
+        app:tabTextAppearance="@style/ReturnTabLayout"
+        app:tabTextColor="@color/black" />
+
+    <com.ying.administrator.masterappdemo.widget.CustomViewPager
+        android:id="@+id/vp_order"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>

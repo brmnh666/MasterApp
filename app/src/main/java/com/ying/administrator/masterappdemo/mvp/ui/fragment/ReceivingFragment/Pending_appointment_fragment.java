@@ -21,12 +21,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
@@ -103,6 +105,11 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
     private Window window;
     private long recommendedtime;//上门预约毫秒数
     private long finishrecomendedtime;//结束时间毫秒数
+    private AlertDialog cancelDialog;
+    private EditText et_message;
+    private Button negtive;
+    private Button positive;
+    private TextView title;
 
     public Pending_appointment_fragment() {
         // Required empty public constructor
@@ -457,24 +464,59 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                     /*取消订单*/
                     case R.id.tv_cancel_order:
                         OrderId = ((WorkOrder.DataBean) adapter.getData().get(position)).getOrderID();//获取工单号
-                        final CommonDialog_Home dialog = new CommonDialog_Home(getActivity());
-                        dialog.setMessage("是否取消工单")
-                                //.setImageResId(R.mipmap.ic_launcher)
-                                .setTitle("提示")
-                                .setSingle(false).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
+                        View Cancelview=LayoutInflater.from(mActivity).inflate(R.layout.dialog_cancel,null);
+                        et_message = Cancelview.findViewById(R.id.et_message);
+                        negtive = Cancelview.findViewById(R.id.negtive);
+                        positive = Cancelview.findViewById(R.id.positive);
+                        title = Cancelview.findViewById(R.id.title);
+                        title.setText("是否取消工单");
+                        negtive.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onPositiveClick() {//取消订单
-                                mPresenter.UpdateSendOrderState(OrderId, "-1");
-                                cancleposition = position;
-                                dialog.dismiss();
+                            public void onClick(View v) {
+                                cancelDialog.dismiss();
                             }
+                        });
 
+                        positive.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onNegtiveClick() {//放弃取消
-                                dialog.dismiss();
-                                // Toast.makeText(MainActivity.this,"ssss",Toast.LENGTH_SHORT).show();
+                            public void onClick(View v) {
+                                String message= et_message.getText().toString();
+                                if (message==null||"".equals(message)){
+                                    ToastUtils.showShort("请输入取消工单理由");
+                                }else {
+//                                    mPresenter.UpdateOrderState(OrderId, "-1",message);
+                                    mPresenter.UpdateSendOrderState(OrderId,"-1",message);
+                                    cancleposition = position;
+                                    cancelDialog.dismiss();
+                                }
+
                             }
-                        }).show();
+                        });
+
+                        cancelDialog = new AlertDialog.Builder(mActivity).setView(Cancelview).create();
+                        cancelDialog.show();
+                        Window window1= cancelDialog.getWindow();
+                        WindowManager.LayoutParams layoutParams=window1.getAttributes();
+                        window1.setAttributes(layoutParams);
+                        window1.setBackgroundDrawable(new ColorDrawable());
+
+//                        final CommonDialog_Home dialog = new CommonDialog_Home(getActivity());
+//                        dialog.setMessage("是否取消工单")
+//                                //.setImageResId(R.mipmap.ic_launcher)
+//                                .setTitle("提示")
+//                                .setSingle(false).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
+//                            @Override
+//                            public void onPositiveClick() {//取消订单
+//
+//                                dialog.dismiss();
+//                            }
+//
+//                            @Override
+//                            public void onNegtiveClick() {//放弃取消
+//                                dialog.dismiss();
+//                                // Toast.makeText(MainActivity.this,"ssss",Toast.LENGTH_SHORT).show();
+//                            }
+//                        }).show();
 
                         break;
 
@@ -691,6 +733,22 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
     @Override
     public void WorkerComplaint(BaseResult<Data<String>> baseResult) {
 
+    }
+
+    @Override
+    public void UpdateOrderState(BaseResult<Data<String>> baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                if (baseResult.getData().isItem1()) {
+                    //mRefreshLayout.autoRefresh();
+                    pending_appointment_adapter.remove(cancleposition);
+                } else {
+                    Toast.makeText(getActivity(), "取消失败", Toast.LENGTH_LONG).show();
+                }
+                break;
+            default:
+                break;
+        }
     }
 
 

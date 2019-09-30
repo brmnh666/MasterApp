@@ -214,7 +214,8 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("Order/UpdateSendOrderState")
     Observable<BaseResult<Data>> UpdateSendOrderState(@Field("OrderID") String OrderID,
-                                                      @Field("State") String State);
+                                                      @Field("State") String State,
+                                                      @Field("Reason") String Reason);
 
 
     /*
@@ -337,7 +338,8 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("Order/UpdateOrderState")
     Observable<BaseResult<Data<String>>> UpdateOrderState(@Field("OrderID") String OrderID,
-                                                          @Field("State") String State);
+                                                          @Field("State") String State,
+                                                          @Field("Reason") String Reason);
 
     /*
      *
@@ -599,7 +601,7 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST("Pay/WXNotifyManual")
-    Observable<BaseResult<Data<String>>> WXNotifyManual(@Field("OutTradeNo") String OutTradeNo);
+    Observable<BaseResult<Data<String>>> WXNotifyManual(@Field("out_trade_no") String OutTradeNo);
 
     /**
      * 完成工单（返件列表）
@@ -789,6 +791,7 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("Order/ApplyAccessoryLater")
     Observable<BaseResult<Data<String>>> ApplyAccessoryLate(@Field("OrderID") String OrderID);
+
     /*
      * 投诉
      * */
@@ -809,6 +812,7 @@ public interface ApiService {
 
     /**
      * 添加收货地址
+     *
      * @param UserID
      * @param Province
      * @param City
@@ -832,8 +836,10 @@ public interface ApiService {
             @Field("UserName") String UserName,
             @Field("Phone") String Phone
     );
+
     /**
      * 修改收货地址
+     *
      * @param ID
      * @param UserID
      * @param Province
@@ -859,8 +865,10 @@ public interface ApiService {
             @Field("UserName") String UserName,
             @Field("Phone") String Phone
     );
+
     /**
      * 删除收货地址
+     *
      * @param ID
      * @return
      */
@@ -872,6 +880,7 @@ public interface ApiService {
 
     /**
      * 获取收货地址列表
+     *
      * @param UserID
      * @return
      */
@@ -881,5 +890,37 @@ public interface ApiService {
             @Field("UserID") String UserID
     );
 
+
+    /**
+     * 留言
+     */
+    @FormUrlEncoded
+    @POST("LeaveMessage/AddLeaveMessageForOrder ")
+    Observable<BaseResult<Data<String>>> AddLeaveMessageForOrder(@Field("UserId") String UserID,
+                                                                 @Field("Type") String Type,
+                                                                 @Field("OrderId") String OrderId,
+                                                                 @Field("Content") String Content);
+
+    /*
+    * 留言图片
+    * */
+    @POST("Upload/LeaveMessageImg")
+    Observable<BaseResult<Data<String>>> LeaveMessageImg(@Body RequestBody json);
+
+    /*
+    * 删除留言图片
+    * */
+    @FormUrlEncoded
+    @POST("LeaveMessage/DeleteLeaveMessageImg")
+    Observable<BaseResult<Data<String>>> DeleteLeaveMessageImg(@Field("LeaveMessageImgId") String LeaveMessageImgId);
+
+
+    /*
+    * 发送收货地址
+    * */
+    @FormUrlEncoded
+    @POST("Order/UpdateOrderAddressByOrderID")
+    Observable<BaseResult<Data<String>>> UpdateOrderAddressByOrderID(@Field("OrderID") String OrderID,
+                                                                     @Field("SendAddress") String SendAddress);
 
 }

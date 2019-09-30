@@ -268,7 +268,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 //                    }else{
 //                        mPresenter.UpdateOrderState(orderID, "5");
 //                    }
-                    mPresenter.UpdateOrderState(orderID, "5");
+                    mPresenter.UpdateOrderState(orderID, "5","");
                 } else {
                     cancleLoading();
                 }
@@ -289,9 +289,9 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 //                    }else{
 
                     if (!"1".equals(data.getIsReturn())) {//不需要返件
-                        mPresenter.UpdateOrderState(orderID, "5");
+                        mPresenter.UpdateOrderState(orderID, "5","");
                     } else {
-                        mPresenter.UpdateOrderState(orderID, "8");
+                        mPresenter.UpdateOrderState(orderID, "8","");
                     }
 
 //                    }

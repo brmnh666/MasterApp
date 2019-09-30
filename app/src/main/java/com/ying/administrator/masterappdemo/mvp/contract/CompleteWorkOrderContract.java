@@ -26,7 +26,7 @@ public interface CompleteWorkOrderContract {
        // Observable<BaseResult<String>> GetReturnAccessoryByOrderID(String OrderID);
 
         //修改订单状态
-        Observable<BaseResult<Data<String>>> UpdateOrderState(String OrderID,String State);
+        Observable<BaseResult<Data<String>>> UpdateOrderState(String OrderID,String State,String Reason);
 
         //提交快递信息
         Observable<BaseResult<Data<String>>> AddReturnAccessory(String OrderID,String ReturnAccessoryMsg,String PostMoney);
@@ -68,7 +68,7 @@ public interface CompleteWorkOrderContract {
        public abstract void FinishOrderPicUpload(RequestBody json);
        //获取返件图片
        //public abstract void GetReturnAccessoryByOrderID(String OrderID);
-       public abstract void UpdateOrderState(String OrderID,String State);
+       public abstract void UpdateOrderState(String OrderID,String State,String Reason);
 
        //提交快递信息
        public abstract void AddReturnAccessory(String OrderID,String ReturnAccessoryMsg,String PostMoney);

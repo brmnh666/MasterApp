@@ -2,28 +2,44 @@ package com.ying.administrator.masterappdemo.mvp.ui.fragment;
 
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.SPUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.m7.imkfsdk.MainActivity;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.ProductList;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.AllWorkOrdersContract;
 import com.ying.administrator.masterappdemo.mvp.model.AllWorkOrdersModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.AllWorkOrdersPresenter;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.IntelligentCustomerServiceActivity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.CartActivity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.GoodsDetailActivity2;
+import com.ying.administrator.masterappdemo.mvp.ui.adapter.MallAdapter;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseFragment;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,10 +69,24 @@ public class BlankFragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
     @BindView(R.id.rv_mall)
     RecyclerView mRvMall;
     Unbinder unbinder;
+    @BindView(R.id.main_collapsing)
+    CollapsingToolbarLayout mMainCollapsing;
+    @BindView(R.id.appbarlayout)
+    AppBarLayout mAppbarlayout;
+    @BindView(R.id.nested)
+    NestedScrollView mNested;
+    @BindView(R.id.cdl)
+    CoordinatorLayout mCdl;
+    @BindView(R.id.img_up)
+    ImageView mImgUp;
+    @BindView(R.id.cv_up)
+    CardView mCvUp;
+    @BindView(R.id.iv_cart)
+    ImageView mIvCart;
 
     private String mContentText;
     private UserInfo.UserInfoDean userInfo;
-
+    private List<ProductList> lists = new ArrayList<>();
 
     public BlankFragment() {
         // Required empty public constructor
@@ -85,6 +115,7 @@ public class BlankFragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -95,12 +126,42 @@ public class BlankFragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
         SPUtils spUtils = SPUtils.getInstance("token");
         String userID = spUtils.getString("userName"); //获取用户id
         mPresenter.GetUserInfoList(userID, "1");
+        mCvUp.setVisibility(View.GONE);
+        mNested.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (mMainCollapsing.getHeight() - scrollY <= 0) {
+                    mCvUp.setVisibility(View.VISIBLE);
+                } else {
+                    mCvUp.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        for (int i = 0; i < 10; i++) {
+            lists.add(new ProductList());
+        }
+        MallAdapter mallAdapter = new MallAdapter(R.layout.item_mall, lists);
+        mRvMall.setLayoutManager(new GridLayoutManager(mActivity, 2));
+        mRvMall.setAdapter(mallAdapter);
+        mallAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                switch (view.getId()) {
+                    case R.id.ll_goods:
+                        startActivity(new Intent(mActivity, GoodsDetailActivity2.class));
+                        break;
+                }
+            }
+        });
         return rootView;
     }
 
     private void initListener() {
         mLlOnlineConsultation.setOnClickListener(this);
         mLlContactCustomerService.setOnClickListener(this);
+        mIvCart.setOnClickListener(this);
+        mImgUp.setOnClickListener(this);
     }
 
     @Override
@@ -142,6 +203,10 @@ public class BlankFragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
                         // Toast.makeText(MainActivity.this,"ssss",Toast.LENGTH_SHORT).show();
                     }
                 }).show();
+                break;
+            case R.id.iv_cart:
+            case R.id.img_up:
+                startActivity(new Intent(mActivity, CartActivity.class));
                 break;
         }
 

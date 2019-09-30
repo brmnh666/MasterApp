@@ -1,8 +1,10 @@
 package com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -97,6 +100,11 @@ public class Quality_sheet_Fragement extends BaseFragment<GetOrderListForMePrese
     private int successposition;
     private int redeployposition;
     private int cancleposition;
+    private EditText et_message;
+    private Button negtive;
+    private Button positive;
+    private AlertDialog cancelDialog;
+
     public Quality_sheet_Fragement() {
         // Required empty public constructor
     }
@@ -410,25 +418,41 @@ public class Quality_sheet_Fragement extends BaseFragment<GetOrderListForMePrese
                     /*取消订单*/
                     case R.id.tv_cancel_order:
                         OrderId = ((WorkOrder.DataBean) adapter.getData().get(position)).getOrderID();//获取工单号
-                        final CommonDialog_Home dialog = new CommonDialog_Home(getActivity());
-                        dialog.setMessage("是否取消工单")
-                                //.setImageResId(R.mipmap.ic_launcher)
-                                .setTitle("提示")
-                                .setSingle(false).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
+                        View Cancelview=LayoutInflater.from(mActivity).inflate(R.layout.dialog_cancel,null);
+                        et_message = Cancelview.findViewById(R.id.et_message);
+                        negtive = Cancelview.findViewById(R.id.negtive);
+                        positive = Cancelview.findViewById(R.id.positive);
+                        TextView title = Cancelview.findViewById(R.id.title);
+                        title.setText("是否取消工单");
+                        negtive.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onPositiveClick() {//取消订单
-                                mPresenter.UpdateSendOrderState(OrderId, "-1");
-                                cancleposition = position;
-                                dialog.dismiss();
+                            public void onClick(View v) {
+                                cancelDialog.dismiss();
                             }
+                        });
 
+                        positive.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onNegtiveClick() {//放弃取消
-                                dialog.dismiss();
-                                // Toast.makeText(MainActivity.this,"ssss",Toast.LENGTH_SHORT).show();
-                            }
-                        }).show();
+                            public void onClick(View v) {
+                                String message= et_message.getText().toString();
+                                if (message==null||"".equals(message)){
+                                    ToastUtils.showShort("请输入取消工单理由");
+                                }else {
+//                                    mPresenter.UpdateOrderState(OrderId, "-1",message);
+                                    mPresenter.UpdateSendOrderState(OrderId,"-1",message);
+                                    cancleposition = position;
+                                    cancelDialog.dismiss();
+                                }
 
+                            }
+                        });
+
+                        cancelDialog = new AlertDialog.Builder(mActivity).setView(Cancelview).create();
+                        cancelDialog.show();
+                        Window window1= cancelDialog.getWindow();
+                        WindowManager.LayoutParams layoutParams=window1.getAttributes();
+                        window1.setAttributes(layoutParams);
+                        window1.setBackgroundDrawable(new ColorDrawable());
                         break;
                     case R.id.rl_qulity:
                         Intent intent=new Intent(getActivity(), WorkOrderDetailsActivity2.class);
@@ -672,6 +696,11 @@ public class Quality_sheet_Fragement extends BaseFragment<GetOrderListForMePrese
 
     @Override
     public void WorkerComplaint(BaseResult<Data<String>> baseResult) {
+
+    }
+
+    @Override
+    public void UpdateOrderState(BaseResult<Data<String>> baseResult) {
 
     }
 

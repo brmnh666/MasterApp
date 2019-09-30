@@ -23,8 +23,8 @@ public class AllWorkOrdersPresenter extends AllWorkOrdersContract.Presenter {
     }
 
     @Override
-    public void UpdateSendOrderState(String OrderID, String State) {
-        mModel.UpdateSendOrderState(OrderID,State)
+    public void UpdateSendOrderState(String OrderID, String State,String Reason) {
+        mModel.UpdateSendOrderState(OrderID,State,Reason)
                 .subscribe(new BaseObserver<Data>() {
                     @Override
                     protected void onHandleSuccess(BaseResult<Data> value) {

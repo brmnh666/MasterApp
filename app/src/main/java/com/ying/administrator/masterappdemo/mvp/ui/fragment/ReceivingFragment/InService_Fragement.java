@@ -6,6 +6,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,6 +18,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -85,6 +88,10 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
     private boolean isfristin;
     private AlertDialog complaint_dialog;
     private EditText et_content;
+    private EditText et_message;
+    private Button negtive;
+    private Button positive;
+    private AlertDialog cancelDialog;
 
     public static InService_Fragement newInstance() {
         InService_Fragement fragment = new InService_Fragement();
@@ -180,26 +187,41 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
 
                         break;
                     case R.id.tv_cancel_work_order://取消工单
-                        OrderId=((WorkOrder.DataBean)adapter.getData().get(position)).getOrderID();//获取工单号
-                        final CommonDialog_Home dialog = new CommonDialog_Home(getActivity());
-                        dialog.setMessage("是否取消工单")
-                                //.setImageResId(R.mipmap.ic_launcher)
-                                .setTitle("提示")
-                                .setSingle(false).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
+                        OrderId = ((WorkOrder.DataBean) adapter.getData().get(position)).getOrderID();//获取工单号
+                        View Cancelview=LayoutInflater.from(mActivity).inflate(R.layout.dialog_cancel,null);
+                        et_message = Cancelview.findViewById(R.id.et_message);
+                        negtive = Cancelview.findViewById(R.id.negtive);
+                        positive = Cancelview.findViewById(R.id.positive);
+                        TextView title1 = Cancelview.findViewById(R.id.title);
+                        title1.setText("是否取消工单");
+                        negtive.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onPositiveClick() {//取消订单
-                                mPresenter.UpdateSendOrderState(OrderId,"-1");
-                                cancelposition=position;
-
-                                dialog.dismiss();
+                            public void onClick(View v) {
+                                cancelDialog.dismiss();
                             }
+                        });
 
+                        positive.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onNegtiveClick() {//放弃取消
-                                dialog.dismiss();
-                                // Toast.makeText(MainActivity.this,"ssss",Toast.LENGTH_SHORT).show();
+                            public void onClick(View v) {
+                                String message= et_message.getText().toString();
+                                if (message==null||"".equals(message)){
+                                    ToastUtils.showShort("请输入取消工单理由");
+                                }else {
+//                                    mPresenter.UpdateOrderState(OrderId, "-1",message);
+                                    mPresenter.UpdateSendOrderState(OrderId,"-1",message);
+                                    cancelDialog.dismiss();
+                                }
+
                             }
-                        }).show();
+                        });
+
+                        cancelDialog = new AlertDialog.Builder(mActivity).setView(Cancelview).create();
+                        cancelDialog.show();
+                        Window window1= cancelDialog.getWindow();
+                        WindowManager.LayoutParams layoutParams=window1.getAttributes();
+                        window1.setAttributes(layoutParams);
+                        window1.setBackgroundDrawable(new ColorDrawable());
                         break;
                     case R.id.img_navigation:
                        // goToBaiduMap(((WorkOrder.DataBean)adapter.getData().get(position)).getAddress());
@@ -368,6 +390,11 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
             default:
                 break;
         }
+    }
+
+    @Override
+    public void UpdateOrderState(BaseResult<Data<String>> baseResult) {
+
     }
 
     @Override

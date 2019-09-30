@@ -23,7 +23,7 @@ public interface AllWorkOrdersContract {
         //抢单操作
         // Observable<BaseResult<Data>> AddGrabsheetapply(String OrderID, String UserID);
         //接单操作
-         Observable<BaseResult<Data>> UpdateSendOrderState(String OrderID,String State);
+         Observable<BaseResult<Data>> UpdateSendOrderState(String OrderID,String State,String Reason);
         //根据用户名获取已抢订单
         //  Observable<BaseResult<WorkOrder>> GetOrderInfoListForMe(String state, String page, String limit,String UserID);
         //获取用户信息
@@ -72,7 +72,7 @@ public interface AllWorkOrdersContract {
         //抢单操作
         // public abstract void AddGrabsheetapply(String OrderID,String UserID);
         //接单操作
-        public abstract void UpdateSendOrderState(String OrderID,String State);
+        public abstract void UpdateSendOrderState(String OrderID,String State,String Reason);
         //根据用户名获取已抢订单
         //public abstract void GetOrderInfoListForMe(String state, String page, String limit,String UserID);
         //获取用户信息

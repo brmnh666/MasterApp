@@ -470,6 +470,11 @@ public class Returnedparts_Fragement extends BaseFragment<GetOrderListForMePrese
     }
 
     @Override
+    public void UpdateOrderState(BaseResult<Data<String>> baseResult) {
+
+    }
+
+    @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser){

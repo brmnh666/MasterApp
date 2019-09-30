@@ -44,6 +44,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -64,6 +65,7 @@ import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.Accessory;
+import com.ying.administrator.masterappdemo.entity.AddressList;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.FAccessory;
 import com.ying.administrator.masterappdemo.entity.FService;
@@ -367,6 +369,13 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     ImageView mIvAccessoriesOne;
     @BindView(R.id.ll_accessories_one)
     LinearLayout mLlAccessoriesOne;
+    @BindView(R.id.tv_message)
+    TextView mTvMessage;
+    @BindView(R.id.tv_modify)
+    TextView mTvModify;
+    @BindView(R.id.tv_address_return)
+    TextView mTvAddressReturn;
+
     private String OrderID;
     private WorkOrder.DataBean data = new WorkOrder.DataBean();
     private ReturnAccessoryAdapter returnAccessoryAdapter;
@@ -478,6 +487,10 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     private String[] money1;
     private TextView tv_phone;
     private TextView tv_phone1;
+    private String userId;
+    private List<AddressList> addressList;
+    private String AddressBack;
+    private String returnAddress;
 
 
     @Override
@@ -495,6 +508,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     @Override
     public void initView() {
         mTvActionbarTitle.setText("详情页");
+        mTvMessage.setVisibility(View.VISIBLE);
+        mTvMessage.setText("反馈求助");
         //this必须为点击消息要跳转到页面的上下文。
         clickedResult = XGPushManager.onActivityStarted(this);
         if (clickedResult != null) {
@@ -517,8 +532,11 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
 
         mTvSelectTime.setText(time);
         mPresenter.GetOrderInfo(OrderID);
+        SPUtils spUtils = SPUtils.getInstance("token");
+        userId = spUtils.getString("userName");
+        mPresenter.GetAccountAddress(userId);
 
-        mPre_order_add_ac_adapter = new Pre_order_Add_Ac_Adapter(R.layout.item_pre_order_add_accessories, fAcList,data.getAccessoryState());
+        mPre_order_add_ac_adapter = new Pre_order_Add_Ac_Adapter(R.layout.item_pre_order_add_accessories, fAcList, data.getAccessoryState());
         mRecyclerViewAddAccessories.setLayoutManager(new LinearLayoutManager(mActivity));
         mRecyclerViewAddAccessories.setAdapter(mPre_order_add_ac_adapter);
         mPre_order_add_ac_adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
@@ -640,6 +658,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         mIvAccessories.setOnClickListener(this);
         mIvAccessoriesOne.setOnClickListener(this);
         mIvHostOne.setOnClickListener(this);
+        mTvMessage.setOnClickListener(this);
+        mTvModify.setOnClickListener(this);
     }
 
     @Override
@@ -657,6 +677,11 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.tv_message:
+                intent = new Intent(mActivity, MessageActivity.class);
+                intent.putExtra("orderId", data.getOrderID());
+                startActivity(intent);
+                break;
             case R.id.tv_confirm:
                 reject = new CommonDialog_Home(mActivity);
                 reject.setMessage("该金额会在返旧件后解冻，是否同意冻结金额？")
@@ -753,11 +778,11 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 } else {
 
                     /*厂家自购跳到新页面*/
-                    if (select_state == 0){
-                        Intent intent=new Intent(mActivity,NewAddAccessoriesActivity.class);
-                        intent.putExtra("SubCategoryID",data.getSubCategoryID()+"");
-                        startActivityForResult(intent,Config.APPLY_REQUEST);
-                    }else {
+                    if (select_state == 0) {
+                        Intent intent = new Intent(mActivity, NewAddAccessoriesActivity.class);
+                        intent.putExtra("SubCategoryID", data.getSubCategoryID() + "");
+                        startActivityForResult(intent, Config.APPLY_REQUEST);
+                    } else {
                         addAccessory();
                     }
 
@@ -1026,11 +1051,11 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     public void onClick(View v) {
                         expressno = et_expressno.getText().toString().trim();
                         if ("2".equals(data.getPostPayType())) {
-                            post_money = "15";
-//                            if ("".equals(post_money)) {
-//                                showToast(mActivity, "请填写邮费");
-//                                return;
-//                            }
+//                            post_money = "15";
+                            if ("".equals(post_money)) {
+                                showToast(mActivity, "请填写邮费");
+                                return;
+                            }
                         } else {
                             post_money = "0";
                         }
@@ -1074,7 +1099,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 if (data.getOrderBeyondImg().size() == 0) {
                     return;
                 }
-                scaleview("http://47.96.126.145:8820/Pics/OrderByondImg/" + data.getOrderBeyondImg().get(0).getUrl());
+                scaleview("https://img.xigyu.com/Pics/OrderByondImg/" + data.getOrderBeyondImg().get(0).getUrl());
                 break;
             case R.id.iv_host_one:
                 if (data.getOrderAccessroyDetail() == null) {
@@ -1083,7 +1108,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 if (data.getOrderAccessroyDetail().size() == 0) {
                     return;
                 }
-                scaleview("http://47.96.126.145:8820/Pics/Accessory/" + data.getOrderAccessroyDetail().get(0).getPhoto1());
+                scaleview("https://img.xigyu.com/Pics/Accessory/" + data.getOrderAccessroyDetail().get(0).getPhoto1());
                 break;
             case R.id.iv_accessories_one:
                 if (data.getOrderAccessroyDetail() == null) {
@@ -1092,7 +1117,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 if (data.getOrderAccessroyDetail().size() == 0) {
                     return;
                 }
-                scaleview("http://47.96.126.145:8820/Pics/Accessory/" + data.getOrderAccessroyDetail().get(0).getPhoto2());
+                scaleview("https://img.xigyu.com/Pics/Accessory/" + data.getOrderAccessroyDetail().get(0).getPhoto2());
                 break;
             case R.id.iv_range_two:
                 if (data.getOrderBeyondImg() == null) {
@@ -1101,33 +1126,33 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 if (data.getOrderBeyondImg().size() < 2) {
                     return;
                 }
-                scaleview("http://47.96.126.145:8820/Pics/OrderByondImg/" + data.getOrderBeyondImg().get(1).getUrl());
+                scaleview("https://img.xigyu.com/Pics/OrderByondImg/" + data.getOrderBeyondImg().get(1).getUrl());
                 break;
             case R.id.iv_bar_code:
                 for (int i = 0; i < data.getReturnaccessoryImg().size(); i++) {
                     if ("img1".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
-                        scaleview("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl());
+                        scaleview("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl());
                     }
                 }
                 break;
             case R.id.iv_machine:
                 for (int i = 0; i < data.getReturnaccessoryImg().size(); i++) {
                     if ("img2".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
-                        scaleview("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl());
+                        scaleview("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl());
                     }
                 }
                 break;
             case R.id.iv_fault_location:
                 for (int i = 0; i < data.getReturnaccessoryImg().size(); i++) {
                     if ("img3".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
-                        scaleview("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl());
+                        scaleview("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl());
                     }
                 }
                 break;
             case R.id.iv_new_and_old_accessories:
                 for (int i = 0; i < data.getReturnaccessoryImg().size(); i++) {
                     if ("img4".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
-                        scaleview("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl());
+                        scaleview("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl());
                     }
                 }
                 break;
@@ -1136,6 +1161,11 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 ClipData myClip = ClipData.newPlainText("", id);
                 myClipboard.setPrimaryClip(myClip);
                 ToastUtils.showShort("复制成功");
+            case R.id.tv_modify:
+                Intent intent = new Intent(mActivity, ShippingAddressActivity.class);
+                intent.putExtra("type", "0");
+                startActivityForResult(intent, 100);
+                break;
         }
 
     }
@@ -1444,12 +1474,15 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         switch (type) {
             case 1:
                 AccessoryMemo = mEtMemo.getText().toString().trim();
+                returnAddress = mTvAddressReturn.getText().toString().trim();
                 if (select_state == -1) {
                     ToastUtils.showShort("请选择配件类型");
                 } else {
                     if (mPre_order_add_ac_adapter.getData().size() == 0) {
                         ToastUtils.showShort("请添加配件");
-                    } else {
+                    }else if ("".equals(returnAddress)){
+                        ToastUtils.showShort("请选择收货地址");
+                    }else {
                         if (accessories_picture.size() > 0) {
                             orderAccessoryStrBean = new FAccessory.OrderAccessoryStrBean();
                             orderAccessoryStrBean.setOrderAccessory(mPre_order_add_ac_adapter.getData());
@@ -1463,6 +1496,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                             Log.d("添加的配件有", s);
                             body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), s);
                             mPresenter.AddOrderAccessory(body);
+                            mPresenter.UpdateOrderAddressByOrderID(OrderID,returnAddress);
                         } else {
                             ToastUtils.showShort("请添加配件图片");
                         }
@@ -1510,11 +1544,11 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     public void GetExpressInfo(BaseResult<Data<List<Logistics>>> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData().isItem1()){
+                if (baseResult.getData().isItem1()) {
                     if (baseResult.getData().getItem2() != null) {
-                        if (expressType==1){
+                        if (expressType == 1) {
                             mTvContent.setText(baseResult.getData().getItem2().get(0).getContent());
-                        }else {
+                        } else {
                             list.addAll(baseResult.getData().getItem2());
                             content = list.get(0).getContent();
 //                    ToastUtils.showShort(content);
@@ -1526,6 +1560,40 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
 
                 break;
         }
+    }
+
+    @Override
+    public void GetAccountAddress(BaseResult<List<AddressList>> baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                addressList = baseResult.getData();
+                if (addressList.size() != 0) {
+                    for (int i = 0; i < addressList.size(); i++) {
+                        if ("1".equals(addressList.get(i).getIsDefault())) {
+                            AddressBack = addressList.get(i).getAddress() + "(" + addressList.get(i).getUserName() + "收)" + addressList.get(i).getPhone();
+                            mTvAddressReturn.setText(AddressBack);
+                            mTvModify.setText("修改地址");
+                        }else {
+                            AddressBack = "";
+                            mTvAddressReturn.setText(AddressBack);
+                            mTvModify.setText("添加地址");
+                        }
+                    }
+                } else {
+                    AddressBack = "";
+                    mTvAddressReturn.setText(AddressBack);
+                    mTvModify.setText("添加地址");
+                }
+                break;
+            default:
+                ToastUtils.showShort("获取失败");
+                break;
+        }
+    }
+
+    @Override
+    public void UpdateOrderAddressByOrderID(BaseResult<Data<String>> baseResult) {
+
     }
 
 
@@ -1575,8 +1643,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     mLlHostOne.setVisibility(View.GONE);
                     mLlAccessoriesOne.setVisibility(View.GONE);
                 } else {
-                    Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/Accessory/" + data.getOrderAccessroyDetail().get(data.getOrderAccessroyDetail().size()-1).getPhoto1()).into(mIvHostOne);
-                    Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/Accessory/" + data.getOrderAccessroyDetail().get(data.getOrderAccessroyDetail().size()-1).getPhoto2()).into(mIvAccessoriesOne);
+                    Glide.with(mActivity).load("https://img.xigyu.com/Pics/Accessory/" + data.getOrderAccessroyDetail().get(data.getOrderAccessroyDetail().size() - 1).getPhoto1()).into(mIvHostOne);
+                    Glide.with(mActivity).load("https://img.xigyu.com/Pics/Accessory/" + data.getOrderAccessroyDetail().get(data.getOrderAccessroyDetail().size() - 1).getPhoto2()).into(mIvAccessoriesOne);
 
                 }
 
@@ -1606,7 +1674,6 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     mLlSelfbuying.setVisibility(View.VISIBLE);
                     mLlSelfbuyingUser.setVisibility(View.VISIBLE);
                 }
-
 
 
                 mTvProductType.setText(data.getCategoryName() + "/" + data.getBrandName() + "/" + data.getSubCategoryName());
@@ -1646,11 +1713,11 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mLlNumber.setVisibility(View.VISIBLE);
                         mViewSigning.setVisibility(View.VISIBLE);
                         mTvSigning.setText("否");
-                        expressType=1;
-                        if ("".equals(data.getExpressNo())||data.getExpressNo()==null){
+                        expressType = 1;
+                        if ("".equals(data.getExpressNo()) || data.getExpressNo() == null) {
                             mTvContent.setText("暂无物流消息");
-                        }else {
-                             mPresenter.GetExpressInfo(data.getExpressNo());
+                        } else {
+                            mPresenter.GetExpressInfo(data.getExpressNo());
                         }
 
                     }
@@ -1676,11 +1743,11 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 }
                 if (data.getBeyondState() == null) {
                     mLlApproveBeyondMoney.setVisibility(View.GONE);
-//                    mLlApplyBeyond.setVisibility(View.VISIBLE);
-                    if ("3".equals(data.getTypeID())){
+                    if ("3".equals(data.getTypeID())) {
                         mLlApplyBeyond.setVisibility(View.GONE);
-                    }else {
-                        mLlApplyBeyond.setVisibility(View.VISIBLE);
+                    } else {
+//                        mLlApplyBeyond.setVisibility(View.VISIBLE);
+                        mLlApplyBeyond.setVisibility(View.GONE);
                     }
 
                 } else {
@@ -1689,8 +1756,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         return;
                     }
                     if (data.getOrderBeyondImg().size() == 1) {
-                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OrderByondImg/" + data.getOrderBeyondImg().get(0).getUrl()).into(mIvRangeOne);
-//                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OrderByondImg/" + data.getOrderBeyondImg().get(1).getUrl()).into(mIvRangeTwo);
+                        Glide.with(mActivity).load("https://img.xigyu.com/Pics/OrderByondImg/" + data.getOrderBeyondImg().get(0).getUrl()).into(mIvRangeOne);
+//                        Glide.with(mActivity).load("https://img.xigyu.com/Pics/OrderByondImg/" + data.getOrderBeyondImg().get(1).getUrl()).into(mIvRangeTwo);
                         mIvRangeTwo.setVisibility(View.GONE);
                     } else {
                         mIvRangeOne.setVisibility(View.GONE);
@@ -1711,7 +1778,6 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mTvBeyondApplication.setVisibility(View.VISIBLE);
                     }
                 }
-
 
 
                 AccessoryApplyState = data.getAccessoryApplyState();
@@ -1856,8 +1922,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     }
                 }
 
-                if ("2".equals(data.getTypeID())){
-                    if (!"0".equals(data.getMallID())){
+                if ("2".equals(data.getTypeID())) {
+                    if (!"0".equals(data.getMallID())) {
                         mLlApplyBeyond.setVisibility(View.GONE);
                     }
                 }
@@ -1868,21 +1934,21 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                             data.getOrderAccessroyDetail().remove(i);
                         }
                     }
-                    if (data.getNewMoney()!=null){
-                        String newMoney=data.getNewMoney().trim();
+                    if (data.getNewMoney() != null) {
+                        String newMoney = data.getNewMoney().trim();
                         money1 = newMoney.split("[|]+");
                     }
 
 //                    Log.d(TAG,"7777"+money1[0]);
 
-                    returnAccessoryAdapter = new ReturnAccessoryAdapter(R.layout.item_returned, data.getOrderAccessroyDetail(), Integer.parseInt(data.getAccessoryState()), content,money1);
+                    returnAccessoryAdapter = new ReturnAccessoryAdapter(R.layout.item_returned, data.getOrderAccessroyDetail(), Integer.parseInt(data.getAccessoryState()), content, money1);
                     mRvReturnInformation.setLayoutManager(new LinearLayoutManager(mActivity));
                     mRvReturnInformation.setAdapter(returnAccessoryAdapter);
                     if (data.getOrderAccessroyDetail().size() > 0) {
-                        for (int i=0;i<data.getOrderAccessroyDetail().size();i++){
+                        for (int i = 0; i < data.getOrderAccessroyDetail().size(); i++) {
                             if ("".equals(data.getOrderAccessroyDetail().get(0).getExpressNo())) {
 
-                            }else {
+                            } else {
                                 expressType = 2;
                                 mPresenter.GetExpressInfo(data.getOrderAccessroyDetail().get(0).getExpressNo());
                             }
@@ -1892,7 +1958,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     returnAccessoryAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
                         @Override
                         public void onItemChildClick(BaseQuickAdapter adapter, View view, final int position) {
-                            switch (view.getId()){
+                            switch (view.getId()) {
                                 case R.id.tv_pass:
                                     reject = new CommonDialog_Home(mActivity);
                                     reject.setMessage("该金额会在返旧件后解冻，是否同意冻结金额？")
@@ -1903,7 +1969,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                                         @Override
                                         public void onPositiveClick() {
                                             reject.dismiss();
-                                            mPresenter.ConfirmtoFreezeByOrderID(OrderID, "1",String.valueOf(data.getOrderAccessroyDetail().get(position).getId()));
+                                            mPresenter.ConfirmtoFreezeByOrderID(OrderID, "1", String.valueOf(data.getOrderAccessroyDetail().get(position).getId()));
                                         }
 
                                         @Override
@@ -1922,7 +1988,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                                         @Override
                                         public void onPositiveClick() {
                                             reject.dismiss();
-                                            mPresenter.ConfirmtoFreezeByOrderID(OrderID, "2",String.valueOf(data.getOrderAccessroyDetail().get(position).getId()));
+                                            mPresenter.ConfirmtoFreezeByOrderID(OrderID, "2", String.valueOf(data.getOrderAccessroyDetail().get(position).getId()));
                                         }
 
                                         @Override
@@ -2039,16 +2105,16 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         List<String> list = new ArrayList<>();
                         for (int i = 0; i < data.getReturnaccessoryImg().size(); i++) {
                             if ("img1".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
-                                Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl()).into(mIvBarCode);
+                                Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl()).into(mIvBarCode);
                             }
                             if ("img2".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
-                                Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl()).into(mIvMachine);
+                                Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl()).into(mIvMachine);
                             }
                             if ("img3".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
-                                Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl()).into(mIvFaultLocation);
+                                Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl()).into(mIvFaultLocation);
                             }
                             if ("img4".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
-                                Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl()).into(mIvNewAndOldAccessories);
+                                Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl()).into(mIvNewAndOldAccessories);
                             }
                             list.add(data.getReturnaccessoryImg().get(i).getRelation());
                         }
@@ -2064,25 +2130,25 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         if (!list.contains("img4")) {
                             mLlNewAndOldAccessories.setVisibility(View.GONE);
                         }
-//                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(1).getUrl()).into(mIvMachine);
-//                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(2).getUrl()).into(mIvFaultLocation);
-//                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(3).getUrl()).into(mIvNewAndOldAccessories);
+//                        Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(1).getUrl()).into(mIvMachine);
+//                        Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(2).getUrl()).into(mIvFaultLocation);
+//                        Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(3).getUrl()).into(mIvNewAndOldAccessories);
                     } else {
                         List<String> list = new ArrayList<>();
                         for (int i = 0; i < data.getReturnaccessoryImg().size(); i++) {
                             if ("img1".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
-                                Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(0).getUrl()).into(mIvBarCode);
+                                Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(0).getUrl()).into(mIvBarCode);
                             }
                             if ("img2".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
-                                Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(1).getUrl()).into(mIvMachine);
+                                Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(1).getUrl()).into(mIvMachine);
 
                             }
                             if ("img3".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
-                                Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(2).getUrl()).into(mIvFaultLocation);
+                                Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(2).getUrl()).into(mIvFaultLocation);
 
                             }
                             if ("img4".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
-                                Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(3).getUrl()).into(mIvNewAndOldAccessories);
+                                Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(3).getUrl()).into(mIvNewAndOldAccessories);
 
                             }
                             list.add(data.getReturnaccessoryImg().get(i).getRelation());
@@ -2133,16 +2199,16 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         List<String> list = new ArrayList<>();
                         for (int i = 0; i < data.getReturnaccessoryImg().size(); i++) {
                             if ("img1".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
-                                Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl()).into(mIvBarCode);
+                                Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl()).into(mIvBarCode);
                             }
                             if ("img2".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
-                                Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl()).into(mIvMachine);
+                                Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl()).into(mIvMachine);
                             }
                             if ("img3".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
-                                Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl()).into(mIvFaultLocation);
+                                Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl()).into(mIvFaultLocation);
                             }
                             if ("img4".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
-                                Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl()).into(mIvNewAndOldAccessories);
+                                Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl()).into(mIvNewAndOldAccessories);
                             }
                             list.add(data.getReturnaccessoryImg().get(i).getRelation());
                         }
@@ -2158,15 +2224,15 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         if (!list.contains("img4")) {
                             mLlNewAndOldAccessories.setVisibility(View.GONE);
                         }
-//                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(0).getUrl()).into(mIvBarCode);
-//                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(1).getUrl()).into(mIvMachine);
-//                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(2).getUrl()).into(mIvFaultLocation);
-//                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(3).getUrl()).into(mIvNewAndOldAccessories);
+//                        Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(0).getUrl()).into(mIvBarCode);
+//                        Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(1).getUrl()).into(mIvMachine);
+//                        Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(2).getUrl()).into(mIvFaultLocation);
+//                        Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(3).getUrl()).into(mIvNewAndOldAccessories);
                     } else {
-                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/FinishOrder/" + data.getOrderImg().get(0).getUrl()).into(mIvBarCode);
-                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/FinishOrder/" + data.getOrderImg().get(1).getUrl()).into(mIvMachine);
-                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/FinishOrder/" + data.getOrderImg().get(2).getUrl()).into(mIvFaultLocation);
-                        Glide.with(mActivity).load("http://47.96.126.145:8820/Pics/FinishOrder/" + data.getOrderImg().get(3).getUrl()).into(mIvNewAndOldAccessories);
+                        Glide.with(mActivity).load("https://img.xigyu.com/Pics/FinishOrder/" + data.getOrderImg().get(0).getUrl()).into(mIvBarCode);
+                        Glide.with(mActivity).load("https://img.xigyu.com/Pics/FinishOrder/" + data.getOrderImg().get(1).getUrl()).into(mIvMachine);
+                        Glide.with(mActivity).load("https://img.xigyu.com/Pics/FinishOrder/" + data.getOrderImg().get(2).getUrl()).into(mIvFaultLocation);
+                        Glide.with(mActivity).load("https://img.xigyu.com/Pics/FinishOrder/" + data.getOrderImg().get(3).getUrl()).into(mIvNewAndOldAccessories);
                         mLlOldAccessory.setVisibility(View.GONE);
                     }
                 } else {
@@ -2315,7 +2381,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         negtive = customdialog_home_view.findViewById(R.id.negtive);
                         positive = customdialog_home_view.findViewById(R.id.positive);
                         title.setText("温馨提示");
-                        message.setText(baseResult.getData().getItem2()+"。当工单完结后返还，是否充值？");
+                        message.setText(baseResult.getData().getItem2() + "。当工单完结后返还，是否充值？");
                         negtive.setText("否");
                         positive.setText("是");
                         negtive.setOnClickListener(new View.OnClickListener() {
@@ -2553,7 +2619,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 if (data.isItem1()) {
                     push_dialog.dismiss();
                     ToastUtils.showShort("提交成功");
-                    mPresenter.UpdateOrderState(OrderID, "5");
+                    mPresenter.UpdateOrderState(OrderID, "5", "");
                 } else {
                     ToastUtils.showShort(data.getItem2());
                 }
@@ -2933,18 +2999,18 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
 
 
 
-                /*获取返回的配件*/
+            /*获取返回的配件*/
             case Config.APPLY_REQUEST:
-                if (resultCode==Config.APPLY_RESULT){
-                   ArrayList<Accessory>list= (ArrayList<Accessory>) data.getSerializableExtra("list_collect");
+                if (resultCode == Config.APPLY_RESULT) {
+                    ArrayList<Accessory> list = (ArrayList<Accessory>) data.getSerializableExtra("list_collect");
                     fAcList.clear();
-                      /*商城*/
+                    /*商城*/
                     for (int i = 0; i < list.size(); i++) {
                         mfAccessory = new FAccessory.OrderAccessoryStrBean.OrderAccessoryBean();
                         mfAccessory.setFAccessoryID(list.get(i).getFAccessoryID());//获取id
                         mfAccessory.setFAccessoryName(list.get(i).getAccessoryName()); //获取名字
-                        mfAccessory.setFCategoryID(list.get(i).getFCategoryID()+""); //分类id
-                        mfAccessory.setQuantity(list.get(i).getCount()+""); //数量 默认数字为1
+                        mfAccessory.setFCategoryID(list.get(i).getFCategoryID() + ""); //分类id
+                        mfAccessory.setQuantity(list.get(i).getCount() + ""); //数量 默认数字为1
                         mfAccessory.setPrice(Double.valueOf("0"));//原价
                         mfAccessory.setDiscountPrice(Double.valueOf("0"));//折扣价
                         mfAccessory.setSizeID("1");//小修中修大修
@@ -2961,10 +3027,26 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         fAcList.add(mfAccessory);
                     }
                     mPre_order_add_ac_adapter.notifyDataSetChanged();
-
+                    if (mPre_order_add_ac_adapter.getData().size() > 0) {
+                        mTvSubmitAddAccessories.setBackgroundResource(R.drawable.ed_order_detail_submit);
+                        mTvSubmitAddAccessories.setTextColor(Color.WHITE);
+                    } else {
+                        mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
+                        mTvSubmitAddAccessories.setTextColor(Color.parseColor("#6a6a6a"));
+                    }
                 }
                 break;
 
+        }
+
+        if (requestCode == 100) {
+            if (data != null) {
+                AddressList address = (AddressList) data.getSerializableExtra("address");
+                if (address != null) {
+                    AddressBack =address.getProvince()+address.getCity()+address.getArea()+address.getDistrict()+ address.getAddress() + "(" + address.getUserName() + "收)" + address.getPhone();
+                    mTvAddressReturn.setText(AddressBack);
+                }
+            }
         }
 
     }
@@ -3034,7 +3116,6 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         timeSelector.setTitle(title);
         timeSelector.show();
     }
-
 
 
 }

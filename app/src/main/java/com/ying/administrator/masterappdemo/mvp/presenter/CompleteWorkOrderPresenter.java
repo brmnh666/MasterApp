@@ -65,8 +65,8 @@ public class CompleteWorkOrderPresenter extends CompleteWorkOrderContract.Presen
     }*/
 
     @Override
-    public void UpdateOrderState(String OrderID, String State) {
-        mModel.UpdateOrderState(OrderID,State).subscribe(new BaseObserver<Data<String>>() {
+    public void UpdateOrderState(String OrderID, String State,String Reason) {
+        mModel.UpdateOrderState(OrderID,State,Reason).subscribe(new BaseObserver<Data<String>>() {
             @Override
             protected void onHandleSuccess(BaseResult<Data<String>> value) {
                 mView.UpdateOrderState(value);

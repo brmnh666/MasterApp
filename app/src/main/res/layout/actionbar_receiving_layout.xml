@@ -53,4 +53,16 @@
         android:visibility="gone"
         android:src="@mipmap/icon_actionbar_message"
         />
+
+    <TextView
+        android:id="@+id/tv_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true"
+        android:text="留言"
+        android:layout_marginRight="16dp"
+        android:textColor="@color/white"
+        android:padding="10dp"
+        android:visibility="gone"/>
 </RelativeLayout>

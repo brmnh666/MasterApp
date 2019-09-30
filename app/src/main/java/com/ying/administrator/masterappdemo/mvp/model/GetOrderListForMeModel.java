@@ -62,8 +62,8 @@ public class GetOrderListForMeModel implements GetOrderListForMeContract.Model {
     }
 
     @Override
-    public Observable<BaseResult<Data>> UpdateSendOrderState(String OrderID, String State) {
-        return ApiRetrofit.getDefault().UpdateSendOrderState(OrderID,State)
+    public Observable<BaseResult<Data>> UpdateSendOrderState(String OrderID, String State,String Reason) {
+        return ApiRetrofit.getDefault().UpdateSendOrderState(OrderID,State,Reason)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }
@@ -107,6 +107,13 @@ public class GetOrderListForMeModel implements GetOrderListForMeContract.Model {
     @Override
     public Observable<BaseResult<Data<String>>> WorkerComplaint(String OrderID, String Content) {
         return ApiRetrofit.getDefault().WorkerComplaint(OrderID, Content)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<BaseResult<Data<String>>> UpdateOrderState(String OrderID, String State, String Reason) {
+        return ApiRetrofit.getDefault().UpdateOrderState(OrderID, State, Reason)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

@@ -81,8 +81,8 @@ public class GetOrderListForMePresenter extends GetOrderListForMeContract.Presen
     }
 
     @Override
-    public void UpdateSendOrderState(String OrderID, String State) {
-        mModel.UpdateSendOrderState(OrderID,State)
+    public void UpdateSendOrderState(String OrderID, String State,String Reason) {
+        mModel.UpdateSendOrderState(OrderID,State,Reason)
                 .subscribe(new BaseObserver<Data>() {
                     @Override
                     protected void onHandleSuccess(BaseResult<Data> value) {
@@ -153,6 +153,17 @@ public class GetOrderListForMePresenter extends GetOrderListForMeContract.Presen
                     @Override
                     protected void onHandleSuccess(BaseResult<Data<String>> value) {
                         mView.WorkerComplaint(value);
+                    }
+                });
+    }
+
+    @Override
+    public void UpdateOrderState(String OrderID, String State, String Reason) {
+        mModel.UpdateOrderState(OrderID, State, Reason)
+                .subscribe(new BaseObserver<Data<String>>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<Data<String>> value) {
+                        mView.UpdateOrderState(value);
                     }
                 });
     }

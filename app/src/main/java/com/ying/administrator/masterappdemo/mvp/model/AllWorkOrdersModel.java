@@ -23,8 +23,8 @@ public class AllWorkOrdersModel implements AllWorkOrdersContract.Model {
 
     /*接单操作*/
     @Override
-    public Observable<BaseResult<Data>> UpdateSendOrderState(String OrderID, String State) {
-        return ApiRetrofit.getDefault().UpdateSendOrderState(OrderID,State)
+    public Observable<BaseResult<Data>> UpdateSendOrderState(String OrderID, String State,String Reason) {
+        return ApiRetrofit.getDefault().UpdateSendOrderState(OrderID,State,Reason)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

@@ -80,8 +80,8 @@
                         android:id="@+id/ll_nickname"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="17dp"
-                        android:layout_marginBottom="21dp"
+                        android:paddingTop="17dp"
+                        android:paddingBottom="21dp"
                         android:orientation="horizontal"
                         android:paddingLeft="14dp"
                         android:paddingRight="14dp">
@@ -118,7 +118,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="17dp"
+                        android:paddingTop="17dp"
+                        android:paddingBottom="11dp"
                         android:orientation="horizontal"
                         android:paddingLeft="14dp"
                         android:paddingRight="14dp">
@@ -208,7 +209,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginLeft="14dp"
-                        android:layout_marginTop="11dp"
                         android:layout_marginRight="14dp"
                         android:background="#E4E4E4" />
 
@@ -216,8 +216,8 @@
                         android:id="@+id/ll_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="17dp"
-                        android:layout_marginBottom="19dp"
+                        android:paddingTop="17dp"
+                        android:paddingBottom="19dp"
                         android:orientation="horizontal"
                         android:paddingLeft="14dp"
                         android:paddingRight="14dp">
@@ -227,7 +227,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_weight="1"
-                            android:text="修改密码"
+                            android:text="账户与安全"
                             android:textColor="#858585"
                             android:textSize="14sp" />
 
@@ -247,7 +247,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="17dp"
+                        android:paddingTop="17dp"
+                        android:paddingBottom="11dp"
                         android:orientation="horizontal"
                         android:paddingLeft="14dp"
                         android:paddingRight="14dp">
@@ -274,7 +275,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginLeft="14dp"
-                        android:layout_marginTop="11dp"
                         android:layout_marginRight="14dp"
                         android:background="#E4E4E4" />
                     <LinearLayout
@@ -317,15 +317,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/color_white"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:paddingTop="17dp"
+                        android:paddingBottom="15dp">
 
                         <TextView
                             android:id="@+id/tv_codestr"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="17dp"
-                            android:layout_marginTop="19dp"
-                            android:layout_marginBottom="15dp"
                             android:layout_weight="1"
                             android:text="修改服务区域"
                             android:textColor="#858585"
@@ -425,7 +425,8 @@
                         android:id="@+id/ll_shop_address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="17dp"
+                        android:paddingTop="17dp"
+                        android:paddingBottom="14dp"
                         android:orientation="horizontal"
                         android:paddingLeft="14dp"
                         android:paddingRight="14dp">
@@ -454,13 +455,13 @@
                         android:layout_height="1dp"
                         android:layout_marginLeft="14dp"
                         android:layout_marginRight="14dp"
-                        android:layout_marginTop="14dp"
                         android:background="#E4E4E4" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="17dp"
+                        android:paddingTop="17dp"
+                        android:paddingBottom="14dp"
                         android:orientation="horizontal"
                         android:paddingLeft="14dp"
                         android:paddingRight="14dp">
@@ -544,14 +545,14 @@
                         android:layout_height="1dp"
                         android:layout_marginLeft="14dp"
                         android:layout_marginRight="14dp"
-                        android:layout_marginTop="14dp"
                         android:background="#E4E4E4" />
 
                     <LinearLayout
                         android:id="@+id/ll_my_skills"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="17dp"
+                        android:paddingTop="17dp"
+                        android:paddingBottom="14dp"
                         android:orientation="horizontal"
                         android:paddingLeft="14dp"
                         android:paddingRight="14dp">
@@ -581,13 +582,12 @@
                             android:src="@mipmap/right_arrow" />
                     </LinearLayout>
 
-                   <View
+                    <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginLeft="14dp"
-                        android:layout_marginTop="14dp"
-                        />
-<!--
+                        android:layout_marginRight="14dp"
+                        android:background="#E4E4E4" />
                     <LinearLayout
                         android:id="@+id/ll_recipient_address"
                         android:layout_width="match_parent"
@@ -611,7 +611,7 @@
                             android:id="@+id/tv_recipient_address"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="未填写"
+                            android:text=""
                             android:textColor="#858585"
                             android:textSize="14sp" />
 
@@ -621,7 +621,7 @@
                             android:layout_gravity="center"
                             android:layout_marginLeft="6dp"
                             android:src="@mipmap/right_arrow" />
-                    </LinearLayout>-->
+                    </LinearLayout>
                 </LinearLayout>
             </FrameLayout>
 

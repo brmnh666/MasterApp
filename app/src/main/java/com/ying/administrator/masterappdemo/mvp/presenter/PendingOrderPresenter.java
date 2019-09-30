@@ -3,6 +3,7 @@ package com.ying.administrator.masterappdemo.mvp.presenter;
 import com.ying.administrator.masterappdemo.base.BaseObserver;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Accessory;
+import com.ying.administrator.masterappdemo.entity.AddressList;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.GAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
@@ -177,8 +178,8 @@ public class PendingOrderPresenter extends PendingOrderContract.Presenter {
         });
     }
     @Override
-    public void UpdateOrderState(String OrderID, String State) {
-        mModel.UpdateOrderState(OrderID,State).subscribe(new BaseObserver<Data<String>>() {
+    public void UpdateOrderState(String OrderID, String State,String Reason) {
+        mModel.UpdateOrderState(OrderID,State,Reason).subscribe(new BaseObserver<Data<String>>() {
             @Override
             protected void onHandleSuccess(BaseResult<Data<String>> value) {
                 mView.UpdateOrderState(value);
@@ -202,6 +203,28 @@ public class PendingOrderPresenter extends PendingOrderContract.Presenter {
                     @Override
                     protected void onHandleSuccess(BaseResult<Data<List<Logistics>>> value) {
                         mView.GetExpressInfo(value);
+                    }
+                });
+    }
+
+    @Override
+    public void GetAccountAddress(String UserId) {
+        mModel.GetAccountAddress(UserId)
+                .subscribe(new BaseObserver<List<AddressList>>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<List<AddressList>> value) {
+                        mView.GetAccountAddress(value);
+                    }
+                });
+    }
+
+    @Override
+    public void UpdateOrderAddressByOrderID(String OrderID, String SendAddress) {
+        mModel.UpdateOrderAddressByOrderID(OrderID, SendAddress)
+                .subscribe(new BaseObserver<Data<String>>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<Data<String>> value) {
+                        mView.UpdateOrderAddressByOrderID(value);
                     }
                 });
     }
