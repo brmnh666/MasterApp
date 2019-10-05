@@ -656,7 +656,7 @@
 
                         <TextView
                             android:id="@+id/tv_submit_add_accessories"
-                            android:layout_width="87dp"
+                            android:layout_width="wrap_content"
                             android:gravity="center"
                             android:layout_height="40dp"
                             android:layout_gravity="center"
@@ -1046,7 +1046,7 @@
 
                         <TextView
                             android:id="@+id/tv_submit_add_service"
-                            android:layout_width="87dp"
+                            android:layout_width="wrap_content"
                             android:gravity="center"
                             android:layout_height="40dp"
                             android:layout_gravity="center"
@@ -1325,7 +1325,7 @@
 
                     <TextView
                         android:id="@+id/tv_submit_beyond"
-                        android:layout_width="87dp"
+                        android:layout_width="wrap_content"
                         android:gravity="center"
                         android:layout_height="40dp"
                         android:layout_gravity="center"
