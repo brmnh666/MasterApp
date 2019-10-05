@@ -80,6 +80,24 @@ public class FAccessory implements Serializable {
             private double Price;
             private double DiscountPrice;
             private String NeedPlatformAuth;
+            private String Photo1;
+            private String Photo2;
+
+            public String getPhoto1() {
+                return Photo1;
+            }
+
+            public void setPhoto1(String photo1) {
+                Photo1 = photo1;
+            }
+
+            public String getPhoto2() {
+                return Photo2;
+            }
+
+            public void setPhoto2(String photo2) {
+                Photo2 = photo2;
+            }
 
             public String getNeedPlatformAuth() {
                 return NeedPlatformAuth;

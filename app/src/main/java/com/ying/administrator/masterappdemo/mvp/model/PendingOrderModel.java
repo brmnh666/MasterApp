@@ -5,6 +5,7 @@ import com.ying.administrator.masterappdemo.entity.Accessory;
 import com.ying.administrator.masterappdemo.entity.Address;
 import com.ying.administrator.masterappdemo.entity.AddressList;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.Data2;
 import com.ying.administrator.masterappdemo.entity.GAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
 import com.ying.administrator.masterappdemo.entity.Logistics;
@@ -107,7 +108,7 @@ public class PendingOrderModel implements PendingOrderContract.Model {
     }
 
     @Override
-    public Observable<BaseResult<Data<String>>> ApplyAccessoryphotoUpload(RequestBody json) {
+    public Observable<BaseResult<Data2>> ApplyAccessoryphotoUpload(RequestBody json) {
         return ApiRetrofit.getDefault().ApplyAccessoryphotoUpload(json)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());

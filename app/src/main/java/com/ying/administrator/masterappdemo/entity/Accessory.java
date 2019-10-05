@@ -1,5 +1,6 @@
 package com.ying.administrator.masterappdemo.entity;
 
+import java.io.File;
 import java.io.Serializable;
 
 public class Accessory implements Serializable {
@@ -41,6 +42,24 @@ public class Accessory implements Serializable {
     private int page;
     private int limit;
     private int Version;
+    private String Img1;//配件照片
+    private String Img2;//整机照片
+
+    public String getImg1() {
+        return Img1;
+    }
+
+    public void setImg1(String img1) {
+        Img1 = img1;
+    }
+
+    public String getImg2() {
+        return Img2;
+    }
+
+    public void setImg2(String img2) {
+        Img2 = img2;
+    }
 
     public int getCount() {
         return count;

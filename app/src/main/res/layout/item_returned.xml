@@ -23,15 +23,29 @@
                 android:id="@+id/tv_accessory_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:text="定时器按钮"
                 android:textColor="#6A6A6A"
                 android:textSize="16sp"
                 android:layout_marginLeft="10dp"/>
+            <ImageView
+                android:id="@+id/photo1"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_margin="@dimen/dp_10"
+                android:scaleType="fitXY"/>
+            <ImageView
+                android:id="@+id/photo2"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_margin="@dimen/dp_10"
+                android:scaleType="fitXY"/>
             <LinearLayout
                 android:id="@+id/ll_state_y"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:orientation="horizontal">
                 <ImageView
                     android:layout_width="14dp"
@@ -115,10 +129,23 @@
                 android:textSize="16sp"
                 android:layout_marginLeft="10dp"
                 android:layout_gravity="center"/>
+            <ImageView
+                android:id="@+id/iv_photo1"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_margin="@dimen/dp_10"
+                android:scaleType="fitXY"/>
+            <ImageView
+                android:id="@+id/iv_photo2"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_margin="@dimen/dp_10"
+                android:scaleType="fitXY"/>
             <LinearLayout
                 android:id="@+id/ll_state_n"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:orientation="horizontal">
                 <ImageView
                     android:layout_width="14dp"

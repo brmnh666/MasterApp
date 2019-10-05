@@ -60,6 +60,7 @@ import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Accessory;
 import com.ying.administrator.masterappdemo.entity.AddressList;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.Data2;
 import com.ying.administrator.masterappdemo.entity.FAccessory;
 import com.ying.administrator.masterappdemo.entity.FService;
 import com.ying.administrator.masterappdemo.entity.GAccessory;
@@ -1570,7 +1571,7 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
     }
 
     @Override
-    public void ApplyAccessoryphotoUpload(BaseResult<Data<String>> baseResult) {
+    public void ApplyAccessoryphotoUpload(BaseResult<Data2> baseResult) {
 
     }
 

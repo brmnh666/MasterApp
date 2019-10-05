@@ -4,6 +4,7 @@ import com.blankj.utilcode.util.SPUtils;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -16,6 +17,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 * */
 public class Config {
 //    public static final String BASE_URL = "http://192.168.101.11:8810/api/";//服务端地址
+//    public static final String BASE_URL = "http://42.51.69.35:8810/api/";//MARK:工厂师傅测试服
     public static final String BASE_URL = "https://api.xigyu.com/api/";//服务端地址
 //    public static final String BASE_URL = "http://admin.xigyu.com/api/";//服务端地址
     public static final String HEAD_URL="https://img.xigyu.com/Pics/Avator/";//头像地址
@@ -81,10 +83,14 @@ public class Config {
         spUtils = SPUtils.getInstance("token");
         if (spUtils.getString("userName")==null){
             client = new OkHttpClient.Builder()
+                    .connectTimeout(30, TimeUnit.SECONDS)
+                    .readTimeout(30, TimeUnit.SECONDS)
                     .addInterceptor(getLoggingInterceptor())
                     .build();
         }else{
             client = new OkHttpClient.Builder()
+                    .connectTimeout(30, TimeUnit.SECONDS)
+                    .readTimeout(30, TimeUnit.SECONDS)
                     .addInterceptor(getInterceptor())
                     .addInterceptor(getLoggingInterceptor())
                     .build();

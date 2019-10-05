@@ -5,6 +5,7 @@ import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Accessory;
 import com.ying.administrator.masterappdemo.entity.AddressList;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.Data2;
 import com.ying.administrator.masterappdemo.entity.GAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
 import com.ying.administrator.masterappdemo.entity.Logistics;
@@ -141,9 +142,9 @@ public class PendingOrderPresenter extends PendingOrderContract.Presenter {
 
     @Override
     public void ApplyAccessoryphotoUpload(RequestBody json) {
-        mModel.ApplyAccessoryphotoUpload(json).subscribe(new BaseObserver<Data<String>>() {
+        mModel.ApplyAccessoryphotoUpload(json).subscribe(new BaseObserver<Data2>() {
             @Override
-            protected void onHandleSuccess(BaseResult<Data<String>> value) {
+            protected void onHandleSuccess(BaseResult<Data2> value) {
                 mView.ApplyAccessoryphotoUpload(value);
             }
         });

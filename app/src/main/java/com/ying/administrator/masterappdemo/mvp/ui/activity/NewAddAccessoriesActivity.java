@@ -1,17 +1,29 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
+import android.support.annotation.RequiresApi;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,27 +39,40 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.ToastUtils;
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.lxj.xpopup.XPopup;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.Accessory;
+import com.ying.administrator.masterappdemo.entity.AddressList;
+import com.ying.administrator.masterappdemo.entity.Data2;
 import com.ying.administrator.masterappdemo.entity.FAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
 import com.ying.administrator.masterappdemo.mvp.contract.NewAddAccessoriesContract;
 import com.ying.administrator.masterappdemo.mvp.model.NewAddAccessoriesModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.NewAddAccessoriesPresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.NewAddAccessoriesAdapter;
+import com.ying.administrator.masterappdemo.util.Glide4Engine;
+import com.ying.administrator.masterappdemo.util.MyUtils;
+import com.ying.administrator.masterappdemo.util.imageutil.CompressHelper;
 import com.ying.administrator.masterappdemo.widget.MyPackagePopup;
+import com.zhihu.matisse.Matisse;
+import com.zhihu.matisse.MimeType;
 import com.zyao89.view.zloading.ZLoadingDialog;
 import com.zyao89.view.zloading.Z_TYPE;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -61,6 +86,9 @@ import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 //  ┏┓　　　┏┓
 //┏┛┻━━━┛┻┓
@@ -137,6 +165,20 @@ public class NewAddAccessoriesActivity extends BaseActivity<NewAddAccessoriesPre
 
     private ZLoadingDialog dialog = new ZLoadingDialog(this); //loading
     private AlertDialog underReviewDialog;
+    private View popupWindow_view;
+    private String FilePath;
+    private PopupWindow mPopupWindow;
+    private ArrayList<Object> permissions;
+    private ImageView iv_host;
+    private ImageView iv_accessories;
+    private List<Uri> mSelected;
+    private Uri uri;
+    private View addpic_view;
+    private AlertDialog addpic_dialog;
+    private HashMap<Integer, File> accessories_picture=new HashMap<>();
+    private String count;
+    private int position;
+    private View addview;
 
     @Override
     protected int setLayoutId() {
@@ -198,41 +240,69 @@ public class NewAddAccessoriesActivity extends BaseActivity<NewAddAccessoriesPre
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 switch (view.getId()) {
                     case R.id.img_add:
-                        num++;//背包内数量+1
-                        if (map_collect.get(position) == null) {
-                            map_collect.put(position, ((Accessory) adapter.getData().get(position)));
-                        } else {
-                            int count = map_collect.get(position).getCount();
-                            count++;
-                            map_collect.get(position).setCount(count);
-                        }
-
-                        list_collect.clear();
-                        //将map对象转为list
-                        Collection<Accessory> collection = map_collect.values();
-                        Iterator<Accessory> iterator = collection.iterator();
-                        while (iterator.hasNext()) {
-                            Accessory value = (Accessory) iterator.next();
-                            list_collect.add(value);
-                        }
-
-                        startLocation = new int[2];// 一个整型数组，用来存储按钮的在屏幕的X、Y坐标
-                        view.getLocationInWindow(startLocation);// 这是获取购买按钮的在屏幕的X、Y坐标（这也是动画开始的坐标）
-                        ball = new ImageView(NewAddAccessoriesActivity.this);// buyImg是动画的图片，我的是一个小球（R.drawable.sign）
-                        getBallImageResource(ball);
-
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                handler.sendEmptyMessage(0);
-                            }
-                        }).start();
+                        addPic(view, position);
                         break;
 
                 }
             }
         });
 
+    }
+
+    /**
+     * 添加配件图片
+     */
+    public void addPic(final View view, final int position){
+        addview =view;
+        this.position = position;
+        addpic_view = LayoutInflater.from(mActivity).inflate(R.layout.addpic, null);
+        Button btn_negtive = addpic_view.findViewById(R.id.negtive);
+        Button btn_positive = addpic_view.findViewById(R.id.positive);
+        LinearLayout ll_host = addpic_view.findViewById(R.id.ll_host);
+        LinearLayout ll_accessories = addpic_view.findViewById(R.id.ll_accessories);
+        final EditText et_count = addpic_view.findViewById(R.id.et_count);
+        iv_host = addpic_view.findViewById(R.id.iv_host);
+        iv_accessories = addpic_view.findViewById(R.id.iv_accessories);
+        ll_host.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showPopupWindow(801,809);
+            }
+        });
+        ll_accessories.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showPopupWindow(901,909);
+            }
+        });
+        addpic_dialog = new AlertDialog.Builder(mActivity)
+                .setView(addpic_view)
+                .create();
+        addpic_dialog.show();
+        btn_negtive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addpic_dialog.dismiss();
+            }
+        });
+        btn_positive.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onClick(View v) {
+                if(accessories_picture.size()!=2){
+                    ToastUtils.showShort("请添加图片");
+                    return;
+                }
+                count = et_count.getText().toString();
+                if(count.isEmpty()){
+                    ToastUtils.showShort("请输入配件数量");
+                    return;
+                }else{
+                    ApplyAccessoryphotoUpload(accessories_picture);
+                }
+
+            }
+        });
     }
 
     /*获取配件*/
@@ -249,6 +319,44 @@ public class NewAddAccessoriesActivity extends BaseActivity<NewAddAccessoriesPre
                 break;
         }
 
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void ApplyAccessoryphotoUpload(BaseResult<Data2> baseResult) {
+        if(baseResult.getStatusCode()==200){
+            Accessory acc=newAddAccessoriesAdapter.getData().get(position);
+            acc.setCount(Integer.parseInt(count));
+            acc.setImg1(baseResult.getData().getItem1());
+            acc.setImg2(baseResult.getData().getItem2());
+            if (map_collect.get(position) == null) {
+                map_collect.put(position, acc);
+                num=num+Integer.parseInt(count);
+            } else {
+                map_collect.replace(position,acc);
+            }
+            list_collect.clear();
+            //将map对象转为list
+            Collection<Accessory> collection = map_collect.values();
+            Iterator<Accessory> iterator = collection.iterator();
+            while (iterator.hasNext()) {
+                Accessory value = iterator.next();
+                list_collect.add(value);
+            }
+
+            startLocation = new int[2];// 一个整型数组，用来存储按钮的在屏幕的X、Y坐标
+            addview.getLocationInWindow(startLocation);// 这是获取购买按钮的在屏幕的X、Y坐标（这也是动画开始的坐标）
+            ball = new ImageView(NewAddAccessoriesActivity.this);// buyImg是动画的图片，我的是一个小球（R.drawable.sign）
+            getBallImageResource(ball);
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    handler.sendEmptyMessage(0);
+                }
+            }).start();
+            addpic_dialog.dismiss();
+        }
     }
 
     public List searchAccessory(String name, List list) {
@@ -483,11 +591,194 @@ public class NewAddAccessoriesActivity extends BaseActivity<NewAddAccessoriesPre
 
 
     }
+    /**
+     * 弹出Popupwindow
+     */
+    public void showPopupWindow(final int code1, final int code2) {
+        popupWindow_view = LayoutInflater.from(mActivity).inflate(R.layout.camera_layout, null);
+        Button camera_btn = popupWindow_view.findViewById(R.id.camera_btn);
+        Button photo_btn = popupWindow_view.findViewById(R.id.photo_btn);
+        Button cancel_btn = popupWindow_view.findViewById(R.id.cancel_btn);
+        camera_btn.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onClick(View view) {
+                if (requestPermissions()) {
+                    Intent intent = new Intent();
+                    // 指定开启系统相机的Action
+                    intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+                    intent.addCategory(Intent.CATEGORY_DEFAULT);
+                    String f = System.currentTimeMillis() + ".jpg";
+                    String fileDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy";
+                    FilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy/" + f;
+                    File dirfile = new File(fileDir);
+                    if (!dirfile.exists()) {
+                        dirfile.mkdirs();
+                    }
+                    File file = new File(FilePath);
+                    Uri fileUri;
+                    if (Build.VERSION.SDK_INT >= 24) {
+                        fileUri = FileProvider.getUriForFile(mActivity, "com.ying.administrator.masterappdemo.fileProvider", file);
+                    } else {
+                        fileUri = Uri.fromFile(file);
+                    }
 
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+                    startActivityForResult(intent, code1);
+                } else {
+                    requestPermissions(permissions.toArray(new String[permissions.size()]), 10001);
+                }
+                mPopupWindow.dismiss();
+            }
+        });
+        photo_btn.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onClick(View view) {
+                if (requestPermissions()) {
+//                    Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+//                    i.addCategory(Intent.CATEGORY_OPENABLE);
+//                    i.setType("image/*");
+//                    startActivityForResult(Intent.createChooser(i, "test"), code2);
+                    Matisse.from(NewAddAccessoriesActivity.this)
+                            .choose(MimeType.ofImage())
+                            .countable(true)
+                            .maxSelectable(1)
+//                            .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
+//                            .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
+                            .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                            .thumbnailScale(0.85f)
+                            .imageEngine(new Glide4Engine())
+                            .forResult(code2);
+                    mPopupWindow.dismiss();
+                } else {
+                    requestPermissions(permissions.toArray(new String[permissions.size()]), 10002);
+                }
+
+            }
+        });
+        cancel_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPopupWindow.dismiss();
+            }
+        });
+        mPopupWindow = new PopupWindow(popupWindow_view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        mPopupWindow.setAnimationStyle(R.style.popwindow_anim_style);
+        mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+        mPopupWindow.setFocusable(true);
+        mPopupWindow.setOutsideTouchable(true);
+        mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                MyUtils.setWindowAlpa(mActivity, false);
+            }
+        });
+        if (mPopupWindow != null && !mPopupWindow.isShowing()) {
+//            popupWindow.showAsDropDown(tv, 0, 10);
+            mPopupWindow.showAtLocation(addpic_dialog.getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
+//            MyUtils.backgroundAlpha(mActivity,0.5f);
+        }
+        MyUtils.setWindowAlpa(mActivity, true);
+    }
+
+    //请求权限
+    private boolean requestPermissions() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            permissions = new ArrayList<>();
+            if (mActivity.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+            }
+            if (mActivity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            }
+            if (mActivity.checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                permissions.add(Manifest.permission.CAMERA);
+            }
+            if (permissions.size() == 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    //返回图片处理
+    @SuppressLint("NewApi")
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        File file = null;
+        switch (requestCode) {
+            //====配件照片
+            //拍照
+            case 801:
+                if (resultCode == -1) {
+                    Glide.with(mActivity).load(FilePath).into(iv_host);
+                    file = new File(FilePath);
+                }
+                if (file != null) {
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    accessories_picture.put(0, newFile);
+                }
+                break;
+            //相册
+            case 809:
+                if (data != null) {
+                    mSelected = Matisse.obtainResult(data);
+                    if (mSelected.size() == 1) {
+                        uri = mSelected.get(0);
+                    }
+                    Glide.with(mActivity).load(uri).into(iv_host);
+                    file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
+                }
+                if (file != null) {
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    accessories_picture.put(0, newFile);
+                }
+                break;
+             //=====整机照片
+            //拍照
+            case 901:
+                if (resultCode == -1) {
+                    Glide.with(mActivity).load(FilePath).into(iv_accessories);
+                    file = new File(FilePath);
+                }
+                if (file != null) {
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    accessories_picture.put(1, newFile);
+                }
+                break;
+            //相册
+            case 909:
+                if (data != null) {
+                    mSelected = Matisse.obtainResult(data);
+                    if (mSelected.size() == 1) {
+                        uri = mSelected.get(0);
+                    }
+                    Glide.with(mActivity).load(uri).into(iv_accessories);
+                    file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
+                }
+                if (file != null) {
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    accessories_picture.put(1, newFile);
+                }
+                break;
+        }
+
+    }
+
+    /**
+     * 添加配件图片
+     *
+     * @param map
+     */
+    public void ApplyAccessoryphotoUpload(HashMap<Integer, File> map) {
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        builder.addFormDataPart("img", map.get(0).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(0)));
+        builder.addFormDataPart("img", map.get(1).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(1)));
+        MultipartBody requestBody = builder.build();
+        mPresenter.ApplyAccessoryphotoUpload(requestBody);
     }
 }

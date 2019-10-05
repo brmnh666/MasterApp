@@ -11,6 +11,7 @@ import com.ying.administrator.masterappdemo.entity.Bill;
 import com.ying.administrator.masterappdemo.entity.CategoryData;
 import com.ying.administrator.masterappdemo.entity.City;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.Data2;
 import com.ying.administrator.masterappdemo.entity.District;
 import com.ying.administrator.masterappdemo.entity.GAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
@@ -288,7 +289,7 @@ public interface ApiService {
      * @return
      */
     @POST("Upload/ApplyAccessoryphotoUpload")
-    Observable<BaseResult<Data<String>>> ApplyAccessoryphotoUpload(@Body RequestBody body);
+    Observable<BaseResult<Data2>> ApplyAccessoryphotoUpload(@Body RequestBody body);
 
 
     /*申请远程费距离*/

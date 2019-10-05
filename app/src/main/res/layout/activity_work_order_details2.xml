@@ -527,6 +527,7 @@
                     </RelativeLayout>
 
                     <LinearLayout
+                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
@@ -664,7 +665,7 @@
                             android:layout_marginBottom="10dp"
                             android:background="@drawable/tv_order_detail_btn"
                             android:padding="10dp"
-                            android:text="提交申请"
+                            android:text="提交配件申请"
                             android:textStyle="bold"
                             android:textColor="#6A6A6A"
                             android:textSize="14sp" />
@@ -872,6 +873,7 @@
                             android:nestedScrollingEnabled="false" />
                     </RelativeLayout>
                     <LinearLayout
+                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
@@ -1056,7 +1058,7 @@
                             android:paddingTop="10dp"
                             android:paddingRight="10dp"
                             android:paddingBottom="10dp"
-                            android:text="提交申请"
+                            android:text="提交服务申请"
                             android:textStyle="bold"
                             android:textColor="#6A6A6A"
                             android:textSize="14sp"
@@ -1331,7 +1333,7 @@
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/tv_order_detail_btn"
                         android:padding="10dp"
-                        android:text="提交申请"
+                        android:text="提交远程费申请"
                         android:textStyle="bold"
                         android:textColor="#6A6A6A"
                         android:textSize="14sp" />

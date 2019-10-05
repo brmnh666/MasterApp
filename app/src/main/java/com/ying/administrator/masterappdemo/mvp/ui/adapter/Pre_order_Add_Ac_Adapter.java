@@ -1,7 +1,9 @@
 package com.ying.administrator.masterappdemo.mvp.ui.adapter;
 
 import android.support.annotation.Nullable;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.ying.administrator.masterappdemo.R;
@@ -26,7 +28,8 @@ public class Pre_order_Add_Ac_Adapter extends BaseQuickAdapter<FAccessory.OrderA
         }else {
             helper.setText(R.id.tv_accessories_number,"¥"+item.getDiscountPrice()+"/"+item.getQuantity()+"个");
         }
-
+        Glide.with(mContext).load("https://img.xigyu.com/Pics/Accessory/"+item.getPhoto1()).into((ImageView) helper.getView(R.id.photo1));
+        Glide.with(mContext).load("https://img.xigyu.com/Pics/Accessory/"+item.getPhoto2()).into((ImageView) helper.getView(R.id.photo2));
         helper.addOnClickListener(R.id.iv_accessories_delete);
            if (item.getSendState()==null){
                helper.setGone(R.id.tv_accessories_sendstate,false);

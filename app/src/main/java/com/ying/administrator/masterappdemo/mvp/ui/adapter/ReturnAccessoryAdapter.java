@@ -1,8 +1,10 @@
 package com.ying.administrator.masterappdemo.mvp.ui.adapter;
 
 import android.view.View;
+import android.widget.ImageView;
 
 import com.blankj.utilcode.util.ToastUtils;
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.ying.administrator.masterappdemo.R;
@@ -32,6 +34,10 @@ public class ReturnAccessoryAdapter extends BaseQuickAdapter<GAccessory,BaseView
     }
     @Override
     protected void convert(BaseViewHolder helper, GAccessory item) {
+        Glide.with(mContext).load("https://img.xigyu.com/Pics/Accessory/"+item.getPhoto1()).into((ImageView) helper.getView(R.id.photo1));
+        Glide.with(mContext).load("https://img.xigyu.com/Pics/Accessory/"+item.getPhoto2()).into((ImageView) helper.getView(R.id.photo2));
+        Glide.with(mContext).load("https://img.xigyu.com/Pics/Accessory/"+item.getPhoto1()).into((ImageView) helper.getView(R.id.iv_photo1));
+        Glide.with(mContext).load("https://img.xigyu.com/Pics/Accessory/"+item.getPhoto2()).into((ImageView) helper.getView(R.id.iv_photo2));
         if (state==0){
             helper.getView(R.id.ll_state_y).setVisibility(View.VISIBLE);
             helper.getView(R.id.ll_state_n).setVisibility(View.VISIBLE);

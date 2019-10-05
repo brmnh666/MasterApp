@@ -8,6 +8,7 @@ import com.ying.administrator.masterappdemo.entity.Accessory;
 import com.ying.administrator.masterappdemo.entity.Address;
 import com.ying.administrator.masterappdemo.entity.AddressList;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.Data2;
 import com.ying.administrator.masterappdemo.entity.GAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
 import com.ying.administrator.masterappdemo.entity.Logistics;
@@ -56,7 +57,7 @@ public interface PendingOrderContract {
         Observable<BaseResult<Data<String>>> OrderByondImgPicUpload(RequestBody json);
 
         //上传配件图片
-        Observable<BaseResult<Data<String>>> ApplyAccessoryphotoUpload(RequestBody json);
+        Observable<BaseResult<Data2>> ApplyAccessoryphotoUpload(RequestBody json);
 
         //申请远程费
         Observable<BaseResult<Data<String>>> ApplyBeyondMoney(String OrderID,String BeyondMoney,String BeyondDistance);
@@ -112,7 +113,7 @@ public interface PendingOrderContract {
         //上传远程费图片
         void OrderByondImgPicUpload(BaseResult<Data<String>> baseResult);
 
-        void ApplyAccessoryphotoUpload(BaseResult<Data<String>> baseResult);
+        void ApplyAccessoryphotoUpload(BaseResult<Data2> baseResult);
 
         //申请远程费
         void ApplyBeyondMoney(BaseResult<Data<String>> baseResult);
