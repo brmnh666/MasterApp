@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="待付款"
+            android:text="已接待预约"
             android:textColor="#808080"
             android:textSize="12sp" />
     </LinearLayout>
@@ -58,7 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="待发货"
+            android:text="待返件"
             android:textColor="#808080"
             android:textSize="12sp" />
     </LinearLayout>
@@ -87,7 +87,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="待收货"
+            android:text="质保单"
             android:textColor="#808080"
             android:textSize="12sp" />
     </LinearLayout>
@@ -116,28 +116,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="待评价"
-            android:textColor="#808080"
-            android:textSize="12sp" />
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/ll_return"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@mipmap/icon_me_finish" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="退款/退货"
+            android:text="已完成"
             android:textColor="#808080"
             android:textSize="12sp" />
     </LinearLayout>

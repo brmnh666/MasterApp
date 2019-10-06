@@ -1534,7 +1534,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     mLlPostMoney.setVisibility(View.GONE);
                 }
 
-                if (data.getOrderAccessroyDetail().size() == 0) {
+                if (data.getOrderAccessroyDetail().size() == 0||data.getOrderAccessroyDetail().get(data.getOrderAccessroyDetail().size() - 1).getPhoto1()==null) {
                     mLlHostOne.setVisibility(View.GONE);
                     mLlAccessoriesOne.setVisibility(View.GONE);
                 } else {
@@ -1836,7 +1836,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
 
 //                    Log.d(TAG,"7777"+money1[0]);
 
-                    returnAccessoryAdapter = new ReturnAccessoryAdapter(R.layout.item_returned, data.getOrderAccessroyDetail(), Integer.parseInt(data.getAccessoryState()), content, money1);
+                    returnAccessoryAdapter = new ReturnAccessoryAdapter(R.layout.item_returned, data.getOrderAccessroyDetail(), data.getAccessoryState(), content, money1);
                     mRvReturnInformation.setLayoutManager(new LinearLayoutManager(mActivity));
                     mRvReturnInformation.setAdapter(returnAccessoryAdapter);
                     if (data.getOrderAccessroyDetail().size() > 0) {
@@ -1905,6 +1905,9 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mTvAccessoryApplication.setVisibility(View.GONE);
                     } else if ("1".equals(data.getAccessoryApplyState())) {
                         mTvAccessoryApplyState.setText("审核通过");
+                        mTvAccessoryApplication.setVisibility(View.VISIBLE);
+                    } else if ("".equals(data.getAccessoryApplyState())){
+                        mTvAccessoryApplyState.setText("厂家已寄件");
                         mTvAccessoryApplication.setVisibility(View.VISIBLE);
                     } else {
                         mTvAccessoryApplyState.setText("被拒");

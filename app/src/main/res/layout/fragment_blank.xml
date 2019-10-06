@@ -223,7 +223,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
-                    android:descendantFocusability="blocksDescendants">
+                    android:descendantFocusability="blocksDescendants"
+                    android:visibility="gone">
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/rv_mall"
@@ -246,7 +247,8 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="20dp"
-        app:cardCornerRadius="20dp">
+        app:cardCornerRadius="20dp"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/img_up"

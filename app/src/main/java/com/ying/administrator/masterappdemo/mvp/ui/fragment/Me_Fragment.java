@@ -31,6 +31,9 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
+import com.paradigm.botkit.BotKitClient;
+import com.paradigm.botkit.ChatActivity;
+import com.paradigm.botlib.VisitorInfo;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -54,10 +57,9 @@ import com.ying.administrator.masterappdemo.mvp.model.MainModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.MainPresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.AboutUsActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Opinion_Activity;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.OrderActivity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_Receiving_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Personal_Information_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.RechargeActivity;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.ReturnActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.SettingActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.StudyActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.SubAccountManagementActivity;
@@ -143,8 +145,6 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
     TextView mTvPhone;
     @BindView(R.id.ll_subsidiary_account)
     LinearLayout mLlSubsidiaryAccount;
-    @BindView(R.id.ll_return)
-    LinearLayout mLlReturn;
 
     private Home_Fragment.CustomShareListener mShareListener;
     private ShareAction mShareAction;
@@ -281,7 +281,7 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
         mLlStudy.setOnClickListener(this);
         mLlSetting.setOnClickListener(this);
         mLlSubsidiaryAccount.setOnClickListener(this);
-        mLlReturn.setOnClickListener(this);
+
     }
 
     /*获取用户信息*/
@@ -341,14 +341,11 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                     mImgCertification.setVisibility(View.VISIBLE);
                 }
 
-                if (userInfo.getParentUserID() == null||"".equals(userInfo.getParentUserID())) {
+                if (userInfo.getParentUserID() != null) {
 
-                    mLlSubAccountManagement.setVisibility(View.VISIBLE);
-                    mLlSubsidiaryAccount.setVisibility(View.VISIBLE);
-
-                }else {
                     mLlSubAccountManagement.setVisibility(View.GONE);
                     mLlSubsidiaryAccount.setVisibility(View.GONE);
+
                 }
 
 
@@ -593,24 +590,23 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                 //startActivity(new Intent(getActivity(), IntelligentCustomerServiceActivity.class));
 
 
-//                VisitorInfo visitorInfo = new VisitorInfo();
-//                visitorInfo.userName = userInfo.getUserID();
-//
-//                visitorInfo.nickName = userInfo.getTrueName();
-//                visitorInfo.phone = userInfo.getPhone();
-//                BotKitClient.getInstance().setVisitor(visitorInfo);
-//
-//                Intent intent = new Intent();
-//                //   intent.setClass(mActivity, ChatActivity.class);
-//                intent.setClass(mActivity, ChatActivity.class);
-//                startActivity(intent);
+                VisitorInfo visitorInfo = new VisitorInfo();
+                visitorInfo.userName = userInfo.getUserID();
+
+                visitorInfo.nickName = userInfo.getTrueName();
+                visitorInfo.phone = userInfo.getPhone();
+                BotKitClient.getInstance().setVisitor(visitorInfo);
+
+                Intent intent = new Intent();
+                //   intent.setClass(mActivity, ChatActivity.class);
+                intent.setClass(mActivity, ChatActivity.class);
+                startActivity(intent);
 
                 break;
             case R.id.normal_dfk_ll:
                 bundle = new Bundle();
-                bundle.putString("intent", "待付款");
-                bundle.putInt("position", 1);
-                intent = new Intent(mActivity, OrderActivity.class);
+                bundle.putString("intent", "pending_appointment");
+                intent = new Intent(mActivity, Order_Receiving_Activity.class);
                 intent.putExtras(bundle);
                 ActivityUtils.startActivity(intent);
                 mActivity.overridePendingTransition(R.anim.anim_no, R.anim.anim_no);
@@ -618,39 +614,27 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                 break;
             case R.id.normal_dfh_ll:   //待返件
                 bundle = new Bundle();
-                bundle.putString("intent", "待发货");
-                bundle.putInt("position", 2);
-                intent = new Intent(mActivity, OrderActivity.class);
+                bundle.putString("intent", "wait_return");
+                intent = new Intent(mActivity, Order_Receiving_Activity.class);
                 intent.putExtras(bundle);
                 ActivityUtils.startActivity(intent);
                 mActivity.overridePendingTransition(R.anim.anim_no, R.anim.anim_no);
                 break;
             case R.id.normal_dsh_ll:
                 bundle = new Bundle();
-                bundle.putString("intent", "待收货");
-                bundle.putInt("position", 3);
-                intent = new Intent(mActivity, OrderActivity.class);
+                bundle.putString("intent", "quality");
+                intent = new Intent(mActivity, Order_Receiving_Activity.class);
                 intent.putExtras(bundle);
                 ActivityUtils.startActivity(intent);
                 mActivity.overridePendingTransition(R.anim.anim_no, R.anim.anim_no);
                 break;
             case R.id.normal_all_ll:
-//                bundle = new Bundle();
-//                bundle.putString("intent", "completed");
-//                intent = new Intent(mActivity, Order_Receiving_Activity.class);
-//                intent.putExtras(bundle);
-//                ActivityUtils.startActivity(intent);
-//                mActivity.overridePendingTransition(R.anim.anim_no, R.anim.anim_no);
                 bundle = new Bundle();
-                bundle.putString("intent", "待评价");
-                bundle.putInt("position", 4);
-                intent = new Intent(mActivity, OrderActivity.class);
+                bundle.putString("intent", "completed");
+                intent = new Intent(mActivity, Order_Receiving_Activity.class);
                 intent.putExtras(bundle);
                 ActivityUtils.startActivity(intent);
                 mActivity.overridePendingTransition(R.anim.anim_no, R.anim.anim_no);
-                break;
-            case R.id.ll_return:
-                startActivity(new Intent(mActivity, ReturnActivity.class));
                 break;
             case R.id.tv_recharge:
                 startActivity(new Intent(mActivity, RechargeActivity.class));
@@ -767,7 +751,7 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                 @Override
                 public void onPositiveClick() {//拨打电话
                     dialog.dismiss();
-                    openBrowser(mActivity, "https://img.xigyu.com/Files/西瓜鱼商城.apk");
+                    openBrowser(mActivity, "http://47.96.126.145:8820/Files/西瓜鱼商城.apk");
                 }
 
                 @Override

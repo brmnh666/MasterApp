@@ -1258,7 +1258,7 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                 if (data.getOrderAccessroyDetail().size() != 0) {
 
 
-                    returnAccessoryAdapter = new ReturnAccessoryAdapter(R.layout.item_returned, data.getOrderAccessroyDetail(), Integer.parseInt(data.getAccessoryState()),content,money1);
+                    returnAccessoryAdapter = new ReturnAccessoryAdapter(R.layout.item_returned, data.getOrderAccessroyDetail(),data.getAccessoryState(),content,money1);
                     mRvReturnInformation.setLayoutManager(new LinearLayoutManager(mActivity));
                     mRvReturnInformation.setAdapter(returnAccessoryAdapter);
                     mLlAccessory.setVisibility(View.VISIBLE);

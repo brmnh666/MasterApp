@@ -13,7 +13,7 @@ import com.ying.administrator.masterappdemo.entity.GAccessory;
 import java.util.List;
 
 public class ReturnAccessoryAdapter extends BaseQuickAdapter<GAccessory,BaseViewHolder> {
-    private int state;
+    private String state;
     private String content;
     private String[] money;
 
@@ -26,7 +26,7 @@ public class ReturnAccessoryAdapter extends BaseQuickAdapter<GAccessory,BaseView
         notifyDataSetChanged();
     }
 
-    public ReturnAccessoryAdapter(int layoutResId, List<GAccessory> data, int state, String content,String[] money) {
+    public ReturnAccessoryAdapter(int layoutResId, List<GAccessory> data, String state, String content,String[] money) {
         super(layoutResId, data);
         this.state=state;
         this.content=content;
@@ -38,7 +38,7 @@ public class ReturnAccessoryAdapter extends BaseQuickAdapter<GAccessory,BaseView
         Glide.with(mContext).load("https://img.xigyu.com/Pics/Accessory/"+item.getPhoto2()).into((ImageView) helper.getView(R.id.photo2));
         Glide.with(mContext).load("https://img.xigyu.com/Pics/Accessory/"+item.getPhoto1()).into((ImageView) helper.getView(R.id.iv_photo1));
         Glide.with(mContext).load("https://img.xigyu.com/Pics/Accessory/"+item.getPhoto2()).into((ImageView) helper.getView(R.id.iv_photo2));
-        if (state==0){
+        if ("0".equals(state)){
             helper.getView(R.id.ll_state_y).setVisibility(View.VISIBLE);
             helper.getView(R.id.ll_state_n).setVisibility(View.VISIBLE);
             if ("Y".equals(item.getSendState())){

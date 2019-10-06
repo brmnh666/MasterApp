@@ -153,7 +153,8 @@
         android:layout_marginRight="10dp"
         android:background="@drawable/ll_me_edit_shape"
         android:orientation="horizontal"
-        android:padding="20dp">
+        android:padding="20dp"
+        android:visibility="gone">
 
         <ImageView
             android:layout_width="20dp"
