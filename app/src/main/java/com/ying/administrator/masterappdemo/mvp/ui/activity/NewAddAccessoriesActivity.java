@@ -23,6 +23,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,11 +45,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
+import com.google.gson.Gson;
 import com.lxj.xpopup.XPopup;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
@@ -56,9 +57,11 @@ import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.Accessory;
 import com.ying.administrator.masterappdemo.entity.AddressList;
+import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.Data2;
 import com.ying.administrator.masterappdemo.entity.FAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
+import com.ying.administrator.masterappdemo.entity.SAccessory;
 import com.ying.administrator.masterappdemo.mvp.contract.NewAddAccessoriesContract;
 import com.ying.administrator.masterappdemo.mvp.model.NewAddAccessoriesModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.NewAddAccessoriesPresenter;
@@ -71,6 +74,8 @@ import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zyao89.view.zloading.ZLoadingDialog;
 import com.zyao89.view.zloading.Z_TYPE;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.Serializable;
@@ -118,6 +123,16 @@ public class NewAddAccessoriesActivity extends BaseActivity<NewAddAccessoriesPre
 
     @BindView(R.id.tv_choose)
     TextView mTvChoose;
+    @BindView(R.id.tv_address_return)
+    TextView mTvAddressReturn;
+    @BindView(R.id.tv_modify)
+    TextView mTvModify;
+    @BindView(R.id.tv_edit)
+    TextView mTvEdit;
+    @BindView(R.id.tv_title)
+    TextView mTvTitle;
+    @BindView(R.id.ll_address)
+    LinearLayout mLlAddress;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -161,7 +176,9 @@ public class NewAddAccessoriesActivity extends BaseActivity<NewAddAccessoriesPre
     private List<Accessory> list_collect = new ArrayList<>(); //收藏的配件
     private List<Accessory> list_add = new ArrayList<>(); //收藏的配件
     private Map<Integer, Accessory> map_collect = new HashMap<>();//收藏的配件map集合
-   FAccessory.OrderAccessoryStrBean.OrderAccessoryBean mfAccessory = new FAccessory.OrderAccessoryStrBean.OrderAccessoryBean();
+    FAccessory.OrderAccessoryStrBean.OrderAccessoryBean mfAccessory = new FAccessory.OrderAccessoryStrBean.OrderAccessoryBean();
+    private List<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> fAcList = new ArrayList<>();// 用于存放预接单页面显示的数据
+
 
     private ZLoadingDialog dialog = new ZLoadingDialog(this); //loading
     private AlertDialog underReviewDialog;
@@ -175,10 +192,18 @@ public class NewAddAccessoriesActivity extends BaseActivity<NewAddAccessoriesPre
     private Uri uri;
     private View addpic_view;
     private AlertDialog addpic_dialog;
-    private HashMap<Integer, File> accessories_picture=new HashMap<>();
+    private HashMap<Integer, File> accessories_picture = new HashMap<>();
     private String count;
     private int position;
     private View addview;
+    private String AddressBack;
+    private List<AddressList> addressList;
+    private String userId;
+    private String select_state;
+    private String OrderID;
+    private View customdialog_home_view;
+    private AlertDialog customdialog_home_dialog;
+    private String money;
 
     @Override
     protected int setLayoutId() {
@@ -187,16 +212,43 @@ public class NewAddAccessoriesActivity extends BaseActivity<NewAddAccessoriesPre
 
     @Override
     protected void initData() {
-        String subCategoryID = getIntent().getStringExtra("SubCategoryID");
-        showLoading();
-        mPresenter.GetFactoryAccessory(subCategoryID);
-        rv.setLayoutManager(new LinearLayoutManager(mActivity));
-        newAddAccessoriesAdapter = new NewAddAccessoriesAdapter(R.layout.item_newaddaccessories, list_search);
-        rv.setAdapter(newAddAccessoriesAdapter);
+
     }
 
     @Override
     protected void initView() {
+        SPUtils spUtils = SPUtils.getInstance("token");
+        userId = spUtils.getString("userName");
+        mPresenter.GetAccountAddress(userId);
+
+        String subCategoryID = getIntent().getStringExtra("SubCategoryID");
+        select_state = getIntent().getStringExtra("select_state");
+        OrderID = getIntent().getStringExtra("orderId");
+        if ("0".equals(select_state)) {
+            mTvTitle.setText("厂家寄件申请");
+        } else {
+            mTvTitle.setText("师傅自购件申请");
+            mTvModify.setVisibility(View.GONE);
+            mLlAddress.setVisibility(View.GONE);
+        }
+        showLoading();
+        mPresenter.GetFactoryAccessory(subCategoryID);
+
+        rv.setLayoutManager(new LinearLayoutManager(mActivity));
+        newAddAccessoriesAdapter = new NewAddAccessoriesAdapter(R.layout.item_newaddaccessories, list_search);
+        rv.setAdapter(newAddAccessoriesAdapter);
+
+        newAddAccessoriesAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                switch (view.getId()) {
+                    case R.id.img_add:
+                        addPic(view, position,select_state);
+                        break;
+
+                }
+            }
+        });
 
     }
 
@@ -206,6 +258,8 @@ public class NewAddAccessoriesActivity extends BaseActivity<NewAddAccessoriesPre
         mTvnext.setOnClickListener(this);
         mImgreturn.setOnClickListener(this);
         mTvChoose.setOnClickListener(this);
+        mTvModify.setOnClickListener(this);
+        mTvEdit.setOnClickListener(this);
 
         mEtsearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -235,46 +289,45 @@ public class NewAddAccessoriesActivity extends BaseActivity<NewAddAccessoriesPre
         });
 
 
-        newAddAccessoriesAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                switch (view.getId()) {
-                    case R.id.img_add:
-                        addPic(view, position);
-                        break;
 
-                }
-            }
-        });
 
     }
 
     /**
      * 添加配件图片
      */
-    public void addPic(final View view, final int position){
-        addview =view;
+    public void addPic(final View view, final int position, final String selectState) {
+        addview = view;
         this.position = position;
         addpic_view = LayoutInflater.from(mActivity).inflate(R.layout.addpic, null);
         Button btn_negtive = addpic_view.findViewById(R.id.negtive);
         Button btn_positive = addpic_view.findViewById(R.id.positive);
         LinearLayout ll_host = addpic_view.findViewById(R.id.ll_host);
         LinearLayout ll_accessories = addpic_view.findViewById(R.id.ll_accessories);
+        LinearLayout ll_money=addpic_view.findViewById(R.id.ll_money);
+        final EditText et_money=addpic_view.findViewById(R.id.et_money);
         final EditText et_count = addpic_view.findViewById(R.id.et_count);
         iv_host = addpic_view.findViewById(R.id.iv_host);
         iv_accessories = addpic_view.findViewById(R.id.iv_accessories);
         ll_host.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showPopupWindow(801,809);
+                showPopupWindow(801, 809);
             }
         });
         ll_accessories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showPopupWindow(901,909);
+                showPopupWindow(901, 909);
             }
         });
+
+        if ("0".equals(select_state)){
+            ll_money.setVisibility(View.GONE);
+        }else {
+            ll_money.setVisibility(View.VISIBLE);
+        }
+
         addpic_dialog = new AlertDialog.Builder(mActivity)
                 .setView(addpic_view)
                 .create();
@@ -289,15 +342,23 @@ public class NewAddAccessoriesActivity extends BaseActivity<NewAddAccessoriesPre
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
-                if(accessories_picture.size()!=2){
+                if (accessories_picture.size() != 2) {
                     ToastUtils.showShort("请添加图片");
                     return;
                 }
+
+                money = et_money.getText().toString();
+                if ("1".equals(selectState)){
+                    if (money.isEmpty()){
+                        ToastUtils.showShort("请输入配件价格");
+                        return;
+                    }
+                }
                 count = et_count.getText().toString();
-                if(count.isEmpty()){
+                if (count.isEmpty()) {
                     ToastUtils.showShort("请输入配件数量");
                     return;
-                }else{
+                } else {
                     ApplyAccessoryphotoUpload(accessories_picture);
                 }
 
@@ -324,16 +385,16 @@ public class NewAddAccessoriesActivity extends BaseActivity<NewAddAccessoriesPre
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void ApplyAccessoryphotoUpload(BaseResult<Data2> baseResult) {
-        if(baseResult.getStatusCode()==200){
-            Accessory acc=newAddAccessoriesAdapter.getData().get(position);
+        if (baseResult.getStatusCode() == 200) {
+            Accessory acc = newAddAccessoriesAdapter.getData().get(position);
             acc.setCount(Integer.parseInt(count));
             acc.setImg1(baseResult.getData().getItem1());
             acc.setImg2(baseResult.getData().getItem2());
             if (map_collect.get(position) == null) {
                 map_collect.put(position, acc);
-                num=num+Integer.parseInt(count);
+                num = num + Integer.parseInt(count);
             } else {
-                map_collect.replace(position,acc);
+                map_collect.replace(position, acc);
             }
             list_collect.clear();
             //将map对象转为list
@@ -357,6 +418,93 @@ public class NewAddAccessoriesActivity extends BaseActivity<NewAddAccessoriesPre
             }).start();
             addpic_dialog.dismiss();
         }
+    }
+
+    @Override
+    public void GetAccountAddress(BaseResult<List<AddressList>> baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                addressList = baseResult.getData();
+                if (addressList.size() != 0) {
+                    for (int i = 0; i < addressList.size(); i++) {
+                        if ("1".equals(addressList.get(i).getIsDefault())) {
+                            AddressBack = addressList.get(i).getProvince() + addressList.get(i).getCity() + addressList.get(i).getArea() + addressList.get(i).getDistrict() + addressList.get(i).getAddress() + "(" + addressList.get(i).getUserName() + "收)" + addressList.get(i).getPhone();
+                            mTvAddressReturn.setText(AddressBack);
+//                            mTvModify.setText("修改地址");
+                        } else {
+                            AddressBack = addressList.get(0).getProvince() + addressList.get(0).getCity() + addressList.get(0).getArea() + addressList.get(0).getDistrict() + addressList.get(0).getAddress() + "(" + addressList.get(0).getUserName() + "收)" + addressList.get(0).getPhone();
+                            mTvAddressReturn.setText(AddressBack);
+//                            mTvModify.setText("修改地址");
+                        }
+//                        else {
+//                            AddressBack = "";
+//                            mTvAddressReturn.setText(AddressBack);
+////                            mTvModify.setText("添加地址");
+//                        }
+                    }
+                } else {
+                    AddressBack = "";
+                    mTvAddressReturn.setText(AddressBack);
+//                    mTvModify.setText("添加地址");
+                }
+                break;
+            default:
+                ToastUtils.showShort("获取失败");
+                break;
+        }
+    }
+
+    @Override
+    public void AddOrderAccessory(BaseResult<Data> baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                if (baseResult.getData().isItem1()) {
+                    ToastUtils.showShort("提交成功");
+                    EventBus.getDefault().post("WorkOrderDetailsActivity");
+                    EventBus.getDefault().post(5);
+                    finish();
+//                    ApplyAccessoryphotoUpload(accessories_picture);
+                } else {
+                    if ("您账户余额不足，请尽快充值以免影响配件审核,充值最低金额为：200".equals(baseResult.getData().getItem2())) {
+                        customdialog_home_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_home, null);
+                        customdialog_home_dialog = new AlertDialog.Builder(mActivity)
+                                .setView(customdialog_home_view)
+                                .create();
+                        customdialog_home_dialog.show();
+                        TextView title = customdialog_home_view.findViewById(R.id.title);
+                        TextView message = customdialog_home_view.findViewById(R.id.message);
+                        TextView negtive = customdialog_home_view.findViewById(R.id.negtive);
+                        TextView positive = customdialog_home_view.findViewById(R.id.positive);
+                        title.setText("温馨提示");
+                        message.setText(baseResult.getData().getItem2() + "。当工单完结后返还，是否充值？");
+                        negtive.setText("否");
+                        positive.setText("是");
+                        negtive.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                customdialog_home_dialog.dismiss();
+                            }
+                        });
+                        positive.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                startActivity(new Intent(mActivity, RechargeActivity.class));
+                                customdialog_home_dialog.dismiss();
+                            }
+                        });
+                    } else {
+                        ToastUtils.showShort((String) baseResult.getData().getItem2());
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void UpdateOrderAddressByOrderID(BaseResult<Data<String>> baseResult) {
+
     }
 
     public List searchAccessory(String name, List list) {
@@ -503,13 +651,75 @@ public class NewAddAccessoriesActivity extends BaseActivity<NewAddAccessoriesPre
 
                 break;
             case R.id.tv_next://下一步
+                String returnAddress = mTvAddressReturn.getText().toString().trim();
+
                 if (list_collect.isEmpty()) {
                     Toast.makeText(mActivity, "请先选择配件", Toast.LENGTH_SHORT).show();
                 } else {
-                    Intent intent = new Intent();
-                    intent.putExtra("list_collect", (Serializable) list_collect);
-                    setResult(Config.APPLY_RESULT, intent);
-                    NewAddAccessoriesActivity.this.finish();
+//                    Intent intent = new Intent();
+//                    intent.putExtra("list_collect", (Serializable) list_collect);
+//                    setResult(Config.APPLY_RESULT, intent);
+//                    NewAddAccessoriesActivity.this.finish();
+
+                    Gson gson = new Gson();
+                    if ("0".equals(select_state)) {
+                        if ("".equals(returnAddress)) {
+                            ToastUtils.showShort("请选择收货地址");
+                        }
+                    }
+                    for (int i = 0; i < list_collect.size(); i++) {
+                        mfAccessory = new FAccessory.OrderAccessoryStrBean.OrderAccessoryBean();
+                        mfAccessory.setPhoto1(list_collect.get(i).getImg1());//配件照片
+                        mfAccessory.setPhoto2(list_collect.get(i).getImg2());//整机照片
+                        mfAccessory.setFAccessoryID(list_collect.get(i).getFAccessoryID());//获取id
+                        mfAccessory.setFAccessoryName(list_collect.get(i).getAccessoryName()); //获取名字
+                        mfAccessory.setFCategoryID(list_collect.get(i).getFCategoryID() + ""); //分类id
+                        mfAccessory.setQuantity(list_collect.get(i).getCount() + ""); //数量 默认数字为1
+                        mfAccessory.setPrice(Double.valueOf("0"));//原价
+                        mfAccessory.setDiscountPrice(Double.valueOf("0"));//折扣价
+                        mfAccessory.setSizeID("1");//小修中修大修
+                        mfAccessory.setSendState("N");
+                        mfAccessory.setRelation("");
+                        mfAccessory.setState("0");
+                        mfAccessory.setIsPay("N");
+                        mfAccessory.setExpressNo("");
+                        mfAccessory.setNeedPlatformAuth("N");
+                        if ("0".equals(select_state)) {//厂家自购
+                            mfAccessory.setPrice(list_collect.get(i).getAccessoryPrice());//原价
+                            mfAccessory.setDiscountPrice(list_collect.get(i).getAccessoryPrice());//原价
+                        } else if ("1".equals(select_state) ) {//师傅自购 还要判断保内保外
+                            if ("".equals(money)) {
+                                ToastUtils.showShort("请输入配件价格");
+                                return;
+                            }
+                            mfAccessory.setPrice(Double.parseDouble(money));
+                            mfAccessory.setDiscountPrice(Double.parseDouble(money));
+                        }
+                        fAcList.add(mfAccessory);
+                    }
+
+
+//                        if (accessories_picture.size() > 0) {
+                    FAccessory.OrderAccessoryStrBean orderAccessoryStrBean = new FAccessory.OrderAccessoryStrBean();
+                    orderAccessoryStrBean.setOrderAccessory(fAcList);
+                    orderAccessoryStrBean.setAccessoryMemo("");
+                    String s1 = gson.toJson(orderAccessoryStrBean);
+                    SAccessory sAccessory = new SAccessory();
+                    sAccessory.setOrderID(OrderID);
+                    sAccessory.setAccessorySequency(select_state);
+                    sAccessory.setOrderAccessoryStr(s1);
+                    String s = gson.toJson(sAccessory);
+                    Log.d("添加的配件有", s);
+                    RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), s);
+                    mPresenter.AddOrderAccessory(body);
+                    if ("0".equals(select_state)){
+                        mPresenter.UpdateOrderAddressByOrderID(OrderID, returnAddress);
+                    }
+
+//                        } else {
+//                            ToastUtils.showShort("请添加配件图片");
+//                        }
+
                 }
 
                 break;
@@ -525,7 +735,7 @@ public class NewAddAccessoriesActivity extends BaseActivity<NewAddAccessoriesPre
                     public void onClick(View v) {
 //                        tv_accessory_name.setText(et_accessories_name.getText());
                         num++;//背包内数量+1
-                        Accessory accessory=new Accessory();
+                        Accessory accessory = new Accessory();
                         accessory.setFAccessoryID("0");
                         accessory.setAccessoryName(et_accessories_name.getText().toString());
                         accessory.setFCategoryID(list_accessory.get(0).getFCategoryID());
@@ -555,6 +765,12 @@ public class NewAddAccessoriesActivity extends BaseActivity<NewAddAccessoriesPre
                 window.setAttributes(lp);
 //                window.setDimAmount(0.1f);
                 window.setBackgroundDrawable(new ColorDrawable());
+                break;
+            case R.id.tv_modify:
+            case R.id.tv_edit:
+                Intent intent = new Intent(mActivity, ShippingAddressActivity.class);
+                intent.putExtra("type", "0");
+                startActivityForResult(intent, 100);
                 break;
 
         }
@@ -591,6 +807,7 @@ public class NewAddAccessoriesActivity extends BaseActivity<NewAddAccessoriesPre
 
 
     }
+
     /**
      * 弹出Popupwindow
      */
@@ -738,7 +955,7 @@ public class NewAddAccessoriesActivity extends BaseActivity<NewAddAccessoriesPre
                     accessories_picture.put(0, newFile);
                 }
                 break;
-             //=====整机照片
+            //=====整机照片
             //拍照
             case 901:
                 if (resultCode == -1) {
@@ -767,6 +984,15 @@ public class NewAddAccessoriesActivity extends BaseActivity<NewAddAccessoriesPre
                 break;
         }
 
+        if (requestCode == 100) {
+            if (data != null) {
+                AddressList address = (AddressList) data.getSerializableExtra("address");
+                if (address != null) {
+                    AddressBack = address.getProvince() + address.getCity() + address.getArea() + address.getDistrict() + address.getAddress() + "(" + address.getUserName() + "收)" + address.getPhone();
+                    mTvAddressReturn.setText(AddressBack);
+                }
+            }
+        }
     }
 
     /**
@@ -780,5 +1006,12 @@ public class NewAddAccessoriesActivity extends BaseActivity<NewAddAccessoriesPre
         builder.addFormDataPart("img", map.get(1).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(1)));
         MultipartBody requestBody = builder.build();
         mPresenter.ApplyAccessoryphotoUpload(requestBody);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

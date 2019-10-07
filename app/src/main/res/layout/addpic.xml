@@ -91,6 +91,30 @@
             android:text="1"/>
     </LinearLayout>
 
+
+    <LinearLayout
+        android:id="@+id/ll_money"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:layout_marginRight="@dimen/dp_20"
+        android:orientation="horizontal"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="配件价格："
+            android:textColor="#353535"
+            android:textSize="12sp" />
+        <EditText
+            android:id="@+id/et_money"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_40"
+            android:paddingLeft="@dimen/dp_10"
+            android:inputType="number" />
+    </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"

@@ -376,6 +376,10 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     TextView mTvModify;
     @BindView(R.id.tv_address_return)
     TextView mTvAddressReturn;
+    @BindView(R.id.tv_leave_message)
+    TextView mTvLeaveMessage;
+    @BindView(R.id.tv_classification)
+    TextView mTvClassification;
 
     private String OrderID;
     private WorkOrder.DataBean data = new WorkOrder.DataBean();
@@ -514,8 +518,6 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     @Override
     public void initView() {
         mTvActionbarTitle.setText("详情页");
-        mTvMessage.setVisibility(View.VISIBLE);
-        mTvMessage.setText("反馈求助");
         //this必须为点击消息要跳转到页面的上下文。
         clickedResult = XGPushManager.onActivityStarted(this);
         if (clickedResult != null) {
@@ -664,7 +666,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         mIvAccessories.setOnClickListener(this);
         mIvAccessoriesOne.setOnClickListener(this);
         mIvHostOne.setOnClickListener(this);
-        mTvMessage.setOnClickListener(this);
+        mTvLeaveMessage.setOnClickListener(this);
         mTvModify.setOnClickListener(this);
     }
 
@@ -683,7 +685,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_message:
+            case R.id.tv_leave_message:
                 intent = new Intent(mActivity, MessageActivity.class);
                 intent.putExtra("orderId", data.getOrderID());
                 startActivity(intent);
@@ -787,6 +789,14 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     if (select_state == 0) {
                         Intent intent = new Intent(mActivity, NewAddAccessoriesActivity.class);
                         intent.putExtra("SubCategoryID", data.getSubCategoryID() + "");
+                        intent.putExtra("select_state",select_state+"");
+                        intent.putExtra("orderId",OrderID);
+                        startActivityForResult(intent, Config.APPLY_REQUEST);
+                    } else if (select_state==1){
+                        Intent intent = new Intent(mActivity, NewAddAccessoriesActivity.class);
+                        intent.putExtra("SubCategoryID", data.getSubCategoryID() + "");
+                        intent.putExtra("select_state",select_state+"");
+                        intent.putExtra("orderId",OrderID);
                         startActivityForResult(intent, Config.APPLY_REQUEST);
                     } else {
                         addAccessory();
@@ -1209,13 +1219,13 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         ll_host.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showPopupWindow(1301,1302);
+                showPopupWindow(1301, 1302);
             }
         });
         ll_accessories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showPopupWindow(1401,1402);
+                showPopupWindow(1401, 1402);
             }
         });
 
@@ -1276,7 +1286,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     ToastUtils.showShort("请输入数量");
                     return;
                 }
-                if(accessories_picture.size()!=2){
+                if (accessories_picture.size() != 2) {
                     ToastUtils.showShort("请添加图片");
                     return;
                 }
@@ -1375,23 +1385,23 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 } else {
                     if (mPre_order_add_ac_adapter.getData().size() == 0) {
                         ToastUtils.showShort("请添加配件");
-                    }else if ("".equals(returnAddress)){
+                    } else if ("".equals(returnAddress)) {
                         ToastUtils.showShort("请选择收货地址");
-                    }else {
+                    } else {
 //                        if (accessories_picture.size() > 0) {
-                            orderAccessoryStrBean = new FAccessory.OrderAccessoryStrBean();
-                            orderAccessoryStrBean.setOrderAccessory(mPre_order_add_ac_adapter.getData());
-                            orderAccessoryStrBean.setAccessoryMemo(AccessoryMemo);
-                            String s1 = gson.toJson(orderAccessoryStrBean);
-                            sAccessory = new SAccessory();
-                            sAccessory.setOrderID(OrderID);
-                            sAccessory.setAccessorySequency(Integer.toString(select_state));
-                            sAccessory.setOrderAccessoryStr(s1);
-                            String s = gson.toJson(sAccessory);
-                            Log.d("添加的配件有", s);
-                            body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), s);
-                            mPresenter.AddOrderAccessory(body);
-                            mPresenter.UpdateOrderAddressByOrderID(OrderID,returnAddress);
+                        orderAccessoryStrBean = new FAccessory.OrderAccessoryStrBean();
+                        orderAccessoryStrBean.setOrderAccessory(mPre_order_add_ac_adapter.getData());
+                        orderAccessoryStrBean.setAccessoryMemo(AccessoryMemo);
+                        String s1 = gson.toJson(orderAccessoryStrBean);
+                        sAccessory = new SAccessory();
+                        sAccessory.setOrderID(OrderID);
+                        sAccessory.setAccessorySequency(Integer.toString(select_state));
+                        sAccessory.setOrderAccessoryStr(s1);
+                        String s = gson.toJson(sAccessory);
+                        Log.d("添加的配件有", s);
+                        body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), s);
+                        mPresenter.AddOrderAccessory(body);
+                        mPresenter.UpdateOrderAddressByOrderID(OrderID, returnAddress);
 //                        } else {
 //                            ToastUtils.showShort("请添加配件图片");
 //                        }
@@ -1468,7 +1478,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                             AddressBack = addressList.get(i).getAddress() + "(" + addressList.get(i).getUserName() + "收)" + addressList.get(i).getPhone();
                             mTvAddressReturn.setText(AddressBack);
                             mTvModify.setText("修改地址");
-                        }else {
+                        } else {
                             AddressBack = "";
                             mTvAddressReturn.setText(AddressBack);
                             mTvModify.setText("添加地址");
@@ -1500,6 +1510,9 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
             case 200:
                 data = baseResult.getData();
                 mTvStatus.setText(data.getStateStr());
+                if ("服务中".equals(data.getStateStr())) {
+                    mTvPrompt.setText("可添加维修配件及直接完成工单");
+                }
                 mTvBeyondMoney.setText("¥" + data.getBeyondMoney() + "");
                 mTvAccessoryMoney.setText("¥" + data.getAccessoryMoney());
                 mTvServiceMoney.setText("¥" + data.getServiceMoney());
@@ -1534,7 +1547,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     mLlPostMoney.setVisibility(View.GONE);
                 }
 
-                if (data.getOrderAccessroyDetail().size() == 0||data.getOrderAccessroyDetail().get(data.getOrderAccessroyDetail().size() - 1).getPhoto1()==null) {
+                if (data.getOrderAccessroyDetail().size() == 0 || data.getOrderAccessroyDetail().get(data.getOrderAccessroyDetail().size() - 1).getPhoto1() == null) {
                     mLlHostOne.setVisibility(View.GONE);
                     mLlAccessoriesOne.setVisibility(View.GONE);
                 } else {
@@ -1551,7 +1564,9 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 mTvWorkOrderNumber.setText(data.getOrderID());
                 mTvOrderTime.setText(data.getAudDate().replace("T", " ")); //将T替换为空格
 
-                mTvCauseOfIssue.setText(data.getMemo());
+//                mTvCauseOfIssue.setText(data.getMemo());
+                mTvCauseOfIssue.setText(data.getBrandName()+"/" + data.getCategoryName());
+                mTvClassification.setText(data.getSubCategoryName());
                 if (("Y").equals(data.getGuarantee())) {
                     mTvPaymentMethod.setText("平台代付");
                     mIvSelfbuying.setSelected(false);
@@ -1571,8 +1586,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 }
 
 
-                mTvProductType.setText(data.getCategoryName() + "/" + data.getBrandName() + "/" + data.getSubCategoryName());
-
+//                mTvProductType.setText(data.getCategoryName() + "/" + data.getBrandName() + "/" + data.getSubCategoryName());
+                mTvProductType.setText(data.getMemo());
                 if (data.getSendOrderList().size() != 0) {
 //                    mLlSelectTime.setVisibility(View.VISIBLE);
 //                    mView.setVisibility(View.VISIBLE);
@@ -1906,7 +1921,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     } else if ("1".equals(data.getAccessoryApplyState())) {
                         mTvAccessoryApplyState.setText("审核通过");
                         mTvAccessoryApplication.setVisibility(View.VISIBLE);
-                    } else if ("".equals(data.getAccessoryApplyState())){
+                    } else if ("".equals(data.getAccessoryApplyState())) {
                         mTvAccessoryApplyState.setText("厂家已寄件");
                         mTvAccessoryApplication.setVisibility(View.VISIBLE);
                     } else {
@@ -2867,9 +2882,9 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         });
         if (mPopupWindow != null && !mPopupWindow.isShowing()) {
 //            popupWindow.showAsDropDown(tv, 0, 10);
-            if(code1==1301||code1==1401){
+            if (code1 == 1301 || code1 == 1401) {
                 mPopupWindow.showAtLocation(choose_accessory_view, Gravity.BOTTOM, 0, 0);
-            }else{
+            } else {
                 mPopupWindow.showAtLocation(popupWindow_view, Gravity.BOTTOM, 0, 0);
             }
 
@@ -3136,7 +3151,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
             if (data != null) {
                 AddressList address = (AddressList) data.getSerializableExtra("address");
                 if (address != null) {
-                    AddressBack =address.getProvince()+address.getCity()+address.getArea()+address.getDistrict()+ address.getAddress() + "(" + address.getUserName() + "收)" + address.getPhone();
+                    AddressBack = address.getProvince() + address.getCity() + address.getArea() + address.getDistrict() + address.getAddress() + "(" + address.getUserName() + "收)" + address.getPhone();
                     mTvAddressReturn.setText(AddressBack);
                 }
             }
