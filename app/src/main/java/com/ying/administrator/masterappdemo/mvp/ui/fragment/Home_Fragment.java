@@ -3,21 +3,29 @@ package com.ying.administrator.masterappdemo.mvp.ui.fragment;
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Vibrator;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,6 +42,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,12 +52,15 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.searchdemo.MainActivity;
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
@@ -66,7 +78,11 @@ import com.umeng.socialize.utils.ShareBoardlistener;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.common.Config;
+import com.ying.administrator.masterappdemo.entity.Accessory;
+import com.ying.administrator.masterappdemo.entity.AddressList;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.Data2;
+import com.ying.administrator.masterappdemo.entity.FAccessory;
 import com.ying.administrator.masterappdemo.entity.SubUserInfo;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
@@ -77,6 +93,7 @@ import com.ying.administrator.masterappdemo.mvp.ui.activity.Login_New_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_Receiving_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_details_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Personal_Information_Activity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.RechargeActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.VerifiedUpdateActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Verified_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Wallet_Activity;
@@ -86,9 +103,12 @@ import com.ying.administrator.masterappdemo.mvp.ui.adapter.Pending_Adapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Pending_Appointment_Adapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Redeploy_Adapter;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
+import com.ying.administrator.masterappdemo.util.Glide4Engine;
+import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.util.ZXingUtils;
 import com.ying.administrator.masterappdemo.util.calendarutil.CalendarEvent;
 import com.ying.administrator.masterappdemo.util.calendarutil.CalendarProviderManager;
+import com.ying.administrator.masterappdemo.util.imageutil.CompressHelper;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 import com.ying.administrator.masterappdemo.widget.CustomDialog;
 import com.ying.administrator.masterappdemo.widget.CustomDialog_Redeploy;
@@ -96,6 +116,8 @@ import com.ying.administrator.masterappdemo.widget.CustomDialog_UnSuccess;
 import com.ying.administrator.masterappdemo.widget.GlideCircleWithBorder_Home;
 import com.ying.administrator.masterappdemo.widget.ShareDialog;
 import com.ying.administrator.masterappdemo.widget.WrapContentLinearLayoutManager;
+import com.zhihu.matisse.Matisse;
+import com.zhihu.matisse.MimeType;
 import com.zyao89.view.zloading.ZLoadingDialog;
 import com.zyao89.view.zloading.Z_TYPE;
 
@@ -104,17 +126,22 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import io.reactivex.functions.Consumer;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -295,6 +322,27 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
     private Button negtive;
     private Button positive;
     private AlertDialog cancelDialog;
+    private Button btn_cancel;
+    private Button btn_submit_beyond;
+    private TextView tv_remote_km;
+    private ImageView iv_map1;
+    private EditText et_order_beyond_km;
+    private View popupWindow_view;
+    private PopupWindow mPopupWindow;
+    private ArrayList<Object> permissions;
+    private String FilePath;
+    private List<Uri> mSelected;
+    private Uri uri;
+    private String OrderID;
+    private HashMap<Integer, File> files_map_remote = new HashMap<>();//申请远程费图片
+    private View customdialog_home_view;
+    private AlertDialog customdialog_home_dialog;
+    private TextView title;
+    private TextView message;
+    private String BeyondMoney;
+    private String Distance;
+    private Window window1;
+    private WindowManager.LayoutParams lp;
 
 
     public Home_Fragment() {
@@ -737,11 +785,53 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                         vibrator.vibrate(100);
                         if (userInfo.getIfAuth() != null) {
                             if (userInfo.getIfAuth().equals("1")) {
-                                showLoading();
-                                grabposition = position;
-                                // mPresenter.AddGrabsheetapply(((WorkOrder.DataBean) adapter.getItem(position)).getOrderID(), userID);
-                                mPresenter.UpdateSendOrderState(((WorkOrder.DataBean) adapter.getItem(position)).getOrderID(), "1","");
+                                final WorkOrder.DataBean item=(WorkOrder.DataBean) adapter.getItem(position);
+                                OrderID=item.getOrderID();
+                                if (Double.parseDouble(item.getDistance())>20){
+                                    under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_apply_beyond, null);
+                                    btn_cancel = under_review.findViewById(R.id.btn_cancel);
+                                    btn_submit_beyond = under_review.findViewById(R.id.btn_submit_beyond);
+                                    tv_remote_km = under_review.findViewById(R.id.tv_remote_km);
+                                    iv_map1 = under_review.findViewById(R.id.iv_map1);
+                                    et_order_beyond_km = under_review.findViewById(R.id.et_order_beyond_km);
+                                    tv_remote_km.setText((Double.parseDouble(item.getDistance())-20)+"km");
 
+                                    btn_cancel.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            underReviewDialog.dismiss();
+                                        }
+                                    });
+                                    btn_submit_beyond.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            if(files_map_remote.size()==0){
+                                                ToastUtils.showShort("请添加远程图片!");
+                                                return;
+                                            }
+                                            Distance=et_order_beyond_km.getText().toString();
+                                            if (!Distance.isEmpty()){
+                                                BeyondMoney=Double.parseDouble(Distance)+"";
+                                                Distance=BeyondMoney;
+                                            }else{
+                                                BeyondMoney=(Double.parseDouble(item.getDistance())-20)+"";
+                                                Distance=(Double.parseDouble(item.getDistance())-20)+"";
+                                            }
+                                            OrderByondImgPicUpload(files_map_remote);
+                                        }
+                                    });
+                                    iv_map1.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            showPopupWindow(1301,1302);
+                                        }
+                                    });
+                                    underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review).create();
+                                    underReviewDialog.show();
+                                }else{
+                                    showLoading();
+                                    mPresenter.UpdateSendOrderState(OrderID, "1","");
+                                }
 
                             } else if (userInfo.getIfAuth().equals("0")) {
                                 under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_under_review, null);
@@ -1462,27 +1552,6 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
         timeSelector.show();
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case 100:
-                if (data != null) {
-                    mAddress = data.getStringExtra("address");
-                    if (mAddress != null) {
-                        mTvHomeLocation.setText(mAddress);
-                    }
-                }
-                break;
-            case 10001:
-            case 10002:
-                if (requestCode == 1001) {
-                    pending_appointment_adapter.remove(successposition);
-                }
-                break;
-        }
-
-    }
 
     @Override
     public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
@@ -1621,6 +1690,259 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
 //        }
     }
 
+    /**
+     * 弹出Popupwindow
+     */
+    public void showPopupWindow(final int code1, final int code2) {
+        popupWindow_view = LayoutInflater.from(mActivity).inflate(R.layout.camera_layout, null);
+        Button camera_btn = popupWindow_view.findViewById(R.id.camera_btn);
+        Button photo_btn = popupWindow_view.findViewById(R.id.photo_btn);
+        Button cancel_btn = popupWindow_view.findViewById(R.id.cancel_btn);
+        camera_btn.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onClick(View view) {
+                if (requestPermissions()) {
+                    Intent intent = new Intent();
+                    // 指定开启系统相机的Action
+                    intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+                    intent.addCategory(Intent.CATEGORY_DEFAULT);
+                    String f = System.currentTimeMillis() + ".jpg";
+                    String fileDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy";
+                    FilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy/" + f;
+                    File dirfile = new File(fileDir);
+                    if (!dirfile.exists()) {
+                        dirfile.mkdirs();
+                    }
+                    File file = new File(FilePath);
+                    Uri fileUri;
+                    if (Build.VERSION.SDK_INT >= 24) {
+                        fileUri = FileProvider.getUriForFile(mActivity, "com.ying.administrator.masterappdemo.fileProvider", file);
+                    } else {
+                        fileUri = Uri.fromFile(file);
+                    }
 
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+                    startActivityForResult(intent, code1);
+                } else {
+                    requestPermissions(permissions.toArray(new String[permissions.size()]), 10001);
+                }
+                mPopupWindow.dismiss();
+            }
+        });
+        photo_btn.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onClick(View view) {
+                if (requestPermissions()) {
+//                    Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+//                    i.addCategory(Intent.CATEGORY_OPENABLE);
+//                    i.setType("image/*");
+//                    startActivityForResult(Intent.createChooser(i, "test"), code2);
+                    Matisse.from(mActivity)
+                            .choose(MimeType.ofImage())
+                            .countable(true)
+                            .maxSelectable(1)
+//                            .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
+//                            .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
+                            .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                            .thumbnailScale(0.85f)
+                            .imageEngine(new Glide4Engine())
+                            .forResult(code2);
+                    mPopupWindow.dismiss();
+                } else {
+                    requestPermissions(permissions.toArray(new String[permissions.size()]), 10002);
+                }
 
+            }
+        });
+        cancel_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPopupWindow.dismiss();
+            }
+        });
+        mPopupWindow = new PopupWindow(popupWindow_view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        mPopupWindow.setAnimationStyle(R.style.popwindow_anim_style);
+        mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+        mPopupWindow.setFocusable(true);
+        mPopupWindow.setOutsideTouchable(true);
+        mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                MyUtils.setWindowAlpa(mActivity, false);
+                lp = window1.getAttributes();
+                lp.alpha=1f;
+                window1.setAttributes(lp);
+            }
+        });
+        if (mPopupWindow != null && !mPopupWindow.isShowing()) {
+//            popupWindow.showAsDropDown(tv, 0, 10);
+            if (code1 == 1301 || code1 == 1401) {
+                View view=under_review.getRootView();
+                LogUtils.eTag("view",view.getLayoutParams());
+                mPopupWindow.showAtLocation(under_review.getRootView(), Gravity.BOTTOM, 0, 0);
+                window1 = underReviewDialog.getWindow();
+                lp = window1.getAttributes();
+                lp.alpha=0.5f;
+                window1.setAttributes(lp);
+            } else {
+                mPopupWindow.showAtLocation(popupWindow_view, Gravity.BOTTOM, 0, 0);
+            }
+
+//            MyUtils.backgroundAlpha(mActivity,0.5f);
+        }
+        MyUtils.setWindowAlpa(mActivity, true);
+    }
+
+    //请求权限
+    private boolean requestPermissions() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            permissions = new ArrayList<>();
+            if (mActivity.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+            }
+            if (mActivity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            }
+            if (mActivity.checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                permissions.add(Manifest.permission.CAMERA);
+            }
+            if (permissions.size() == 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+    //返回图片处理
+    @SuppressLint("NewApi")
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        File file = null;
+        switch (requestCode) {
+            case 100:
+                if (data != null) {
+                    mAddress = data.getStringExtra("address");
+                    if (mAddress != null) {
+                        mTvHomeLocation.setText(mAddress);
+                    }
+                }
+                break;
+            case 10001:
+            case 10002:
+                if (requestCode == 1001) {
+                    pending_appointment_adapter.remove(successposition);
+                }
+                break;
+
+            //拍照
+            case 1301://远程费照片
+                if (resultCode == -1) {
+                    Glide.with(mActivity).load(FilePath).into(iv_map1);
+                    file = new File(FilePath);
+                }
+                if (file != null) {
+                    File newFile = CompressHelper.getDefault(mActivity).compressToFile(file);
+                    files_map_remote.put(0, newFile);
+                }
+
+                break;
+            //相册
+            case 1302://远程费照片
+                if (data != null) {
+                    mSelected = Matisse.obtainResult(data);
+                    if (mSelected.size() == 1) {
+                        uri = mSelected.get(0);
+                    }
+//                    Uri uri = data.getData();
+                    Glide.with(mActivity).load(uri).into(iv_map1);
+                    file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
+                }
+                if (file != null) {
+                    File newFile = CompressHelper.getDefault(mActivity).compressToFile(file);
+                    files_map_remote.put(0, newFile);
+                }
+                break;
+
+        }
+
+    }
+
+    /**
+     * 添加远程图片
+     *
+     * @param map
+     */
+    public void OrderByondImgPicUpload(HashMap<Integer, File> map) {
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        builder.addFormDataPart("img", map.get(0).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(0)));
+//        builder.addFormDataPart("img", map.get(1).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(1)));
+        builder.addFormDataPart("OrderID", OrderID);
+        MultipartBody requestBody = builder.build();
+        mPresenter.OrderByondImgPicUpload(requestBody);
+    }
+    @Override
+    public void OrderByondImgPicUpload(BaseResult<Data<String>> baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                if (baseResult.getData().isItem1()) {
+                    mPresenter.ApplyBeyondMoney(OrderID, BeyondMoney, Distance);
+                } else {
+                    ToastUtils.showShort("远程费图片上传失败");
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void ApplyBeyondMoney(BaseResult<Data<String>> baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                if (baseResult.getData().isItem1()) {
+                    ToastUtils.showShort("提交成功");
+                    underReviewDialog.dismiss();
+                    showLoading();
+                    mPresenter.UpdateSendOrderState(OrderID, "1","");
+                } else {
+                    if ("支付错误,添加失败".equals(baseResult.getData().getItem2())) {
+                        customdialog_home_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_home, null);
+                        customdialog_home_dialog = new AlertDialog.Builder(mActivity)
+                                .setView(customdialog_home_view)
+                                .create();
+                        customdialog_home_dialog.show();
+                        title = customdialog_home_view.findViewById(R.id.title);
+                        message = customdialog_home_view.findViewById(R.id.message);
+                        negtive = customdialog_home_view.findViewById(R.id.negtive);
+                        positive = customdialog_home_view.findViewById(R.id.positive);
+                        title.setText("提示");
+                        message.setText("余额不足，是否充值？");
+                        negtive.setText("否");
+                        positive.setText("是");
+                        negtive.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                customdialog_home_dialog.dismiss();
+                            }
+                        });
+                        positive.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                startActivity(new Intent(mActivity, RechargeActivity.class));
+                                customdialog_home_dialog.dismiss();
+                            }
+                        });
+                    } else {
+                        ToastUtils.showShort((String) baseResult.getData().getItem2());
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+    }
 }

@@ -10,6 +10,7 @@ import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 
 import io.reactivex.Observable;
+import okhttp3.RequestBody;
 
 
 /*home页面*/
@@ -36,8 +37,10 @@ public interface AllWorkOrdersContract {
         //未预约成功
         Observable<BaseResult<Data>> AddOrderfailureReason(String OrderID, String AppointmentState, String AppointmentMessage);
 
-
-
+        //上传远程费图片
+        Observable<BaseResult<Data<String>>> OrderByondImgPicUpload(RequestBody json);
+        //申请远程费
+        Observable<BaseResult<Data<String>>> ApplyBeyondMoney(String OrderID,String BeyondMoney,String BeyondDistance);
     }
 
     interface View extends BaseView {
@@ -62,6 +65,11 @@ public interface AllWorkOrdersContract {
         void AddOrderSuccess(BaseResult<Data> baseResult);
         //未预约成功
         void AddOrderfailureReason(BaseResult<Data> baseResult);
+        //上传远程费图片
+        void OrderByondImgPicUpload(BaseResult<Data<String>> baseResult);
+
+        //申请远程费
+        void ApplyBeyondMoney(BaseResult<Data<String>> baseResult);
     }
 
     abstract class Presenter extends BasePresenter<View,Model> {
@@ -85,5 +93,9 @@ public interface AllWorkOrdersContract {
         public abstract void AddOrderSuccess(String OrderID,String AppointmentState,String AppointmentMessage);
         //未预约成功
         public abstract void AddOrderfailureReason(String OrderID,String AppointmentState,String AppointmentMessage);
+        //上传远程费图片
+        public abstract void OrderByondImgPicUpload(RequestBody json);
+        //申请远程费
+        public abstract void ApplyBeyondMoney(String OrderID,String BeyondMoney,String BeyondDistance);
     }
 }

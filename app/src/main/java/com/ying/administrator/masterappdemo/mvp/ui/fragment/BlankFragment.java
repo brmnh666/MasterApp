@@ -250,4 +250,14 @@ public class BlankFragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
     public void AddOrderfailureReason(BaseResult<Data> baseResult) {
 
     }
+
+    @Override
+    public void OrderByondImgPicUpload(BaseResult<Data<String>> baseResult) {
+
+    }
+
+    @Override
+    public void ApplyBeyondMoney(BaseResult<Data<String>> baseResult) {
+
+    }
 }

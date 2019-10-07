@@ -4,9 +4,12 @@ package com.ying.administrator.masterappdemo.mvp.presenter;
 import com.ying.administrator.masterappdemo.base.BaseObserver;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.Data2;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.AllWorkOrdersContract;
+
+import okhttp3.RequestBody;
 
 public class AllWorkOrdersPresenter extends AllWorkOrdersContract.Presenter {
 
@@ -106,6 +109,25 @@ public class AllWorkOrdersPresenter extends AllWorkOrdersContract.Presenter {
             @Override
             protected void onHandleSuccess(BaseResult<Data> value) {
                 mView.AddOrderfailureReason(value);
+            }
+        });
+    }
+    @Override
+    public void OrderByondImgPicUpload(RequestBody json) {
+        mModel.OrderByondImgPicUpload(json).subscribe(new BaseObserver<Data<String>>() {
+            @Override
+            protected void onHandleSuccess(BaseResult<Data<String>> value) {
+                mView.OrderByondImgPicUpload(value);
+            }
+        });
+    }
+
+    @Override
+    public void ApplyBeyondMoney(String OrderID, String BeyondMoney, String BeyondDistance) {
+        mModel.ApplyBeyondMoney(OrderID,BeyondMoney,BeyondDistance).subscribe(new BaseObserver<Data<String>>() {
+            @Override
+            protected void onHandleSuccess(BaseResult<Data<String>> value) {
+                mView.ApplyBeyondMoney(value);
             }
         });
     }

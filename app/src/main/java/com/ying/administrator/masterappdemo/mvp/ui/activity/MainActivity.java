@@ -426,6 +426,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        fragmentList.get(0).onActivityResult(requestCode,resultCode,data);
         if (resultCode==10202){
             if (requestCode==20202){
                 Log.d("=========>","进入onActivityResult");
