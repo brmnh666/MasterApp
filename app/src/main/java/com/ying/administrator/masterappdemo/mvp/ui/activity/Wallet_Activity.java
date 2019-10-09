@@ -287,7 +287,7 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
                     mTvCanWithdraw.setText(CanWithdraw);
                     String Con = String.format("%.2f", userInfo.getCon());
                     mTvFreeGift.setText(Con);
-                    mTvFreeze.setText(String.format("%.2f",userInfo.getFrozenMoney()));
+                    mTvFreeze.setText(String.format("%.2f", userInfo.getFrozenMoney()));
                 }
 
                 break;
@@ -382,9 +382,13 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(String message) {
+        if ("GetUserInfoList".equals(message)) {
+            mPresenter.GetUserInfoList(userId,"1");
+        }
         if (!"GetAccountPayInfoList".equals(message)) {
             return;
         }
+
         mPresenter.GetAccountPayInfoList(userId);
     }
 

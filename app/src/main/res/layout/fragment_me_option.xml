@@ -280,6 +280,11 @@
             android:src="@mipmap/icon_me_arrows" />
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#F7F7F7" />
+
     <LinearLayout
         android:id="@+id/ll_me_customer_service"
         android:layout_width="match_parent"

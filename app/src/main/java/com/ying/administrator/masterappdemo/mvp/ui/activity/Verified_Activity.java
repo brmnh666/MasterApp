@@ -825,19 +825,18 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
         switch (baseResult.getStatusCode()){
             case 200:
                 if (!baseResult.getData().getData().isEmpty()){
-                    if (baseResult.getData().getData().get(0).getParentUserID()!=null){
+                    if (baseResult.getData().getData().get(0).getParentUserID()==null||"".equals(baseResult.getData().getData().get(0).getParentUserID())){
+                        parentUserInfo=baseResult.getData(); //存储父账号
+
+                    }else {
 
                         issubaccount=true;
-                         //为子账号时隐藏位置选择框
+                        //为子账号时隐藏位置选择框
                         mLlSelectServiceArea.setVisibility(View.GONE);
                         mLl_serive_origin.setVisibility(View.GONE);
                         mLlShopAddress.setVisibility(View.GONE);
                         mLlServiceSkill.setVisibility(View.GONE);
                         mPresenter.GetUserInfoList(baseResult.getData().getData().get(0).getParentUserID(),"1");
-                    }else {
-
-                      parentUserInfo=baseResult.getData(); //存储父账号
-
                     }
 
 

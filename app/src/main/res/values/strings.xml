@@ -92,4 +92,7 @@
     <string name="satisfy_title" translatable="false">感谢您使用我们的服务，请为此次服务评价！</string>
     <string name="satisfy_thank" translatable="false">感谢您对此次服务做出评价，祝您生活愉快，再见！</string>
     <string name="wait_link">等待接入</string>
+
+    <string name="gray_white"><Data><![CDATA[<font color="#333333">%1$s</font><font color="#FF0000">%2$s</font><font color="#333333">%3$s</font>]]></Data></string>
+
 </resources>

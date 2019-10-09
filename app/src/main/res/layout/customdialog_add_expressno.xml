@@ -24,10 +24,11 @@
         android:textColor="#333333"
         android:textSize="18sp" />
     <TextView
+        android:id="@+id/tv_remind"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="为避免产生不必要的纠纷，请填写正确的快递单号"
+        android:text="为避免产生不必要的纠纷，请在返件的快递单中填写所完成的工单号、用户姓名及电话号码，并在下面的输入框中填写正确的快递单号"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"/>
     <ImageView
@@ -115,13 +116,13 @@
         android:orientation="horizontal"
         android:gravity="center">
 
-        <TextView
+        <EditText
             android:id="@+id/et_post_money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@null"
-            android:text="邮费：15元"
+            android:hint="邮费："
             android:textColor="#333333"
             android:textSize="12dp"
             android:padding="5dp"/>

@@ -26,6 +26,7 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Display;
@@ -380,6 +381,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     TextView mTvLeaveMessage;
     @BindView(R.id.tv_classification)
     TextView mTvClassification;
+    @BindView(R.id.ll_prompt)
+    LinearLayout mLlPrompt;
 
     private String OrderID;
     private WorkOrder.DataBean data = new WorkOrder.DataBean();
@@ -474,7 +477,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
 
     private String startTime;
     private String endTime;
-    private TextView et_post_money;
+    private EditText et_post_money;
     private String post_money;
     private LinearLayout ll_post_money;
     private List<Uri> mSelected;
@@ -789,14 +792,14 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     if (select_state == 0) {
                         Intent intent = new Intent(mActivity, NewAddAccessoriesActivity.class);
                         intent.putExtra("SubCategoryID", data.getSubCategoryID() + "");
-                        intent.putExtra("select_state",select_state+"");
-                        intent.putExtra("orderId",OrderID);
+                        intent.putExtra("select_state", select_state + "");
+                        intent.putExtra("orderId", OrderID);
                         startActivityForResult(intent, Config.APPLY_REQUEST);
-                    } else if (select_state==1){
+                    } else if (select_state == 1) {
                         Intent intent = new Intent(mActivity, NewAddAccessoriesActivity.class);
                         intent.putExtra("SubCategoryID", data.getSubCategoryID() + "");
-                        intent.putExtra("select_state",select_state+"");
-                        intent.putExtra("orderId",OrderID);
+                        intent.putExtra("select_state", select_state + "");
+                        intent.putExtra("orderId", OrderID);
                         startActivityForResult(intent, Config.APPLY_REQUEST);
                     } else {
                         addAccessory();
@@ -1032,6 +1035,11 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 et_post_money = puchsh_view.findViewById(R.id.et_post_money);
                 ll_post_money = puchsh_view.findViewById(R.id.ll_post_money);
                 ll_scan = puchsh_view.findViewById(R.id.ll_scan);
+                TextView tv_remind = puchsh_view.findViewById(R.id.tv_remind);
+//                SpannableStringBuilder builder = new SpannableStringBuilder(tv_remind.getText().toString());
+//                ForegroundColorSpan redSpan = new ForegroundColorSpan(Color.RED);
+//                builder.setSpan(redSpan, 27, 38, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                tv_remind.setText(Html.fromHtml(mActivity.getResources().getString(R.string.gray_white, "为避免产生不必要的纠纷，请在返件的快递单中填写所完成的", "工单号、用户姓名及电话号码", "，并在下面的输入框中填写正确的快递单号")));
                 push_dialog = new AlertDialog.Builder(mActivity)
                         .setView(puchsh_view)
                         .create();
@@ -1067,7 +1075,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     public void onClick(View v) {
                         expressno = et_expressno.getText().toString().trim();
                         if ("2".equals(data.getPostPayType())) {
-//                            post_money = "15";
+                            post_money = et_post_money.getText().toString();
                             if ("".equals(post_money)) {
                                 showToast(mActivity, "请填写邮费");
                                 return;
@@ -1565,7 +1573,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 mTvOrderTime.setText(data.getAudDate().replace("T", " ")); //将T替换为空格
 
 //                mTvCauseOfIssue.setText(data.getMemo());
-                mTvCauseOfIssue.setText(data.getBrandName()+"/" + data.getCategoryName());
+                mTvCauseOfIssue.setText(data.getBrandName() + "/" + data.getCategoryName());
                 mTvClassification.setText(data.getSubCategoryName());
                 if (("Y").equals(data.getGuarantee())) {
                     mTvPaymentMethod.setText("平台代付");
@@ -1681,6 +1689,10 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mTvBeyondApplication.setVisibility(View.GONE);
                     } else if ("1".equals(data.getBeyondState())) {
                         mTvBeyondState.setText("审核通过");
+                        mTvBeyondApplication.setVisibility(View.VISIBLE);
+                        mLlApplyAgainBeyond.setVisibility(View.GONE);
+                    }else if ("2".equals(data.getBeyondState())){
+                        mTvBeyondState.setText("修改完成");
                         mTvBeyondApplication.setVisibility(View.VISIBLE);
                         mLlApplyAgainBeyond.setVisibility(View.GONE);
                     } else {
@@ -2087,6 +2099,16 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
 //                    mViewSelectTimePoint.setVisibility(View.VISIBLE);
 //                    mViewSelectTimePoint2.setVisibility(View.VISIBLE);
                 }
+
+                if ("9".equals(data.getState())) {
+                    mLlAddAccessory.setVisibility(View.GONE);
+                    mLlAddService.setVisibility(View.GONE);
+                    mRlSelectTime.setVisibility(View.GONE);
+                    mLlPrompt.setVisibility(View.GONE);
+                    mLlApplyBeyond.setVisibility(View.GONE);
+                }
+
+
                 if ("8".equals(data.getState())) {
                     if (data.getOrderAccessroyDetail().size() == 0) {
                         mLlAddAccessory.setVisibility(View.GONE);

@@ -24,6 +24,7 @@ import com.ying.administrator.masterappdemo.mvp.presenter.ReceivingPresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment.Appointment_failure_fragment;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment.Complete_wait_fetch_Fragement;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment.Completed_Fragement;
+import com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment.ConfirmedFragement;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment.InService_Fragement;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment.Pending_appointment_fragment;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment.Quality_sheet_Fragement;
@@ -60,7 +61,7 @@ public class Order_Receiving_Activity extends BaseActivity<ReceivingPresenter, R
     SPUtils spUtils = SPUtils.getInstance("token");
     private String userid;
     private final String[] mTitles = {
-            "已接待预约", "服务中", "配件单"
+            "未确认","已接待预约", "服务中", "配件单"
             , "待返件", "质保单", "完成待取机",
             "已完成","预约不成功"
     };
@@ -77,6 +78,7 @@ public class Order_Receiving_Activity extends BaseActivity<ReceivingPresenter, R
     private Complete_wait_fetch_Fragement complete_wait_fetch_fragement;//完成待取机
     private Completed_Fragement completed_fragement; //已完成
     private Appointment_failure_fragment appointment_failure_fragment;//预约失败
+    private ConfirmedFragement confirmedFragement;
 
 
     @Override
@@ -105,6 +107,8 @@ public class Order_Receiving_Activity extends BaseActivity<ReceivingPresenter, R
         mPresenter.WorkerGetOrderRed(userid);
 
 
+
+        confirmedFragement = ConfirmedFragement.newInstance();    //未确认
         pending_appointment_fragment=Pending_appointment_fragment.newInstance(); //已接待预约
         inService_fragement= InService_Fragement.newInstance(); //服务中
         returnedparts_fragement= Returnedparts_Fragement.newInstance();//配件单
@@ -114,7 +118,7 @@ public class Order_Receiving_Activity extends BaseActivity<ReceivingPresenter, R
         completed_fragement= Completed_Fragement.newInstance();//已完成
         appointment_failure_fragment= Appointment_failure_fragment.newInstance();//预约不成功
 
-
+        mFragments.add(confirmedFragement);
         mFragments.add(pending_appointment_fragment);
         mFragments.add(inService_fragement);
         mFragments.add(returnedparts_fragement);
@@ -133,36 +137,39 @@ public class Order_Receiving_Activity extends BaseActivity<ReceivingPresenter, R
 
         String intent = getIntent().getStringExtra("intent");
         switch (intent){
-            case "pending_appointment"://已接待预约
+            case "confirmedFragement":
                 mReceivingViewpager.setCurrentItem(0);
                 break;
-
-            case "in_service":  //服务中
+            case "pending_appointment"://已接待预约
                 mReceivingViewpager.setCurrentItem(1);
                 break;
 
-            case "return"://配件单
+            case "in_service":  //服务中
                 mReceivingViewpager.setCurrentItem(2);
+                break;
+
+            case "return"://配件单
+                mReceivingViewpager.setCurrentItem(3);
                 break;
 
             case "wait_return"://待返件
 
-                mReceivingViewpager.setCurrentItem(3);
-                break;
-
-            case "quality"://质保单
                 mReceivingViewpager.setCurrentItem(4);
                 break;
 
-            case "complete_wait_fetch"://完成待取机
+            case "quality"://质保单
                 mReceivingViewpager.setCurrentItem(5);
                 break;
 
-            case "completed"://已完成
+            case "complete_wait_fetch"://完成待取机
                 mReceivingViewpager.setCurrentItem(6);
                 break;
-            case "appointment_failure"://预约失败
+
+            case "completed"://已完成
                 mReceivingViewpager.setCurrentItem(7);
+                break;
+            case "appointment_failure"://预约失败
+                mReceivingViewpager.setCurrentItem(8);
                 break;
 
             default:
@@ -193,16 +200,16 @@ public class Order_Receiving_Activity extends BaseActivity<ReceivingPresenter, R
     public void getEventBus(Integer num) {
         switch (num) {
             case 2:
-                mReceivingViewpager.setCurrentItem(1); //服务中 state 4
+                mReceivingViewpager.setCurrentItem(2); //服务中 state 4
                 break;
             case 3:
                 mReceivingViewpager.setCurrentItem(3);//待返件 state 5
                 break;
             case 4:
-                mReceivingViewpager.setCurrentItem(6);//已完成 state 7
+                mReceivingViewpager.setCurrentItem(7);//已完成 state 7
                 break;
             case 5:
-                mReceivingViewpager.setCurrentItem(2);//配件单 state 4
+                mReceivingViewpager.setCurrentItem(3);//配件单 state 4
                 break;
 
             case Config.ORDER_READ:

@@ -782,24 +782,26 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 switch (view.getId()) {
                     case R.id.img_grabsheet:
+                        files_map_remote.clear();
                         vibrator.vibrate(100);
                         if (userInfo.getIfAuth() != null) {
                             if (userInfo.getIfAuth().equals("1")) {
                                 final WorkOrder.DataBean item=(WorkOrder.DataBean) adapter.getItem(position);
                                 OrderID=item.getOrderID();
-                                if (Double.parseDouble(item.getDistance())>20){
+                                if (Double.parseDouble(item.getDistance())>30){
                                     under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_apply_beyond, null);
                                     btn_cancel = under_review.findViewById(R.id.btn_cancel);
                                     btn_submit_beyond = under_review.findViewById(R.id.btn_submit_beyond);
                                     tv_remote_km = under_review.findViewById(R.id.tv_remote_km);
                                     iv_map1 = under_review.findViewById(R.id.iv_map1);
                                     et_order_beyond_km = under_review.findViewById(R.id.et_order_beyond_km);
-                                    tv_remote_km.setText((Double.parseDouble(item.getDistance())-20)+"km");
+                                    tv_remote_km.setText((Double.parseDouble(item.getDistance())-30)+"km");
 
                                     btn_cancel.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
                                             underReviewDialog.dismiss();
+                                            mPresenter.UpdateSendOrderState(OrderID, "1","");
                                         }
                                     });
                                     btn_submit_beyond.setOnClickListener(new View.OnClickListener() {
@@ -814,8 +816,10 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                                                 BeyondMoney=Double.parseDouble(Distance)+"";
                                                 Distance=BeyondMoney;
                                             }else{
-                                                BeyondMoney=(Double.parseDouble(item.getDistance())-20)+"";
-                                                Distance=(Double.parseDouble(item.getDistance())-20)+"";
+//                                                BeyondMoney=(Double.parseDouble(item.getDistance())-20)+"";
+//                                                Distance=(Double.parseDouble(item.getDistance())-20)+"";
+                                                ToastUtils.showShort("请输入超出远程费！");
+                                                return;
                                             }
                                             OrderByondImgPicUpload(files_map_remote);
                                         }
@@ -1906,8 +1910,15 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 if (baseResult.getData().isItem1()) {
                     ToastUtils.showShort("提交成功");
                     underReviewDialog.dismiss();
-                    showLoading();
-                    mPresenter.UpdateSendOrderState(OrderID, "1","");
+//                    showLoading();
+//                    mPresenter.UpdateSendOrderState(OrderID, "9","");
+                    grabsheetAdapter.remove(grabposition);
+//                    Toast.makeText(getActivity(), "接单成功", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getActivity(), Order_Receiving_Activity.class);
+                    intent.putExtra("intent", "confirmedFragement");
+                    startActivity(intent);
+                    cancleLoading();
+
                 } else {
                     if ("支付错误,添加失败".equals(baseResult.getData().getItem2())) {
                         customdialog_home_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_home, null);

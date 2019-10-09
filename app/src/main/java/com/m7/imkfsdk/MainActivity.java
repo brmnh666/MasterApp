@@ -108,7 +108,7 @@ public class MainActivity extends Activity {
         if (productName!=null){
             helper.setCard(ci);
         }
-        helper.initSdkChat("44a62150-b9b8-11e9-a2b3-6b8746cb08da", userName, userId);//腾讯云正式
+        helper.initSdkChat("87326950-b5a5-11e9-be6e-a515be030f55", userName, userId);//腾讯云正式
         finish();
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override

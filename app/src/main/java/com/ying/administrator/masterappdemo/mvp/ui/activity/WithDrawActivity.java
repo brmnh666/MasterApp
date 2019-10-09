@@ -449,9 +449,31 @@ public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
         switch (baseResult.getStatusCode()) {
             case 200:
                 if (baseResult.getData().isItem1()) {
-                    Toast.makeText(this, baseResult.getData().getItem2(), Toast.LENGTH_SHORT).show();
-                    EventBus.getDefault().post("GetUserInfoList");
-                    WithDrawActivity.this.finish();
+                    final CommonDialog_Home dialog = new CommonDialog_Home(mActivity);
+                    dialog.setMessage(baseResult.getData().getItem2())
+                            //.setImageResId(R.mipmap.ic_launcher)
+                            .setTitle("提示")
+                            .setSingle(false).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
+                        @Override
+                        public void onPositiveClick() {//拨打电话
+                            dialog.dismiss();
+                            EventBus.getDefault().post("GetUserInfoList");
+                            WithDrawActivity.this.finish();
+                        }
+
+                        @Override
+                        public void onNegtiveClick() {//取消
+                            dialog.dismiss();
+                            // Toast.makeText(MainActivity.this,"ssss",Toast.LENGTH_SHORT).show();
+                            EventBus.getDefault().post("GetUserInfoList");
+                            WithDrawActivity.this.finish();
+                        }
+                    }).show();
+
+
+//                    MyUtils.showToast(mActivity,  baseResult.getData().getItem2());
+//                    Toast.makeText(this, baseResult.getData().getItem2(), Toast.LENGTH_SHORT).show();
+
                 } else {
                     Toast.makeText(this, baseResult.getData().getItem2(), Toast.LENGTH_SHORT).show();
                 }
