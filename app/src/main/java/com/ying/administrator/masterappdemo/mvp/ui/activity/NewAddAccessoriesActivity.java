@@ -656,65 +656,65 @@ public class NewAddAccessoriesActivity extends BaseActivity<NewAddAccessoriesPre
                 if (list_collect.isEmpty()) {
                     Toast.makeText(mActivity, "请先选择配件", Toast.LENGTH_SHORT).show();
                 } else {
-//                    Intent intent = new Intent();
-//                    intent.putExtra("list_collect", (Serializable) list_collect);
-//                    setResult(Config.APPLY_RESULT, intent);
-//                    NewAddAccessoriesActivity.this.finish();
+                    Intent intent = new Intent();
+                    intent.putExtra("list_collect", (Serializable) list_collect);
+                    setResult(Config.APPLY_RESULT, intent);
+                    NewAddAccessoriesActivity.this.finish();
 
-                    Gson gson = new Gson();
-                    if ("0".equals(select_state)) {
-                        if ("".equals(returnAddress)) {
-                            ToastUtils.showShort("请选择收货地址");
-                        }
-                    }
-                    for (int i = 0; i < list_collect.size(); i++) {
-                        mfAccessory = new FAccessory.OrderAccessoryStrBean.OrderAccessoryBean();
-                        mfAccessory.setPhoto1(list_collect.get(i).getImg1());//配件照片
-                        mfAccessory.setPhoto2(list_collect.get(i).getImg2());//整机照片
-                        mfAccessory.setFAccessoryID(list_collect.get(i).getFAccessoryID());//获取id
-                        mfAccessory.setFAccessoryName(list_collect.get(i).getAccessoryName()); //获取名字
-                        mfAccessory.setFCategoryID(list_collect.get(i).getFCategoryID() + ""); //分类id
-                        mfAccessory.setQuantity(list_collect.get(i).getCount() + ""); //数量 默认数字为1
-                        mfAccessory.setPrice(Double.valueOf("0"));//原价
-                        mfAccessory.setDiscountPrice(Double.valueOf("0"));//折扣价
-//                        mfAccessory.setSizeID("1");//小修中修大修
-                        mfAccessory.setSendState("N");
-                        mfAccessory.setRelation("");
-                        mfAccessory.setState("0");
-                        mfAccessory.setIsPay("N");
-                        mfAccessory.setExpressNo("");
-                        mfAccessory.setNeedPlatformAuth("N");
-                        if ("0".equals(select_state)) {//厂家自购
-                            mfAccessory.setPrice(list_collect.get(i).getAccessoryPrice());//原价
-                            mfAccessory.setDiscountPrice(list_collect.get(i).getAccessoryPrice());//原价
-                        } else if ("1".equals(select_state) ) {//师傅自购 还要判断保内保外
-                            if ("".equals(money)) {
-                                ToastUtils.showShort("请输入配件价格");
-                                return;
-                            }
-                            mfAccessory.setPrice(Double.parseDouble(money));
-                            mfAccessory.setDiscountPrice(Double.parseDouble(money));
-                        }
-                        fAcList.add(mfAccessory);
-                    }
-
-
-//                        if (accessories_picture.size() > 0) {
-                    FAccessory.OrderAccessoryStrBean orderAccessoryStrBean = new FAccessory.OrderAccessoryStrBean();
-                    orderAccessoryStrBean.setOrderAccessory(fAcList);
-                    orderAccessoryStrBean.setAccessoryMemo("");
-                    String s1 = gson.toJson(orderAccessoryStrBean);
-                    SAccessory sAccessory = new SAccessory();
-                    sAccessory.setOrderID(OrderID);
-                    sAccessory.setAccessorySequency(select_state);
-                    sAccessory.setOrderAccessoryStr(s1);
-                    String s = gson.toJson(sAccessory);
-                    Log.d("添加的配件有", s);
-                    RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), s);
-                    mPresenter.AddOrderAccessory(body);
-                    if ("0".equals(select_state)){
-                        mPresenter.UpdateOrderAddressByOrderID(OrderID, returnAddress);
-                    }
+//                    Gson gson = new Gson();
+//                    if ("0".equals(select_state)) {
+//                        if ("".equals(returnAddress)) {
+//                            ToastUtils.showShort("请选择收货地址");
+//                        }
+//                    }
+//                    for (int i = 0; i < list_collect.size(); i++) {
+//                        mfAccessory = new FAccessory.OrderAccessoryStrBean.OrderAccessoryBean();
+//                        mfAccessory.setPhoto1(list_collect.get(i).getImg1());//配件照片
+//                        mfAccessory.setPhoto2(list_collect.get(i).getImg2());//整机照片
+//                        mfAccessory.setFAccessoryID(list_collect.get(i).getFAccessoryID());//获取id
+//                        mfAccessory.setFAccessoryName(list_collect.get(i).getAccessoryName()); //获取名字
+//                        mfAccessory.setFCategoryID(list_collect.get(i).getFCategoryID() + ""); //分类id
+//                        mfAccessory.setQuantity(list_collect.get(i).getCount() + ""); //数量 默认数字为1
+//                        mfAccessory.setPrice(Double.valueOf("0"));//原价
+//                        mfAccessory.setDiscountPrice(Double.valueOf("0"));//折扣价
+////                        mfAccessory.setSizeID("1");//小修中修大修
+//                        mfAccessory.setSendState("N");
+//                        mfAccessory.setRelation("");
+//                        mfAccessory.setState("0");
+//                        mfAccessory.setIsPay("N");
+//                        mfAccessory.setExpressNo("");
+//                        mfAccessory.setNeedPlatformAuth("N");
+//                        if ("0".equals(select_state)) {//厂家自购
+//                            mfAccessory.setPrice(list_collect.get(i).getAccessoryPrice());//原价
+//                            mfAccessory.setDiscountPrice(list_collect.get(i).getAccessoryPrice());//原价
+//                        } else if ("1".equals(select_state) ) {//师傅自购 还要判断保内保外
+//                            if ("".equals(money)) {
+//                                ToastUtils.showShort("请输入配件价格");
+//                                return;
+//                            }
+//                            mfAccessory.setPrice(Double.parseDouble(money));
+//                            mfAccessory.setDiscountPrice(Double.parseDouble(money));
+//                        }
+//                        fAcList.add(mfAccessory);
+//                    }
+//
+//
+////                        if (accessories_picture.size() > 0) {
+//                    FAccessory.OrderAccessoryStrBean orderAccessoryStrBean = new FAccessory.OrderAccessoryStrBean();
+//                    orderAccessoryStrBean.setOrderAccessory(fAcList);
+//                    orderAccessoryStrBean.setAccessoryMemo("");
+//                    String s1 = gson.toJson(orderAccessoryStrBean);
+//                    SAccessory sAccessory = new SAccessory();
+//                    sAccessory.setOrderID(OrderID);
+//                    sAccessory.setAccessorySequency(select_state);
+//                    sAccessory.setOrderAccessoryStr(s1);
+//                    String s = gson.toJson(sAccessory);
+//                    Log.d("添加的配件有", s);
+//                    RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), s);
+//                    mPresenter.AddOrderAccessory(body);
+//                    if ("0".equals(select_state)){
+//                        mPresenter.UpdateOrderAddressByOrderID(OrderID, returnAddress);
+//                    }
 
 //                        } else {
 //                            ToastUtils.showShort("请添加配件图片");

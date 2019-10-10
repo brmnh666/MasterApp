@@ -1063,8 +1063,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="10dp"
                     android:background="@color/white"
-                    android:orientation="vertical"
-                    android:visibility="gone">
+                    android:orientation="vertical">
 
                     <TextView
 
@@ -1143,7 +1142,7 @@
                             android:textStyle="bold"
                             android:textColor="#6A6A6A"
                             android:textSize="14sp"
-
+                            android:visibility="gone"
                             />
                     </LinearLayout>
                 </LinearLayout>
