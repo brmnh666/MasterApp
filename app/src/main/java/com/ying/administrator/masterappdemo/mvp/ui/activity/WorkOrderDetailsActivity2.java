@@ -1751,6 +1751,10 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mBtnCompleteSubmit.setVisibility(View.VISIBLE);
                         mRlCompleteSubmit.setVisibility(View.VISIBLE);
                         mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                    }else if ("2".equals(BeyondState)){
+                        mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                        mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
                     } else {
                         mBtnCompleteSubmit.setVisibility(View.GONE);
                         mRlCompleteSubmit.setVisibility(View.GONE);
@@ -1795,6 +1799,16 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                             mRlCompleteSubmit.setVisibility(View.VISIBLE);
                             mBtnCompleteSubmitOne.setVisibility(View.GONE);
                         }
+                    }else if ("1".equals(AccessoryApplyState) && "2".equals(BeyondState)) {
+                        if ("Y".equals(data.getAccessorySendState())) {
+                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                        } else {
+                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                        }
                     } else {
                         mBtnCompleteSubmit.setVisibility(View.GONE);
                         mRlCompleteSubmit.setVisibility(View.GONE);
@@ -1807,6 +1821,10 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mRlCompleteSubmit.setVisibility(View.VISIBLE);
                         mBtnCompleteSubmitOne.setVisibility(View.GONE);
                     } else if ("1".equals(ServiceApplyState) && "-1".equals(BeyondState)) {
+                        mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                        mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                    }else if ("1".equals(ServiceApplyState) && "2".equals(BeyondState)) {
                         mBtnCompleteSubmit.setVisibility(View.VISIBLE);
                         mRlCompleteSubmit.setVisibility(View.VISIBLE);
                         mBtnCompleteSubmitOne.setVisibility(View.GONE);
@@ -1828,6 +1846,16 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                             mBtnCompleteSubmitOne.setVisibility(View.GONE);
                         }
                     } else if ("1".equals(AccessoryApplyState) && "1".equals(ServiceApplyState) && "-1".equals(BeyondState)) {
+                        if ("Y".equals(data.getAccessorySendState())) {
+                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                        } else {
+                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                        }
+                    } else if ("1".equals(AccessoryApplyState) && "1".equals(ServiceApplyState) && "2".equals(BeyondState)) {
                         if ("Y".equals(data.getAccessorySendState())) {
                             mBtnCompleteSubmit.setVisibility(View.VISIBLE);
                             mRlCompleteSubmit.setVisibility(View.VISIBLE);

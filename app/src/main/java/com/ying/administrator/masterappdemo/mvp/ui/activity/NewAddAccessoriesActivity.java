@@ -677,7 +677,7 @@ public class NewAddAccessoriesActivity extends BaseActivity<NewAddAccessoriesPre
                         mfAccessory.setQuantity(list_collect.get(i).getCount() + ""); //数量 默认数字为1
                         mfAccessory.setPrice(Double.valueOf("0"));//原价
                         mfAccessory.setDiscountPrice(Double.valueOf("0"));//折扣价
-                        mfAccessory.setSizeID("1");//小修中修大修
+//                        mfAccessory.setSizeID("1");//小修中修大修
                         mfAccessory.setSendState("N");
                         mfAccessory.setRelation("");
                         mfAccessory.setState("0");
