@@ -743,8 +743,8 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
                     mService = mList_service.get(i);
                     if (mService.isIschecked()) {
                         mfService = new FService.OrderServiceStrBean.OrderServiceBean();
-                        mfService.setServiceID(mService.getFServiceID());
-                        mfService.setServiceName(mService.getFServiceName());
+                        mfService.setFServiceID(mService.getFServiceID());
+                        mfService.setFServiceName(mService.getFServiceName());
                         mfService.setPrice(mService.getInitPrice());
                         mfService.setDiscountPrice(mService.getInitPrice());
                         mfService.setIsPay("N");
@@ -1047,6 +1047,11 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     @Override
     public void AddOrderService(BaseResult<Data> baseResult) {
 
+
+    }
+
+    @Override
+    public void AddOrderAccessoryAndService(BaseResult<Data> baseResult) {
 
     }
 

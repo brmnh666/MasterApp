@@ -38,6 +38,8 @@ public interface PendingOrderContract {
         //提交需要的服务信息
         Observable<BaseResult<Data>> AddOrderService(RequestBody json);
 
+        Observable<BaseResult<Data>> AddOrderAccessoryAndService(RequestBody json);
+
         //提交配件服务和返件信息
         Observable<BaseResult<Data<String>>> AddOrUpdateAccessoryServiceReturn(RequestBody json);
 
@@ -93,6 +95,8 @@ public interface PendingOrderContract {
         //提交需要的服务信息
         void AddOrderService(BaseResult<Data> baseResult);
 
+        void AddOrderAccessoryAndService(BaseResult<Data> baseResult);
+
         //提交配件服务和返件信息
         void AddOrUpdateAccessoryServiceReturn(BaseResult<Data<String>> baseResult);
 
@@ -141,6 +145,8 @@ public interface PendingOrderContract {
         public abstract void AddOrderAccessory(RequestBody json);
         //提交需要的服务信息
         public abstract void AddOrderService(RequestBody json);
+
+        public abstract void AddOrderAccessoryAndService(RequestBody json);
          //提交配件服务和返件信息
         public abstract void AddOrUpdateAccessoryServiceReturn(RequestBody json);
         //更新时间

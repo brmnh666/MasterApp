@@ -47,13 +47,48 @@ public class FService {
              * DiscountPrice : 50
              */
 
-            private String ServiceID;
-            private String ServiceName;
+            private String FServiceID;
+            private String FServiceName;
             private double Price;
             private double DiscountPrice;
             private String IsPay;
             private String Relation;
+            private String SNeedPlatformAuth;
+            private String State;
+            private String CategoryID;
 
+
+            public String getFServiceID() {
+                return FServiceID;
+            }
+
+            public void setFServiceID(String FServiceID) {
+                this.FServiceID = FServiceID;
+            }
+
+            public String getFServiceName() {
+                return FServiceName;
+            }
+
+            public void setFServiceName(String FServiceName) {
+                this.FServiceName = FServiceName;
+            }
+
+            public double getPrice() {
+                return Price;
+            }
+
+            public void setPrice(double price) {
+                Price = price;
+            }
+
+            public double getDiscountPrice() {
+                return DiscountPrice;
+            }
+
+            public void setDiscountPrice(double discountPrice) {
+                DiscountPrice = discountPrice;
+            }
 
             public String getIsPay() {
                 return IsPay;
@@ -71,36 +106,28 @@ public class FService {
                 Relation = relation;
             }
 
-            public String getServiceID() {
-                return ServiceID;
+            public String getSNeedPlatformAuth() {
+                return SNeedPlatformAuth;
             }
 
-            public void setServiceID(String ServiceID) {
-                this.ServiceID = ServiceID;
+            public void setSNeedPlatformAuth(String SNeedPlatformAuth) {
+                this.SNeedPlatformAuth = SNeedPlatformAuth;
             }
 
-            public String getServiceName() {
-                return ServiceName;
+            public String getState() {
+                return State;
             }
 
-            public void setServiceName(String ServiceName) {
-                this.ServiceName = ServiceName;
+            public void setState(String state) {
+                State = state;
             }
 
-            public double getPrice() {
-                return Price;
+            public String getCategoryID() {
+                return CategoryID;
             }
 
-            public void setPrice(double price) {
-                Price = price;
-            }
-
-            public double getDiscountPrice() {
-                return DiscountPrice;
-            }
-
-            public void setDiscountPrice(double discountPrice) {
-                DiscountPrice = discountPrice;
+            public void setCategoryID(String categoryID) {
+                CategoryID = categoryID;
             }
         }
     }

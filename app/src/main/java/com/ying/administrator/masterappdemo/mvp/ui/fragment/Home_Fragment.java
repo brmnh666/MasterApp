@@ -3,7 +3,6 @@ package com.ying.administrator.masterappdemo.mvp.ui.fragment;
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -30,10 +29,8 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -59,8 +56,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
@@ -78,12 +73,7 @@ import com.umeng.socialize.utils.ShareBoardlistener;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.common.Config;
-import com.ying.administrator.masterappdemo.entity.Accessory;
-import com.ying.administrator.masterappdemo.entity.AddressList;
 import com.ying.administrator.masterappdemo.entity.Data;
-import com.ying.administrator.masterappdemo.entity.Data2;
-import com.ying.administrator.masterappdemo.entity.FAccessory;
-import com.ying.administrator.masterappdemo.entity.SubUserInfo;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.AllWorkOrdersContract;
@@ -100,8 +90,6 @@ import com.ying.administrator.masterappdemo.mvp.ui.activity.Wallet_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.WorkOrderDetailsActivity2;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.GrabsheetAdapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Pending_Adapter;
-import com.ying.administrator.masterappdemo.mvp.ui.adapter.Pending_Appointment_Adapter;
-import com.ying.administrator.masterappdemo.mvp.ui.adapter.Redeploy_Adapter;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
 import com.ying.administrator.masterappdemo.util.Glide4Engine;
 import com.ying.administrator.masterappdemo.util.MyUtils;
@@ -111,7 +99,6 @@ import com.ying.administrator.masterappdemo.util.calendarutil.CalendarProviderMa
 import com.ying.administrator.masterappdemo.util.imageutil.CompressHelper;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 import com.ying.administrator.masterappdemo.widget.CustomDialog;
-import com.ying.administrator.masterappdemo.widget.CustomDialog_Redeploy;
 import com.ying.administrator.masterappdemo.widget.CustomDialog_UnSuccess;
 import com.ying.administrator.masterappdemo.widget.GlideCircleWithBorder_Home;
 import com.ying.administrator.masterappdemo.widget.ShareDialog;
@@ -206,6 +193,10 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
     TextView mTvMoney;
     @BindView(R.id.tv_edemption)
     TextView mTvEdemption;
+    @BindView(R.id.tv_finish)
+    TextView mTvFinish;
+    @BindView(R.id.tv_complaint)
+    TextView mTvComplaint;
 
     // private WaveSwipeRefreshLayout mWaveSwipeRefreshLayout;
     private String mContentText;
@@ -403,18 +394,18 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
             public void onRefresh(RefreshLayout refreshlayout) {
                 pageIndex = 1;
                 //list.clear();
-                if (userInfo.getParentUserID()==null||"".equals(userInfo.getParentUserID())){
+                if (userInfo.getParentUserID() == null || "".equals(userInfo.getParentUserID())) {
                     list.clear();
                     grabsheetAdapter.notifyDataSetChanged();
                     mPresenter.WorkerGetOrderList(userID, "0", Integer.toString(pageIndex), "10");
-                }else {
+                } else {
                     Pendinglist.clear();
                     pending_appointment_adapter.notifyDataSetChanged();
                     mPresenter.WorkerGetOrderList(userID, "1", Integer.toString(pageIndex), "5");
                 }
-                if (userInfo.getParentUserID()==null||"".equals(userInfo.getParentUserID())){
+                if (userInfo.getParentUserID() == null || "".equals(userInfo.getParentUserID())) {
 //                    grabsheetAdapter.notifyDataSetChanged();
-                }else {
+                } else {
 //                    pending_appointment_adapter.notifyDataSetChanged();
                 }
 
@@ -448,18 +439,18 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 pageIndex++; //页数加1
                 Log.d("当前的单数", String.valueOf(list.size()));
 //                list.clear();
-                if (userInfo.getParentUserID()==null||"".equals(userInfo.getParentUserID())){
+                if (userInfo.getParentUserID() == null || "".equals(userInfo.getParentUserID())) {
 //
 //                    grabsheetAdapter.notifyDataSetChanged();
                     mPresenter.WorkerGetOrderList(userID, "0", Integer.toString(pageIndex), "10");
-                }else {
+                } else {
 //                    list.clear();
 //                    pending_appointment_adapter.notifyDataSetChanged();
                     mPresenter.WorkerGetOrderList(userID, "1", Integer.toString(pageIndex), "5");
                 }
-                if (userInfo.getParentUserID()==null||"".equals(userInfo.getParentUserID())){
+                if (userInfo.getParentUserID() == null || "".equals(userInfo.getParentUserID())) {
 //                    grabsheetAdapter.notifyDataSetChanged();
-                }else {
+                } else {
 //                    pending_appointment_adapter.notifyDataSetChanged();
                 }
                 refreshlayout.finishLoadmore();
@@ -475,7 +466,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
     public void WorkerGetOrderList(BaseResult<WorkOrder> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-                if (userInfo.getParentUserID()==null||"".equals(userInfo.getParentUserID())){
+                if (userInfo.getParentUserID() == null || "".equals(userInfo.getParentUserID())) {
                     if (baseResult.getData().getData() == null) {
                         // Toast.makeText(getActivity(),"咱无新工单",Toast.LENGTH_SHORT).show();
                         Log.d("===>", "暂无新工单");
@@ -510,7 +501,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
 
                     }
 
-                }else {
+                } else {
                     if (baseResult.getData().getData() == null) {
                         if (pageIndex == 1) {
                             Pendinglist.clear();
@@ -620,7 +611,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                                         if (aBoolean) {
                                             // 获取全部权限成功
 
-                                            chooseTime(position,"请选择上门时间");
+                                            chooseTime(position, "请选择上门时间");
                                         } else {
                                             // 获取全部权限失败
                                             Log.d("=====>", "权限获取失败");
@@ -730,7 +721,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                     /*取消订单*/
                     case R.id.tv_cancel_order:
                         OrderId = ((WorkOrder.DataBean) adapter.getData().get(position)).getOrderID();//获取工单号
-                        View Cancelview=LayoutInflater.from(mActivity).inflate(R.layout.dialog_cancel,null);
+                        View Cancelview = LayoutInflater.from(mActivity).inflate(R.layout.dialog_cancel, null);
                         et_message = Cancelview.findViewById(R.id.et_message);
                         negtive = Cancelview.findViewById(R.id.negtive);
                         positive = Cancelview.findViewById(R.id.positive);
@@ -746,12 +737,12 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                         positive.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                String message= et_message.getText().toString();
-                                if (message==null||"".equals(message)){
+                                String message = et_message.getText().toString();
+                                if (message == null || "".equals(message)) {
                                     ToastUtils.showShort("请输入取消工单理由");
-                                }else {
+                                } else {
 //                                    mPresenter.UpdateOrderState(OrderId, "-1",message);
-                                    mPresenter.UpdateSendOrderState(OrderId,"-1",message);
+                                    mPresenter.UpdateSendOrderState(OrderId, "-1", message);
                                     cancleposition = position;
                                     cancelDialog.dismiss();
                                 }
@@ -761,8 +752,8 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
 
                         cancelDialog = new AlertDialog.Builder(mActivity).setView(Cancelview).create();
                         cancelDialog.show();
-                        Window window1= cancelDialog.getWindow();
-                        WindowManager.LayoutParams layoutParams=window1.getAttributes();
+                        Window window1 = cancelDialog.getWindow();
+                        WindowManager.LayoutParams layoutParams = window1.getAttributes();
                         window1.setAttributes(layoutParams);
                         window1.setBackgroundDrawable(new ColorDrawable());
                         break;
@@ -786,36 +777,36 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                         vibrator.vibrate(100);
                         if (userInfo.getIfAuth() != null) {
                             if (userInfo.getIfAuth().equals("1")) {
-                                final WorkOrder.DataBean item=(WorkOrder.DataBean) adapter.getItem(position);
-                                OrderID=item.getOrderID();
-                                if (Double.parseDouble(item.getDistance())>30){
+                                final WorkOrder.DataBean item = (WorkOrder.DataBean) adapter.getItem(position);
+                                OrderID = item.getOrderID();
+                                if ("true".equals(item.getDistanceTureOrFalse())) {
                                     under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_apply_beyond, null);
                                     btn_cancel = under_review.findViewById(R.id.btn_cancel);
                                     btn_submit_beyond = under_review.findViewById(R.id.btn_submit_beyond);
                                     tv_remote_km = under_review.findViewById(R.id.tv_remote_km);
                                     iv_map1 = under_review.findViewById(R.id.iv_map1);
                                     et_order_beyond_km = under_review.findViewById(R.id.et_order_beyond_km);
-                                    tv_remote_km.setText((Double.parseDouble(item.getDistance())-30)+"km");
+//                                    tv_remote_km.setText((Double.parseDouble(item.getDistance()) - 30) + "km");
 
                                     btn_cancel.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
                                             underReviewDialog.dismiss();
-                                            mPresenter.UpdateSendOrderState(OrderID, "1","");
+                                            mPresenter.UpdateSendOrderState(OrderID, "1", "");
                                         }
                                     });
                                     btn_submit_beyond.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-                                            if(files_map_remote.size()==0){
+                                            if (files_map_remote.size() == 0) {
                                                 ToastUtils.showShort("请添加远程图片!");
                                                 return;
                                             }
-                                            Distance=et_order_beyond_km.getText().toString();
-                                            if (!Distance.isEmpty()){
-                                                BeyondMoney=Double.parseDouble(Distance)+"";
-                                                Distance=BeyondMoney;
-                                            }else{
+                                            Distance = et_order_beyond_km.getText().toString();
+                                            if (!Distance.isEmpty()) {
+                                                BeyondMoney = Double.parseDouble(Distance) + "";
+                                                Distance = BeyondMoney;
+                                            } else {
 //                                                BeyondMoney=(Double.parseDouble(item.getDistance())-20)+"";
 //                                                Distance=(Double.parseDouble(item.getDistance())-20)+"";
                                                 ToastUtils.showShort("请输入超出远程费！");
@@ -827,14 +818,14 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                                     iv_map1.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-                                            showPopupWindow(1301,1302);
+                                            showPopupWindow(1301, 1302);
                                         }
                                     });
                                     underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review).create();
                                     underReviewDialog.show();
-                                }else{
+                                } else {
                                     showLoading();
-                                    mPresenter.UpdateSendOrderState(OrderID, "1","");
+                                    mPresenter.UpdateSendOrderState(OrderID, "1", "");
                                 }
 
                             } else if (userInfo.getIfAuth().equals("0")) {
@@ -852,7 +843,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                                 under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_audit_failure, null);
                                 btnConfirm = under_review.findViewById(R.id.btn_confirm);
                                 content = under_review.findViewById(R.id.tv_content);
-                                content.setText(userInfo.getAuthMessage()+",有疑问请咨询客服电话。");
+                                content.setText(userInfo.getAuthMessage() + ",有疑问请咨询客服电话。");
                                 btnConfirm.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
@@ -882,21 +873,20 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
             case 200://200
                 if (data.isItem1()) {//接单成功
 
-                    if (userInfo.getParentUserID()==null||"".equals(userInfo.getParentUserID())){
+                    if (userInfo.getParentUserID() == null || "".equals(userInfo.getParentUserID())) {
                         grabsheetAdapter.remove(grabposition);
-                        Toast.makeText(getActivity(), "接单成功", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "接单成功", LENGTH_SHORT).show();
                         Intent intent = new Intent(getActivity(), Order_Receiving_Activity.class);
                         intent.putExtra("intent", "pending_appointment");
                         startActivity(intent);
                         cancleLoading();
-                    }else {
+                    } else {
                         pending_appointment_adapter.remove(cancleposition);
                     }
 
 
-
                 } else {
-                    Toast.makeText(getActivity(), (CharSequence) data.getItem2(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), (CharSequence) data.getItem2(), LENGTH_SHORT).show();
                     cancleLoading();
 
                 }
@@ -920,9 +910,9 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
         switch (baseResult.getStatusCode()) {
             case 200:
                 userInfo = baseResult.getData().getData().get(0);
-                if (userInfo.getParentUserID()==null||"".equals(userInfo.getParentUserID())){
+                if (userInfo.getParentUserID() == null || "".equals(userInfo.getParentUserID())) {
                     mPresenter.WorkerGetOrderList(userID, "0", Integer.toString(pageIndex), "10");
-                }else {
+                } else {
                     mPresenter.WorkerGetOrderList(userID, "1", Integer.toString(pageIndex), "5");
                 }
                 /*设置实名认证状态*/
@@ -958,9 +948,9 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 mTvHomeAvailableBalance.setText("可提现余额: " + format + "元");
                 mTvHomeOutstandingAmount.setText("未完结金额: " + FrozenMoney + "元");
                 mTvHomeGivingMoney.setText("赠 送 金 额: 暂无");
-                if (userInfo.getUserID().equals(userInfo.getNickName())){
+                if (userInfo.getUserID().equals(userInfo.getNickName())) {
                     mTvName.setText("未设置昵称");
-                }else {
+                } else {
                     mTvName.setText(userInfo.getNickName());
                 }
                 String xigua = String.format("%.2f", userInfo.getCon());
@@ -978,13 +968,13 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                             .apply(myOptions)
                             .into(mImgHomeHead);
 
-                    if (userInfo.getParentUserID()==null||"".equals(userInfo.getParentUserID())){
+                    if (userInfo.getParentUserID() == null || "".equals(userInfo.getParentUserID())) {
                         mRecyclerviewOrderReceiving.setLayoutManager(new WrapContentLinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
                         grabsheetAdapter = new GrabsheetAdapter(R.layout.item_grabsheet, list);
                         grabsheetAdapter.setEmptyView(getEmptyView());
                         mRecyclerviewOrderReceiving.setAdapter(grabsheetAdapter);
                         showGrabsheet();
-                    }else {
+                    } else {
                         mRecyclerviewOrderReceiving.setLayoutManager(new WrapContentLinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
                         pending_appointment_adapter = new Pending_Adapter(R.layout.item_pending_appointment, Pendinglist, userInfo);
                         pending_appointment_adapter.setEmptyView(getEmptyView());
@@ -1028,19 +1018,12 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                     // 添加事件
                     int result = CalendarProviderManager.addCalendarEvent(mActivity, calendarEvent);
                     if (result == 0) {
-                        Toast.makeText(mActivity, "已为您添加行程至日历,将提前一小时提醒您！！", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mActivity, "已为您添加行程至日历,将提前一小时提醒您！！", LENGTH_SHORT).show();
                     } else if (result == -1) {
                         Toast.makeText(mActivity, "插入失败", LENGTH_SHORT).show();
                     } else if (result == -2) {
                         Toast.makeText(mActivity, "没有权限", LENGTH_SHORT).show();
                     }
-
-
-
-
-
-
-
 
 
                 }
@@ -1148,7 +1131,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                     } else if (userInfo.getIfAuth().equals("-1")) {
                         under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_audit_failure, null);
                         content = under_review.findViewById(R.id.tv_content);
-                        content.setText(userInfo.getAuthMessage()+",有疑问请咨询客服电话。");
+                        content.setText(userInfo.getAuthMessage() + ",有疑问请咨询客服电话。");
                         btnConfirm = under_review.findViewById(R.id.btn_confirm);
                         btnConfirm.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -1496,11 +1479,9 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
         /*模拟数据*/
 
 
-
-
-        if (userInfo.getParentUserID()==null||"".equals(userInfo.getParentUserID())){
+        if (userInfo.getParentUserID() == null || "".equals(userInfo.getParentUserID())) {
             mPresenter.WorkerGetOrderList(userID, "0", Integer.toString(pageIndex), "10");
-        }else {
+        } else {
             mPresenter.WorkerGetOrderList(userID, "1", Integer.toString(pageIndex), "5");
         }
       /* if (list.isEmpty()){ //没有数据显示空
@@ -1521,7 +1502,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
     /**
      * 选择上门时间
      */
-    public void chooseTime(final int position,final String title) {
+    public void chooseTime(final int position, final String title) {
         Date date = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String format1 = format.format(date);
@@ -1537,17 +1518,17 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
-                OrderId= workOrder.getData().get(position).getOrderID();
+                OrderId = workOrder.getData().get(position).getOrderID();
                 mPresenter.UpdateSendOrderUpdateTime(OrderId, time, time);
 
 
-                Intent intent=new Intent(mActivity, WorkOrderDetailsActivity2.class);
-                intent.putExtra("OrderID",OrderId);
-                intent.putExtra("time",time);
+                Intent intent = new Intent(mActivity, WorkOrderDetailsActivity2.class);
+                intent.putExtra("OrderID", OrderId);
+                intent.putExtra("time", time);
                 startActivity(intent);
-                successposition=position;
+                successposition = position;
 
-                mPresenter.AddOrderSuccess(OrderId,"1","预约成功");
+                mPresenter.AddOrderSuccess(OrderId, "1", "预约成功");
             }
         }, format1, "2022-1-1 24:00");
 
@@ -1582,9 +1563,9 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
         if ("GetUserInfoList".equals(message)) {
             mPresenter.GetUserInfoList(userID, "1");
         } else if ("0".equals(message)) {
-            if (userInfo.getParentUserID()==null||"".equals(userInfo.getParentUserID())){
+            if (userInfo.getParentUserID() == null || "".equals(userInfo.getParentUserID())) {
                 mPresenter.WorkerGetOrderList(userID, "0", Integer.toString(pageIndex), "10");
-            }else {
+            } else {
                 mPresenter.WorkerGetOrderList(userID, "1", Integer.toString(pageIndex), "5");
             }
         }
@@ -1659,7 +1640,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 @Override
                 public void onPositiveClick() {//拨打电话
                     dialog.dismiss();
-                    openBrowser(mActivity,"https://img.xigyu.com/Files/西瓜鱼商城.apk");
+                    openBrowser(mActivity, "https://img.xigyu.com/Files/西瓜鱼商城.apk");
                 }
 
                 @Override
@@ -1776,19 +1757,19 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
             public void onDismiss() {
                 MyUtils.setWindowAlpa(mActivity, false);
                 lp = window1.getAttributes();
-                lp.alpha=1f;
+                lp.alpha = 1f;
                 window1.setAttributes(lp);
             }
         });
         if (mPopupWindow != null && !mPopupWindow.isShowing()) {
 //            popupWindow.showAsDropDown(tv, 0, 10);
             if (code1 == 1301 || code1 == 1401) {
-                View view=under_review.getRootView();
-                LogUtils.eTag("view",view.getLayoutParams());
+                View view = under_review.getRootView();
+                LogUtils.eTag("view", view.getLayoutParams());
                 mPopupWindow.showAtLocation(under_review.getRootView(), Gravity.BOTTOM, 0, 0);
                 window1 = underReviewDialog.getWindow();
                 lp = window1.getAttributes();
-                lp.alpha=0.5f;
+                lp.alpha = 0.5f;
                 window1.setAttributes(lp);
             } else {
                 mPopupWindow.showAtLocation(popupWindow_view, Gravity.BOTTOM, 0, 0);
@@ -1820,6 +1801,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
         }
         return true;
     }
+
     //返回图片处理
     @SuppressLint("NewApi")
     @Override
@@ -1888,6 +1870,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
         MultipartBody requestBody = builder.build();
         mPresenter.OrderByondImgPicUpload(requestBody);
     }
+
     @Override
     public void OrderByondImgPicUpload(BaseResult<Data<String>> baseResult) {
         switch (baseResult.getStatusCode()) {

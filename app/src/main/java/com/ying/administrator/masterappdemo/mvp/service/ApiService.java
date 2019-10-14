@@ -406,6 +406,13 @@ public interface ApiService {
     Observable<BaseResult<Data>> AddOrderService(@Body RequestBody json);
 
 
+    /*
+    * 添加配件跟服务
+    * */
+    @POST("Order/AddOrderAccessoryAndService")
+    Observable<BaseResult<Data>> AddOrderAccessoryAndService(@Body RequestBody json);
+
+
     /*预接单页面提交上门时间 */
     @POST("Order/AddOrUpdateAccessoryServiceReturn")
     Observable<BaseResult<Data<String>>> AddOrUpdateAccessoryServiceReturn(@Body RequestBody json);

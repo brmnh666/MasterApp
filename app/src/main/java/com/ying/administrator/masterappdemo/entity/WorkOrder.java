@@ -218,6 +218,24 @@ public class WorkOrder implements Serializable {
         private String QuaMoney;
         private List<LeavemessageListBean> LeavemessageList;
         private List<LeavemessageimgListBean> LeavemessageimgList;
+        private String AccessoryAndServiceApplyState;
+        private String DistanceTureOrFalse;
+
+        public String getDistanceTureOrFalse() {
+            return DistanceTureOrFalse;
+        }
+
+        public void setDistanceTureOrFalse(String distanceTureOrFalse) {
+            DistanceTureOrFalse = distanceTureOrFalse;
+        }
+
+        public String getAccessoryAndServiceApplyState() {
+            return AccessoryAndServiceApplyState==null?"":AccessoryAndServiceApplyState;
+        }
+
+        public void setAccessoryAndServiceApplyState(String accessoryAndServiceApplyState) {
+            AccessoryAndServiceApplyState = accessoryAndServiceApplyState;
+        }
 
         public List<LeavemessageimgListBean> getLeavemessageimgList() {
             return LeavemessageimgList;

@@ -24,11 +24,14 @@ public class Complete_wait_fetch_Adapter extends BaseQuickAdapter<WorkOrder.Data
         baseViewHolder.setText(R.id.tv_complete_status_repair,item.getTypeName()+"/"+item.getGuaranteeText());//安装or维修
         if ("安装".equals(item.getTypeName())){
             baseViewHolder.setBackgroundColor(R.id.tv_complete_status_repair, Color.parseColor("#1690FF"));
+            baseViewHolder.setText(R.id.tv_malfunction,item.getMemo());//memo
         }else{
             baseViewHolder.setBackgroundColor(R.id.tv_complete_status_repair,Color.parseColor("#FF0000"));
+            baseViewHolder.setText(R.id.tv_malfunction,"故障:"+item.getMemo());//memo
+
         }
         baseViewHolder.setText(R.id.tv_complete_wait_fetch_job_number,"工单号:"+item.getOrderID());//工单号
-        baseViewHolder.setText(R.id.tv_reason_complete_wait_fetch,item.getMemo());//memo
+        baseViewHolder.setText(R.id.tv_reason_complete_wait_fetch,item.getCategoryName() + " " + item.getBrandName() + " " + item.getSubCategoryName());//memo
         baseViewHolder.setText(R.id.tv_loaction_complete_wait_fetch,"距离："+item.getDistance()+"km");//距离
         baseViewHolder.setText(R.id.tv_num,"数量："+item.getNum()+"台");//数量
         baseViewHolder.setText(R.id.tv_address_complete_wait_fetch,item.getAddress());//地址

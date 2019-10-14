@@ -58,9 +58,19 @@
         android:layout_marginRight="15dp"
         android:layout_marginTop="41dp"
         android:textColor="#333333"/>
-
-    <ImageView
+    <TextView
+        android:id="@+id/tv_malfunction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="75dp"
         android:layout_below="@+id/tv_reason_quality"
+        android:layout_marginTop="5dp"
+        android:text="不通电热水器不通电热水器不通电热水器不通电"
+        android:textColor="#333333"
+        android:textSize="14sp" />
+    <ImageView
+        android:layout_below="@+id/tv_malfunction"
         android:id="@+id/img_loaction"
         android:layout_width="14dp"
         android:layout_height="14dp"
@@ -75,7 +85,7 @@
         android:textSize="14sp"
         android:text="距离 43.12KM"
         android:layout_toRightOf="@+id/img_loaction"
-        android:layout_below="@+id/tv_reason_quality"
+        android:layout_below="@+id/tv_malfunction"
         android:layout_marginTop="5dp"
         android:layout_marginLeft="5dp"
 
@@ -87,7 +97,7 @@
         android:text="数量:2台"
         android:textSize="14sp"
         android:layout_toRightOf="@+id/tv_loaction_quality"
-        android:layout_below="@+id/tv_reason_quality"
+        android:layout_below="@+id/tv_malfunction"
         android:layout_marginTop="5dp"
         android:layout_marginLeft="30dp"
         />

@@ -59,6 +59,13 @@ public class PendingOrderModel implements PendingOrderContract.Model {
     }
 
     @Override
+    public Observable<BaseResult<Data>> AddOrderAccessoryAndService(RequestBody json) {
+        return ApiRetrofit.getDefault().AddOrderAccessoryAndService(json)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
     public Observable<BaseResult<Data<String>>> AddOrUpdateAccessoryServiceReturn(RequestBody json) {
         return ApiRetrofit.getDefault().AddOrUpdateAccessoryServiceReturn(json)
                 .observeOn(AndroidSchedulers.mainThread())

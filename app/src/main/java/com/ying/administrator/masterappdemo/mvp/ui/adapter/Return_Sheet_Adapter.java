@@ -44,11 +44,13 @@ public class Return_Sheet_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,Ba
         baseViewHolder.setText(R.id.tv_returnedparts_status_repair,item.getTypeName()+"/"+item.getGuaranteeText());//安装or维修
         if ("安装".equals(item.getTypeName())){
             baseViewHolder.setBackgroundColor(R.id.tv_returnedparts_status_repair, Color.parseColor("#1690FF"));
+            baseViewHolder.setText(R.id.tv_malfunction,item.getMemo());//memo
         }else{
             baseViewHolder.setBackgroundColor(R.id.tv_returnedparts_status_repair,Color.parseColor("#FF0000"));
+            baseViewHolder.setText(R.id.tv_malfunction,"故障:"+item.getMemo());//memo
         }
         baseViewHolder.setText(R.id.tv_returnedparts_job_number,"工单号:"+item.getOrderID());//工单号
-        baseViewHolder.setText(R.id.tv_reason_returnedparts,item.getMemo());//memo
+        baseViewHolder.setText(R.id.tv_reason_returnedparts,item.getCategoryName()+" "+item.getBrandName()+" "+item.getSubCategoryName());//memo
         baseViewHolder.setText(R.id.tv_loaction_returnedparts,"距离："+item.getDistance()+"km");//距离
         baseViewHolder.setText(R.id.tv_num,"数量："+item.getNum()+"台");//数量
         baseViewHolder.setText(R.id.tv_address_returnedparts,item.getAddress());//地址
@@ -113,24 +115,26 @@ public class Return_Sheet_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,Ba
         baseViewHolder.addOnClickListener(R.id.tv_apply_for_an_extension);//申请延期
 //        baseViewHolder.addOnClickListener(R.id.tv_telephone_reminder);//电话催件
         baseViewHolder.addOnClickListener(R.id.tv_complaint);
-        if("".equals(item.getAccessoryApplyState())){
+        if("".equals(item.getAccessoryAndServiceApplyState())){
             baseViewHolder.setText(R.id.tv_review,"");
-        } else if ("0".equals(item.getAccessoryApplyState())) {
-            baseViewHolder.setText(R.id.tv_review,"配件审核中");
-        } else if ("1".equals(item.getAccessoryApplyState())) {
-            baseViewHolder.setText(R.id.tv_review,"配件审核通过");
+        } else if ("0".equals(item.getAccessoryAndServiceApplyState())) {
+            baseViewHolder.setText(R.id.tv_review,"审核中");
+        } else if ("1".equals(item.getAccessoryAndServiceApplyState())) {
+            baseViewHolder.setText(R.id.tv_review,"审核通过");
+        } else if ("2".equals(item.getAccessoryAndServiceApplyState())) {
+            baseViewHolder.setText(R.id.tv_review,"厂家寄件");
         } else {
-            baseViewHolder.setText(R.id.tv_review,"配件被拒");
+            baseViewHolder.setText(R.id.tv_review,"被拒");
         }
-        if("".equals(item.getServiceApplyState())){
-            baseViewHolder.setText(R.id.tv_review2,"");
-        } else if ("0".equals(item.getServiceApplyState())) {
-            baseViewHolder.setText(R.id.tv_review2,"服务审核中");
-        } else if ("1".equals(item.getServiceApplyState())) {
-            baseViewHolder.setText(R.id.tv_review2,"服务审核通过");
-        } else {
-            baseViewHolder.setText(R.id.tv_review2,"服务被拒");
-        }
+//        if("".equals(item.getServiceApplyState())){
+//            baseViewHolder.setText(R.id.tv_review2,"");
+//        } else if ("0".equals(item.getServiceApplyState())) {
+//            baseViewHolder.setText(R.id.tv_review2,"服务审核中");
+//        } else if ("1".equals(item.getServiceApplyState())) {
+//            baseViewHolder.setText(R.id.tv_review2,"服务审核通过");
+//        } else {
+//            baseViewHolder.setText(R.id.tv_review2,"服务被拒");
+//        }
 
         if (item.getBeyondState()==null){
             baseViewHolder.setText(R.id.tv_review3,"");

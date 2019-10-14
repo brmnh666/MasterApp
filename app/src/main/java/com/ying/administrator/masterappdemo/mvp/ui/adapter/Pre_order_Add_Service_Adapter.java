@@ -18,7 +18,7 @@ public class Pre_order_Add_Service_Adapter extends BaseQuickAdapter<FService.Ord
 
     @Override
     protected void convert(BaseViewHolder helper, FService.OrderServiceStrBean.OrderServiceBean item) {
-        helper.setText(R.id.tv_service_name,item.getServiceName()); //模拟
+        helper.setText(R.id.tv_service_name,item.getFServiceName()); //模拟
 
         helper.addOnClickListener(R.id.iv_service_delete);
     }

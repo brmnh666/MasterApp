@@ -660,8 +660,8 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                     mService = mList_service.get(i);
                     if (mService.isIschecked()) {
                         mfService = new FService.OrderServiceStrBean.OrderServiceBean();
-                        mfService.setServiceID(mService.getFServiceID());
-                        mfService.setServiceName(mService.getFServiceName());
+                        mfService.setFServiceID(mService.getFServiceID());
+                        mfService.setFServiceName(mService.getFServiceName());
                         mfService.setPrice(mService.getInitPrice());
                         mfService.setDiscountPrice(mService.getInitPrice());
                         mfService.setIsPay("N");
@@ -898,8 +898,8 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
         if (!gServices.isEmpty()) {
             for (int i = 0; i < gServices.size(); i++) {
                 mfService = new FService.OrderServiceStrBean.OrderServiceBean();
-                mfService.setServiceID(String.valueOf(gServices.get(i).getServiceID()));
-                mfService.setServiceName(gServices.get(i).getServiceName());
+                mfService.setFServiceID(String.valueOf(gServices.get(i).getServiceID()));
+                mfService.setFServiceName(gServices.get(i).getServiceName());
                 mfService.setDiscountPrice(gServices.get(i).getDiscountPrice());
                 mfService.setPrice(gServices.get(i).getPrice());
                 mfService.setIsPay("N");
@@ -1111,6 +1111,11 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
             default:
                 break;
         }
+    }
+
+    @Override
+    public void AddOrderAccessoryAndService(BaseResult<Data> baseResult) {
+
     }
 
     /*配件和服务都有*/

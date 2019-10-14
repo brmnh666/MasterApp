@@ -23,7 +23,12 @@ public class In_Service_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,Base
         helper.setText(R.id.tv_in_service_status_repair,item.getTypeName()+"/"+item.getGuaranteeText());
         helper.setText(R.id.tv_number,"数量:"+item.getNum()+"台");
         helper.setText(R.id.tv_loaction_in_service,"距离 "+item.getDistance()+"Km");
-        helper.setText(R.id.tv_reason_in_service,item.getMemo());//原因
+        helper.setText(R.id.tv_reason_in_service,item.getCategoryName() + " " + item.getBrandName() + " " + item.getSubCategoryName());//原因
+        if ("维修".equals(item.getTypeName())){
+            helper.setText(R.id.tv_malfunction, "故障:"+item.getMemo());//原因
+        }else {
+            helper.setText(R.id.tv_malfunction, item.getMemo());//原因
+        }
         helper.setText(R.id.tv_address_in_service,item.getAddress()); //地址
         helper.setText(R.id.tv_in_service_job_number,"工单号:"+item.getOrderID());
         if (item.getBeyondState()==null){

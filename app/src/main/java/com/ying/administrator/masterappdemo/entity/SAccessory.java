@@ -14,6 +14,24 @@ public class SAccessory implements Serializable {
     private String OrderID;
     private String AccessorySequency;
     private String OrderAccessoryStr;
+    private String OrderServiceStr;
+    private String IsAorS;
+
+    public String getIsAorS() {
+        return IsAorS;
+    }
+
+    public void setIsAorS(String isAorS) {
+        IsAorS = isAorS;
+    }
+
+    public String getOrderServiceStr() {
+        return OrderServiceStr;
+    }
+
+    public void setOrderServiceStr(String orderServiceStr) {
+        OrderServiceStr = orderServiceStr;
+    }
 
     public String getOrderID() {
         return OrderID;

@@ -382,7 +382,11 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     @BindView(R.id.tv_classification)
     TextView mTvClassification;
     @BindView(R.id.ll_prompt)
-    LinearLayout mLlPrompt;
+    LinearLayout mLlPrompt;;
+    @BindView(R.id.tv_order_money_finish)
+    TextView mTvOrderMoneyFinish;
+    @BindView(R.id.ll_order_money_finish)
+    LinearLayout mLlOrderMoneyFinish;
 
     private String OrderID;
     private WorkOrder.DataBean data = new WorkOrder.DataBean();
@@ -504,6 +508,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     private LinearLayout ll_accessories;
     private ImageView iv_host;
     private ImageView iv_accessories;
+    private String AccessoryAndServiceApplyState;
 
 
     @Override
@@ -938,6 +943,14 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 btn_positive = puchsh_view.findViewById(R.id.positive);
                 tv_title = puchsh_view.findViewById(R.id.title);
                 etContent = puchsh_view.findViewById(R.id.et_content);
+                tv_phone1 = puchsh_view.findViewById(R.id.tv_phone);
+                tv_phone1.setText(data.getUserID());
+                tv_phone1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        call("tel:" + data.getUserID());
+                    }
+                });
                 push_dialog = new AlertDialog.Builder(mActivity)
                         .setView(puchsh_view)
                         .create();
@@ -1112,9 +1125,116 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 break;
             case R.id.btn_complete_submit_one:
             case R.id.btn_complete_submit:
-                intent = new Intent(mActivity, CompleteWorkOrderActivity.class);
-                intent.putExtra("OrderID", data.getOrderID());
-                startActivity(intent);
+                gson = new Gson();
+                returnAddress = mTvAddressReturn.getText().toString().trim();
+                if (mPre_order_add_ac_adapter.getData().size() > 0 && mPre_order_Add_Service_Adapter.getData().size() == 0) {
+                    if ("".equals(returnAddress)) {
+                        ToastUtils.showShort("请选择收货地址");
+                    } else {
+                        orderAccessoryStrBean = new FAccessory.OrderAccessoryStrBean();
+                        orderAccessoryStrBean.setOrderAccessory(mPre_order_add_ac_adapter.getData());
+                        orderAccessoryStrBean.setAccessoryMemo(AccessoryMemo);
+                        String s1 = gson.toJson(orderAccessoryStrBean);
+
+//                        mfService = new FService.OrderServiceStrBean.OrderServiceBean();
+//                        mfService.setFServiceID("1");
+//                        mfService.setFServiceName("1");
+////                        mfService.setPrice(mService.getInitPrice());
+////                        mfService.setDiscountPrice(mService.getInitPrice());
+//                        mfService.setSNeedPlatformAuth("1");
+//                        mfService.setState("2");
+//                        mfService.setIsPay("1");
+//                        mfService.setCategoryID("1");
+////                        mfService.setRelation("");
+//                        fList_service.add(mfService);
+//                        mPre_order_Add_Service_Adapter.setNewData(fList_service);
+//                        orderServiceStrBean = new FService.OrderServiceStrBean();
+//                        orderServiceStrBean.setOrderService(mPre_order_Add_Service_Adapter.getData());
+//                        String s2 = gson.toJson(orderServiceStrBean);
+
+                        sAccessory = new SAccessory();
+                        sAccessory.setOrderID(OrderID);
+                        sAccessory.setAccessorySequency(Integer.toString(select_state));
+                        sAccessory.setOrderAccessoryStr(s1);
+                        sAccessory.setOrderServiceStr("");
+                        String s = gson.toJson(sAccessory);
+                        Log.d("添加的配件有", s);
+                        body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), s);
+//                    mPresenter.AddOrderAccessory(body);
+                        mPresenter.AddOrderAccessoryAndService(body);
+                        mPresenter.UpdateOrderAddressByOrderID(OrderID, returnAddress);
+
+                    }
+                } else if (mPre_order_add_ac_adapter.getData().size() == 0 && mPre_order_Add_Service_Adapter.getData().size() > 0) {
+
+//                    mfAccessory = new FAccessory.OrderAccessoryStrBean.OrderAccessoryBean();
+//                    mfAccessory.setPhoto1("1");//配件照片
+//                    mfAccessory.setPhoto2("1");//整机照片
+//                    mfAccessory.setFAccessoryID("1");//获取id
+//                    mfAccessory.setFAccessoryName("1"); //获取名字
+//                    mfAccessory.setFCategoryID("1"); //分类id
+//                    mfAccessory.setQuantity("1"); //数量 默认数字为1
+//                    mfAccessory.setPrice(Double.valueOf("1"));//原价
+//                    mfAccessory.setDiscountPrice(Double.valueOf("1"));//折扣价
+//                    mfAccessory.setSizeID("1");//小修中修大修
+//                    mfAccessory.setSendState("1");
+//                    mfAccessory.setRelation("1");
+//                    mfAccessory.setState("2");
+//                    mfAccessory.setIsPay("1");
+//                    mfAccessory.setExpressNo("1");
+//                    mfAccessory.setNeedPlatformAuth("1");
+//                    mfAccessory.setPrice(0);//原价
+//                    mfAccessory.setDiscountPrice(0);//原价
+//                    fAcList.add(mfAccessory);
+//                    mPre_order_add_ac_adapter.notifyDataSetChanged();
+//                    orderAccessoryStrBean = new FAccessory.OrderAccessoryStrBean();
+//                    orderAccessoryStrBean.setOrderAccessory(mPre_order_add_ac_adapter.getData());
+//                    orderAccessoryStrBean.setAccessoryMemo(AccessoryMemo);
+//                    String s1 = gson.toJson(orderAccessoryStrBean);
+
+                    orderServiceStrBean = new FService.OrderServiceStrBean();
+                    orderServiceStrBean.setOrderService(mPre_order_Add_Service_Adapter.getData());
+                    String s2 = gson.toJson(orderServiceStrBean);
+                    sAccessory = new SAccessory();
+                    sAccessory.setOrderID(OrderID);
+                    sAccessory.setAccessorySequency("");
+                    sAccessory.setOrderAccessoryStr("");
+                    sAccessory.setOrderServiceStr(s2);
+                    String s = gson.toJson(sAccessory);
+                    Log.d("添加的服务有", s);
+                    body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), s);
+//                    mPresenter.AddOrderService(body);
+                    mPresenter.AddOrderAccessoryAndService(body);
+                } else if (mPre_order_add_ac_adapter.getData().size() > 0 && mPre_order_Add_Service_Adapter.getData().size() > 0) {
+                    if ("".equals(returnAddress)) {
+                        ToastUtils.showShort("请选择收货地址");
+                    } else {
+                        orderAccessoryStrBean = new FAccessory.OrderAccessoryStrBean();
+                        orderAccessoryStrBean.setOrderAccessory(mPre_order_add_ac_adapter.getData());
+                        orderAccessoryStrBean.setAccessoryMemo(AccessoryMemo);
+                        String s1 = gson.toJson(orderAccessoryStrBean);
+                        orderServiceStrBean = new FService.OrderServiceStrBean();
+                        orderServiceStrBean.setOrderService(mPre_order_Add_Service_Adapter.getData());
+                        String s2 = gson.toJson(orderServiceStrBean);
+                        sAccessory = new SAccessory();
+                        sAccessory.setOrderID(OrderID);
+                        sAccessory.setAccessorySequency(Integer.toString(select_state));
+                        sAccessory.setOrderAccessoryStr(s1);
+                        sAccessory.setOrderServiceStr(s2);
+                        String s = gson.toJson(sAccessory);
+                        Log.d("添加的配件有", s);
+                        body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), s);
+//                    mPresenter.AddOrderAccessory(body);
+                        mPresenter.AddOrderAccessoryAndService(body);
+                        mPresenter.UpdateOrderAddressByOrderID(OrderID, returnAddress);
+
+                    }
+                } else {
+                    intent = new Intent(mActivity, CompleteWorkOrderActivity.class);
+                    intent.putExtra("OrderID", data.getOrderID());
+                    startActivity(intent);
+                }
+
                 break;
             case R.id.iv_range_one:
                 if (data.getOrderBeyondImg() == null) {
@@ -1354,12 +1474,15 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     mService = mList_service.get(i);
                     if (mService.isIschecked()) {
                         mfService = new FService.OrderServiceStrBean.OrderServiceBean();
-                        mfService.setServiceID(mService.getFServiceID());
-                        mfService.setServiceName(mService.getFServiceName());
-                        mfService.setPrice(mService.getInitPrice());
-                        mfService.setDiscountPrice(mService.getInitPrice());
+                        mfService.setFServiceID(mService.getFServiceID());
+                        mfService.setFServiceName(mService.getFServiceName());
+//                        mfService.setPrice(mService.getInitPrice());
+//                        mfService.setDiscountPrice(mService.getInitPrice());
+                        mfService.setSNeedPlatformAuth("N");
+                        mfService.setState("0");
                         mfService.setIsPay("N");
-                        mfService.setRelation("");
+                        mfService.setCategoryID(mService.getFCategoryID() + "");
+//                        mfService.setRelation("");
                         fList_service.add(mfService);
                     }
                 }
@@ -1487,9 +1610,9 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                             mTvAddressReturn.setText(AddressBack);
                             mTvModify.setText("修改地址");
                         } else {
-                            AddressBack = "";
+                            AddressBack = addressList.get(0).getProvince() + addressList.get(0).getCity() + addressList.get(0).getArea() + addressList.get(0).getDistrict() + addressList.get(0).getAddress() + "(" + addressList.get(0).getUserName() + "收)" + addressList.get(0).getPhone();
                             mTvAddressReturn.setText(AddressBack);
-                            mTvModify.setText("添加地址");
+                            mTvModify.setText("修改地址");
                         }
                     }
                 } else {
@@ -1525,6 +1648,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 mTvAccessoryMoney.setText("¥" + data.getAccessoryMoney());
                 mTvServiceMoney.setText("¥" + data.getServiceMoney());
                 mTvOrderMoney.setText("¥" + data.getOrderMoney() + "");
+                mTvOrderMoneyFinish.setText("¥" + data.getOrderMoney() + "");
                 if ("3".equals(data.getTypeID())) {
                     mTvServiceAmount.setText("服务金额：¥" + data.getQuaMoney() + "");
                     mTvTotalPrice.setText("服务金额：¥" + data.getQuaMoney() + "");
@@ -1691,7 +1815,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mTvBeyondState.setText("审核通过");
                         mTvBeyondApplication.setVisibility(View.VISIBLE);
                         mLlApplyAgainBeyond.setVisibility(View.GONE);
-                    }else if ("2".equals(data.getBeyondState())){
+                    } else if ("2".equals(data.getBeyondState())) {
                         mTvBeyondState.setText("修改完成");
                         mTvBeyondApplication.setVisibility(View.VISIBLE);
                         mLlApplyAgainBeyond.setVisibility(View.GONE);
@@ -1704,33 +1828,16 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
 
                 AccessoryApplyState = data.getAccessoryApplyState();
                 ServiceApplyState = data.getServiceApplyState();
+                AccessoryAndServiceApplyState = data.getAccessoryAndServiceApplyState();
                 BeyondState = data.getBeyondState();
-                if ("".equals(AccessoryApplyState) && "".equals(ServiceApplyState) && BeyondState == null) {
-                    //nnn  配件  服务  远程
+
+                if ("".equals(AccessoryAndServiceApplyState) && BeyondState == null) {
                     mBtnCompleteSubmit.setVisibility(View.VISIBLE);
                     mRlCompleteSubmit.setVisibility(View.VISIBLE);
                     mBtnCompleteSubmitOne.setVisibility(View.GONE);
                     mBtnTrial.setVisibility(View.GONE);
-                } else if (!"".equals(AccessoryApplyState) && "".equals(ServiceApplyState) && BeyondState == null) {
-                    //ynn
-                    if ("1".equals(AccessoryApplyState)) {
-                        if ("Y".equals(data.getAccessorySendState())) {
-                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                        } else {
-                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                        }
-                    } else {
-                        mBtnCompleteSubmit.setVisibility(View.GONE);
-                        mRlCompleteSubmit.setVisibility(View.GONE);
-                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                    }
-                } else if ("".equals(AccessoryApplyState) && !"".equals(ServiceApplyState) && BeyondState == null) {
-                    //nyn
-                    if ("1".equals(ServiceApplyState)) {
+                } else if (!"".equals(AccessoryAndServiceApplyState) && BeyondState == null) {
+                    if ("1".equals(AccessoryAndServiceApplyState) || "2".equals(AccessoryAndServiceApplyState)) {
                         mBtnCompleteSubmit.setVisibility(View.VISIBLE);
                         mRlCompleteSubmit.setVisibility(View.VISIBLE);
                         mBtnCompleteSubmitOne.setVisibility(View.GONE);
@@ -1739,10 +1846,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mRlCompleteSubmit.setVisibility(View.GONE);
                         mBtnCompleteSubmitOne.setVisibility(View.GONE);
                     }
-                } else if ("".equals(AccessoryApplyState) && "".equals(ServiceApplyState) && BeyondState != null) {
-                    //nny
-//                    mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-//                    mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                } else if ("".equals(AccessoryAndServiceApplyState) && BeyondState != null) {
                     if ("1".equals(BeyondState)) {
                         mBtnCompleteSubmit.setVisibility(View.VISIBLE);
                         mRlCompleteSubmit.setVisibility(View.VISIBLE);
@@ -1751,80 +1855,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mBtnCompleteSubmit.setVisibility(View.VISIBLE);
                         mRlCompleteSubmit.setVisibility(View.VISIBLE);
                         mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                    }else if ("2".equals(BeyondState)){
-                        mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                        mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                    } else {
-                        mBtnCompleteSubmit.setVisibility(View.GONE);
-                        mRlCompleteSubmit.setVisibility(View.GONE);
-                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                    }
-                } else if (!"".equals(AccessoryApplyState) && !"".equals(ServiceApplyState) && BeyondState == null) {
-                    //yyn
-                    if ("1".equals(AccessoryApplyState) && "1".equals(ServiceApplyState)) {
-                        if ("Y".equals(data.getAccessorySendState())) {
-                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                        } else {
-                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                        }
-                    } else {
-                        mBtnCompleteSubmit.setVisibility(View.GONE);
-                        mRlCompleteSubmit.setVisibility(View.GONE);
-                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                    }
-                } else if (!"".equals(AccessoryApplyState) && "".equals(ServiceApplyState)) {
-                    //yny
-                    if ("1".equals(AccessoryApplyState) && "1".equals(BeyondState)) {
-                        if ("Y".equals(data.getAccessorySendState())) {
-                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                        } else {
-                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                        }
-                    } else if ("1".equals(AccessoryApplyState) && "-1".equals(BeyondState)) {
-                        if ("Y".equals(data.getAccessorySendState())) {
-                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                        } else {
-                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                        }
-                    }else if ("1".equals(AccessoryApplyState) && "2".equals(BeyondState)) {
-                        if ("Y".equals(data.getAccessorySendState())) {
-                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                        } else {
-                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                        }
-                    } else {
-                        mBtnCompleteSubmit.setVisibility(View.GONE);
-                        mRlCompleteSubmit.setVisibility(View.GONE);
-                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                    }
-                } else if ("".equals(AccessoryApplyState) && !"".equals(ServiceApplyState) && BeyondState != null) {
-                    //nyy
-                    if ("1".equals(ServiceApplyState) && "1".equals(BeyondState)) {
-                        mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                        mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                    } else if ("1".equals(ServiceApplyState) && "-1".equals(BeyondState)) {
-                        mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                        mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                    }else if ("1".equals(ServiceApplyState) && "2".equals(BeyondState)) {
+                    } else if ("2".equals(BeyondState)) {
                         mBtnCompleteSubmit.setVisibility(View.VISIBLE);
                         mRlCompleteSubmit.setVisibility(View.VISIBLE);
                         mBtnCompleteSubmitOne.setVisibility(View.GONE);
@@ -1834,43 +1865,204 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mBtnCompleteSubmitOne.setVisibility(View.GONE);
                     }
                 } else {
-                    //yyy
-                    if ("1".equals(AccessoryApplyState) && "1".equals(ServiceApplyState) && "1".equals(BeyondState)) {
-                        if ("Y".equals(data.getAccessorySendState())) {
-                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                        } else {
-                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                        }
-                    } else if ("1".equals(AccessoryApplyState) && "1".equals(ServiceApplyState) && "-1".equals(BeyondState)) {
-                        if ("Y".equals(data.getAccessorySendState())) {
-                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                        } else {
-                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                        }
-                    } else if ("1".equals(AccessoryApplyState) && "1".equals(ServiceApplyState) && "2".equals(BeyondState)) {
-                        if ("Y".equals(data.getAccessorySendState())) {
-                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                        } else {
-                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                        }
+                    if ("1".equals(AccessoryAndServiceApplyState) && "1".equals(BeyondState)) {
+                        mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                        mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                    } else if ("1".equals(AccessoryAndServiceApplyState) && "-1".equals(BeyondState)) {
+                        mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                        mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                    } else if ("1".equals(AccessoryAndServiceApplyState) && "2".equals(BeyondState)) {
+                        mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                        mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                    } else if ("2".equals(AccessoryAndServiceApplyState) && "2".equals(BeyondState)) {
+                        mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                        mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                    } else if ("2".equals(AccessoryAndServiceApplyState) && "-1".equals(BeyondState)) {
+                        mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                        mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                    }
+                    if ("2".equals(AccessoryAndServiceApplyState) && "1".equals(BeyondState)) {
+                        mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                        mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
                     } else {
                         mBtnCompleteSubmit.setVisibility(View.GONE);
                         mRlCompleteSubmit.setVisibility(View.GONE);
                         mBtnCompleteSubmitOne.setVisibility(View.GONE);
                     }
                 }
+
+//                if ("".equals(AccessoryApplyState) && "".equals(ServiceApplyState) && BeyondState == null) {
+//                    //nnn  配件  服务  远程
+//                    mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+//                    mRlCompleteSubmit.setVisibility(View.VISIBLE);
+//                    mBtnCompleteSubmitOne.setVisibility(View.GONE);
+//                    mBtnTrial.setVisibility(View.GONE);
+//                } else if (!"".equals(AccessoryApplyState) && "".equals(ServiceApplyState) && BeyondState == null) {
+//                    //ynn
+//                    if ("1".equals(AccessoryApplyState)) {
+//                        if ("Y".equals(data.getAccessorySendState())) {
+//                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+//                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
+//                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
+//                        } else {
+//                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+//                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
+//                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
+//                        }
+//                    } else {
+//                        mBtnCompleteSubmit.setVisibility(View.GONE);
+//                        mRlCompleteSubmit.setVisibility(View.GONE);
+//                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
+//                    }
+//                } else if ("".equals(AccessoryApplyState) && !"".equals(ServiceApplyState) && BeyondState == null) {
+//                    //nyn
+//                    if ("1".equals(ServiceApplyState)) {
+//                        mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+//                        mRlCompleteSubmit.setVisibility(View.VISIBLE);
+//                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
+//                    } else {
+//                        mBtnCompleteSubmit.setVisibility(View.GONE);
+//                        mRlCompleteSubmit.setVisibility(View.GONE);
+//                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
+//                    }
+//                } else if ("".equals(AccessoryApplyState) && "".equals(ServiceApplyState) && BeyondState != null) {
+//                    //nny
+////                    mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+////                    mRlCompleteSubmit.setVisibility(View.VISIBLE);
+//                    if ("1".equals(BeyondState)) {
+//                        mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+//                        mRlCompleteSubmit.setVisibility(View.VISIBLE);
+//                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
+//                    } else if ("-1".equals(BeyondState)) {
+//                        mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+//                        mRlCompleteSubmit.setVisibility(View.VISIBLE);
+//                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
+//                    } else if ("2".equals(BeyondState)) {
+//                        mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+//                        mRlCompleteSubmit.setVisibility(View.VISIBLE);
+//                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
+//                    } else {
+//                        mBtnCompleteSubmit.setVisibility(View.GONE);
+//                        mRlCompleteSubmit.setVisibility(View.GONE);
+//                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
+//                    }
+//                } else if (!"".equals(AccessoryApplyState) && !"".equals(ServiceApplyState) && BeyondState == null) {
+//                    //yyn
+//                    if ("1".equals(AccessoryApplyState) && "1".equals(ServiceApplyState)) {
+//                        if ("Y".equals(data.getAccessorySendState())) {
+//                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+//                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
+//                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
+//                        } else {
+//                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+//                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
+//                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
+//                        }
+//                    } else {
+//                        mBtnCompleteSubmit.setVisibility(View.GONE);
+//                        mRlCompleteSubmit.setVisibility(View.GONE);
+//                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
+//                    }
+//                } else if (!"".equals(AccessoryApplyState) && "".equals(ServiceApplyState)) {
+//                    //yny
+//                    if ("1".equals(AccessoryApplyState) && "1".equals(BeyondState)) {
+//                        if ("Y".equals(data.getAccessorySendState())) {
+//                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+//                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
+//                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
+//                        } else {
+//                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+//                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
+//                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
+//                        }
+//                    } else if ("1".equals(AccessoryApplyState) && "-1".equals(BeyondState)) {
+//                        if ("Y".equals(data.getAccessorySendState())) {
+//                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+//                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
+//                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
+//                        } else {
+//                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+//                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
+//                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
+//                        }
+//                    } else if ("1".equals(AccessoryApplyState) && "2".equals(BeyondState)) {
+//                        if ("Y".equals(data.getAccessorySendState())) {
+//                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+//                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
+//                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
+//                        } else {
+//                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+//                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
+//                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
+//                        }
+//                    } else {
+//                        mBtnCompleteSubmit.setVisibility(View.GONE);
+//                        mRlCompleteSubmit.setVisibility(View.GONE);
+//                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
+//                    }
+//                } else if ("".equals(AccessoryApplyState) && !"".equals(ServiceApplyState) && BeyondState != null) {
+//                    //nyy
+//                    if ("1".equals(ServiceApplyState) && "1".equals(BeyondState)) {
+//                        mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+//                        mRlCompleteSubmit.setVisibility(View.VISIBLE);
+//                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
+//                    } else if ("1".equals(ServiceApplyState) && "-1".equals(BeyondState)) {
+//                        mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+//                        mRlCompleteSubmit.setVisibility(View.VISIBLE);
+//                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
+//                    } else if ("1".equals(ServiceApplyState) && "2".equals(BeyondState)) {
+//                        mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+//                        mRlCompleteSubmit.setVisibility(View.VISIBLE);
+//                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
+//                    } else {
+//                        mBtnCompleteSubmit.setVisibility(View.GONE);
+//                        mRlCompleteSubmit.setVisibility(View.GONE);
+//                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
+//                    }
+//                } else {
+//                    //yyy
+//                    if ("1".equals(AccessoryApplyState) && "1".equals(ServiceApplyState) && "1".equals(BeyondState)) {
+//                        if ("Y".equals(data.getAccessorySendState())) {
+//                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+//                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
+//                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
+//                        } else {
+//                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+//                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
+//                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
+//                        }
+//                    } else if ("1".equals(AccessoryApplyState) && "1".equals(ServiceApplyState) && "-1".equals(BeyondState)) {
+//                        if ("Y".equals(data.getAccessorySendState())) {
+//                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+//                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
+//                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
+//                        } else {
+//                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+//                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
+//                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
+//                        }
+//                    } else if ("1".equals(AccessoryApplyState) && "1".equals(ServiceApplyState) && "2".equals(BeyondState)) {
+//                        if ("Y".equals(data.getAccessorySendState())) {
+//                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+//                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
+//                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
+//                        } else {
+//                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+//                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
+//                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
+//                        }
+//                    } else {
+//                        mBtnCompleteSubmit.setVisibility(View.GONE);
+//                        mRlCompleteSubmit.setVisibility(View.GONE);
+//                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
+//                    }
+//                }
 
                 if ("2".equals(data.getTypeID())) {
                     if (!"0".equals(data.getMallID())) {
@@ -1955,18 +2147,21 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     mLlAccessory.setVisibility(View.VISIBLE);
                     mLlAddAccessory.setVisibility(View.GONE);
 //                    mLlMemo.setVisibility(View.GONE);
-                    if ("0".equals(data.getAccessoryApplyState())) {
+                    if ("0".equals(data.getAccessoryAndServiceApplyState())) {
                         mTvAccessoryApplyState.setText("审核中");
                         mTvAccessoryApplication.setVisibility(View.GONE);
-                    } else if ("1".equals(data.getAccessoryApplyState())) {
+                    } else if ("1".equals(data.getAccessoryAndServiceApplyState())) {
                         mTvAccessoryApplyState.setText("审核通过");
-                        mTvAccessoryApplication.setVisibility(View.VISIBLE);
-                    } else if ("".equals(data.getAccessoryApplyState())) {
-                        mTvAccessoryApplyState.setText("厂家已寄件");
-                        mTvAccessoryApplication.setVisibility(View.VISIBLE);
+                        mTvAccessoryApplication.setVisibility(View.GONE);
+//                    } else if ("".equals(data.getAccessoryAndServiceApplyState())) {
+//                        mTvAccessoryApplyState.setText("厂家已寄件");
+//                        mTvAccessoryApplication.setVisibility(View.VISIBLE);
+                    } else if ("2".equals(data.getAccessoryAndServiceApplyState())) {
+                        mTvAccessoryApplyState.setText("厂家寄件");
+                        mTvAccessoryApplication.setVisibility(View.GONE);
                     } else {
                         mTvAccessoryApplyState.setText("被拒");
-                        mTvAccessoryApplication.setVisibility(View.VISIBLE);
+                        mTvAccessoryApplication.setVisibility(View.GONE);
                     }
                 } else {
                     mLlAccessory.setVisibility(View.GONE);
@@ -1983,15 +2178,15 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     mRvService.setAdapter(gServiceAdapter);
                     mLlService.setVisibility(View.VISIBLE);
                     mLlAddService.setVisibility(View.GONE);
-                    if ("0".equals(data.getServiceApplyState())) {
+                    if ("0".equals(data.getAccessoryAndServiceApplyState())) {
                         mTvServiceApplyState.setText("审核中");
                         mTvServiceApplication.setVisibility(View.GONE);
-                    } else if ("1".equals(data.getServiceApplyState())) {
+                    } else if ("1".equals(data.getAccessoryAndServiceApplyState())) {
                         mTvServiceApplyState.setText("审核通过");
-                        mTvServiceApplication.setVisibility(View.VISIBLE);
+                        mTvServiceApplication.setVisibility(View.GONE);
                     } else {
                         mTvServiceApplyState.setText("被拒");
-                        mTvServiceApplication.setVisibility(View.VISIBLE);
+                        mTvServiceApplication.setVisibility(View.GONE);
                     }
                 } else {
                     mLlService.setVisibility(View.GONE);
@@ -2053,6 +2248,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
 //                    }
 
                     mLlReturnInformation.setVisibility(View.VISIBLE);
+                    mLlOrderMoneyFinish.setVisibility(View.VISIBLE);
                     mTvPrompt.setText("服务已完成");
                     if ("1".equals(data.getTypeID()) || "3".equals(data.getTypeID())) {//维修
                         List<String> list = new ArrayList<>();
@@ -2123,6 +2319,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     }
                 } else {
                     mLlReturnInformation.setVisibility(View.GONE);
+                    mLlOrderMoneyFinish.setVisibility(View.GONE);
                     mRlExpressno.setVisibility(View.GONE);
 //                    mViewSelectTimePoint.setVisibility(View.VISIBLE);
 //                    mViewSelectTimePoint2.setVisibility(View.VISIBLE);
@@ -2150,6 +2347,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     mTvPrompt.setText("请务必认真填写返件快递单号");
                     mTvAccessoryMessage.setText("配件信息");
                     mLlReturnInformation.setVisibility(View.VISIBLE);
+                    mLlOrderMoneyFinish.setVisibility(View.GONE);
                     mRlExpressno.setVisibility(View.VISIBLE);
                     mRlSelectTime.setVisibility(View.GONE);
                     mLlApplyAgain.setVisibility(View.GONE);
@@ -2392,6 +2590,53 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         positive = customdialog_home_view.findViewById(R.id.positive);
                         title.setText("提示");
                         message.setText("余额不足，是否充值？");
+                        negtive.setText("否");
+                        positive.setText("是");
+                        negtive.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                customdialog_home_dialog.dismiss();
+                            }
+                        });
+                        positive.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                startActivity(new Intent(mActivity, RechargeActivity.class));
+                                customdialog_home_dialog.dismiss();
+                            }
+                        });
+                    } else {
+                        ToastUtils.showShort((String) baseResult.getData().getItem2());
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void AddOrderAccessoryAndService(BaseResult<Data> baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                if (baseResult.getData().isItem1()) {
+                    ToastUtils.showShort("提交成功");
+                    EventBus.getDefault().post("WorkOrderDetailsActivity");
+                    EventBus.getDefault().post(5);
+//                    ApplyAccessoryphotoUpload(accessories_picture);
+                } else {
+                    if ("您账户余额不足，请尽快充值以免影响配件审核,充值最低金额为：200".equals(baseResult.getData().getItem2())) {
+                        customdialog_home_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_home, null);
+                        customdialog_home_dialog = new AlertDialog.Builder(mActivity)
+                                .setView(customdialog_home_view)
+                                .create();
+                        customdialog_home_dialog.show();
+                        title = customdialog_home_view.findViewById(R.id.title);
+                        message = customdialog_home_view.findViewById(R.id.message);
+                        negtive = customdialog_home_view.findViewById(R.id.negtive);
+                        positive = customdialog_home_view.findViewById(R.id.positive);
+                        title.setText("温馨提示");
+                        message.setText(baseResult.getData().getItem2() + "。当工单完结后返还，是否充值？");
                         negtive.setText("否");
                         positive.setText("是");
                         negtive.setOnClickListener(new View.OnClickListener() {

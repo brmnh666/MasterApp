@@ -23,11 +23,14 @@ public class CompletedAdapter extends BaseQuickAdapter<WorkOrder.DataBean, BaseV
         baseViewHolder.setText(R.id.tv_complete_status_repair,item.getTypeName()+"/"+item.getGuaranteeText());//安装or维修
         if ("安装".equals(item.getTypeName())){
             baseViewHolder.setBackgroundColor(R.id.tv_complete_status_repair, Color.parseColor("#1690FF"));
+            baseViewHolder.setText(R.id.tv_malfunction,item.getMemo());//memo
         }else{
             baseViewHolder.setBackgroundColor(R.id.tv_complete_status_repair,Color.parseColor("#FF0000"));
+            baseViewHolder.setText(R.id.tv_malfunction,"故障:"+item.getMemo());//memo
+
         }
         baseViewHolder.setText(R.id.tv_complete_job_number,"工单号:"+item.getOrderID());//工单号
-        baseViewHolder.setText(R.id.tv_reason_complete,item.getMemo());//memo
+        baseViewHolder.setText(R.id.tv_reason_complete,item.getCategoryName() + " " + item.getBrandName() + " " + item.getSubCategoryName());//memo
         baseViewHolder.setText(R.id.tv_loaction_complete,"距离："+item.getDistance()+"km");//距离
         baseViewHolder.setText(R.id.tv_num,"数量："+item.getNum()+"台");//数量
         baseViewHolder.setText(R.id.tv_address_complete,item.getAddress());//地址
