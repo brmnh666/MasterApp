@@ -263,12 +263,15 @@ public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> im
         switch (baseResult.getStatusCode()) {
             case 200:
                 if (baseResult.getData().isItem1() && !baseResult.getData().getItem2().equals("")) {
-
-                    mTvAddCardBankname.setText(baseResult.getData().getItem2()); //绑定银行名
-
+                    if (mTvAddCardBankname!=null){
+                        mTvAddCardBankname.setText(baseResult.getData().getItem2()); //绑定银行名
+                    }
 
                 } else {//不支持的银行
-                    met_banknumber.setText("");
+
+                    if (met_banknumber!=null){
+                        met_banknumber.setText("");
+                    }
                     final CommonDialog_Home dialog = new CommonDialog_Home(mActivity);
                     dialog.setMessage("暂时不支持绑定该银行")
                             //.setImageResId(R.mipmap.ic_launcher)
