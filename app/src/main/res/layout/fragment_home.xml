@@ -19,12 +19,12 @@
 
         <include layout="@layout/actionbar_home_layout" />
 
-        <include layout="@layout/fragment_home_user" />
+
 
 
         <include layout="@layout/fragment_home_realtime_neworder" />
 
-
+        <include layout="@layout/fragment_home_user" />
 
 
     </RelativeLayout>

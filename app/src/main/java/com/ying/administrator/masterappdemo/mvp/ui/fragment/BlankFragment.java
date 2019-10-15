@@ -36,6 +36,7 @@ import com.ying.administrator.masterappdemo.mvp.ui.activity.CartActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.GoodsDetailActivity2;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.MallAdapter;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseFragment;
+import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ import butterknife.Unbinder;
  * Use the {@link BlankFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BlankFragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkOrdersModel> implements View.OnClickListener, AllWorkOrdersContract.View {
+public class BlankFragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllWorkOrdersModel> implements View.OnClickListener, AllWorkOrdersContract.View {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_SHOW_TEXT = "text";
     @BindView(R.id.ll_online_consultation)
@@ -115,28 +116,32 @@ public class BlankFragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_blank, container, false);
-        unbinder = ButterKnife.bind(this, rootView);
-        initListener();
+    protected int setLayoutId() {
+        return R.layout.fragment_blank;
+    }
+
+    @Override
+    protected void initData() {
+
+    }
+
+    @Override
+    protected void initView() {
         SPUtils spUtils = SPUtils.getInstance("token");
         String userID = spUtils.getString("userName"); //获取用户id
         mPresenter.GetUserInfoList(userID, "1");
         mCvUp.setVisibility(View.GONE);
-        mNested.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                if (mMainCollapsing.getHeight() - scrollY <= 0) {
-                    mCvUp.setVisibility(View.VISIBLE);
-                } else {
-                    mCvUp.setVisibility(View.GONE);
-                }
-            }
-        });
+//        mNested.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+//            @Override
+//            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+//                if (mMainCollapsing.getHeight() - scrollY <= 0) {
+//                    mCvUp.setVisibility(View.VISIBLE);
+//                } else {
+//                    mCvUp.setVisibility(View.GONE);
+//                }
+//            }
+//        });
 
         for (int i = 0; i < 10; i++) {
             lists.add(new ProductList());
@@ -154,20 +159,20 @@ public class BlankFragment extends BaseFragment<AllWorkOrdersPresenter, AllWorkO
                 }
             }
         });
-        return rootView;
     }
 
-    private void initListener() {
+    @Override
+    protected void setListener() {
         mLlOnlineConsultation.setOnClickListener(this);
         mLlContactCustomerService.setOnClickListener(this);
         mIvCart.setOnClickListener(this);
         mImgUp.setOnClickListener(this);
     }
 
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
     }
 
     @Override
