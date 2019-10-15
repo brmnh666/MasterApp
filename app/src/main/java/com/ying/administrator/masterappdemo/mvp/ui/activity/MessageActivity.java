@@ -182,7 +182,7 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
                     ToastUtils.showShort("请输入留言内容");
                 } else {
                     mPresenter.AddLeaveMessageForOrder(userID, orderId, message);
-                    if (img != null) {
+                    if (img.size()>0) {
                         uploadImg(img);
                     }
                 }
