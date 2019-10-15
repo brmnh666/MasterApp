@@ -104,10 +104,12 @@ public class SplashActivity extends BaseActivity<LoginPresenter, LoginModel> imp
                 @Override
                 public void run() {
                     recLen--;
-                    mTvSplashSkin.setText("跳过 " + recLen);
-                    if (recLen < 0) {
-                        timer.cancel();
-                        mTvSplashSkin.setVisibility(View.GONE); //倒计时到0隐藏字体
+                    if(mTvSplashSkin!=null){
+                        mTvSplashSkin.setText("跳过 " + recLen);
+                        if (recLen < 0) {
+                            timer.cancel();
+                            mTvSplashSkin.setVisibility(View.GONE); //倒计时到0隐藏字体
+                        }
                     }
                 }
             });
