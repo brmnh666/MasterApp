@@ -173,6 +173,10 @@ public class AddServiceAreaActivity extends BaseActivity<AddServicePresenter, Ad
                 mPresenter.GetArea(mCity.getCode());
                 break;
             case R.id.ll_town:
+                if (mCity == null) {
+                    ToastUtils.showShort("请选择市！");
+                    return;
+                }
                 if ("济源市".equals(mCity.getName())){
                     mPresenter.GetDistrict("410881",0);
                 }else {
