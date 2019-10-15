@@ -393,21 +393,8 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 pageIndex = 1;
-                //list.clear();
-                if (userInfo.getParentUserID() == null || "".equals(userInfo.getParentUserID())) {
-                    list.clear();
-                    grabsheetAdapter.notifyDataSetChanged();
-                    mPresenter.WorkerGetOrderList(userID, "0", Integer.toString(pageIndex), "10");
-                } else {
-                    Pendinglist.clear();
-                    pending_appointment_adapter.notifyDataSetChanged();
-                    mPresenter.WorkerGetOrderList(userID, "1", Integer.toString(pageIndex), "5");
-                }
-                if (userInfo.getParentUserID() == null || "".equals(userInfo.getParentUserID())) {
-//                    grabsheetAdapter.notifyDataSetChanged();
-                } else {
-//                    pending_appointment_adapter.notifyDataSetChanged();
-                }
+                list.clear();
+                Pendinglist.clear();
 
                 refreshlayout.finishRefresh();
                 refreshlayout.setLoadmoreFinished(false);
@@ -438,20 +425,12 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
             public void onLoadmore(RefreshLayout refreshlayout) {
                 pageIndex++; //页数加1
                 Log.d("当前的单数", String.valueOf(list.size()));
-//                list.clear();
-                if (userInfo.getParentUserID() == null || "".equals(userInfo.getParentUserID())) {
-//
-//                    grabsheetAdapter.notifyDataSetChanged();
-                    mPresenter.WorkerGetOrderList(userID, "0", Integer.toString(pageIndex), "10");
-                } else {
-//                    list.clear();
-//                    pending_appointment_adapter.notifyDataSetChanged();
-                    mPresenter.WorkerGetOrderList(userID, "1", Integer.toString(pageIndex), "5");
-                }
-                if (userInfo.getParentUserID() == null || "".equals(userInfo.getParentUserID())) {
-//                    grabsheetAdapter.notifyDataSetChanged();
-                } else {
-//                    pending_appointment_adapter.notifyDataSetChanged();
+                if(userInfo!=null){
+                    if (userInfo.getParentUserID() == null || "".equals(userInfo.getParentUserID())) {
+                        mPresenter.WorkerGetOrderList(userID, "0", Integer.toString(pageIndex), "10");
+                    } else {
+                        mPresenter.WorkerGetOrderList(userID, "1", Integer.toString(pageIndex), "5");
+                    }
                 }
                 refreshlayout.finishLoadmore();
             }
