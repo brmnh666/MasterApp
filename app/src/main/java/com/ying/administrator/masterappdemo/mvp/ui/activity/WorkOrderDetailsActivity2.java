@@ -1583,7 +1583,9 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 if (baseResult.getData().isItem1()) {
                     if (baseResult.getData().getItem2() != null) {
                         if (expressType == 1) {
-                            mTvContent.setText(baseResult.getData().getItem2().get(0).getContent());
+                            if (mTvContent!=null){
+                                mTvContent.setText(baseResult.getData().getItem2().get(0).getContent());
+                            }
                         } else {
                             list.addAll(baseResult.getData().getItem2());
                             content = list.get(0).getContent();
