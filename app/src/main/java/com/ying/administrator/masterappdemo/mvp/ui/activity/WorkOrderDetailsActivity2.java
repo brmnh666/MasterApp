@@ -1639,6 +1639,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         switch (baseResult.getStatusCode()) {
 
             case 200:
+                if (baseResult!=null){
+
                 data = baseResult.getData();
                 mTvStatus.setText(data.getStateStr());
                 if ("服务中".equals(data.getStateStr())) {
@@ -1885,8 +1887,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mBtnCompleteSubmit.setVisibility(View.VISIBLE);
                         mRlCompleteSubmit.setVisibility(View.VISIBLE);
                         mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                    }
-                    if ("2".equals(AccessoryAndServiceApplyState) && "1".equals(BeyondState)) {
+                    } else if ("2".equals(AccessoryAndServiceApplyState) && "1".equals(BeyondState)) {
                         mBtnCompleteSubmit.setVisibility(View.VISIBLE);
                         mRlCompleteSubmit.setVisibility(View.VISIBLE);
                         mBtnCompleteSubmitOne.setVisibility(View.GONE);
@@ -2408,6 +2409,9 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 }
                 break;
 
+                }else {
+                    return;
+                }
             default:
                 break;
         }

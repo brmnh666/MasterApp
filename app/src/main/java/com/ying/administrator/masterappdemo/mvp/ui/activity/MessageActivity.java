@@ -45,6 +45,7 @@ import com.ying.administrator.masterappdemo.mvp.ui.adapter.LeaveMessageAdapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.LeaveMessageImgAdapter;
 import com.ying.administrator.masterappdemo.util.Glide4Engine;
 import com.ying.administrator.masterappdemo.util.MyUtils;
+import com.ying.administrator.masterappdemo.util.SingleClick;
 import com.ying.administrator.masterappdemo.util.imageutil.CompressHelper;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
@@ -167,6 +168,7 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
         ButterKnife.bind(this);
     }
 
+    @SingleClick
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onClick(View v) {

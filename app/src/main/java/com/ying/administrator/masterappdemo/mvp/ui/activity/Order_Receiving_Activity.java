@@ -61,7 +61,7 @@ public class Order_Receiving_Activity extends BaseActivity<ReceivingPresenter, R
     SPUtils spUtils = SPUtils.getInstance("token");
     private String userid;
     private final String[] mTitles = {
-            "未确认","已接待预约", "服务中", "配件单"
+            "待预约","已接待预约", "服务中", "待审核"
             , "待返件", "质保单", "完成待取机",
             "已完成","预约不成功"
     };

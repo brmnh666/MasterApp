@@ -22,6 +22,7 @@ import com.ying.administrator.masterappdemo.mvp.contract.CardContract;
 import com.ying.administrator.masterappdemo.mvp.model.CardModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.CardPresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.ChooseBankAdapter;
+import com.ying.administrator.masterappdemo.util.SingleClick;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 import com.ying.administrator.masterappdemo.widget.CustomDialog_ChooseBank;
 
@@ -98,6 +99,7 @@ public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> im
         /*time = new TimeCount(60000, 1000);*/
     }
 
+    @SingleClick
     @Override
     protected void setListener() {
         // mLlChooseBank.setOnClickListener(this);
@@ -137,6 +139,7 @@ public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> im
         });
     }
 
+    @SingleClick
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

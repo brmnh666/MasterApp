@@ -208,6 +208,8 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
     public void GetOrderInfo(BaseResult<WorkOrder.DataBean> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
+                if (baseResult!=null){
+
                 data = baseResult.getData();
                 mTvWorkOrderStatus.setText(data.getStateStr());
                 mTvPaymentMethod.setText(data.getOrderPayStr());
@@ -248,6 +250,9 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 
                 break;
 
+                }else {
+                    return;
+                }
             default:
                 Log.d("detail", baseResult.getData().toString());
                 //  data=null;

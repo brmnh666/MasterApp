@@ -466,77 +466,82 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
     public void WorkerGetOrderList(BaseResult<WorkOrder> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-                if (userInfo.getParentUserID() == null || "".equals(userInfo.getParentUserID())) {
-                    if (baseResult.getData().getData() == null) {
-                        // Toast.makeText(getActivity(),"咱无新工单",Toast.LENGTH_SHORT).show();
-                        Log.d("===>", "暂无新工单");
-                        if (pageIndex == 1) {
-                            list.clear();
-                            grabsheetAdapter.notifyDataSetChanged();
+                if (baseResult != null) {
+                    if (userInfo.getParentUserID() == null || "".equals(userInfo.getParentUserID())) {
+                        if (baseResult.getData().getData() == null) {
+                            // Toast.makeText(getActivity(),"咱无新工单",Toast.LENGTH_SHORT).show();
+                            Log.d("===>", "暂无新工单");
+                            if (pageIndex == 1) {
+                                list.clear();
+                                grabsheetAdapter.notifyDataSetChanged();
+                            }
+
+                        } else {
+                            if (pageIndex == 1) {
+                                list.clear();
+                                grabsheetAdapter.notifyDataSetChanged();
+                                workOrder = baseResult.getData();
+                                list.addAll(workOrder.getData());
+                                grabsheetAdapter.setNewData(list);
+//                            mRecyclerviewOrderReceiving.setLayoutManager(new WrapContentLinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
+//                            grabsheetAdapter = new GrabsheetAdapter(R.layout.item_grabsheet, list);
+//                            mRecyclerviewOrderReceiving.setAdapter(grabsheetAdapter);
+//                            grabsheetAdapter.setEmptyView(getEmptyView());
+//                            showGrabsheet();
+                            } else {
+                                workOrder = baseResult.getData();
+                                list.addAll(workOrder.getData());
+                                grabsheetAdapter.setNewData(list);
+//                            mRecyclerviewOrderReceiving.setLayoutManager(new WrapContentLinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
+//                            grabsheetAdapter = new GrabsheetAdapter(R.layout.item_grabsheet, list);
+//                            mRecyclerviewOrderReceiving.setAdapter(grabsheetAdapter);
+//                            grabsheetAdapter.setEmptyView(getEmptyView());
+//                            showGrabsheet();
+
+                            }
+
                         }
 
                     } else {
-                        if (pageIndex == 1) {
-                            list.clear();
-                            grabsheetAdapter.notifyDataSetChanged();
-                            workOrder = baseResult.getData();
-                            list.addAll(workOrder.getData());
-                            grabsheetAdapter.setNewData(list);
-//                            mRecyclerviewOrderReceiving.setLayoutManager(new WrapContentLinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
-//                            grabsheetAdapter = new GrabsheetAdapter(R.layout.item_grabsheet, list);
-//                            mRecyclerviewOrderReceiving.setAdapter(grabsheetAdapter);
-//                            grabsheetAdapter.setEmptyView(getEmptyView());
-//                            showGrabsheet();
+                        if (baseResult.getData().getData() == null) {
+                            if (pageIndex == 1) {
+                                Pendinglist.clear();
+//                            pending_appointment_adapter.notifyDataSetChanged();
+                            }
+                            cancleLoading();
                         } else {
-                            workOrder = baseResult.getData();
-                            list.addAll(workOrder.getData());
-                            grabsheetAdapter.setNewData(list);
+                            if (pageIndex == 1) {
+                                Pendinglist.clear();
+                                pending_appointment_adapter.notifyDataSetChanged();
+                                workOrder = baseResult.getData();
+                                Pendinglist.addAll(workOrder.getData());
+                                pending_appointment_adapter.setNewData(Pendinglist);
 //                            mRecyclerviewOrderReceiving.setLayoutManager(new WrapContentLinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
-//                            grabsheetAdapter = new GrabsheetAdapter(R.layout.item_grabsheet, list);
-//                            mRecyclerviewOrderReceiving.setAdapter(grabsheetAdapter);
-//                            grabsheetAdapter.setEmptyView(getEmptyView());
-//                            showGrabsheet();
+//                            pending_appointment_adapter = new Pending_Adapter(R.layout.item_pending_appointment, Pendinglist, userInfo);
+//                            pending_appointment_adapter.setEmptyView(getEmptyView());
+//                            mRecyclerviewOrderReceiving.setAdapter(pending_appointment_adapter);
+//                            showPending();
+                            } else {
+                                workOrder = baseResult.getData();
+                                Pendinglist.addAll(workOrder.getData());
+                                pending_appointment_adapter.setNewData(Pendinglist);
+//                            mRecyclerviewOrderReceiving.setLayoutManager(new WrapContentLinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
+//                            pending_appointment_adapter = new Pending_Adapter(R.layout.item_pending_appointment, Pendinglist, userInfo);
+//                            pending_appointment_adapter.setEmptyView(getEmptyView());
+//                            mRecyclerviewOrderReceiving.setAdapter(pending_appointment_adapter);
+//                            showPending();
+
+                            }
+
+                            cancleLoading();
+                            //  pending_appointment_adapter.notifyDataSetChanged();
 
                         }
 
                     }
 
                 } else {
-                    if (baseResult.getData().getData() == null) {
-                        if (pageIndex == 1) {
-                            Pendinglist.clear();
-//                            pending_appointment_adapter.notifyDataSetChanged();
-                        }
-                        cancleLoading();
-                    } else {
-                        if (pageIndex == 1) {
-                            Pendinglist.clear();
-                            pending_appointment_adapter.notifyDataSetChanged();
-                            workOrder = baseResult.getData();
-                            Pendinglist.addAll(workOrder.getData());
-                            pending_appointment_adapter.setNewData(Pendinglist);
-//                            mRecyclerviewOrderReceiving.setLayoutManager(new WrapContentLinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
-//                            pending_appointment_adapter = new Pending_Adapter(R.layout.item_pending_appointment, Pendinglist, userInfo);
-//                            pending_appointment_adapter.setEmptyView(getEmptyView());
-//                            mRecyclerviewOrderReceiving.setAdapter(pending_appointment_adapter);
-//                            showPending();
-                        } else {
-                            workOrder = baseResult.getData();
-                            Pendinglist.addAll(workOrder.getData());
-                            pending_appointment_adapter.setNewData(Pendinglist);
-//                            mRecyclerviewOrderReceiving.setLayoutManager(new WrapContentLinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
-//                            pending_appointment_adapter = new Pending_Adapter(R.layout.item_pending_appointment, Pendinglist, userInfo);
-//                            pending_appointment_adapter.setEmptyView(getEmptyView());
-//                            mRecyclerviewOrderReceiving.setAdapter(pending_appointment_adapter);
-//                            showPending();
-
-                        }
-
-                        cancleLoading();
-                        //  pending_appointment_adapter.notifyDataSetChanged();
-
-                    }
-
+                    return;
                 }
 
                 break;
