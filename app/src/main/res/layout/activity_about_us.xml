@@ -88,7 +88,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="客服热线哦："
+            android:text="客服热线："
             android:textColor="#AEAEAE"
             android:textSize="16sp"/>
         <TextView

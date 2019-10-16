@@ -23,8 +23,8 @@ public class WalletModel implements WalletContract.Model {
     }
 
     @Override
-    public Observable<BaseResult<Data<Bill>>> AccountBill(String UserID, String state) {
-        return ApiRetrofit.getDefault().AccountBill(UserID,state)
+    public Observable<BaseResult<Data<Bill>>> AccountBill(String UserID, String state,String page, String limit) {
+        return ApiRetrofit.getDefault().AccountBill(UserID,state,page,limit)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

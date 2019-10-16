@@ -88,7 +88,9 @@
         android:layout_below="@+id/tv_brand_name"
         android:layout_toLeftOf="@+id/img_grabsheet"
         android:text="热水器不通电"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:maxLines="2"
+        android:ellipsize="end"/>
 
     <TextView
         android:id="@+id/tv_address"

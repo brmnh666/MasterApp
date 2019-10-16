@@ -17,7 +17,7 @@ import io.reactivex.Observable;
 public interface WalletContract {
     interface Model extends BaseModel{
         Observable<BaseResult<UserInfo>> GetUserInfoList(String UserId, String limit);
-        Observable<BaseResult<Data<Bill>>> AccountBill(String UserID, String state);
+        Observable<BaseResult<Data<Bill>>> AccountBill(String UserID, String state,String page, String limit);
         Observable<BaseResult<List<BankCard>>> GetAccountPayInfoList(String UserId);
     }
 
@@ -29,7 +29,7 @@ public interface WalletContract {
 
     abstract class Presenter extends BasePresenter<View,Model>{
         public abstract void GetUserInfoList(String UserId,String limit);
-        public abstract void AccountBill(String UserID,String state);
+        public abstract void AccountBill(String UserID,String state,String page, String limit);
         public abstract void GetAccountPayInfoList(String UserId);
     }
 }

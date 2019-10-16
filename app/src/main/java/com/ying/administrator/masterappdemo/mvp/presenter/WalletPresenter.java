@@ -24,8 +24,8 @@ public class WalletPresenter extends WalletContract.Presenter {
     }
 
     @Override
-    public void AccountBill(String UserID,String state) {
-        mModel.AccountBill(UserID,state)
+    public void AccountBill(String UserID,String state,String page, String limit) {
+        mModel.AccountBill(UserID,state,page,limit)
                 .subscribe(new BaseObserver<Data<Bill>>() {
                     @Override
                     protected void onHandleSuccess(BaseResult<Data<Bill>> value) {

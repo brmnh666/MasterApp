@@ -35,6 +35,7 @@ import com.ying.administrator.masterappdemo.mvp.ui.adapter.DistrictAdapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.ProvinceAdapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.ServiceAddressAdapter;
 import com.ying.administrator.masterappdemo.util.MyUtils;
+import com.ying.administrator.masterappdemo.util.SingleClick;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -149,6 +150,7 @@ public class AddServiceAreaActivity extends BaseActivity<AddServicePresenter, Ad
         ButterKnife.bind(this);
     }
 
+    @SingleClick
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

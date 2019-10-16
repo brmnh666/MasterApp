@@ -1836,15 +1836,45 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 BeyondState = data.getBeyondState();
 
                 if ("".equals(AccessoryAndServiceApplyState) && BeyondState == null) {
-                    mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                    mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                    mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                    mBtnTrial.setVisibility(View.GONE);
-                } else if (!"".equals(AccessoryAndServiceApplyState) && BeyondState == null) {
-                    if ("1".equals(AccessoryAndServiceApplyState) || "2".equals(AccessoryAndServiceApplyState)) {
+                    if (data.getOrderAccessroyDetail().size()>0){
+                        if ("".equals(data.getOrderAccessroyDetail().get(0).getExpressNo())||data.getOrderAccessroyDetail().get(0).getExpressNo()==null){
+                            mBtnCompleteSubmit.setVisibility(View.GONE);
+                            mRlCompleteSubmit.setVisibility(View.GONE);
+                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                            mBtnTrial.setVisibility(View.GONE);
+                        }else {
+                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                            mBtnTrial.setVisibility(View.GONE);
+                        }
+                    }else {
                         mBtnCompleteSubmit.setVisibility(View.VISIBLE);
                         mRlCompleteSubmit.setVisibility(View.VISIBLE);
                         mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                        mBtnTrial.setVisibility(View.GONE);
+                    }
+
+                } else if (!"".equals(AccessoryAndServiceApplyState) && BeyondState == null) {
+                    if ("1".equals(AccessoryAndServiceApplyState) || "2".equals(AccessoryAndServiceApplyState)) {
+                        if (data.getOrderAccessroyDetail().size()>0){
+                            if ("".equals(data.getOrderAccessroyDetail().get(0).getExpressNo())||data.getOrderAccessroyDetail().get(0).getExpressNo()==null){
+                                mBtnCompleteSubmit.setVisibility(View.GONE);
+                                mRlCompleteSubmit.setVisibility(View.GONE);
+                                mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                mBtnTrial.setVisibility(View.GONE);
+                            }else {
+                                mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                                mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                                mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                mBtnTrial.setVisibility(View.GONE);
+                            }
+                        }else {
+                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                            mBtnTrial.setVisibility(View.GONE);
+                        }
                     } else {
                         mBtnCompleteSubmit.setVisibility(View.GONE);
                         mRlCompleteSubmit.setVisibility(View.GONE);
@@ -1870,29 +1900,120 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     }
                 } else {
                     if ("1".equals(AccessoryAndServiceApplyState) && "1".equals(BeyondState)) {
-                        mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                        mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                        if (data.getOrderAccessroyDetail().size()>0){
+                            if ("".equals(data.getOrderAccessroyDetail().get(0).getExpressNo())||data.getOrderAccessroyDetail().get(0).getExpressNo()==null){
+                                mBtnCompleteSubmit.setVisibility(View.GONE);
+                                mRlCompleteSubmit.setVisibility(View.GONE);
+                                mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                mBtnTrial.setVisibility(View.GONE);
+                            }else {
+                                mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                                mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                                mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                mBtnTrial.setVisibility(View.GONE);
+                            }
+                        }else {
+                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                            mBtnTrial.setVisibility(View.GONE);
+                        }
                     } else if ("1".equals(AccessoryAndServiceApplyState) && "-1".equals(BeyondState)) {
-                        mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                        mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                        if (data.getOrderAccessroyDetail().size()>0){
+                            if ("".equals(data.getOrderAccessroyDetail().get(0).getExpressNo())||data.getOrderAccessroyDetail().get(0).getExpressNo()==null){
+                                mBtnCompleteSubmit.setVisibility(View.GONE);
+                                mRlCompleteSubmit.setVisibility(View.GONE);
+                                mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                mBtnTrial.setVisibility(View.GONE);
+                            }else {
+                                mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                                mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                                mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                mBtnTrial.setVisibility(View.GONE);
+                            }
+                        }else {
+                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                            mBtnTrial.setVisibility(View.GONE);
+                        }
                     } else if ("1".equals(AccessoryAndServiceApplyState) && "2".equals(BeyondState)) {
-                        mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                        mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                        if (data.getOrderAccessroyDetail().size()>0){
+                            if ("".equals(data.getOrderAccessroyDetail().get(0).getExpressNo())||data.getOrderAccessroyDetail().get(0).getExpressNo()==null){
+                                mBtnCompleteSubmit.setVisibility(View.GONE);
+                                mRlCompleteSubmit.setVisibility(View.GONE);
+                                mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                mBtnTrial.setVisibility(View.GONE);
+                            }else {
+                                mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                                mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                                mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                mBtnTrial.setVisibility(View.GONE);
+                            }
+                        }else {
+                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                            mBtnTrial.setVisibility(View.GONE);
+                        }
+
                     } else if ("2".equals(AccessoryAndServiceApplyState) && "2".equals(BeyondState)) {
-                        mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                        mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                        if (data.getOrderAccessroyDetail().size()>0){
+                            if ("".equals(data.getOrderAccessroyDetail().get(0).getExpressNo())||data.getOrderAccessroyDetail().get(0).getExpressNo()==null){
+                                mBtnCompleteSubmit.setVisibility(View.GONE);
+                                mRlCompleteSubmit.setVisibility(View.GONE);
+                                mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                mBtnTrial.setVisibility(View.GONE);
+                            }else {
+                                mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                                mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                                mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                mBtnTrial.setVisibility(View.GONE);
+                            }
+                        }else {
+                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                            mBtnTrial.setVisibility(View.GONE);
+                        }
                     } else if ("2".equals(AccessoryAndServiceApplyState) && "-1".equals(BeyondState)) {
-                        mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                        mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                        if (data.getOrderAccessroyDetail().size()>0){
+                            if ("".equals(data.getOrderAccessroyDetail().get(0).getExpressNo())||data.getOrderAccessroyDetail().get(0).getExpressNo()==null){
+                                mBtnCompleteSubmit.setVisibility(View.GONE);
+                                mRlCompleteSubmit.setVisibility(View.GONE);
+                                mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                mBtnTrial.setVisibility(View.GONE);
+                            }else {
+                                mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                                mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                                mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                mBtnTrial.setVisibility(View.GONE);
+                            }
+                        }else {
+                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                            mBtnTrial.setVisibility(View.GONE);
+                        }
                     } else if ("2".equals(AccessoryAndServiceApplyState) && "1".equals(BeyondState)) {
-                        mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                        mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                        if (data.getOrderAccessroyDetail().size()>0){
+                            if ("".equals(data.getOrderAccessroyDetail().get(0).getExpressNo())||data.getOrderAccessroyDetail().get(0).getExpressNo()==null){
+                                mBtnCompleteSubmit.setVisibility(View.GONE);
+                                mRlCompleteSubmit.setVisibility(View.GONE);
+                                mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                mBtnTrial.setVisibility(View.GONE);
+                            }else {
+                                mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                                mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                                mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                mBtnTrial.setVisibility(View.GONE);
+                            }
+                        }else {
+                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                            mBtnTrial.setVisibility(View.GONE);
+                        }
                     } else {
                         mBtnCompleteSubmit.setVisibility(View.GONE);
                         mRlCompleteSubmit.setVisibility(View.GONE);
@@ -2203,7 +2324,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 if ("2".equals(data.getTypeID())) {
                     mLlOldAccessory.setVisibility(View.GONE);
                 } else {
-                    if ("1".equals(data.getAccessoryApplyState())) {
+                    if ("1".equals(data.getAccessoryAndServiceApplyState())||"2".equals(data.getAccessoryAndServiceApplyState())) {
                         mLlOldAccessory.setVisibility(View.VISIBLE);
                         if ("1".equals(data.getIsReturn())) {
                             mTvYn.setText("是");

@@ -73,13 +73,13 @@ public class RecordFragment extends BaseFragment<WalletPresenter, WalletModel>im
         userId = spUtils.getString("userName");
 
         if (title.equals("收支")){
-            mPresenter.AccountBill(userId, "2,5");
+            mPresenter.AccountBill(userId, "2,5","1","999");
         }
         if (title.equals("提现")){
-            mPresenter.AccountBill(userId, "3");//提现
+            mPresenter.AccountBill(userId, "3","1","999");//提现
         }
         if (title.equals("充值")){
-            mPresenter.AccountBill(userId, "1");//充值
+            mPresenter.AccountBill(userId, "1","1","999");//充值
         }
 
 

@@ -134,9 +134,9 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
         userId = spUtils.getString("userName");
         mPresenter.GetUserInfoList(userId, "1");
 
-        mPresenter.AccountBill(userId, "1");//充值
-        mPresenter.AccountBill(userId, "3");//提现
-        mPresenter.AccountBill(userId, "2,5");//收入和支出
+        mPresenter.AccountBill(userId, "1","1","999");//充值
+        mPresenter.AccountBill(userId, "3","1","999");//提现
+        mPresenter.AccountBill(userId, "2,5","1","999");//收入和支出
         //  mPresenter.AccountBill(userId,"4");//待支付
         mPresenter.GetAccountPayInfoList(userId);
     }
