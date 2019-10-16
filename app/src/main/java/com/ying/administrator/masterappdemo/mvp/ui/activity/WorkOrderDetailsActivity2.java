@@ -651,9 +651,90 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         mTvSubmitBeyond.setOnClickListener(this);
         mTvOrderDetailsAddAccessories.setOnClickListener(this);
         mTvOrderDetailAddService.setOnClickListener(this);
-        mLlManufacturers.setOnClickListener(this);
-        mLlSelfbuying.setOnClickListener(this);
-        mLlSelfbuyingUser.setOnClickListener(this);
+        mLlManufacturers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (select_state != 0) {
+                    select_state = 0;
+                    mIvManufacturers.setSelected(true);
+                    mIvSelfbuying.setSelected(false);
+                    mIvSelfbuyingUser.setSelected(false);
+                    mPre_order_add_ac_adapter.setNewData(fAcList);
+                    mRecyclerViewAddAccessories.setVisibility(View.VISIBLE);
+                    if (mPre_order_add_ac_adapter.getData().size() > 0) {
+                        mTvSubmitAddAccessories.setBackgroundResource(R.drawable.ed_order_detail_submit);
+                        mTvSubmitAddAccessories.setTextColor(Color.WHITE);
+                    } else {
+                        mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
+                        mTvSubmitAddAccessories.setTextColor(Color.parseColor("#6a6a6a"));
+                    }
+                } else {
+                    select_state = -1;
+                    mIvManufacturers.setSelected(false);
+                    mIvSelfbuying.setSelected(false);
+                    mIvSelfbuyingUser.setSelected(false);
+                    mRecyclerViewAddAccessories.setVisibility(View.GONE);
+                    mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
+                    mTvSubmitAddAccessories.setTextColor(Color.parseColor("#6a6a6a"));
+                }
+            }
+        });
+        mLlSelfbuying.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (select_state != 1) {
+                    select_state = 1;
+                    mIvManufacturers.setSelected(false);
+                    mIvSelfbuying.setSelected(true);
+                    mIvSelfbuyingUser.setSelected(false);
+                    mPre_order_add_ac_adapter.setNewData(mAcList);
+                    mRecyclerViewAddAccessories.setVisibility(View.VISIBLE);
+                    if (mPre_order_add_ac_adapter.getData().size() > 0) {
+                        mTvSubmitAddAccessories.setBackgroundResource(R.drawable.ed_order_detail_submit);
+                        mTvSubmitAddAccessories.setTextColor(Color.WHITE);
+                    } else {
+                        mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
+                        mTvSubmitAddAccessories.setTextColor(Color.parseColor("#6a6a6a"));
+                    }
+                } else {
+                    select_state = -1;
+                    mIvManufacturers.setSelected(false);
+                    mIvSelfbuying.setSelected(false);
+                    mIvSelfbuyingUser.setSelected(false);
+                    mRecyclerViewAddAccessories.setVisibility(View.GONE);
+                    mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
+                    mTvSubmitAddAccessories.setTextColor(Color.parseColor("#6a6a6a"));
+                }
+            }
+        });
+        mLlSelfbuyingUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (select_state != 2) {
+                    select_state = 2;
+                    mIvManufacturers.setSelected(false);
+                    mIvSelfbuying.setSelected(false);
+                    mIvSelfbuyingUser.setSelected(true);
+                    mPre_order_add_ac_adapter.setNewData(sAcList);
+                    mRecyclerViewAddAccessories.setVisibility(View.VISIBLE);
+                    if (mPre_order_add_ac_adapter.getData().size() > 0) {
+                        mTvSubmitAddAccessories.setBackgroundResource(R.drawable.ed_order_detail_submit);
+                        mTvSubmitAddAccessories.setTextColor(Color.WHITE);
+                    } else {
+                        mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
+                        mTvSubmitAddAccessories.setTextColor(Color.parseColor("#6a6a6a"));
+                    }
+                } else {
+                    select_state = -1;
+                    mIvManufacturers.setSelected(false);
+                    mIvSelfbuying.setSelected(false);
+                    mIvSelfbuyingUser.setSelected(false);
+                    mRecyclerViewAddAccessories.setVisibility(View.GONE);
+                    mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
+                    mTvSubmitAddAccessories.setTextColor(Color.parseColor("#6a6a6a"));
+                }
+            }
+        });
         mIvMap1.setOnClickListener(this);
         mIvMap2.setOnClickListener(this);
         mIvBarCode.setOnClickListener(this);
@@ -817,81 +898,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
             case R.id.tv_order_detail_add_service:
                 mPresenter.GetFactoryService(data.getBrandID() + "", data.getCategoryID() + "");
                 break;
-            case R.id.ll_manufacturers://厂家寄件申请
-                if (select_state != 0) {
-                    select_state = 0;
-                    mIvManufacturers.setSelected(true);
-                    mIvSelfbuying.setSelected(false);
-                    mIvSelfbuyingUser.setSelected(false);
-                    mPre_order_add_ac_adapter.setNewData(fAcList);
-                    mRecyclerViewAddAccessories.setVisibility(View.VISIBLE);
-                    if (mPre_order_add_ac_adapter.getData().size() > 0) {
-                        mTvSubmitAddAccessories.setBackgroundResource(R.drawable.ed_order_detail_submit);
-                        mTvSubmitAddAccessories.setTextColor(Color.WHITE);
-                    } else {
-                        mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
-                        mTvSubmitAddAccessories.setTextColor(Color.parseColor("#6a6a6a"));
-                    }
-                } else {
-                    select_state = -1;
-                    mIvManufacturers.setSelected(false);
-                    mIvSelfbuying.setSelected(false);
-                    mIvSelfbuyingUser.setSelected(false);
-                    mRecyclerViewAddAccessories.setVisibility(View.GONE);
-                    mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
-                    mTvSubmitAddAccessories.setTextColor(Color.parseColor("#6a6a6a"));
-                }
-                break;
-            case R.id.ll_selfbuying://师傅自购件
-                if (select_state != 1) {
-                    select_state = 1;
-                    mIvManufacturers.setSelected(false);
-                    mIvSelfbuying.setSelected(true);
-                    mIvSelfbuyingUser.setSelected(false);
-                    mPre_order_add_ac_adapter.setNewData(mAcList);
-                    mRecyclerViewAddAccessories.setVisibility(View.VISIBLE);
-                    if (mPre_order_add_ac_adapter.getData().size() > 0) {
-                        mTvSubmitAddAccessories.setBackgroundResource(R.drawable.ed_order_detail_submit);
-                        mTvSubmitAddAccessories.setTextColor(Color.WHITE);
-                    } else {
-                        mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
-                        mTvSubmitAddAccessories.setTextColor(Color.parseColor("#6a6a6a"));
-                    }
-                } else {
-                    select_state = -1;
-                    mIvManufacturers.setSelected(false);
-                    mIvSelfbuying.setSelected(false);
-                    mIvSelfbuyingUser.setSelected(false);
-                    mRecyclerViewAddAccessories.setVisibility(View.GONE);
-                    mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
-                    mTvSubmitAddAccessories.setTextColor(Color.parseColor("#6a6a6a"));
-                }
-                break;
-            case R.id.ll_selfbuying_user://用户自购件
-                if (select_state != 2) {
-                    select_state = 2;
-                    mIvManufacturers.setSelected(false);
-                    mIvSelfbuying.setSelected(false);
-                    mIvSelfbuyingUser.setSelected(true);
-                    mPre_order_add_ac_adapter.setNewData(sAcList);
-                    mRecyclerViewAddAccessories.setVisibility(View.VISIBLE);
-                    if (mPre_order_add_ac_adapter.getData().size() > 0) {
-                        mTvSubmitAddAccessories.setBackgroundResource(R.drawable.ed_order_detail_submit);
-                        mTvSubmitAddAccessories.setTextColor(Color.WHITE);
-                    } else {
-                        mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
-                        mTvSubmitAddAccessories.setTextColor(Color.parseColor("#6a6a6a"));
-                    }
-                } else {
-                    select_state = -1;
-                    mIvManufacturers.setSelected(false);
-                    mIvSelfbuying.setSelected(false);
-                    mIvSelfbuyingUser.setSelected(false);
-                    mRecyclerViewAddAccessories.setVisibility(View.GONE);
-                    mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
-                    mTvSubmitAddAccessories.setTextColor(Color.parseColor("#6a6a6a"));
-                }
-                break;
+
             case R.id.ll_return:
                 if (clickedResult != null) {
                     startActivity(new Intent(mActivity, MainActivity.class));
