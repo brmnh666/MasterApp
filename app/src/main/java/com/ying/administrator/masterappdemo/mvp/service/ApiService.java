@@ -353,7 +353,7 @@ public interface ApiService {
     /*获取工厂服务信息*/
     @FormUrlEncoded
     @POST("FactoryConfig/GetFactoryService")
-    Observable<BaseResult<GetFactoryData<Service>>> GetFactoryService(@Field("FBrandID") String FBrandID, @Field("FCategoryID") String FCategoryID);
+    Observable<BaseResult<GetFactoryData<Service>>> GetFactoryService(@Field("FCategoryID") String FCategoryID);
 
     /*
 

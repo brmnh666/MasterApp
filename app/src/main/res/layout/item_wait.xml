@@ -46,7 +46,10 @@
         android:layout_marginRight="5dp"
         android:text="456"
         android:textSize="12sp"
-        android:textColor="@color/red"/>
+        android:textColor="@color/red"
+        android:background="@drawable/gray_white_shape"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"/>
     <TextView
         android:id="@+id/tv_review2"
         android:layout_width="wrap_content"
@@ -57,7 +60,10 @@
         android:text="123"
         android:textSize="12sp"
         android:textColor="@color/red"
-        android:layout_marginRight="5dp"/>
+        android:layout_marginRight="5dp"
+        android:background="@drawable/gray_white_shape"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"/>
     <TextView
         android:id="@+id/tv_review3"
         android:layout_width="wrap_content"
@@ -68,7 +74,10 @@
         android:text="123"
         android:textSize="12sp"
         android:textColor="@color/red"
-        android:layout_marginRight="19dp"/>
+        android:layout_marginRight="19dp"
+        android:background="@drawable/gray_white_shape"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"/>
     <TextView
         android:id="@+id/tv_returnedparts_job_number"
         android:layout_width="wrap_content"
@@ -110,7 +119,9 @@
         android:layout_below="@+id/tv_malfunction"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="5dp"
-        android:src="@mipmap/icon_loaction" />
+        android:src="@mipmap/icon_loaction"
+        android:visibility="gone"
+        />
 
     <TextView
         android:id="@+id/tv_loaction_returnedparts"
@@ -122,7 +133,7 @@
         android:layout_toRightOf="@+id/img_loaction"
         android:text="距离 43.12KM"
         android:textSize="14sp"
-
+        android:visibility="gone"
         />
 
     <TextView
@@ -130,9 +141,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_malfunction"
-        android:layout_marginLeft="30dp"
+        android:layout_marginLeft="15dp"
         android:layout_marginTop="5dp"
-        android:layout_toRightOf="@+id/tv_loaction_returnedparts"
         android:text="数量:2台"
         android:textSize="14sp" />
 
@@ -141,7 +151,7 @@
         android:id="@+id/tv_address_returnedparts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_loaction_returnedparts"
+        android:layout_below="@+id/tv_num"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="5dp"
         android:text="宁波市江北区长阳路人才公寓5栋1701室"

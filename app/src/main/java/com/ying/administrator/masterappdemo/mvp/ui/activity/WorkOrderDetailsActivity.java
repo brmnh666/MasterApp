@@ -604,7 +604,7 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                 break;
             /*添加服务*/
             case R.id.tv_order_detail_add_service:
-                mPresenter.GetFactoryService(data.getBrandID() + "", data.getCategoryID() + "");
+                mPresenter.GetFactoryService( data.getCategoryID() + "");
                 break;
             case R.id.ll_manufacturers://厂家寄件申请
                 if (select_state != 0) {

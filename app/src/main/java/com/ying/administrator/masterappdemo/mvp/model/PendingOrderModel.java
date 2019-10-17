@@ -37,9 +37,9 @@ public class PendingOrderModel implements PendingOrderContract.Model {
     }
 
     @Override
-    public Observable<BaseResult<GetFactoryData<Service>>> GetFactoryService(String FBrandID,String FCategoryID) {
+    public Observable<BaseResult<GetFactoryData<Service>>> GetFactoryService(String FCategoryID) {
 
-        return ApiRetrofit.getDefault().GetFactoryService(FBrandID,FCategoryID)
+        return ApiRetrofit.getDefault().GetFactoryService(FCategoryID)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

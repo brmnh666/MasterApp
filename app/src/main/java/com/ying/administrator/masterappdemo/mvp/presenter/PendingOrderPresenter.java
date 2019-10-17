@@ -39,9 +39,9 @@ public class PendingOrderPresenter extends PendingOrderContract.Presenter {
      }
 
     @Override
-    public void GetFactoryService(String FBrandID,String FCategoryID) {
+    public void GetFactoryService(String FCategoryID) {
 
-        mModel.GetFactoryService( FBrandID, FCategoryID).subscribe(new BaseObserver<GetFactoryData<Service>>() {
+        mModel.GetFactoryService( FCategoryID).subscribe(new BaseObserver<GetFactoryData<Service>>() {
             @Override
             protected void onHandleSuccess(BaseResult<GetFactoryData<Service>> value) {
                 mView.GetFactoryService(value);

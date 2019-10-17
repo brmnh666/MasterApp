@@ -33,6 +33,7 @@ public class In_Service_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,Base
         helper.setText(R.id.tv_in_service_job_number,"工单号:"+item.getOrderID());
         if (item.getBeyondState()==null){
             helper.setText(R.id.tv_review,"");
+            helper.getView(R.id.tv_review).setVisibility(View.GONE);
         }else if ("0".equals(item.getBeyondState())) {
             helper.setText(R.id.tv_review,"远程费审核中");
         } else if ("1".equals(item.getBeyondState())) {

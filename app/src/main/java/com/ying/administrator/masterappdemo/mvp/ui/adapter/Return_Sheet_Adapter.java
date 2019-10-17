@@ -117,6 +117,7 @@ public class Return_Sheet_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,Ba
         baseViewHolder.addOnClickListener(R.id.tv_complaint);
         if("".equals(item.getAccessoryAndServiceApplyState())){
             baseViewHolder.setText(R.id.tv_review,"");
+            baseViewHolder.getView(R.id.tv_review).setVisibility(View.GONE);
         } else if ("0".equals(item.getAccessoryAndServiceApplyState())) {
             baseViewHolder.setText(R.id.tv_review,"审核中");
         } else if ("1".equals(item.getAccessoryAndServiceApplyState())) {
@@ -138,6 +139,7 @@ public class Return_Sheet_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,Ba
 
         if (item.getBeyondState()==null){
             baseViewHolder.setText(R.id.tv_review3,"");
+            baseViewHolder.getView(R.id.tv_review3).setVisibility(View.GONE);
         }else if ("0".equals(item.getBeyondState())) {
             baseViewHolder.setText(R.id.tv_review3,"远程费审核中");
         } else if ("1".equals(item.getBeyondState())) {

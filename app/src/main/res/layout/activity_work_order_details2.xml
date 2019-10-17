@@ -811,7 +811,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="寄送至："
-                            android:textSize="16sp" />
+                            android:textSize="16sp"
+                            android:textColor="@color/black"/>
                         <TextView
                             android:id="@+id/tv_modify"
                             android:layout_width="match_parent"
@@ -820,7 +821,7 @@
                             android:layout_marginRight="10dp"
                             android:gravity="right"
                             android:text="修改地址"
-                            android:textColor="#808080"
+                            android:textColor="@color/black"
                             android:textSize="14sp" />
 
 
@@ -831,7 +832,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text=""
-                        android:textColor="@color/black"
+                        android:textColor="#808080"
                         android:textSize="16sp"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"

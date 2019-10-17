@@ -904,7 +904,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 break;
             /*添加服务*/
             case R.id.tv_order_detail_add_service:
-                mPresenter.GetFactoryService(data.getBrandID() + "", data.getCategoryID() + "");
+                mPresenter.GetFactoryService( data.getSubCategoryID() + "");
                 break;
             case R.id.ll_return:
                 if (clickedResult != null) {
@@ -1464,6 +1464,17 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 .setView(add_service_view)
                 .create();
         add_service_dialog.show();
+        Window window=add_service_dialog.getWindow();
+        lp = window.getAttributes();
+//                lp.alpha = 0.5f;
+        // 也可按屏幕宽高比例进行设置宽高
+        Display display =getWindowManager().getDefaultDisplay();
+        lp.width = (int) (display.getWidth() * 1);
+//                lp.height = under_review.getHeight();
+//                lp.width = 300;
+//                lp.height = (int) (display.getHeight() * 0.5);
+
+        window.setAttributes(lp);
         tv_add_service_submit = add_service_view.findViewById(R.id.tv_add_service_submit);
         recyclerView_custom_add_service = add_service_view.findViewById(R.id.recyclerView_custom_add_service);
         recyclerView_custom_add_service.setLayoutManager(new LinearLayoutManager(mActivity));

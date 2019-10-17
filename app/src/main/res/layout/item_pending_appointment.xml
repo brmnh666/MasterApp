@@ -16,7 +16,10 @@
         android:layout_marginLeft="15dp"
         android:layout_marginTop="15dp"
         android:text="已接待预约"
-        android:textSize="12sp" />
+        android:textSize="12sp"
+        android:background="@drawable/gray_white_shape"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"/>
 
 
 
@@ -54,7 +57,9 @@
         android:layout_marginTop="41dp"
         android:text="不通电热水器不通电热水器不通电热水器不通电"
         android:textColor="#333333"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:maxLines="1"
+        android:ellipsize="end"/>
     <TextView
         android:id="@+id/tv_malfunction"
         android:layout_width="wrap_content"
@@ -76,7 +81,9 @@
         android:layout_below="@id/tv_malfunction"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="5dp"
-        android:src="@mipmap/icon_loaction" />
+        android:src="@mipmap/icon_loaction"
+        android:visibility="gone"
+        />
 
     <TextView
         android:id="@+id/tv_loaction_appointment"
@@ -88,7 +95,7 @@
         android:layout_toRightOf="@id/img_loaction"
         android:text="距离 xx.xxKM"
         android:textSize="14sp"
-
+        android:visibility="gone"
         />
 
     <TextView
@@ -96,9 +103,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_malfunction"
-        android:layout_marginLeft="30dp"
+        android:layout_marginLeft="15dp"
         android:layout_marginTop="5dp"
-        android:layout_toRightOf="@id/tv_loaction_appointment"
         android:text="数量:1台"
         android:textSize="14sp" />
 
@@ -107,7 +113,7 @@
         android:id="@+id/tv_address_pending_appointment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_loaction_appointment"
+        android:layout_below="@+id/tv_num"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="5dp"
         android:text="宁波市江北区长阳路人才公寓5栋1701室"

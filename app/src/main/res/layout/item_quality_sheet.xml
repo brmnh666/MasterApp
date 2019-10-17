@@ -17,7 +17,10 @@
         android:text="质保单"
         android:textSize="12sp"
         android:layout_marginLeft="13dp"
-        android:layout_marginTop="15dp" />
+        android:layout_marginTop="15dp"
+        android:background="@drawable/gray_white_shape"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"/>
 
 
 
@@ -80,6 +83,7 @@
         android:src="@mipmap/icon_loaction"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="5dp"
+        android:visibility="gone"
         />
     <TextView
         android:id="@+id/tv_loaction_quality"
@@ -91,7 +95,7 @@
         android:layout_below="@+id/tv_malfunction"
         android:layout_marginTop="5dp"
         android:layout_marginLeft="5dp"
-
+        android:visibility="gone"
         />
     <TextView
         android:id="@+id/tv_num"
@@ -102,7 +106,7 @@
         android:layout_toRightOf="@+id/tv_loaction_quality"
         android:layout_below="@+id/tv_malfunction"
         android:layout_marginTop="5dp"
-        android:layout_marginLeft="30dp"
+        android:layout_marginLeft="15dp"
         />
 
 
@@ -112,7 +116,7 @@
         android:layout_height="wrap_content"
         android:text="宁波市江北区长阳路人才公寓5栋1701室"
         android:textSize="14sp"
-        android:layout_below="@+id/tv_loaction_quality"
+        android:layout_below="@+id/tv_num"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="15dp"/>

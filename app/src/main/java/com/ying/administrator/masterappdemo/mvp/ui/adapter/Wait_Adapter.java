@@ -3,6 +3,7 @@ package com.ying.administrator.masterappdemo.mvp.ui.adapter;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -101,6 +102,7 @@ public class Wait_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,BaseViewHo
 
         if("".equals(item.getAccessoryApplyState())){
             baseViewHolder.setText(R.id.tv_review,"");
+            baseViewHolder.getView(R.id.tv_review).setVisibility(View.GONE);
         } else if ("0".equals(item.getAccessoryApplyState())) {
             baseViewHolder.setText(R.id.tv_review,"配件审核中");
         } else if ("1".equals(item.getAccessoryApplyState())) {
@@ -110,6 +112,7 @@ public class Wait_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,BaseViewHo
         }
         if("".equals(item.getServiceApplyState())){
             baseViewHolder.setText(R.id.tv_review2,"");
+            baseViewHolder.getView(R.id.tv_review2).setVisibility(View.GONE);
         } else if ("0".equals(item.getServiceApplyState())) {
             baseViewHolder.setText(R.id.tv_review2,"服务审核中");
         } else if ("1".equals(item.getServiceApplyState())) {
@@ -120,6 +123,7 @@ public class Wait_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,BaseViewHo
 
         if (item.getBeyondState()==null){
             baseViewHolder.setText(R.id.tv_review3,"");
+            baseViewHolder.getView(R.id.tv_review3).setVisibility(View.GONE);
         }else if ("0".equals(item.getBeyondState())) {
             baseViewHolder.setText(R.id.tv_review3,"远程费审核中");
         } else if ("1".equals(item.getBeyondState())) {

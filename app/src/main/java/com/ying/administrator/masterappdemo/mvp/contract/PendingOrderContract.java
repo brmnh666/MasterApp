@@ -30,7 +30,7 @@ public interface PendingOrderContract {
         Observable<BaseResult<GetFactoryData<Accessory>>> GetFactoryAccessory(String FProductTypeID);
 
         //获取工厂服务信息
-        Observable<BaseResult<GetFactoryData<Service>>> GetFactoryService(String FBrandID,String FCategoryID);
+        Observable<BaseResult<GetFactoryData<Service>>> GetFactoryService(String FCategoryID);
 
         //提交需要的配件信息
         Observable<BaseResult<Data>> AddOrderAccessory(RequestBody json);
@@ -140,7 +140,7 @@ public interface PendingOrderContract {
         //获取工厂配件信息
         public abstract void GetFactoryAccessory(String FProductTypeID);
         //获取工厂服务信息
-        public abstract void GetFactoryService(String FBrandID,String FCategoryID);
+        public abstract void GetFactoryService(String FCategoryID);
         //提交需要的配件信息
         public abstract void AddOrderAccessory(RequestBody json);
         //提交需要的服务信息

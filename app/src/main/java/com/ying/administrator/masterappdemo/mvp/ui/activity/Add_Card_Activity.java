@@ -99,7 +99,6 @@ public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> im
         /*time = new TimeCount(60000, 1000);*/
     }
 
-    @SingleClick
     @Override
     protected void setListener() {
         // mLlChooseBank.setOnClickListener(this);

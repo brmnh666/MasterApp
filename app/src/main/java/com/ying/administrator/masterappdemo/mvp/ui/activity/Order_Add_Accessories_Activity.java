@@ -496,7 +496,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                 break;
             /*添加服务*/
             case R.id.tv_order_detail_add_service:
-                mPresenter.GetFactoryService(data.getBrandID() + "", data.getCategoryID() + "");
+                mPresenter.GetFactoryService( data.getCategoryID() + "");
                 break;
             /*提交工单*/
             case R.id.tv_detail_submit:

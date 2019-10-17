@@ -38,7 +38,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_marginRight="30dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="12dp"
         android:text="点击刷新工单"
         android:textSize="17sp"
         android:textColor="@color/black"/>
@@ -49,10 +49,9 @@
         android:layout_height="27dp"
         android:layout_alignParentBottom="true"
         android:layout_marginRight="2dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="12dp"
         android:layout_toLeftOf="@+id/tv_home_refresh"
         android:src="@drawable/shou_red"
-
 
         />
 

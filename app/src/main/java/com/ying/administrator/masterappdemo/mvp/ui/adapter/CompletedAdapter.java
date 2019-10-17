@@ -39,7 +39,8 @@ public class CompletedAdapter extends BaseQuickAdapter<WorkOrder.DataBean, BaseV
             baseViewHolder.setText(R.id.tv_review,"已完成待确认");
             baseViewHolder.getView(R.id.tv_review).setVisibility(View.VISIBLE);
         }else {
-            baseViewHolder.getView(R.id.tv_review).setVisibility(View.GONE );
+            baseViewHolder.setText(R.id.tv_review,"结算完成");
+            baseViewHolder.getView(R.id.tv_review).setVisibility(View.VISIBLE);
         }
 
     }
