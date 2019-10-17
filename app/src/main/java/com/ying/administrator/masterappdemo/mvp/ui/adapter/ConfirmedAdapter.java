@@ -21,7 +21,8 @@ public class ConfirmedAdapter extends BaseQuickAdapter<WorkOrder.DataBean, BaseV
         helper.setText(R.id.tv_complete_status_repair,item.getTypeName()+"/"+item.getGuaranteeText());//安装or维修
         if ("安装".equals(item.getTypeName())){
             helper.setBackgroundColor(R.id.tv_complete_status_repair, Color.parseColor("#1690FF"));
-            helper.setText(R.id.tv_malfunction,item.getMemo());//memo
+            helper.setText(R.id.tv_malfunction, "安装备注:"+item.getMemo());//原因
+
         }else{
             helper.setBackgroundColor(R.id.tv_complete_status_repair,Color.parseColor("#FF0000"));
             helper.setText(R.id.tv_malfunction,"故障:"+item.getMemo());//memo

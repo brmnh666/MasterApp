@@ -1,5 +1,6 @@
 package com.ying.administrator.masterappdemo.mvp.ui.adapter;
 
+import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.view.View;
 
@@ -26,6 +27,11 @@ public class In_Service_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,Base
         helper.setText(R.id.tv_reason_in_service,item.getCategoryName() + " " + item.getBrandName() + " " + item.getSubCategoryName());//原因
         if ("维修".equals(item.getTypeName())){
             helper.setText(R.id.tv_malfunction, "故障:"+item.getMemo());//原因
+        }else if ("安装".equals(item.getTypeName())){
+            helper.setText(R.id.tv_malfunction, "安装备注:"+item.getMemo());//原因
+            helper.setBackgroundColor(R.id.tv_in_service_status_repair, Color.parseColor("#1690FF"));
+            helper.setText(R.id.tv_hint_in_service,"提示:请务必在维修过程中拍照");
+            helper.setTextColor(R.id.tv_hint_in_service,Color.parseColor("#ff0000"));
         }else {
             helper.setText(R.id.tv_malfunction, item.getMemo());//原因
         }

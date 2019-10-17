@@ -44,7 +44,7 @@ public class Return_Sheet_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,Ba
         baseViewHolder.setText(R.id.tv_returnedparts_status_repair,item.getTypeName()+"/"+item.getGuaranteeText());//安装or维修
         if ("安装".equals(item.getTypeName())){
             baseViewHolder.setBackgroundColor(R.id.tv_returnedparts_status_repair, Color.parseColor("#1690FF"));
-            baseViewHolder.setText(R.id.tv_malfunction,item.getMemo());//memo
+            baseViewHolder.setText(R.id.tv_malfunction,"安装备注:"+item.getMemo());//memo
         }else{
             baseViewHolder.setBackgroundColor(R.id.tv_returnedparts_status_repair,Color.parseColor("#FF0000"));
             baseViewHolder.setText(R.id.tv_malfunction,"故障:"+item.getMemo());//memo

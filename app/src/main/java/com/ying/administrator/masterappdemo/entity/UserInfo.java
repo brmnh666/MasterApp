@@ -127,6 +127,24 @@ public class UserInfo implements Serializable {
         private int limit;
         private int Version;
         private Double Con;
+        private String ServiceTotalOrderNum;
+        private String ServiceComplaintNum;
+
+        public String getServiceTotalOrderNum() {
+            return ServiceTotalOrderNum;
+        }
+
+        public void setServiceTotalOrderNum(String serviceTotalOrderNum) {
+            ServiceTotalOrderNum = serviceTotalOrderNum;
+        }
+
+        public String getServiceComplaintNum() {
+            return ServiceComplaintNum;
+        }
+
+        public void setServiceComplaintNum(String serviceComplaintNum) {
+            ServiceComplaintNum = serviceComplaintNum;
+        }
 
         public String getLongitude() {
             return Longitude;

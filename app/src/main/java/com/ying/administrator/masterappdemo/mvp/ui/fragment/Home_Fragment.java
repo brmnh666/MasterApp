@@ -894,6 +894,8 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
         switch (baseResult.getStatusCode()) {
             case 200:
                 userInfo = baseResult.getData().getData().get(0);
+                mTvFinish.setText(userInfo.getServiceTotalOrderNum());
+                mTvComplaint.setText(userInfo.getServiceComplaintNum());
                 if (userInfo.getParentUserID() == null || "".equals(userInfo.getParentUserID())) {
                     mPresenter.WorkerGetOrderList(userID, "0", Integer.toString(pageIndex), "10");
                 } else {

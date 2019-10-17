@@ -391,6 +391,10 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     LinearLayout mLlChooseAddress;
     @BindView(R.id.ll_shipping_type)
     LinearLayout mLlShippingType;
+    @BindView(R.id.tv_description)
+    TextView mTvDescription;
+    @BindView(R.id.view_select_time_point2)
+    ImageView mViewSelectTimePoint2;
 
     private String OrderID;
     private WorkOrder.DataBean data = new WorkOrder.DataBean();
@@ -904,7 +908,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 break;
             /*添加服务*/
             case R.id.tv_order_detail_add_service:
-                mPresenter.GetFactoryService( data.getSubCategoryID() + "");
+                mPresenter.GetFactoryService(data.getSubCategoryID() + "");
                 break;
             case R.id.ll_return:
                 if (clickedResult != null) {
@@ -1464,11 +1468,11 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 .setView(add_service_view)
                 .create();
         add_service_dialog.show();
-        Window window=add_service_dialog.getWindow();
+        Window window = add_service_dialog.getWindow();
         lp = window.getAttributes();
 //                lp.alpha = 0.5f;
         // 也可按屏幕宽高比例进行设置宽高
-        Display display =getWindowManager().getDefaultDisplay();
+        Display display = getWindowManager().getDefaultDisplay();
         lp.width = (int) (display.getWidth() * 1);
 //                lp.height = under_review.getHeight();
 //                lp.width = 300;
@@ -1671,7 +1675,12 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     data = baseResult.getData();
                     mTvStatus.setText(data.getStateStr());
                     if ("服务中".equals(data.getStateStr())) {
-                        mTvPrompt.setText("可添加维修配件及直接完成工单");
+                        if ("1".equals(data.getTypeID())) {//维修
+                            mTvPrompt.setText("可添加维修配件及直接完成工单");
+                        } else {
+                            mTvPrompt.setText("可根据用户需求增加相应的服务项目");
+                        }
+
                     }
                     mTvBeyondMoney.setText("¥" + data.getBeyondMoney() + "");
                     mTvAccessoryMoney.setText("¥" + data.getAccessoryMoney());
@@ -1718,9 +1727,9 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     }
 
                     mTvAccessoryMemo.setText("备注：" + data.getAccessoryMemo());
-                    if ("2".equals(data.getAccessoryAndServiceApplyState())){
+                    if ("2".equals(data.getAccessoryAndServiceApplyState())) {
                         mTvAccessorySequency.setText("已修改为厂家寄件");
-                    }else {
+                    } else {
                         mTvAccessorySequency.setText(data.getAccessorySequencyStr());
                     }
 
@@ -1775,12 +1784,15 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     if ("1".equals(data.getTypeID())) {//维修
                         mTvType.setText(data.getTypeName() + "/" + data.getGuaranteeText());
                         mTvType.setBackgroundResource(R.color.color_custom_01);
+                        mTvDescription.setText("故障说明");
 //                    mll_return_information.setVisibility(View.VISIBLE);
 //                    mll_service_process.setVisibility(View.GONE);
                         mLlSigning.setVisibility(View.GONE);
                     } else {
                         mTvType.setText(data.getTypeName() + "/" + data.getGuaranteeText());
                         mTvType.setBackgroundResource(R.color.color_custom_04);
+                        mTvDescription.setText("安装备注");
+                        mLlPrompt.setVisibility(View.GONE);
                         mLlSigning.setVisibility(View.VISIBLE);
                         if ("Y".equals(data.getIsRecevieGoods())) {
                             mLlNumber.setVisibility(View.GONE);
@@ -2404,12 +2416,12 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mTvServiceApplyState.setVisibility(View.GONE);
                         mTvAccessoryApplyState.setVisibility(View.GONE);
 
-                    mTvAccessoryApplication.setVisibility(View.GONE);
-                    mTvServiceApplication.setVisibility(View.GONE);
-                    mTvBeyondApplication.setVisibility(View.GONE);
-                    mTvAccessoryInformation.setVisibility(View.GONE);
-                    mTvServiceInformation.setVisibility(View.GONE);
-                    mTvRemoteFeeInformation.setVisibility(View.GONE);
+                        mTvAccessoryApplication.setVisibility(View.GONE);
+                        mTvServiceApplication.setVisibility(View.GONE);
+                        mTvBeyondApplication.setVisibility(View.GONE);
+                        mTvAccessoryInformation.setVisibility(View.GONE);
+                        mTvServiceInformation.setVisibility(View.GONE);
+                        mTvRemoteFeeInformation.setVisibility(View.GONE);
 
                         mViewSelectTimePoint.setVisibility(View.GONE);
                         mViewSelectTimePoint2.setVisibility(View.GONE);

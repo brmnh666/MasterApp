@@ -61,7 +61,7 @@
     </style>
 
     <style name="NoActionBar">
-        <item name="android:background">@mipmap/icon_splash</item>
+        <item name="android:background">@drawable/icon_new</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
         <item name="windowActionBar">false</item>

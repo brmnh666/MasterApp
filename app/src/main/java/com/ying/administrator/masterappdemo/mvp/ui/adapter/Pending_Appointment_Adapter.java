@@ -1,5 +1,6 @@
 package com.ying.administrator.masterappdemo.mvp.ui.adapter;
 
+import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
@@ -45,6 +46,9 @@ public class Pending_Appointment_Adapter extends BaseQuickAdapter<WorkOrder.Data
         helper.setText(R.id.tv_reason_pending_appointment, item.getCategoryName() + " " + item.getBrandName() + " " + item.getSubCategoryName());//型号
         if ("维修".equals(item.getTypeName())){
             helper.setText(R.id.tv_malfunction, "故障:"+item.getMemo());//原因
+        }else if ("安装".equals(item.getTypeName())){
+            helper.setText(R.id.tv_malfunction, "安装备注:"+item.getMemo());//原因
+            helper.setBackgroundColor(R.id.tv_in_service_status_repair, Color.parseColor("#1690FF"));
         }else {
             helper.setText(R.id.tv_malfunction, item.getMemo());//原因
         }

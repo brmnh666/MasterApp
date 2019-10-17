@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#4169ff">
 
     <TextView
         android:id="@+id/tv_splash_skin"
@@ -12,7 +14,14 @@
         android:paddingRight="20dp"
         android:textColor="@color/white"
         android:text="1"
+        android:visibility="gone"
         android:textSize="14sp" />
+    <ImageView
+        android:id="@+id/img"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitCenter"
+        android:src="@drawable/icon_new"/>
 
 
 
