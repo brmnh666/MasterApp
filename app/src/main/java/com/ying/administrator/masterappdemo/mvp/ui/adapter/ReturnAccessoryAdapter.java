@@ -38,7 +38,7 @@ public class ReturnAccessoryAdapter extends BaseQuickAdapter<GAccessory,BaseView
         Glide.with(mContext).load("https://img.xigyu.com/Pics/Accessory/"+item.getPhoto2()).into((ImageView) helper.getView(R.id.photo2));
         Glide.with(mContext).load("https://img.xigyu.com/Pics/Accessory/"+item.getPhoto1()).into((ImageView) helper.getView(R.id.iv_photo1));
         Glide.with(mContext).load("https://img.xigyu.com/Pics/Accessory/"+item.getPhoto2()).into((ImageView) helper.getView(R.id.iv_photo2));
-        if ("0".equals(state)){
+        if (!"".equals(item.getExpressNo())||item.getExpressNo()!=null){
             helper.getView(R.id.ll_state_y).setVisibility(View.VISIBLE);
             helper.getView(R.id.ll_state_n).setVisibility(View.VISIBLE);
             if ("Y".equals(item.getSendState())){
@@ -60,6 +60,17 @@ public class ReturnAccessoryAdapter extends BaseQuickAdapter<GAccessory,BaseView
             helper.setText(R.id.tv_accessory_name_n,item.getFAccessoryName()+"  ¥"+item.getDiscountPrice()+"/"+item.getQuantity()+"个");
         }
 
+        if (item.getPhoto1()==null&&item.getPhoto2()==null){
+            helper.getView(R.id.iv_photo1).setVisibility(View.GONE);
+            helper.getView(R.id.iv_photo2).setVisibility(View.GONE);
+            helper.getView(R.id.photo2).setVisibility(View.GONE);
+            helper.getView(R.id.photo1).setVisibility(View.GONE);
+        }else {
+            helper.getView(R.id.iv_photo1).setVisibility(View.VISIBLE);
+            helper.getView(R.id.iv_photo2).setVisibility(View.VISIBLE);
+            helper.getView(R.id.photo2).setVisibility(View.VISIBLE);
+            helper.getView(R.id.photo1).setVisibility(View.VISIBLE);
+        }
 //
         if ("1".equals(item.getState())){
             helper.setVisible(R.id.tv_sure,true);

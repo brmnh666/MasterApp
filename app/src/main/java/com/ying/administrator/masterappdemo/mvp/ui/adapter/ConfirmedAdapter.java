@@ -31,7 +31,7 @@ public class ConfirmedAdapter extends BaseQuickAdapter<WorkOrder.DataBean, BaseV
         helper.setText(R.id.tv_reason_complete,item.getCategoryName() + " " + item.getBrandName() + " " + item.getSubCategoryName());//memo
         helper.setText(R.id.tv_loaction_complete,"距离："+item.getDistance()+"km");//距离
         helper.setText(R.id.tv_num,"数量："+item.getNum()+"台");//数量
-        helper.setText(R.id.tv_address_complete,item.getAddress());//地址
+        helper.setText(R.id.tv_address_complete,"地址:"+item.getAddress());//地址
         helper.addOnClickListener(R.id.tv_detail);
         helper.addOnClickListener(R.id.tv_cancel_order);
 

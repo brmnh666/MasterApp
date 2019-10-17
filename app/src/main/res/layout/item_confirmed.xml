@@ -37,8 +37,6 @@
         android:textColor="@color/color_white"
         />
 
-
-
     <TextView
         android:id="@+id/tv_complete_job_number"
         android:layout_width="wrap_content"
@@ -64,12 +62,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
-        android:layout_marginRight="75dp"
+        android:layout_marginRight="20dp"
         android:layout_below="@+id/tv_reason_complete"
         android:layout_marginTop="5dp"
         android:text="不通电热水器不通电热水器不通电热水器不通电"
         android:textColor="#333333"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:maxLines="1"
+        android:ellipsize="end"/>
     <ImageView
         android:layout_below="@+id/tv_malfunction"
         android:id="@+id/img_loaction"

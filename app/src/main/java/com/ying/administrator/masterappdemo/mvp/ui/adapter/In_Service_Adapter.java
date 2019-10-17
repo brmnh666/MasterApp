@@ -29,7 +29,7 @@ public class In_Service_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,Base
         }else {
             helper.setText(R.id.tv_malfunction, item.getMemo());//原因
         }
-        helper.setText(R.id.tv_address_in_service,item.getAddress()); //地址
+        helper.setText(R.id.tv_address_in_service,"地址:"+item.getAddress()); //地址
         helper.setText(R.id.tv_in_service_job_number,"工单号:"+item.getOrderID());
         if (item.getBeyondState()==null){
             helper.setText(R.id.tv_review,"");

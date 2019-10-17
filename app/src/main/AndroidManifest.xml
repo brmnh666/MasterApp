@@ -111,6 +111,8 @@
         tools:replace="android:icon, android:theme"
         >
 
+        <uses-library android:name="org.apache.http.legacy" android:required="false" />
+
         <provider
 
             android:name="android.support.v4.content.FileProvider"

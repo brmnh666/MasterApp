@@ -48,7 +48,7 @@ public class Pending_Appointment_Adapter extends BaseQuickAdapter<WorkOrder.Data
         }else {
             helper.setText(R.id.tv_malfunction, item.getMemo());//原因
         }
-        helper.setText(R.id.tv_address_pending_appointment, item.getAddress()); //地址
+        helper.setText(R.id.tv_address_pending_appointment, "地址:"+item.getAddress()); //地址
         helper.setText(R.id.tv_num, "数量:" + item.getNum() + "台");
         helper.setText(R.id.tv_pending_appointment_job_number, "工单号:" + item.getOrderID());
         countdownView = helper.getView(R.id.countdownview);

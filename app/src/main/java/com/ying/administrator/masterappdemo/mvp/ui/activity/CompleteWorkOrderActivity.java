@@ -14,6 +14,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.FileProvider;
+import android.text.Html;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
@@ -44,6 +45,7 @@ import com.ying.administrator.masterappdemo.mvp.presenter.CompleteWorkOrderPrese
 import com.ying.administrator.masterappdemo.util.Glide4Engine;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.util.imageutil.CompressHelper;
+import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 import com.ying.administrator.masterappdemo.widget.ViewExampleDialog;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
@@ -142,6 +144,12 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
     Button mBtnCompleteSubmit;
     @BindView(R.id.et_memo)
     EditText mEtMemo;
+    @BindView(R.id.tv_message)
+    TextView mTvMessage;
+    @BindView(R.id.tv_manufacturer_phone)
+    TextView mTvManufacturerPhone;
+    @BindView(R.id.tv_call)
+    TextView mTvCall;
     private String orderID;
 
     /*工单详情*/
@@ -201,6 +209,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
         mIvFour.setOnClickListener(this);
         mBtnCompleteSubmit.setOnClickListener(this);
         mLlViewExampleTwo.setOnClickListener(this);
+        mTvCall.setOnClickListener(this);
 
     }
 
@@ -208,49 +217,51 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
     public void GetOrderInfo(BaseResult<WorkOrder.DataBean> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult!=null){
+                if (baseResult != null) {
 
-                data = baseResult.getData();
-                mTvWorkOrderStatus.setText(data.getStateStr());
-                mTvPaymentMethod.setText(data.getOrderPayStr());
-                mTvNumber.setText(data.getNum());
+                    data = baseResult.getData();
+                    mTvWorkOrderStatus.setText(data.getStateStr());
+                    mTvPaymentMethod.setText(data.getOrderPayStr());
+                    mTvNumber.setText(data.getNum());
+                    mTvManufacturerPhone.setText(data.getUserID());
 
-                mTvWorkOrderNumber.setText(data.getOrderID());
-                mTvOrderTime.setText(data.getAudDate().replace("T", " ")); //将T替换为空格
-                if (("Y").equals(data.getGuarantee())) {
-                    mTvPaymentMethod.setText("平台代付");
+                    mTvWorkOrderNumber.setText(data.getOrderID());
+                    mTvOrderTime.setText(data.getAudDate().replace("T", " ")); //将T替换为空格
+                    if (("Y").equals(data.getGuarantee())) {
+                        mTvPaymentMethod.setText("平台代付");
+                    } else {
+                        mTvPaymentMethod.setText("客户付款");
+                    }
+//                    mTvReasonPendingAppointment.setText("故障描述:"+data.getMemo());
+                    mTvReasonPendingAppointment.setText(Html.fromHtml(mActivity.getResources().getString(R.string.malfunction, "故障描述:", data.getMemo())));
+                    mTvServiceGoods.setText(data.getCategoryName() + "/" + data.getBrandName() + "/" + data.getSubCategoryName());
+
+                    if ("1".equals(data.getTypeID())) {//维修
+                        mTvService.setText(data.getTypeName() + "/" + data.getGuaranteeText());
+                        mTvService.setBackgroundResource(R.color.color_custom_01);
+                        mLlReturnInformation.setVisibility(View.VISIBLE);
+                        mLlServiceProcess.setVisibility(View.GONE);
+
+                    } else if ("2".equals(data.getTypeID())) {
+                        mTvService.setText(data.getTypeName() + "/" + data.getGuaranteeText());
+                        mTvService.setBackgroundResource(R.color.color_custom_04);
+                        mLlReturnInformation.setVisibility(View.GONE);
+                        mLlServiceProcess.setVisibility(View.VISIBLE);
+
+                    } else {
+                        mTvService.setText(data.getTypeName() + "/" + data.getGuaranteeText());
+                        mTvService.setBackgroundResource(R.color.color_custom_01);
+                        mLlReturnInformation.setVisibility(View.VISIBLE);
+                        mLlServiceProcess.setVisibility(View.GONE);
+                    }
+                    mTvAddress.setText(data.getAddress());
+                    mTvName.setText(data.getUserName());
+                    mTvPhone.setText(data.getPhone());
+
+
+                    break;
+
                 } else {
-                    mTvPaymentMethod.setText("客户付款");
-                }
-                mTvReasonPendingAppointment.setText(data.getMemo());
-                mTvServiceGoods.setText(data.getCategoryName() + "/" + data.getBrandName() + "/" + data.getSubCategoryName());
-
-                if ("1".equals(data.getTypeID())) {//维修
-                    mTvService.setText(data.getTypeName() + "/" + data.getGuaranteeText());
-                    mTvService.setBackgroundResource(R.color.color_custom_01);
-                    mLlReturnInformation.setVisibility(View.VISIBLE);
-                    mLlServiceProcess.setVisibility(View.GONE);
-
-                } else if ("2".equals(data.getTypeID())) {
-                    mTvService.setText(data.getTypeName() + "/" + data.getGuaranteeText());
-                    mTvService.setBackgroundResource(R.color.color_custom_04);
-                    mLlReturnInformation.setVisibility(View.GONE);
-                    mLlServiceProcess.setVisibility(View.VISIBLE);
-
-                } else {
-                    mTvService.setText(data.getTypeName() + "/" + data.getGuaranteeText());
-                    mTvService.setBackgroundResource(R.color.color_custom_01);
-                    mLlReturnInformation.setVisibility(View.VISIBLE);
-                    mLlServiceProcess.setVisibility(View.GONE);
-                }
-                mTvAddress.setText(data.getAddress());
-                mTvName.setText(data.getUserName());
-                mTvPhone.setText(data.getPhone());
-
-
-                break;
-
-                }else {
                     return;
                 }
             default:
@@ -273,7 +284,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 //                    }else{
 //                        mPresenter.UpdateOrderState(orderID, "5");
 //                    }
-                    mPresenter.UpdateOrderState(orderID, "5","");
+                    mPresenter.UpdateOrderState(orderID, "5", "");
                 } else {
                     cancleLoading();
                 }
@@ -294,9 +305,9 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 //                    }else{
 
                     if (!"1".equals(data.getIsReturn())) {//不需要返件
-                        mPresenter.UpdateOrderState(orderID, "5","");
+                        mPresenter.UpdateOrderState(orderID, "5", "");
                     } else {
-                        mPresenter.UpdateOrderState(orderID, "8","");
+                        mPresenter.UpdateOrderState(orderID, "8", "");
                     }
 
 //                    }
@@ -430,30 +441,46 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 
                     }*/
                 if ("2".equals(data.getTypeID())) {//安装
-                    if (service_img_map.get(0)==null||service_img_map.get(1)==null) {
-                        MyUtils.showToast(mActivity, "请上传安装前照片以及安装后一张照片");
-                        return;
+                    if (service_img_map.get(0) == null || service_img_map.get(1) == null) {
+//                        MyUtils.showToast(mActivity, "请上传安装前照片以及安装后一张照片");
+                            mPresenter.UpdateOrderState(orderID, "5", "");
                     } else {
-                        String EndRemark=mEtMemo.getText().toString();
-                        ServiceOrderPicUpload(service_img_map,EndRemark);
+                        String EndRemark = mEtMemo.getText().toString();
+                        ServiceOrderPicUpload(service_img_map, EndRemark);
                     }
 
                 } else {//维修
-                    if (data.getAccessory() == null || "".equals(data.getAccessory())) {
+                    if (data.getOrderAccessroyDetail().size()==0) {
                         //没配件
-                        if (return_img_map.get(1) == null) {
-                            MyUtils.showToast(mActivity, "整机图片必传！");
-                            return;
+//                        if (return_img_map.get(1) == null) {
+//                            MyUtils.showToast(mActivity, "整机图片必传！");
+//                            return;
+//                        }
+                        if (return_img_map.size()==0){
+                            mPresenter.UpdateOrderState(orderID, "5", "");
+
+                        }else {
+                            String EndRemark = mEtMemo.getText().toString();
+                            ReuturnAccessoryPicUpload(return_img_map, EndRemark);
                         }
                     } else {
                         //有配件
-                        if (return_img_map.get(1) == null || return_img_map.get(2) == null || return_img_map.get(3) == null) {
-                            MyUtils.showToast(mActivity, "整机、故障位置、新旧配件图片必传！");
-                            return;
+//                        if (return_img_map.get(1) == null || return_img_map.get(2) == null || return_img_map.get(3) == null) {
+//                            MyUtils.showToast(mActivity, "整机、故障位置、新旧配件图片必传！");
+//                            return;
+//                        }
+                        if (return_img_map.size()==0){
+                            if (!"1".equals(data.getIsReturn())) {//不需要返件
+                                mPresenter.UpdateOrderState(orderID, "5", "");
+                            } else {
+                                mPresenter.UpdateOrderState(orderID, "8", "");
+                            }
+                        }else {
+                            String EndRemark = mEtMemo.getText().toString();
+                            ReuturnAccessoryPicUpload(return_img_map, EndRemark);
                         }
                     }
-                    String EndRemark=mEtMemo.getText().toString();
-                    ReuturnAccessoryPicUpload(return_img_map,EndRemark);
+
 //                    if (return_img_map.size() < 4) {
 //                        Toast.makeText(CompleteWorkOrderActivity.this, "请添加四张返件图片", Toast.LENGTH_SHORT).show();
 //
@@ -465,8 +492,25 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 //                        ReuturnAccessoryPicUpload(return_img_map);
 //                    }
                 }
+                break;
+            case R.id.tv_call:
+                final CommonDialog_Home dialog = new CommonDialog_Home(mActivity);
+                dialog.setMessage("是否拨打电话给厂商")
+                        //.setImageResId(R.mipmap.ic_launcher)
+                        .setTitle("提示")
+                        .setSingle(false).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
+                    @Override
+                    public void onPositiveClick() {//拨打电话
+                        dialog.dismiss();
+                        call("tel:" + data.getUserID());
+                    }
 
-
+                    @Override
+                    public void onNegtiveClick() {//取消
+                        dialog.dismiss();
+                        // Toast.makeText(MainActivity.this,"ssss",Toast.LENGTH_SHORT).show();
+                    }
+                }).show();
                 break;
 
 
@@ -856,14 +900,14 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
             builder.addFormDataPart("img4", map.get(3).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(3)));
         }
         builder.addFormDataPart("OrderID", orderID);
-        builder.addFormDataPart("EndRemark",EndRemark);
+        builder.addFormDataPart("EndRemark", EndRemark);
         MultipartBody requestBody = builder.build();
         mPresenter.ReuturnAccessoryPicUpload(requestBody);
 
     }
 
     /*安装服务图片*/
-    public void ServiceOrderPicUpload(HashMap<Integer, File> map,String EndRemark ) {
+    public void ServiceOrderPicUpload(HashMap<Integer, File> map, String EndRemark) {
         showLoading();
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         if (map.get(0) != null) {
@@ -879,7 +923,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
             builder.addFormDataPart("img4", map.get(3).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(3)));
         }
         builder.addFormDataPart("OrderID", orderID);
-        builder.addFormDataPart("EndRemark",EndRemark);
+        builder.addFormDataPart("EndRemark", EndRemark);
         MultipartBody requestBody = builder.build();
 //        mPresenter.ServiceOrderPicUpload(requestBody);
         mPresenter.ReuturnAccessoryPicUpload(requestBody);

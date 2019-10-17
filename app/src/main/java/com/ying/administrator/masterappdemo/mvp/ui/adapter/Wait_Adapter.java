@@ -51,7 +51,7 @@ public class Wait_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,BaseViewHo
         baseViewHolder.setText(R.id.tv_reason_returnedparts,item.getCategoryName()+" "+item.getBrandName()+" "+item.getSubCategoryName());//memo
         baseViewHolder.setText(R.id.tv_loaction_returnedparts,"距离："+item.getDistance()+"km");//距离
         baseViewHolder.setText(R.id.tv_num,"数量："+item.getNum()+"台");//数量
-        baseViewHolder.setText(R.id.tv_address_returnedparts,item.getAddress());//地址
+        baseViewHolder.setText(R.id.tv_address_returnedparts,"地址:"+item.getAddress());//地址
         tv_returnedparts_apply_parts =baseViewHolder.getView(R.id.tv_returnedparts_apply_parts);
         tv_continue_service =baseViewHolder.getView(R.id.tv_continue_service);
         tv_reminder =baseViewHolder.getView(R.id.tv_reminder);
