@@ -382,11 +382,15 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     @BindView(R.id.tv_classification)
     TextView mTvClassification;
     @BindView(R.id.ll_prompt)
-    LinearLayout mLlPrompt;;
+    LinearLayout mLlPrompt;
     @BindView(R.id.tv_order_money_finish)
     TextView mTvOrderMoneyFinish;
     @BindView(R.id.ll_order_money_finish)
     LinearLayout mLlOrderMoneyFinish;
+    @BindView(R.id.ll_choose_address)
+    LinearLayout mLlChooseAddress;
+    @BindView(R.id.ll_shipping_type)
+    LinearLayout mLlShippingType;
 
     private String OrderID;
     private WorkOrder.DataBean data = new WorkOrder.DataBean();
@@ -659,6 +663,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     mIvManufacturers.setSelected(true);
                     mIvSelfbuying.setSelected(false);
                     mIvSelfbuyingUser.setSelected(false);
+                    mLlChooseAddress.setVisibility(View.VISIBLE);
                     mPre_order_add_ac_adapter.setNewData(fAcList);
                     mRecyclerViewAddAccessories.setVisibility(View.VISIBLE);
                     if (mPre_order_add_ac_adapter.getData().size() > 0) {
@@ -673,6 +678,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     mIvManufacturers.setSelected(false);
                     mIvSelfbuying.setSelected(false);
                     mIvSelfbuyingUser.setSelected(false);
+                    mLlChooseAddress.setVisibility(View.GONE);
                     mRecyclerViewAddAccessories.setVisibility(View.GONE);
                     mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
                     mTvSubmitAddAccessories.setTextColor(Color.parseColor("#6a6a6a"));
@@ -687,6 +693,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     mIvManufacturers.setSelected(false);
                     mIvSelfbuying.setSelected(true);
                     mIvSelfbuyingUser.setSelected(false);
+                    mLlChooseAddress.setVisibility(View.VISIBLE);
                     mPre_order_add_ac_adapter.setNewData(mAcList);
                     mRecyclerViewAddAccessories.setVisibility(View.VISIBLE);
                     if (mPre_order_add_ac_adapter.getData().size() > 0) {
@@ -701,6 +708,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     mIvManufacturers.setSelected(false);
                     mIvSelfbuying.setSelected(false);
                     mIvSelfbuyingUser.setSelected(false);
+                    mLlChooseAddress.setVisibility(View.GONE);
                     mRecyclerViewAddAccessories.setVisibility(View.GONE);
                     mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
                     mTvSubmitAddAccessories.setTextColor(Color.parseColor("#6a6a6a"));
@@ -898,7 +906,6 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
             case R.id.tv_order_detail_add_service:
                 mPresenter.GetFactoryService(data.getBrandID() + "", data.getCategoryID() + "");
                 break;
-
             case R.id.ll_return:
                 if (clickedResult != null) {
                     startActivity(new Intent(mActivity, MainActivity.class));
@@ -1590,7 +1597,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 if (baseResult.getData().isItem1()) {
                     if (baseResult.getData().getItem2() != null) {
                         if (expressType == 1) {
-                            if (mTvContent!=null){
+                            if (mTvContent != null) {
                                 mTvContent.setText(baseResult.getData().getItem2().get(0).getContent());
                             }
                         } else {
@@ -1648,22 +1655,22 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         switch (baseResult.getStatusCode()) {
 
             case 200:
-                if (baseResult!=null){
+                if (baseResult != null) {
 
-                data = baseResult.getData();
-                mTvStatus.setText(data.getStateStr());
-                if ("服务中".equals(data.getStateStr())) {
-                    mTvPrompt.setText("可添加维修配件及直接完成工单");
-                }
-                mTvBeyondMoney.setText("¥" + data.getBeyondMoney() + "");
-                mTvAccessoryMoney.setText("¥" + data.getAccessoryMoney());
-                mTvServiceMoney.setText("¥" + data.getServiceMoney());
-                mTvOrderMoney.setText("¥" + data.getOrderMoney() + "");
-                mTvOrderMoneyFinish.setText("¥" + data.getOrderMoney() + "");
-                if ("3".equals(data.getTypeID())) {
-                    mTvServiceAmount.setText("服务金额：¥" + data.getQuaMoney() + "");
-                    mTvTotalPrice.setText("服务金额：¥" + data.getQuaMoney() + "");
-                } else {
+                    data = baseResult.getData();
+                    mTvStatus.setText(data.getStateStr());
+                    if ("服务中".equals(data.getStateStr())) {
+                        mTvPrompt.setText("可添加维修配件及直接完成工单");
+                    }
+                    mTvBeyondMoney.setText("¥" + data.getBeyondMoney() + "");
+                    mTvAccessoryMoney.setText("¥" + data.getAccessoryMoney());
+                    mTvServiceMoney.setText("¥" + data.getServiceMoney());
+                    mTvOrderMoney.setText("¥" + data.getOrderMoney() + "");
+                    mTvOrderMoneyFinish.setText("¥" + data.getOrderMoney() + "");
+                    if ("3".equals(data.getTypeID())) {
+                        mTvServiceAmount.setText("服务金额：¥" + data.getQuaMoney() + "");
+                        mTvTotalPrice.setText("服务金额：¥" + data.getQuaMoney() + "");
+                    } else {
 //                    if (data.getAccessoryMoney() != null && !"0.00".equals(data.getAccessoryMoney())) {
 //                        if ("1".equals(data.getBeyondState())) {
 //                            mTvServiceAmount.setText("服务金额：¥" + (Double.parseDouble(data.getAccessoryMoney()) + Double.parseDouble(data.getBeyondMoney()) + Double.parseDouble(data.getPostMoney())) + "");
@@ -1672,361 +1679,368 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
 //                            mTvServiceAmount.setText("服务金额：¥" + (Double.parseDouble(data.getAccessoryMoney()) + Double.parseDouble(data.getPostMoney())) + "");
 //                            mTvTotalPrice.setText("服务金额：¥" + (Double.parseDouble(data.getAccessoryMoney()) + Double.parseDouble(data.getPostMoney())) + "");
 //                        }
-                    if ("1".equals(data.getAccessoryApplyState())) {
-                        mTvServiceAmount.setText("服务金额：¥" + data.getOrderMoney());
-                        mTvTotalPrice.setText("服务金额：¥" + data.getOrderMoney());
+                        if ("1".equals(data.getAccessoryApplyState())) {
+                            mTvServiceAmount.setText("服务金额：¥" + data.getOrderMoney());
+                            mTvTotalPrice.setText("服务金额：¥" + data.getOrderMoney());
 
-                    } else {
-                        mTvServiceAmount.setText("服务金额：¥" + data.getOrderMoney() + "");
-                        mTvTotalPrice.setText("服务金额：¥" + data.getOrderMoney() + "");
+                        } else {
+                            mTvServiceAmount.setText("服务金额：¥" + data.getOrderMoney() + "");
+                            mTvTotalPrice.setText("服务金额：¥" + data.getOrderMoney() + "");
+                        }
                     }
-                }
 
 //                mTvTotalPrice.setVisibility(View.GONE);
-                if (!"0.00".equals(data.getPostMoney()) && data.getPostMoney() != null) {
-                    mLlPostMoney.setVisibility(View.VISIBLE);
-                    mTvPostMoney.setText("¥" + data.getPostMoney());
-                } else {
-                    mLlPostMoney.setVisibility(View.GONE);
-                }
+                    if (!"0.00".equals(data.getPostMoney()) && data.getPostMoney() != null) {
+                        mLlPostMoney.setVisibility(View.VISIBLE);
+                        mTvPostMoney.setText("¥" + data.getPostMoney());
+                    } else {
+                        mLlPostMoney.setVisibility(View.GONE);
+                    }
 
-                if (data.getOrderAccessroyDetail().size() == 0 || data.getOrderAccessroyDetail().get(data.getOrderAccessroyDetail().size() - 1).getPhoto1() == null) {
-                    mLlHostOne.setVisibility(View.GONE);
-                    mLlAccessoriesOne.setVisibility(View.GONE);
-                } else {
-                    Glide.with(mActivity).load("https://img.xigyu.com/Pics/Accessory/" + data.getOrderAccessroyDetail().get(data.getOrderAccessroyDetail().size() - 1).getPhoto1()).into(mIvHostOne);
-                    Glide.with(mActivity).load("https://img.xigyu.com/Pics/Accessory/" + data.getOrderAccessroyDetail().get(data.getOrderAccessroyDetail().size() - 1).getPhoto2()).into(mIvAccessoriesOne);
+                    if (data.getOrderAccessroyDetail().size() == 0 || data.getOrderAccessroyDetail().get(data.getOrderAccessroyDetail().size() - 1).getPhoto1() == null) {
+                        mLlHostOne.setVisibility(View.GONE);
+                        mLlAccessoriesOne.setVisibility(View.GONE);
+                    } else {
+                        Glide.with(mActivity).load("https://img.xigyu.com/Pics/Accessory/" + data.getOrderAccessroyDetail().get(data.getOrderAccessroyDetail().size() - 1).getPhoto1()).into(mIvHostOne);
+                        Glide.with(mActivity).load("https://img.xigyu.com/Pics/Accessory/" + data.getOrderAccessroyDetail().get(data.getOrderAccessroyDetail().size() - 1).getPhoto2()).into(mIvAccessoriesOne);
 
-                }
+                    }
 
-                mTvAccessoryMemo.setText("备注：" + data.getAccessoryMemo());
-                mTvAccessorySequency.setText(data.getAccessorySequencyStr());
-                mTvName.setText(data.getUserName());
-                mTvPhone.setText(data.getPhone());
-                mTvAddress.setText(data.getAddress());
-                mTvWorkOrderNumber.setText(data.getOrderID());
-                mTvOrderTime.setText(data.getAudDate().replace("T", " ")); //将T替换为空格
+                    mTvAccessoryMemo.setText("备注：" + data.getAccessoryMemo());
+                    if ("2".equals(data.getAccessoryAndServiceApplyState())){
+                        mTvAccessorySequency.setText("已修改为厂家寄件");
+                    }else {
+                        mTvAccessorySequency.setText(data.getAccessorySequencyStr());
+                    }
+
+                    mTvName.setText(data.getUserName());
+                    mTvPhone.setText(data.getPhone());
+                    mTvAddress.setText(data.getAddress());
+                    mTvWorkOrderNumber.setText(data.getOrderID());
+                    mTvOrderTime.setText(data.getAudDate().replace("T", " ")); //将T替换为空格
 
 //                mTvCauseOfIssue.setText(data.getMemo());
-                mTvCauseOfIssue.setText(data.getBrandName() + "/" + data.getCategoryName());
-                mTvClassification.setText(data.getSubCategoryName());
-                if (("Y").equals(data.getGuarantee())) {
-                    mTvPaymentMethod.setText("平台代付");
-                    mIvSelfbuying.setSelected(false);
-                    mIvSelfbuyingUser.setSelected(false);
-                    mLlManufacturers.setVisibility(View.VISIBLE);
-                    mLlSelfbuying.setVisibility(View.VISIBLE);
-                    mLlSelfbuyingUser.setVisibility(View.GONE);
-                } else {
-                    mTvPaymentMethod.setText("客户付款");
-                    mIvSelfbuying.setSelected(true);
-                    mIvManufacturers.setEnabled(false);
-                    select_state = 1;
-                    mIvSelfbuyingUser.setSelected(false);
-                    mLlManufacturers.setVisibility(View.GONE);
-                    mLlSelfbuying.setVisibility(View.VISIBLE);
-                    mLlSelfbuyingUser.setVisibility(View.VISIBLE);
-                }
+                    mTvCauseOfIssue.setText(data.getBrandName() + "/" + data.getCategoryName());
+                    mTvClassification.setText(data.getSubCategoryName());
+                    if (("Y").equals(data.getGuarantee())) {
+                        mTvPaymentMethod.setText("平台代付");
+                        mIvSelfbuying.setSelected(false);
+                        mIvSelfbuyingUser.setSelected(false);
+                        mLlManufacturers.setVisibility(View.VISIBLE);
+                        mLlSelfbuying.setVisibility(View.VISIBLE);
+                        mLlSelfbuyingUser.setVisibility(View.GONE);
+                    } else {
+                        mTvPaymentMethod.setText("客户付款");
+                        mIvSelfbuying.setSelected(true);
+                        mIvManufacturers.setEnabled(false);
+                        select_state = 1;
+                        mIvSelfbuyingUser.setSelected(false);
+                        mLlManufacturers.setVisibility(View.GONE);
+                        mLlSelfbuying.setVisibility(View.VISIBLE);
+                        mLlSelfbuyingUser.setVisibility(View.VISIBLE);
+                    }
 
 
 //                mTvProductType.setText(data.getCategoryName() + "/" + data.getBrandName() + "/" + data.getSubCategoryName());
-                mTvProductType.setText(data.getMemo());
-                if (data.getSendOrderList().size() != 0) {
+                    mTvProductType.setText(data.getMemo());
+//                    mTvProductType.setText(Html.fromHtml(mActivity.getResources().getString(R.string.description, "故障描述:", data.getMemo())));
+                    if (data.getSendOrderList().size() != 0) {
 //                    mLlSelectTime.setVisibility(View.VISIBLE);
 //                    mView.setVisibility(View.VISIBLE);
-                    if (data.getSendOrderList().get(0).getServiceDate().isEmpty()) {
-                        mLlSelectTime.setVisibility(View.GONE);
-                        mView.setVisibility(View.GONE);
-                    } else {
-//                        mLlSelectTime.setVisibility(View.VISIBLE);
-                        mView.setVisibility(View.VISIBLE);
-
-                        mTvSelectTime.setText(data.getSendOrderList().get(0).getServiceDate());
-                    }
-
-                } else if (data.getSendOrderList().size() == 0) {
-                    mLlSelectTime.setVisibility(View.GONE);
-                    mView.setVisibility(View.GONE);
-                }
-                if ("1".equals(data.getTypeID())) {//维修
-                    mTvType.setText(data.getTypeName() + "/" + data.getGuaranteeText());
-                    mTvType.setBackgroundResource(R.color.color_custom_01);
-//                    mll_return_information.setVisibility(View.VISIBLE);
-//                    mll_service_process.setVisibility(View.GONE);
-                    mLlSigning.setVisibility(View.GONE);
-                } else {
-                    mTvType.setText(data.getTypeName() + "/" + data.getGuaranteeText());
-                    mTvType.setBackgroundResource(R.color.color_custom_04);
-                    mLlSigning.setVisibility(View.VISIBLE);
-                    if ("Y".equals(data.getIsRecevieGoods())) {
-                        mLlNumber.setVisibility(View.GONE);
-                        mViewSigning.setVisibility(View.GONE);
-                        mTvSigning.setText("是");
-                    } else {
-                        mLlNumber.setVisibility(View.VISIBLE);
-                        mViewSigning.setVisibility(View.VISIBLE);
-                        mTvSigning.setText("否");
-                        expressType = 1;
-                        if ("".equals(data.getExpressNo()) || data.getExpressNo() == null) {
-                            mTvContent.setText("暂无物流消息");
+                        if (data.getSendOrderList().get(0).getServiceDate().isEmpty()) {
+                            mLlSelectTime.setVisibility(View.GONE);
+                            mView.setVisibility(View.GONE);
                         } else {
-                            mPresenter.GetExpressInfo(data.getExpressNo());
+//                        mLlSelectTime.setVisibility(View.VISIBLE);
+                            mView.setVisibility(View.VISIBLE);
+
+                            mTvSelectTime.setText(data.getSendOrderList().get(0).getServiceDate());
                         }
 
+                    } else if (data.getSendOrderList().size() == 0) {
+                        mLlSelectTime.setVisibility(View.GONE);
+                        mView.setVisibility(View.GONE);
                     }
+                    if ("1".equals(data.getTypeID())) {//维修
+                        mTvType.setText(data.getTypeName() + "/" + data.getGuaranteeText());
+                        mTvType.setBackgroundResource(R.color.color_custom_01);
+//                    mll_return_information.setVisibility(View.VISIBLE);
+//                    mll_service_process.setVisibility(View.GONE);
+                        mLlSigning.setVisibility(View.GONE);
+                    } else {
+                        mTvType.setText(data.getTypeName() + "/" + data.getGuaranteeText());
+                        mTvType.setBackgroundResource(R.color.color_custom_04);
+                        mLlSigning.setVisibility(View.VISIBLE);
+                        if ("Y".equals(data.getIsRecevieGoods())) {
+                            mLlNumber.setVisibility(View.GONE);
+                            mViewSigning.setVisibility(View.GONE);
+                            mTvSigning.setText("是");
+                        } else {
+                            mLlNumber.setVisibility(View.VISIBLE);
+                            mViewSigning.setVisibility(View.VISIBLE);
+                            mTvSigning.setText("否");
+                            expressType = 1;
+                            if ("".equals(data.getExpressNo()) || data.getExpressNo() == null) {
+                                mTvContent.setText("暂无物流消息");
+                            } else {
+                                mPresenter.GetExpressInfo(data.getExpressNo());
+                            }
+
+                        }
 //                    mll_return_information.setVisibility(View.GONE);
 //                    mll_service_process.setVisibility(View.VISIBLE);
 
-                }
-                mTvServiceAddress.setText(data.getAddress());
-                mTvNumber.setText(data.getNum());
+                    }
+                    mTvServiceAddress.setText(data.getAddress());
+                    mTvNumber.setText(data.getNum());
 
 
 
-                /*获取订单的距离*/
-                distance = Double.parseDouble(data.getDistance());
-                if (Service_range >= distance) {
-                    mTvRemoteKm.setText("0km");
-                    mTvSubmitBeyond.setBackgroundResource(R.drawable.tv_order_detail_btn);
-                    mTvSubmitBeyond.setTextColor(Color.parseColor("#6a6a6a"));
-                } else {
-                    mTvRemoteKm.setText(String.format("%.2f", distance - Service_range) + "km");
-                    mTvSubmitBeyond.setBackgroundResource(R.drawable.ed_order_detail_submit);
-                    mTvSubmitBeyond.setTextColor(Color.WHITE);
-                }
-                if (data.getBeyondState() == null) {
-                    mLlApproveBeyondMoney.setVisibility(View.GONE);
-                    if ("3".equals(data.getTypeID())) {
-                        mLlApplyBeyond.setVisibility(View.GONE);
+                    /*获取订单的距离*/
+                    distance = Double.parseDouble(data.getDistance());
+                    if (Service_range >= distance) {
+                        mTvRemoteKm.setText("0km");
+                        mTvSubmitBeyond.setBackgroundResource(R.drawable.tv_order_detail_btn);
+                        mTvSubmitBeyond.setTextColor(Color.parseColor("#6a6a6a"));
                     } else {
+                        mTvRemoteKm.setText(String.format("%.2f", distance - Service_range) + "km");
+                        mTvSubmitBeyond.setBackgroundResource(R.drawable.ed_order_detail_submit);
+                        mTvSubmitBeyond.setTextColor(Color.WHITE);
+                    }
+                    if (data.getBeyondState() == null) {
+                        mLlApproveBeyondMoney.setVisibility(View.GONE);
+                        if ("3".equals(data.getTypeID())) {
+                            mLlApplyBeyond.setVisibility(View.GONE);
+                        } else {
 //                        mLlApplyBeyond.setVisibility(View.VISIBLE);
-                        mLlApplyBeyond.setVisibility(View.GONE);
-                    }
+                            mLlApplyBeyond.setVisibility(View.GONE);
+                        }
 
-                } else {
-                    mTvRange.setText(String.format("%.2f", distance - Service_range) + "km");
-                    if (data.getOrderBeyondImg() == null) {
-                        return;
-                    }
-                    if (data.getOrderBeyondImg().size() == 1) {
-                        Glide.with(mActivity).load("https://img.xigyu.com/Pics/OrderByondImg/" + data.getOrderBeyondImg().get(0).getUrl()).into(mIvRangeOne);
+                    } else {
+//                        mTvRange.setText(String.format("%.2f", distance - Service_range) + "km");
+                        mTvRange.setText(data.getBeyondMoney());
+                        if (data.getOrderBeyondImg() == null) {
+                            return;
+                        }
+                        if (data.getOrderBeyondImg().size() == 1) {
+                            Glide.with(mActivity).load("https://img.xigyu.com/Pics/OrderByondImg/" + data.getOrderBeyondImg().get(0).getUrl()).into(mIvRangeOne);
 //                        Glide.with(mActivity).load("https://img.xigyu.com/Pics/OrderByondImg/" + data.getOrderBeyondImg().get(1).getUrl()).into(mIvRangeTwo);
-                        mIvRangeTwo.setVisibility(View.GONE);
-                    } else {
-                        mIvRangeOne.setVisibility(View.GONE);
-                        mIvRangeTwo.setVisibility(View.GONE);
+                            mIvRangeTwo.setVisibility(View.GONE);
+                        } else {
+                            mIvRangeOne.setVisibility(View.GONE);
+                            mIvRangeTwo.setVisibility(View.GONE);
+                        }
+
+                        mLlApproveBeyondMoney.setVisibility(View.VISIBLE);
+                        mLlApplyBeyond.setVisibility(View.GONE);
+                        if ("0".equals(data.getBeyondState())) {
+                            mTvBeyondState.setText("审核中");
+                            mTvBeyondApplication.setVisibility(View.GONE);
+                        } else if ("1".equals(data.getBeyondState())) {
+                            mTvBeyondState.setText("审核通过");
+                            mTvBeyondApplication.setVisibility(View.VISIBLE);
+                            mLlApplyAgainBeyond.setVisibility(View.GONE);
+                        } else if ("2".equals(data.getBeyondState())) {
+                            mTvBeyondState.setText("修改完成");
+                            mTvBeyondApplication.setVisibility(View.VISIBLE);
+                            mLlApplyAgainBeyond.setVisibility(View.GONE);
+                        } else {
+                            mTvBeyondState.setText("被拒");
+                            mTvBeyondApplication.setVisibility(View.VISIBLE);
+                        }
                     }
 
-                    mLlApproveBeyondMoney.setVisibility(View.VISIBLE);
-                    mLlApplyBeyond.setVisibility(View.GONE);
-                    if ("0".equals(data.getBeyondState())) {
-                        mTvBeyondState.setText("审核中");
-                        mTvBeyondApplication.setVisibility(View.GONE);
-                    } else if ("1".equals(data.getBeyondState())) {
-                        mTvBeyondState.setText("审核通过");
-                        mTvBeyondApplication.setVisibility(View.VISIBLE);
-                        mLlApplyAgainBeyond.setVisibility(View.GONE);
-                    } else if ("2".equals(data.getBeyondState())) {
-                        mTvBeyondState.setText("修改完成");
-                        mTvBeyondApplication.setVisibility(View.VISIBLE);
-                        mLlApplyAgainBeyond.setVisibility(View.GONE);
-                    } else {
-                        mTvBeyondState.setText("被拒");
-                        mTvBeyondApplication.setVisibility(View.VISIBLE);
-                    }
-                }
 
+                    AccessoryApplyState = data.getAccessoryApplyState();
+                    ServiceApplyState = data.getServiceApplyState();
+                    AccessoryAndServiceApplyState = data.getAccessoryAndServiceApplyState();
+                    BeyondState = data.getBeyondState();
 
-                AccessoryApplyState = data.getAccessoryApplyState();
-                ServiceApplyState = data.getServiceApplyState();
-                AccessoryAndServiceApplyState = data.getAccessoryAndServiceApplyState();
-                BeyondState = data.getBeyondState();
+                    if ("".equals(AccessoryAndServiceApplyState) && BeyondState == null) {
+                        if (data.getOrderAccessroyDetail().size() > 0) {
+                            if ("".equals(data.getOrderAccessroyDetail().get(0).getExpressNo()) || data.getOrderAccessroyDetail().get(0).getExpressNo() == null) {
+                                mBtnCompleteSubmit.setVisibility(View.GONE);
+                                mRlCompleteSubmit.setVisibility(View.GONE);
+                                mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                mBtnTrial.setVisibility(View.GONE);
+                            } else {
+                                mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                                mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                                mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                mBtnTrial.setVisibility(View.GONE);
+                            }
+                        } else {
+                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                            mBtnTrial.setVisibility(View.GONE);
+                        }
 
-                if ("".equals(AccessoryAndServiceApplyState) && BeyondState == null) {
-                    if (data.getOrderAccessroyDetail().size()>0){
-                        if ("".equals(data.getOrderAccessroyDetail().get(0).getExpressNo())||data.getOrderAccessroyDetail().get(0).getExpressNo()==null){
+                    } else if (!"".equals(AccessoryAndServiceApplyState) && BeyondState == null) {
+                        if ("1".equals(AccessoryAndServiceApplyState) || "2".equals(AccessoryAndServiceApplyState)) {
+                            if (data.getOrderAccessroyDetail().size() > 0) {
+                                if ("".equals(data.getOrderAccessroyDetail().get(0).getExpressNo()) || data.getOrderAccessroyDetail().get(0).getExpressNo() == null) {
+                                    mBtnCompleteSubmit.setVisibility(View.GONE);
+                                    mRlCompleteSubmit.setVisibility(View.GONE);
+                                    mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                    mBtnTrial.setVisibility(View.GONE);
+                                } else {
+                                    mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                                    mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                                    mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                    mBtnTrial.setVisibility(View.GONE);
+                                }
+                            } else {
+                                mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                                mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                                mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                mBtnTrial.setVisibility(View.GONE);
+                            }
+                        } else {
                             mBtnCompleteSubmit.setVisibility(View.GONE);
                             mRlCompleteSubmit.setVisibility(View.GONE);
                             mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                            mBtnTrial.setVisibility(View.GONE);
-                        }else {
+                        }
+                    } else if ("".equals(AccessoryAndServiceApplyState) && BeyondState != null) {
+                        if ("1".equals(BeyondState)) {
                             mBtnCompleteSubmit.setVisibility(View.VISIBLE);
                             mRlCompleteSubmit.setVisibility(View.VISIBLE);
                             mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                            mBtnTrial.setVisibility(View.GONE);
+                        } else if ("-1".equals(BeyondState)) {
+                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                        } else if ("2".equals(BeyondState)) {
+                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                        } else {
+                            mBtnCompleteSubmit.setVisibility(View.GONE);
+                            mRlCompleteSubmit.setVisibility(View.GONE);
+                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
                         }
-                    }else {
-                        mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                        mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                        mBtnTrial.setVisibility(View.GONE);
-                    }
+                    } else {
+                        if ("1".equals(AccessoryAndServiceApplyState) && "1".equals(BeyondState)) {
+                            if (data.getOrderAccessroyDetail().size() > 0) {
+                                if ("".equals(data.getOrderAccessroyDetail().get(0).getExpressNo()) || data.getOrderAccessroyDetail().get(0).getExpressNo() == null) {
+                                    mBtnCompleteSubmit.setVisibility(View.GONE);
+                                    mRlCompleteSubmit.setVisibility(View.GONE);
+                                    mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                    mBtnTrial.setVisibility(View.GONE);
+                                } else {
+                                    mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                                    mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                                    mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                    mBtnTrial.setVisibility(View.GONE);
+                                }
+                            } else {
+                                mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                                mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                                mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                mBtnTrial.setVisibility(View.GONE);
+                            }
+                        } else if ("1".equals(AccessoryAndServiceApplyState) && "-1".equals(BeyondState)) {
+                            if (data.getOrderAccessroyDetail().size() > 0) {
+                                if ("".equals(data.getOrderAccessroyDetail().get(0).getExpressNo()) || data.getOrderAccessroyDetail().get(0).getExpressNo() == null) {
+                                    mBtnCompleteSubmit.setVisibility(View.GONE);
+                                    mRlCompleteSubmit.setVisibility(View.GONE);
+                                    mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                    mBtnTrial.setVisibility(View.GONE);
+                                } else {
+                                    mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                                    mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                                    mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                    mBtnTrial.setVisibility(View.GONE);
+                                }
+                            } else {
+                                mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                                mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                                mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                mBtnTrial.setVisibility(View.GONE);
+                            }
+                        } else if ("1".equals(AccessoryAndServiceApplyState) && "2".equals(BeyondState)) {
+                            if (data.getOrderAccessroyDetail().size() > 0) {
+                                if ("".equals(data.getOrderAccessroyDetail().get(0).getExpressNo()) || data.getOrderAccessroyDetail().get(0).getExpressNo() == null) {
+                                    mBtnCompleteSubmit.setVisibility(View.GONE);
+                                    mRlCompleteSubmit.setVisibility(View.GONE);
+                                    mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                    mBtnTrial.setVisibility(View.GONE);
+                                } else {
+                                    mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                                    mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                                    mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                    mBtnTrial.setVisibility(View.GONE);
+                                }
+                            } else {
+                                mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                                mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                                mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                mBtnTrial.setVisibility(View.GONE);
+                            }
 
-                } else if (!"".equals(AccessoryAndServiceApplyState) && BeyondState == null) {
-                    if ("1".equals(AccessoryAndServiceApplyState) || "2".equals(AccessoryAndServiceApplyState)) {
-                        if (data.getOrderAccessroyDetail().size()>0){
-                            if ("".equals(data.getOrderAccessroyDetail().get(0).getExpressNo())||data.getOrderAccessroyDetail().get(0).getExpressNo()==null){
-                                mBtnCompleteSubmit.setVisibility(View.GONE);
-                                mRlCompleteSubmit.setVisibility(View.GONE);
-                                mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                                mBtnTrial.setVisibility(View.GONE);
-                            }else {
+                        } else if ("2".equals(AccessoryAndServiceApplyState) && "2".equals(BeyondState)) {
+                            if (data.getOrderAccessroyDetail().size() > 0) {
+                                if ("".equals(data.getOrderAccessroyDetail().get(0).getExpressNo()) || data.getOrderAccessroyDetail().get(0).getExpressNo() == null) {
+                                    mBtnCompleteSubmit.setVisibility(View.GONE);
+                                    mRlCompleteSubmit.setVisibility(View.GONE);
+                                    mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                    mBtnTrial.setVisibility(View.GONE);
+                                } else {
+                                    mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                                    mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                                    mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                    mBtnTrial.setVisibility(View.GONE);
+                                }
+                            } else {
                                 mBtnCompleteSubmit.setVisibility(View.VISIBLE);
                                 mRlCompleteSubmit.setVisibility(View.VISIBLE);
                                 mBtnCompleteSubmitOne.setVisibility(View.GONE);
                                 mBtnTrial.setVisibility(View.GONE);
                             }
-                        }else {
-                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                        } else if ("2".equals(AccessoryAndServiceApplyState) && "-1".equals(BeyondState)) {
+                            if (data.getOrderAccessroyDetail().size() > 0) {
+                                if ("".equals(data.getOrderAccessroyDetail().get(0).getExpressNo()) || data.getOrderAccessroyDetail().get(0).getExpressNo() == null) {
+                                    mBtnCompleteSubmit.setVisibility(View.GONE);
+                                    mRlCompleteSubmit.setVisibility(View.GONE);
+                                    mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                    mBtnTrial.setVisibility(View.GONE);
+                                } else {
+                                    mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                                    mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                                    mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                    mBtnTrial.setVisibility(View.GONE);
+                                }
+                            } else {
+                                mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                                mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                                mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                mBtnTrial.setVisibility(View.GONE);
+                            }
+                        } else if ("2".equals(AccessoryAndServiceApplyState) && "1".equals(BeyondState)) {
+                            if (data.getOrderAccessroyDetail().size() > 0) {
+                                if ("".equals(data.getOrderAccessroyDetail().get(0).getExpressNo()) || data.getOrderAccessroyDetail().get(0).getExpressNo() == null) {
+                                    mBtnCompleteSubmit.setVisibility(View.GONE);
+                                    mRlCompleteSubmit.setVisibility(View.GONE);
+                                    mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                    mBtnTrial.setVisibility(View.GONE);
+                                } else {
+                                    mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                                    mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                                    mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                    mBtnTrial.setVisibility(View.GONE);
+                                }
+                            } else {
+                                mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                                mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                                mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                mBtnTrial.setVisibility(View.GONE);
+                            }
+                        } else {
+                            mBtnCompleteSubmit.setVisibility(View.GONE);
+                            mRlCompleteSubmit.setVisibility(View.GONE);
                             mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                            mBtnTrial.setVisibility(View.GONE);
                         }
-                    } else {
-                        mBtnCompleteSubmit.setVisibility(View.GONE);
-                        mRlCompleteSubmit.setVisibility(View.GONE);
-                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
                     }
-                } else if ("".equals(AccessoryAndServiceApplyState) && BeyondState != null) {
-                    if ("1".equals(BeyondState)) {
-                        mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                        mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                    } else if ("-1".equals(BeyondState)) {
-                        mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                        mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                    } else if ("2".equals(BeyondState)) {
-                        mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                        mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                    } else {
-                        mBtnCompleteSubmit.setVisibility(View.GONE);
-                        mRlCompleteSubmit.setVisibility(View.GONE);
-                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                    }
-                } else {
-                    if ("1".equals(AccessoryAndServiceApplyState) && "1".equals(BeyondState)) {
-                        if (data.getOrderAccessroyDetail().size()>0){
-                            if ("".equals(data.getOrderAccessroyDetail().get(0).getExpressNo())||data.getOrderAccessroyDetail().get(0).getExpressNo()==null){
-                                mBtnCompleteSubmit.setVisibility(View.GONE);
-                                mRlCompleteSubmit.setVisibility(View.GONE);
-                                mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                                mBtnTrial.setVisibility(View.GONE);
-                            }else {
-                                mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                                mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                                mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                                mBtnTrial.setVisibility(View.GONE);
-                            }
-                        }else {
-                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                            mBtnTrial.setVisibility(View.GONE);
-                        }
-                    } else if ("1".equals(AccessoryAndServiceApplyState) && "-1".equals(BeyondState)) {
-                        if (data.getOrderAccessroyDetail().size()>0){
-                            if ("".equals(data.getOrderAccessroyDetail().get(0).getExpressNo())||data.getOrderAccessroyDetail().get(0).getExpressNo()==null){
-                                mBtnCompleteSubmit.setVisibility(View.GONE);
-                                mRlCompleteSubmit.setVisibility(View.GONE);
-                                mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                                mBtnTrial.setVisibility(View.GONE);
-                            }else {
-                                mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                                mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                                mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                                mBtnTrial.setVisibility(View.GONE);
-                            }
-                        }else {
-                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                            mBtnTrial.setVisibility(View.GONE);
-                        }
-                    } else if ("1".equals(AccessoryAndServiceApplyState) && "2".equals(BeyondState)) {
-                        if (data.getOrderAccessroyDetail().size()>0){
-                            if ("".equals(data.getOrderAccessroyDetail().get(0).getExpressNo())||data.getOrderAccessroyDetail().get(0).getExpressNo()==null){
-                                mBtnCompleteSubmit.setVisibility(View.GONE);
-                                mRlCompleteSubmit.setVisibility(View.GONE);
-                                mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                                mBtnTrial.setVisibility(View.GONE);
-                            }else {
-                                mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                                mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                                mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                                mBtnTrial.setVisibility(View.GONE);
-                            }
-                        }else {
-                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                            mBtnTrial.setVisibility(View.GONE);
-                        }
-
-                    } else if ("2".equals(AccessoryAndServiceApplyState) && "2".equals(BeyondState)) {
-                        if (data.getOrderAccessroyDetail().size()>0){
-                            if ("".equals(data.getOrderAccessroyDetail().get(0).getExpressNo())||data.getOrderAccessroyDetail().get(0).getExpressNo()==null){
-                                mBtnCompleteSubmit.setVisibility(View.GONE);
-                                mRlCompleteSubmit.setVisibility(View.GONE);
-                                mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                                mBtnTrial.setVisibility(View.GONE);
-                            }else {
-                                mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                                mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                                mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                                mBtnTrial.setVisibility(View.GONE);
-                            }
-                        }else {
-                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                            mBtnTrial.setVisibility(View.GONE);
-                        }
-                    } else if ("2".equals(AccessoryAndServiceApplyState) && "-1".equals(BeyondState)) {
-                        if (data.getOrderAccessroyDetail().size()>0){
-                            if ("".equals(data.getOrderAccessroyDetail().get(0).getExpressNo())||data.getOrderAccessroyDetail().get(0).getExpressNo()==null){
-                                mBtnCompleteSubmit.setVisibility(View.GONE);
-                                mRlCompleteSubmit.setVisibility(View.GONE);
-                                mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                                mBtnTrial.setVisibility(View.GONE);
-                            }else {
-                                mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                                mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                                mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                                mBtnTrial.setVisibility(View.GONE);
-                            }
-                        }else {
-                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                            mBtnTrial.setVisibility(View.GONE);
-                        }
-                    } else if ("2".equals(AccessoryAndServiceApplyState) && "1".equals(BeyondState)) {
-                        if (data.getOrderAccessroyDetail().size()>0){
-                            if ("".equals(data.getOrderAccessroyDetail().get(0).getExpressNo())||data.getOrderAccessroyDetail().get(0).getExpressNo()==null){
-                                mBtnCompleteSubmit.setVisibility(View.GONE);
-                                mRlCompleteSubmit.setVisibility(View.GONE);
-                                mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                                mBtnTrial.setVisibility(View.GONE);
-                            }else {
-                                mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                                mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                                mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                                mBtnTrial.setVisibility(View.GONE);
-                            }
-                        }else {
-                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
-                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                            mBtnTrial.setVisibility(View.GONE);
-                        }
-                    } else {
-                        mBtnCompleteSubmit.setVisibility(View.GONE);
-                        mRlCompleteSubmit.setVisibility(View.GONE);
-                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                    }
-                }
 
 //                if ("".equals(AccessoryApplyState) && "".equals(ServiceApplyState) && BeyondState == null) {
 //                    //nnn  配件  服务  远程
@@ -2195,175 +2209,189 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
 //                    }
 //                }
 
-                if ("2".equals(data.getTypeID())) {
-                    if (!"0".equals(data.getMallID())) {
-                        mLlApplyBeyond.setVisibility(View.GONE);
-                    }
-                }
-
-                if (data.getOrderAccessroyDetail().size() != 0) {
-                    for (int i = 0; i < data.getOrderAccessroyDetail().size(); i++) {
-                        if ("2".equals(data.getOrderAccessroyDetail().get(i).getState())) {
-                            data.getOrderAccessroyDetail().remove(i);
+                    if ("2".equals(data.getTypeID())) {
+                        if (!"0".equals(data.getMallID())) {
+                            mLlApplyBeyond.setVisibility(View.GONE);
                         }
                     }
-                    if (data.getNewMoney() != null) {
-                        String newMoney = data.getNewMoney().trim();
-                        money1 = newMoney.split("[|]+");
-                    }
+
+                    if (data.getOrderAccessroyDetail().size() != 0) {
+                        for (int i = 0; i < data.getOrderAccessroyDetail().size(); i++) {
+                            if ("2".equals(data.getOrderAccessroyDetail().get(i).getState())) {
+                                data.getOrderAccessroyDetail().remove(i);
+                            }
+                        }
+                        if (data.getNewMoney() != null) {
+                            String newMoney = data.getNewMoney().trim();
+                            money1 = newMoney.split("[|]+");
+                        }
 
 //                    Log.d(TAG,"7777"+money1[0]);
 
-                    returnAccessoryAdapter = new ReturnAccessoryAdapter(R.layout.item_returned, data.getOrderAccessroyDetail(), data.getAccessoryState(), content, money1);
-                    mRvReturnInformation.setLayoutManager(new LinearLayoutManager(mActivity));
-                    mRvReturnInformation.setAdapter(returnAccessoryAdapter);
-                    if (data.getOrderAccessroyDetail().size() > 0) {
-                        for (int i = 0; i < data.getOrderAccessroyDetail().size(); i++) {
-                            if ("".equals(data.getOrderAccessroyDetail().get(0).getExpressNo())) {
+                        returnAccessoryAdapter = new ReturnAccessoryAdapter(R.layout.item_returned, data.getOrderAccessroyDetail(), data.getAccessoryState(), content, money1);
+                        mRvReturnInformation.setLayoutManager(new LinearLayoutManager(mActivity));
+                        mRvReturnInformation.setAdapter(returnAccessoryAdapter);
+                        if (data.getOrderAccessroyDetail().size() > 0) {
+                            for (int i = 0; i < data.getOrderAccessroyDetail().size(); i++) {
+                                if ("".equals(data.getOrderAccessroyDetail().get(0).getExpressNo())) {
 
-                            } else {
-                                expressType = 2;
-                                mPresenter.GetExpressInfo(data.getOrderAccessroyDetail().get(0).getExpressNo());
+                                } else {
+                                    expressType = 2;
+                                    mPresenter.GetExpressInfo(data.getOrderAccessroyDetail().get(0).getExpressNo());
+                                }
                             }
+
                         }
+                        returnAccessoryAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+                            @Override
+                            public void onItemChildClick(BaseQuickAdapter adapter, View view, final int position) {
+                                switch (view.getId()) {
+                                    case R.id.tv_pass:
+                                        reject = new CommonDialog_Home(mActivity);
+                                        reject.setMessage("该金额会在返旧件后解冻，是否同意冻结金额？")
 
-                    }
-                    returnAccessoryAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-                        @Override
-                        public void onItemChildClick(BaseQuickAdapter adapter, View view, final int position) {
-                            switch (view.getId()) {
-                                case R.id.tv_pass:
-                                    reject = new CommonDialog_Home(mActivity);
-                                    reject.setMessage("该金额会在返旧件后解冻，是否同意冻结金额？")
+                                                //.setImageResId(R.mipmap.ic_launcher)
+                                                .setTitle("提示")
+                                                .setSingle(false).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
+                                            @Override
+                                            public void onPositiveClick() {
+                                                reject.dismiss();
+                                                mPresenter.ConfirmtoFreezeByOrderID(OrderID, "1", String.valueOf(data.getOrderAccessroyDetail().get(position).getId()));
+                                            }
 
-                                            //.setImageResId(R.mipmap.ic_launcher)
-                                            .setTitle("提示")
-                                            .setSingle(false).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
-                                        @Override
-                                        public void onPositiveClick() {
-                                            reject.dismiss();
-                                            mPresenter.ConfirmtoFreezeByOrderID(OrderID, "1", String.valueOf(data.getOrderAccessroyDetail().get(position).getId()));
-                                        }
+                                            @Override
+                                            public void onNegtiveClick() {//取消
+                                                reject.dismiss();
+                                            }
+                                        }).show();
+                                        break;
+                                    case R.id.tv_reject:
+                                        reject = new CommonDialog_Home(mActivity);
+                                        reject.setMessage("该金额会在返旧件后解冻，是否取消冻结金额？")
 
-                                        @Override
-                                        public void onNegtiveClick() {//取消
-                                            reject.dismiss();
-                                        }
-                                    }).show();
-                                    break;
-                                case R.id.tv_reject:
-                                    reject = new CommonDialog_Home(mActivity);
-                                    reject.setMessage("该金额会在返旧件后解冻，是否取消冻结金额？")
+                                                //.setImageResId(R.mipmap.ic_launcher)
+                                                .setTitle("提示")
+                                                .setSingle(false).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
+                                            @Override
+                                            public void onPositiveClick() {
+                                                reject.dismiss();
+                                                mPresenter.ConfirmtoFreezeByOrderID(OrderID, "2", String.valueOf(data.getOrderAccessroyDetail().get(position).getId()));
+                                            }
 
-                                            //.setImageResId(R.mipmap.ic_launcher)
-                                            .setTitle("提示")
-                                            .setSingle(false).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
-                                        @Override
-                                        public void onPositiveClick() {
-                                            reject.dismiss();
-                                            mPresenter.ConfirmtoFreezeByOrderID(OrderID, "2", String.valueOf(data.getOrderAccessroyDetail().get(position).getId()));
-                                        }
-
-                                        @Override
-                                        public void onNegtiveClick() {//取消
-                                            reject.dismiss();
-                                        }
-                                    }).show();
-                                    break;
+                                            @Override
+                                            public void onNegtiveClick() {//取消
+                                                reject.dismiss();
+                                            }
+                                        }).show();
+                                        break;
+                                }
                             }
-                        }
-                    });
+                        });
 
 
-                    mLlAccessory.setVisibility(View.VISIBLE);
-                    mLlAddAccessory.setVisibility(View.GONE);
+                        mLlAccessory.setVisibility(View.VISIBLE);
+                        mLlShippingType.setVisibility(View.VISIBLE);
+                        mLlAddAccessory.setVisibility(View.GONE);
 //                    mLlMemo.setVisibility(View.GONE);
-                    if ("0".equals(data.getAccessoryAndServiceApplyState())) {
-                        mTvAccessoryApplyState.setText("审核中");
-                        mTvAccessoryApplication.setVisibility(View.GONE);
-                    } else if ("1".equals(data.getAccessoryAndServiceApplyState())) {
-                        mTvAccessoryApplyState.setText("审核通过");
-                        mTvAccessoryApplication.setVisibility(View.GONE);
+                        if ("0".equals(data.getAccessoryAndServiceApplyState())) {
+                            mTvAccessoryApplyState.setText("审核中");
+                            mTvAccessoryApplication.setVisibility(View.GONE);
+                        } else if ("1".equals(data.getAccessoryAndServiceApplyState())) {
+                            mTvAccessoryApplyState.setText("审核通过");
+                            mTvAccessoryApplication.setVisibility(View.GONE);
 //                    } else if ("".equals(data.getAccessoryAndServiceApplyState())) {
 //                        mTvAccessoryApplyState.setText("厂家已寄件");
 //                        mTvAccessoryApplication.setVisibility(View.VISIBLE);
-                    } else if ("2".equals(data.getAccessoryAndServiceApplyState())) {
-                        mTvAccessoryApplyState.setText("厂家寄件");
-                        mTvAccessoryApplication.setVisibility(View.GONE);
-                    } else {
-                        mTvAccessoryApplyState.setText("被拒");
-                        mTvAccessoryApplication.setVisibility(View.GONE);
-                    }
-                } else {
-                    mLlAccessory.setVisibility(View.GONE);
-                    if ("2".equals(data.getTypeID())) {
-                        mLlAddAccessory.setVisibility(View.GONE);
-                    } else {
-                        mLlAddAccessory.setVisibility(View.VISIBLE);
-                    }
-//                    mLlMemo.setVisibility(View.VISIBLE);
-                }
-                if (data.getOrderServiceDetail().size() != 0) {
-                    gServiceAdapter = new GServiceAdapter(R.layout.item_service, data.getOrderServiceDetail());
-                    mRvService.setLayoutManager(new LinearLayoutManager(mActivity));
-                    mRvService.setAdapter(gServiceAdapter);
-                    mLlService.setVisibility(View.VISIBLE);
-                    mLlAddService.setVisibility(View.GONE);
-                    if ("0".equals(data.getAccessoryAndServiceApplyState())) {
-                        mTvServiceApplyState.setText("审核中");
-                        mTvServiceApplication.setVisibility(View.GONE);
-                    } else if ("1".equals(data.getAccessoryAndServiceApplyState())) {
-                        mTvServiceApplyState.setText("审核通过");
-                        mTvServiceApplication.setVisibility(View.GONE);
-                    } else {
-                        mTvServiceApplyState.setText("被拒");
-                        mTvServiceApplication.setVisibility(View.GONE);
-                    }
-                } else {
-                    mLlService.setVisibility(View.GONE);
-                    if ("2".equals(data.getTypeID())) {
-                        mLlAddService.setVisibility(View.GONE);
-                    } else {
-//                        mLlAddService.setVisibility(View.VISIBLE);
-                    }
-
-                }
-                if ("2".equals(data.getTypeID())) {
-                    mLlOldAccessory.setVisibility(View.GONE);
-                } else {
-                    if ("1".equals(data.getAccessoryAndServiceApplyState())||"2".equals(data.getAccessoryAndServiceApplyState())) {
-                        mLlOldAccessory.setVisibility(View.VISIBLE);
-                        if ("1".equals(data.getIsReturn())) {
-                            mTvYn.setText("是");
-                            mLlAddressInfo.setVisibility(View.VISIBLE);
-                            mTvAddressback.setText(data.getAddressBack());
-                            if ("1".equals(data.getPostPayType())) {
-                                mTvPostpaytype.setText("厂商到付");
-                            } else {
-                                mTvPostpaytype.setText("维修商现付");
-                            }
+                        } else if ("2".equals(data.getAccessoryAndServiceApplyState())) {
+                            mTvAccessoryApplyState.setText("厂家寄件");
+                            mTvAccessoryApplication.setVisibility(View.GONE);
+                        } else if ("".equals(data.getAccessoryAndServiceApplyState())) {
+                            mTvAccessoryApplyState.setText("");
+                            mTvAccessoryApplyState.setVisibility(View.GONE);
+                            mTvAccessoryApplication.setVisibility(View.GONE);
                         } else {
-                            mTvYn.setText("否");
-                            mLlAddressInfo.setVisibility(View.GONE);
+                            mTvAccessoryApplyState.setText("被拒");
+                            mTvAccessoryApplication.setVisibility(View.GONE);
                         }
                     } else {
-                        mLlOldAccessory.setVisibility(View.GONE);
+                        mLlAccessory.setVisibility(View.GONE);
+                        mLlShippingType.setVisibility(View.GONE);
+                        if ("2".equals(data.getTypeID())) {
+                            mLlAddAccessory.setVisibility(View.GONE);
+                        } else {
+                            mLlAddAccessory.setVisibility(View.VISIBLE);
+                        }
+//                    mLlMemo.setVisibility(View.VISIBLE);
                     }
-                }
+                    if (data.getOrderServiceDetail().size() != 0) {
+                        gServiceAdapter = new GServiceAdapter(R.layout.item_service, data.getOrderServiceDetail());
+                        mRvService.setLayoutManager(new LinearLayoutManager(mActivity));
+                        mRvService.setAdapter(gServiceAdapter);
+                        mLlService.setVisibility(View.VISIBLE);
+                        mLlAddService.setVisibility(View.GONE);
+                        if ("0".equals(data.getAccessoryAndServiceApplyState())) {
+                            mTvServiceApplyState.setText("审核中");
+                            mTvServiceApplication.setVisibility(View.GONE);
+                        } else if ("1".equals(data.getAccessoryAndServiceApplyState())) {
+                            mTvServiceApplyState.setText("审核通过");
+                            mTvServiceApplication.setVisibility(View.GONE);
+                        } else if ("".equals(data.getAccessoryAndServiceApplyState())) {
+                            mTvServiceApplyState.setText("");
+                            mTvServiceApplyState.setVisibility(View.GONE);
+                            mTvServiceApplication.setVisibility(View.GONE);
+                        } else {
+                            mTvServiceApplyState.setText("被拒");
+                            mTvServiceApplication.setVisibility(View.GONE);
+                        }
+                    } else {
+                        mLlService.setVisibility(View.GONE);
+                        if ("2".equals(data.getTypeID())) {
+                            mLlAddService.setVisibility(View.GONE);
+                        } else {
+//                        mLlAddService.setVisibility(View.VISIBLE);
+                        }
+
+                    }
+                    if ("2".equals(data.getTypeID())) {
+                        mLlOldAccessory.setVisibility(View.GONE);
+                    } else {
+                        if ("1".equals(data.getAccessoryAndServiceApplyState()) || "2".equals(data.getAccessoryAndServiceApplyState()) || "".equals(data.getAccessoryAndServiceApplyState())) {
+                            mLlOldAccessory.setVisibility(View.VISIBLE);
+                            if (data.getOrderAccessroyDetail().size() > 0) {
+                                if ("1".equals(data.getIsReturn())) {
+                                    mTvYn.setText("是");
+                                    mLlAddressInfo.setVisibility(View.VISIBLE);
+                                    mTvAddressback.setText(data.getAddressBack());
+                                    if ("1".equals(data.getPostPayType())) {
+                                        mTvPostpaytype.setText("厂商到付");
+                                    } else {
+                                        mTvPostpaytype.setText("维修商现付");
+                                    }
+                                } else {
+                                    mTvYn.setText("否");
+                                    mLlAddressInfo.setVisibility(View.GONE);
+                                }
+                            } else {
+                                mLlOldAccessory.setVisibility(View.GONE);
+                            }
+                        } else {
+                            mLlOldAccessory.setVisibility(View.GONE);
+                        }
+                    }
 
 
-                if ("5".equals(data.getState()) || "6".equals(data.getState()) || "7".equals(data.getState())) {
-                    mBtnCompleteSubmit.setVisibility(View.GONE);
-                    mRlCompleteSubmit.setVisibility(View.GONE);
-                    mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                    mBtnTrial.setVisibility(View.GONE);
-                    mLlAddAccessory.setVisibility(View.GONE);
-                    mLlAddService.setVisibility(View.GONE);
-                    mLlApplyBeyond.setVisibility(View.GONE);
+                    if ("5".equals(data.getState()) || "6".equals(data.getState()) || "7".equals(data.getState())) {
+                        mBtnCompleteSubmit.setVisibility(View.GONE);
+                        mRlCompleteSubmit.setVisibility(View.GONE);
+                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                        mBtnTrial.setVisibility(View.GONE);
+                        mLlAddAccessory.setVisibility(View.GONE);
+                        mLlAddService.setVisibility(View.GONE);
+                        mLlApplyBeyond.setVisibility(View.GONE);
 
-                    mTvBeyondState.setVisibility(View.GONE);
-                    mTvServiceApplyState.setVisibility(View.GONE);
-                    mTvAccessoryApplyState.setVisibility(View.GONE);
+                        mTvBeyondState.setVisibility(View.GONE);
+                        mTvServiceApplyState.setVisibility(View.GONE);
+                        mTvAccessoryApplyState.setVisibility(View.GONE);
 
                     mTvAccessoryApplication.setVisibility(View.GONE);
                     mTvServiceApplication.setVisibility(View.GONE);
@@ -2372,174 +2400,174 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     mTvServiceInformation.setVisibility(View.GONE);
                     mTvRemoteFeeInformation.setVisibility(View.GONE);
 
-                    mViewSelectTimePoint.setVisibility(View.GONE);
-                    mViewSelectTimePoint2.setVisibility(View.GONE);
+                        mViewSelectTimePoint.setVisibility(View.GONE);
+                        mViewSelectTimePoint2.setVisibility(View.GONE);
 //                    if (mTvSelectTime.toString().isEmpty()){
-                    mRlSelectTime.setVisibility(View.GONE);
+                        mRlSelectTime.setVisibility(View.GONE);
 //                    }
 
-                    mLlReturnInformation.setVisibility(View.VISIBLE);
-                    mLlOrderMoneyFinish.setVisibility(View.VISIBLE);
-                    mTvPrompt.setText("服务已完成");
-                    if ("1".equals(data.getTypeID()) || "3".equals(data.getTypeID())) {//维修
-                        List<String> list = new ArrayList<>();
-                        for (int i = 0; i < data.getReturnaccessoryImg().size(); i++) {
-                            if ("img1".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
-                                Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl()).into(mIvBarCode);
+                        mLlReturnInformation.setVisibility(View.VISIBLE);
+                        mLlOrderMoneyFinish.setVisibility(View.VISIBLE);
+                        mTvPrompt.setText("服务已完成");
+                        if ("1".equals(data.getTypeID()) || "3".equals(data.getTypeID())) {//维修
+                            List<String> list = new ArrayList<>();
+                            for (int i = 0; i < data.getReturnaccessoryImg().size(); i++) {
+                                if ("img1".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
+                                    Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl()).into(mIvBarCode);
+                                }
+                                if ("img2".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
+                                    Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl()).into(mIvMachine);
+                                }
+                                if ("img3".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
+                                    Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl()).into(mIvFaultLocation);
+                                }
+                                if ("img4".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
+                                    Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl()).into(mIvNewAndOldAccessories);
+                                }
+                                list.add(data.getReturnaccessoryImg().get(i).getRelation());
                             }
-                            if ("img2".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
-                                Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl()).into(mIvMachine);
+                            if (!list.contains("img1")) {
+                                mLlBarCode.setVisibility(View.GONE);
                             }
-                            if ("img3".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
-                                Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl()).into(mIvFaultLocation);
+                            if (!list.contains("img2")) {
+                                mLlMachine.setVisibility(View.GONE);
                             }
-                            if ("img4".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
-                                Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl()).into(mIvNewAndOldAccessories);
+                            if (!list.contains("img3")) {
+                                mLlFaultLocation.setVisibility(View.GONE);
                             }
-                            list.add(data.getReturnaccessoryImg().get(i).getRelation());
-                        }
-                        if (!list.contains("img1")) {
-                            mLlBarCode.setVisibility(View.GONE);
-                        }
-                        if (!list.contains("img2")) {
-                            mLlMachine.setVisibility(View.GONE);
-                        }
-                        if (!list.contains("img3")) {
-                            mLlFaultLocation.setVisibility(View.GONE);
-                        }
-                        if (!list.contains("img4")) {
-                            mLlNewAndOldAccessories.setVisibility(View.GONE);
-                        }
+                            if (!list.contains("img4")) {
+                                mLlNewAndOldAccessories.setVisibility(View.GONE);
+                            }
 //                        Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(1).getUrl()).into(mIvMachine);
 //                        Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(2).getUrl()).into(mIvFaultLocation);
 //                        Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(3).getUrl()).into(mIvNewAndOldAccessories);
-                    } else {
-                        List<String> list = new ArrayList<>();
-                        for (int i = 0; i < data.getReturnaccessoryImg().size(); i++) {
-                            if ("img1".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
-                                Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(0).getUrl()).into(mIvBarCode);
-                            }
-                            if ("img2".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
-                                Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(1).getUrl()).into(mIvMachine);
+                        } else {
+                            List<String> list = new ArrayList<>();
+                            for (int i = 0; i < data.getReturnaccessoryImg().size(); i++) {
+                                if ("img1".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
+                                    Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(0).getUrl()).into(mIvBarCode);
+                                }
+                                if ("img2".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
+                                    Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(1).getUrl()).into(mIvMachine);
 
-                            }
-                            if ("img3".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
-                                Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(2).getUrl()).into(mIvFaultLocation);
+                                }
+                                if ("img3".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
+                                    Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(2).getUrl()).into(mIvFaultLocation);
 
-                            }
-                            if ("img4".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
-                                Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(3).getUrl()).into(mIvNewAndOldAccessories);
+                                }
+                                if ("img4".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
+                                    Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(3).getUrl()).into(mIvNewAndOldAccessories);
 
+                                }
+                                list.add(data.getReturnaccessoryImg().get(i).getRelation());
                             }
-                            list.add(data.getReturnaccessoryImg().get(i).getRelation());
-                        }
 //                        Log.d(TAG,"data.getReturnaccessoryImg().size()"+data.getReturnaccessoryImg().size());
-                        if (!list.contains("img1")) {
-                            mLlBarCode.setVisibility(View.GONE);
+                            if (!list.contains("img1")) {
+                                mLlBarCode.setVisibility(View.GONE);
+                            }
+                            if (!list.contains("img2")) {
+                                mLlMachine.setVisibility(View.GONE);
+                            }
+                            if (!list.contains("img3")) {
+                                mLlFaultLocation.setVisibility(View.GONE);
+                            }
+                            if (!list.contains("img4")) {
+                                mLlNewAndOldAccessories.setVisibility(View.GONE);
+                            }
+                            mLlOldAccessory.setVisibility(View.GONE);
                         }
-                        if (!list.contains("img2")) {
-                            mLlMachine.setVisibility(View.GONE);
-                        }
-                        if (!list.contains("img3")) {
-                            mLlFaultLocation.setVisibility(View.GONE);
-                        }
-                        if (!list.contains("img4")) {
-                            mLlNewAndOldAccessories.setVisibility(View.GONE);
-                        }
-                        mLlOldAccessory.setVisibility(View.GONE);
-                    }
-                } else {
-                    mLlReturnInformation.setVisibility(View.GONE);
-                    mLlOrderMoneyFinish.setVisibility(View.GONE);
-                    mRlExpressno.setVisibility(View.GONE);
+                    } else {
+                        mLlReturnInformation.setVisibility(View.GONE);
+                        mLlOrderMoneyFinish.setVisibility(View.GONE);
+                        mRlExpressno.setVisibility(View.GONE);
 //                    mViewSelectTimePoint.setVisibility(View.VISIBLE);
 //                    mViewSelectTimePoint2.setVisibility(View.VISIBLE);
-                }
+                    }
 
-                if ("9".equals(data.getState())) {
-                    mLlAddAccessory.setVisibility(View.GONE);
-                    mLlAddService.setVisibility(View.GONE);
-                    mRlSelectTime.setVisibility(View.GONE);
-                    mLlPrompt.setVisibility(View.GONE);
-                    mLlApplyBeyond.setVisibility(View.GONE);
-                }
-
-
-                if ("8".equals(data.getState())) {
-                    if (data.getOrderAccessroyDetail().size() == 0) {
+                    if ("9".equals(data.getState())) {
                         mLlAddAccessory.setVisibility(View.GONE);
-                    }
-                    if (data.getOrderServiceDetail().size() == 0) {
                         mLlAddService.setVisibility(View.GONE);
-                    }
-                    if (data.getOrderBeyondImg().size() == 0) {
+                        mRlSelectTime.setVisibility(View.GONE);
+                        mLlPrompt.setVisibility(View.GONE);
                         mLlApplyBeyond.setVisibility(View.GONE);
                     }
-                    mTvPrompt.setText("请务必认真填写返件快递单号");
-                    mTvAccessoryMessage.setText("配件信息");
-                    mLlReturnInformation.setVisibility(View.VISIBLE);
-                    mLlOrderMoneyFinish.setVisibility(View.GONE);
-                    mRlExpressno.setVisibility(View.VISIBLE);
-                    mRlSelectTime.setVisibility(View.GONE);
-                    mLlApplyAgain.setVisibility(View.GONE);
-                    mLlApplyAgainService.setVisibility(View.GONE);
-                    mLlApplyAgainBeyond.setVisibility(View.GONE);
-                    mBtnCompleteSubmit.setVisibility(View.GONE);
-                    mRlCompleteSubmit.setVisibility(View.GONE);
-                    mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                    if ("1".equals(data.getTypeID()) || "3".equals(data.getTypeID())) {//维修
-                        List<String> list = new ArrayList<>();
-                        for (int i = 0; i < data.getReturnaccessoryImg().size(); i++) {
-                            if ("img1".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
-                                Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl()).into(mIvBarCode);
+
+
+                    if ("8".equals(data.getState())) {
+                        if (data.getOrderAccessroyDetail().size() == 0) {
+                            mLlAddAccessory.setVisibility(View.GONE);
+                        }
+                        if (data.getOrderServiceDetail().size() == 0) {
+                            mLlAddService.setVisibility(View.GONE);
+                        }
+                        if (data.getOrderBeyondImg().size() == 0) {
+                            mLlApplyBeyond.setVisibility(View.GONE);
+                        }
+                        mTvPrompt.setText("请务必认真填写返件快递单号");
+                        mTvAccessoryMessage.setText("配件信息");
+                        mLlReturnInformation.setVisibility(View.VISIBLE);
+                        mLlOrderMoneyFinish.setVisibility(View.GONE);
+                        mRlExpressno.setVisibility(View.VISIBLE);
+                        mRlSelectTime.setVisibility(View.GONE);
+                        mLlApplyAgain.setVisibility(View.GONE);
+                        mLlApplyAgainService.setVisibility(View.GONE);
+                        mLlApplyAgainBeyond.setVisibility(View.GONE);
+                        mBtnCompleteSubmit.setVisibility(View.GONE);
+                        mRlCompleteSubmit.setVisibility(View.GONE);
+                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                        if ("1".equals(data.getTypeID()) || "3".equals(data.getTypeID())) {//维修
+                            List<String> list = new ArrayList<>();
+                            for (int i = 0; i < data.getReturnaccessoryImg().size(); i++) {
+                                if ("img1".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
+                                    Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl()).into(mIvBarCode);
+                                }
+                                if ("img2".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
+                                    Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl()).into(mIvMachine);
+                                }
+                                if ("img3".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
+                                    Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl()).into(mIvFaultLocation);
+                                }
+                                if ("img4".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
+                                    Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl()).into(mIvNewAndOldAccessories);
+                                }
+                                list.add(data.getReturnaccessoryImg().get(i).getRelation());
                             }
-                            if ("img2".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
-                                Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl()).into(mIvMachine);
+                            if (!list.contains("img1")) {
+                                mLlBarCode.setVisibility(View.GONE);
                             }
-                            if ("img3".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
-                                Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl()).into(mIvFaultLocation);
+                            if (!list.contains("img2")) {
+                                mLlMachine.setVisibility(View.GONE);
                             }
-                            if ("img4".equals(data.getReturnaccessoryImg().get(i).getRelation())) {
-                                Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(i).getUrl()).into(mIvNewAndOldAccessories);
+                            if (!list.contains("img3")) {
+                                mLlFaultLocation.setVisibility(View.GONE);
                             }
-                            list.add(data.getReturnaccessoryImg().get(i).getRelation());
-                        }
-                        if (!list.contains("img1")) {
-                            mLlBarCode.setVisibility(View.GONE);
-                        }
-                        if (!list.contains("img2")) {
-                            mLlMachine.setVisibility(View.GONE);
-                        }
-                        if (!list.contains("img3")) {
-                            mLlFaultLocation.setVisibility(View.GONE);
-                        }
-                        if (!list.contains("img4")) {
-                            mLlNewAndOldAccessories.setVisibility(View.GONE);
-                        }
+                            if (!list.contains("img4")) {
+                                mLlNewAndOldAccessories.setVisibility(View.GONE);
+                            }
 //                        Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(0).getUrl()).into(mIvBarCode);
 //                        Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(1).getUrl()).into(mIvMachine);
 //                        Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(2).getUrl()).into(mIvFaultLocation);
 //                        Glide.with(mActivity).load("https://img.xigyu.com/Pics/OldAccessory/" + data.getReturnaccessoryImg().get(3).getUrl()).into(mIvNewAndOldAccessories);
+                        } else {
+                            Glide.with(mActivity).load("https://img.xigyu.com/Pics/FinishOrder/" + data.getOrderImg().get(0).getUrl()).into(mIvBarCode);
+                            Glide.with(mActivity).load("https://img.xigyu.com/Pics/FinishOrder/" + data.getOrderImg().get(1).getUrl()).into(mIvMachine);
+                            Glide.with(mActivity).load("https://img.xigyu.com/Pics/FinishOrder/" + data.getOrderImg().get(2).getUrl()).into(mIvFaultLocation);
+                            Glide.with(mActivity).load("https://img.xigyu.com/Pics/FinishOrder/" + data.getOrderImg().get(3).getUrl()).into(mIvNewAndOldAccessories);
+                            mLlOldAccessory.setVisibility(View.GONE);
+                        }
                     } else {
-                        Glide.with(mActivity).load("https://img.xigyu.com/Pics/FinishOrder/" + data.getOrderImg().get(0).getUrl()).into(mIvBarCode);
-                        Glide.with(mActivity).load("https://img.xigyu.com/Pics/FinishOrder/" + data.getOrderImg().get(1).getUrl()).into(mIvMachine);
-                        Glide.with(mActivity).load("https://img.xigyu.com/Pics/FinishOrder/" + data.getOrderImg().get(2).getUrl()).into(mIvFaultLocation);
-                        Glide.with(mActivity).load("https://img.xigyu.com/Pics/FinishOrder/" + data.getOrderImg().get(3).getUrl()).into(mIvNewAndOldAccessories);
-                        mLlOldAccessory.setVisibility(View.GONE);
+                        mRlExpressno.setVisibility(View.GONE);
                     }
-                } else {
-                    mRlExpressno.setVisibility(View.GONE);
-                }
 
-                if ("0.0".equals(data.getNewMoney())) {
-                    mLlNewMoney.setVisibility(View.GONE);
-                } else {
-                    mLlNewMoney.setVisibility(View.GONE);
-                    mTvNewMoney.setText("¥" + data.getNewMoney());
-                }
-                break;
+                    if ("0.0".equals(data.getNewMoney())) {
+                        mLlNewMoney.setVisibility(View.GONE);
+                    } else {
+                        mLlNewMoney.setVisibility(View.GONE);
+                        mTvNewMoney.setText("¥" + data.getNewMoney());
+                    }
+                    break;
 
-                }else {
+                } else {
                     return;
                 }
             default:

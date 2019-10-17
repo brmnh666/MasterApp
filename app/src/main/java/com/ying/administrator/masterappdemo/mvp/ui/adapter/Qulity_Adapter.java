@@ -50,7 +50,7 @@ public class Qulity_Adapter extends BaseQuickAdapter<WorkOrder.DataBean, BaseVie
 
         baseViewHolder.setText(R.id.tv_loaction_quality,"距离："+item.getDistance()+"km");//距离
         baseViewHolder.setText(R.id.tv_num,"数量："+item.getNum()+"台");//数量
-        baseViewHolder.setText(R.id.tv_address_quality,item.getAddress());//地址
+        baseViewHolder.setText(R.id.tv_address_quality,"地址:"+item.getAddress());//地址
         baseViewHolder.addOnClickListener(R.id.tv_quality_apply_parts);
         baseViewHolder.addOnClickListener(R.id.tv_quality_finish);
         baseViewHolder.addOnClickListener(R.id.img_pending_appointment_phone);//拨打电话事件

@@ -39,10 +39,33 @@
 
                     <TextView
                         android:id="@+id/tv_work_order_status"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="待完成工单"
                         android:textColor="#FF7979"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="数量:"
+                        android:textColor="#6A6A6A"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tv_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1"
+                        android:textColor="#FF6868"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="台"
+                        android:textColor="#6A6A6A"
                         android:textSize="14sp" />
                 </LinearLayout>
 
@@ -125,29 +148,9 @@
                         android:layout_weight="1"
                         android:text="热水器不通电"
                         android:textColor="#000000"
-                        android:textSize="20sp" />
+                        android:textSize="16sp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="数量:"
-                        android:textColor="#6A6A6A"
-                        android:textSize="14sp" />
 
-                    <TextView
-                        android:id="@+id/tv_number"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="2"
-                        android:textColor="#FF6868"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="台"
-                        android:textColor="#6A6A6A"
-                        android:textSize="14sp" />
 
                 </LinearLayout>
 
@@ -164,7 +167,10 @@
                         android:layout_height="wrap_content"
                         android:background="#FF0000"
                         android:gravity="center"
-                        android:padding="5dp"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="2dp"
                         android:text="维修"
                         android:textColor="@color/white"
                         android:textSize="12sp" />
@@ -269,6 +275,47 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:paddingTop="13dp"
+                android:paddingLeft="12dp"
+                android:paddingBottom="13dp"
+                android:paddingRight="12dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="厂商电话"
+                    android:textSize="16sp"
+                    android:textColor="#333"/>
+                <TextView
+                    android:id="@+id/tv_manufacturer_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="#333"
+                    android:textSize="16sp"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:id="@+id/tv_call"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/red"
+                    android:text="拨打电话"
+                    android:textSize="16sp"
+                    android:textColor="@color/white"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    android:layout_marginLeft="10dp"/>
+            </LinearLayout>
             <LinearLayout
                 android:id="@+id/ll_return_information"
                 android:layout_width="match_parent"

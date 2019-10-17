@@ -8,12 +8,14 @@
     android:layout_marginRight="10dp"
     android:background="@color/white"
     android:orientation="vertical"
-    android:padding="@dimen/dp_10">
+    android:paddingTop="20dp"
+    android:paddingRight="10dp"
+    android:paddingLeft="10dp"
+    android:paddingBottom="20dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -116,12 +118,12 @@
 
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:text="现付:由您暂代付邮费       到付:由工厂收到旧配件时自行支付邮费"
-        android:textColor="@color/red"
-        android:textSize="12sp" />
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:layout_marginBottom="10dp"-->
+        <!--android:text="现付:由您暂代付邮费       到付:由工厂收到旧配件时自行支付邮费"-->
+        <!--android:textColor="@color/red"-->
+        <!--android:textSize="12sp" />-->
 </LinearLayout>

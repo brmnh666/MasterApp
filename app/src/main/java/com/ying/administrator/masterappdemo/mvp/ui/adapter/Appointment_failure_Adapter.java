@@ -35,7 +35,7 @@ baseViewHolder.setText(R.id.tv_appointment_failure,item.getStateStr());//预约�
         baseViewHolder.setText(R.id.tv_appointment_failure_job_number,"工单号："+item.getOrderID());//工单号
         baseViewHolder.setText(R.id.tv_loaction_appointment_failure,"距离"+item.getDistance()+"km");//距离
         baseViewHolder.setText(R.id.tv_num,"数量："+item.getNum()+"台");//数量
-        baseViewHolder.setText(R.id.tv_address_appointment_failure,item.getAddress());//地址
+        baseViewHolder.setText(R.id.tv_address_appointment_failure,"地址:"+item.getAddress());//地址
         baseViewHolder.setText(R.id.tv_appointment_failure_reason,"原因:"+item.getAppointmentMessage());//原因
         baseViewHolder.addOnClickListener(R.id.img_pending_appointment_failure_phone);//再次预约
         baseViewHolder.addOnClickListener(R.id.tv_pending_appointment_failure);//预约不成功

@@ -70,7 +70,9 @@
         android:layout_marginTop="5dp"
         android:text="不通电热水器不通电热水器不通电热水器不通电"
         android:textColor="#333333"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:maxLines="1"
+        android:ellipsize="end"/>
 <ImageView
     android:layout_below="@+id/tv_malfunction"
     android:id="@+id/img_loaction"

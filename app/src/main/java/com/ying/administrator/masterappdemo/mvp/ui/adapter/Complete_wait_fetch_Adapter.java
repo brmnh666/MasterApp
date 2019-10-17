@@ -34,6 +34,6 @@ public class Complete_wait_fetch_Adapter extends BaseQuickAdapter<WorkOrder.Data
         baseViewHolder.setText(R.id.tv_reason_complete_wait_fetch,item.getCategoryName() + " " + item.getBrandName() + " " + item.getSubCategoryName());//memo
         baseViewHolder.setText(R.id.tv_loaction_complete_wait_fetch,"距离："+item.getDistance()+"km");//距离
         baseViewHolder.setText(R.id.tv_num,"数量："+item.getNum()+"台");//数量
-        baseViewHolder.setText(R.id.tv_address_complete_wait_fetch,item.getAddress());//地址
+        baseViewHolder.setText(R.id.tv_address_complete_wait_fetch,"地址:"+item.getAddress());//地址
     }
 }
