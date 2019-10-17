@@ -15,8 +15,8 @@ import okhttp3.RequestBody;
 
 public class MessageModel implements MessageContract.Model {
     @Override
-    public Observable<BaseResult<Data<String>>> AddLeaveMessageForOrder(String UserID, String OrderId, String Content) {
-        return ApiRetrofit.getDefault().AddLeaveMessageForOrder(UserID, "1", OrderId, Content)
+    public Observable<BaseResult<Data<String>>> AddLeaveMessageForOrder(String UserID, String OrderId, String Content,String photo) {
+        return ApiRetrofit.getDefault().AddLeaveMessageForOrder(UserID, "1", OrderId, Content,photo)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

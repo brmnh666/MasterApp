@@ -909,7 +909,8 @@ public interface ApiService {
     Observable<BaseResult<Data<String>>> AddLeaveMessageForOrder(@Field("UserId") String UserID,
                                                                  @Field("Type") String Type,
                                                                  @Field("OrderId") String OrderId,
-                                                                 @Field("Content") String Content);
+                                                                 @Field("Content") String Content,
+                                                                 @Field("photo") String photo);
 
     /*
     * 留言图片

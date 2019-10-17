@@ -18,6 +18,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -92,15 +93,10 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
     ImageView mIvDel;
     @BindView(R.id.ll_del)
     LinearLayout mLlDel;
-    @BindView(R.id.rv_picture)
-    RecyclerView mRvPicture;
-    @BindView(R.id.ll_picture_list)
-    LinearLayout mLlPictureList;
     private String userID;
     private String orderId;
     private WorkOrder.DataBean data;
     private List<WorkOrder.LeavemessageListBean> list = new ArrayList<>();
-    private List<WorkOrder.LeavemessageimgListBean> pictureList = new ArrayList<>();
     private LeaveMessageAdapter leaveMessageAdapter;
     private ArrayList<String> permissions;
     private int size;
@@ -110,7 +106,6 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
     private Uri uri;
     private HashMap<Integer, File> img = new HashMap<>();
     private String position;
-    private LeaveMessageImgAdapter leaveMessageImgAdapter;
 
     @Override
     protected int setLayoutId() {
@@ -132,20 +127,16 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
         orderId = getIntent().getStringExtra("orderId");
         mPresenter.GetOrderInfo(orderId);
 
-        leaveMessageAdapter = new LeaveMessageAdapter(R.layout.logistics_recycle_item, list);
+        leaveMessageAdapter = new LeaveMessageAdapter(R.layout.leave_message_item, list);
         mMessageRv.setLayoutManager(new LinearLayoutManager(mActivity));
         mMessageRv.setAdapter(leaveMessageAdapter);
-
-        leaveMessageImgAdapter = new LeaveMessageImgAdapter(R.layout.item_message_picture,pictureList);
-        mRvPicture.setLayoutManager(new GridLayoutManager(mActivity,3));
-        mRvPicture.setAdapter(leaveMessageImgAdapter);
-        leaveMessageImgAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+        leaveMessageAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 switch (view.getId()){
-                    case R.id.iv_image:
+                    case R.id.img:
                         Intent intent = new Intent(mActivity, PhotoViewActivity.class);
-                        intent.putExtra("PhotoUrl", Config.Leave_Message_URL+pictureList.get(position).getUrl());
+                        intent.putExtra("PhotoUrl", Config.Leave_Message_URL+((WorkOrder.LeavemessageListBean)adapter.getData().get(position)).getPhoto());
                         startActivity(intent);
                         break;
                 }
@@ -159,6 +150,45 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
         mBtnSubmit.setOnClickListener(this);
         mAnnexIv.setOnClickListener(this);
         mLlDel.setOnClickListener(this);
+        mEtMessage.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (v.getId()) {
+                    case R.id.et_message:
+                        // 解决scrollView中嵌套EditText导致不能上下滑动的问题
+                        if (canVerticalScroll(mEtMessage))
+                            v.getParent().requestDisallowInterceptTouchEvent(true);
+                        switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                            case MotionEvent.ACTION_UP:
+                                v.getParent().requestDisallowInterceptTouchEvent(false);
+                                break;
+                        }
+                }
+                return false;
+            }
+        });
+    }
+
+    /**
+     * EditText竖直方向是否可以滚动
+     * @param editText 需要判断的EditText
+     * @return true：可以滚动  false：不可以滚动
+     */
+    public static  boolean canVerticalScroll(EditText editText) {
+        //滚动的距离
+        int scrollY = editText.getScrollY();
+        //控件内容的总高度
+        int scrollRange = editText.getLayout().getHeight();
+        //控件实际显示的高度
+        int scrollExtent = editText.getHeight() - editText.getCompoundPaddingTop() -editText.getCompoundPaddingBottom();
+        //控件内容总高度与实际显示高度的差值
+        int scrollDifference = scrollRange - scrollExtent;
+
+        if(scrollDifference == 0) {
+            return false;
+        }
+
+        return (scrollY > 0) || (scrollY < scrollDifference - 1);
     }
 
     @Override
@@ -177,13 +207,14 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
                 finish();
                 break;
             case R.id.btn_submit:
-                String message = mEtMessage.getText().toString();
-                if (message == null || "".equals(message)) {
-                    ToastUtils.showShort("请输入留言内容");
-                } else {
-                    mPresenter.AddLeaveMessageForOrder(userID, orderId, message);
-                    if (img.size()>0) {
-                        uploadImg(img);
+                if (img.size()>0) {
+                    uploadImg(img);
+                }else{
+                    String message = mEtMessage.getText().toString();
+                    if (message == null || "".equals(message)) {
+                        ToastUtils.showShort("请输入留言内容");
+                    } else {
+                        mPresenter.AddLeaveMessageForOrder(userID, orderId, message,"");
                     }
                 }
                 break;
@@ -195,7 +226,12 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
                 }
                 break;
             case R.id.ll_del:
-                mPresenter.DeleteLeaveMessageImg(position);
+                img.clear();
+                Glide.with(mActivity)
+                        .load(R.drawable.annex)
+                        .into(mAnnexIv);
+                mAnnexIv.setClickable(true);
+                mLlDel.setVisibility(View.GONE);
                 break;
 
         }
@@ -207,10 +243,12 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
             case 200:
                 ToastUtils.showShort(baseResult.getData().getItem2());
                 mEtMessage.setText("");
-                list.clear();
-                leaveMessageAdapter.notifyDataSetChanged();
-                pictureList.clear();
-                leaveMessageImgAdapter.notifyDataSetChanged();
+                img.clear();
+                Glide.with(mActivity)
+                        .load(R.drawable.annex)
+                        .into(mAnnexIv);
+                mAnnexIv.setClickable(true);
+                mLlDel.setVisibility(View.GONE);
                 mPresenter.GetOrderInfo(orderId);
                 break;
         }
@@ -224,16 +262,7 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
                 if (data.getLeavemessageList().size() == 0) {
                     mLlMessageList.setVisibility(View.GONE);
                 } else {
-                    list.addAll(data.getLeavemessageList());
-                    Collections.reverse(list);
-                    leaveMessageAdapter.setNewData(list);
-                }
-                if (data.getLeavemessageimgList().size()==0){
-                    mLlPictureList.setVisibility(View.GONE);
-                }else {
-                    pictureList.addAll(data.getLeavemessageimgList());
-                    Collections.reverse(pictureList);
-                    leaveMessageImgAdapter.setNewData(pictureList);
+                    leaveMessageAdapter.setNewData(data.getLeavemessageList());
                 }
                     break;
         }
@@ -244,10 +273,13 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
         switch (baseResult.getStatusCode()) {
             case 200:
                 if (baseResult.getData().isItem1()) {
-                    position = baseResult.getData().getItem2();
-                    Glide.with(mActivity)
-                            .load(R.drawable.annex)
-                            .into(mAnnexIv);
+                    String message = mEtMessage.getText().toString();
+                    if (message == null || "".equals(message)) {
+                        ToastUtils.showShort("请输入留言内容");
+                    } else {
+                        mPresenter.AddLeaveMessageForOrder(userID, orderId, message,baseResult.getData().getItem2());
+                    }
+
                 }
                 break;
             default:
@@ -264,7 +296,7 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
                         .load(R.drawable.annex)
                         .into(mAnnexIv);
                 mAnnexIv.setClickable(true);
-                mIvDel.setVisibility(View.GONE);
+                mLlDel.setVisibility(View.GONE);
                 break;
         }
     }
@@ -430,7 +462,7 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
             case 101:
                 if (resultCode == -1) {
                     Glide.with(mActivity).load(FilePath).into(mAnnexIv);
-//                    mLlDel.setVisibility(View.VISIBLE);
+                    mLlDel.setVisibility(View.VISIBLE);
                     file = new File(FilePath);
 //                    mAnnexIv.setClickable(false);
                 }
@@ -452,7 +484,7 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
                     }
 //                    uri = data.getData();
                     Glide.with(mActivity).load(uri).into(mAnnexIv);
-//                    mLlDel.setVisibility(View.VISIBLE);
+                    mLlDel.setVisibility(View.VISIBLE);
 //                    mAnnexIv.setClickable(false);
                     file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
                 }
@@ -468,19 +500,8 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
     public void uploadImg(HashMap<Integer, File> map) {
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("img", map.get(0).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(0)));
-        builder.addFormDataPart("UserId", userID);
-        builder.addFormDataPart("OrderId", orderId);
         MultipartBody requestBody = builder.build();
         mPresenter.LeaveMessageImg(requestBody);
 
     }
-//    public void uploadImg(File filePath,int code) {
-//        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
-//        builder.addFormDataPart("img", filePath.getName(), RequestBody.create(MediaType.parse("img/png"),filePath));
-//        builder.addFormDataPart("UserId", userID);
-//        builder.addFormDataPart("OrderId", orderId);
-//        MultipartBody requestBody = builder.build();
-//        mPresenter.LeaveMessageImg(requestBody);
-//
-//    }
 }

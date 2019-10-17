@@ -1038,9 +1038,18 @@ public class WorkOrder implements Serializable {
         private String Content;
         private String CreateDate;
         private String IsUse;
+        private String photo;
         private int page;
         private int limit;
         private int Version;
+
+        public String getPhoto() {
+            return photo;
+        }
+
+        public void setPhoto(String photo) {
+            this.photo = photo;
+        }
 
         public int getId() {
             return Id;

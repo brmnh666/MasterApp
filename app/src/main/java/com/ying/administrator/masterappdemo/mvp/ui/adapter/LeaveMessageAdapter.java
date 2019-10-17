@@ -2,13 +2,16 @@ package com.ying.administrator.masterappdemo.mvp.ui.adapter;
 
 import android.support.annotation.Nullable;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ying.administrator.masterappdemo.R;
+import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.util.DensityUtil;
 import com.ying.administrator.masterappdemo.viewholder.LayoutParamsViewHolder;
+import com.ying.administrator.masterappdemo.widget.GlideUtil;
 
 import java.util.List;
 
@@ -24,7 +27,13 @@ public class LeaveMessageAdapter extends BaseQuickAdapter<WorkOrder.Leavemessage
         helper.setText(R.id.tv_status,item.getContent())
                 .setText(R.id.tv_date,time)
                 .setText(R.id.tv_time,item.getUserId());
-
+        if (item.getPhoto()==null){
+            helper.setGone(R.id.img,false);
+        }else{
+            helper.setGone(R.id.img,true);
+        }
+        GlideUtil.loadImageViewLoding(mContext, Config.Leave_Message_URL +item.getPhoto(), (ImageView) helper.getView(R.id.img), R.drawable.image_loading,R.drawable.image_loading);
+        helper.addOnClickListener(R.id.img);
         int position=helper.getAdapterPosition();
         if (position==0){
             helper.setImageResource(R.id.iv_status,R.drawable.blue_bot);

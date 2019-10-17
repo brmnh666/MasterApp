@@ -10,8 +10,8 @@ import okhttp3.RequestBody;
 
 public class MessagePresenter extends MessageContract.Presenter {
     @Override
-    public void AddLeaveMessageForOrder(String UserID, String OrderId, String Content) {
-        mModel.AddLeaveMessageForOrder(UserID, OrderId, Content)
+    public void AddLeaveMessageForOrder(String UserID, String OrderId, String Content,String photo) {
+        mModel.AddLeaveMessageForOrder(UserID, OrderId, Content,photo)
                 .subscribe(new BaseObserver<Data<String>>() {
                     @Override
                     protected void onHandleSuccess(BaseResult<Data<String>> value) {
