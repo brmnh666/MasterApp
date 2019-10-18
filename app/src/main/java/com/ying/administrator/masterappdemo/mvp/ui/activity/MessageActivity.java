@@ -262,6 +262,7 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
                 if (data.getLeavemessageList().size() == 0) {
                     mLlMessageList.setVisibility(View.GONE);
                 } else {
+                    mLlMessageList.setVisibility(View.VISIBLE);
                     leaveMessageAdapter.setNewData(data.getLeavemessageList());
                 }
                     break;

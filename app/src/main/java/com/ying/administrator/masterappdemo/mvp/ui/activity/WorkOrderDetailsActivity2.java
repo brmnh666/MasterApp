@@ -113,6 +113,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -393,8 +394,6 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     LinearLayout mLlShippingType;
     @BindView(R.id.tv_description)
     TextView mTvDescription;
-    @BindView(R.id.view_select_time_point2)
-    ImageView mViewSelectTimePoint2;
 
     private String OrderID;
     private WorkOrder.DataBean data = new WorkOrder.DataBean();
@@ -576,6 +575,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                             mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
                             mTvSubmitAddAccessories.setTextColor(Color.parseColor("#6a6a6a"));
                         }
+                        getMoney(mPre_order_add_ac_adapter.getData(),fList_service);
                         break;
                     default:
                         break;
@@ -600,6 +600,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                             mTvSubmitAddService.setBackgroundResource(R.drawable.tv_order_detail_btn);
                             mTvSubmitAddService.setTextColor(Color.parseColor("#6a6a6a"));
                         }
+                        getMoney(mPre_order_add_ac_adapter.getData(),fList_service);
                         break;
                     default:
                         break;
@@ -677,7 +678,10 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
                         mTvSubmitAddAccessories.setTextColor(Color.parseColor("#6a6a6a"));
                     }
+                    getMoney(mPre_order_add_ac_adapter.getData(),fList_service);
+
                 } else {
+                    getMoney(new ArrayList<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean>(),fList_service);
                     select_state = -1;
                     mIvManufacturers.setSelected(false);
                     mIvSelfbuying.setSelected(false);
@@ -707,7 +711,10 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
                         mTvSubmitAddAccessories.setTextColor(Color.parseColor("#6a6a6a"));
                     }
+                    getMoney(mPre_order_add_ac_adapter.getData(),fList_service);
+
                 } else {
+                    getMoney(new ArrayList<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean>(),fList_service);
                     select_state = -1;
                     mIvManufacturers.setSelected(false);
                     mIvSelfbuying.setSelected(false);
@@ -736,7 +743,10 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
                         mTvSubmitAddAccessories.setTextColor(Color.parseColor("#6a6a6a"));
                     }
+                    getMoney(mPre_order_add_ac_adapter.getData(),fList_service);
+
                 } else {
+                    getMoney(new ArrayList<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean>(),fList_service);
                     select_state = -1;
                     mIvManufacturers.setSelected(false);
                     mIvSelfbuying.setSelected(false);
@@ -1450,6 +1460,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 if (mPre_order_add_ac_adapter.getData().size() > 0) {
                     mTvSubmitAddAccessories.setBackgroundResource(R.drawable.ed_order_detail_submit);
                     mTvSubmitAddAccessories.setTextColor(Color.WHITE);
+                    getMoney(mPre_order_add_ac_adapter.getData(),fList_service);
                 } else {
                     mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
                     mTvSubmitAddAccessories.setTextColor(Color.parseColor("#6a6a6a"));
@@ -1510,6 +1521,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mfService.setSNeedPlatformAuth("N");
                         mfService.setState("0");
                         mfService.setIsPay("N");
+                        mfService.setSizeID(mService.getSizeID());
                         mfService.setCategoryID(mService.getFCategoryID() + "");
 //                        mfService.setRelation("");
                         fList_service.add(mfService);
@@ -1526,6 +1538,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 if (mPre_order_Add_Service_Adapter.getData().size() > 0) {
                     mTvSubmitAddService.setBackgroundResource(R.drawable.ed_order_detail_submit);
                     mTvSubmitAddService.setTextColor(Color.WHITE);
+                    getMoney(mPre_order_add_ac_adapter.getData(),fList_service);
                 } else {
                     mTvSubmitAddService.setBackgroundResource(R.drawable.tv_order_detail_btn);
                     mTvSubmitAddService.setTextColor(Color.BLACK);
@@ -1661,6 +1674,29 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     @Override
     public void UpdateOrderAddressByOrderID(BaseResult<Data<String>> baseResult) {
 
+    }
+
+    @Override
+    public void GetFactoryAccessoryMoney(BaseResult<Data<String>> baseResult) {
+        switch (baseResult.getStatusCode()){
+            case 200:
+                if (baseResult.getData().isItem1()){
+                    Double money1=Double.parseDouble(data.getQuaMoney());
+                    Double money2=Double.parseDouble(data.getOrderMoney());
+                    Double money3=Double.parseDouble(baseResult.getData().getItem2());
+                    if ("3".equals(data.getTypeID())) {
+                        mTvServiceAmount.setText("服务金额：¥" + (money1+money3));
+                        mTvTotalPrice.setText("服务金额：¥" + (money1+money3));
+                        ToastUtils.showShort("服务金额：¥" + (money1+money3));
+                    } else {
+                        mTvServiceAmount.setText("服务金额：¥" + (money2+money3));
+                        mTvTotalPrice.setText("服务金额：¥" + (money2+money3));
+                        ToastUtils.showShort("服务金额：¥" + (money2+money3));
+                    }
+
+                }
+                break;
+        }
     }
 
 
@@ -3601,7 +3637,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mfAccessory.setQuantity(list.get(i).getCount() + ""); //数量 默认数字为1
                         mfAccessory.setPrice(Double.valueOf("0"));//原价
                         mfAccessory.setDiscountPrice(Double.valueOf("0"));//折扣价
-                        mfAccessory.setSizeID("1");//小修中修大修
+                        mfAccessory.setSizeID(list.get(i).getSizeID());//小修中修大修
                         mfAccessory.setSendState("N");
                         mfAccessory.setRelation("");
                         mfAccessory.setState("0");
@@ -3622,6 +3658,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
                         mTvSubmitAddAccessories.setTextColor(Color.parseColor("#6a6a6a"));
                     }
+                    getMoney(fAcList,fList_service);
                 }
                 break;
 
@@ -3703,6 +3740,33 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         timeSelector.setTitle(title);
         timeSelector.show();
     }
-
+    /**
+     * 添加完配件和服务之后返回多少钱
+     */
+    public void getMoney(List<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> accessoryList,List<FService.OrderServiceStrBean.OrderServiceBean> serviceList){
+        List<Integer> list=new ArrayList<>();
+        for (int i = 0; i < accessoryList.size(); i++) {
+            list.add(Integer.parseInt(accessoryList.get(i).getSizeID()));
+        }
+        for (int i = 0; i < serviceList.size(); i++) {
+            list.add(Integer.parseInt(serviceList.get(i).getSizeID()));
+        }
+        if (list.size()>0){
+            System.out.println(Collections.max(list));
+            mPresenter.GetFactoryAccessoryMoney(OrderID,data.getSubCategoryID(), String.valueOf(Collections.max(list)));
+        }else{
+            Double money1=Double.parseDouble(data.getQuaMoney());
+            Double money2=Double.parseDouble(data.getOrderMoney());
+            if ("3".equals(data.getTypeID())) {
+                mTvServiceAmount.setText("服务金额：¥" + money1);
+                mTvTotalPrice.setText("服务金额：¥" + money1);
+                ToastUtils.showShort("服务金额：¥" + money1);
+            } else {
+                mTvServiceAmount.setText("服务金额：¥" + money2);
+                mTvTotalPrice.setText("服务金额：¥" + money2);
+                ToastUtils.showShort("服务金额：¥" + money2);
+            }
+        }
+    }
 
 }

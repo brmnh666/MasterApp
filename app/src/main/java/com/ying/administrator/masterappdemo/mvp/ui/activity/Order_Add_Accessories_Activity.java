@@ -1432,6 +1432,11 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
     public void UpdateOrderAddressByOrderID(BaseResult<Data<String>> baseResult) {
 
     }
+
+    @Override
+    public void GetFactoryAccessoryMoney(BaseResult<Data<String>> baseResult) {
+
+    }
     //计算价格
 
     //计算价格

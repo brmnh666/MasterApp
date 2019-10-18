@@ -56,7 +56,15 @@ public class FService {
             private String SNeedPlatformAuth;
             private String State;
             private String CategoryID;
+            private String SizeID;
 
+            public String getSizeID() {
+                return SizeID;
+            }
+
+            public void setSizeID(String sizeID) {
+                SizeID = sizeID;
+            }
 
             public String getFServiceID() {
                 return FServiceID;

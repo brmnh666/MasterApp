@@ -1690,6 +1690,11 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
 
     }
 
+    @Override
+    public void GetFactoryAccessoryMoney(BaseResult<Data<String>> baseResult) {
+
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(String name) {
         if (!"WorkOrderDetailsActivity".equals(name)) {

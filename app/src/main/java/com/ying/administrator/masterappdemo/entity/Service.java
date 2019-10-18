@@ -18,6 +18,7 @@ public class Service {
     private int Id;
     private String FServiceID;
     private String FServiceName;
+    private String SizeID;
     private int FBrandID;
     private int FCategoryID;
     private double InitPrice;
@@ -26,6 +27,14 @@ public class Service {
     private int limit;
     private int Version;
     private boolean ischecked;
+
+    public String getSizeID() {
+        return SizeID;
+    }
+
+    public void setSizeID(String sizeID) {
+        SizeID = sizeID;
+    }
 
     public int getId() {
         return Id;

@@ -240,4 +240,15 @@ public class PendingOrderPresenter extends PendingOrderContract.Presenter {
                     }
                 });
     }
+
+    @Override
+    public void GetFactoryAccessoryMoney(String OrderID, String FCategoryID, String SizeID) {
+        mModel.GetFactoryAccessoryMoney(OrderID, FCategoryID,SizeID)
+                .subscribe(new BaseObserver<Data<String>>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<Data<String>> value) {
+                        mView.GetFactoryAccessoryMoney(value);
+                    }
+                });
+    }
 }

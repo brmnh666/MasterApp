@@ -934,4 +934,14 @@ public interface ApiService {
     Observable<BaseResult<Data<String>>> UpdateOrderAddressByOrderID(@Field("OrderID") String OrderID,
                                                                      @Field("SendAddress") String SendAddress);
 
+    /**
+     *根据配件服务sizeID计算钱
+     */
+    @FormUrlEncoded
+    @POST("FactoryConfig/GetFactoryAccessoryMoney")
+    Observable<BaseResult<Data<String>>> GetFactoryAccessoryMoney(@Field("OrderID") String OrderID,
+                                                                     @Field("FCategoryID") String FCategoryID,
+                                                                     @Field("SizeID") String SizeID
+    );
+
 }

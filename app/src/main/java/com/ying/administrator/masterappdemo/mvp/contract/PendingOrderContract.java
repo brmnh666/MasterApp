@@ -78,6 +78,7 @@ public interface PendingOrderContract {
         Observable<BaseResult<List<AddressList>>> GetAccountAddress(String UserId);
 
         Observable<BaseResult<Data<String>>> UpdateOrderAddressByOrderID(String OrderID, String SendAddress);
+        Observable<BaseResult<Data<String>>> GetFactoryAccessoryMoney(String OrderID, String FCategoryID,String SizeID);
     }
 
     interface View extends BaseView{
@@ -132,6 +133,7 @@ public interface PendingOrderContract {
         void GetAccountAddress(BaseResult<List<AddressList>> baseResult);
 
         void UpdateOrderAddressByOrderID(BaseResult<Data<String>> baseResult);
+        void GetFactoryAccessoryMoney(BaseResult<Data<String>> baseResult);
     }
 
     abstract  class Presenter extends BasePresenter<View,Model>{
@@ -177,6 +179,7 @@ public interface PendingOrderContract {
         public abstract void GetAccountAddress(String UserId);
 
         public abstract void UpdateOrderAddressByOrderID(String OrderID, String SendAddress);
+        public abstract void GetFactoryAccessoryMoney(String OrderID, String FCategoryID,String SizeID);
     }
 
 
