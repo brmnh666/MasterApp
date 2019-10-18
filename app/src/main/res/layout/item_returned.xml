@@ -200,7 +200,8 @@
                     android:paddingBottom="5dp"
                     android:text="通过"
                     android:textColor="@color/red"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:visibility="gone"/>
             </LinearLayout>
         </LinearLayout>
         <View

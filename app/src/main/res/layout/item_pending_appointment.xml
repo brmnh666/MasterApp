@@ -9,17 +9,7 @@
     android:background="@drawable/rr_shape"
     android:id="@+id/rl_pending_appointment">
 
-    <TextView
-        android:id="@+id/tv_pending_appointment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="15dp"
-        android:text="已接待预约"
-        android:textSize="12sp"
-        android:background="@drawable/gray_white_shape"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"/>
+
 
 
 
@@ -27,9 +17,8 @@
         android:id="@+id/tv_pending_appointment_status_repair"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="15dp"
         android:layout_marginTop="17dp"
-        android:layout_toRightOf="@id/tv_pending_appointment"
         android:background="@color/color_custom_04"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
@@ -37,7 +26,18 @@
         android:textColor="@color/color_white"
         android:textSize="10sp" />
 
-
+    <TextView
+        android:id="@+id/tv_pending_appointment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="15dp"
+        android:text="已接待预约"
+        android:textSize="12sp"
+        android:background="@drawable/gray_white_shape"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:layout_toRightOf="@id/tv_pending_appointment_status_repair"/>
     <TextView
         android:id="@+id/tv_pending_appointment_job_number"
         android:layout_width="wrap_content"

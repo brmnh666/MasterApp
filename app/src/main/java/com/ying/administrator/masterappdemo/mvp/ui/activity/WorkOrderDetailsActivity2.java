@@ -575,7 +575,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                             mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
                             mTvSubmitAddAccessories.setTextColor(Color.parseColor("#6a6a6a"));
                         }
-                        getMoney(mPre_order_add_ac_adapter.getData(),fList_service);
+                        getMoney(mPre_order_add_ac_adapter.getData(), fList_service);
                         break;
                     default:
                         break;
@@ -600,7 +600,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                             mTvSubmitAddService.setBackgroundResource(R.drawable.tv_order_detail_btn);
                             mTvSubmitAddService.setTextColor(Color.parseColor("#6a6a6a"));
                         }
-                        getMoney(mPre_order_add_ac_adapter.getData(),fList_service);
+                        getMoney(mPre_order_add_ac_adapter.getData(), fList_service);
                         break;
                     default:
                         break;
@@ -678,10 +678,10 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
                         mTvSubmitAddAccessories.setTextColor(Color.parseColor("#6a6a6a"));
                     }
-                    getMoney(mPre_order_add_ac_adapter.getData(),fList_service);
+                    getMoney(mPre_order_add_ac_adapter.getData(), fList_service);
 
                 } else {
-                    getMoney(new ArrayList<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean>(),fList_service);
+                    getMoney(new ArrayList<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean>(), fList_service);
                     select_state = -1;
                     mIvManufacturers.setSelected(false);
                     mIvSelfbuying.setSelected(false);
@@ -711,10 +711,10 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
                         mTvSubmitAddAccessories.setTextColor(Color.parseColor("#6a6a6a"));
                     }
-                    getMoney(mPre_order_add_ac_adapter.getData(),fList_service);
+                    getMoney(mPre_order_add_ac_adapter.getData(), fList_service);
 
                 } else {
-                    getMoney(new ArrayList<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean>(),fList_service);
+                    getMoney(new ArrayList<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean>(), fList_service);
                     select_state = -1;
                     mIvManufacturers.setSelected(false);
                     mIvSelfbuying.setSelected(false);
@@ -743,10 +743,10 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
                         mTvSubmitAddAccessories.setTextColor(Color.parseColor("#6a6a6a"));
                     }
-                    getMoney(mPre_order_add_ac_adapter.getData(),fList_service);
+                    getMoney(mPre_order_add_ac_adapter.getData(), fList_service);
 
                 } else {
-                    getMoney(new ArrayList<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean>(),fList_service);
+                    getMoney(new ArrayList<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean>(), fList_service);
                     select_state = -1;
                     mIvManufacturers.setSelected(false);
                     mIvSelfbuying.setSelected(false);
@@ -1460,7 +1460,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 if (mPre_order_add_ac_adapter.getData().size() > 0) {
                     mTvSubmitAddAccessories.setBackgroundResource(R.drawable.ed_order_detail_submit);
                     mTvSubmitAddAccessories.setTextColor(Color.WHITE);
-                    getMoney(mPre_order_add_ac_adapter.getData(),fList_service);
+                    getMoney(mPre_order_add_ac_adapter.getData(), fList_service);
                 } else {
                     mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
                     mTvSubmitAddAccessories.setTextColor(Color.parseColor("#6a6a6a"));
@@ -1538,7 +1538,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 if (mPre_order_Add_Service_Adapter.getData().size() > 0) {
                     mTvSubmitAddService.setBackgroundResource(R.drawable.ed_order_detail_submit);
                     mTvSubmitAddService.setTextColor(Color.WHITE);
-                    getMoney(mPre_order_add_ac_adapter.getData(),fList_service);
+                    getMoney(mPre_order_add_ac_adapter.getData(), fList_service);
                 } else {
                     mTvSubmitAddService.setBackgroundResource(R.drawable.tv_order_detail_btn);
                     mTvSubmitAddService.setTextColor(Color.BLACK);
@@ -1678,7 +1678,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
 
     @Override
     public void GetFactoryAccessoryMoney(BaseResult<Data<String>> baseResult) {
-        switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
                 if (baseResult.getData().isItem1()){
                     Double money1=Double.parseDouble(data.getQuaMoney());
@@ -1776,7 +1776,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
 
                     mTvAccessoryMemo.setText("备注：" + data.getAccessoryMemo());
                     if ("2".equals(data.getAccessoryAndServiceApplyState())) {
-                        mTvAccessorySequency.setText("已修改为厂家寄件");
+                        mTvAccessorySequency.setText("已修改为厂商寄件");
                     } else {
                         mTvAccessorySequency.setText(data.getAccessorySequencyStr());
                     }
@@ -1949,12 +1949,20 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
 
                     } else if (!"".equals(AccessoryAndServiceApplyState) && BeyondState == null) {
                         if ("1".equals(AccessoryAndServiceApplyState) || "2".equals(AccessoryAndServiceApplyState)) {
-                            if (data.getOrderAccessroyDetail().size() > 0) {
-                                if ("".equals(data.getOrderAccessroyDetail().get(0).getExpressNo()) || data.getOrderAccessroyDetail().get(0).getExpressNo() == null) {
-                                    mBtnCompleteSubmit.setVisibility(View.GONE);
-                                    mRlCompleteSubmit.setVisibility(View.GONE);
-                                    mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                                    mBtnTrial.setVisibility(View.GONE);
+                            if ("0".equals(data.getAccessoryState())) {
+                                if (data.getOrderAccessroyDetail().size() > 0) {
+                                    if ("".equals(data.getOrderAccessroyDetail().get(0).getExpressNo()) || data.getOrderAccessroyDetail().get(0).getExpressNo() == null) {
+                                        mBtnCompleteSubmit.setVisibility(View.GONE);
+                                        mRlCompleteSubmit.setVisibility(View.GONE);
+                                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                        mBtnTrial.setVisibility(View.GONE);
+                                    } else {
+                                        mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                                        mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                        mBtnTrial.setVisibility(View.GONE);
+                                    }
+
                                 } else {
                                     mBtnCompleteSubmit.setVisibility(View.VISIBLE);
                                     mRlCompleteSubmit.setVisibility(View.VISIBLE);
@@ -1992,12 +2000,20 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         }
                     } else {
                         if ("1".equals(AccessoryAndServiceApplyState) && "1".equals(BeyondState)) {
-                            if (data.getOrderAccessroyDetail().size() > 0) {
-                                if ("".equals(data.getOrderAccessroyDetail().get(0).getExpressNo()) || data.getOrderAccessroyDetail().get(0).getExpressNo() == null) {
-                                    mBtnCompleteSubmit.setVisibility(View.GONE);
-                                    mRlCompleteSubmit.setVisibility(View.GONE);
-                                    mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                                    mBtnTrial.setVisibility(View.GONE);
+                            if ("0".equals(data.getAccessoryState())) {
+                                if (data.getOrderAccessroyDetail().size() > 0) {
+                                    if ("".equals(data.getOrderAccessroyDetail().get(0).getExpressNo()) || data.getOrderAccessroyDetail().get(0).getExpressNo() == null) {
+                                        mBtnCompleteSubmit.setVisibility(View.GONE);
+                                        mRlCompleteSubmit.setVisibility(View.GONE);
+                                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                        mBtnTrial.setVisibility(View.GONE);
+                                    } else {
+                                        mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                                        mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                        mBtnTrial.setVisibility(View.GONE);
+                                    }
+
                                 } else {
                                     mBtnCompleteSubmit.setVisibility(View.VISIBLE);
                                     mRlCompleteSubmit.setVisibility(View.VISIBLE);
@@ -2011,12 +2027,20 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                                 mBtnTrial.setVisibility(View.GONE);
                             }
                         } else if ("1".equals(AccessoryAndServiceApplyState) && "-1".equals(BeyondState)) {
-                            if (data.getOrderAccessroyDetail().size() > 0) {
-                                if ("".equals(data.getOrderAccessroyDetail().get(0).getExpressNo()) || data.getOrderAccessroyDetail().get(0).getExpressNo() == null) {
-                                    mBtnCompleteSubmit.setVisibility(View.GONE);
-                                    mRlCompleteSubmit.setVisibility(View.GONE);
-                                    mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                                    mBtnTrial.setVisibility(View.GONE);
+                            if ("0".equals(data.getAccessoryState())) {
+                                if (data.getOrderAccessroyDetail().size() > 0) {
+                                    if ("".equals(data.getOrderAccessroyDetail().get(0).getExpressNo()) || data.getOrderAccessroyDetail().get(0).getExpressNo() == null) {
+                                        mBtnCompleteSubmit.setVisibility(View.GONE);
+                                        mRlCompleteSubmit.setVisibility(View.GONE);
+                                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                        mBtnTrial.setVisibility(View.GONE);
+                                    } else {
+                                        mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                                        mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                        mBtnTrial.setVisibility(View.GONE);
+                                    }
+
                                 } else {
                                     mBtnCompleteSubmit.setVisibility(View.VISIBLE);
                                     mRlCompleteSubmit.setVisibility(View.VISIBLE);
@@ -2030,12 +2054,20 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                                 mBtnTrial.setVisibility(View.GONE);
                             }
                         } else if ("1".equals(AccessoryAndServiceApplyState) && "2".equals(BeyondState)) {
-                            if (data.getOrderAccessroyDetail().size() > 0) {
-                                if ("".equals(data.getOrderAccessroyDetail().get(0).getExpressNo()) || data.getOrderAccessroyDetail().get(0).getExpressNo() == null) {
-                                    mBtnCompleteSubmit.setVisibility(View.GONE);
-                                    mRlCompleteSubmit.setVisibility(View.GONE);
-                                    mBtnCompleteSubmitOne.setVisibility(View.GONE);
-                                    mBtnTrial.setVisibility(View.GONE);
+                            if ("0".equals(data.getAccessoryState())) {
+                                if (data.getOrderAccessroyDetail().size() > 0) {
+                                    if ("".equals(data.getOrderAccessroyDetail().get(0).getExpressNo()) || data.getOrderAccessroyDetail().get(0).getExpressNo() == null) {
+                                        mBtnCompleteSubmit.setVisibility(View.GONE);
+                                        mRlCompleteSubmit.setVisibility(View.GONE);
+                                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                        mBtnTrial.setVisibility(View.GONE);
+                                    } else {
+                                        mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                                        mRlCompleteSubmit.setVisibility(View.VISIBLE);
+                                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
+                                        mBtnTrial.setVisibility(View.GONE);
+                                    }
+
                                 } else {
                                     mBtnCompleteSubmit.setVisibility(View.VISIBLE);
                                     mRlCompleteSubmit.setVisibility(View.VISIBLE);
@@ -2428,6 +2460,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     } else {
                         if ("1".equals(data.getAccessoryAndServiceApplyState()) || "2".equals(data.getAccessoryAndServiceApplyState()) || "".equals(data.getAccessoryAndServiceApplyState())) {
                             mLlOldAccessory.setVisibility(View.VISIBLE);
+                            mLlChooseAddress.setVisibility(View.GONE);
                             if (data.getOrderAccessroyDetail().size() > 0) {
                                 if ("1".equals(data.getIsReturn())) {
                                     mTvYn.setText("是");
@@ -2446,6 +2479,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                                 mLlOldAccessory.setVisibility(View.GONE);
                             }
                         } else {
+                            mLlChooseAddress.setVisibility(View.GONE);
                             mLlOldAccessory.setVisibility(View.GONE);
                         }
                     }
@@ -2856,6 +2890,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     ToastUtils.showShort("提交成功");
                     EventBus.getDefault().post("WorkOrderDetailsActivity");
                     EventBus.getDefault().post(5);
+                    mPresenter.GetOrderInfo(OrderID);
 //                    ApplyAccessoryphotoUpload(accessories_picture);
                 } else {
                     if ("您账户余额不足，请尽快充值以免影响配件审核,充值最低金额为：200".equals(baseResult.getData().getItem2())) {
@@ -3670,7 +3705,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
                         mTvSubmitAddAccessories.setTextColor(Color.parseColor("#6a6a6a"));
                     }
-                    getMoney(fAcList,fList_service);
+                    getMoney(fAcList, fList_service);
                 }
                 break;
 
@@ -3752,23 +3787,24 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         timeSelector.setTitle(title);
         timeSelector.show();
     }
+
     /**
      * 添加完配件和服务之后返回多少钱
      */
-    public void getMoney(List<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> accessoryList,List<FService.OrderServiceStrBean.OrderServiceBean> serviceList){
-        List<Integer> list=new ArrayList<>();
+    public void getMoney(List<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> accessoryList, List<FService.OrderServiceStrBean.OrderServiceBean> serviceList) {
+        List<Integer> list = new ArrayList<>();
         for (int i = 0; i < accessoryList.size(); i++) {
             list.add(Integer.parseInt(accessoryList.get(i).getSizeID()));
         }
         for (int i = 0; i < serviceList.size(); i++) {
             list.add(Integer.parseInt(serviceList.get(i).getSizeID()));
         }
-        if (list.size()>0){
+        if (list.size() > 0) {
             System.out.println(Collections.max(list));
-            mPresenter.GetFactoryAccessoryMoney(OrderID,data.getSubCategoryID(), String.valueOf(Collections.max(list)));
-        }else{
-            Double money1=Double.parseDouble(data.getQuaMoney());
-            Double money2=Double.parseDouble(data.getOrderMoney());
+            mPresenter.GetFactoryAccessoryMoney(OrderID, data.getSubCategoryID(), String.valueOf(Collections.max(list)));
+        } else {
+            Double money1 = Double.parseDouble(data.getQuaMoney());
+            Double money2 = Double.parseDouble(data.getOrderMoney());
             if ("3".equals(data.getTypeID())) {
                 String str="服务金额：¥" + (money1);
                 mTvServiceAmount.setText(str);

@@ -73,14 +73,16 @@ public class ReturnAccessoryAdapter extends BaseQuickAdapter<GAccessory,BaseView
         }
 //
         if ("1".equals(item.getState())){
-            helper.setVisible(R.id.tv_sure,true);
+            helper.getView(R.id.tv_sure).setVisibility(View.GONE);
             helper.setText(R.id.tv_sure,"审核通过");
         }else if ("-1".equals(item.getState())){
             helper.setText(R.id.tv_sure,"审核拒绝");
-            helper.setVisible(R.id.tv_sure,true);
+            helper.getView(R.id.tv_sure).setVisibility(View.GONE);
+
         }else {
             helper.setText(R.id.tv_sure,"审核中");
-            helper.setVisible(R.id.tv_sure,true);
+            helper.getView(R.id.tv_sure).setVisibility(View.GONE);
+
         }
         helper.setText(R.id.tv_content,content);
         helper.addOnClickListener(R.id.tv_reject)

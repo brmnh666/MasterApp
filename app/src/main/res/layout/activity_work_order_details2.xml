@@ -754,44 +754,6 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/ll_shipping_type"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:background="@color/white"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginBottom="16dp"
-                        android:paddingLeft="7dp"
-                        android:paddingTop="2dp"
-                        android:paddingBottom="2dp"
-                        android:text="寄件类型："
-                        android:textColor="#6A6A6A"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:id="@+id/tv_accessory_sequency"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginBottom="16dp"
-                        android:paddingTop="2dp"
-                        android:paddingRight="7dp"
-                        android:paddingBottom="2dp"
-                        android:text=""
-                        android:textColor="@color/red"
-                        android:textSize="16sp" />
-                </LinearLayout>
-
-                <LinearLayout
                     android:id="@+id/ll_choose_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -843,6 +805,47 @@
 
                 </LinearLayout>
 
+
+                <LinearLayout
+                    android:id="@+id/ll_shipping_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="@color/white"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:paddingLeft="7dp"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="2dp"
+                        android:text="寄件类型："
+                        android:textColor="#6A6A6A"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/tv_accessory_sequency"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="16dp"
+                        android:paddingTop="2dp"
+                        android:paddingRight="7dp"
+                        android:paddingBottom="2dp"
+                        android:text=""
+                        android:textColor="@color/red"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+
                 <LinearLayout
                     android:id="@+id/ll_accessory"
                     android:layout_width="match_parent"
@@ -869,7 +872,7 @@
                             android:text="寄件信息"
                             android:textColor="#6A6A6A"
                             android:textSize="16sp"
-                             />
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/tv_accessory_apply_state"
@@ -1232,7 +1235,7 @@
                             android:text="服务信息"
                             android:textColor="#6A6A6A"
                             android:textSize="16sp"
-                             />
+                            android:textStyle="bold"/>
 
                         <TextView
                             android:id="@+id/tv_service_apply_state"
@@ -1644,7 +1647,8 @@
                         android:layout_marginTop="13dp"
                         android:text="完结图片"
                         android:textColor="#6A6A6A"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
 
 
                     <LinearLayout

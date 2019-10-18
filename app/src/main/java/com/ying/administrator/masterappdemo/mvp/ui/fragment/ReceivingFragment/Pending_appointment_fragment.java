@@ -110,6 +110,7 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
     private Button negtive;
     private Button positive;
     private TextView title;
+    private TextView tv_pending_appointment_success;
 
     public Pending_appointment_fragment() {
         // Required empty public constructor
@@ -235,6 +236,7 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
         pending_appointment_adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(final BaseQuickAdapter adapter, View view, final int position) {
+                TextView tv_pending_appointment_success = (TextView) view.findViewById(R.id.tv_pending_appointment_success);
                 switch (view.getId()) {
                     case R.id.rl_pending_appointment:
                         Intent intent1 = new Intent(getActivity(), Order_details_Activity.class);
@@ -357,6 +359,7 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
 
                     /*电话预约*/
                     case R.id.img_pending_appointment_phone:
+//                        tv_pending_appointment_success.setClickable(true);
                         call("tel:" + ((WorkOrder.DataBean) adapter.getItem(position)).getPhone());
 
                         break;

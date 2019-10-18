@@ -7,20 +7,13 @@
 
     <!--左边 时间-->
     <LinearLayout
-        android:layout_width="60dp"
+        android:layout_width="10dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="vertical"
         android:layout_marginLeft="5dp">
 
-        <TextView
-            android:id="@+id/tv_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="14:29"
-            android:textColor="#808080"
-            android:textSize="13sp" />
+
     </LinearLayout>
 
     <!--中间 时间轴-->
@@ -48,7 +41,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="14:29"
+            android:textColor="#808080"
+            android:textSize="15sp"
+            android:layout_marginRight="15dp"
+            android:layout_marginLeft="5dp"/>
         <TextView
             android:id="@+id/tv_date"
             android:layout_width="match_parent"
