@@ -1682,16 +1682,28 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
             case 200:
                 if (baseResult.getData().isItem1()){
                     Double money1=Double.parseDouble(data.getQuaMoney());
-                    Double money2=Double.parseDouble(data.getOrderMoney());
+                    Double beyond=Double.parseDouble(data.getBeyondMoney());
                     Double money3=Double.parseDouble(baseResult.getData().getItem2());
                     if ("3".equals(data.getTypeID())) {
-                        mTvServiceAmount.setText("服务金额：¥" + (money1+money3));
-                        mTvTotalPrice.setText("服务金额：¥" + (money1+money3));
-                        ToastUtils.showShort("服务金额：¥" + (money1+money3));
+                        String str="";
+                        if ("-1".equals(data.getBeyondState())){
+                            str="服务金额：¥" + (money1);
+                        }else{
+                            str="服务金额：¥" + (money1+beyond);
+                        }
+                        mTvServiceAmount.setText(str);
+                        mTvTotalPrice.setText(str);
+                        ToastUtils.showShort(str);
                     } else {
-                        mTvServiceAmount.setText("服务金额：¥" + (money2+money3));
-                        mTvTotalPrice.setText("服务金额：¥" + (money2+money3));
-                        ToastUtils.showShort("服务金额：¥" + (money2+money3));
+                        String str="";
+                        if ("-1".equals(data.getBeyondState())){
+                            str="服务金额：¥" + (money3);
+                        }else{
+                            str="服务金额：¥" + (money3+beyond);
+                        }
+                        mTvServiceAmount.setText(str);
+                        mTvTotalPrice.setText(str);
+                        ToastUtils.showShort(str);
                     }
 
                 }
@@ -3758,13 +3770,15 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
             Double money1=Double.parseDouble(data.getQuaMoney());
             Double money2=Double.parseDouble(data.getOrderMoney());
             if ("3".equals(data.getTypeID())) {
-                mTvServiceAmount.setText("服务金额：¥" + money1);
-                mTvTotalPrice.setText("服务金额：¥" + money1);
-                ToastUtils.showShort("服务金额：¥" + money1);
+                String str="服务金额：¥" + (money1);
+                mTvServiceAmount.setText(str);
+                mTvTotalPrice.setText(str);
+                ToastUtils.showShort(str);
             } else {
-                mTvServiceAmount.setText("服务金额：¥" + money2);
-                mTvTotalPrice.setText("服务金额：¥" + money2);
-                ToastUtils.showShort("服务金额：¥" + money2);
+                String str="服务金额：¥" + (money2);
+                mTvServiceAmount.setText(str);
+                mTvTotalPrice.setText(str);
+                ToastUtils.showShort(str);
             }
         }
     }
