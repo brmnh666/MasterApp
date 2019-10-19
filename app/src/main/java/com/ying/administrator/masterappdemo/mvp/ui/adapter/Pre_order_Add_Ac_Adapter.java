@@ -15,9 +15,11 @@ import java.util.Map;
 /*预接单的添加配置*/
 public class Pre_order_Add_Ac_Adapter extends BaseQuickAdapter<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean, BaseViewHolder>  {
     private String AccessoryState;
-    public Pre_order_Add_Ac_Adapter(int layoutResId, @Nullable List<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> data,String AccessoryState) {
+    private int select_state;
+    public Pre_order_Add_Ac_Adapter(int layoutResId, @Nullable List<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> data,String AccessoryState,Integer select_state) {
         super(layoutResId, data);
         this.AccessoryState=AccessoryState;
+        this.select_state=select_state;
     }
 
     @Override
@@ -26,7 +28,9 @@ public class Pre_order_Add_Ac_Adapter extends BaseQuickAdapter<FAccessory.OrderA
         if ("0".equals(AccessoryState)){
             helper.setText(R.id.tv_accessories_number,item.getQuantity()+"个");
         }else {
-            helper.setText(R.id.tv_accessories_number,"¥"+item.getDiscountPrice()+"/"+item.getQuantity()+"个");
+//            helper.setText(R.id.tv_accessories_number,"¥"+item.getDiscountPrice()+"/"+item.getQuantity()+"个");
+            helper.setText(R.id.tv_accessories_number,item.getQuantity()+"个");
+
         }
         Glide.with(mContext).load("https://img.xigyu.com/Pics/Accessory/"+item.getPhoto1()).into((ImageView) helper.getView(R.id.photo1));
         Glide.with(mContext).load("https://img.xigyu.com/Pics/Accessory/"+item.getPhoto2()).into((ImageView) helper.getView(R.id.photo2));
@@ -40,6 +44,8 @@ public class Pre_order_Add_Ac_Adapter extends BaseQuickAdapter<FAccessory.OrderA
             helper.setGone(R.id.tv_accessories_sendstate,true);
             helper.setText(R.id.tv_accessories_sendstate,"已返件");
         }
+
+
     }
 
 

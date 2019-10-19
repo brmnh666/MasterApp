@@ -333,7 +333,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
         orderID = getIntent().getStringExtra("OrderID");
         mPresenter.GetOrderInfo(orderID);
 
-        mPre_order_add_ac_adapter = new Pre_order_Add_Ac_Adapter(R.layout.item_pre_order_add_accessories, fAcList,String.valueOf(select_state));
+        mPre_order_add_ac_adapter = new Pre_order_Add_Ac_Adapter(R.layout.item_pre_order_add_accessories, fAcList,String.valueOf(select_state),select_state);
         mRecyclerViewAddAccessories.setLayoutManager(new LinearLayoutManager(mActivity));
         mRecyclerViewAddAccessories.setAdapter(mPre_order_add_ac_adapter);
         mPre_order_add_ac_adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
