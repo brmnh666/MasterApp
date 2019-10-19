@@ -1154,7 +1154,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
             case R.id.btn_complete_submit_one:
             case R.id.btn_complete_submit:
                 gson = new Gson();
-                returnAddress = mTvAddressReturn.getText().toString().trim();
+//                returnAddress = mTvAddressReturn.getText().toString().trim();
                 if (mPre_order_add_ac_adapter.getData().size() > 0 && mPre_order_Add_Service_Adapter.getData().size() == 0) {
                     if ("".equals(returnAddress)) {
                         ToastUtils.showShort("请选择收货地址");
@@ -1552,7 +1552,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         switch (type) {
             case 1:
                 AccessoryMemo = mEtMemo.getText().toString().trim();
-                returnAddress = mTvAddressReturn.getText().toString().trim();
+//                returnAddress = mTvAddressReturn.getText().toString().trim();
                 if (select_state == -1) {
                     ToastUtils.showShort("请选择配件类型");
                 } else {
@@ -1652,15 +1652,18 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         if ("1".equals(addressList.get(i).getIsDefault())) {
                             AddressBack = addressList.get(i).getAddress() + "(" + addressList.get(i).getUserName() + "收)" + addressList.get(i).getPhone();
                             mTvAddressReturn.setText(AddressBack);
+                            returnAddress=AddressBack;
                             mTvModify.setText("修改地址");
                         } else {
                             AddressBack = addressList.get(0).getProvince() + addressList.get(0).getCity() + addressList.get(0).getArea() + addressList.get(0).getDistrict() + addressList.get(0).getAddress() + "(" + addressList.get(0).getUserName() + "收)" + addressList.get(0).getPhone();
                             mTvAddressReturn.setText(AddressBack);
+                            returnAddress=AddressBack;
                             mTvModify.setText("修改地址");
                         }
                     }
                 } else {
                     AddressBack = "";
+                    returnAddress="";
                     mTvAddressReturn.setText(AddressBack);
                     mTvModify.setText("添加地址");
                 }
@@ -3717,6 +3720,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 if (address != null) {
                     AddressBack = address.getProvince() + address.getCity() + address.getArea() + address.getDistrict() + address.getAddress() + "(" + address.getUserName() + "收)" + address.getPhone();
                     mTvAddressReturn.setText(AddressBack);
+                    returnAddress=AddressBack;
                 }
             }
         }
