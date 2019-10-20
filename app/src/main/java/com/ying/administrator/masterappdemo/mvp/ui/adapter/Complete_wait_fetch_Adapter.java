@@ -20,6 +20,7 @@ public class Complete_wait_fetch_Adapter extends BaseQuickAdapter<WorkOrder.Data
     @SuppressLint("ResourceAsColor")
     @Override
     protected void convert(BaseViewHolder baseViewHolder, WorkOrder.DataBean item) {
+                baseViewHolder.setText(R.id.tv_orderid,"工单号："+item.getOrderID());
                 baseViewHolder.setText(R.id.tv_complete_wait_fetch,item.getStateStr());
         baseViewHolder.setText(R.id.tv_complete_status_repair,item.getTypeName()+"/"+item.getGuaranteeText());//安装or维修
         if ("安装".equals(item.getTypeName())){

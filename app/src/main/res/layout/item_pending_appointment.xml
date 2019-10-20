@@ -27,14 +27,14 @@
         android:textSize="10sp" />
 
     <TextView
-        android:id="@+id/tv_pending_appointment"
+        android:id="@+id/tv_orderid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
-        android:layout_marginTop="15dp"
-        android:text="已接待预约"
-        android:textSize="12sp"
-        android:background="@drawable/gray_white_shape"
+        android:layout_marginTop="17dp"
+        android:text=""
+        android:textSize="10sp"
+        android:textColor="@color/blue"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:layout_toRightOf="@id/tv_pending_appointment_status_repair"/>
@@ -46,6 +46,7 @@
         android:layout_marginTop="15dp"
         android:layout_marginRight="19dp"
         android:text="工单号:1212412412412414124"
+        android:visibility="gone"
         android:textSize="12sp" />
 
     <TextView

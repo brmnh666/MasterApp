@@ -35,7 +35,19 @@
         android:text="维修"
         android:textColor="@color/color_white"
         android:textSize="10sp" />
-
+    <TextView
+        android:id="@+id/tv_orderid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="17dp"
+        android:layout_marginRight="5dp"
+        android:layout_toRightOf="@+id/tv_returnedparts_status_repair"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:text="维修"
+        android:textColor="@color/blue"
+        android:textSize="10sp" />
     <TextView
         android:id="@+id/tv_review"
         android:layout_width="wrap_content"

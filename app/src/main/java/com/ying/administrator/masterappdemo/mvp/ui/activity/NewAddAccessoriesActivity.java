@@ -57,14 +57,19 @@ import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.Accessory;
 import com.ying.administrator.masterappdemo.entity.AddressList;
+import com.ying.administrator.masterappdemo.entity.Area;
+import com.ying.administrator.masterappdemo.entity.City;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.Data2;
+import com.ying.administrator.masterappdemo.entity.District;
 import com.ying.administrator.masterappdemo.entity.FAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
+import com.ying.administrator.masterappdemo.entity.Province;
 import com.ying.administrator.masterappdemo.entity.SAccessory;
 import com.ying.administrator.masterappdemo.mvp.contract.NewAddAccessoriesContract;
 import com.ying.administrator.masterappdemo.mvp.model.NewAddAccessoriesModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.NewAddAccessoriesPresenter;
+import com.ying.administrator.masterappdemo.mvp.ui.adapter.MyPackageAdapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.NewAddAccessoriesAdapter;
 import com.ying.administrator.masterappdemo.util.Glide4Engine;
 import com.ying.administrator.masterappdemo.util.MyUtils;
@@ -204,6 +209,7 @@ public class NewAddAccessoriesActivity extends BaseActivity<NewAddAccessoriesPre
     private View customdialog_home_view;
     private AlertDialog customdialog_home_dialog;
     private String money;
+    private PopupWindow popupWindow;
 
     @Override
     protected int setLayoutId() {
@@ -644,11 +650,11 @@ public class NewAddAccessoriesActivity extends BaseActivity<NewAddAccessoriesPre
 
         switch (v.getId()) {
             case R.id.ll_my_package:
-                new XPopup.Builder(mActivity)
-                        .moveUpToKeyboard(false) //如果不加这个，评论弹窗会移动到软键盘上面
-                        .asCustom(new MyPackagePopup(mActivity, list_collect, mActivity))/*.enableDrag(false)*/
-                        .show();
-
+//                new XPopup.Builder(mActivity)
+//                        .moveUpToKeyboard(false) //如果不加这个，评论弹窗会移动到软键盘上面
+//                        .asCustom(new MyPackagePopup(mActivity, list_collect, mActivity))/*.enableDrag(false)*/
+//                        .show();
+                showPopWindow();
                 break;
             case R.id.tv_next://下一步
                 String returnAddress = mTvAddressReturn.getText().toString().trim();
@@ -1013,5 +1019,47 @@ public class NewAddAccessoriesActivity extends BaseActivity<NewAddAccessoriesPre
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
+    }
+
+    public void showPopWindow() {
+        View contentView = LayoutInflater.from(mActivity).inflate(R.layout.custom_bottom_popup  , null);
+        final RecyclerView rv = contentView.findViewById(R.id.rv_popup);
+        rv.setLayoutManager(new LinearLayoutManager(mActivity));
+        MyPackageAdapter myPackageAdapter=new MyPackageAdapter(R.layout.item_mypackage,list_collect);
+        rv.setAdapter(myPackageAdapter);
+        myPackageAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                switch (view.getId()){
+                    case R.id.img1:
+
+                        break;
+                    case R.id.img2:
+
+                        break;
+                }
+            }
+        });
+        popupWindow = new PopupWindow(contentView);
+        popupWindow.setWidth(LinearLayout.LayoutParams.MATCH_PARENT);
+        if (list_collect.size() > 5) {
+            popupWindow.setHeight(600);
+        } else {
+            popupWindow.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
+        }
+        popupWindow.setAnimationStyle(R.style.popwindow_anim_style);
+        popupWindow.setBackgroundDrawable(new BitmapDrawable());
+        popupWindow.setFocusable(true);
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                MyUtils.setWindowAlpa(mActivity, false);
+            }
+        });
+        if (popupWindow != null && !popupWindow.isShowing()) {
+            popupWindow.showAtLocation(contentView, Gravity.BOTTOM, 0, 0);
+        }
+        MyUtils.setWindowAlpa(mActivity, true);
     }
 }

@@ -259,7 +259,7 @@ dependencies {
     implementation 'com.zhihu.android:matisse:0.5.2-beta3'
     implementation 'org.aspectj:aspectjrt:1.8.9'
 
-    implementation 'com.lxj:xpopup:1.8.7'
+    implementation 'com.lxj:xpopup:1.8.10'
     implementation files('libs\\IMKFSDKTX-3.2.4.jar')
     implementation 'com.google.android:flexbox:0.3.2'
 

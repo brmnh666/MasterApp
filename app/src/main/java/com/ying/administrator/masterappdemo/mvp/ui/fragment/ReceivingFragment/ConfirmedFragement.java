@@ -129,8 +129,8 @@ public class ConfirmedFragement extends BaseFragment<GetOrderListForMePresenter,
         ConfirmedAdapter.setEmptyView(getEmptyView());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mPresenter.WorkerGetOrderList(userID,"9",Integer.toString(pageIndex),"5");
-        ConfirmedAdapter.notifyDataSetChanged();
-        mRefreshLayout.autoRefresh();
+//        ConfirmedAdapter.notifyDataSetChanged();
+//        mRefreshLayout.autoRefresh();
     }
 
 

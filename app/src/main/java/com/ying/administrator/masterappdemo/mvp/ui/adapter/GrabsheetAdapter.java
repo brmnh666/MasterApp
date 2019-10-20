@@ -26,6 +26,7 @@ public class GrabsheetAdapter extends BaseQuickAdapter<WorkOrder.DataBean,BaseVi
     protected void convert(BaseViewHolder baseViewHolder, WorkOrder.DataBean item) {
 
         baseViewHolder.setText(R.id.tv_loaction,"距离:"+item.getDistance()+"Km");
+        baseViewHolder.setText(R.id.tv_orderid,"工单号:"+item.getOrderID());
         baseViewHolder.setText(R.id.tv_brand_name,item.getCategoryName()+" "+item.getBrandName());
 
       baseViewHolder.setText(R.id.tv_grabsheet_status_repair,item.getTypeName()+"/"+item.getGuaranteeText());
