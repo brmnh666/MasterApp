@@ -48,7 +48,7 @@
         android:text="维修"
         android:textSize="10sp"
         android:textColor="@color/blue"
-        />
+        android:visibility="gone"/>
 
 
     <TextView
@@ -59,8 +59,7 @@
         android:layout_alignParentRight="true"
         android:textSize="12sp"
         android:layout_marginRight="19dp"
-        android:layout_marginTop="15dp"
-        android:visibility="gone"/>
+        android:layout_marginTop="15dp" />
 
     <TextView
         android:id="@+id/tv_reason_complete_wait_fetch"

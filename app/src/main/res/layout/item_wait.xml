@@ -47,12 +47,13 @@
         android:paddingRight="5dp"
         android:text="维修"
         android:textColor="@color/blue"
-        android:textSize="10sp" />
+        android:textSize="10sp"
+        android:visibility="gone"/>
     <TextView
         android:id="@+id/tv_review"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/tv_review2"
+        android:layout_toRightOf="@+id/tv_returnedparts_status_repair"
         android:layout_marginTop="15dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
@@ -66,21 +67,22 @@
         android:id="@+id/tv_review2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/tv_review3"
+        android:layout_toRightOf="@+id/tv_review"
         android:layout_marginTop="15dp"
         android:layout_marginLeft="5dp"
-        android:text="123"
+        android:text="789"
         android:textSize="12sp"
         android:textColor="@color/red"
         android:layout_marginRight="5dp"
         android:background="@drawable/gray_white_shape"
         android:paddingLeft="8dp"
-        android:paddingRight="8dp"/>
+        android:paddingRight="8dp"
+        android:visibility="gone"/>
     <TextView
         android:id="@+id/tv_review3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@+id/tv_review"
         android:layout_marginTop="15dp"
         android:layout_marginLeft="5dp"
         android:text="123"
@@ -98,8 +100,7 @@
         android:layout_marginTop="15dp"
         android:layout_marginRight="19dp"
         android:text="工单号:1212412412412414124"
-        android:textSize="12sp"
-        android:visibility="gone"/>
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/tv_reason_returnedparts"

@@ -598,6 +598,12 @@
             android:windowSoftInputMode="adjustUnspecified|stateHidden"/>
 
 
+        <!--配件图片上传-->
+        <activity android:name=".mvp.ui.activity.AccessoriesPictureActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden"/>
+
        <!-- <activity android:name="io.card.payment.CardIOActivity" android:configChanges="keyboardHidden|orientation" />
         <activity android:name="io.card.payment.DataEntryActivity" />
                     -->

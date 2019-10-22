@@ -527,6 +527,35 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     protected void initData() {
         //EventBus.getDefault().register(this);
 
+        ArrayList<Accessory> list_collect = (ArrayList<Accessory>) getIntent().getSerializableExtra("list_collect");
+        if (list_collect != null) {
+            fAcList.clear();
+            /*商城*/
+            for (int i = 0; i < list.size(); i++) {
+                mfAccessory = new FAccessory.OrderAccessoryStrBean.OrderAccessoryBean();
+                mfAccessory.setPhoto1(list_collect.get(i).getImg1());//配件照片
+                mfAccessory.setPhoto2(list_collect.get(i).getImg2());//整机照片
+                mfAccessory.setFAccessoryID(list_collect.get(i).getFAccessoryID());//获取id
+                mfAccessory.setFAccessoryName(list_collect.get(i).getAccessoryName()); //获取名字
+                mfAccessory.setFCategoryID(list_collect.get(i).getFCategoryID() + ""); //分类id
+                mfAccessory.setQuantity(list_collect.get(i).getCount() + ""); //数量 默认数字为1
+                mfAccessory.setPrice(Double.valueOf("0"));//原价
+                mfAccessory.setDiscountPrice(Double.valueOf("0"));//折扣价
+                mfAccessory.setSizeID(list_collect.get(i).getSizeID());//小修中修大修
+                mfAccessory.setSendState("N");
+                mfAccessory.setRelation("");
+                mfAccessory.setState("0");
+                mfAccessory.setIsPay("N");
+                mfAccessory.setExpressNo("");
+                mfAccessory.setNeedPlatformAuth("N");
+//            if (select_state == 0) {//厂家自购
+                mfAccessory.setPrice(list_collect.get(i).getAccessoryPrice());//原价
+                mfAccessory.setDiscountPrice(list_collect.get(i).getAccessoryPrice());//原价
+//            }
+                fAcList.add(mfAccessory);
+            }
+            mPre_order_add_ac_adapter.notifyDataSetChanged();
+        }
 
     }
 
@@ -559,7 +588,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         userId = spUtils.getString("userName");
         mPresenter.GetAccountAddress(userId);
 
-        mPre_order_add_ac_adapter = new Pre_order_Add_Ac_Adapter(R.layout.item_pre_order_add_accessories, fAcList, data.getAccessoryState(),select_state);
+        mPre_order_add_ac_adapter = new Pre_order_Add_Ac_Adapter(R.layout.item_pre_order_add_accessories, fAcList, data.getAccessoryState(), select_state);
         mRecyclerViewAddAccessories.setLayoutManager(new LinearLayoutManager(mActivity));
         mRecyclerViewAddAccessories.setAdapter(mPre_order_add_ac_adapter);
         mPre_order_add_ac_adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
@@ -1574,18 +1603,18 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         if ("1".equals(addressList.get(i).getIsDefault())) {
                             AddressBack = addressList.get(i).getAddress() + "(" + addressList.get(i).getUserName() + "收)" + addressList.get(i).getPhone();
                             mTvAddressReturn.setText(AddressBack);
-                            returnAddress=AddressBack;
+                            returnAddress = AddressBack;
                             mTvModify.setText("修改地址");
                         } else {
                             AddressBack = addressList.get(0).getProvince() + addressList.get(0).getCity() + addressList.get(0).getArea() + addressList.get(0).getDistrict() + addressList.get(0).getAddress() + "(" + addressList.get(0).getUserName() + "收)" + addressList.get(0).getPhone();
                             mTvAddressReturn.setText(AddressBack);
-                            returnAddress=AddressBack;
+                            returnAddress = AddressBack;
                             mTvModify.setText("修改地址");
                         }
                     }
                 } else {
                     AddressBack = "";
-                    returnAddress="";
+                    returnAddress = "";
                     mTvAddressReturn.setText(AddressBack);
                     mTvModify.setText("添加地址");
                 }
@@ -1600,22 +1629,22 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     public void UpdateOrderAddressByOrderID(BaseResult<Data<String>> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData().isItem1()){
+                if (baseResult.getData().isItem1()) {
                     gson = new Gson();
                     if (mPre_order_add_ac_adapter.getData().size() > 0 && mPre_order_Add_Service_Adapter.getData().size() == 0) {
-                            orderAccessoryStrBean = new FAccessory.OrderAccessoryStrBean();
-                            orderAccessoryStrBean.setOrderAccessory(mPre_order_add_ac_adapter.getData());
-                            orderAccessoryStrBean.setAccessoryMemo(AccessoryMemo);
-                            String s1 = gson.toJson(orderAccessoryStrBean);
-                            sAccessory = new SAccessory();
-                            sAccessory.setOrderID(OrderID);
-                            sAccessory.setAccessorySequency(Integer.toString(select_state));
-                            sAccessory.setOrderAccessoryStr(s1);
-                            sAccessory.setOrderServiceStr("");
-                            String s = gson.toJson(sAccessory);
-                            Log.d("添加的配件有", s);
-                            body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), s);
-                            mPresenter.AddOrderAccessoryAndService(body);
+                        orderAccessoryStrBean = new FAccessory.OrderAccessoryStrBean();
+                        orderAccessoryStrBean.setOrderAccessory(mPre_order_add_ac_adapter.getData());
+                        orderAccessoryStrBean.setAccessoryMemo(AccessoryMemo);
+                        String s1 = gson.toJson(orderAccessoryStrBean);
+                        sAccessory = new SAccessory();
+                        sAccessory.setOrderID(OrderID);
+                        sAccessory.setAccessorySequency(Integer.toString(select_state));
+                        sAccessory.setOrderAccessoryStr(s1);
+                        sAccessory.setOrderServiceStr("");
+                        String s = gson.toJson(sAccessory);
+                        Log.d("添加的配件有", s);
+                        body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), s);
+                        mPresenter.AddOrderAccessoryAndService(body);
                     } else if (mPre_order_add_ac_adapter.getData().size() == 0 && mPre_order_Add_Service_Adapter.getData().size() > 0) {
                         orderServiceStrBean = new FService.OrderServiceStrBean();
                         orderServiceStrBean.setOrderService(mPre_order_Add_Service_Adapter.getData());
@@ -1630,24 +1659,24 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), s);
                         mPresenter.AddOrderAccessoryAndService(body);
                     } else if (mPre_order_add_ac_adapter.getData().size() > 0 && mPre_order_Add_Service_Adapter.getData().size() > 0) {
-                            orderAccessoryStrBean = new FAccessory.OrderAccessoryStrBean();
-                            orderAccessoryStrBean.setOrderAccessory(mPre_order_add_ac_adapter.getData());
-                            orderAccessoryStrBean.setAccessoryMemo(AccessoryMemo);
-                            String s1 = gson.toJson(orderAccessoryStrBean);
-                            orderServiceStrBean = new FService.OrderServiceStrBean();
-                            orderServiceStrBean.setOrderService(mPre_order_Add_Service_Adapter.getData());
-                            String s2 = gson.toJson(orderServiceStrBean);
-                            sAccessory = new SAccessory();
-                            sAccessory.setOrderID(OrderID);
-                            sAccessory.setAccessorySequency(Integer.toString(select_state));
-                            sAccessory.setOrderAccessoryStr(s1);
-                            sAccessory.setOrderServiceStr(s2);
-                            String s = gson.toJson(sAccessory);
-                            Log.d("添加的配件有", s);
-                            body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), s);
-                            mPresenter.AddOrderAccessoryAndService(body);
+                        orderAccessoryStrBean = new FAccessory.OrderAccessoryStrBean();
+                        orderAccessoryStrBean.setOrderAccessory(mPre_order_add_ac_adapter.getData());
+                        orderAccessoryStrBean.setAccessoryMemo(AccessoryMemo);
+                        String s1 = gson.toJson(orderAccessoryStrBean);
+                        orderServiceStrBean = new FService.OrderServiceStrBean();
+                        orderServiceStrBean.setOrderService(mPre_order_Add_Service_Adapter.getData());
+                        String s2 = gson.toJson(orderServiceStrBean);
+                        sAccessory = new SAccessory();
+                        sAccessory.setOrderID(OrderID);
+                        sAccessory.setAccessorySequency(Integer.toString(select_state));
+                        sAccessory.setOrderAccessoryStr(s1);
+                        sAccessory.setOrderServiceStr(s2);
+                        String s = gson.toJson(sAccessory);
+                        Log.d("添加的配件有", s);
+                        body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), s);
+                        mPresenter.AddOrderAccessoryAndService(body);
                     }
-                }else{
+                } else {
                     ToastUtils.showShort("添加寄件地址失败");
                 }
                 break;
@@ -1658,26 +1687,26 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     public void GetFactoryAccessoryMoney(BaseResult<Data<String>> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData().isItem1()){
-                    Double money1=Double.parseDouble(data.getQuaMoney());
-                    Double beyond=Double.parseDouble(data.getBeyondMoney());
-                    Double money3=Double.parseDouble(baseResult.getData().getItem2());
+                if (baseResult.getData().isItem1()) {
+                    Double money1 = Double.parseDouble(data.getQuaMoney());
+                    Double beyond = Double.parseDouble(data.getBeyondMoney());
+                    Double money3 = Double.parseDouble(baseResult.getData().getItem2());
                     if ("3".equals(data.getTypeID())) {
-                        String str="";
-                        if ("-1".equals(data.getBeyondState())){
-                            str="服务金额：¥" + (money1);
-                        }else{
-                            str="服务金额：¥" + (money1+beyond);
+                        String str = "";
+                        if ("-1".equals(data.getBeyondState())) {
+                            str = "服务金额：¥" + (money1);
+                        } else {
+                            str = "服务金额：¥" + (money1 + beyond);
                         }
                         mTvServiceAmount.setText(str);
                         mTvTotalPrice.setText(str);
                         ToastUtils.showShort(str);
                     } else {
-                        String str="";
-                        if ("-1".equals(data.getBeyondState())){
-                            str="服务金额：¥" + (money3);
-                        }else{
-                            str="服务金额：¥" + (money3+beyond);
+                        String str = "";
+                        if ("-1".equals(data.getBeyondState())) {
+                            str = "服务金额：¥" + (money3);
+                        } else {
+                            str = "服务金额：¥" + (money3 + beyond);
                         }
                         mTvServiceAmount.setText(str);
                         mTvTotalPrice.setText(str);
@@ -3280,6 +3309,36 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         mPresenter.GetOrderInfo(OrderID);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(List<Accessory> list_collect) {
+        fAcList.clear();
+        /*商城*/
+        for (int i = 0; i < list.size(); i++) {
+            mfAccessory = new FAccessory.OrderAccessoryStrBean.OrderAccessoryBean();
+            mfAccessory.setPhoto1(list_collect.get(i).getImg1());//配件照片
+            mfAccessory.setPhoto2(list_collect.get(i).getImg2());//整机照片
+            mfAccessory.setFAccessoryID(list_collect.get(i).getFAccessoryID());//获取id
+            mfAccessory.setFAccessoryName(list_collect.get(i).getAccessoryName()); //获取名字
+            mfAccessory.setFCategoryID(list_collect.get(i).getFCategoryID() + ""); //分类id
+            mfAccessory.setQuantity(list_collect.get(i).getCount() + ""); //数量 默认数字为1
+            mfAccessory.setPrice(Double.valueOf("0"));//原价
+            mfAccessory.setDiscountPrice(Double.valueOf("0"));//折扣价
+            mfAccessory.setSizeID(list_collect.get(i).getSizeID());//小修中修大修
+            mfAccessory.setSendState("N");
+            mfAccessory.setRelation("");
+            mfAccessory.setState("0");
+            mfAccessory.setIsPay("N");
+            mfAccessory.setExpressNo("");
+            mfAccessory.setNeedPlatformAuth("N");
+//            if (select_state == 0) {//厂家自购
+            mfAccessory.setPrice(list_collect.get(i).getAccessoryPrice());//原价
+            mfAccessory.setDiscountPrice(list_collect.get(i).getAccessoryPrice());//原价
+//            }
+            fAcList.add(mfAccessory);
+            mPre_order_add_ac_adapter.notifyDataSetChanged();
+        }
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -3695,7 +3754,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 if (address != null) {
                     AddressBack = address.getProvince() + address.getCity() + address.getArea() + address.getDistrict() + address.getAddress() + "(" + address.getUserName() + "收)" + address.getPhone();
                     mTvAddressReturn.setText(AddressBack);
-                    returnAddress=AddressBack;
+                    returnAddress = AddressBack;
                 }
             }
         }
@@ -3785,17 +3844,18 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
             Double money1 = Double.parseDouble(data.getQuaMoney());
             Double money2 = Double.parseDouble(data.getOrderMoney());
             if ("3".equals(data.getTypeID())) {
-                String str="服务金额：¥" + (money1);
+                String str = "服务金额：¥" + (money1);
                 mTvServiceAmount.setText(str);
                 mTvTotalPrice.setText(str);
-                ToastUtils.showShort(str);
+//                ToastUtils.showShort(str);
             } else {
-                String str="服务金额：¥" + (money2);
+                String str = "服务金额：¥" + (money2);
                 mTvServiceAmount.setText(str);
                 mTvTotalPrice.setText(str);
-                ToastUtils.showShort(str);
+//                ToastUtils.showShort(str);
             }
         }
     }
+
 
 }

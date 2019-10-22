@@ -120,6 +120,7 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
         list=new ArrayList<>();
         recyclerView=view.findViewById(R.id.recyclerview_order_receiving);
         mRefreshLayout=view.findViewById(R.id.refreshLayout);
+        mRefreshLayout.autoRefresh();
         in_service_adapter=new In_Service_Adapter(R.layout.item_in_service,list);
         in_service_adapter.setEmptyView(getEmptyView());
         recyclerView.setAdapter(in_service_adapter);
@@ -331,6 +332,7 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
                 if (baseResult.getData().isItem1()){
                    // mRefreshLayout.autoRefresh();
                     in_service_adapter.remove(cancelposition);
+                    EventBus.getDefault().post(8);
                 }else {
                     Toast.makeText(getActivity(), (CharSequence) baseResult.getData().getItem2(),Toast.LENGTH_SHORT).show();
                 }

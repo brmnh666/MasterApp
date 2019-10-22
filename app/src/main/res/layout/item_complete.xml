@@ -57,9 +57,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="工单号:1212412412412414124"
-        android:layout_toRightOf="@+id/tv_review"
+        android:layout_alignParentRight="true"
         android:textSize="10sp"
-        android:textColor="@color/blue"
         android:layout_marginRight="19dp"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="17dp" />

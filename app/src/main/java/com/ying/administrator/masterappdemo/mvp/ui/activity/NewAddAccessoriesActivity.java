@@ -210,6 +210,9 @@ public class NewAddAccessoriesActivity extends BaseActivity<NewAddAccessoriesPre
     private AlertDialog customdialog_home_dialog;
     private String money;
     private PopupWindow popupWindow;
+    private int requestCode;
+    private int resultCode;
+    private Intent data;
 
     @Override
     protected int setLayoutId() {
@@ -249,7 +252,37 @@ public class NewAddAccessoriesActivity extends BaseActivity<NewAddAccessoriesPre
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 switch (view.getId()) {
                     case R.id.img_add:
-                        addPic(view, position,select_state);
+//                        addPic(view, position,select_state);
+
+                        num++;//背包内数量+1
+                        if (map_collect.get(position) == null) {
+                            map_collect.put(position, ((Accessory) adapter.getData().get(position)));
+                        } else {
+                            int count = map_collect.get(position).getCount();
+                            count++;
+                            map_collect.get(position).setCount(count);
+                        }
+
+                        list_collect.clear();
+                        //将map对象转为list
+                        Collection<Accessory> collection = map_collect.values();
+                        Iterator<Accessory> iterator = collection.iterator();
+                        while (iterator.hasNext()) {
+                            Accessory value = (Accessory) iterator.next();
+                            list_collect.add(value);
+                        }
+
+                        startLocation = new int[2];// 一个整型数组，用来存储按钮的在屏幕的X、Y坐标
+                        view.getLocationInWindow(startLocation);// 这是获取购买按钮的在屏幕的X、Y坐标（这也是动画开始的坐标）
+                        ball = new ImageView(NewAddAccessoriesActivity.this);// buyImg是动画的图片，我的是一个小球（R.drawable.sign）
+                        getBallImageResource(ball);
+
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                handler.sendEmptyMessage(0);
+                            }
+                        }).start();
                         break;
 
                 }
@@ -662,10 +695,14 @@ public class NewAddAccessoriesActivity extends BaseActivity<NewAddAccessoriesPre
                 if (list_collect.isEmpty()) {
                     Toast.makeText(mActivity, "请先选择配件", Toast.LENGTH_SHORT).show();
                 } else {
-                    Intent intent = new Intent();
+//                    Intent intent = new Intent();
+//                    intent.putExtra("list_collect", (Serializable) list_collect);
+//                    setResult(Config.APPLY_RESULT, intent);
+//                    NewAddAccessoriesActivity.this.finish();
+
+                    Intent intent=new Intent(mActivity,AccessoriesPictureActivity.class);
                     intent.putExtra("list_collect", (Serializable) list_collect);
-                    setResult(Config.APPLY_RESULT, intent);
-                    NewAddAccessoriesActivity.this.finish();
+                    startActivityForResult(intent, Config.APPLY_REQUEST);
 
 //                    Gson gson = new Gson();
 //                    if ("0".equals(select_state)) {
@@ -988,6 +1025,15 @@ public class NewAddAccessoriesActivity extends BaseActivity<NewAddAccessoriesPre
                     accessories_picture.put(1, newFile);
                 }
                 break;
+
+            case Config.APPLY_REQUEST:
+                if (resultCode == Config.APPLY_RESULT) {
+                    ArrayList<Accessory> list = (ArrayList<Accessory>) data.getSerializableExtra("list_collect");
+                    Intent intent = new Intent();
+                    intent.putExtra("list_collect", (Serializable) list);
+                    setResult(Config.APPLY_RESULT, intent);
+                    NewAddAccessoriesActivity.this.finish();
+                }
         }
 
         if (requestCode == 100) {
@@ -999,6 +1045,9 @@ public class NewAddAccessoriesActivity extends BaseActivity<NewAddAccessoriesPre
                 }
             }
         }
+
+
+
     }
 
     /**
@@ -1062,4 +1111,5 @@ public class NewAddAccessoriesActivity extends BaseActivity<NewAddAccessoriesPre
         }
         MyUtils.setWindowAlpa(mActivity, true);
     }
+
 }

@@ -107,6 +107,7 @@ public class Wait_Return_Fragment extends BaseFragment<GetOrderListForMePresente
         recyclerView=view.findViewById(R.id.recyclerview_order_receiving);
         tv_pending_appointment_redeploy=view.findViewById(R.id.tv_pending_appointment_redeploy);
         mRefreshLayout=view.findViewById(R.id.refreshLayout);
+        mRefreshLayout.autoRefresh();
         list=new ArrayList<>();
         subuserlist=new ArrayList<>();//获取子账号列表
 

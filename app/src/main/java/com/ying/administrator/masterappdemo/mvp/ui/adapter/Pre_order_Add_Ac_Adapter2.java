@@ -10,13 +10,12 @@ import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.entity.FAccessory;
 
 import java.util.List;
-import java.util.Map;
 
 /*预接单的添加配置*/
-public class Pre_order_Add_Ac_Adapter extends BaseQuickAdapter<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean, BaseViewHolder>  {
+public class Pre_order_Add_Ac_Adapter2 extends BaseQuickAdapter<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean, BaseViewHolder>  {
     private String AccessoryState;
     private int select_state;
-    public Pre_order_Add_Ac_Adapter(int layoutResId, @Nullable List<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> data,String AccessoryState,Integer select_state) {
+    public Pre_order_Add_Ac_Adapter2(int layoutResId, @Nullable List<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> data, String AccessoryState, Integer select_state) {
         super(layoutResId, data);
         this.AccessoryState=AccessoryState;
         this.select_state=select_state;
@@ -32,18 +31,9 @@ public class Pre_order_Add_Ac_Adapter extends BaseQuickAdapter<FAccessory.OrderA
             helper.setText(R.id.tv_accessories_number,"数量："+item.getQuantity());
 
         }
-        Glide.with(mContext).load("https://img.xigyu.com/Pics/Accessory/"+item.getPhoto1()).into((ImageView) helper.getView(R.id.photo1));
-        Glide.with(mContext).load("https://img.xigyu.com/Pics/Accessory/"+item.getPhoto2()).into((ImageView) helper.getView(R.id.photo2));
+//        Glide.with(mContext).load("https://img.xigyu.com/Pics/Accessory/"+item.getPhoto1()).into((ImageView) helper.getView(R.id.photo1));
+//        Glide.with(mContext).load("https://img.xigyu.com/Pics/Accessory/"+item.getPhoto2()).into((ImageView) helper.getView(R.id.photo2));
         helper.addOnClickListener(R.id.iv_accessories_delete);
-           if (item.getSendState()==null){
-               helper.setGone(R.id.tv_accessories_sendstate,false);
-           }
-           else if (item.getSendState().equals("N")){//未返件
-            helper.setGone(R.id.tv_accessories_sendstate,false);
-           }else { //已返件
-            helper.setGone(R.id.tv_accessories_sendstate,true);
-            helper.setText(R.id.tv_accessories_sendstate,"已返件");
-        }
 
 
     }

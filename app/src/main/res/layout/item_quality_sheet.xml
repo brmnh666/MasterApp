@@ -50,7 +50,7 @@
         android:text="维修"
         android:textSize="10sp"
         android:textColor="@color/blue"
-        />
+        android:visibility="gone"/>
 
 
     <TextView
@@ -59,7 +59,6 @@
         android:layout_height="wrap_content"
         android:text="工单号:1212412412412414124"
         android:layout_alignParentRight="true"
-        android:visibility="gone"
         android:textSize="12sp"
         android:layout_marginRight="19dp"
         android:layout_marginTop="15dp" />

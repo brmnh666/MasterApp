@@ -58,7 +58,7 @@ public class FAccessory implements Serializable {
             Memo = accessoryMemo;
         }
 
-        public static class OrderAccessoryBean {
+        public static class OrderAccessoryBean implements Serializable{
             /**
              * FAccessoryID : 1
              * FAccessoryName : PC管

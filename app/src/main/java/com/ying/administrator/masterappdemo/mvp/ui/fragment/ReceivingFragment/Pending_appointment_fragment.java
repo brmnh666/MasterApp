@@ -147,6 +147,7 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
         recyclerView = view.findViewById(R.id.recyclerview_order_receiving);
         tv_pending_appointment_redeploy = view.findViewById(R.id.tv_pending_appointment_redeploy);
         mRefreshLayout = view.findViewById(R.id.refreshLayout);
+        mRefreshLayout.autoRefresh();
         list = new ArrayList<>();
         subuserlist = new ArrayList<>();//获取子账号列表
         mPresenter.GetUserInfoList(userID, "1"); //获取关于自己的信息
@@ -190,7 +191,7 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
 //                startActivity(intent);
                 successposition=position;
 
-                mPresenter.AddOrderSuccess(OrderId,"1","预约成功");
+
             }
         }, format1, "2022-1-1 24:00");
 
@@ -691,7 +692,7 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
             case 200:
 
                 if (baseResult.getData().isItem1()) {
-
+                    mPresenter.AddOrderSuccess(OrderId,"1","预约成功");
                     if (data.getAddress() == null) {
                         Log.d("=====>", "地址为空");
                     } else {

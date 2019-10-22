@@ -150,7 +150,7 @@ public class Complete_wait_fetch_Fragement extends BaseFragment<GetOrderListForM
         recyclerView=view.findViewById(R.id.recyclerview_order_receiving);
         tv_pending_appointment_redeploy=view.findViewById(R.id.tv_pending_appointment_redeploy);
         mRefreshLayout=view.findViewById(R.id.refreshLayout);
-
+        mRefreshLayout.autoRefresh();
         list=new ArrayList<>();
 
 

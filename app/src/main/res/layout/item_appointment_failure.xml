@@ -45,7 +45,6 @@
         android:layout_height="wrap_content"
         android:text="工单号:1212412412412414124"
         android:layout_alignParentRight="true"
-        android:textColor="@color/blue"
         android:textSize="10sp"
         android:layout_marginRight="19dp"
         android:layout_marginTop="15dp"

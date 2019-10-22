@@ -37,7 +37,8 @@
         android:textColor="@color/blue"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:layout_toRightOf="@id/tv_pending_appointment_status_repair"/>
+        android:layout_toRightOf="@id/tv_pending_appointment_status_repair"
+        android:visibility="gone"/>
     <TextView
         android:id="@+id/tv_pending_appointment_job_number"
         android:layout_width="wrap_content"
@@ -46,7 +47,6 @@
         android:layout_marginTop="15dp"
         android:layout_marginRight="19dp"
         android:text="工单号:1212412412412414124"
-        android:visibility="gone"
         android:textSize="12sp" />
 
     <TextView

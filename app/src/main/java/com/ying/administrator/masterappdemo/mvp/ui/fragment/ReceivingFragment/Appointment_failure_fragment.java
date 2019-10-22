@@ -621,5 +621,4 @@ public class Appointment_failure_fragment extends BaseFragment<GetOrderListForMe
         }
         mPresenter.WorkerGetOrderList(userID, "7", Integer.toString(pageIndex), "5");
     }
-
 }
