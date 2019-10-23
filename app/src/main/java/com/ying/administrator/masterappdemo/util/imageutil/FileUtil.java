@@ -276,4 +276,8 @@ public class FileUtil {
         }
         return count;
     }
+    public static File getSaveFile(Context context) {
+        File file = new File(context.getFilesDir(), "pic.jpg");
+        return file;
+    }
 }

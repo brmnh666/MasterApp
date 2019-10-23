@@ -265,7 +265,8 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
 //                        alipay();
                         break;
                     case 2:
-                        mPresenter.GetWXOrderStr(userID, value);
+//                        mPresenter.GetWXOrderStr(userID, value);
+                        mPresenter.GetWXOrderStr(userID, "0.01");
 //                        WXpay();
                         break;
                 }

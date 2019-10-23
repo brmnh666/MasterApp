@@ -91,7 +91,7 @@ public class SplashActivity extends BaseActivity<LoginPresenter, LoginModel> imp
                 }
 
             }
-        }, 3000); //延时3秒后发送信息
+        }, 1000); //延时3秒后发送信息
 
 
     }

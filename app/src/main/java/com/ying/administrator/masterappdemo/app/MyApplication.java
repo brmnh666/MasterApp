@@ -1,5 +1,6 @@
 package com.ying.administrator.masterappdemo.app;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
@@ -36,6 +37,7 @@ import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.UpgradeActivity;
 import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.MainActivity;
+import com.ying.administrator.masterappdemo.util.UnCeHandler;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -72,7 +74,9 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        //设置该CrashHandler为程序的默认处理器
+        UnCeHandler catchExcep = new UnCeHandler(this);
+        Thread.setDefaultUncaughtExceptionHandler(catchExcep);
 
         Log.d("====>","application启动了");
         // 主要是添加下面这句代码
