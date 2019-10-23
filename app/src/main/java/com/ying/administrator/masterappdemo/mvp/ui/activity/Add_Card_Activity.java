@@ -46,6 +46,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -99,7 +100,7 @@ public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> im
     private String bankname;
     private String name;
     private String phone;
-
+    private List<BankCard> list=new ArrayList<>();//已经绑定的银行卡
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,7 +120,7 @@ public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> im
         userId = spUtils.getString("userName");
         mPresenter.GetUserInfoList(userId, "1");
         initAccessTokenWithAkSk();
-
+        list= (List<BankCard>) getIntent().getSerializableExtra("cardlist");
     }
     public void isCardNo(String cardNo){
         //接口
@@ -248,6 +249,12 @@ public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> im
                 if (num.isEmpty()){
                     ToastUtils.showShort("请输入银行卡号");
                     return;
+                }
+                for (int i = 0; i < list.size(); i++) {
+                    if (num.equals(list.get(i).getPayNo())){
+                        ToastUtils.showShort("该银行卡已绑定");
+                        return;
+                    }
                 }
                 if (phone.isEmpty()){
                     ToastUtils.showShort("请输入手机号码");

@@ -22,6 +22,8 @@ import com.ying.administrator.masterappdemo.mvp.model.CardModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.CardPresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.MyCardAdapter;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -46,6 +48,7 @@ public class CardList_Activity extends BaseActivity<CardPresenter, CardModel> im
 
     private String userId;
     private MyCardAdapter myCardAdapter;
+    private List<BankCard> list=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +90,9 @@ public class CardList_Activity extends BaseActivity<CardPresenter, CardModel> im
                 break;
             case R.id.ll_add_card:
             case R.id.tv_add_card:
-                startActivityForResult(new Intent(this, Add_Card_Activity.class), 2002);
+                Intent intent=new Intent(this, Add_Card_Activity.class);
+                intent.putExtra("cardlist", (Serializable) list);
+                startActivityForResult(intent, 2002);
                 //startActivity(new Intent(this,Add_Card_Activity.class));
                 break;
 
@@ -116,6 +121,7 @@ public class CardList_Activity extends BaseActivity<CardPresenter, CardModel> im
                     return;
                 } else {
                     mRvCardList.setLayoutManager(new LinearLayoutManager(mActivity));
+                    list=baseResult.getData();
                     myCardAdapter = new MyCardAdapter(R.layout.item_mycard, baseResult.getData(), mActivity);
                     mRvCardList.setAdapter(myCardAdapter);
                 }
