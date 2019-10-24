@@ -2,6 +2,7 @@ package com.ying.administrator.masterappdemo.mvp.ui.adapter;
 
 import android.support.annotation.Nullable;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
@@ -20,6 +21,12 @@ import java.util.List;
 
 /*预接单的添加配置*/
 public class Pre_order_Add_Ac_Adapter2 extends BaseQuickAdapter<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean, BaseViewHolder>  {
+    private OnItemEditTextChangedListener mListener;
+    private String discountStr;
+
+    public void setListener(OnItemEditTextChangedListener listener) {
+        mListener = listener;
+    }
     private String AccessoryState;
     private String select_state;
     public List<String> contents = new ArrayList<>();
@@ -30,7 +37,7 @@ public class Pre_order_Add_Ac_Adapter2 extends BaseQuickAdapter<FAccessory.Order
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, FAccessory.OrderAccessoryStrBean.OrderAccessoryBean item) {
+    protected void convert(final BaseViewHolder helper, FAccessory.OrderAccessoryStrBean.OrderAccessoryBean item) {
         helper.setText(R.id.tv_accessories_name,item.getFAccessoryName());
         if ("0".equals(AccessoryState)){
             helper.setText(R.id.tv_accessories_number,"数量："+item.getQuantity());
@@ -48,47 +55,67 @@ public class Pre_order_Add_Ac_Adapter2 extends BaseQuickAdapter<FAccessory.Order
             helper.getView(R.id.et_price).setVisibility(View.VISIBLE);
         }
 
-        EditText et_price=helper.getView(R.id.et_price);
-        et_price.addTextChangedListener(new MyTextChangedListener(helper,contents));
-
-    }
-
-
-    public class MyTextChangedListener implements TextWatcher {
-
-        public BaseViewHolder holder;
-        public List<String> contents;
-
-        public MyTextChangedListener(BaseViewHolder holder,List<String> contents){
-            this.holder = holder;
-            this.contents = contents;
+        final EditText et_price=helper.getView(R.id.et_price);
+        if (item.getPrice()==0){
+            et_price.setText("");
+        }else{
+            et_price.setText(item.getPrice()+"");
         }
-
-        @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-        }
-
-        @Override
-        public void afterTextChanged(Editable editable) {
-            if(holder != null && contents != null){
-                int adapterPosition = holder.getAdapterPosition();
-                LogUtil.d(TAG,"adapterPosition==================="+adapterPosition);
-//                contents.put(editable.toString());
-                contents.add(editable.toString());
+        et_price.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                discountStr = s.toString();
             }
-        }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String trim = s.toString().trim();
+                if (!TextUtils.isEmpty(trim)) {
+                    if (trim.contains(".")) {
+                        String[] split = trim.split("\\.");
+                        if (split.length > 1) {
+                            String s1 = split[1];
+                            if (!TextUtils.isEmpty(s1)) {
+                                if (s1.length() == 2) {
+                                    et_price.setText(discountStr);
+                                    try {
+                                        String trim1 = et_price.getText().toString().trim();
+                                        et_price.setSelection(trim1.length());
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                    return;
+                                }
+                            }
+                        }
+                    }
+
+
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String text = s.toString().trim();
+                String value;
+                int len = text.length();
+                if (len > 1 && text.startsWith("0")) {
+                    value = s.replace(0, 1, "").toString();
+                }else if(text.startsWith(".")){
+                    value = s.replace(0, 1, "0").toString();
+                }else if (text.endsWith(".")){
+                    value=s.replace(len-1, len, "").toString();
+                }else if(len==0){
+                    value="0";
+                }else{
+                    value=text;
+                }
+                mListener.onEditTextAfterTextChanged(value, helper.getLayoutPosition());
+            }
+        });
+
     }
-
-
-    @Override
-    public void onBindViewHolder(BaseViewHolder holder, int position) {
-        super.onBindViewHolder(holder, position);
-
+    public interface OnItemEditTextChangedListener {
+        void onEditTextAfterTextChanged(String s, int position);
     }
 }

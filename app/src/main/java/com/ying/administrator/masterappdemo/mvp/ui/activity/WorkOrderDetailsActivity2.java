@@ -410,9 +410,9 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     /*  配件*/
     private List<Accessory> mList = new ArrayList<>();   //存放返回的list
     private Map<Integer, FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> map = new HashMap<>(); //用于存放dialog里选择的配件
-    private List<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> fAcList = new ArrayList<>();// 用于存放预接单页面显示的数据
-    private List<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> mAcList = new ArrayList<>();// 用于存放预接单页面显示的数据
-    private List<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> sAcList = new ArrayList<>();// 用于存放预接单页面显示的数据
+    private List<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> fAcList = new ArrayList<>();// 厂家配件集合
+    private List<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> mAcList = new ArrayList<>();// 师傅自购配件集合
+    private List<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> sAcList = new ArrayList<>();// 用户自购配件集合
     private FAccessory fAccessory;
     private FAccessory.OrderAccessoryStrBean orderAccessoryStrBean;
     private FAccessory.OrderAccessoryStrBean.OrderAccessoryBean mfAccessory;
@@ -1183,37 +1183,13 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
             case R.id.btn_complete_submit_one:
             case R.id.btn_complete_submit:
                 gson = new Gson();
-                if (mPre_order_add_ac_adapter.getData().size() > 0 && mPre_order_Add_Service_Adapter.getData().size() == 0) {
-                    if ("".equals(returnAddress)) {
-                        ToastUtils.showShort("请选择收货地址");
-                    } else {
-                        mPresenter.UpdateOrderAddressByOrderID(OrderID, returnAddress);
-                    }
-                } else if (mPre_order_add_ac_adapter.getData().size() == 0 && mPre_order_Add_Service_Adapter.getData().size() > 0) {
-                    orderServiceStrBean = new FService.OrderServiceStrBean();
-                    orderServiceStrBean.setOrderService(mPre_order_Add_Service_Adapter.getData());
-                    String s2 = gson.toJson(orderServiceStrBean);
-                    sAccessory = new SAccessory();
-                    sAccessory.setOrderID(OrderID);
-                    sAccessory.setAccessorySequency("");
-                    sAccessory.setOrderAccessoryStr("");
-                    sAccessory.setOrderServiceStr(s2);
-                    String s = gson.toJson(sAccessory);
-                    Log.d("添加的服务有", s);
-                    body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), s);
-                    mPresenter.AddOrderAccessoryAndService(body);
-                } else if (mPre_order_add_ac_adapter.getData().size() > 0 && mPre_order_Add_Service_Adapter.getData().size() > 0) {
-                    if ("".equals(returnAddress)) {
-                        ToastUtils.showShort("请选择收货地址");
-                    } else {
-                        mPresenter.UpdateOrderAddressByOrderID(OrderID, returnAddress);
-                    }
-                } else {
-                    intent = new Intent(mActivity, CompleteWorkOrderActivity.class);
-                    intent.putExtra("OrderID", data.getOrderID());
-                    startActivity(intent);
+                if (select_state==0){
+                    select_state(fAcList);
+                }else if (select_state==1){
+                    select_state(mAcList);
+                }else{
+                    select_state(sAcList);
                 }
-
                 break;
             case R.id.iv_range_one:
                 if (data.getOrderBeyondImg() == null) {
@@ -1292,7 +1268,39 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         }
 
     }
-
+    //厂家寄件，师傅自购，用户自购
+    public void select_state(List<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> list){
+        if (list.size() > 0 && mPre_order_Add_Service_Adapter.getData().size() == 0) {
+            if ("".equals(returnAddress)) {
+                ToastUtils.showShort("请选择收货地址");
+            } else {
+                mPresenter.UpdateOrderAddressByOrderID(OrderID, returnAddress);
+            }
+        } else if (list.size() == 0 && mPre_order_Add_Service_Adapter.getData().size() > 0) {
+            orderServiceStrBean = new FService.OrderServiceStrBean();
+            orderServiceStrBean.setOrderService(mPre_order_Add_Service_Adapter.getData());
+            String s2 = gson.toJson(orderServiceStrBean);
+            sAccessory = new SAccessory();
+            sAccessory.setOrderID(OrderID);
+            sAccessory.setAccessorySequency("");
+            sAccessory.setOrderAccessoryStr("");
+            sAccessory.setOrderServiceStr(s2);
+            String s = gson.toJson(sAccessory);
+            Log.d("添加的服务有", s);
+            body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), s);
+            mPresenter.AddOrderAccessoryAndService(body);
+        } else if (list.size() > 0 && mPre_order_Add_Service_Adapter.getData().size() > 0) {
+            if ("".equals(returnAddress)) {
+                ToastUtils.showShort("请选择收货地址");
+            } else {
+                mPresenter.UpdateOrderAddressByOrderID(OrderID, returnAddress);
+            }
+        } else {
+            intent = new Intent(mActivity, CompleteWorkOrderActivity.class);
+            intent.putExtra("OrderID", data.getOrderID());
+            startActivity(intent);
+        }
+    }
     public void scaleview(String url) {
         simpleTarget = new SimpleTarget<Bitmap>() {
             @Override
@@ -1624,57 +1632,65 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 break;
         }
     }
-
+    public void select_state2(List<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> list){
+        if (list.size() > 0 && mPre_order_Add_Service_Adapter.getData().size() == 0) {
+            orderAccessoryStrBean = new FAccessory.OrderAccessoryStrBean();
+            orderAccessoryStrBean.setOrderAccessory(list);
+            orderAccessoryStrBean.setAccessoryMemo(AccessoryMemo);
+            String s1 = gson.toJson(orderAccessoryStrBean);
+            sAccessory = new SAccessory();
+            sAccessory.setOrderID(OrderID);
+            sAccessory.setAccessorySequency(Integer.toString(select_state));
+            sAccessory.setOrderAccessoryStr(s1);
+            sAccessory.setOrderServiceStr("");
+            String s = gson.toJson(sAccessory);
+            Log.d("添加的配件有", s);
+            body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), s);
+            mPresenter.AddOrderAccessoryAndService(body);
+        } else if (list.size() == 0 && mPre_order_Add_Service_Adapter.getData().size() > 0) {
+            orderServiceStrBean = new FService.OrderServiceStrBean();
+            orderServiceStrBean.setOrderService(mPre_order_Add_Service_Adapter.getData());
+            String s2 = gson.toJson(orderServiceStrBean);
+            sAccessory = new SAccessory();
+            sAccessory.setOrderID(OrderID);
+            sAccessory.setAccessorySequency("");
+            sAccessory.setOrderAccessoryStr("");
+            sAccessory.setOrderServiceStr(s2);
+            String s = gson.toJson(sAccessory);
+            Log.d("添加的服务有", s);
+            body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), s);
+            mPresenter.AddOrderAccessoryAndService(body);
+        } else if (list.size() > 0 && mPre_order_Add_Service_Adapter.getData().size() > 0) {
+            orderAccessoryStrBean = new FAccessory.OrderAccessoryStrBean();
+            orderAccessoryStrBean.setOrderAccessory(list);
+            orderAccessoryStrBean.setAccessoryMemo(AccessoryMemo);
+            String s1 = gson.toJson(orderAccessoryStrBean);
+            orderServiceStrBean = new FService.OrderServiceStrBean();
+            orderServiceStrBean.setOrderService(mPre_order_Add_Service_Adapter.getData());
+            String s2 = gson.toJson(orderServiceStrBean);
+            sAccessory = new SAccessory();
+            sAccessory.setOrderID(OrderID);
+            sAccessory.setAccessorySequency(Integer.toString(select_state));
+            sAccessory.setOrderAccessoryStr(s1);
+            sAccessory.setOrderServiceStr(s2);
+            String s = gson.toJson(sAccessory);
+            Log.d("添加的配件有", s);
+            body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), s);
+            mPresenter.AddOrderAccessoryAndService(body);
+        }
+    }
     @Override
     public void UpdateOrderAddressByOrderID(BaseResult<Data<String>> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
                 if (baseResult.getData().isItem1()) {
                     gson = new Gson();
-                    if (mPre_order_add_ac_adapter.getData().size() > 0 && mPre_order_Add_Service_Adapter.getData().size() == 0) {
-                        orderAccessoryStrBean = new FAccessory.OrderAccessoryStrBean();
-                        orderAccessoryStrBean.setOrderAccessory(mPre_order_add_ac_adapter.getData());
-                        orderAccessoryStrBean.setAccessoryMemo(AccessoryMemo);
-                        String s1 = gson.toJson(orderAccessoryStrBean);
-                        sAccessory = new SAccessory();
-                        sAccessory.setOrderID(OrderID);
-                        sAccessory.setAccessorySequency(Integer.toString(select_state));
-                        sAccessory.setOrderAccessoryStr(s1);
-                        sAccessory.setOrderServiceStr("");
-                        String s = gson.toJson(sAccessory);
-                        Log.d("添加的配件有", s);
-                        body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), s);
-                        mPresenter.AddOrderAccessoryAndService(body);
-                    } else if (mPre_order_add_ac_adapter.getData().size() == 0 && mPre_order_Add_Service_Adapter.getData().size() > 0) {
-                        orderServiceStrBean = new FService.OrderServiceStrBean();
-                        orderServiceStrBean.setOrderService(mPre_order_Add_Service_Adapter.getData());
-                        String s2 = gson.toJson(orderServiceStrBean);
-                        sAccessory = new SAccessory();
-                        sAccessory.setOrderID(OrderID);
-                        sAccessory.setAccessorySequency("");
-                        sAccessory.setOrderAccessoryStr("");
-                        sAccessory.setOrderServiceStr(s2);
-                        String s = gson.toJson(sAccessory);
-                        Log.d("添加的服务有", s);
-                        body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), s);
-                        mPresenter.AddOrderAccessoryAndService(body);
-                    } else if (mPre_order_add_ac_adapter.getData().size() > 0 && mPre_order_Add_Service_Adapter.getData().size() > 0) {
-                        orderAccessoryStrBean = new FAccessory.OrderAccessoryStrBean();
-                        orderAccessoryStrBean.setOrderAccessory(mPre_order_add_ac_adapter.getData());
-                        orderAccessoryStrBean.setAccessoryMemo(AccessoryMemo);
-                        String s1 = gson.toJson(orderAccessoryStrBean);
-                        orderServiceStrBean = new FService.OrderServiceStrBean();
-                        orderServiceStrBean.setOrderService(mPre_order_Add_Service_Adapter.getData());
-                        String s2 = gson.toJson(orderServiceStrBean);
-                        sAccessory = new SAccessory();
-                        sAccessory.setOrderID(OrderID);
-                        sAccessory.setAccessorySequency(Integer.toString(select_state));
-                        sAccessory.setOrderAccessoryStr(s1);
-                        sAccessory.setOrderServiceStr(s2);
-                        String s = gson.toJson(sAccessory);
-                        Log.d("添加的配件有", s);
-                        body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), s);
-                        mPresenter.AddOrderAccessoryAndService(body);
+                    if (select_state==0){
+                        select_state2(fAcList);
+                    }else if (select_state==1){
+                        select_state2(mAcList);
+                    }else{
+                        select_state2(sAcList);
                     }
                 } else {
                     ToastUtils.showShort("添加寄件地址失败");
@@ -3729,10 +3745,14 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mfAccessory.setExpressNo("");
                         mfAccessory.setNeedPlatformAuth("N");
                         if (select_state == 0) {//厂家自购
+                            fAcList.add(mfAccessory);
+                        }else if (select_state==1){
                             mfAccessory.setPrice(list.get(i).getAccessoryPrice());//原价
                             mfAccessory.setDiscountPrice(list.get(i).getAccessoryPrice());//原价
+                            mAcList.add(mfAccessory);
+                        }else{
+                            sAcList.add(mfAccessory);
                         }
-                        fAcList.add(mfAccessory);
                     }
                     mPre_order_add_ac_adapter.notifyDataSetChanged();
                     if (mPre_order_add_ac_adapter.getData().size() > 0) {
@@ -3742,7 +3762,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mTvSubmitAddAccessories.setBackgroundResource(R.drawable.tv_order_detail_btn);
                         mTvSubmitAddAccessories.setTextColor(Color.parseColor("#6a6a6a"));
                     }
-                    getMoney(fAcList, fList_service);
+                    getMoney(mPre_order_add_ac_adapter.getData(), fList_service);
                 }
                 break;
 

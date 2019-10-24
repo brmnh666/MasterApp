@@ -44,7 +44,8 @@
                 android:layout_marginLeft="10dp"
                 android:hint="配件价格"
                 android:gravity="right"
-                android:inputType="text|textMultiLine"
+                android:maxLength="5"
+                android:inputType="numberDecimal"
                 />
         </LinearLayout>
 

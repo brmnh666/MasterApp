@@ -16,6 +16,7 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,7 +69,7 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
-public class AccessoriesPictureActivity extends BaseActivity<NewAddAccessoriesPresenter, NewAddAccessoriesModel> implements View.OnClickListener, NewAddAccessoriesContract.View {
+public class AccessoriesPictureActivity extends BaseActivity<NewAddAccessoriesPresenter, NewAddAccessoriesModel> implements View.OnClickListener, NewAddAccessoriesContract.View,Pre_order_Add_Ac_Adapter2.OnItemEditTextChangedListener {
     @BindView(R.id.img_actionbar_return)
     ImageView mImgActionbarReturn;
     @BindView(R.id.tv_actionbar_return)
@@ -141,6 +142,7 @@ public class AccessoriesPictureActivity extends BaseActivity<NewAddAccessoriesPr
             fAcList.add(mfAccessory);
         }
         mPre_order_add_ac_adapter = new Pre_order_Add_Ac_Adapter2(R.layout.item_pre_order_add_accessories2, fAcList, "0", select_state);
+        mPre_order_add_ac_adapter.setListener(this);
         mRvAccessoriesList.setLayoutManager(new LinearLayoutManager(mActivity));
         mRvAccessoriesList.setAdapter(mPre_order_add_ac_adapter);
         contents = mPre_order_add_ac_adapter.contents;
@@ -200,13 +202,12 @@ public class AccessoriesPictureActivity extends BaseActivity<NewAddAccessoriesPr
                         list.get(i).setImg2(img_list.get(list.size()));//整机照片
                     }
                     if ("1".equals(select_state)){
-                        if (contents==null){
-                            ToastUtils.showShort("请输入配件价格");
-                            return;
-                        }else {
-                            for (int i = 0; i < list.size(); i++) {
-                                list.get(i).setAccessoryPrice(Double.parseDouble(contents.get(i)));
+                        for (int i = 0; i < list.size(); i++) {
+                            if (fAcList.get(i).getPrice()==0){
+                                ToastUtils.showShort("请输入配件价格");
+                                return;
                             }
+                            list.get(i).setAccessoryPrice(fAcList.get(i).getPrice());
                         }
                     }
                     Intent intent = new Intent();
@@ -423,8 +424,8 @@ public class AccessoriesPictureActivity extends BaseActivity<NewAddAccessoriesPr
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        mRvAccessoriesList.setFocusable(true);
+    public void onEditTextAfterTextChanged(String price, int position) {
+        mfAccessory = fAcList.get(position);
+        mfAccessory.setPrice(Double.parseDouble(price));
     }
 }

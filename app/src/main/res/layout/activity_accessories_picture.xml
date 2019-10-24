@@ -14,15 +14,15 @@
             android:orientation="vertical">
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:descendantFocusability="blocksDescendants">
+                android:layout_height="wrap_content">
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_accessories_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:overScrollMode="never"
                     android:nestedScrollingEnabled="false"
-                    android:descendantFocusability="beforeDescendants"/>
+                    android:descendantFocusability="afterDescendants"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -37,6 +37,7 @@
                     android:id="@+id/rv_accessories_picture"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:overScrollMode="never"
                     android:nestedScrollingEnabled="false"
                     android:descendantFocusability="beforeDescendants"/>
             </RelativeLayout>
