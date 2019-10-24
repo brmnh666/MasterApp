@@ -932,12 +932,12 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         intent.putExtra("select_state", select_state + "");
                         intent.putExtra("orderId", OrderID);
                         startActivityForResult(intent, Config.APPLY_REQUEST);
-//                    } else if (select_state == 1) {
-//                        Intent intent = new Intent(mActivity, NewAddAccessoriesActivity.class);
-//                        intent.putExtra("SubCategoryID", data.getSubCategoryID() + "");
-//                        intent.putExtra("select_state", select_state + "");
-//                        intent.putExtra("orderId", OrderID);
-//                        startActivityForResult(intent, Config.APPLY_REQUEST);
+                    } else if (select_state == 1) {
+                        Intent intent = new Intent(mActivity, NewAddAccessoriesActivity.class);
+                        intent.putExtra("SubCategoryID", data.getSubCategoryID() + "");
+                        intent.putExtra("select_state", select_state + "");
+                        intent.putExtra("orderId", OrderID);
+                        startActivityForResult(intent, Config.APPLY_REQUEST);
                     } else {
                         addAccessory();
                     }

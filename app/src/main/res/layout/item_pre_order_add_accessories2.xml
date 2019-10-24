@@ -37,7 +37,15 @@
                 android:textColor="#6A6A6A"
                 android:textSize="15sp" />
 
-
+            <EditText
+                android:id="@+id/et_price"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:hint="配件价格"
+                android:gravity="right"
+                android:inputType="text|textMultiLine"
+                />
         </LinearLayout>
 
         <ImageView

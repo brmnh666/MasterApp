@@ -702,6 +702,7 @@ public class NewAddAccessoriesActivity extends BaseActivity<NewAddAccessoriesPre
 
                     Intent intent=new Intent(mActivity,AccessoriesPictureActivity.class);
                     intent.putExtra("list_collect", (Serializable) list_collect);
+                    intent.putExtra("select_state",select_state);
                     startActivityForResult(intent, Config.APPLY_REQUEST);
 
 //                    Gson gson = new Gson();

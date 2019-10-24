@@ -108,6 +108,8 @@ public class AccessoriesPictureActivity extends BaseActivity<NewAddAccessoriesPr
     private NewAddAccessoriesAdapter newAddAccessoriesAdapter;
     private List<Accessory> list_collect = new ArrayList<>(); //收藏的配件
     private HashMap<Integer, String> img_list = new HashMap<>(); //图片集合
+    private String select_state;
+    private List<String> contents;
 
     @Override
     protected int setLayoutId() {
@@ -118,6 +120,7 @@ public class AccessoriesPictureActivity extends BaseActivity<NewAddAccessoriesPr
     protected void initData() {
 
         list = (ArrayList<Accessory>) getIntent().getSerializableExtra("list_collect");
+        select_state = getIntent().getStringExtra("select_state");
         for (int i = 0; i < list.size(); i++) {
             mfAccessory = new FAccessory.OrderAccessoryStrBean.OrderAccessoryBean();
             mfAccessory.setFAccessoryID(list.get(i).getFAccessoryID());//获取id
@@ -137,10 +140,10 @@ public class AccessoriesPictureActivity extends BaseActivity<NewAddAccessoriesPr
             mfAccessory.setDiscountPrice(list.get(i).getAccessoryPrice());//原价
             fAcList.add(mfAccessory);
         }
-        mPre_order_add_ac_adapter = new Pre_order_Add_Ac_Adapter2(R.layout.item_pre_order_add_accessories2, fAcList, "0", 0);
+        mPre_order_add_ac_adapter = new Pre_order_Add_Ac_Adapter2(R.layout.item_pre_order_add_accessories2, fAcList, "0", select_state);
         mRvAccessoriesList.setLayoutManager(new LinearLayoutManager(mActivity));
         mRvAccessoriesList.setAdapter(mPre_order_add_ac_adapter);
-
+        contents = mPre_order_add_ac_adapter.contents;
         nameList = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
             nameList.add(new AccessoriesName(list.get(i).getAccessoryName(), null));
@@ -195,6 +198,16 @@ public class AccessoriesPictureActivity extends BaseActivity<NewAddAccessoriesPr
                     for (int i = 0; i < list.size(); i++) {
                         list.get(i).setImg1(img_list.get(i));//配件照片
                         list.get(i).setImg2(img_list.get(list.size()));//整机照片
+                    }
+                    if ("1".equals(select_state)){
+                        if (contents==null){
+                            ToastUtils.showShort("请输入配件价格");
+                            return;
+                        }else {
+                            for (int i = 0; i < list.size(); i++) {
+                                list.get(i).setAccessoryPrice(Double.parseDouble(contents.get(i)));
+                            }
+                        }
                     }
                     Intent intent = new Intent();
                     intent.putExtra("list_collect", (Serializable) list);
@@ -373,7 +386,6 @@ public class AccessoriesPictureActivity extends BaseActivity<NewAddAccessoriesPr
     /**
      * 添加配件图片
      *
-     * @param map
      */
     public void ApplyAccessoryphotoUpload(File file) {
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
@@ -408,5 +420,11 @@ public class AccessoriesPictureActivity extends BaseActivity<NewAddAccessoriesPr
     @Override
     public void UpdateOrderAddressByOrderID(BaseResult<Data<String>> baseResult) {
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mRvAccessoriesList.setFocusable(true);
     }
 }
