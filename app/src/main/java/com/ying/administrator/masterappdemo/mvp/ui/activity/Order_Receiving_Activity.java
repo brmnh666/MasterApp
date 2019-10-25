@@ -130,7 +130,7 @@ public class Order_Receiving_Activity extends BaseActivity<ReceivingPresenter, R
 
         mAdapter = new MyPagerAdapter(getSupportFragmentManager());
         mReceivingViewpager.setAdapter(mAdapter);
-        mReceivingViewpager.setOffscreenPageLimit(mFragments.size());
+        mReceivingViewpager.setOffscreenPageLimit(1);
         mTabReceivingLayout.setViewPager(mReceivingViewpager);
 
       //  mTabReceivingLayout.showDot(2);

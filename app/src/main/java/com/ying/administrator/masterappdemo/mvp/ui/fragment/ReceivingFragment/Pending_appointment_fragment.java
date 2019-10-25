@@ -794,14 +794,14 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
         }
 
         public void showLoading () {
-            dialog.setLoadingBuilder(Z_TYPE.ROTATE_CIRCLE)//设置类型
-                    .setLoadingColor(Color.BLACK)//颜色
-                    .setHintText("正在加载工单...")
-                    .setHintTextSize(14) // 设置字体大小 dp
-                    .setHintTextColor(Color.BLACK)  // 设置字体颜色
-                    .setDurationTime(1) // 设置动画时间百分比 - 0.5倍
-                    .setCanceledOnTouchOutside(false)//点击外部无法取消
-                    .show();
+//            dialog.setLoadingBuilder(Z_TYPE.ROTATE_CIRCLE)//设置类型
+//                    .setLoadingColor(Color.BLACK)//颜色
+//                    .setHintText("正在加载工单...")
+//                    .setHintTextSize(14) // 设置字体大小 dp
+//                    .setHintTextColor(Color.BLACK)  // 设置字体颜色
+//                    .setDurationTime(1) // 设置动画时间百分比 - 0.5倍
+//                    .setCanceledOnTouchOutside(false)//点击外部无法取消
+//                    .show();
         }
 
         public void cancleLoading () {

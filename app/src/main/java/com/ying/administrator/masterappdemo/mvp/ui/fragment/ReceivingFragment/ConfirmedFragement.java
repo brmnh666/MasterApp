@@ -51,6 +51,7 @@ import java.util.List;
 
 /*未确认*/
 public class ConfirmedFragement extends BaseFragment<GetOrderListForMePresenter, GetOrderListForMeModel> implements GetOrderListForMeContract.View {
+    private static final String TAG = "ConfirmedFragement";
     private View view;
     private RecyclerView recyclerView;
     private ConfirmedAdapter ConfirmedAdapter;
@@ -90,6 +91,7 @@ public class ConfirmedFragement extends BaseFragment<GetOrderListForMePresenter,
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(TAG, "onResume: --------------------------------------");
         mRefreshLayout.autoRefresh();  //返回的时候刷新页面
     }
 
@@ -112,7 +114,7 @@ public class ConfirmedFragement extends BaseFragment<GetOrderListForMePresenter,
         recyclerView=view.findViewById(R.id.recyclerview_order_receiving);
         tv_pending_appointment_redeploy=view.findViewById(R.id.tv_pending_appointment_redeploy);
         mRefreshLayout=view.findViewById(R.id.refreshLayout);
-        mRefreshLayout.autoRefresh();
+//        mRefreshLayout.autoRefresh();
         list=new ArrayList<>();
 
 
