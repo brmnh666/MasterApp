@@ -130,8 +130,16 @@ public class ConfirmedFragement extends BaseFragment<GetOrderListForMePresenter,
         ConfirmedAdapter.setEmptyView(getEmptyView());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mPresenter.WorkerGetOrderList(userID,"9",Integer.toString(pageIndex),"5");
-//        ConfirmedAdapter.notifyDataSetChanged();
-//        mRefreshLayout.autoRefresh(0,0,1);
+        ConfirmedAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Intent intent=new Intent(getActivity(), WorkOrderDetailsActivity2.class);
+                //传递工单号
+                intent.putExtra("OrderID",((WorkOrder.DataBean)adapter.getItem(position)).getOrderID());
+                startActivity(intent);
+                mPresenter.UpdateOrderIsLook(((WorkOrder.DataBean)adapter.getItem(position)).getOrderID(),"2");
+            }
+        });
     }
 
 

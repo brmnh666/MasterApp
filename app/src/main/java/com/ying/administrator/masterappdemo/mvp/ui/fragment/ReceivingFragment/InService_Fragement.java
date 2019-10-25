@@ -124,6 +124,16 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
         in_service_adapter=new In_Service_Adapter(R.layout.item_in_service,list);
         in_service_adapter.setEmptyView(getEmptyView());
         recyclerView.setAdapter(in_service_adapter);
+        in_service_adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Intent intent=new Intent(getActivity(), WorkOrderDetailsActivity2.class);
+                //传递工单号
+                intent.putExtra("OrderID",((WorkOrder.DataBean)adapter.getItem(position)).getOrderID());
+                startActivity(intent);
+                mPresenter.UpdateOrderIsLook(((WorkOrder.DataBean)adapter.getItem(position)).getOrderID(),"2");
+            }
+        });
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         /*选择地图*/
         popupWindow_view = LayoutInflater.from(mActivity).inflate(R.layout.popwindow_choosemap, null);
