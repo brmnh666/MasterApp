@@ -2693,6 +2693,9 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mLlNewMoney.setVisibility(View.GONE);
                         mTvNewMoney.setText("¥" + data.getNewMoney());
                     }
+                    if (!("".equals(AccessoryAndServiceApplyState)||AccessoryAndServiceApplyState==null)){
+                        mLlAddService.setVisibility(View.GONE);
+                    }
                     break;
 
                 } else {

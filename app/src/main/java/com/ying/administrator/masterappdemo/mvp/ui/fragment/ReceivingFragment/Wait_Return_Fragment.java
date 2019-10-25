@@ -84,7 +84,7 @@ public class Wait_Return_Fragment extends BaseFragment<GetOrderListForMePresente
    /* @Override
     public void onResume() {
         super.onResume();
-        mRefreshLayout.autoRefresh();  //返回的时候刷新页面
+        mRefreshLayout.autoRefresh(0,0,1);  //返回的时候刷新页面
     }*/
 
     @Override
@@ -107,7 +107,7 @@ public class Wait_Return_Fragment extends BaseFragment<GetOrderListForMePresente
         recyclerView=view.findViewById(R.id.recyclerview_order_receiving);
         tv_pending_appointment_redeploy=view.findViewById(R.id.tv_pending_appointment_redeploy);
         mRefreshLayout=view.findViewById(R.id.refreshLayout);
-        mRefreshLayout.autoRefresh();
+        mRefreshLayout.autoRefresh(0,0,1);
         list=new ArrayList<>();
         subuserlist=new ArrayList<>();//获取子账号列表
 
@@ -300,7 +300,7 @@ public class Wait_Return_Fragment extends BaseFragment<GetOrderListForMePresente
         switch (baseResult.getStatusCode()){
             case 200:
                 if (baseResult.getData().isItem1()){
-                    mRefreshLayout.autoRefresh();
+                    mRefreshLayout.autoRefresh(0,0,1);
                 }else {
                     Toast.makeText(getActivity(),"取消失败",Toast.LENGTH_LONG).show();
                 }
@@ -344,7 +344,7 @@ public class Wait_Return_Fragment extends BaseFragment<GetOrderListForMePresente
                 Data<String> data=baseResult.getData();
                 if (data.isItem1()){
                     ToastUtils.showShort(data.getItem2());
-                    mRefreshLayout.autoRefresh();
+                    mRefreshLayout.autoRefresh(0,0,1);
                 }else{
                     ToastUtils.showShort(data.getItem2());
                 }
@@ -359,7 +359,7 @@ public class Wait_Return_Fragment extends BaseFragment<GetOrderListForMePresente
                 Data<String> data=baseResult.getData();
                 if (data.isItem1()){
                     ToastUtils.showShort("催件成功");
-                    mRefreshLayout.autoRefresh();
+                    mRefreshLayout.autoRefresh(0,0,1);
                 }else{
                     ToastUtils.showShort(data.getItem2());
                 }
@@ -400,6 +400,9 @@ public class Wait_Return_Fragment extends BaseFragment<GetOrderListForMePresente
             if (isVisibleToUser){
                 if (isfristin==false){
                     showLoading();
+                }
+                if (mPresenter==null){
+                    return;
                 }
                 mPresenter.WorkerGetOrderList(userID,"8",Integer.toString(pageIndex),"5");
             }

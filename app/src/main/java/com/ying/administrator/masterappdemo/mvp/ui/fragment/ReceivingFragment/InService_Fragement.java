@@ -113,14 +113,14 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
     @Override
     public void onResume() {
         super.onResume();
-        mRefreshLayout.autoRefresh();
+        mRefreshLayout.autoRefresh(0,0,1);
     }
     public void initView() {
         dialog =new ZLoadingDialog(mActivity);
         list=new ArrayList<>();
         recyclerView=view.findViewById(R.id.recyclerview_order_receiving);
         mRefreshLayout=view.findViewById(R.id.refreshLayout);
-        mRefreshLayout.autoRefresh();
+        mRefreshLayout.autoRefresh(0,0,1);
         in_service_adapter=new In_Service_Adapter(R.layout.item_in_service,list);
         in_service_adapter.setEmptyView(getEmptyView());
         recyclerView.setAdapter(in_service_adapter);
@@ -138,6 +138,9 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
         if (hidden){
             return;
         }else {
+            if (mPresenter==null){
+                return;
+            }
             list.clear();
             mPresenter.WorkerGetOrderList(userID,"2",Integer.toString(pageIndex),"5");
         }
@@ -330,7 +333,7 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
         switch (baseResult.getStatusCode()){
             case 200:
                 if (baseResult.getData().isItem1()){
-                   // mRefreshLayout.autoRefresh();
+                   // mRefreshLayout.autoRefresh(0,0,1);
                     in_service_adapter.remove(cancelposition);
                     EventBus.getDefault().post(8);
                 }else {
@@ -563,6 +566,9 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
         if (isVisibleToUser){
        if (isfristin==false){
            showLoading();
+            }
+            if (mPresenter==null){
+                return;
             }
             mPresenter.WorkerGetOrderList(userID,"2",Integer.toString(pageIndex),"5");
         }

@@ -92,7 +92,7 @@ public class ConfirmedFragement extends BaseFragment<GetOrderListForMePresenter,
     public void onResume() {
         super.onResume();
         Log.d(TAG, "onResume: --------------------------------------");
-        mRefreshLayout.autoRefresh();  //返回的时候刷新页面
+        mRefreshLayout.autoRefresh(0,0,1);  //返回的时候刷新页面
     }
 
     @Override
@@ -114,7 +114,6 @@ public class ConfirmedFragement extends BaseFragment<GetOrderListForMePresenter,
         recyclerView=view.findViewById(R.id.recyclerview_order_receiving);
         tv_pending_appointment_redeploy=view.findViewById(R.id.tv_pending_appointment_redeploy);
         mRefreshLayout=view.findViewById(R.id.refreshLayout);
-//        mRefreshLayout.autoRefresh();
         list=new ArrayList<>();
 
 
@@ -132,7 +131,7 @@ public class ConfirmedFragement extends BaseFragment<GetOrderListForMePresenter,
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mPresenter.WorkerGetOrderList(userID,"9",Integer.toString(pageIndex),"5");
 //        ConfirmedAdapter.notifyDataSetChanged();
-//        mRefreshLayout.autoRefresh();
+//        mRefreshLayout.autoRefresh(0,0,1);
     }
 
 
@@ -346,7 +345,7 @@ public class ConfirmedFragement extends BaseFragment<GetOrderListForMePresenter,
         switch (baseResult.getStatusCode()){
             case 200:
                 if (baseResult.getData().isItem1()){
-                    mRefreshLayout.autoRefresh();
+                    mRefreshLayout.autoRefresh(0,0,1);
 
                 }else {
                     Toast.makeText(getActivity(),"取消失败",Toast.LENGTH_LONG).show();

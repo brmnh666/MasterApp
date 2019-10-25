@@ -117,7 +117,7 @@ public class Quality_sheet_Fragement extends BaseFragment<GetOrderListForMePrese
     @Override
     public void onResume() {
         super.onResume();
-        mRefreshLayout.autoRefresh();  //返回的时候刷新页面
+        mRefreshLayout.autoRefresh(0,0,1);  //返回的时候刷新页面
     }
 
     @Override
@@ -139,7 +139,7 @@ public class Quality_sheet_Fragement extends BaseFragment<GetOrderListForMePrese
         recyclerView=view.findViewById(R.id.recyclerview_order_receiving);
         tv_pending_appointment_redeploy=view.findViewById(R.id.tv_pending_appointment_redeploy);
         mRefreshLayout=view.findViewById(R.id.refreshLayout);
-        mRefreshLayout.autoRefresh();
+        mRefreshLayout.autoRefresh(0,0,1);
         list=new ArrayList<>();
 
 
@@ -392,7 +392,7 @@ public class Quality_sheet_Fragement extends BaseFragment<GetOrderListForMePrese
                                     redeployposition = position;
                                     mPresenter.ChangeSendOrder(OrderId, SubUserID);
                                     customDialog_redeploy.dismiss();
-                                    // mRefreshLayout.autoRefresh();
+                                    // mRefreshLayout.autoRefresh(0,0,1);
                                     SubUserID = null;
                                 }
 
@@ -629,7 +629,7 @@ public class Quality_sheet_Fragement extends BaseFragment<GetOrderListForMePrese
         switch (baseResult.getStatusCode()){
             case 200:
                 if (baseResult.getData().isItem1()){
-                    mRefreshLayout.autoRefresh();
+                    mRefreshLayout.autoRefresh(0,0,1);
                     Qulity_Adapter.remove(cancleposition);
                 }else {
                     Toast.makeText(getActivity(),"取消失败",Toast.LENGTH_LONG).show();

@@ -128,7 +128,7 @@ public class Complete_wait_fetch_Fragement extends BaseFragment<GetOrderListForM
    /* @Override
     public void onResume() {
         super.onResume();
-        mRefreshLayout.autoRefresh();  //返回的时候刷新页面
+        mRefreshLayout.autoRefresh(0,0,1);  //返回的时候刷新页面
     }*/
 
     @Override
@@ -150,7 +150,7 @@ public class Complete_wait_fetch_Fragement extends BaseFragment<GetOrderListForM
         recyclerView=view.findViewById(R.id.recyclerview_order_receiving);
         tv_pending_appointment_redeploy=view.findViewById(R.id.tv_pending_appointment_redeploy);
         mRefreshLayout=view.findViewById(R.id.refreshLayout);
-        mRefreshLayout.autoRefresh();
+        mRefreshLayout.autoRefresh(0,0,1);
         list=new ArrayList<>();
 
 
@@ -396,7 +396,7 @@ public class Complete_wait_fetch_Fragement extends BaseFragment<GetOrderListForM
                                     //转派成功 刷新当前页面
                                     mPresenter.ChangeSendOrder(OrderId,SubUserID);
                                     customDialog_redeploy.dismiss();
-                                    mRefreshLayout.autoRefresh();
+                                    mRefreshLayout.autoRefresh(0,0,1);
                                 }
 
                             }
@@ -579,7 +579,7 @@ public class Complete_wait_fetch_Fragement extends BaseFragment<GetOrderListForM
         switch (baseResult.getStatusCode()){
             case 200:
                 if (baseResult.getData().isItem1()){
-                    mRefreshLayout.autoRefresh();
+                    mRefreshLayout.autoRefresh(0,0,1);
 
                 }else {
                     Toast.makeText(getActivity(),"取消失败",Toast.LENGTH_LONG).show();
