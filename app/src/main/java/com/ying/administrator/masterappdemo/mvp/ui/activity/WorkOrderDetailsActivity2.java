@@ -928,13 +928,13 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     /*厂家自购跳到新页面*/
                     if (select_state == 0) {
                         Intent intent = new Intent(mActivity, NewAddAccessoriesActivity.class);
-                        intent.putExtra("SubCategoryID", data.getSubCategoryID() + "");
+                        intent.putExtra("SubCategoryID", data.getProductTypeID() + "");
                         intent.putExtra("select_state", select_state + "");
                         intent.putExtra("orderId", OrderID);
                         startActivityForResult(intent, Config.APPLY_REQUEST);
                     } else if (select_state == 1) {
                         Intent intent = new Intent(mActivity, NewAddAccessoriesActivity.class);
-                        intent.putExtra("SubCategoryID", data.getSubCategoryID() + "");
+                        intent.putExtra("SubCategoryID", data.getProductTypeID() + "");
                         intent.putExtra("select_state", select_state + "");
                         intent.putExtra("orderId", OrderID);
                         startActivityForResult(intent, Config.APPLY_REQUEST);
@@ -947,7 +947,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 break;
             /*添加服务*/
             case R.id.tv_order_detail_add_service:
-                mPresenter.GetFactoryService(data.getSubCategoryID() + "");
+                mPresenter.GetFactoryService(data.getProductTypeID() + "");
                 break;
             case R.id.ll_return:
                 if (clickedResult != null) {
@@ -1382,7 +1382,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         ll_choose_accessory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPresenter.GetFactoryAccessory(data.getSubCategoryID() + "");
+                mPresenter.GetFactoryAccessory(data.getProductTypeID() + "");
             }
         });
 
@@ -1716,7 +1716,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         }
                         mTvServiceAmount.setText(str);
                         mTvTotalPrice.setText(str);
-                        ToastUtils.showShort(str);
+//                        ToastUtils.showShort(str);
                     } else {
                         String str = "";
                         if ("-1".equals(data.getBeyondState())) {
@@ -1726,7 +1726,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         }
                         mTvServiceAmount.setText(str);
                         mTvTotalPrice.setText(str);
-                        ToastUtils.showShort(str);
+//                        ToastUtils.showShort(str);
                     }
 
                 }
@@ -3045,7 +3045,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     mfAccessory.setPhoto2(baseResult.getData().getItem2());//整机照片
                     mfAccessory.setFAccessoryID(accessory.getFAccessoryID() + "");//获取id
                     mfAccessory.setFAccessoryName(accessory.getAccessoryName()); //获取名字
-                    mfAccessory.setFCategoryID(data.getSubCategoryID()); //分类id
+                    mfAccessory.setFCategoryID(data.getProductTypeID()); //分类id
                     mfAccessory.setQuantity(num); //数量 默认数字为1
                     mfAccessory.setPrice(accessory.getAccessoryPrice());//原价
                     mfAccessory.setDiscountPrice(accessory.getAccessoryPrice());//折扣价
@@ -3112,7 +3112,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     mfAccessory.setPhoto2(baseResult.getData().getItem2());//整机照片
                     mfAccessory.setFAccessoryID("0");//获取id
                     mfAccessory.setFAccessoryName(tv_accessory_name.getText().toString()); //获取名字
-                    mfAccessory.setFCategoryID(data.getSubCategoryID()); //分类id
+                    mfAccessory.setFCategoryID(data.getProductTypeID()); //分类id
                     mfAccessory.setQuantity(num); //数量 默认数字为1
                     mfAccessory.setPrice(Double.valueOf("0"));//原价
                     mfAccessory.setDiscountPrice(Double.valueOf("0"));//折扣价
@@ -3859,7 +3859,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         }
         if (list.size() > 0) {
             System.out.println(Collections.max(list));
-            mPresenter.GetFactoryAccessoryMoney(OrderID, data.getSubCategoryID(), String.valueOf(Collections.max(list)));
+            mPresenter.GetFactoryAccessoryMoney(OrderID, data.getProductTypeID(), String.valueOf(Collections.max(list)));
         } else {
             Double money1 = Double.parseDouble(data.getQuaMoney());
             Double money2 = Double.parseDouble(data.getOrderMoney());

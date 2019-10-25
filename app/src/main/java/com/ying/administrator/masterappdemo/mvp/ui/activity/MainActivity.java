@@ -213,12 +213,12 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
 
     @Override
     protected void initView() {
-        skeletonScreen=  Skeleton.bind(rootview)
-                .load(R.layout.skeleton_main)
-                .duration(2000)
-                .color(R.color.shimmer_color)
-                .angle(10)
-                .show();
+//        skeletonScreen=  Skeleton.bind(rootview)
+//                .load(R.layout.skeleton_main)
+//                .duration(2000)
+//                .color(R.color.shimmer_color)
+//                .angle(10)
+//                .show();
         fragmentList = new ArrayList<>();
         fragmentList.add(Home_Fragment.newInstance(""));
         fragmentList.add(NewsFragment.newInstance(""));

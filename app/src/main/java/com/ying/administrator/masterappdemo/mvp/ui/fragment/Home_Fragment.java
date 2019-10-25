@@ -793,7 +793,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                                             } else {
 //                                                BeyondMoney=(Double.parseDouble(item.getDistance())-20)+"";
 //                                                Distance=(Double.parseDouble(item.getDistance())-20)+"";
-                                                ToastUtils.showShort("请输入超出远程费！");
+                                                ToastUtils.showShort("请输入超出公里数！");
                                                 return;
                                             }
                                             OrderByondImgPicUpload(files_map_remote);
