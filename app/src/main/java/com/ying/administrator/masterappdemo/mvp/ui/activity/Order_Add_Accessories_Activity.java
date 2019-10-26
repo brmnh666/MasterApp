@@ -831,7 +831,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
 
 
                 // Log.d("====>", String.valueOf(data.getOrderAccessroyDetail().size()));
-                Money = Double.parseDouble(data.getOrderMoney()) - Double.parseDouble(data.getInitMoney());
+                Money = Double.parseDouble(data.getOrderMoney()+"") - Double.parseDouble(data.getInitMoney());
                 switch (type) {
                     case 1:
 //                        accessory();

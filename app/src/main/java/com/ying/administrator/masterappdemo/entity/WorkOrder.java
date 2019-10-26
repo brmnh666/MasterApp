@@ -165,7 +165,7 @@ public class WorkOrder implements Serializable {
         private String OrgSendUser;
         private String LoginUser;
         private String IsPay;
-        private String OrderMoney;
+        private Double OrderMoney;
         private String InitMoney;
         private String BeyondMoney;
         private String BeyondID;
@@ -220,6 +220,15 @@ public class WorkOrder implements Serializable {
         private List<LeavemessageimgListBean> LeavemessageimgList;
         private String AccessoryAndServiceApplyState;
         private String DistanceTureOrFalse;
+        private Double terraceMoney;
+
+        public Double getTerraceMoney() {
+            return terraceMoney;
+        }
+
+        public void setTerraceMoney(Double terraceMoney) {
+            this.terraceMoney = terraceMoney;
+        }
 
         public String getDistanceTureOrFalse() {
             return DistanceTureOrFalse;
@@ -763,11 +772,11 @@ public class WorkOrder implements Serializable {
             this.IsPay = IsPay;
         }
 
-        public String getOrderMoney() {
+        public Double getOrderMoney() {
             return OrderMoney;
         }
 
-        public void setOrderMoney(String OrderMoney) {
+        public void setOrderMoney(Double OrderMoney) {
             this.OrderMoney = OrderMoney;
         }
 

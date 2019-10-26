@@ -403,6 +403,9 @@ public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> im
     }
     @Override
     protected void onActivityResult(int requestCode, final int resultCode, Intent data) {
+        if (data==null){
+            return;
+        }
         // 获取调用参数
         String contentType = data.getStringExtra(CameraActivity.KEY_CONTENT_TYPE);
         // 通过临时文件获取拍摄的图片

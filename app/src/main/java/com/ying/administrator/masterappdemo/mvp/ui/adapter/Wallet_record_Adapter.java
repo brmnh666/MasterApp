@@ -54,7 +54,7 @@ public class Wallet_record_Adapter extends BaseQuickAdapter<Bill.DataBean, BaseV
                 helper.setText(R.id.tv_record_happen,"收入");
                 helper.setText(R.id.tv_record_add_reduce,"+");
                 helper.setText(R.id.tv_record_money,"¥"+item.getPayMoney());
-                helper.setTextColor(R.id.tv_record_money, Color.GREEN);
+                helper.setTextColor(R.id.tv_record_money,  Color.parseColor("#1690FF"));
             }else {
                 helper.setText(R.id.tv_record_happen,"支出");
                 helper.setText(R.id.tv_record_add_reduce,"-");

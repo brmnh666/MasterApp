@@ -1742,8 +1742,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
 
             case 200:
                 if (baseResult != null) {
-
                     data = baseResult.getData();
+                    Double ordermoney=data.getOrderMoney()-data.getTerraceMoney();
                     mTvStatus.setText(data.getStateStr());
                     if ("服务中".equals(data.getStateStr())) {
                         if ("1".equals(data.getTypeID())) {//维修
@@ -1756,8 +1756,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     mTvBeyondMoney.setText("¥" + data.getBeyondMoney() + "");
                     mTvAccessoryMoney.setText("¥" + data.getAccessoryMoney());
                     mTvServiceMoney.setText("¥" + data.getServiceMoney());
-                    mTvOrderMoney.setText("¥" + data.getOrderMoney() + "");
-                    mTvOrderMoneyFinish.setText("¥" + data.getOrderMoney() + "");
+                    mTvOrderMoney.setText("¥" + ordermoney + "");
+                    mTvOrderMoneyFinish.setText("¥" + ordermoney + "");
                     if ("3".equals(data.getTypeID())) {
                         mTvServiceAmount.setText("服务金额：¥" + data.getQuaMoney() + "");
                         mTvTotalPrice.setText("服务金额：¥" + data.getQuaMoney() + "");
@@ -1771,12 +1771,12 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
 //                            mTvTotalPrice.setText("服务金额：¥" + (Double.parseDouble(data.getAccessoryMoney()) + Double.parseDouble(data.getPostMoney())) + "");
 //                        }
                         if ("1".equals(data.getAccessoryApplyState())) {
-                            mTvServiceAmount.setText("服务金额：¥" + data.getOrderMoney());
-                            mTvTotalPrice.setText("服务金额：¥" + data.getOrderMoney());
+                            mTvServiceAmount.setText("服务金额：¥" + ordermoney);
+                            mTvTotalPrice.setText("服务金额：¥" + ordermoney);
 
                         } else {
-                            mTvServiceAmount.setText("服务金额：¥" + data.getOrderMoney() + "");
-                            mTvTotalPrice.setText("服务金额：¥" + data.getOrderMoney() + "");
+                            mTvServiceAmount.setText("服务金额：¥" +ordermoney);
+                            mTvTotalPrice.setText("服务金额：¥" + ordermoney);
                         }
                     }
 
@@ -2465,7 +2465,11 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                             mTvServiceApplyState.setText("");
                             mTvServiceApplyState.setVisibility(View.GONE);
                             mTvServiceApplication.setVisibility(View.GONE);
-                        } else {
+                        }  else if ("2".equals(data.getAccessoryAndServiceApplyState())) {
+                            mTvServiceApplyState.setText("审核通过");
+                            mTvServiceApplyState.setVisibility(View.GONE);
+                            mTvServiceApplication.setVisibility(View.GONE);
+                        }else {
                             mTvServiceApplyState.setText("被拒");
                             mTvServiceApplication.setVisibility(View.GONE);
                         }
@@ -2916,6 +2920,10 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     ToastUtils.showShort("提交成功");
                     EventBus.getDefault().post("WorkOrderDetailsActivity");
                     EventBus.getDefault().post(5);
+                    mAcList.clear();
+                    fAcList.clear();
+                    sAcList.clear();
+                    fList_service.clear();
 //                    mPresenter.GetOrderInfo(OrderID);
 //                    ApplyAccessoryphotoUpload(accessories_picture);
                 } else {
@@ -3865,7 +3873,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
             mPresenter.GetFactoryAccessoryMoney(OrderID, data.getProductTypeID(), String.valueOf(Collections.max(list)));
         } else {
             Double money1 = Double.parseDouble(data.getQuaMoney());
-            Double money2 = Double.parseDouble(data.getOrderMoney());
+            Double money2 = Double.parseDouble(data.getOrderMoney()+"");
             if ("3".equals(data.getTypeID())) {
                 String str = "服务金额：¥" + (money1);
                 mTvServiceAmount.setText(str);

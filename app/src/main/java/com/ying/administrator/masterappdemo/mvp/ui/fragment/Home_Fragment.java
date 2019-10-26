@@ -79,6 +79,7 @@ import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.AllWorkOrdersContract;
 import com.ying.administrator.masterappdemo.mvp.model.AllWorkOrdersModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.AllWorkOrdersPresenter;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.ApplyFeeActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Login_New_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_Receiving_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_details_Activity;
@@ -764,49 +765,54 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                                 final WorkOrder.DataBean item = (WorkOrder.DataBean) adapter.getItem(position);
                                 OrderID = item.getOrderID();
                                 if ("true".equals(item.getDistanceTureOrFalse())) {
-                                    under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_apply_beyond, null);
-                                    btn_cancel = under_review.findViewById(R.id.btn_cancel);
-                                    btn_submit_beyond = under_review.findViewById(R.id.btn_submit_beyond);
-                                    tv_remote_km = under_review.findViewById(R.id.tv_remote_km);
-                                    iv_map1 = under_review.findViewById(R.id.iv_map1);
-                                    et_order_beyond_km = under_review.findViewById(R.id.et_order_beyond_km);
-//                                    tv_remote_km.setText((Double.parseDouble(item.getDistance()) - 30) + "km");
-
-                                    btn_cancel.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            underReviewDialog.dismiss();
-                                            mPresenter.UpdateSendOrderState(OrderID, "1", "");
-                                        }
-                                    });
-                                    btn_submit_beyond.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            if (files_map_remote.size() == 0) {
-                                                ToastUtils.showShort("请添加远程图片!");
-                                                return;
-                                            }
-                                            Distance = et_order_beyond_km.getText().toString();
-                                            if (!Distance.isEmpty()) {
-                                                BeyondMoney = Double.parseDouble(Distance) + "";
-                                                Distance = BeyondMoney;
-                                            } else {
-//                                                BeyondMoney=(Double.parseDouble(item.getDistance())-20)+"";
-//                                                Distance=(Double.parseDouble(item.getDistance())-20)+"";
-                                                ToastUtils.showShort("请输入超出公里数！");
-                                                return;
-                                            }
-                                            OrderByondImgPicUpload(files_map_remote);
-                                        }
-                                    });
-                                    iv_map1.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            showPopupWindow(1301, 1302);
-                                        }
-                                    });
-                                    underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review).create();
-                                    underReviewDialog.show();
+                                    Intent intent=new Intent(mActivity,ApplyFeeActivity.class);
+                                    intent.putExtra("position",position);
+                                    intent.putExtra("orderId",OrderID);
+                                    startActivity(intent);
+//                                    startActivity(new Intent(mActivity, ApplyFeeActivity.class));
+//                                    under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_apply_beyond, null);
+//                                    btn_cancel = under_review.findViewById(R.id.btn_cancel);
+//                                    btn_submit_beyond = under_review.findViewById(R.id.btn_submit_beyond);
+//                                    tv_remote_km = under_review.findViewById(R.id.tv_remote_km);
+//                                    iv_map1 = under_review.findViewById(R.id.iv_map1);
+//                                    et_order_beyond_km = under_review.findViewById(R.id.et_order_beyond_km);
+////                                    tv_remote_km.setText((Double.parseDouble(item.getDistance()) - 30) + "km");
+//
+//                                    btn_cancel.setOnClickListener(new View.OnClickListener() {
+//                                        @Override
+//                                        public void onClick(View v) {
+//                                            underReviewDialog.dismiss();
+//                                            mPresenter.UpdateSendOrderState(OrderID, "1", "");
+//                                        }
+//                                    });
+//                                    btn_submit_beyond.setOnClickListener(new View.OnClickListener() {
+//                                        @Override
+//                                        public void onClick(View v) {
+//                                            if (files_map_remote.size() == 0) {
+//                                                ToastUtils.showShort("请添加远程图片!");
+//                                                return;
+//                                            }
+//                                            Distance = et_order_beyond_km.getText().toString();
+//                                            if (!Distance.isEmpty()) {
+//                                                BeyondMoney = Double.parseDouble(Distance) + "";
+//                                                Distance = BeyondMoney;
+//                                            } else {
+////                                                BeyondMoney=(Double.parseDouble(item.getDistance())-20)+"";
+////                                                Distance=(Double.parseDouble(item.getDistance())-20)+"";
+//                                                ToastUtils.showShort("请输入超出公里数！");
+//                                                return;
+//                                            }
+//                                            OrderByondImgPicUpload(files_map_remote);
+//                                        }
+//                                    });
+//                                    iv_map1.setOnClickListener(new View.OnClickListener() {
+//                                        @Override
+//                                        public void onClick(View v) {
+//                                            showPopupWindow(1301, 1302);
+//                                        }
+//                                    });
+//                                    underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review).create();
+//                                    underReviewDialog.show();
                                 } else {
                                     showLoading();
                                     mPresenter.UpdateSendOrderState(OrderID, "1", "");
@@ -1554,6 +1560,8 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
             } else {
                 mPresenter.WorkerGetOrderList(userID, "1", Integer.toString(pageIndex), "5");
             }
+        }else if ("pending_appointment".equals(message)){
+            grabsheetAdapter.remove(grabposition);
         }
     }
 

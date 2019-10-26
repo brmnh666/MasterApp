@@ -48,7 +48,7 @@ public class Pending_Appointment_Adapter extends BaseQuickAdapter<WorkOrder.Data
             helper.setText(R.id.tv_malfunction, "故障:"+item.getMemo());//原因
         }else if ("安装".equals(item.getTypeName())){
             helper.setText(R.id.tv_malfunction, "安装备注:"+item.getMemo());//原因
-            helper.setBackgroundColor(R.id.tv_in_service_status_repair, Color.parseColor("#1690FF"));
+            helper.setBackgroundColor(R.id.tv_pending_appointment_status_repair, Color.parseColor("#1690FF"));
         }else {
             helper.setText(R.id.tv_malfunction, item.getMemo());//原因
         }
