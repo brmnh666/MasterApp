@@ -20,7 +20,7 @@ public class MyMessageModel implements MyMessageContract.Model {
 
     @Override
     public Observable<BaseResult<MessageData<List<Message>>>> GetMessageList(String UserID, String Type,String SubType, String limit, String page) {
-        return ApiRetrofit.getDefault().GetMessageList(UserID, Type,SubType,limit,page,"1")
+        return ApiRetrofit.getDefault().GetMessageList(UserID, Type,SubType,limit,page,"")
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

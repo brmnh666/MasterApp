@@ -697,7 +697,8 @@ public interface ApiService {
 
     /*获取个人消息  1.交易消息类型  2.订单消息类型*/
     @FormUrlEncoded
-    @POST("Cms/GetListmessageByType")
+//    @POST("Cms/GetListmessageByType")//分页无效
+    @POST("Cms/GetmessageListByType")//分页有效
     Observable<BaseResult<MessageData<List<Message>>>> GetMessageList(@Field("UserID") String UserID,
                                                                       @Field("Type") String Type,
                                                                       @Field("SubType") String SubType,

@@ -9,6 +9,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -138,22 +139,6 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
         /*选择地图*/
         popupWindow_view = LayoutInflater.from(mActivity).inflate(R.layout.popwindow_choosemap, null);
         mPopupWindow = new PopupWindow(popupWindow_view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-       // mPresenter.WorkerGetOrderList(userID,"2",Integer.toString(pageIndex),"5");
-    }
-
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (hidden){
-            return;
-        }else {
-            if (mPresenter==null){
-                return;
-            }
-            list.clear();
-            mPresenter.WorkerGetOrderList(userID,"2",Integer.toString(pageIndex),"5");
-        }
     }
 
     private void initListener() {
@@ -163,23 +148,19 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 pageIndex=1;
-              //  list.clear();
                 mPresenter.WorkerGetOrderList(userID,"2",Integer.toString(pageIndex),"5");
-                in_service_adapter.notifyDataSetChanged();
-                refreshlayout.finishRefresh();
+                refreshlayout.resetNoMoreData();
             }
         });
 
         //没满屏时禁止上拉
-        mRefreshLayout.setEnableLoadmoreWhenContentNotFull(false);
+//        mRefreshLayout.setEnableLoadmoreWhenContentNotFull(false);
         //上拉加载更多
         mRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 pageIndex++; //页数加1
                 mPresenter.WorkerGetOrderList(userID,"2",Integer.toString(pageIndex),"5");
-                in_service_adapter.notifyDataSetChanged();
-                refreshlayout.finishLoadmore();
             }
         });
 
@@ -283,26 +264,25 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
 
     @Override
     public void WorkerGetOrderList(BaseResult<WorkOrder> baseResult) {
+        mRefreshLayout.finishRefresh();
+        mRefreshLayout.finishLoadmore();
         switch (baseResult.getStatusCode()) {
 
             case 200:
                 if (baseResult.getData().getData()==null){
-                    Log.d("==>","暂无服务工单");
-                    if (pageIndex==1){
+                    if (pageIndex!=1){
+                        mRefreshLayout.finishLoadmoreWithNoMoreData();
+                    }else{
                         list.clear();
                         in_service_adapter.notifyDataSetChanged();
                     }
                 }else {
                     if (pageIndex==1){
                         list.clear();
-                        workOrder = baseResult.getData();
-                        list.addAll(workOrder.getData());
-                        in_service_adapter.notifyDataSetChanged();
-                    }else {
-                        workOrder = baseResult.getData();
-                        list.addAll(workOrder.getData());
-                        in_service_adapter.setNewData(list);
                     }
+                    workOrder = baseResult.getData();
+                    list.addAll(workOrder.getData());
+                    in_service_adapter.notifyDataSetChanged();
                 }
                 isfristin=true;
                 cancleLoading();
@@ -570,20 +550,20 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
         startActivity(intent);
     }
 
-   @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser){
-       if (isfristin==false){
-           showLoading();
-            }
-            if (mPresenter==null){
-                return;
-            }
-            mPresenter.WorkerGetOrderList(userID,"2",Integer.toString(pageIndex),"5");
-        }
-
-    }
+//   @Override
+//    public void setUserVisibleHint(boolean isVisibleToUser) {
+//        super.setUserVisibleHint(isVisibleToUser);
+//        if (isVisibleToUser){
+//       if (isfristin==false){
+//           showLoading();
+//            }
+//            if (mPresenter==null){
+//                return;
+//            }
+//            mPresenter.WorkerGetOrderList(userID,"2",Integer.toString(pageIndex),"5");
+//        }
+//
+//    }
     /*@Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(String message) {
         if (!"2".equals(message)){

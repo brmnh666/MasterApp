@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -157,28 +158,21 @@ public class Returnedparts_Fragement extends BaseFragment<GetOrderListForMePrese
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-          /*      if (!list.isEmpty()){ //当有数据的时候
-                    ll_empty.setVisibility(View.INVISIBLE);//隐藏空的界面
-                }*/
                 pageIndex=1;
-                //list.clear();
                 mPresenter.WorkerGetOrderList(userID,"3",Integer.toString(pageIndex),"5");
-                Return_Sheet_Adapter.notifyDataSetChanged();
-                refreshlayout.finishRefresh();
+                refreshlayout.resetNoMoreData();
             }
         });
 
 
         //没满屏时禁止上拉
-        mRefreshLayout.setEnableLoadmoreWhenContentNotFull(false);
+//        mRefreshLayout.setEnableLoadmoreWhenContentNotFull(false);
         //上拉加载更多
         mRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 pageIndex++; //页数加1
                 mPresenter.WorkerGetOrderList(userID,"3",Integer.toString(pageIndex),"5");
-                Return_Sheet_Adapter.notifyDataSetChanged();
-                refreshlayout.finishLoadmore();
             }
         });
 
@@ -256,26 +250,25 @@ public class Returnedparts_Fragement extends BaseFragment<GetOrderListForMePrese
     /*获取 自己抢到的订单*/
     @Override
     public void WorkerGetOrderList(BaseResult<WorkOrder> baseResult) {
+        mRefreshLayout.finishRefresh();
+        mRefreshLayout.finishLoadmore();
         switch (baseResult.getStatusCode()) {
             case 200:
                 if (baseResult.getData().getData()==null){
                     Log.d("===>","暂无预约工单");
-                    if (pageIndex==1){
+                    if (pageIndex!=1){
+                        mRefreshLayout.finishLoadmoreWithNoMoreData();
+                    }else{
                         list.clear();
                         Return_Sheet_Adapter.notifyDataSetChanged();
                     }
                 }else {
                     if (pageIndex==1){
                         list.clear();
-                        workOrder = baseResult.getData();
-                        list.addAll(workOrder.getData());
-                        Return_Sheet_Adapter.notifyDataSetChanged();
-                    }else {
-                        workOrder = baseResult.getData();
-                        list.addAll(workOrder.getData());
-                        Return_Sheet_Adapter.setNewData(list);
                     }
-
+                    workOrder = baseResult.getData();
+                    list.addAll(workOrder.getData());
+                    Return_Sheet_Adapter.notifyDataSetChanged();
                 }
                 isfristin=true;
                 cancleLoading();
@@ -431,8 +424,8 @@ public class Returnedparts_Fragement extends BaseFragment<GetOrderListForMePrese
                     EventBus.getDefault().post(Config.ORDER_READ);
                 }
                 break;
-                default:
-                    break;
+            default:
+                break;
         }
 
 

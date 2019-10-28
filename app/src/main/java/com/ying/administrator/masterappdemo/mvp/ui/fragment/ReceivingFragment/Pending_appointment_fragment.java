@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.Image;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -208,28 +209,19 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-          /*      if (!list.isEmpty()){ //当有数据的时候
-                    ll_empty.setVisibility(View.INVISIBLE);//隐藏空的界面
-                }*/
                 pageIndex = 1;
-                //list.clear();
                 mPresenter.WorkerGetOrderList(userID, "1", Integer.toString(pageIndex), "5");
-                pending_appointment_adapter.notifyDataSetChanged();
-                refreshlayout.finishRefresh();
+                mRefreshLayout.resetNoMoreData();
             }
         });
 
 
-        //没满屏时禁止上拉
-        mRefreshLayout.setEnableLoadmoreWhenContentNotFull(false);
         //上拉加载更多
         mRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 pageIndex++; //页数加1
                 mPresenter.WorkerGetOrderList(userID, "1", Integer.toString(pageIndex), "5");
-                pending_appointment_adapter.notifyDataSetChanged();
-                refreshlayout.finishLoadmore();
             }
         });
 
@@ -259,21 +251,21 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                         data.setPhone(((WorkOrder.DataBean) adapter.getItem(position)).getPhone());
                         data.setMemo(((WorkOrder.DataBean) adapter.getItem(position)).getMemo());
 
-                                RxPermissions rxPermissions = new RxPermissions(mActivity);
-                                rxPermissions.request(Manifest.permission.WRITE_CALENDAR, Manifest.permission.READ_CALENDAR)
-                                        .subscribe(new Consumer<Boolean>() {
-                                            @Override
-                                            public void accept(Boolean aBoolean) throws Exception {
-                                                if (aBoolean) {
-                                                    // 获取全部权限成功
+                        RxPermissions rxPermissions = new RxPermissions(mActivity);
+                        rxPermissions.request(Manifest.permission.WRITE_CALENDAR, Manifest.permission.READ_CALENDAR)
+                                .subscribe(new Consumer<Boolean>() {
+                                    @Override
+                                    public void accept(Boolean aBoolean) throws Exception {
+                                        if (aBoolean) {
+                                            // 获取全部权限成功
 
-                                                    chooseTime(position,"请选择上门时间");
-                                                } else {
-                                                    // 获取全部权限失败
-                                                    Log.d("=====>", "权限获取失败");
-                                                }
-                                            }
-                                        });
+                                            chooseTime(position,"请选择上门时间");
+                                        } else {
+                                            // 获取全部权限失败
+                                            Log.d("=====>", "权限获取失败");
+                                        }
+                                    }
+                                });
                         break;
                     case R.id.tv_pending_appointment_failure:
 
@@ -538,11 +530,15 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
     /*获取 自己抢到的订单*/
     @Override
     public void WorkerGetOrderList(BaseResult<WorkOrder> baseResult) {
+        mRefreshLayout.finishRefresh();
+        mRefreshLayout.finishLoadmore();
         switch (baseResult.getStatusCode()) {
             case 200:
 
                 if (baseResult.getData().getData() == null) {
-                    if (pageIndex == 1) {
+                    if (pageIndex != 1) {
+                        mRefreshLayout.finishLoadmoreWithNoMoreData();
+                    }else{
                         list.clear();
                         pending_appointment_adapter.notifyDataSetChanged();
                     }
@@ -550,18 +546,10 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                 } else {
                     if (pageIndex == 1) {
                         list.clear();
-                        workOrder = baseResult.getData();
-                        list.addAll(workOrder.getData());
-                        pending_appointment_adapter.notifyDataSetChanged();
-                    } else {
-                        workOrder = baseResult.getData();
-                        list.addAll(workOrder.getData());
-                        pending_appointment_adapter.setNewData(list);
                     }
-
-                    cancleLoading();
-                    //  pending_appointment_adapter.notifyDataSetChanged();
-
+                    workOrder = baseResult.getData();
+                    list.addAll(workOrder.getData());
+                    pending_appointment_adapter.notifyDataSetChanged();
                 }
 
 
@@ -727,7 +715,7 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                 }
         }
 
-        }
+    }
 
     @Override
     public void ApplyAccessoryLate(BaseResult<Data<String>> baseResult) {
@@ -757,43 +745,43 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
 
 
     @Override
-        public void contentLoading () {
-        }
+    public void contentLoading () {
+    }
 
-        @Override
-        public void contentLoadingComplete () {
-        }
+    @Override
+    public void contentLoadingComplete () {
+    }
 
-        @Override
-        public void contentLoadingError () {
-        }
+    @Override
+    public void contentLoadingError () {
+    }
 
-        @Override
-        public void contentLoadingEmpty () {
-        }
+    @Override
+    public void contentLoadingEmpty () {
+    }
 
-        @Override
-        public void showProgress () {
-        }
+    @Override
+    public void showProgress () {
+    }
 
-        @Override
-        public void hideProgress () {
+    @Override
+    public void hideProgress () {
 
-        }
+    }
 
 
-        @Override
-        public void onActivityResult ( int requestCode, int resultCode, Intent data){
-            super.onActivityResult(requestCode, resultCode, data);
-            if (resultCode == 10001 || resultCode == 10002) {
-                if (requestCode == 1001) {
-                    pending_appointment_adapter.remove(successposition);
-                }
-
+    @Override
+    public void onActivityResult ( int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == 10001 || resultCode == 10002) {
+            if (requestCode == 1001) {
+                pending_appointment_adapter.remove(successposition);
             }
-        }
 
-        public void showLoading () {
+        }
+    }
+
+    public void showLoading () {
 //            dialog.setLoadingBuilder(Z_TYPE.ROTATE_CIRCLE)//设置类型
 //                    .setLoadingColor(Color.BLACK)//颜色
 //                    .setHintText("正在加载工单...")
@@ -802,17 +790,17 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
 //                    .setDurationTime(1) // 设置动画时间百分比 - 0.5倍
 //                    .setCanceledOnTouchOutside(false)//点击外部无法取消
 //                    .show();
-        }
-
-        public void cancleLoading () {
-            dialog.dismiss();
-
-        }
-        @Subscribe(threadMode = ThreadMode.MAIN)
-        public void Event (String message){
-            if (!"1".equals(message)) {
-                return;
-            }
-            mPresenter.WorkerGetOrderList(userID, "1", Integer.toString(pageIndex), "5");
-        }
     }
+
+    public void cancleLoading () {
+        dialog.dismiss();
+
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event (String message){
+        if (!"1".equals(message)) {
+            return;
+        }
+        mPresenter.WorkerGetOrderList(userID, "1", Integer.toString(pageIndex), "5");
+    }
+}

@@ -603,7 +603,7 @@
              />
 
         <!--工单消息-->
-        <activity android:name=".mvp.ui.activity.OrderMessageActivity"
+        <activity android:name=".mvp.ui.activity.OrderMessageActivity2"
             android:theme="@style/AppTheme.NoActionBar"
             />
         <!--交易信息-->

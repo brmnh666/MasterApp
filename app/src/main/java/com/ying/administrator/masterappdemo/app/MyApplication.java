@@ -58,6 +58,7 @@ public class MyApplication extends Application {
                 header.setPrimaryColors(Color.parseColor("#00000000"));
                 header.setShowBezierWave(true);
                 layout.setEnableHeaderTranslationContent(false);
+                layout.setDisableContentWhenRefresh(true);
                 return header;//指定为经典Header，默认是 贝塞尔雷达Header
 //                return new ClassicsHeader(context).setSpinnerStyle(SpinnerStyle.Translate);//指定为经典Header，默认是 贝塞尔雷达Header
             }

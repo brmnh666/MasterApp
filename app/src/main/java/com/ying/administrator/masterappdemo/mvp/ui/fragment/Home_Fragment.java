@@ -394,11 +394,8 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 pageIndex = 1;
-                list.clear();
-                Pendinglist.clear();
 
-                refreshlayout.finishRefresh();
-                refreshlayout.setLoadmoreFinished(false);
+                refreshlayout.resetNoMoreData();
 
                 mPresenter.GetUserInfoList(userID, "1");//根据 手机号码获取用户详细信息
 
@@ -433,7 +430,6 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                         mPresenter.WorkerGetOrderList(userID, "1", Integer.toString(pageIndex), "5");
                     }
                 }
-                refreshlayout.finishLoadmore();
             }
         });
 
@@ -444,6 +440,8 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
     /*获取订单列表新接口*/
     @Override
     public void WorkerGetOrderList(BaseResult<WorkOrder> baseResult) {
+        mRefreshLayout.finishRefresh();
+        mRefreshLayout.finishLoadmore();
         switch (baseResult.getStatusCode()) {
             case 200:
                 if (baseResult != null) {
@@ -454,6 +452,8 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                             if (pageIndex == 1) {
                                 list.clear();
                                 grabsheetAdapter.notifyDataSetChanged();
+                            }else{
+                                mRefreshLayout.finishLoadmoreWithNoMoreData();
                             }
 
                         } else {
@@ -463,21 +463,11 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                                 workOrder = baseResult.getData();
                                 list.addAll(workOrder.getData());
                                 grabsheetAdapter.setNewData(list);
-//                            mRecyclerviewOrderReceiving.setLayoutManager(new WrapContentLinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
-//                            grabsheetAdapter = new GrabsheetAdapter(R.layout.item_grabsheet, list);
-//                            mRecyclerviewOrderReceiving.setAdapter(grabsheetAdapter);
-//                            grabsheetAdapter.setEmptyView(getEmptyView());
-//                            showGrabsheet();
                             } else {
                                 workOrder = baseResult.getData();
                                 list.addAll(workOrder.getData());
                                 grabsheetAdapter.setNewData(list);
-//                            mRecyclerviewOrderReceiving.setLayoutManager(new WrapContentLinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
-//                            grabsheetAdapter = new GrabsheetAdapter(R.layout.item_grabsheet, list);
-//                            mRecyclerviewOrderReceiving.setAdapter(grabsheetAdapter);
-//                            grabsheetAdapter.setEmptyView(getEmptyView());
-//                            showGrabsheet();
-
+                                mRefreshLayout.finishLoadmore();
                             }
 
                         }
@@ -486,7 +476,8 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                         if (baseResult.getData().getData() == null) {
                             if (pageIndex == 1) {
                                 Pendinglist.clear();
-//                            pending_appointment_adapter.notifyDataSetChanged();
+                            }else{
+                                mRefreshLayout.finishLoadmoreWithNoMoreData();
                             }
                             cancleLoading();
                         } else {
@@ -496,25 +487,15 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                                 workOrder = baseResult.getData();
                                 Pendinglist.addAll(workOrder.getData());
                                 pending_appointment_adapter.setNewData(Pendinglist);
-//                            mRecyclerviewOrderReceiving.setLayoutManager(new WrapContentLinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
-//                            pending_appointment_adapter = new Pending_Adapter(R.layout.item_pending_appointment, Pendinglist, userInfo);
-//                            pending_appointment_adapter.setEmptyView(getEmptyView());
-//                            mRecyclerviewOrderReceiving.setAdapter(pending_appointment_adapter);
-//                            showPending();
                             } else {
                                 workOrder = baseResult.getData();
                                 Pendinglist.addAll(workOrder.getData());
                                 pending_appointment_adapter.setNewData(Pendinglist);
-//                            mRecyclerviewOrderReceiving.setLayoutManager(new WrapContentLinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
-//                            pending_appointment_adapter = new Pending_Adapter(R.layout.item_pending_appointment, Pendinglist, userInfo);
-//                            pending_appointment_adapter.setEmptyView(getEmptyView());
-//                            mRecyclerviewOrderReceiving.setAdapter(pending_appointment_adapter);
-//                            showPending();
+                                mRefreshLayout.finishLoadmore();
 
                             }
 
                             cancleLoading();
-                            //  pending_appointment_adapter.notifyDataSetChanged();
 
                         }
 
@@ -1468,7 +1449,6 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
 
 
         methodRequiresPermission();
-        /*模拟数据*/
 
 
         if (userInfo.getParentUserID() == null || "".equals(userInfo.getParentUserID())) {
@@ -1476,18 +1456,6 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
         } else {
             mPresenter.WorkerGetOrderList(userID, "1", Integer.toString(pageIndex), "5");
         }
-      /* if (list.isEmpty()){ //没有数据显示空
-           contentLoadingEmpty();
-
-       }else {
-           mLlEmpty.setVisibility(View.INVISIBLE);
-
-       }*/
-
-
-        /*点击接单按钮*/
-
-//        showAd();
     }
 
 

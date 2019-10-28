@@ -5,19 +5,41 @@
     android:orientation="vertical"
     >
 
-    <!--<TextView-->
-    <!--android:id="@+id/tv_push_time"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginBottom="10dp"-->
-    <!--android:text="时间"-->
-    <!--android:textColor="@color/white"-->
-    <!--android:textSize="12sp"-->
-    <!--android:layout_gravity="center"-->
-    <!--android:layout_marginTop="10dp"-->
-    <!--android:background="#B5B5B5"-->
-    <!--android:paddingLeft="10dp"-->
-    <!--android:paddingRight="10dp" />-->
+    <RelativeLayout
+        android:id="@+id/rl_new_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_message_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:text="新消息"
+            android:textColor="#999"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="40dip"
+            android:layout_height="1dip"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/tv_message_number"
+            android:background="#999" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="40dip"
+            android:layout_height="1dip"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/tv_message_number"
+            android:background="#999" />
+    </RelativeLayout>
 
     <FrameLayout
         android:layout_width="match_parent"

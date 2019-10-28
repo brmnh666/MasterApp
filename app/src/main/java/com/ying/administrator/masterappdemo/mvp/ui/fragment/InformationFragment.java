@@ -23,6 +23,7 @@ import com.ying.administrator.masterappdemo.mvp.presenter.ArticlePresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.ArticleActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.LoginActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.OrderMessageActivity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.OrderMessageActivity2;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.TransactionMessageActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
@@ -149,16 +150,20 @@ public class InformationFragment extends BaseLazyFragment<ArticlePresenter, Arti
 
     @Override
     public void onClick(View v) {
+        Intent intent;
         switch (v.getId()) {
             case R.id.ll_work_order_message://工单消息
-
-                startActivity(new Intent(getActivity(), OrderMessageActivity.class));
+                intent=new Intent(getActivity(), OrderMessageActivity2.class);
+                intent.putExtra("type",2);
+                startActivity(intent);
                 break;
             case R.id.ll_transaction_news://交易信息
-                startActivity(new Intent(getActivity(), TransactionMessageActivity.class));
+                intent=new Intent(getActivity(), OrderMessageActivity2.class);
+                intent.putExtra("type",1);
+                startActivity(intent);
                 break;
             case R.id.ll_announcement:
-               Intent intent = new Intent(mActivity, ArticleActivity.class);
+                intent = new Intent(mActivity, ArticleActivity.class);
                 intent.putExtra("CategoryID","7");
                 startActivity(intent);
                 break;

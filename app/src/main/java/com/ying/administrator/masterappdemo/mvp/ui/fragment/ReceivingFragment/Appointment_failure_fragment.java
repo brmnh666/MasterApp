@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -176,28 +177,21 @@ public class Appointment_failure_fragment extends BaseFragment<GetOrderListForMe
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-          /*      if (!list.isEmpty()){ //当有数据的时候
-                    ll_empty.setVisibility(View.INVISIBLE);//隐藏空的界面
-                }*/
                 pageIndex=1;
-               // list.clear();
                 mPresenter.WorkerGetOrderList(userID,"7",Integer.toString(pageIndex),"5");
-                pending_appointment_adapter.notifyDataSetChanged();
-                refreshlayout.finishRefresh();
+                refreshlayout.resetNoMoreData();
             }
         });
 
 
         //没满屏时禁止上拉
-        mRefreshLayout.setEnableLoadmoreWhenContentNotFull(false);
+//        mRefreshLayout.setEnableLoadmoreWhenContentNotFull(false);
         //上拉加载更多
         mRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 pageIndex++; //页数加1
                 mPresenter.WorkerGetOrderList(userID,"7",Integer.toString(pageIndex),"5");
-                pending_appointment_adapter.notifyDataSetChanged();
-                refreshlayout.finishLoadmore();
             }
         });
 
@@ -471,31 +465,25 @@ public class Appointment_failure_fragment extends BaseFragment<GetOrderListForMe
     /*获取 自己抢到的订单*/
     @Override
     public void WorkerGetOrderList(BaseResult<WorkOrder> baseResult) {
+        mRefreshLayout.finishRefresh();
+        mRefreshLayout.finishLoadmore();
         switch (baseResult.getStatusCode()) {
             case 200:
                 if (baseResult.getData().getData()==null){
                     Log.d("===>","暂无预约工单");
-                    if (pageIndex==1){
+                    if (pageIndex!=1){
+                        mRefreshLayout.finishLoadmoreWithNoMoreData();
+                    }else{
                         list.clear();
                         pending_appointment_adapter.notifyDataSetChanged();
                     }
-
                 }else {
-                /*    workOrder = baseResult.getData();
-                    list.addAll(workOrder.getData());
-                    pending_appointment_adapter.setNewData(list);
-                    //  pending_appointment_adapter.notifyDataSetChanged();
-*/
                     if (pageIndex==1){
                         list.clear();
-                        workOrder = baseResult.getData();
-                        list.addAll(workOrder.getData());
-                        pending_appointment_adapter.notifyDataSetChanged();
-                    }else {
-                        workOrder = baseResult.getData();
-                        list.addAll(workOrder.getData());
-                        pending_appointment_adapter.setNewData(list);
                     }
+                    workOrder = baseResult.getData();
+                    list.addAll(workOrder.getData());
+                    pending_appointment_adapter.notifyDataSetChanged();
 
                 }
 
