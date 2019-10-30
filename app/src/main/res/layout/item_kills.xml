@@ -9,13 +9,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@drawable/white_shape">
+        android:background="@color/white">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:padding="@dimen/dp_10">
+            android:paddingTop="15dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="15dp">
 
             <TextView
                 android:id="@+id/tv_kill_name"
@@ -23,8 +26,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="空调类"
-                android:textSize="19dp"
-                android:textColor="#5A5A5B"/>
+                android:textSize="20dp"
+                android:textColor="#333" />
 
             <ImageView
                 android:id="@+id/iv_choose"
@@ -32,7 +35,21 @@
                 android:layout_height="21dp"
                 android:src="@drawable/check_kill_selector"/>
         </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:descendantFocusability="blocksDescendants">
 
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_skills"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:visibility="gone">
+
+            </android.support.v7.widget.RecyclerView>
+
+        </RelativeLayout>
         <View
             android:visibility="gone"
             android:layout_width="match_parent"

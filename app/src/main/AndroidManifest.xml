@@ -601,6 +601,19 @@
               android:launchMode="singleTask"
             android:screenOrientation="portrait"
              />
+        <!--新实名认证-->
+         <activity android:name=".mvp.ui.activity.VerifiedActivity2"
+             android:theme="@style/AppTheme.NoActionBar"
+              android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+             />
+
+        <!--新添加技能-->
+        <activity android:name=".mvp.ui.activity.MySkillActivity2"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            />
 
         <!--工单消息-->
         <activity android:name=".mvp.ui.activity.OrderMessageActivity2"

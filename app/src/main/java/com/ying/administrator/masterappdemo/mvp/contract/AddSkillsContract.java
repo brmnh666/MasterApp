@@ -17,7 +17,7 @@ import io.reactivex.Observable;
 
 public interface AddSkillsContract {
     interface Model extends BaseModel {
-        Observable<BaseResult<CategoryData>> GetFactoryCategory();
+        Observable<BaseResult<CategoryData>> GetFactoryCategory(String ParentID);
          Observable<BaseResult<CategoryData>> GetChildFactoryCategory(String ParentID);
         //获取该账号下的技能
         Observable<BaseResult<List<Skill>>> GetAccountSkill(String UserID);
@@ -34,7 +34,7 @@ public interface AddSkillsContract {
     }
 
     abstract class Presenter extends BasePresenter<View,Model> {
-        public abstract void GetFactoryCategory();
+        public abstract void GetFactoryCategory(String ParentID);
         public abstract void GetChildFactoryCategory(String ParentID);
         //获取该账号下的技能
         public abstract void GetAccountSkill(String UserID);

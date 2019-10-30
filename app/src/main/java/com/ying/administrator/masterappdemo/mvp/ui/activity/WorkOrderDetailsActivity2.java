@@ -1183,11 +1183,11 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
             case R.id.btn_complete_submit_one:
             case R.id.btn_complete_submit:
                 gson = new Gson();
-                if (select_state==0){
+                if (select_state == 0) {
                     select_state(fAcList);
-                }else if (select_state==1){
+                } else if (select_state == 1) {
                     select_state(mAcList);
-                }else{
+                } else {
                     select_state(sAcList);
                 }
                 break;
@@ -1268,8 +1268,9 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         }
 
     }
+
     //厂家寄件，师傅自购，用户自购
-    public void select_state(List<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> list){
+    public void select_state(List<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> list) {
         if (list.size() > 0 && mPre_order_Add_Service_Adapter.getData().size() == 0) {
             if ("".equals(returnAddress)) {
                 ToastUtils.showShort("请选择收货地址");
@@ -1301,6 +1302,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
             startActivity(intent);
         }
     }
+
     public void scaleview(String url) {
         simpleTarget = new SimpleTarget<Bitmap>() {
             @Override
@@ -1632,7 +1634,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 break;
         }
     }
-    public void select_state2(List<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> list){
+
+    public void select_state2(List<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> list) {
         if (list.size() > 0 && mPre_order_Add_Service_Adapter.getData().size() == 0) {
             orderAccessoryStrBean = new FAccessory.OrderAccessoryStrBean();
             orderAccessoryStrBean.setOrderAccessory(list);
@@ -1679,17 +1682,18 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
             mPresenter.AddOrderAccessoryAndService(body);
         }
     }
+
     @Override
     public void UpdateOrderAddressByOrderID(BaseResult<Data<String>> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
                 if (baseResult.getData().isItem1()) {
                     gson = new Gson();
-                    if (select_state==0){
+                    if (select_state == 0) {
                         select_state2(fAcList);
-                    }else if (select_state==1){
+                    } else if (select_state == 1) {
                         select_state2(mAcList);
-                    }else{
+                    } else {
                         select_state2(sAcList);
                     }
                 } else {
@@ -1743,7 +1747,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
             case 200:
                 if (baseResult != null) {
                     data = baseResult.getData();
-                    Double ordermoney=data.getOrderMoney()-data.getTerraceMoney();
+                    Double ordermoney = data.getOrderMoney() - data.getTerraceMoney();
                     mTvStatus.setText(data.getStateStr());
                     if ("服务中".equals(data.getStateStr())) {
                         if ("1".equals(data.getTypeID())) {//维修
@@ -1775,7 +1779,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                             mTvTotalPrice.setText("服务金额：¥" + ordermoney);
 
                         } else {
-                            mTvServiceAmount.setText("服务金额：¥" +ordermoney);
+                            mTvServiceAmount.setText("服务金额：¥" + ordermoney);
                             mTvTotalPrice.setText("服务金额：¥" + ordermoney);
                         }
                     }
@@ -2465,11 +2469,11 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                             mTvServiceApplyState.setText("");
                             mTvServiceApplyState.setVisibility(View.GONE);
                             mTvServiceApplication.setVisibility(View.GONE);
-                        }  else if ("2".equals(data.getAccessoryAndServiceApplyState())) {
+                        } else if ("2".equals(data.getAccessoryAndServiceApplyState())) {
                             mTvServiceApplyState.setText("审核通过");
                             mTvServiceApplyState.setVisibility(View.GONE);
                             mTvServiceApplication.setVisibility(View.GONE);
-                        }else {
+                        } else {
                             mTvServiceApplyState.setText("被拒");
                             mTvServiceApplication.setVisibility(View.GONE);
                         }
@@ -2697,7 +2701,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mLlNewMoney.setVisibility(View.GONE);
                         mTvNewMoney.setText("¥" + data.getNewMoney());
                     }
-                    if (!("".equals(AccessoryAndServiceApplyState)||AccessoryAndServiceApplyState==null)){
+                    if (!("".equals(AccessoryAndServiceApplyState) || AccessoryAndServiceApplyState == null)) {
                         mLlAddService.setVisibility(View.GONE);
                     }
                     break;
@@ -2955,7 +2959,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                             }
                         });
                     } else {
-                        ToastUtils.showShort((String) baseResult.getData().getItem2());
+                        MyUtils.showToast(mActivity,(String) baseResult.getData().getItem2());
+//                        ToastUtils.showShort((String) baseResult.getData().getItem2());
                     }
                 }
                 break;
@@ -3757,11 +3762,11 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mfAccessory.setNeedPlatformAuth("N");
                         if (select_state == 0) {//厂家自购
                             fAcList.add(mfAccessory);
-                        }else if (select_state==1){
+                        } else if (select_state == 1) {
                             mfAccessory.setPrice(list.get(i).getAccessoryPrice());//原价
                             mfAccessory.setDiscountPrice(list.get(i).getAccessoryPrice());//原价
                             mAcList.add(mfAccessory);
-                        }else{
+                        } else {
                             sAcList.add(mfAccessory);
                         }
                     }
@@ -3873,7 +3878,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
             mPresenter.GetFactoryAccessoryMoney(OrderID, data.getProductTypeID(), String.valueOf(Collections.max(list)));
         } else {
             Double money1 = Double.parseDouble(data.getQuaMoney());
-            Double money2 = Double.parseDouble(data.getOrderMoney()+"");
+            Double money2 = Double.parseDouble(data.getOrderMoney() + "");
             if ("3".equals(data.getTypeID())) {
                 String str = "服务金额：¥" + (money1);
                 mTvServiceAmount.setText(str);

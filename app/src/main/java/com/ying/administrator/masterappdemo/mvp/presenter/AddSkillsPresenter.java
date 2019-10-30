@@ -15,8 +15,8 @@ public class AddSkillsPresenter extends AddSkillsContract.Presenter {
 
 
     @Override
-    public void GetFactoryCategory() {
-        mModel.GetFactoryCategory()
+    public void GetFactoryCategory(String ParentID) {
+        mModel.GetFactoryCategory(ParentID)
                 .subscribe(new BaseObserver<CategoryData>() {
                     @Override
                     protected void onHandleSuccess(BaseResult<CategoryData> value) {

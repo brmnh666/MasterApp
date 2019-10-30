@@ -71,7 +71,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 /*实名认证*/
-public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedModel> implements View.OnClickListener, VerifiedContract.View {
+public class VerifiedActivity2 extends BaseActivity<VerifiedPresenter, VerifiedModel> implements View.OnClickListener, VerifiedContract.View {
 
 
     @BindView(R.id.img_actionbar_return)
@@ -84,34 +84,32 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
     TextView mTvActionbarTitle;
     @BindView(R.id.img_actionbar_message)
     ImageView mImgActionbarMessage;
+    @BindView(R.id.tv_message)
+    TextView mTvMessage;
     @BindView(R.id.actionbar_layout)
     RelativeLayout mActionbarLayout;
-    @BindView(R.id.bank_card_ll)
-    LinearLayout mBankCardLl;
+    @BindView(R.id.iv_positive)
+    ImageView mIvPositive;
+    @BindView(R.id.ll_positive)
+    LinearLayout mLlPositive;
+    @BindView(R.id.iv_negative)
+    ImageView mIvNegative;
+    @BindView(R.id.ll_negative)
+    LinearLayout mLlNegative;
     @BindView(R.id.actual_name_et)
     EditText mActualNameEt;
     @BindView(R.id.id_number_et)
     EditText mIdNumberEt;
-    @BindView(R.id.iv_positive)
-    ImageView mIvPositive;
-    @BindView(R.id.iv_negative)
-    ImageView mIvNegative;
-    @BindView(R.id.ll_shop_address)
-    LinearLayout mLlShopAddress;
-    @BindView(R.id.submit_application_bt)
-    Button mSubmitApplicationBt;
-    @BindView(R.id.ll_service_skill)
-    LinearLayout mLlServiceSkill;
-    @BindView(R.id.tv_shop_address)
-    TextView mTvShopAddress;
-    @BindView(R.id.tv_skills)
-    TextView mTvSkills;
-    @BindView(R.id.iv_selfie)
-    ImageView mIvSelfie;
-    @BindView(R.id.ll_select_service_area)
-    LinearLayout mLlSelectServiceArea;
     @BindView(R.id.tv_codestr)
     TextView mTvCodestr;
+    @BindView(R.id.ll_select_service_area)
+    LinearLayout mLlSelectServiceArea;
+    @BindView(R.id.tv_province)
+    TextView mTvProvince;
+    @BindView(R.id.tv_shop_address)
+    TextView mTvShopAddress;
+    @BindView(R.id.ll_shop_address)
+    LinearLayout mLlShopAddress;
     @BindView(R.id.cb_under_warranty)
     CheckBox mCbUnderWarranty;
     @BindView(R.id.ll_under_warranty)
@@ -120,18 +118,18 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
     CheckBox mCbOutsideTheWarranty;
     @BindView(R.id.ll_outside_the_warranty)
     LinearLayout mLlOutsideTheWarranty;
-    @BindView(R.id.img_male_unselect)
-    ImageView mImgMaleUnselect;
-    @BindView(R.id.ll_male)
-    LinearLayout mLlMale;
-    @BindView(R.id.img_female_select)
-    ImageView mImgFemaleSelect;
-    @BindView(R.id.ll_female)
-    LinearLayout mLlFemale;
-
     @BindView(R.id.ll_serive_origin)
-    LinearLayout mLl_serive_origin;
-
+    LinearLayout mLlSeriveOrigin;
+    @BindView(R.id.tv_identity)
+    TextView mTvIdentity;
+    @BindView(R.id.ll_identity)
+    LinearLayout mLlIdentity;
+    @BindView(R.id.tv_skills)
+    TextView mTvSkills;
+    @BindView(R.id.ll_service_skill)
+    LinearLayout mLlServiceSkill;
+    @BindView(R.id.submit_application_bt)
+    Button mSubmitApplicationBt;
     private boolean issubaccount = false; //判断是不是子账号
     private View popupWindow_view;
     private String FilePath;
@@ -164,51 +162,6 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
     private int mGpsAccuracyStatus;
     private String mTime;
     private ObjectAnimator animator; //刷新图片属性动画
-    //声明定位回调监听器
-    public AMapLocationListener mLocationListener = new AMapLocationListener() {
-        @Override
-        public void onLocationChanged(AMapLocation aMapLocation) {
-            //定位结果回调
-            if (aMapLocation != null) {
-                if (aMapLocation.getErrorCode() == 0) {
-//可在其中解析amapLocation获取相应内容。
-                    mLocationType = aMapLocation.getLocationType();//获取当前定位结果来源，如网络定位结果，详见定位类型表
-                    mLatitude = aMapLocation.getLatitude();//获取纬度
-                    mLongitude = aMapLocation.getLongitude();//获取经度
-                    mAccuracy = aMapLocation.getAccuracy();//获取精度信息
-                    mAddress = aMapLocation.getAddress();//地址，如果option中设置isNeedAddress为false，则没有此结果，网络定位结果中会有地址信息，GPS定位不返回地址信息。
-                    mCountry = aMapLocation.getCountry();//国家信息
-                    mProvince = aMapLocation.getProvince();//省信息
-                    mCity = aMapLocation.getCity();//城市信息
-                    mDistrict = aMapLocation.getDistrict();//城区信息
-                    mStreet = aMapLocation.getStreet();//街道信息
-                    mStreetNum = aMapLocation.getStreetNum();//街道门牌号信息
-                    mCityCode = aMapLocation.getCityCode();//城市编码
-                    mAdCode = aMapLocation.getAdCode();//地区编码
-                    mAoiName = aMapLocation.getAoiName();//获取当前定位点的AOI信息
-                    mBuildingId = aMapLocation.getBuildingId();//获取当前室内定位的建筑物Id
-                    mFloor = aMapLocation.getFloor();//获取当前室内定位的楼层
-                    mGpsAccuracyStatus = aMapLocation.getGpsAccuracyStatus();//获取GPS的当前状态
-                    //获取定位时间
-                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    Date date = new Date(aMapLocation.getTime());
-                    mTime = df.format(date);
-                    if (mAddress != null) {
-                        mTvShopAddress.setText(mAddress);
-                    } else {
-                        mTvShopAddress.setText(aMapLocation.getAddress());
-                    }
-
-                } else {
-                    //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
-                    Log.e("AmapError", "location Error, ErrCode:"
-                            + aMapLocation.getErrorCode() + ", errInfo:"
-                            + aMapLocation.getErrorInfo());
-                }
-                mLocationClient.stopLocation();
-            }
-        }
-    };
 
     private SPUtils spUtils;
     private String UserID;
@@ -223,51 +176,18 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
     private int size;
     private String codestr = "";
     private String Guarantee = "";
-    private String Sex="";
+    private String Sex = "";
     private List<Uri> mSelected;
 
     @Override
     protected int setLayoutId() {
-        return R.layout.activity_verified;
+        return R.layout.activity_verified2;
     }
 
-    public void Location() {
-        //初始化定位
-        mLocationClient = new AMapLocationClient(mActivity);
-        //设置定位回调监听
-        mLocationClient.setLocationListener(mLocationListener);
-        //初始化AMapLocationClientOption对象
-        mLocationOption = new AMapLocationClientOption();
-/**
- * 设置定位场景，目前支持三种场景（签到、出行、运动，默认无场景）
- */
-        /*mLocationOption.setLocationPurpose(AMapLocationClientOption.AMapLocationPurpose.SignIn);
-        if (null != mLocationClient) {
-            mLocationClient.setLocationOption(mLocationOption);
-            //设置场景模式后最好调用一次stop，再调用start以保证场景模式生效
-            mLocationClient.stopLocation();
-            mLocationClient.startLocation();
-        }*/
-        //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。
-        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-
-        //给定位客户端对象设置定位参数
-        mLocationClient.setLocationOption(mLocationOption);
-        //启动定位
-        mLocationClient.startLocation();
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void initData() {
-        if (requestLocationPermissions()) {
-            Location();
-        } else {
-            requestPermissions(permissions.toArray(new String[permissions.size()]), 20002);
-        }
-
-
-
 
 
     }
@@ -277,14 +197,13 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
         mTvActionbarTitle.setText("实名认证");
         spUtils = SPUtils.getInstance("token");
         UserID = spUtils.getString("userName");
-        mPresenter.GetUserInfoList(UserID,"1");
+        mPresenter.GetUserInfoList(UserID, "1");
     }
 
     @Override
     protected void setListener() {
         mIvPositive.setOnClickListener(this);
         mIvNegative.setOnClickListener(this);
-        mIvSelfie.setOnClickListener(this);
         mLlReturn.setOnClickListener(this);
         mLlShopAddress.setOnClickListener(this);
         mLlServiceSkill.setOnClickListener(this);
@@ -292,8 +211,6 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
         mLlSelectServiceArea.setOnClickListener(this);
         mLlUnderWarranty.setOnClickListener(this);
         mLlOutsideTheWarranty.setOnClickListener(this);
-        mLlMale.setOnClickListener(this);
-        mLlFemale.setOnClickListener(this);
     }
 
 
@@ -311,16 +228,7 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                 mCbOutsideTheWarranty.setChecked(true);
                 Guarantee = "N";
                 break;
-            case R.id.ll_male:
-                mImgMaleUnselect.setSelected(true);
-                mImgFemaleSelect.setSelected(false);
-                Sex = "男";
-                break;
-            case R.id.ll_female:
-                mImgMaleUnselect.setSelected(false);
-                mImgFemaleSelect.setSelected(true);
-                Sex = "女";
-                break;
+
             case R.id.ll_return:
                 finish();
                 break;
@@ -349,10 +257,10 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                 startActivityForResult(new Intent(mActivity, MainActivity.class), 100);
                 break;
             case R.id.ll_service_skill:
-                startActivityForResult(new Intent(mActivity, MySkillActivity2.class), 1000);
+                startActivityForResult(new Intent(mActivity, MySkillsActivity.class), 1000);
                 break;
             case R.id.submit_application_bt:
-                if (issubaccount){//是子账号
+                if (issubaccount) {//是子账号
                     mActualName = mActualNameEt.getText().toString();
                     mIdNumber = mIdNumberEt.getText().toString();
                     if ("".equals(mActualName)) {
@@ -391,13 +299,13 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                     String cityCode = parentuserInfoDean.getCityCode();
                     String areaCode = parentuserInfoDean.getAreaCode();
                     String address = parentuserInfoDean.getAddress();
-                    String Longitude=parentuserInfoDean.getLongitude();
-                    String Dimension=parentuserInfoDean.getDimension();
+                    String Longitude = parentuserInfoDean.getLongitude();
+                    String Dimension = parentuserInfoDean.getDimension();
 
-                    mPresenter.ApplyAuthInfoBysub(UserID,mActualName,Sex,mIdNumber,address,provinceCode,cityCode,areaCode,districtCode,Longitude,Dimension,"2");
+                    mPresenter.ApplyAuthInfoBysub(UserID, mActualName, Sex, mIdNumber, address, provinceCode, cityCode, areaCode, districtCode, Longitude, Dimension, "2");
 
 
-                }else {
+                } else {
                     mActualName = mActualNameEt.getText().toString();
                     mIdNumber = mIdNumberEt.getText().toString();
 
@@ -447,11 +355,11 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                     }
                     if ("Y".equals(Guarantee)) {
                         showLoading();
-                        mPresenter.ApplyAuthInfo(UserID, mActualName, Sex, mIdNumber, mAddress, NodeIds, mProvince, mCity, mDistrict, mStreet, Double.toString(mLongitude), Double.toString(mLatitude), codestr,"1");
+                        mPresenter.ApplyAuthInfo(UserID, mActualName, Sex, mIdNumber, mAddress, NodeIds, mProvince, mCity, mDistrict, mStreet, Double.toString(mLongitude), Double.toString(mLatitude), codestr, "1");
 
                     } else {
                         showLoading();
-                        mPresenter.ApplyAuthInfo(UserID, mActualName, Sex, mIdNumber, mAddress, NodeIds, mProvince, mCity, mDistrict, mStreet, "", "", codestr,"1");
+                        mPresenter.ApplyAuthInfo(UserID, mActualName, Sex, mIdNumber, mAddress, NodeIds, mProvince, mCity, mDistrict, mStreet, "", "", codestr, "1");
                     }
 
                 }
@@ -512,7 +420,7 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
 //                i.addCategory(Intent.CATEGORY_OPENABLE);
 //                i.setType("image/*");
 //                startActivityForResult(Intent.createChooser(i, "test"), code2);
-                Matisse.from(Verified_Activity.this)
+                Matisse.from(VerifiedActivity2.this)
                         .choose(MimeType.ofImage())
                         .countable(true)
                         .maxSelectable(1)
@@ -624,14 +532,6 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                     MyUtils.showToast(mActivity, "相关权限未开启");
                 }
                 break;
-            case 20002:
-                if (size == grantResults.length) {//允许
-                    Location();
-                } else {//拒绝
-                    MyUtils.showToast(mActivity, "相关权限未开启");
-                }
-
-                break;
             default:
                 break;
 
@@ -662,7 +562,7 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
             case 102:
                 if (data != null) {
                     mSelected = Matisse.obtainResult(data);
-                    if (mSelected.size()==1){
+                    if (mSelected.size() == 1) {
                         uri = mSelected.get(0);
                     }
 //                    uri = data.getData();
@@ -689,7 +589,7 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
             case 202:
                 if (data != null) {
                     mSelected = Matisse.obtainResult(data);
-                    if (mSelected.size()==1){
+                    if (mSelected.size() == 1) {
                         uri = mSelected.get(0);
                     }
 //                    Uri uri = data.getData();
@@ -699,33 +599,6 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                 if (file != null) {
                     File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
                     uploadImg(newFile, 1);
-                }
-                break;
-            //拍照
-            case 301:
-                if (resultCode == -1) {
-                    Glide.with(mActivity).load(FilePath).into(mIvSelfie);
-                    file = new File(FilePath);
-                }
-                if (file != null) {
-                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
-                    uploadImg(newFile, 2);
-                }
-                break;
-            //相册
-            case 302:
-                if (data != null) {
-                    mSelected = Matisse.obtainResult(data);
-                    if (mSelected.size()==1){
-                        uri = mSelected.get(0);
-                    }
-//                    Uri uri = data.getData();
-                    Glide.with(mActivity).load(uri).into(mIvSelfie);
-                    file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
-                }
-                if (file != null) {
-                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
-                    uploadImg(newFile, 2);
                 }
                 break;
 
@@ -822,23 +695,21 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
     @Override
     public void GetUserInfoList(BaseResult<UserInfo> baseResult) {
 
-        switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
-                if (!baseResult.getData().getData().isEmpty()){
-                    if (baseResult.getData().getData().get(0).getParentUserID()==null||"".equals(baseResult.getData().getData().get(0).getParentUserID())){
-                        parentUserInfo=baseResult.getData(); //存储父账号
+                if (!baseResult.getData().getData().isEmpty()) {
+                    if (baseResult.getData().getData().get(0).getParentUserID() == null || "".equals(baseResult.getData().getData().get(0).getParentUserID())) {
+                        parentUserInfo = baseResult.getData(); //存储父账号
 
-                    }else {
+                    } else {
 
-                        issubaccount=true;
+                        issubaccount = true;
                         //为子账号时隐藏位置选择框
                         mLlSelectServiceArea.setVisibility(View.GONE);
-                        mLl_serive_origin.setVisibility(View.GONE);
                         mLlShopAddress.setVisibility(View.GONE);
                         mLlServiceSkill.setVisibility(View.GONE);
-                        mPresenter.GetUserInfoList(baseResult.getData().getData().get(0).getParentUserID(),"1");
+                        mPresenter.GetUserInfoList(baseResult.getData().getData().get(0).getParentUserID(), "1");
                     }
-
 
 
                 }
@@ -867,12 +738,12 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
     /*认证子账号*/
     @Override
     public void ApplyAuthInfoBysub(BaseResult<Data<String>> baseResult) {
-        switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData().isItem1()){
-                    Toast.makeText(mActivity,"提交成功",Toast.LENGTH_SHORT).show();
+                if (baseResult.getData().isItem1()) {
+                    Toast.makeText(mActivity, "提交成功", Toast.LENGTH_SHORT).show();
                     EventBus.getDefault().post("GetUserInfoList");
-                    Verified_Activity.this.finish();
+                    VerifiedActivity2.this.finish();
 
                 }
                 break;

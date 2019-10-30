@@ -1,9 +1,12 @@
 package com.ying.administrator.masterappdemo.entity;
 
+import com.chad.library.adapter.base.entity.AbstractExpandableItem;
+import com.chad.library.adapter.base.entity.MultiItemEntity;
+
 import java.io.Serializable;
 import java.util.List;
 
-public class MySkills implements Serializable {
+public class MySkills implements Serializable{
     private boolean selected;
     private Category Category;
     private List<Category> categoryArrayList;
@@ -80,4 +83,6 @@ public class MySkills implements Serializable {
     public void setDetail(String detail) {
         this.detail = detail;
     }
+
+
 }

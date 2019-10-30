@@ -427,8 +427,9 @@ public interface ApiService {
     /**
      * 获取分类
      */
+    @FormUrlEncoded
     @POST("FactoryConfig/GetFactoryCategory")
-    Observable<BaseResult<CategoryData>> GetFactoryCategory();
+    Observable<BaseResult<CategoryData>> GetFactoryCategory(@Field("ParentID") String ParentID);
     /**
      * 获取子分类
      */

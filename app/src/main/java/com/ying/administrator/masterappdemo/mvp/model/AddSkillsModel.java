@@ -19,8 +19,8 @@ public class AddSkillsModel implements AddSkillsContract.Model {
 
 
     @Override
-    public Observable<BaseResult<CategoryData>> GetFactoryCategory() {
-        return  ApiRetrofit.getDefault().GetFactoryCategory()
+    public Observable<BaseResult<CategoryData>> GetFactoryCategory(String ParentID) {
+        return  ApiRetrofit.getDefault().GetFactoryCategory(ParentID)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }
