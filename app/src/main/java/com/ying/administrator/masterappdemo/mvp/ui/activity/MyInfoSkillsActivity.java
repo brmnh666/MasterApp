@@ -82,7 +82,7 @@ public class MyInfoSkillsActivity extends BaseActivity<AddSkillsPresenter, AddSk
     protected void initData() {
         userID = spUtils.getString("userName"); //获取用户id
         showLoading();
-        mPresenter.GetFactoryCategory();
+        mPresenter.GetChildFactoryCategory("999");
 
     }
     @Override
@@ -117,7 +117,7 @@ public class MyInfoSkillsActivity extends BaseActivity<AddSkillsPresenter, AddSk
                 for (int i = 0; i < mySkillAdapter.getData().size(); i++) {
                     if (mySkillAdapter.getData().get(i).isSelected()){
                         skills+=mySkillAdapter.getData().get(i).getCategory().getFCategoryName()+"/";
-                        NodeIds+=mySkillAdapter.getData().get(i).getNodeIds()+",";
+                        NodeIds+=mySkillAdapter.getData().get(i).getCategory().getFCategoryID()+",";
                     }
                 }
                 if (skills.contains("/")){
@@ -173,6 +173,46 @@ public class MyInfoSkillsActivity extends BaseActivity<AddSkillsPresenter, AddSk
     }
 
     @Override
+    public void GetChildFactoryCategory(BaseResult<CategoryData> baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                CategoryData data = baseResult.getData();
+                if ("0".equals(data.getCode())) {
+                    popularList = data.getData();
+                    if (popularList.size() == 0) {
+                        ToastUtils.showShort("无分类，请联系管理员添加！");
+                    } else {
+                        for (int i = 0; i < popularList.size(); i++) {
+                            if ("999".equals(popularList.get(i).getParentID())){
+                                mySkillsList.add(new MySkills(false,popularList.get(i),popularList));
+                            }
+                        }
+                        for (int i = 0; i < mySkillsList.size(); i++) {
+                            subList=new ArrayList<>();
+                            for (int j = 0; j < popularList.size(); j++) {
+                                if (mySkillsList.get(i).getCategory().getId().equals(popularList.get(j).getParentID())){
+                                    subList.add(popularList.get(j));
+                                }
+                            }
+                            mySkillsList.get(i).setCategoryArrayList(subList);
+                        }
+                        mySkillAdapter=new MySkillAdapter(R.layout.item_kills,mySkillsList);
+                        mRvKills.setLayoutManager(new LinearLayoutManager(mActivity));
+                        mRvKills.setAdapter(mySkillAdapter);
+                    }
+                    mPresenter.GetAccountSkill(userID);
+                } else {
+                    ToastUtils.showShort("获取分类失败！");
+                }
+                cancleLoading();
+                break;
+            case 401:
+//                ToastUtils.showShort(baseResult.getData());
+                break;
+        }
+    }
+
+    @Override
     public void GetAccountSkill(BaseResult<List<Skill>> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
@@ -182,7 +222,7 @@ public class MyInfoSkillsActivity extends BaseActivity<AddSkillsPresenter, AddSk
                 } else {
                     for (int i = 0; i < mSkillList.size(); i++) {
                         for (int j = 0; j < mySkillsList.size(); j++) {
-                            if (mSkillList.get(i).getParentID().equals(mySkillsList.get(j).getCategory().getId())){
+                            if (mSkillList.get(i).getCategoryID().equals(mySkillsList.get(j).getCategory().getId())){
                                 mySkillsList.get(j).setSelected(true);
                             }
                         }

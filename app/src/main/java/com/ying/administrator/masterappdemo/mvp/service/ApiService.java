@@ -429,12 +429,12 @@ public interface ApiService {
      */
     @POST("FactoryConfig/GetFactoryCategory")
     Observable<BaseResult<CategoryData>> GetFactoryCategory();
-//    /**
-//     * 获取子分类
-//     */
-//    @FormUrlEncoded
-//    @POST("FactoryConfig/GetFactoryCategory")
-//    Observable<BaseResult<CategoryData>> GetChildFactoryCategory(@Field("ParentID") String ParentID);
+    /**
+     * 获取子分类
+     */
+    @FormUrlEncoded
+    @POST("FactoryConfig/GetFactoryCategory")
+    Observable<BaseResult<CategoryData>> GetChildFactoryCategory(@Field("ParentID") String ParentID);
 
     /*获取账户的技能*/
     @FormUrlEncoded

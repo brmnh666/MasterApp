@@ -26,6 +26,17 @@ public class AddSkillsPresenter extends AddSkillsContract.Presenter {
     }
 
     @Override
+    public void GetChildFactoryCategory(String ParentID) {
+        mModel.GetChildFactoryCategory(ParentID)
+                .subscribe(new BaseObserver<CategoryData>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<CategoryData> value) {
+                        mView.GetChildFactoryCategory(value);
+                    }
+                });
+    }
+
+    @Override
     public void GetAccountSkill(String UserID) {
         mModel.GetAccountSkill(UserID)
                 .subscribe(new BaseObserver<List<Skill>>() {

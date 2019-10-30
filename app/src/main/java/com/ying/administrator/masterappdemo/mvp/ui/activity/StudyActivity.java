@@ -162,6 +162,11 @@ public class StudyActivity extends BaseActivity<AddSkillsPresenter, AddSkillsMod
     }
 
     @Override
+    public void GetChildFactoryCategory(BaseResult<CategoryData> baseResult) {
+
+    }
+
+    @Override
     public void GetAccountSkill(BaseResult<List<Skill>> baseResult) {
 
     }

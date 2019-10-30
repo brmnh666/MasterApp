@@ -26,6 +26,13 @@ public class AddSkillsModel implements AddSkillsContract.Model {
     }
 
     @Override
+    public Observable<BaseResult<CategoryData>> GetChildFactoryCategory(String ParentID) {
+        return  ApiRetrofit.getDefault().GetChildFactoryCategory(ParentID)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
     public Observable<BaseResult<List<Skill>>> GetAccountSkill(String UserID) {
         return  ApiRetrofit.getDefault().GetAccountSkill(UserID)
                 .observeOn(AndroidSchedulers.mainThread())

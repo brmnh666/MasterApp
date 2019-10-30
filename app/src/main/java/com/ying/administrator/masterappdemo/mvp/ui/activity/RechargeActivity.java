@@ -404,6 +404,7 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
                     wXpayInfo = baseResult.getData().getItem2();
                     if (wXpayInfo != null) {
                         WXpay();
+                        EventBus.getDefault().post("GetUserInfoList");
                     }
                 } else {
                     ToastUtils.showShort("获取支付信息失败！");

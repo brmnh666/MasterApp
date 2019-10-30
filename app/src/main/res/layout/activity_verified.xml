@@ -508,7 +508,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="17dp"
-                    android:text="浙江省  宁波市  江北区  同济路169号1901室"
+                    android:text=""
                     android:textColor="#5A5A5B"
                     android:textSize="14sp" />
             </LinearLayout>

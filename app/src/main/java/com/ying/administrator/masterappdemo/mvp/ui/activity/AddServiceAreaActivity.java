@@ -198,10 +198,10 @@ public class AddServiceAreaActivity extends BaseActivity<AddServicePresenter, Ad
                     ToastUtils.showShort("请选择市！");
                     return;
                 }
-//                if (mArea == null) {
-//                    ToastUtils.showShort("请选择区！");
-//                    return;
-//                }
+                if (mArea == null) {
+                    ToastUtils.showShort("请选择区！");
+                    return;
+                }
                 if (mDistrict == null) {
                     mPresenter.GetDistrict(mArea.getCode(),1);
                 }else{
