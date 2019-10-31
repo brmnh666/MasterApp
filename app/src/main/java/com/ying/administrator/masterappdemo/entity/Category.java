@@ -32,6 +32,15 @@ public class Category implements Serializable {
     private String page;
     private String limit;
     private String Version;
+    private boolean selected=false;
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
 
     public String getId() {
         return Id;

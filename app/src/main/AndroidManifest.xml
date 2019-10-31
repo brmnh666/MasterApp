@@ -535,7 +535,7 @@
             android:screenOrientation="portrait"/>
         <!--QQend-->
         <!--我的消息页面技能-->
-        <activity android:name=".mvp.ui.activity.MyInfoSkillsActivity"
+        <activity android:name=".mvp.ui.activity.MyInfoSkillActivity2"
             android:theme="@style/AppTheme.NoActionBar"
              android:launchMode="singleTask"
             android:screenOrientation="portrait"/>

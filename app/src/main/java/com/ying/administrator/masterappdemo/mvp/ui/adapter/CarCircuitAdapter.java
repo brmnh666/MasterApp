@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ying.administrator.masterappdemo.R;
@@ -27,15 +28,14 @@ public class CarCircuitAdapter extends BaseExpandableListAdapter {
 
     public void addGroupList(List<MySkills> mgroup) {
         if (mgroup != null) {
-
             group.addAll(mgroup);
-            for (int i = 0; i < mgroup.size(); i++) {
-                List<MySkills> mchild = new ArrayList<>();
-                group.get(i).getCategory().getFCategoryName();
-            }
-
+            notifyDataSetChanged();
         }
-        notifyDataSetChanged();
+
+    }
+
+    public List<MySkills> getGroup() {
+        return group;
     }
 
     public void addAllChild(int position, List<Category> mchild) {
@@ -93,25 +93,39 @@ public class CarCircuitAdapter extends BaseExpandableListAdapter {
      */
     @SuppressLint("SetTextI18n")
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+    public View getGroupView(final int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.item_kills, null);
             holder = new ViewHolder();
             holder.textView = (TextView) convertView.findViewById(R.id.tv_kill_name);
+            holder.iv_choose = (ImageView) convertView.findViewById(R.id.iv_choose);
+            holder.iv_updown = (ImageView) convertView.findViewById(R.id.iv_updown);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
         holder.textView.setText(group.get(groupPosition).getCategory().getFCategoryName());
-
+        holder.iv_choose.setSelected(group.get(groupPosition).isSelected());
+        holder.iv_choose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                group.get(groupPosition).setSelected(!group.get(groupPosition).isSelected());
+                for (int i = 0; i < group.get(groupPosition).getCategoryArrayList().size(); i++) {
+                    group.get(groupPosition).getCategoryArrayList().get(i).setSelected(group.get(groupPosition).isSelected());
+                }
+                notifyDataSetChanged();
+            }
+        });
 
         //判断isExpanded就可以控制是按下还是关闭，同时更换图片
-//        if (isExpanded) {
-//            holder.car_up_img.setBackgroundResource(R.mipmap.arrow_up);
-//        } else {
-//            holder.car_up_img.setBackgroundResource(R.mipmap.arrow_down);
-//        }
+        if (isExpanded) {
+            holder.iv_updown.setImageResource(R.drawable.tree_ex);
+            holder.iv_choose.setVisibility(View.VISIBLE);
+        } else {
+            holder.iv_updown.setImageResource(R.drawable.tree_ec);
+            holder.iv_choose.setVisibility(View.GONE);
+        }
 
         return convertView;
     }
@@ -136,7 +150,7 @@ public class CarCircuitAdapter extends BaseExpandableListAdapter {
             convertView = LayoutInflater.from(context).inflate(R.layout.item_skill2, null);
             holder = new ViewHolder();
             holder.tv_car_circuit = (TextView) convertView.findViewById(R.id.tv_kill_name);
-
+            holder.iv_choose = (ImageView) convertView.findViewById(R.id.iv_choose);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -145,6 +159,7 @@ public class CarCircuitAdapter extends BaseExpandableListAdapter {
 
 
             holder.tv_car_circuit.setText( child.getFCategoryName());
+            holder.iv_choose.setSelected(child.isSelected());
 
         return convertView;
     }
@@ -168,6 +183,8 @@ public class CarCircuitAdapter extends BaseExpandableListAdapter {
 
 
         TextView tv_car_circuit;
+        ImageView iv_choose;
+        ImageView iv_updown;
     }
 }
 

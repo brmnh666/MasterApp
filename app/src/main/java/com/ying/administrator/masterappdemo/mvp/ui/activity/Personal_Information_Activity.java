@@ -218,7 +218,7 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
                 if (userInfo.getIfAuth() == null) {//未实名认证
                     return;
                 } else {
-                    startActivity(new Intent(this, MyInfoSkillsActivity.class));
+                    startActivity(new Intent(this, MyInfoSkillActivity2.class));
                 }
 
                 break;

@@ -1,8 +1,12 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
@@ -10,7 +14,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
@@ -32,7 +38,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MySkillActivity2 extends BaseActivity<AddSkillsPresenter, AddSkillsModel> implements View.OnClickListener, AddSkillsContract.View {
+public class MyInfoSkillActivity2 extends BaseActivity<AddSkillsPresenter, AddSkillsModel> implements View.OnClickListener, AddSkillsContract.View {
     @BindView(R.id.img_actionbar_return)
     ImageView mImgActionbarReturn;
     @BindView(R.id.tv_actionbar_return)
@@ -54,12 +60,15 @@ public class MySkillActivity2 extends BaseActivity<AddSkillsPresenter, AddSkills
     ExpandableListView mExpandablelistview;
 
     private List<MySkills> mySkillsList = new ArrayList<>();
+    private List<Skill> mSkillList=new ArrayList<>();
     private List<Category> popularList;
     ZLoadingDialog dialog = new ZLoadingDialog(this); //loading
     private CarCircuitAdapter circuitAdapter;
     private int position;
     private String skills;
     private String NodeIds;
+    SPUtils spUtils = SPUtils.getInstance("token");
+    private String userID;//用户id
 
     @Override
     protected int setLayoutId() {
@@ -73,6 +82,7 @@ public class MySkillActivity2 extends BaseActivity<AddSkillsPresenter, AddSkills
 
     @Override
     protected void initView() {
+        userID = spUtils.getString("userName"); //获取用户id
         mTvActionbarTitle.setText("我的技能");
         mPresenter.GetFactoryCategory("999");
     }
@@ -83,6 +93,7 @@ public class MySkillActivity2 extends BaseActivity<AddSkillsPresenter, AddSkills
         mBtnSkill.setOnClickListener(this);
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -110,13 +121,27 @@ public class MySkillActivity2 extends BaseActivity<AddSkillsPresenter, AddSkills
                 if (NodeIds.contains(",")){
                     NodeIds = NodeIds.substring(0, NodeIds.lastIndexOf(","));
                 }
+                if ("".equals(skills)){
+                    ToastUtils.setBgColor(Color.BLACK);
+                    ToastUtils.setMsgColor(Color.WHITE);
+                    ToastUtils.setGravity(Gravity.CENTER,0 , 0);
+                    ToastUtils.showShort("未选择技能");
+                    return;
+                }
                 System.out.println(skills);
                 System.out.println(NodeIds);
-                Intent intent=new Intent();
-                intent.putExtra("skills", skills);
-                intent.putExtra("NodeIds", NodeIds);
-                setResult(1000,intent);
-                finish();
+                new AlertDialog.Builder(mActivity).setMessage("替换之前的技能？\n\n已选技能："+skills)
+                        .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                mPresenter.UpdateAccountSkillData(userID,NodeIds);
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .setNegativeButton("取消",null)
+                        .create()
+                        .show();
+
                 break;
         }
     }
@@ -211,6 +236,7 @@ public class MySkillActivity2 extends BaseActivity<AddSkillsPresenter, AddSkills
                        circuitAdapter.addAllChild(position,popularList);
                        mExpandablelistview.expandGroup(position);
                     }
+                    mPresenter.GetAccountSkill(userID);
                 } else {
                     ToastUtils.showShort("获取分类失败！");
                 }
@@ -224,12 +250,47 @@ public class MySkillActivity2 extends BaseActivity<AddSkillsPresenter, AddSkills
 
     @Override
     public void GetAccountSkill(BaseResult<List<Skill>> baseResult) {
-
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                mSkillList = baseResult.getData();
+                if (mSkillList.size() == 0) {
+//                        ToastUtils.showShort("获取技能失败！");
+                } else {
+                    for (int i = 0; i < mSkillList.size(); i++) {
+                        for (int j = 0; j < mySkillsList.size(); j++) {
+                            if (mSkillList.get(i).getCategoryID().equals(mySkillsList.get(j).getCategory().getId())){
+                                mySkillsList.get(j).setSelected(true);
+                            }
+                            for (int k = 0; k < mySkillsList.get(j).getCategoryArrayList().size(); k++) {
+                                if (mSkillList.get(i).getCategoryID().equals(mySkillsList.get(j).getCategoryArrayList().get(k).getId())){
+                                    mySkillsList.get(j).getCategoryArrayList().get(k).setSelected(true);
+                                }
+                            }
+                        }
+                        circuitAdapter.notifyDataSetChanged();
+                    }
+                }
+                break;
+            case 401:
+//                ToastUtils.showShort(baseResult.getData());
+                break;
+        }
     }
 
     @Override
     public void UpdateAccountSkillData(BaseResult<String> baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                finish();
+                break;
+            case 401:
+//                ToastUtils.showShort(baseResult.getData());
+                break;
 
+            default:
+                cancleLoading();
+                break;
+        }
     }
 
     public void showLoading() {
