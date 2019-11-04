@@ -319,6 +319,11 @@ public class Completed_Fragement extends BaseFragment<GetOrderListForMePresenter
 
     }
 
+    @Override
+    public void OrderIsCall(BaseResult<Data<String>> baseResult) {
+
+    }
+
 
     @Override
     public void contentLoading() {
@@ -347,6 +352,9 @@ public class Completed_Fragement extends BaseFragment<GetOrderListForMePresenter
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(String message) {
+        if ("WorkOrderDetailsActivity".equals(message)){
+            mPresenter.WorkerGetOrderList(userID, "6", Integer.toString(pageIndex), "5");
+        }
         if (!"6".equals(message)){
             return;
         }

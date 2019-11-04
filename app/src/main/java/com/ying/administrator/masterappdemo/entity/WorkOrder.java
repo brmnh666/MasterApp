@@ -221,6 +221,15 @@ public class WorkOrder implements Serializable {
         private String AccessoryAndServiceApplyState;
         private String DistanceTureOrFalse;
         private Double terraceMoney;
+        private String IsCall;
+
+        public String getIsCall() {
+            return IsCall;
+        }
+
+        public void setIsCall(String isCall) {
+            IsCall = isCall;
+        }
 
         public Double getTerraceMoney() {
             return terraceMoney;

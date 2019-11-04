@@ -43,9 +43,10 @@ public class Pending_Appointment_Adapter extends BaseQuickAdapter<WorkOrder.Data
         helper.setText(R.id.tv_orderid, "工单号："+item.getOrderID());
         helper.setText(R.id.tv_pending_appointment_status_repair, item.getTypeName() + "/" + item.getGuaranteeText());
         helper.setText(R.id.tv_loaction_appointment, "距离 " + item.getDistance() + "Km");
-        helper.setText(R.id.tv_reason_pending_appointment, item.getCategoryName() + " " + item.getBrandName() + " " + item.getSubCategoryName());//型号
+        helper.setText(R.id.tv_reason_pending_appointment, item.getBrandName() + " " + item.getSubCategoryName()+" "+item.getProductType());//型号
         if ("维修".equals(item.getTypeName())){
             helper.setText(R.id.tv_malfunction, "故障:"+item.getMemo());//原因
+            helper.setBackgroundColor(R.id.tv_pending_appointment_status_repair, Color.parseColor("#FF0000"));
         }else if ("安装".equals(item.getTypeName())){
             helper.setText(R.id.tv_malfunction, "安装备注:"+item.getMemo());//原因
             helper.setBackgroundColor(R.id.tv_pending_appointment_status_repair, Color.parseColor("#1690FF"));

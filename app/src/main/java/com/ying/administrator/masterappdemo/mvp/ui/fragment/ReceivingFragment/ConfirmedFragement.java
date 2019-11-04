@@ -389,6 +389,11 @@ public class ConfirmedFragement extends BaseFragment<GetOrderListForMePresenter,
 
     }
 
+    @Override
+    public void OrderIsCall(BaseResult<Data<String>> baseResult) {
+
+    }
+
 
     @Override
     public void contentLoading() {

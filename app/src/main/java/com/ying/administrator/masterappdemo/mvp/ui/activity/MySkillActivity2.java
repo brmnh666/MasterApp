@@ -74,6 +74,7 @@ public class MySkillActivity2 extends BaseActivity<AddSkillsPresenter, AddSkills
     @Override
     protected void initView() {
         mTvActionbarTitle.setText("我的技能");
+        showLoading();
         mPresenter.GetFactoryCategory("999");
     }
 

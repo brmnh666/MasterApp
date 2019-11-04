@@ -1,6 +1,7 @@
 package com.ying.administrator.masterappdemo.mvp.ui.adapter;
 
 
+import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.TextView;
@@ -27,7 +28,7 @@ public class GrabsheetAdapter extends BaseQuickAdapter<WorkOrder.DataBean,BaseVi
 
         baseViewHolder.setText(R.id.tv_loaction,"距离:"+item.getDistance()+"Km");
         baseViewHolder.setText(R.id.tv_orderid,"工单号:"+item.getOrderID());
-        baseViewHolder.setText(R.id.tv_brand_name,item.getCategoryName()+" "+item.getBrandName());
+        baseViewHolder.setText(R.id.tv_brand_name,item.getSubCategoryName()+" "+item.getBrandName());
 
       baseViewHolder.setText(R.id.tv_grabsheet_status_repair,item.getTypeName()+"/"+item.getGuaranteeText());
       baseViewHolder.setText(R.id.tv_address,"地址:"+item.getAddress()); //地址
@@ -35,8 +36,10 @@ public class GrabsheetAdapter extends BaseQuickAdapter<WorkOrder.DataBean,BaseVi
       baseViewHolder.addOnClickListener(R.id.img_grabsheet);
       if ("维修".equals(item.getTypeName())){
           baseViewHolder.setText(R.id.tv_reason,"故障:"+item.getMemo()); //故障原因
+          baseViewHolder.setBackgroundColor(R.id.tv_grabsheet_status_repair, Color.parseColor("#FF0000"));
       }else {
           baseViewHolder.setText(R.id.tv_reason,item.getMemo()); //故障原因
+          baseViewHolder.setBackgroundColor(R.id.tv_grabsheet_status_repair, Color.parseColor("#1690FF"));
       }
     }
 }

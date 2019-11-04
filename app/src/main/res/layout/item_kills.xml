@@ -32,6 +32,12 @@
                 android:textSize="20dp"
                 android:textColor="#333" />
 
+            <TextView
+                android:id="@+id/tv_choose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="全选" />
+
             <ImageView
                 android:id="@+id/iv_choose"
                 android:layout_width="@dimen/dp_40"

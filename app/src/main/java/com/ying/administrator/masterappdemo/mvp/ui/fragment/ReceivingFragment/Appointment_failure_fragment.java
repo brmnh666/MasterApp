@@ -96,6 +96,11 @@ public class Appointment_failure_fragment extends BaseFragment<GetOrderListForMe
 
     }
 
+    @Override
+    public void OrderIsCall(BaseResult<Data<String>> baseResult) {
+
+    }
+
     private Appointment_failure_Adapter pending_appointment_adapter;
     private ArrayList<WorkOrder.DataBean> list;
     private UserInfo.UserInfoDean userInfo=new UserInfo.UserInfoDean(); //获取当前账号详情

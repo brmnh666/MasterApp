@@ -355,11 +355,14 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                     EventBus.getDefault().post("WorkOrderDetailsActivity");
                     if ("0".equals(data.getAccessorySearchState())) {
                         EventBus.getDefault().post(4);
+                        finish();
                     } else {
                         if (!"1".equals(data.getIsReturn())) {//不需要返件
                             EventBus.getDefault().post(4);
+                            finish();
                         } else {
-                            EventBus.getDefault().post(3);
+                            EventBus.getDefault().post(7);
+                            finish();
                         }
                     }
                 }

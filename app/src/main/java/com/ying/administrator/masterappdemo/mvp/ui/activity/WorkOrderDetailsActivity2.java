@@ -1300,6 +1300,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
             intent = new Intent(mActivity, CompleteWorkOrderActivity.class);
             intent.putExtra("OrderID", data.getOrderID());
             startActivity(intent);
+            finish();
         }
     }
 
@@ -1815,8 +1816,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     mTvOrderTime.setText(data.getAudDate().replace("T", " ")); //将T替换为空格
 
 //                mTvCauseOfIssue.setText(data.getMemo());
-                    mTvCauseOfIssue.setText(data.getBrandName() + "/" + data.getCategoryName());
-                    mTvClassification.setText(data.getSubCategoryName());
+                    mTvCauseOfIssue.setText(data.getBrandName() + "/" + data.getSubCategoryName());
+                    mTvClassification.setText(data.getProductType());
                     if (("Y").equals(data.getGuarantee())) {
                         mTvPaymentMethod.setText("平台代付");
                         mIvSelfbuying.setSelected(false);
@@ -2928,6 +2929,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     fAcList.clear();
                     sAcList.clear();
                     fList_service.clear();
+                    finish();
 //                    mPresenter.GetOrderInfo(OrderID);
 //                    ApplyAccessoryphotoUpload(accessories_picture);
                 } else {
@@ -3268,6 +3270,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     push_dialog.dismiss();
                     ToastUtils.showShort("提交成功");
                     mPresenter.UpdateOrderState(OrderID, "5", "");
+                    EventBus.getDefault().post(4);
+                    finish();
                 } else {
                     ToastUtils.showShort(data.getItem2());
                 }

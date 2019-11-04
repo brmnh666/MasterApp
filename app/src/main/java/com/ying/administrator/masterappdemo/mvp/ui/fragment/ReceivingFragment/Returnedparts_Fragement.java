@@ -468,6 +468,11 @@ public class Returnedparts_Fragement extends BaseFragment<GetOrderListForMePrese
     }
 
     @Override
+    public void OrderIsCall(BaseResult<Data<String>> baseResult) {
+
+    }
+
+    @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser){
@@ -481,13 +486,16 @@ public class Returnedparts_Fragement extends BaseFragment<GetOrderListForMePrese
         }
 
     }
-    /*@Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(String message) {
+        if ("WorkOrderDetailsActivity".equals(message)){
+            mPresenter.WorkerGetOrderList(userID, "3", Integer.toString(pageIndex), "5");
+        }
         if (!"3".equals(message)){
             return;
         }
         mPresenter.WorkerGetOrderList(userID, "3", Integer.toString(pageIndex), "5");
-    }*/
+    }
 
 
 

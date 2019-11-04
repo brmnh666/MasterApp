@@ -100,6 +100,7 @@ public class CarCircuitAdapter extends BaseExpandableListAdapter {
             holder = new ViewHolder();
             holder.textView = (TextView) convertView.findViewById(R.id.tv_kill_name);
             holder.iv_choose = (ImageView) convertView.findViewById(R.id.iv_choose);
+            holder.tv_choose=(TextView) convertView.findViewById(R.id.tv_choose);
             holder.iv_updown = (ImageView) convertView.findViewById(R.id.iv_updown);
             convertView.setTag(holder);
         } else {
@@ -122,9 +123,11 @@ public class CarCircuitAdapter extends BaseExpandableListAdapter {
         if (isExpanded) {
             holder.iv_updown.setImageResource(R.drawable.tree_ex);
             holder.iv_choose.setVisibility(View.VISIBLE);
+            holder.tv_choose.setVisibility(View.VISIBLE);
         } else {
             holder.iv_updown.setImageResource(R.drawable.tree_ec);
             holder.iv_choose.setVisibility(View.GONE);
+            holder.tv_choose.setVisibility(View.GONE);
         }
 
         return convertView;
@@ -185,6 +188,7 @@ public class CarCircuitAdapter extends BaseExpandableListAdapter {
         TextView tv_car_circuit;
         ImageView iv_choose;
         ImageView iv_updown;
+        TextView tv_choose;
     }
 }
 

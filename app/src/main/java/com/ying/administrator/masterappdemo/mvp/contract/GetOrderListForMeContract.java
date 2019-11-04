@@ -49,6 +49,8 @@ public interface GetOrderListForMeContract {
         Observable<BaseResult<Data<String>>> WorkerComplaint(String OrderID, String Content);
         //修改订单状态
         Observable<BaseResult<Data<String>>> UpdateOrderState(String OrderID,String State,String Reason);
+        Observable<BaseResult<Data<String>>> OrderIsCall(String OrderID,String IsCall);
+
     }
 
     interface View extends BaseView {
@@ -87,6 +89,7 @@ public interface GetOrderListForMeContract {
         void WorkerComplaint(BaseResult<Data<String>> baseResult);
         //修改订单状态
         void UpdateOrderState(BaseResult<Data<String>> baseResult);
+        void OrderIsCall(BaseResult<Data<String>> baseResult);
     }
 
     abstract class Presenter extends BasePresenter<View,Model> {
@@ -117,5 +120,6 @@ public interface GetOrderListForMeContract {
 
         public abstract void WorkerComplaint(String OrderID, String Content);
         public abstract void UpdateOrderState(String OrderID,String State,String Reason);
+        public abstract void OrderIsCall(String OrderID,String IsCall);
     }
 }

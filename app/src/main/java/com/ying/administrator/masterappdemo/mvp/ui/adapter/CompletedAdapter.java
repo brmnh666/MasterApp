@@ -32,7 +32,7 @@ public class CompletedAdapter extends BaseQuickAdapter<WorkOrder.DataBean, BaseV
 
         }
         baseViewHolder.setText(R.id.tv_complete_job_number,"工单号:"+item.getOrderID());//工单号
-        baseViewHolder.setText(R.id.tv_reason_complete,item.getCategoryName() + " " + item.getBrandName() + " " + item.getSubCategoryName());//memo
+        baseViewHolder.setText(R.id.tv_reason_complete,item.getBrandName() + " " + item.getSubCategoryName()+" "+item.getProductType());//memo
         baseViewHolder.setText(R.id.tv_loaction_complete,"距离："+item.getDistance()+"km");//距离
         baseViewHolder.setText(R.id.tv_num,"数量："+item.getNum()+"台");//数量
         baseViewHolder.setText(R.id.tv_address_complete,"地址:"+item.getAddress());//地址

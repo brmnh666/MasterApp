@@ -67,21 +67,21 @@ import java.util.List;
 import static com.umeng.socialize.utils.ContextUtil.getPackageName;
 
 /*
-* 服务中页面
-* */
-  public class InService_Fragement extends BaseFragment<GetOrderListForMePresenter, GetOrderListForMeModel> implements GetOrderListForMeContract.View {
-     private View view;
-     private RecyclerView recyclerView;
-     private In_Service_Adapter in_service_adapter;
-     private ArrayList<WorkOrder.DataBean> list;
-     private RefreshLayout mRefreshLayout;
-     private WorkOrder workOrder;
-     private String userID; //用户id
-     private int pageIndex = 1;  //默认当前页数为1
+ * 服务中页面
+ * */
+public class InService_Fragement extends BaseFragment<GetOrderListForMePresenter, GetOrderListForMeModel> implements GetOrderListForMeContract.View {
+    private View view;
+    private RecyclerView recyclerView;
+    private In_Service_Adapter in_service_adapter;
+    private ArrayList<WorkOrder.DataBean> list;
+    private RefreshLayout mRefreshLayout;
+    private WorkOrder workOrder;
+    private String userID; //用户id
+    private int pageIndex = 1;  //默认当前页数为1
     private String OrderId;//记录当前工单号
     private int cancelposition;
     private PopupWindow mPopupWindow;
-    private View popupWindow_view ;
+    private View popupWindow_view;
     private ImageView img_cancle;
     private LinearLayout ll_choose_baidumap;
     private LinearLayout ll_choose_gaodemap;
@@ -98,41 +98,43 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
         InService_Fragement fragment = new InService_Fragement();
         return fragment;
     }
-     @Nullable
-     @Override
-     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-     if (view==null){
-       view=inflater.inflate(R.layout.fragment_order_receiving,container,false);
-        SPUtils spUtils = SPUtils.getInstance("token");
-        userID = spUtils.getString("userName"); //获取用户id
-        initView();
-        initListener();
-    }
-    return view;
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        if (view == null) {
+            view = inflater.inflate(R.layout.fragment_order_receiving, container, false);
+            SPUtils spUtils = SPUtils.getInstance("token");
+            userID = spUtils.getString("userName"); //获取用户id
+            initView();
+            initListener();
+        }
+        return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mRefreshLayout.autoRefresh(0,0,1);
+        mRefreshLayout.autoRefresh(0, 0, 1);
     }
+
     public void initView() {
-        dialog =new ZLoadingDialog(mActivity);
-        list=new ArrayList<>();
-        recyclerView=view.findViewById(R.id.recyclerview_order_receiving);
-        mRefreshLayout=view.findViewById(R.id.refreshLayout);
-        mRefreshLayout.autoRefresh(0,0,1);
-        in_service_adapter=new In_Service_Adapter(R.layout.item_in_service,list);
+        dialog = new ZLoadingDialog(mActivity);
+        list = new ArrayList<>();
+        recyclerView = view.findViewById(R.id.recyclerview_order_receiving);
+        mRefreshLayout = view.findViewById(R.id.refreshLayout);
+        mRefreshLayout.autoRefresh(0, 0, 1);
+        in_service_adapter = new In_Service_Adapter(R.layout.item_in_service, list);
         in_service_adapter.setEmptyView(getEmptyView());
         recyclerView.setAdapter(in_service_adapter);
         in_service_adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Intent intent=new Intent(getActivity(), WorkOrderDetailsActivity2.class);
+                Intent intent = new Intent(getActivity(), WorkOrderDetailsActivity2.class);
                 //传递工单号
-                intent.putExtra("OrderID",((WorkOrder.DataBean)adapter.getItem(position)).getOrderID());
+                intent.putExtra("OrderID", ((WorkOrder.DataBean) adapter.getItem(position)).getOrderID());
                 startActivity(intent);
-                mPresenter.UpdateOrderIsLook(((WorkOrder.DataBean)adapter.getItem(position)).getOrderID(),"2");
+                mPresenter.UpdateOrderIsLook(((WorkOrder.DataBean) adapter.getItem(position)).getOrderID(), "2");
             }
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -147,8 +149,8 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                pageIndex=1;
-                mPresenter.WorkerGetOrderList(userID,"2",Integer.toString(pageIndex),"5");
+                pageIndex = 1;
+                mPresenter.WorkerGetOrderList(userID, "2", Integer.toString(pageIndex), "5");
                 refreshlayout.resetNoMoreData();
             }
         });
@@ -160,30 +162,30 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 pageIndex++; //页数加1
-                mPresenter.WorkerGetOrderList(userID,"2",Integer.toString(pageIndex),"5");
+                mPresenter.WorkerGetOrderList(userID, "2", Integer.toString(pageIndex), "5");
             }
         });
 
         in_service_adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, final int position) {
-                switch (view.getId()){
+                switch (view.getId()) {
                     case R.id.tv_see_detail://查看详情
-                        Intent intent=new Intent(getActivity(), WorkOrderDetailsActivity2.class);
+                        Intent intent = new Intent(getActivity(), WorkOrderDetailsActivity2.class);
                         //传递工单号
-                        intent.putExtra("OrderID",((WorkOrder.DataBean)adapter.getItem(position)).getOrderID());
+                        intent.putExtra("OrderID", ((WorkOrder.DataBean) adapter.getItem(position)).getOrderID());
                         startActivity(intent);
-                        mPresenter.UpdateOrderIsLook(((WorkOrder.DataBean)adapter.getItem(position)).getOrderID(),"2");
+                        mPresenter.UpdateOrderIsLook(((WorkOrder.DataBean) adapter.getItem(position)).getOrderID(), "2");
                         break;
                     case R.id.tv_in_service_apply_parts: //申请配件
-                        Intent intent2=new Intent(getActivity(),Order_Add_Accessories_Activity.class);
-                        intent2.putExtra("OrderID",((WorkOrder.DataBean)adapter.getItem(position)).getOrderID());
+                        Intent intent2 = new Intent(getActivity(), Order_Add_Accessories_Activity.class);
+                        intent2.putExtra("OrderID", ((WorkOrder.DataBean) adapter.getItem(position)).getOrderID());
                         startActivity(intent2);
 
                         break;
                     case R.id.tv_cancel_work_order://取消工单
                         OrderId = ((WorkOrder.DataBean) adapter.getData().get(position)).getOrderID();//获取工单号
-                        View Cancelview=LayoutInflater.from(mActivity).inflate(R.layout.dialog_cancel,null);
+                        View Cancelview = LayoutInflater.from(mActivity).inflate(R.layout.dialog_cancel, null);
                         et_message = Cancelview.findViewById(R.id.et_message);
                         negtive = Cancelview.findViewById(R.id.negtive);
                         positive = Cancelview.findViewById(R.id.positive);
@@ -199,12 +201,12 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
                         positive.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                String message= et_message.getText().toString();
-                                if (message==null||"".equals(message)){
+                                String message = et_message.getText().toString();
+                                if (message == null || "".equals(message)) {
                                     ToastUtils.showShort("请输入取消工单理由");
-                                }else {
+                                } else {
 //                                    mPresenter.UpdateOrderState(OrderId, "-1",message);
-                                    mPresenter.UpdateSendOrderState(OrderId,"-1",message);
+                                    mPresenter.UpdateSendOrderState(OrderId, "-1", message);
                                     cancelDialog.dismiss();
                                 }
 
@@ -213,15 +215,15 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
 
                         cancelDialog = new AlertDialog.Builder(mActivity).setView(Cancelview).create();
                         cancelDialog.show();
-                        Window window1= cancelDialog.getWindow();
-                        WindowManager.LayoutParams layoutParams=window1.getAttributes();
+                        Window window1 = cancelDialog.getWindow();
+                        WindowManager.LayoutParams layoutParams = window1.getAttributes();
                         window1.setAttributes(layoutParams);
                         window1.setBackgroundDrawable(new ColorDrawable());
                         break;
                     case R.id.img_navigation:
-                       // goToBaiduMap(((WorkOrder.DataBean)adapter.getData().get(position)).getAddress());
+                        // goToBaiduMap(((WorkOrder.DataBean)adapter.getData().get(position)).getAddress());
                         //goToGaodeMap(((WorkOrder.DataBean)adapter.getData().get(position)).getAddress());
-                        showPopupWindow(((WorkOrder.DataBean)adapter.getData().get(position)).getAddress());
+                        showPopupWindow(((WorkOrder.DataBean) adapter.getData().get(position)).getAddress());
                         break;
                     case R.id.tv_complaint:
                         View complaint_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_complaint, null);
@@ -244,16 +246,16 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
                             @Override
                             public void onClick(View v) {
                                 String content = et_content.getText().toString().trim();
-                                if ("".equals(content)){
-                                    MyUtils.showToast(mActivity,"请输入投诉原因");
-                                }else{
-                                    mPresenter.WorkerComplaint(workOrder.getData().get(position).getOrderID(),content);
+                                if ("".equals(content)) {
+                                    MyUtils.showToast(mActivity, "请输入投诉原因");
+                                } else {
+                                    mPresenter.WorkerComplaint(workOrder.getData().get(position).getOrderID(), content);
                                 }
                             }
                         });
                         break;
-                        default:
-                            break;
+                    default:
+                        break;
 
                 }
 
@@ -269,22 +271,22 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
         switch (baseResult.getStatusCode()) {
 
             case 200:
-                if (baseResult.getData().getData()==null){
-                    if (pageIndex!=1){
+                if (baseResult.getData().getData() == null) {
+                    if (pageIndex != 1) {
                         mRefreshLayout.finishLoadmoreWithNoMoreData();
-                    }else{
+                    } else {
                         list.clear();
                         in_service_adapter.notifyDataSetChanged();
                     }
-                }else {
-                    if (pageIndex==1){
+                } else {
+                    if (pageIndex == 1) {
                         list.clear();
                     }
                     workOrder = baseResult.getData();
                     list.addAll(workOrder.getData());
                     in_service_adapter.notifyDataSetChanged();
                 }
-                isfristin=true;
+                isfristin = true;
                 cancleLoading();
                 break;
             case 401:
@@ -320,14 +322,14 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
 
     @Override
     public void UpdateSendOrderState(BaseResult<Data> baseResult) {
-        switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData().isItem1()){
-                   // mRefreshLayout.autoRefresh(0,0,1);
+                if (baseResult.getData().isItem1()) {
+                    // mRefreshLayout.autoRefresh(0,0,1);
                     in_service_adapter.remove(cancelposition);
                     EventBus.getDefault().post(8);
-                }else {
-                    Toast.makeText(getActivity(), (CharSequence) baseResult.getData().getItem2(),Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), (CharSequence) baseResult.getData().getItem2(), Toast.LENGTH_SHORT).show();
                 }
                 break;
             default:
@@ -349,10 +351,10 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
     @Override
     public void UpdateOrderIsLook(BaseResult<Data<String>> baseResult) {
 
-        switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
 
-                if (baseResult.getData().isItem1()){
+                if (baseResult.getData().isItem1()) {
                     EventBus.getDefault().post(Config.ORDER_READ);
                 }
 
@@ -393,6 +395,11 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
     }
 
     @Override
+    public void OrderIsCall(BaseResult<Data<String>> baseResult) {
+
+    }
+
+    @Override
     public void contentLoading() {
 
     }
@@ -423,7 +430,7 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
     }
 
 
-    public void showLoading(){
+    public void showLoading() {
 //        dialog.setLoadingBuilder(Z_TYPE.ROTATE_CIRCLE)//设置类型
 //                .setLoadingColor(Color.BLACK)//颜色
 //                .setHintText("正在加载工单...")
@@ -434,11 +441,10 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
 //                .show();
     }
 
-    public void cancleLoading(){
+    public void cancleLoading() {
 //        dialog.dismiss();
 
     }
-
 
 
     /**
@@ -446,9 +452,9 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
      */
     public void showPopupWindow(final String location) {
 
-        img_cancle=popupWindow_view.findViewById(R.id.img_cancle);
-        ll_choose_baidumap=popupWindow_view.findViewById(R.id.ll_choose_baidumap);
-        ll_choose_gaodemap=popupWindow_view.findViewById(R.id.ll_choose_gaodemap);
+        img_cancle = popupWindow_view.findViewById(R.id.img_cancle);
+        ll_choose_baidumap = popupWindow_view.findViewById(R.id.ll_choose_baidumap);
+        ll_choose_gaodemap = popupWindow_view.findViewById(R.id.ll_choose_gaodemap);
 
 
         mPopupWindow.setAnimationStyle(R.style.popwindow_anim_style);
@@ -468,7 +474,7 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
 
         img_cancle.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)  {
+            public void onClick(View v) {
                 mPopupWindow.dismiss();
             }
         });
@@ -488,7 +494,6 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
                 mPopupWindow.dismiss();
             }
         });
-
 
 
     }
@@ -518,11 +523,11 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
      */
     private void goToBaiduMap(String location) {
         if (!isInstalled("com.baidu.BaiduMap")) {
-            Toast.makeText(getActivity(),"请先安装百度地图客户端",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "请先安装百度地图客户端", Toast.LENGTH_SHORT).show();
             return;
         }
         Intent intent = new Intent();
-        intent.setData(Uri.parse("baidumap://map/navi?query="+location+"&src="+ getPackageName()));
+        intent.setData(Uri.parse("baidumap://map/navi?query=" + location + "&src=" + getPackageName()));
         startActivity(intent); // 启动调用
     }
 
@@ -533,10 +538,10 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
     private void goToGaodeMap(String location) {
         if (!isInstalled("com.autonavi.minimap")) {
 
-            Toast.makeText(getActivity(),"请先安装高德地图客户端",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "请先安装高德地图客户端", Toast.LENGTH_SHORT).show();
             return;
         }
-      //  LatLng endPoint = BD2GCJ(new LatLng(mLat, mLng));//坐标转换
+        //  LatLng endPoint = BD2GCJ(new LatLng(mLat, mLng));//坐标转换
      /*   StringBuffer stringBuffer = new StringBuffer("androidamap://navi?sourceApplication=").append("amap");
         stringBuffer.append("&lat=").append(endPoint.latitude)
                 .append("&lon=").append(endPoint.longitude).append("&keywords=" + mAddressStr)
@@ -544,13 +549,13 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
                 .append("&style=").append(2);*/
         Intent intent = new Intent("android.intent.action.VIEW",
                 Uri.parse("androidamap://poi?sourceApplication=softname" +
-                "&keywords=" +location+
-                "&dev=0"));
+                        "&keywords=" + location +
+                        "&dev=0"));
         intent.setPackage("com.autonavi.minimap");
         startActivity(intent);
     }
 
-//   @Override
+    //   @Override
 //    public void setUserVisibleHint(boolean isVisibleToUser) {
 //        super.setUserVisibleHint(isVisibleToUser);
 //        if (isVisibleToUser){
@@ -564,13 +569,17 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
 //        }
 //
 //    }
-    /*@Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(String message) {
-        if (!"2".equals(message)){
+        if ("服务中".equals(message)) {
+            mPresenter.WorkerGetOrderList(userID, "2", Integer.toString(pageIndex), "5");
+        }
+        if (!"2".equals(message)) {
             return;
         }
+
         mPresenter.WorkerGetOrderList(userID, "2", Integer.toString(pageIndex), "5");
-    }*/
+    }
 
     /**
      * 跳转腾讯地图

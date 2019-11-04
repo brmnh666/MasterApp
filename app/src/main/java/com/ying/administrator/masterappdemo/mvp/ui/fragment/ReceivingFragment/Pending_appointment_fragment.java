@@ -50,6 +50,7 @@ import com.ying.administrator.masterappdemo.mvp.ui.adapter.Pending_Appointment_A
 
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Redeploy_Adapter;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseFragment;
+import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.util.calendarutil.CalendarEvent;
 import com.ying.administrator.masterappdemo.util.calendarutil.CalendarProviderManager;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
@@ -243,29 +244,34 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                         break;
                     /*预约成功*/
                     case R.id.tv_pending_appointment_success:
+                        if (((WorkOrder.DataBean) adapter.getItem(position)).getIsCall()==null){
+                            MyUtils.showToast(mActivity,"您还没有预约客户，请先预约客户");
+                            return;
+                        }else {
+                            data.setOrderID(((WorkOrder.DataBean) adapter.getItem(position)).getOrderID());
+                            data.setTypeName(((WorkOrder.DataBean) adapter.getItem(position)).getTypeName());
+                            data.setAddress(((WorkOrder.DataBean) adapter.getItem(position)).getAddress());
+                            data.setUserName(((WorkOrder.DataBean) adapter.getItem(position)).getUserName());
+                            data.setPhone(((WorkOrder.DataBean) adapter.getItem(position)).getPhone());
+                            data.setMemo(((WorkOrder.DataBean) adapter.getItem(position)).getMemo());
 
-                        data.setOrderID(((WorkOrder.DataBean) adapter.getItem(position)).getOrderID());
-                        data.setTypeName(((WorkOrder.DataBean) adapter.getItem(position)).getTypeName());
-                        data.setAddress(((WorkOrder.DataBean) adapter.getItem(position)).getAddress());
-                        data.setUserName(((WorkOrder.DataBean) adapter.getItem(position)).getUserName());
-                        data.setPhone(((WorkOrder.DataBean) adapter.getItem(position)).getPhone());
-                        data.setMemo(((WorkOrder.DataBean) adapter.getItem(position)).getMemo());
+                            RxPermissions rxPermissions = new RxPermissions(mActivity);
+                            rxPermissions.request(Manifest.permission.WRITE_CALENDAR, Manifest.permission.READ_CALENDAR)
+                                    .subscribe(new Consumer<Boolean>() {
+                                        @Override
+                                        public void accept(Boolean aBoolean) throws Exception {
+                                            if (aBoolean) {
+                                                // 获取全部权限成功
 
-                        RxPermissions rxPermissions = new RxPermissions(mActivity);
-                        rxPermissions.request(Manifest.permission.WRITE_CALENDAR, Manifest.permission.READ_CALENDAR)
-                                .subscribe(new Consumer<Boolean>() {
-                                    @Override
-                                    public void accept(Boolean aBoolean) throws Exception {
-                                        if (aBoolean) {
-                                            // 获取全部权限成功
-
-                                            chooseTime(position,"请选择上门时间");
-                                        } else {
-                                            // 获取全部权限失败
-                                            Log.d("=====>", "权限获取失败");
+                                                chooseTime(position,"请选择上门时间");
+                                            } else {
+                                                // 获取全部权限失败
+                                                Log.d("=====>", "权限获取失败");
+                                            }
                                         }
-                                    }
-                                });
+                                    });
+                        }
+
                         break;
                     case R.id.tv_pending_appointment_failure:
 
@@ -354,7 +360,7 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                     case R.id.img_pending_appointment_phone:
 //                        tv_pending_appointment_success.setClickable(true);
                         call("tel:" + ((WorkOrder.DataBean) adapter.getItem(position)).getPhone());
-
+                        mPresenter.OrderIsCall(((WorkOrder.DataBean) adapter.getItem(position)).getOrderID(),"Y");
                         break;
                     /*电话预约*/
 
@@ -582,6 +588,7 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                     pending_appointment_adapter.remove(successposition);
                     //Toast.makeText(getActivity(),"预约成功请到服务中",Toast.LENGTH_SHORT).show();
                     EventBus.getDefault().post(2);//预约成功跳转到服务中
+                    EventBus.getDefault().post("服务中");
                 } else {
 
 
@@ -739,6 +746,17 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                 }
                 break;
             default:
+                break;
+        }
+    }
+
+    @Override
+    public void OrderIsCall(BaseResult<Data<String>> baseResult) {
+        switch (baseResult.getStatusCode()){
+            case 200:
+                if (baseResult.getData().isItem1()){
+                    mPresenter.WorkerGetOrderList(userID, "1", Integer.toString(pageIndex), "5");
+                }
                 break;
         }
     }

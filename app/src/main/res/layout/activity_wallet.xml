@@ -178,7 +178,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center"
-                                        android:text="10000.00"
+                                        android:text="0.00"
                                         android:textColor="#000000"
                                         android:textSize="14sp" />
                                 </LinearLayout>
@@ -211,7 +211,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center"
-                                        android:text="10000.00"
+                                        android:text="0.00"
                                         android:textColor="#000000"
                                         android:textSize="14sp" />
                                 </LinearLayout>
@@ -253,7 +253,8 @@
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:gravity="center"
-                                    android:orientation="vertical">
+                                    android:orientation="vertical"
+                                    android:visibility="gone">
 
                                     <ImageView
                                         android:layout_width="15dp"
@@ -306,7 +307,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center"
-                                        android:text="10000.00"
+                                        android:text="0.00"
                                         android:textColor="#000000"
                                         android:textSize="14sp" />
                                 </LinearLayout>

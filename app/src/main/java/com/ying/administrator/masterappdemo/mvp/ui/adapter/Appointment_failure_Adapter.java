@@ -31,7 +31,7 @@ baseViewHolder.setText(R.id.tv_appointment_failure,item.getStateStr());//预约�
             baseViewHolder.setText(R.id.tv_malfunction,"故障:"+item.getMemo());//memo
 
         }
-        baseViewHolder.setText(R.id.tv_reason_appointment_failure,item.getCategoryName() + " " + item.getBrandName() + " " + item.getSubCategoryName());//memo
+        baseViewHolder.setText(R.id.tv_reason_appointment_failure,item.getBrandName() + " " + item.getSubCategoryName()+" "+item.getProductType());//memo
         baseViewHolder.setText(R.id.tv_appointment_failure_job_number,"工单号："+item.getOrderID());//工单号
         baseViewHolder.setText(R.id.tv_loaction_appointment_failure,"距离"+item.getDistance()+"km");//距离
         baseViewHolder.setText(R.id.tv_num,"数量："+item.getNum()+"台");//数量

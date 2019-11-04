@@ -197,10 +197,10 @@ public class Order_Receiving_Activity extends BaseActivity<ReceivingPresenter, R
 
     //任意写一个方法，给这个方法一个@Subscribe注解，参数类型可以自定义，但是一定要与你发出的类型相同
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void getEventBus(Integer num) {
+    public void Event(Integer num) {
         switch (num) {
             case 2:
-                mReceivingViewpager.setCurrentItem(2); //服务中 state 4
+                mReceivingViewpager.setCurrentItem(2); //服务中 state 2
                 break;
             case 3:
                 mReceivingViewpager.setCurrentItem(3);//待返件 state 5
@@ -209,7 +209,10 @@ public class Order_Receiving_Activity extends BaseActivity<ReceivingPresenter, R
                 mReceivingViewpager.setCurrentItem(7);//已完成 state 7
                 break;
             case 5:
-                mReceivingViewpager.setCurrentItem(3);//配件单 state 4
+                mReceivingViewpager.setCurrentItem(3);//配件单 state 3
+                break;
+            case 7:
+                mReceivingViewpager.setCurrentItem(4);//待寄件  state 4
                 break;
 
             case Config.ORDER_READ:

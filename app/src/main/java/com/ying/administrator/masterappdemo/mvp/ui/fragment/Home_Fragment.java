@@ -49,6 +49,7 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.searchdemo.MainActivity;
+import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
@@ -198,6 +199,10 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
     TextView mTvFinish;
     @BindView(R.id.tv_complaint)
     TextView mTvComplaint;
+    @BindView(R.id.ll_finsh)
+    LinearLayout mLlFinsh;
+    @BindView(R.id.ll_complaint)
+    LinearLayout mLlComplaint;
 
     // private WaveSwipeRefreshLayout mWaveSwipeRefreshLayout;
     private String mContentText;
@@ -388,7 +393,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
 
         mImgHomeHead.setOnClickListener(this);
         mLlMoney.setOnClickListener(this);
-
+        mLlFinsh.setOnClickListener(this);
         /*下拉刷新*/
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -423,7 +428,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
             public void onLoadmore(RefreshLayout refreshlayout) {
                 pageIndex++; //页数加1
                 Log.d("当前的单数", String.valueOf(list.size()));
-                if(userInfo!=null){
+                if (userInfo != null) {
                     if (userInfo.getParentUserID() == null || "".equals(userInfo.getParentUserID())) {
                         mPresenter.WorkerGetOrderList(userID, "0", Integer.toString(pageIndex), "10");
                     } else {
@@ -452,7 +457,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                             if (pageIndex == 1) {
                                 list.clear();
                                 grabsheetAdapter.notifyDataSetChanged();
-                            }else{
+                            } else {
                                 mRefreshLayout.finishLoadmoreWithNoMoreData();
                             }
 
@@ -476,7 +481,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                         if (baseResult.getData().getData() == null) {
                             if (pageIndex == 1) {
                                 Pendinglist.clear();
-                            }else{
+                            } else {
                                 mRefreshLayout.finishLoadmoreWithNoMoreData();
                             }
                             cancleLoading();
@@ -746,9 +751,9 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                                 final WorkOrder.DataBean item = (WorkOrder.DataBean) adapter.getItem(position);
                                 OrderID = item.getOrderID();
                                 if ("true".equals(item.getDistanceTureOrFalse())) {
-                                    Intent intent=new Intent(mActivity,ApplyFeeActivity.class);
-                                    intent.putExtra("position",position);
-                                    intent.putExtra("orderId",OrderID);
+                                    Intent intent = new Intent(mActivity, ApplyFeeActivity.class);
+                                    intent.putExtra("position", position);
+                                    intent.putExtra("orderId", OrderID);
                                     startActivity(intent);
 //                                    startActivity(new Intent(mActivity, ApplyFeeActivity.class));
 //                                    under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_apply_beyond, null);
@@ -1203,6 +1208,15 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 break;
             case R.id.ll_money:
                 startActivity(new Intent(mActivity, Wallet_Activity.class));
+                break;
+            case R.id.ll_finsh:
+                Bundle bundle = new Bundle();
+                bundle.putString("intent", "completed");
+                Intent intent = new Intent(mActivity, Order_Receiving_Activity.class);
+                intent.putExtras(bundle);
+                ActivityUtils.startActivity(intent);
+                mActivity.overridePendingTransition(R.anim.anim_no, R.anim.anim_no);
+                break;
             default:
                 break;
         }
@@ -1528,7 +1542,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
             } else {
                 mPresenter.WorkerGetOrderList(userID, "1", Integer.toString(pageIndex), "5");
             }
-        }else if ("pending_appointment".equals(message)){
+        } else if ("pending_appointment".equals(message)) {
             grabsheetAdapter.remove(grabposition);
         }
     }

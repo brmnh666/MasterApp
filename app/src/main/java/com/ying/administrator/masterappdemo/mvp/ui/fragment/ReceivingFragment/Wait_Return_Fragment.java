@@ -385,6 +385,11 @@ public class Wait_Return_Fragment extends BaseFragment<GetOrderListForMePresente
 
     }
 
+    @Override
+    public void OrderIsCall(BaseResult<Data<String>> baseResult) {
+
+    }
+
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
@@ -420,11 +425,14 @@ public class Wait_Return_Fragment extends BaseFragment<GetOrderListForMePresente
 
     }
 
-   /* @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(String message) {
+        if ("WorkOrderDetailsActivity".equals(message)){
+            mPresenter.WorkerGetOrderList(userID, "8", Integer.toString(pageIndex), "5");
+        }
         if (!"4".equals(message)){
             return;
         }
         mPresenter.WorkerGetOrderList(userID, "8", Integer.toString(pageIndex), "5");
-    }*/
+    }
 }

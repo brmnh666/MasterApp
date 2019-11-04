@@ -946,4 +946,13 @@ public interface ApiService {
                                                                      @Field("SizeID") String SizeID
     );
 
+    /*
+    * 是否拨打用户电话
+    * */
+    @FormUrlEncoded
+    @POST("Order/OrderIsCall")
+    Observable<BaseResult<Data<String>>> OrderIsCall(@Field("OrderID") String OrderID,
+                                                                  @Field("IsCall") String IsCall
+    );
+
 }

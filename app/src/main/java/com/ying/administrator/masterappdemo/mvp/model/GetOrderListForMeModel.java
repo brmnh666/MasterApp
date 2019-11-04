@@ -117,4 +117,11 @@ public class GetOrderListForMeModel implements GetOrderListForMeContract.Model {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }
+
+    @Override
+    public Observable<BaseResult<Data<String>>> OrderIsCall(String OrderID, String IsCall) {
+        return ApiRetrofit.getDefault().OrderIsCall(OrderID, IsCall)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
 }
