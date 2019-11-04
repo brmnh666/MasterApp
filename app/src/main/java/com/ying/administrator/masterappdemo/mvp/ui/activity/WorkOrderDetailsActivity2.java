@@ -516,6 +516,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     private ImageView iv_host;
     private ImageView iv_accessories;
     private String AccessoryAndServiceApplyState;
+    private Double factorymoney;//申请配件服务传给工厂的钱
+    private Integer sizeId;//申请配件服务传给工厂的值
 
 
     @Override
@@ -1283,6 +1285,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
             String s2 = gson.toJson(orderServiceStrBean);
             sAccessory = new SAccessory();
             sAccessory.setOrderID(OrderID);
+            sAccessory.setMoney(Double.toString(factorymoney));
+            sAccessory.setSizeID(String.valueOf(sizeId));
             sAccessory.setAccessorySequency("");
             sAccessory.setOrderAccessoryStr("");
             sAccessory.setOrderServiceStr(s2);
@@ -1604,6 +1608,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         }
     }
 
+
     @Override
     public void GetAccountAddress(BaseResult<List<AddressList>> baseResult) {
         switch (baseResult.getStatusCode()) {
@@ -1644,6 +1649,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
             String s1 = gson.toJson(orderAccessoryStrBean);
             sAccessory = new SAccessory();
             sAccessory.setOrderID(OrderID);
+            sAccessory.setMoney(Double.toString(factorymoney));
+            sAccessory.setSizeID(String.valueOf(sizeId));
             sAccessory.setAccessorySequency(Integer.toString(select_state));
             sAccessory.setOrderAccessoryStr(s1);
             sAccessory.setOrderServiceStr("");
@@ -1657,6 +1664,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
             String s2 = gson.toJson(orderServiceStrBean);
             sAccessory = new SAccessory();
             sAccessory.setOrderID(OrderID);
+            sAccessory.setMoney(Double.toString(factorymoney));
+            sAccessory.setSizeID(String.valueOf(sizeId));
             sAccessory.setAccessorySequency("");
             sAccessory.setOrderAccessoryStr("");
             sAccessory.setOrderServiceStr(s2);
@@ -1674,6 +1683,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
             String s2 = gson.toJson(orderServiceStrBean);
             sAccessory = new SAccessory();
             sAccessory.setOrderID(OrderID);
+            sAccessory.setMoney(Double.toString(factorymoney));
+            sAccessory.setSizeID(String.valueOf(sizeId));
             sAccessory.setAccessorySequency(Integer.toString(select_state));
             sAccessory.setOrderAccessoryStr(s1);
             sAccessory.setOrderServiceStr(s2);
@@ -1716,8 +1727,10 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         String str = "";
                         if ("-1".equals(data.getBeyondState())) {
                             str = "服务金额：¥" + (money1);
+                            factorymoney=money1;
                         } else {
                             str = "服务金额：¥" + (money1 + beyond);
+                            factorymoney=money1+beyond;
                         }
                         mTvServiceAmount.setText(str);
                         mTvTotalPrice.setText(str);
@@ -1726,8 +1739,10 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         String str = "";
                         if ("-1".equals(data.getBeyondState())) {
                             str = "服务金额：¥" + (money3);
+                            factorymoney=money3;
                         } else {
                             str = "服务金额：¥" + (money3 + beyond);
+                            factorymoney=money3+beyond;
                         }
                         mTvServiceAmount.setText(str);
                         mTvTotalPrice.setText(str);
@@ -1766,6 +1781,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     if ("3".equals(data.getTypeID())) {
                         mTvServiceAmount.setText("服务金额：¥" + data.getQuaMoney() + "");
                         mTvTotalPrice.setText("服务金额：¥" + data.getQuaMoney() + "");
+                        factorymoney=Double.parseDouble(data.getQuaMoney());
                     } else {
 //                    if (data.getAccessoryMoney() != null && !"0.00".equals(data.getAccessoryMoney())) {
 //                        if ("1".equals(data.getBeyondState())) {
@@ -1778,10 +1794,11 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         if ("1".equals(data.getAccessoryApplyState())) {
                             mTvServiceAmount.setText("服务金额：¥" + ordermoney);
                             mTvTotalPrice.setText("服务金额：¥" + ordermoney);
-
+                            factorymoney=ordermoney;
                         } else {
                             mTvServiceAmount.setText("服务金额：¥" + ordermoney);
                             mTvTotalPrice.setText("服务金额：¥" + ordermoney);
+                            factorymoney=ordermoney;
                         }
                     }
 
@@ -3879,6 +3896,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         }
         if (list.size() > 0) {
             System.out.println(Collections.max(list));
+            sizeId = Collections.max(list);
             mPresenter.GetFactoryAccessoryMoney(OrderID, data.getProductTypeID(), String.valueOf(Collections.max(list)));
         } else {
             Double money1 = Double.parseDouble(data.getQuaMoney());
@@ -3888,11 +3906,13 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 mTvServiceAmount.setText(str);
                 mTvTotalPrice.setText(str);
 //                ToastUtils.showShort(str);
+                factorymoney =money1;
             } else {
                 String str = "服务金额：¥" + (money2);
                 mTvServiceAmount.setText(str);
                 mTvTotalPrice.setText(str);
 //                ToastUtils.showShort(str);
+                factorymoney =money2;
             }
         }
     }

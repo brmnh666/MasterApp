@@ -12,10 +12,28 @@ public class SAccessory implements Serializable {
      */
 
     private String OrderID;
+    private String Money;
+    private String SizeID;
     private String AccessorySequency;
     private String OrderAccessoryStr;
     private String OrderServiceStr;
     private String IsAorS;
+
+    public String getSizeID() {
+        return SizeID;
+    }
+
+    public void setSizeID(String sizeID) {
+        SizeID = sizeID;
+    }
+
+    public String getMoney() {
+        return Money;
+    }
+
+    public void setMoney(String money) {
+        Money = money;
+    }
 
     public String getIsAorS() {
         return IsAorS;
