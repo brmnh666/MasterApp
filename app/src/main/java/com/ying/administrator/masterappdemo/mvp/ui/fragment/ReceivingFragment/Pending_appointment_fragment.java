@@ -266,7 +266,8 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
                                                 chooseTime(position,"请选择上门时间");
                                             } else {
                                                 // 获取全部权限失败
-                                                Log.d("=====>", "权限获取失败");
+//                                                Log.d("=====>", "权限获取失败");
+                                                ToastUtils.showShort("权限获取失败");
                                             }
                                         }
                                     });

@@ -394,6 +394,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
         mImgHomeHead.setOnClickListener(this);
         mLlMoney.setOnClickListener(this);
         mLlFinsh.setOnClickListener(this);
+        mTvName.setOnClickListener(this);
         /*下拉刷新*/
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -456,7 +457,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                             Log.d("===>", "暂无新工单");
                             if (pageIndex == 1) {
                                 list.clear();
-                                grabsheetAdapter.notifyDataSetChanged();
+//                                grabsheetAdapter.notifyDataSetChanged();
                             } else {
                                 mRefreshLayout.finishLoadmoreWithNoMoreData();
                             }
@@ -585,7 +586,8 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                                             chooseTime(position, "请选择上门时间");
                                         } else {
                                             // 获取全部权限失败
-                                            Log.d("=====>", "权限获取失败");
+//                                            Log.d("=====>", "权限获取失败");
+                                            ToastUtils.showShort("权限获取失败");
                                         }
                                     }
                                 });
@@ -938,7 +940,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 if (userInfo.getAvator() != null) {//显示默认头像
                     RequestOptions myOptions = new RequestOptions()
                             .bitmapTransform(new CircleCrop())
-                            .transform(new GlideCircleWithBorder_Home(this, 1, Color.parseColor("#808080")))
+                            .transform(new GlideCircleWithBorder_Home(this, 1, Color.parseColor("#DCDCDC")))
                             .error(R.drawable.icon);
 
                     Glide.with(mActivity)
@@ -1216,6 +1218,9 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 intent.putExtras(bundle);
                 ActivityUtils.startActivity(intent);
                 mActivity.overridePendingTransition(R.anim.anim_no, R.anim.anim_no);
+                break;
+            case R.id.tv_name:
+                startActivity(new Intent(mActivity,Personal_Information_Activity.class));
                 break;
             default:
                 break;

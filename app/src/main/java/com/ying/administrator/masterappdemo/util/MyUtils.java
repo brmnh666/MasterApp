@@ -442,7 +442,7 @@ public class MyUtils {
 
     public static boolean isBasePhone(String mobile){
         Pattern p1 = Pattern
-                .compile("^((13[0-9])|(15[^4,\\D])|(177)|(18[0,5-9]))\\d{8}$");
+                .compile("^((13[0-9])|(15[^4,\\D])|(177)|(18[0,1,2,5-9]))\\d{8}$");
         Matcher m1 = p1.matcher(mobile);
         return m1.matches();
     }

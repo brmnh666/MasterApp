@@ -634,7 +634,6 @@
         <activity android:name=".mvp.ui.activity.Register_New_Activity"
             android:theme="@style/AppTheme.Splash"
              android:launchMode="singleTask"
-            android:screenOrientation="portrait"
             />
 
         <!--新的登陆-->

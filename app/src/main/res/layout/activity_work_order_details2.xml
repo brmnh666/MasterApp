@@ -190,6 +190,59 @@
                             android:src="@mipmap/fuzhi" />
                     </LinearLayout>
 
+
+                    <LinearLayout
+                        android:id="@+id/ll_expedited"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="@dimen/dp_10"
+                        android:background="@color/white">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="未在"
+                            android:textColor="@color/red"
+                            android:textSize="13sp"
+                            android:layout_gravity="center"/>
+
+                        <cn.iwgang.countdownview.CountdownView
+                            android:id="@+id/countdownview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_gravity="center"
+                            app:isHideTimeBackground="true"
+                            app:isShowDay="false"
+                            app:isShowHour="true"
+                            app:isShowMillisecond="false"
+                            app:isShowMinute="true"
+                            app:isShowSecond="true"
+                            app:isShowTimeBgDivisionLine="false"
+                            app:isTimeTextBold="true"
+                            app:suffixGravity="center"
+                            app:suffixHour="时"
+                            app:suffixMinute="分"
+                            app:suffixSecond="秒"
+                            app:suffixTextColor="@color/red"
+                            app:suffixTextSize="11sp"
+                            app:timeBgColor="#ffffff"
+                            app:timeBgRadius="3dp"
+                            app:timeTextColor="@color/red"
+                            app:timeTextSize="13sp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="完成工单，将取消加急费用"
+                            android:textColor="@color/red"
+                            android:textSize="13sp"
+                            android:layout_gravity="center"/>
+                    </LinearLayout>
+
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
@@ -1782,7 +1835,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text=""
-                        android:textColor="#333"
+                        android:textColor="@color/red"
                         android:textSize="16sp"
                         android:layout_gravity="center"
                         android:layout_marginRight="6dp"/>

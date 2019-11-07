@@ -18,7 +18,12 @@ public class ConfirmedAdapter extends BaseQuickAdapter<WorkOrder.DataBean, BaseV
     @Override
     protected void convert(BaseViewHolder helper, WorkOrder.DataBean item) {
         helper.setText(R.id.tv_complete,item.getStateStr());//已完成
-        helper.setText(R.id.tv_complete_status_repair,item.getTypeName()+"/"+item.getGuaranteeText());//安装or维修
+        if ("Y".equals(item.getExtra())&&!"0".equals(item.getExtraTime())){
+            helper.setText(R.id.tv_complete_status_repair,item.getTypeName()+"/"+item.getGuaranteeText()+"/加急");
+        }else {
+            helper.setText(R.id.tv_complete_status_repair,item.getTypeName()+"/"+item.getGuaranteeText());
+        }
+//        helper.setText(R.id.tv_complete_status_repair,item.getTypeName()+"/"+item.getGuaranteeText());//安装or维修
         if ("安装".equals(item.getTypeName())){
             helper.setBackgroundColor(R.id.tv_complete_status_repair, Color.parseColor("#1690FF"));
             helper.setText(R.id.tv_malfunction, "安装备注:"+item.getMemo());//原因

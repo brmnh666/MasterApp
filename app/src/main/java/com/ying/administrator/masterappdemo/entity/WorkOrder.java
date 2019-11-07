@@ -632,7 +632,7 @@ public class WorkOrder implements Serializable {
         }
 
         public String getCreateDate() {
-            return CreateDate;
+            return CreateDate.replace("T"," ");
         }
 
         public void setCreateDate(String CreateDate) {
@@ -701,6 +701,9 @@ public class WorkOrder implements Serializable {
                     break;
                 case "8":
                     status="服务中待返件";
+                    break;
+                case "9":
+                    status="远程费审核";
                     break;
             }
             return status;

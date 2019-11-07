@@ -41,7 +41,14 @@ public class Pending_Appointment_Adapter extends BaseQuickAdapter<WorkOrder.Data
     protected void convert(BaseViewHolder helper, WorkOrder.DataBean item) {
 
         helper.setText(R.id.tv_orderid, "工单号："+item.getOrderID());
-        helper.setText(R.id.tv_pending_appointment_status_repair, item.getTypeName() + "/" + item.getGuaranteeText());
+        if ("Y".equals(item.getExtra())&&!"0".equals(item.getExtraTime())){
+            helper.setText(R.id.tv_pending_appointment_status_repair,item.getTypeName()+"/"+item.getGuaranteeText()+"/加急");
+        }else {
+            helper.setText(R.id.tv_pending_appointment_status_repair,item.getTypeName()+"/"+item.getGuaranteeText());
+        }
+
+
+//        helper.setText(R.id.tv_pending_appointment_status_repair, item.getTypeName() + "/" + item.getGuaranteeText());
         helper.setText(R.id.tv_loaction_appointment, "距离 " + item.getDistance() + "Km");
         helper.setText(R.id.tv_reason_pending_appointment, item.getBrandName() + " " + item.getSubCategoryName()+" "+item.getProductType());//型号
         if ("维修".equals(item.getTypeName())){

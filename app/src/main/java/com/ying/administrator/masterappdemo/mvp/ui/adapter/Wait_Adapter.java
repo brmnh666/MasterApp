@@ -40,7 +40,12 @@ public class Wait_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,BaseViewHo
 
         baseViewHolder.setText(R.id.tv_orderid,"工单号："+item.getOrderID());
         baseViewHolder.setText(R.id.tv_returnedparts,item.getStateStr());
-        baseViewHolder.setText(R.id.tv_returnedparts_status_repair,item.getTypeName()+"/"+item.getGuaranteeText());//安装or维修
+        if ("Y".equals(item.getExtra()) && !"0".equals(item.getExtraTime())) {
+            baseViewHolder.setText(R.id.tv_returnedparts_status_repair, item.getTypeName() + "/" + item.getGuaranteeText() + "/加急");
+        } else {
+            baseViewHolder.setText(R.id.tv_returnedparts_status_repair, item.getTypeName() + "/" + item.getGuaranteeText());
+        }
+//        baseViewHolder.setText(R.id.tv_returnedparts_status_repair,item.getTypeName()+"/"+item.getGuaranteeText());//安装or维修
         if ("安装".equals(item.getTypeName())){
             baseViewHolder.setBackgroundColor(R.id.tv_returnedparts_status_repair, Color.parseColor("#1690FF"));
             baseViewHolder.setText(R.id.tv_reason_returnedparts,"安装备注:"+item.getMemo());//memo

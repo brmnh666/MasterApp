@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -147,7 +149,7 @@ public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> im
                 System.out.println(str);
 //                ToastUtils.showShort(str);
                 Gson gson=new Gson();
-                IsCardNo result=gson.fromJson(str,IsCardNo.class);
+                IsCardNo result=gson.fromJson(str.replaceAll(" ",""),IsCardNo.class);
                 if (result.isValidated()){
                     mPresenter.AddorUpdateAccountPayInfo(userId, phone, bankname, result.getKey(),name);
                 }else{
@@ -178,7 +180,9 @@ public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> im
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+//设置过滤器，限制输入字长，及不能输入空格
+                met_banknumber.setFilters(
+                        new InputFilter[] { new InputFilter.LengthFilter(19), filter });
 
             }
 
@@ -194,6 +198,21 @@ public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> im
             }
         });
     }
+
+    /**
+     * EditText禁止输入空格，使用：mEditText.setFilters(new InputFilter[] { TextUtils.filter });
+     */
+    public static InputFilter filter = new InputFilter() {
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest,
+                                   int dstart, int dend) {
+            if (source.equals(" ")) {
+                return "";
+            } else {
+                return null;
+            }
+        }
+    };
 
     @SingleClick
     @Override
@@ -436,7 +455,7 @@ public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> im
 //                            };
 //                        }
                         mTvAddCardBankname.setText(result.getBankName());
-                        met_banknumber.setText(result.getBankCardNumber());
+                        met_banknumber.setText(result.getBankCardNumber().replaceAll(" ",""));
                     }
                     @Override
                     public void onError(OCRError error) {
