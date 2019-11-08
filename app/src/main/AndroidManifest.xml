@@ -273,6 +273,19 @@
              android:launchMode="singleTask"
             android:screenOrientation="portrait"
             />
+        <activity
+            android:name=".mvp.ui.activity.SettingActivity2"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            />
+        <!--消息设置界面-->
+        <activity
+            android:name=".mvp.ui.activity.MessageSettingsActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            />
         <!--关于我们-->
         <activity android:name=".mvp.ui.activity.AboutUsActivity"
             android:theme="@style/AppTheme.NoActionBar"

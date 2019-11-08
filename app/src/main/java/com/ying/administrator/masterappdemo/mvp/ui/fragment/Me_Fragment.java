@@ -61,6 +61,7 @@ import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_Receiving_Acti
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Personal_Information_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.RechargeActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.SettingActivity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.SettingActivity2;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.StudyActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.SubAccountManagementActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.SubsidiaryAccountActivity;
@@ -460,7 +461,7 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                 break;
             case R.id.ll_setting:
             case R.id.img_me_setting: //设置
-                startActivity(new Intent(getActivity(), SettingActivity.class));
+                startActivity(new Intent(getActivity(), SettingActivity2.class));
                 break;
             case R.id.ll_me_about_us://关于我们
                 startActivity(new Intent(getActivity(), AboutUsActivity.class));

@@ -220,7 +220,8 @@
                         android:paddingBottom="19dp"
                         android:orientation="horizontal"
                         android:paddingLeft="14dp"
-                        android:paddingRight="14dp">
+                        android:paddingRight="14dp"
+                        android:visibility="gone">
 
                         <TextView
                             android:layout_width="match_parent"
@@ -242,7 +243,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dp_10"
-                        android:background="#f5f2f5" />
+                        android:background="#f5f2f5"
+                        android:visibility="gone"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
