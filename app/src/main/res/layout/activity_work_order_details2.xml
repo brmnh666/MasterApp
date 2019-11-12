@@ -1731,7 +1731,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="13dp"
-                                android:text="条形码"
+                                android:text="整机"
                                 android:textColor="#353535"
                                 android:textSize="10dp" />
                         </LinearLayout>
@@ -1754,7 +1754,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="13dp"
-                                android:text="整机"
+                                android:text="条形码"
                                 android:textColor="#353535"
                                 android:textSize="10dp" />
                         </LinearLayout>

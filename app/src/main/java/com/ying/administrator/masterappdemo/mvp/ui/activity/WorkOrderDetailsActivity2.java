@@ -2752,6 +2752,15 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     } else {
                         mLlExpedited.setVisibility(View.GONE);
                     }
+
+                    if (!"".equals(data.getAccessoryAndServiceApplyState())){
+                        mLlAddAccessory.setVisibility(View.GONE);
+                        mLlAddService.setVisibility(View.GONE);
+                    }else {
+                        mLlAddAccessory.setVisibility(View.VISIBLE);
+                        mLlAddService.setVisibility(View.VISIBLE);
+                    }
+
                     break;
 
                 } else {

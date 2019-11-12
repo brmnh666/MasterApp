@@ -454,28 +454,7 @@
                     android:orientation="horizontal"
                     android:paddingBottom="15dp">
 
-                    <LinearLayout
-                        android:id="@+id/ll_bar_code"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
 
-                        <ImageView
-                            android:id="@+id/iv_bar_code"
-                            android:layout_width="69dp"
-                            android:layout_height="69dp"
-                            android:src="@mipmap/upload" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="13dp"
-                            android:text="条形码"
-                            android:textColor="#353535"
-                            android:textSize="12sp" />
-                    </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/ll_machine"
@@ -499,7 +478,28 @@
                             android:textColor="#353535"
                             android:textSize="12sp" />
                     </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/ll_bar_code"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
 
+                        <ImageView
+                            android:id="@+id/iv_bar_code"
+                            android:layout_width="69dp"
+                            android:layout_height="69dp"
+                            android:src="@mipmap/upload" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="13dp"
+                            android:text="条形码"
+                            android:textColor="#353535"
+                            android:textSize="12sp" />
+                    </LinearLayout>
                     <LinearLayout
                         android:id="@+id/ll_fault_location"
                         android:layout_width="match_parent"

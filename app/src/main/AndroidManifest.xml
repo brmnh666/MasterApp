@@ -304,8 +304,7 @@
 
         <activity android:name="com.amap.searchdemo.MainActivity"
             android:theme="@style/AppTheme.Splash"
-             android:launchMode="singleTask"
-            android:screenOrientation="portrait">
+             android:launchMode="singleTask">
 
 
         </activity>
@@ -669,7 +668,6 @@
         <activity android:name=".mvp.ui.activity.ToteLoginActivity"
             android:theme="@style/AppTheme.Splash"
              android:launchMode="singleTask"
-            android:screenOrientation="portrait"
             />
 
       <!--添加配件页面-->

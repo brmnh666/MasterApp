@@ -42,6 +42,7 @@ import com.ying.administrator.masterappdemo.mvp.model.AllWorkOrdersModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.AllWorkOrdersPresenter;
 import com.ying.administrator.masterappdemo.util.Glide4Engine;
 import com.ying.administrator.masterappdemo.util.MyUtils;
+import com.ying.administrator.masterappdemo.util.SingleClick;
 import com.ying.administrator.masterappdemo.util.imageutil.CompressHelper;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
@@ -124,6 +125,7 @@ public class ApplyFeeActivity extends BaseActivity<AllWorkOrdersPresenter, AllWo
         mIvMap1.setOnClickListener(this);
     }
 
+    @SingleClick
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

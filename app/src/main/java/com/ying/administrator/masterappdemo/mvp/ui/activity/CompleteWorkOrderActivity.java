@@ -467,10 +467,10 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                 } else {//维修
                     if (data.getOrderAccessroyDetail().size() == 0) {
                         //没配件
-//                        if (return_img_map.get(1) == null) {
-//                            MyUtils.showToast(mActivity, "整机图片必传！");
-//                            return;
-//                        }
+                        if (return_img_map.get(0) == null) {
+                            MyUtils.showToast(mActivity, "整机图片必传！");
+                            return;
+                        }
                         if (return_img_map.size() == 0) {
                             mPresenter.UpdateOrderState(orderID, "5", "");
 
@@ -481,9 +481,11 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                     } else {
                         //有配件
 //                        if (return_img_map.get(1) == null || return_img_map.get(2) == null || return_img_map.get(3) == null) {
+                        if (return_img_map.get(0) == null) {
 //                            MyUtils.showToast(mActivity, "整机、故障位置、新旧配件图片必传！");
-//                            return;
-//                        }
+                            MyUtils.showToast(mActivity, "整机图片必传！");
+                            return;
+                        }
                         if (return_img_map.size() == 0) {
                             if (!"1".equals(data.getIsReturn())) {//不需要返件
                                 mPresenter.UpdateOrderState(orderID, "5", "");
@@ -678,7 +680,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                 }
                 if (file != null) {
                     File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
-                    return_img_map.put(0, newFile);
+                    return_img_map.put(1, newFile);
                 }
 
                 break;
@@ -695,7 +697,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                 }
                 if (file != null) {
                     File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
-                    return_img_map.put(0, newFile);
+                    return_img_map.put(1, newFile);
                 }
                 break;
             //拍照
@@ -707,7 +709,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                 if (file != null) {
 
                     File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
-                    return_img_map.put(1, newFile);
+                    return_img_map.put(0, newFile);
                 }
                 break;
             //相册
@@ -724,7 +726,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                 if (file != null) {
 
                     File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
-                    return_img_map.put(1, newFile);
+                    return_img_map.put(0, newFile);
                 }
                 break;
             //拍照
