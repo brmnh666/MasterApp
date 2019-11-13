@@ -242,8 +242,8 @@ public class PendingOrderPresenter extends PendingOrderContract.Presenter {
     }
 
     @Override
-    public void GetFactoryAccessoryMoney(String OrderID, String FCategoryID, String SizeID) {
-        mModel.GetFactoryAccessoryMoney(OrderID, FCategoryID,SizeID)
+    public void GetFactoryAccessoryMoney(String OrderID, String FCategoryID, String SizeID,String Price) {
+        mModel.GetFactoryAccessoryMoney(OrderID, FCategoryID,SizeID,Price)
                 .subscribe(new BaseObserver<Data<String>>() {
                     @Override
                     protected void onHandleSuccess(BaseResult<Data<String>> value) {

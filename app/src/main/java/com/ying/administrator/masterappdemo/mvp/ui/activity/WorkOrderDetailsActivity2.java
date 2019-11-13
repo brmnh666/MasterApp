@@ -3926,9 +3926,11 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
      * 添加完配件和服务之后返回多少钱
      */
     public void getMoney(List<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> accessoryList, List<FService.OrderServiceStrBean.OrderServiceBean> serviceList) {
+        double price=0;
         List<Integer> list = new ArrayList<>();
         for (int i = 0; i < accessoryList.size(); i++) {
             list.add(Integer.parseInt(accessoryList.get(i).getSizeID()));
+            price+=accessoryList.get(i).getDiscountPrice();
         }
         for (int i = 0; i < serviceList.size(); i++) {
             list.add(Integer.parseInt(serviceList.get(i).getSizeID()));
@@ -3936,7 +3938,12 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         if (list.size() > 0) {
             System.out.println(Collections.max(list));
             sizeId = Collections.max(list);
-            mPresenter.GetFactoryAccessoryMoney(OrderID, data.getProductTypeID(), String.valueOf(Collections.max(list)));
+            if(select_state==1){
+                mPresenter.GetFactoryAccessoryMoney(OrderID, data.getProductTypeID(), String.valueOf(Collections.max(list)),Double.toString(price));
+            }else{
+                mPresenter.GetFactoryAccessoryMoney(OrderID, data.getProductTypeID(), String.valueOf(Collections.max(list)),"0");
+            }
+
         } else {
             Double money1 = Double.parseDouble(data.getQuaMoney());
             Double money2 = Double.parseDouble(data.getOrderMoney() + "");

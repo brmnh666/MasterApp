@@ -177,8 +177,8 @@ public class PendingOrderModel implements PendingOrderContract.Model {
     }
 
     @Override
-    public Observable<BaseResult<Data<String>>> GetFactoryAccessoryMoney(String OrderID, String FCategoryID, String SizeID) {
-        return ApiRetrofit.getDefault().GetFactoryAccessoryMoney(OrderID, FCategoryID,SizeID)
+    public Observable<BaseResult<Data<String>>> GetFactoryAccessoryMoney(String OrderID, String FCategoryID, String SizeID,String Price) {
+        return ApiRetrofit.getDefault().GetFactoryAccessoryMoney(OrderID, FCategoryID,SizeID,Price)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

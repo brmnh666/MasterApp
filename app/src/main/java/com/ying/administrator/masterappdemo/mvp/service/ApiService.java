@@ -943,7 +943,8 @@ public interface ApiService {
     @POST("FactoryConfig/GetFactoryAccessoryMoney")
     Observable<BaseResult<Data<String>>> GetFactoryAccessoryMoney(@Field("OrderID") String OrderID,
                                                                      @Field("FCategoryID") String FCategoryID,
-                                                                     @Field("SizeID") String SizeID
+                                                                     @Field("SizeID") String SizeID,
+                                                                     @Field("Price") String Price
     );
 
     /*
