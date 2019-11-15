@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -26,6 +27,8 @@ import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.LoginActivity;
 import com.ying.administrator.masterappdemo.util.TUtil;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
+import com.zyao89.view.zloading.ZLoadingDialog;
+import com.zyao89.view.zloading.Z_TYPE;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -48,6 +51,7 @@ public abstract class BaseActivity<P extends BasePresenter, M extends BaseModel>
     public P mPresenter;
     public M mModel;
     private RxManager mRxManage;
+    private ZLoadingDialog dialog;
     @Override
     public Resources getResources() {
         Resources res = super.getResources();
@@ -222,12 +226,22 @@ public abstract class BaseActivity<P extends BasePresenter, M extends BaseModel>
 
     @Override
     public void showProgress() {
-
+        dialog=new ZLoadingDialog(mActivity);
+        dialog.setLoadingBuilder(Z_TYPE.ROTATE_CIRCLE)//设置类型
+                .setLoadingColor(Color.BLACK)//颜色
+                .setHintText("...")
+                .setHintTextSize(14) // 设置字体大小 dp
+                .setHintTextColor(Color.BLACK)  // 设置字体颜色
+                .setDurationTime(1) // 设置动画时间百分比 - 0.5倍
+                .setCanceledOnTouchOutside(false)//点击外部无法取消
+                .show();
     }
 
     @Override
     public void hideProgress() {
-
+        if (dialog!=null){
+            dialog.dismiss();
+        }
     }
 
     /*电话*/
