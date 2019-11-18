@@ -157,6 +157,12 @@ public class Return_Sheet_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,Ba
         } else {
             baseViewHolder.setText(R.id.tv_review3,"远程费被拒");
         }
+
+        if ("1".equals(item.getIsLook())){
+            baseViewHolder.setTextColor(R.id.tv_reason_returnedparts,Color.BLACK);
+        }else{
+            baseViewHolder.setTextColor(R.id.tv_reason_returnedparts,Color.GRAY);
+        }
     }
 
 

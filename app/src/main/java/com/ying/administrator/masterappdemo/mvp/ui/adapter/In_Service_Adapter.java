@@ -56,7 +56,11 @@ public class In_Service_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,Base
         } else {
             helper.setText(R.id.tv_review,"远程费被拒");
         }
-
+        if ("1".equals(item.getIsLook())){
+            helper.setTextColor(R.id.tv_reason_in_service,Color.BLACK);
+        }else{
+            helper.setTextColor(R.id.tv_reason_in_service,Color.GRAY);
+        }
 //         if (item.getBeyondState()==null){
 //         }else if (item.getBeyondState().equals("0")){//待审核
 //             helper.setText(R.id.tv_remote_fee,"远程费审核中");

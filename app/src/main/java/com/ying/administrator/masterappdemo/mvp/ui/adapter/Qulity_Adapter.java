@@ -81,6 +81,10 @@ public class Qulity_Adapter extends BaseQuickAdapter<WorkOrder.DataBean, BaseVie
         }else {
             baseViewHolder.setGone(R.id.tv_pending_appointment_redeploy,false);
         }
-
+        if ("1".equals(item.getIsLook())){
+            baseViewHolder.setTextColor(R.id.tv_reason_quality,Color.BLACK);
+        }else{
+            baseViewHolder.setTextColor(R.id.tv_reason_quality,Color.GRAY);
+        }
     }
 }

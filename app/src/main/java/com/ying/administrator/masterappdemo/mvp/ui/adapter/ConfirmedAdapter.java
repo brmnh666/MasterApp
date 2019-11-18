@@ -40,6 +40,11 @@ public class ConfirmedAdapter extends BaseQuickAdapter<WorkOrder.DataBean, BaseV
         helper.setText(R.id.tv_address_complete,"地址:"+item.getAddress());//地址
         helper.addOnClickListener(R.id.tv_detail);
         helper.addOnClickListener(R.id.tv_cancel_order);
+        if ("1".equals(item.getIsLook())){
+            helper.setTextColor(R.id.tv_reason_complete,Color.BLACK);
+        }else{
+            helper.setTextColor(R.id.tv_reason_complete,Color.GRAY);
+        }
 
     }
 }

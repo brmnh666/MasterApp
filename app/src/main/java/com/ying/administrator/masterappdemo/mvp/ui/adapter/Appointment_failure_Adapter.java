@@ -46,5 +46,10 @@ public class Appointment_failure_Adapter extends BaseQuickAdapter<WorkOrder.Data
         baseViewHolder.addOnClickListener(R.id.tv_pending_appointment_failure);//预约不成功
         baseViewHolder.addOnClickListener(R.id.tv_pending_appointment_success);//预约成功
         baseViewHolder.addOnClickListener(R.id.tv_cancel_order);//取消订单
+        if ("1".equals(item.getIsLook())){
+            baseViewHolder.setTextColor(R.id.tv_reason_appointment_failure,Color.BLACK);
+        }else{
+            baseViewHolder.setTextColor(R.id.tv_reason_appointment_failure,Color.GRAY);
+        }
     }
 }

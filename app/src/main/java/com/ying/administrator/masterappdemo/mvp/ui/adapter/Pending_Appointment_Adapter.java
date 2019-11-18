@@ -99,6 +99,11 @@ public class Pending_Appointment_Adapter extends BaseQuickAdapter<WorkOrder.Data
         helper.addOnClickListener(R.id.tv_cancel_order);//取消工单
 //        helper.getView(R.id.tv_pending_appointment_success).setEnabled(false);
 //        helper.addOnClickListener(R.id.rl_pending_appointment);
+        if ("1".equals(item.getIsLook())){
+            helper.setTextColor(R.id.tv_reason_pending_appointment,Color.BLACK);
+        }else{
+            helper.setTextColor(R.id.tv_reason_pending_appointment,Color.GRAY);
+        }
     }
 
 

@@ -48,6 +48,10 @@ public class CompletedAdapter extends BaseQuickAdapter<WorkOrder.DataBean, BaseV
             baseViewHolder.setText(R.id.tv_review,"结算完成");
             baseViewHolder.getView(R.id.tv_review).setVisibility(View.VISIBLE);
         }
-
+        if ("1".equals(item.getIsLook())){
+            baseViewHolder.setTextColor(R.id.tv_reason_complete,Color.BLACK);
+        }else{
+            baseViewHolder.setTextColor(R.id.tv_reason_complete,Color.GRAY);
+        }
     }
 }
