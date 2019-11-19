@@ -164,14 +164,15 @@
         android:layout_marginLeft="13dp"
         android:layout_marginTop="10dp"
         android:text="提示:服务过程中需要申请配件请点击申请配件"
-        android:textSize="11sp" />
+        android:textSize="11sp"
+        android:visibility="gone"/>
 
 
     <View
         android:id="@+id/view_point"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/tv_hint_in_service"
+        android:layout_below="@+id/tv_address_in_service"
         android:layout_marginTop="10dp"
         android:background="#eeeeee"></View>
 

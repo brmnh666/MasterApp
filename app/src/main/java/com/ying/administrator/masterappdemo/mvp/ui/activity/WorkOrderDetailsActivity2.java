@@ -1151,11 +1151,13 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 btn_positive.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        showProgress();
                         expressno = et_expressno.getText().toString().trim();
                         if ("2".equals(data.getPostPayType())) {
                             post_money = et_post_money.getText().toString();
                             if ("".equals(post_money)) {
                                 showToast(mActivity, "请填写邮费");
+                                hideProgress();
                                 return;
                             }
                         } else {
@@ -1163,6 +1165,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         }
                         if ("".equals(expressno)) {
                             showToast(mActivity, "请填写快递单号");
+                            hideProgress();
                             return;
                         }
                         mPresenter.AddReturnAccessory(OrderID, expressno, post_money);
@@ -1190,6 +1193,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 break;
             case R.id.btn_complete_submit_one:
             case R.id.btn_complete_submit:
+                showProgress();
                 gson = new Gson();
                 if (select_state == 0) {
                     select_state(fAcList);
@@ -1282,6 +1286,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         if (list.size() > 0 && mPre_order_Add_Service_Adapter.getData().size() == 0) {
             if ("".equals(returnAddress)) {
                 ToastUtils.showShort("请选择收货地址");
+                hideProgress();
+                return;
             } else {
                 mPresenter.UpdateOrderAddressByOrderID(OrderID, returnAddress);
             }
@@ -1303,6 +1309,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         } else if (list.size() > 0 && mPre_order_Add_Service_Adapter.getData().size() > 0) {
             if ("".equals(returnAddress)) {
                 ToastUtils.showShort("请选择收货地址");
+                hideProgress();
+                return;
             } else {
                 mPresenter.UpdateOrderAddressByOrderID(OrderID, returnAddress);
             }
@@ -1623,7 +1631,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 if (addressList.size() != 0) {
                     for (int i = 0; i < addressList.size(); i++) {
                         if ("1".equals(addressList.get(i).getIsDefault())) {
-                            AddressBack = addressList.get(i).getAddress() + "(" + addressList.get(i).getUserName() + "收)" + addressList.get(i).getPhone();
+                            AddressBack = addressList.get(0).getProvince() + addressList.get(0).getCity() + addressList.get(0).getArea() + addressList.get(0).getDistrict() +addressList.get(i).getAddress() + "(" + addressList.get(i).getUserName() + "收)" + addressList.get(i).getPhone();
                             mTvAddressReturn.setText(AddressBack);
                             returnAddress = AddressBack;
                             mTvModify.setText("修改地址");
@@ -1729,19 +1737,19 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     Double money1 = Double.parseDouble(data.getQuaMoney());
                     Double beyond = Double.parseDouble(data.getBeyondMoney());
                     Double money3 = Double.parseDouble(baseResult.getData().getItem2());
-                    if ("3".equals(data.getTypeID())) {
-                        String str = "";
-                        if ("-1".equals(data.getBeyondState())) {
-                            str = "服务金额：¥" + (money1);
-                            factorymoney = money1;
-                        } else {
-                            str = "服务金额：¥" + (money1 + beyond);
-                            factorymoney = money1 + beyond;
-                        }
-                        mTvServiceAmount.setText(str);
-                        mTvTotalPrice.setText(str);
-//                        ToastUtils.showShort(str);
-                    } else {
+//                    if ("3".equals(data.getTypeID())) {
+//                        String str = "";
+//                        if ("-1".equals(data.getBeyondState())) {
+//                            str = "服务金额：¥" + (money1);
+//                            factorymoney = money1;
+//                        } else {
+//                            str = "服务金额：¥" + (money1 + beyond);
+//                            factorymoney = money1 + beyond;
+//                        }
+//                        mTvServiceAmount.setText(str);
+//                        mTvTotalPrice.setText(str);
+////                        ToastUtils.showShort(str);
+//                    } else {
                         String str = "";
                         if ("-1".equals(data.getBeyondState())) {
                             str = "服务金额：¥" + (money3);
@@ -1753,7 +1761,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mTvServiceAmount.setText(str);
                         mTvTotalPrice.setText(str);
 //                        ToastUtils.showShort(str);
-                    }
+//                    }
 
                 }
                 break;
@@ -1880,7 +1888,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mLlSelectTime.setVisibility(View.GONE);
                         mView.setVisibility(View.GONE);
                     }
-                    if ("1".equals(data.getTypeID())) {//维修
+                    if ("1".equals(data.getTypeID())||"3".equals(data.getTypeID())) {//维修
                         mTvType.setText(data.getTypeName() + "/" + data.getGuaranteeText());
                         mTvType.setBackgroundResource(R.color.color_custom_01);
                         mTvDescription.setText("故障说明");
@@ -2453,6 +2461,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mLlAccessory.setVisibility(View.VISIBLE);
                         mLlShippingType.setVisibility(View.VISIBLE);
                         mLlAddAccessory.setVisibility(View.GONE);
+                        mLlPrompt.setVisibility(View.GONE);
 //                    mLlMemo.setVisibility(View.GONE);
                         if ("0".equals(data.getAccessoryAndServiceApplyState())) {
                             mTvAccessoryApplyState.setText("审核中");
@@ -2479,8 +2488,10 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mLlShippingType.setVisibility(View.GONE);
                         if ("2".equals(data.getTypeID())) {
                             mLlAddAccessory.setVisibility(View.GONE);
+                            mLlPrompt.setVisibility(View.GONE);
                         } else {
                             mLlAddAccessory.setVisibility(View.VISIBLE);
+                            mLlPrompt.setVisibility(View.VISIBLE);
                         }
 //                    mLlMemo.setVisibility(View.VISIBLE);
                     }
@@ -2553,6 +2564,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mBtnCompleteSubmitOne.setVisibility(View.GONE);
                         mBtnTrial.setVisibility(View.GONE);
                         mLlAddAccessory.setVisibility(View.GONE);
+                        mLlPrompt.setVisibility(View.GONE);
                         mLlAddService.setVisibility(View.GONE);
                         mLlApplyBeyond.setVisibility(View.GONE);
 
@@ -2653,6 +2665,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
 
                     if ("9".equals(data.getState())) {
                         mLlAddAccessory.setVisibility(View.GONE);
+                        mLlPrompt.setVisibility(View.GONE);
                         mLlAddService.setVisibility(View.GONE);
                         mRlSelectTime.setVisibility(View.GONE);
                         mLlPrompt.setVisibility(View.GONE);
@@ -2663,6 +2676,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     if ("8".equals(data.getState())) {
                         if (data.getOrderAccessroyDetail().size() == 0) {
                             mLlAddAccessory.setVisibility(View.GONE);
+                            mLlPrompt.setVisibility(View.GONE);
                         }
                         if (data.getOrderServiceDetail().size() == 0) {
                             mLlAddService.setVisibility(View.GONE);
@@ -2752,13 +2766,20 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     } else {
                         mLlExpedited.setVisibility(View.GONE);
                     }
-
-                    if (!"".equals(data.getAccessoryAndServiceApplyState())){
+                    if ("安装".equals(data.getTypeName())){
                         mLlAddAccessory.setVisibility(View.GONE);
+                        mLlPrompt.setVisibility(View.GONE);
                         mLlAddService.setVisibility(View.GONE);
                     }else {
-                        mLlAddAccessory.setVisibility(View.VISIBLE);
-                        mLlAddService.setVisibility(View.VISIBLE);
+                        if (!"".equals(data.getAccessoryAndServiceApplyState())){
+                            mLlAddAccessory.setVisibility(View.GONE);
+                            mLlAddService.setVisibility(View.GONE);
+                            mLlPrompt.setVisibility(View.GONE);
+                        }else {
+                            mLlAddAccessory.setVisibility(View.VISIBLE);
+                            mLlAddService.setVisibility(View.VISIBLE);
+                            mLlPrompt.setVisibility(View.VISIBLE);
+                        }
                     }
 
                     break;
@@ -3021,6 +3042,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
 //                        ToastUtils.showShort((String) baseResult.getData().getItem2());
                     }
                 }
+                hideProgress();
                 break;
             default:
                 break;
@@ -3331,6 +3353,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 } else {
                     ToastUtils.showShort(data.getItem2());
                 }
+                hideProgress();
                 break;
         }
     }
@@ -3947,19 +3970,19 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         } else {
             Double money1 = Double.parseDouble(data.getQuaMoney());
             Double money2 = Double.parseDouble(data.getOrderMoney() + "");
-            if ("3".equals(data.getTypeID())) {
-                String str = "服务金额：¥" + (money1);
-                mTvServiceAmount.setText(str);
-                mTvTotalPrice.setText(str);
-//                ToastUtils.showShort(str);
-                factorymoney = money1;
-            } else {
+//            if ("3".equals(data.getTypeID())) {
+//                String str = "服务金额：¥" + (money1);
+//                mTvServiceAmount.setText(str);
+//                mTvTotalPrice.setText(str);
+////                ToastUtils.showShort(str);
+//                factorymoney = money1;
+//            } else {
                 String str = "服务金额：¥" + (money2);
                 mTvServiceAmount.setText(str);
                 mTvTotalPrice.setText(str);
 //                ToastUtils.showShort(str);
                 factorymoney = money2;
-            }
+//            }
         }
     }
 

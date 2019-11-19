@@ -47,4 +47,15 @@ public class MyMessagePresenter extends MyMessageContract.Presenter {
                     }
                 });
     }
+
+    @Override
+    public void AllRead(String UserID, String Type, String SubType) {
+        mModel.AllRead(UserID, Type, SubType)
+                .subscribe(new BaseObserver<MessageData<List<Message>>>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<MessageData<List<Message>>> value) {
+                        mView.AllRead(value);
+                    }
+                });
+    }
 }

@@ -56,7 +56,7 @@ public class MessageSettingsActivity extends BaseActivity implements View.OnClic
 
     @Override
     protected void initView() {
-        mTvActionbarTitle.setText("消息设置");
+        mTvActionbarTitle.setText("工单设置");
     }
 
     @Override

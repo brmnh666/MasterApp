@@ -45,6 +45,8 @@ public class OrderMessageActivity2 extends BaseActivity<MyMessagePresenter, MyMe
     RecyclerView mRvOrdermessage;
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout mRefreshLayout;
+    @BindView(R.id.tv_all_read)
+    TextView mTvAllRead;
 
     private MessageAdapter messageAdapter;
     private int pageIndex = 1;
@@ -52,7 +54,7 @@ public class OrderMessageActivity2 extends BaseActivity<MyMessagePresenter, MyMe
     private String userId;
     private List<Message> list = new ArrayList<>();//未读
     private int pos;
-    private int type=1;//1.工单消息  2.交易信息
+    private int type = 1;//1.工单消息  2.交易信息
 
     @Override
     protected int setLayoutId() {
@@ -77,7 +79,7 @@ public class OrderMessageActivity2 extends BaseActivity<MyMessagePresenter, MyMe
         mRvOrdermessage.setNestedScrollingEnabled(false);
         messageAdapter = new MessageAdapter(R.layout.item_message, list);
         mRvOrdermessage.setAdapter(messageAdapter);
-        type=getIntent().getIntExtra("type",1);
+        type = getIntent().getIntExtra("type", 1);
 
         SPUtils spUtils = SPUtils.getInstance("token");
         userId = spUtils.getString("userName");
@@ -92,6 +94,7 @@ public class OrderMessageActivity2 extends BaseActivity<MyMessagePresenter, MyMe
     @Override
     protected void setListener() {
         mImgActionbarReturn.setOnClickListener(this);
+        mTvAllRead.setOnClickListener(this);
         /*下拉刷新*/
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -109,18 +112,18 @@ public class OrderMessageActivity2 extends BaseActivity<MyMessagePresenter, MyMe
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 pageIndex++; //页数加1
-                mPresenter.GetMessageList(userId, Integer.toString(type),"0", "10", Integer.toString(pageIndex));
+                mPresenter.GetMessageList(userId, Integer.toString(type), "0", "10", Integer.toString(pageIndex));
                 refreshlayout.finishLoadmore();
             }
         });
         messageAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                pos =position;
+                pos = position;
                 switch (view.getId()) {
                     case R.id.ll_order_message:
                         mPresenter.AddOrUpdatemessage(((Message) adapter.getData().get(position)).getMessageID(), "2");
-                        if (!"0".equals(((Message) adapter.getData().get(position)).getOrderID())){
+                        if (!"0".equals(((Message) adapter.getData().get(position)).getOrderID())) {
                             Intent intent = new Intent(mActivity, WorkOrderDetailsActivity2.class);
                             intent.putExtra("OrderID", ((Message) adapter.getData().get(position)).getOrderID());
                             startActivity(intent);
@@ -136,7 +139,7 @@ public class OrderMessageActivity2 extends BaseActivity<MyMessagePresenter, MyMe
     public void GetMessageList(BaseResult<MessageData<List<Message>>> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-                if (pageIndex!=1&&baseResult.getData().getData().size()==0){
+                if (pageIndex != 1 && baseResult.getData().getData().size() == 0) {
                     mRefreshLayout.finishLoadmoreWithNoMoreData();
                 }
                 list.addAll(baseResult.getData().getData());
@@ -174,7 +177,24 @@ public class OrderMessageActivity2 extends BaseActivity<MyMessagePresenter, MyMe
                     EventBus.getDefault().post("orderempty");
                     EventBus.getDefault().post("order_num");
                     EventBus.getDefault().post("transaction_num");
+                    mRefreshLayout.autoRefresh();
                 }
+                break;
+        }
+    }
+
+    @Override
+    public void AllRead(BaseResult<MessageData<List<Message>>> baseResult) {
+        switch (baseResult.getStatusCode()){
+            case 200:
+//                    if (baseResult.getData().isItem1()) {
+                list.get(pos).setIsLook("2");
+                messageAdapter.setNewData(list);
+                EventBus.getDefault().post("orderempty");
+                EventBus.getDefault().post("order_num");
+                EventBus.getDefault().post("transaction_num");
+//                    }
+               hideProgress();
                 break;
         }
     }
@@ -184,6 +204,10 @@ public class OrderMessageActivity2 extends BaseActivity<MyMessagePresenter, MyMe
         switch (v.getId()) {
             case R.id.img_actionbar_return:
                 OrderMessageActivity2.this.finish();
+                break;
+            case R.id.tv_all_read:
+                showProgress();
+                mPresenter.AllRead(userId,Integer.toString(type),"0");
                 break;
         }
     }

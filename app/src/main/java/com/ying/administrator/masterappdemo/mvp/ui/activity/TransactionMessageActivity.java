@@ -241,6 +241,11 @@ public class TransactionMessageActivity extends BaseActivity<MyMessagePresenter,
     }
 
     @Override
+    public void AllRead(BaseResult<MessageData<List<Message>>> baseResult) {
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation

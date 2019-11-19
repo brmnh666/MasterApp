@@ -136,11 +136,14 @@ public class ApplyFeeActivity extends BaseActivity<AllWorkOrdersPresenter, AllWo
                 showPopupWindow(1301, 1302);
                 break;
             case R.id.btn_cancel:
+                showProgress();
                 mPresenter.UpdateSendOrderState(orderId, "1", "");
                 break;
             case R.id.btn_submit_beyond:
+                showProgress();
                 if (files_map_remote.size() == 0) {
                     ToastUtils.showShort("请添加远程图片!");
+                    hideProgress();
                     return;
                 }
                 Distance = mEtOrderBeyondKm.getText().toString();
@@ -149,6 +152,7 @@ public class ApplyFeeActivity extends BaseActivity<AllWorkOrdersPresenter, AllWo
                     Distance = BeyondMoney;
                 } else {
                     ToastUtils.showShort("请输入超出公里数！");
+                    hideProgress();
                     return;
                 }
                 OrderByondImgPicUpload(files_map_remote);
@@ -177,6 +181,7 @@ public class ApplyFeeActivity extends BaseActivity<AllWorkOrdersPresenter, AllWo
                 } else {
                     Toast.makeText(mActivity, (CharSequence) data.getItem2(), LENGTH_SHORT).show();
                 }
+                hideProgress();
                 break;
             default:
                 break;
@@ -217,6 +222,7 @@ public class ApplyFeeActivity extends BaseActivity<AllWorkOrdersPresenter, AllWo
                 } else {
                     ToastUtils.showShort("远程费图片上传失败");
                 }
+                hideProgress();
                 break;
             default:
                 break;

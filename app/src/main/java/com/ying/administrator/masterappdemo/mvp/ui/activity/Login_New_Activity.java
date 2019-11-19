@@ -143,14 +143,17 @@ public class Login_New_Activity extends BaseActivity<LoginPresenter, LoginModel>
               passWord = mEtLoginPassword.getText().toString();
 
               if ("".equals(userName)) {
+                  cancleLoading();
                   ToastUtils.showShort("请输入手机号！");
                   return;
               }
               if (!RegexUtils.isMobileExact(userName)){
+                  cancleLoading();
                   ToastUtils.showShort("手机号格式不正确！");
                   return;
               }
               if ("".equals(passWord)) {
+                  cancleLoading();
                   ToastUtils.showShort("请输入密码！");
                   return;
               }

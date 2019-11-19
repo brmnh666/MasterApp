@@ -3,8 +3,11 @@ package com.ying.administrator.masterappdemo.mvp.presenter;
 import com.ying.administrator.masterappdemo.base.BaseObserver;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.ReadMessage;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.MessageContract;
+
+import java.util.List;
 
 import okhttp3.RequestBody;
 
@@ -49,6 +52,17 @@ public class MessagePresenter extends MessageContract.Presenter {
                     @Override
                     protected void onHandleSuccess(BaseResult<Data<String>> value) {
                         mView.DeleteLeaveMessageImg(value);
+                    }
+                });
+    }
+
+    @Override
+    public void LeaveMessageWhetherLook(String OrderID) {
+        mModel.LeaveMessageWhetherLook(OrderID)
+                .subscribe(new BaseObserver<Data<List<ReadMessage>>>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<Data<List<ReadMessage>>> value) {
+                        mView.LeaveMessageWhetherLook(value);
                     }
                 });
     }

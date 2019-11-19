@@ -266,6 +266,11 @@ public class OrderMessageActivity extends BaseActivity<MyMessagePresenter, MyMes
     }
 
     @Override
+    public void AllRead(BaseResult<MessageData<List<Message>>> baseResult) {
+
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.img_actionbar_return:

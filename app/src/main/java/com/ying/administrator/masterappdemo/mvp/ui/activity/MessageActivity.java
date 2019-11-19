@@ -38,6 +38,7 @@ import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.ReadMessage;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.MessageContract;
 import com.ying.administrator.masterappdemo.mvp.model.MessageModel;
@@ -258,6 +259,7 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
     public void GetOrderInfo(BaseResult<WorkOrder.DataBean> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
+                mPresenter.LeaveMessageWhetherLook(orderId);
                 data = baseResult.getData();
                 if (data.getLeavemessageList().size() == 0) {
                     mLlMessageList.setVisibility(View.GONE);
@@ -303,6 +305,11 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
                 mLlDel.setVisibility(View.GONE);
                 break;
         }
+    }
+
+    @Override
+    public void LeaveMessageWhetherLook(BaseResult<Data<List<ReadMessage>>> baseResult) {
+
     }
 
     //请求权限

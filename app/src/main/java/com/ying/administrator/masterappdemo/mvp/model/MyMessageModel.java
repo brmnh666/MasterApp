@@ -39,4 +39,11 @@ public class MyMessageModel implements MyMessageContract.Model {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }
+
+    @Override
+    public Observable<BaseResult<MessageData<List<Message>>>> AllRead(String UserID, String Type, String SubType) {
+        return ApiRetrofit.getDefault().AllRead(UserID, Type, SubType)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
 }

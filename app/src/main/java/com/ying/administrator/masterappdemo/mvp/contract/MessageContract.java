@@ -7,6 +7,7 @@ import com.ying.administrator.masterappdemo.base.BaseView;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.Message;
 import com.ying.administrator.masterappdemo.entity.MessageData;
+import com.ying.administrator.masterappdemo.entity.ReadMessage;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 
 import java.util.List;
@@ -22,6 +23,9 @@ public interface MessageContract {
 
         Observable<BaseResult<Data<String>>> LeaveMessageImg(RequestBody json);
         Observable<BaseResult<Data<String>>> DeleteLeaveMessageImg(String LeaveMessageImgId);
+        Observable<BaseResult<Data<List<ReadMessage>>>> LeaveMessageWhetherLook(String OrderID);
+
+
 
     }
 
@@ -32,6 +36,7 @@ public interface MessageContract {
 
         void LeaveMessageImg(BaseResult<Data<String>> baseResult);
         void DeleteLeaveMessageImg(BaseResult<Data<String>> baseResult);
+        void LeaveMessageWhetherLook(BaseResult<Data<List<ReadMessage>>> baseResult);
     }
 
     abstract class Presenter extends BasePresenter<View,Model>{
@@ -41,5 +46,6 @@ public interface MessageContract {
 
         public abstract void LeaveMessageImg(RequestBody json);
         public abstract void DeleteLeaveMessageImg(String LeaveMessageImgId);
+        public abstract void LeaveMessageWhetherLook(String OrderID);
     }
 }

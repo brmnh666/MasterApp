@@ -149,10 +149,10 @@ public class Return_Sheet_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,Ba
         }else if ("0".equals(item.getBeyondState())) {
             baseViewHolder.setText(R.id.tv_review3,"远程费审核中");
         } else if ("1".equals(item.getBeyondState())) {
-            baseViewHolder.setText(R.id.tv_review3,"远程费审核通过");
+            baseViewHolder.setText(R.id.tv_review3,"远程费通过");
 
         }  else if ("2".equals(item.getBeyondState())) {
-            baseViewHolder.setText(R.id.tv_review3,"远程费修改通过");
+            baseViewHolder.setText(R.id.tv_review3,"远程费通过");
 
         } else {
             baseViewHolder.setText(R.id.tv_review3,"远程费被拒");

@@ -154,6 +154,7 @@ public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> im
                     mPresenter.AddorUpdateAccountPayInfo(userId, phone, bankname, result.getKey(),name);
                 }else{
                     ToastUtils.showShort("请输入有效的银行卡号");
+                    hideProgress();
                 }
             }
         });
@@ -257,32 +258,37 @@ public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> im
                 time.start();
                 break;*/
             case R.id.tv_bind_card:
+                showProgress();
                 name = mEtAddCardName.getText().toString();
                 bankname = mTvAddCardBankname.getText().toString();
                 String num=met_banknumber.getText().toString();
                 phone = met_add_card_phone.getText().toString();
                 if (name.isEmpty()){
                     ToastUtils.showShort("请输入姓名");
+                    hideProgress();
                     return;
                 }
                 if (num.isEmpty()){
                     ToastUtils.showShort("请输入银行卡号");
+                    hideProgress();
                     return;
                 }
                 for (int i = 0; i < list.size(); i++) {
                     if (num.equals(list.get(i).getPayNo())){
                         ToastUtils.showShort("该银行卡已绑定");
+                        hideProgress();
                         return;
                     }
                 }
                 if (phone.isEmpty()){
                     ToastUtils.showShort("请输入手机号码");
+                    hideProgress();
                     return;
                 }
-                if (!MyUtils.isPhoneNum(phone)){
-                    ToastUtils.showShort("请输入正确的手机号码");
-                    return;
-                }
+//                if (!MyUtils.isPhoneNum(phone)){
+//                    ToastUtils.showShort("请输入正确的手机号码");
+//                    return;
+//                }
                 isCardNo(num);
 //                if ("".equals(name)||name==null){
 //                    ToastUtils.showShort("请输入姓名");
@@ -352,6 +358,7 @@ public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> im
                     Toast.makeText(this, "添加失败", Toast.LENGTH_SHORT).show();
 
                 }
+                hideProgress();
                 break;
             default:
                 break;

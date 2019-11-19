@@ -50,9 +50,9 @@ public class In_Service_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,Base
         }else if ("0".equals(item.getBeyondState())) {
             helper.setText(R.id.tv_review,"远程费审核中");
         } else if ("1".equals(item.getBeyondState())) {
-            helper.setText(R.id.tv_review,"远程费审核通过");
+            helper.setText(R.id.tv_review,"远程费通过");
         }  else if ("2".equals(item.getBeyondState())) {
-            helper.setText(R.id.tv_review,"远程费修改通过");
+            helper.setText(R.id.tv_review,"远程费通过");
         } else {
             helper.setText(R.id.tv_review,"远程费被拒");
         }

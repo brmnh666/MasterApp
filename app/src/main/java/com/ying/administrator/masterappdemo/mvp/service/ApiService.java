@@ -22,6 +22,7 @@ import com.ying.administrator.masterappdemo.entity.MessageData;
 import com.ying.administrator.masterappdemo.entity.Province;
 import com.ying.administrator.masterappdemo.entity.QuestBean;
 import com.ying.administrator.masterappdemo.entity.QuestResult;
+import com.ying.administrator.masterappdemo.entity.ReadMessage;
 import com.ying.administrator.masterappdemo.entity.RedPointData;
 import com.ying.administrator.masterappdemo.entity.Service;
 import com.ying.administrator.masterappdemo.entity.Skill;
@@ -407,8 +408,8 @@ public interface ApiService {
 
 
     /*
-    * 添加配件跟服务
-    * */
+     * 添加配件跟服务
+     * */
     @POST("Order/AddOrderAccessoryAndService")
     Observable<BaseResult<Data>> AddOrderAccessoryAndService(@Body RequestBody json);
 
@@ -430,6 +431,7 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("FactoryConfig/GetFactoryCategory")
     Observable<BaseResult<CategoryData>> GetFactoryCategory(@Field("ParentID") String ParentID);
+
     /**
      * 获取子分类
      */
@@ -699,13 +701,23 @@ public interface ApiService {
     /*获取个人消息  1.交易消息类型  2.订单消息类型*/
     @FormUrlEncoded
 //    @POST("Cms/GetListmessageByType")//分页无效
-    @POST("Cms/GetmessageListByType")//分页有效
+    @POST("Cms/GetmessageListByType")
+//分页有效
     Observable<BaseResult<MessageData<List<Message>>>> GetMessageList(@Field("UserID") String UserID,
                                                                       @Field("Type") String Type,
                                                                       @Field("SubType") String SubType,
                                                                       @Field("limit") String limit,
                                                                       @Field("page") String page,
                                                                       @Field("IsLook") String IsLook);
+
+    /*标记个人消息全部已读  1.交易消息类型  2.订单消息类型*/
+    @FormUrlEncoded
+//    @POST("Cms/GetListmessageByType")//分页无效
+    @POST("Cms/AllRead")
+//分页有效
+    Observable<BaseResult<MessageData<List<Message>>>> AllRead(@Field("UserID") String UserID,
+                                                               @Field("Type") String Type,
+                                                               @Field("SubType") String SubType);
 
 
     /*提现页面获取提现页面的数据*/
@@ -915,45 +927,59 @@ public interface ApiService {
                                                                  @Field("photo") String photo);
 
     /*
-    * 留言图片
-    * */
+     * 留言图片
+     * */
     @POST("Upload/LeaveMessageImg")
     Observable<BaseResult<Data<String>>> LeaveMessageImg(@Body RequestBody json);
 
     /*
-    * 删除留言图片
-    * */
+     * 删除留言图片
+     * */
     @FormUrlEncoded
     @POST("LeaveMessage/DeleteLeaveMessageImg")
     Observable<BaseResult<Data<String>>> DeleteLeaveMessageImg(@Field("LeaveMessageImgId") String LeaveMessageImgId);
 
 
     /*
-    * 发送收货地址
-    * */
+     * 发送收货地址
+     * */
     @FormUrlEncoded
     @POST("Order/UpdateOrderAddressByOrderID")
     Observable<BaseResult<Data<String>>> UpdateOrderAddressByOrderID(@Field("OrderID") String OrderID,
                                                                      @Field("SendAddress") String SendAddress);
 
     /**
-     *根据配件服务sizeID计算钱
+     * 根据配件服务sizeID计算钱
      */
     @FormUrlEncoded
     @POST("FactoryConfig/GetFactoryAccessoryMoney")
     Observable<BaseResult<Data<String>>> GetFactoryAccessoryMoney(@Field("OrderID") String OrderID,
-                                                                     @Field("FCategoryID") String FCategoryID,
-                                                                     @Field("SizeID") String SizeID,
-                                                                     @Field("Price") String Price
+                                                                  @Field("FCategoryID") String FCategoryID,
+                                                                  @Field("SizeID") String SizeID,
+                                                                  @Field("Price") String Price
     );
 
     /*
-    * 是否拨打用户电话
-    * */
+     * 是否拨打用户电话
+     * */
     @FormUrlEncoded
     @POST("Order/OrderIsCall")
     Observable<BaseResult<Data<String>>> OrderIsCall(@Field("OrderID") String OrderID,
-                                                                  @Field("IsCall") String IsCall
+                                                     @Field("IsCall") String IsCall
+    );
+
+    /*
+     * 留言查看过
+     * 1  未读
+     * 2  已读
+     * */
+    @FormUrlEncoded
+    @POST("LeaveMessage/LeaveMessageWhetherLook")
+    Observable<BaseResult<Data<List<ReadMessage>>>> LeaveMessageWhetherLook(@Field("OrderID") String OrderID,
+                                                                            @Field("factoryIslook") String factoryIslook,
+                                                                            @Field("workerIslook") String workerIslook,
+                                                                            @Field("platformIslook") String platformIslook
+
     );
 
 }
