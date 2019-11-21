@@ -5,6 +5,7 @@ import com.ying.administrator.masterappdemo.base.BaseObserver;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Article;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.LeaveMessage;
 import com.ying.administrator.masterappdemo.entity.Message;
 import com.ying.administrator.masterappdemo.entity.MessageData;
 import com.ying.administrator.masterappdemo.mvp.contract.ArticleContract;
@@ -42,6 +43,16 @@ public class ArticlePresenter extends ArticleContract.Presenter {
                     @Override
                     protected void onHandleSuccess(BaseResult<MessageData<List<Message>>> value) {
                         mView.GetTransactionMessageList(value);
+                    }
+                });
+    }
+    @Override
+    public void GetNewsLeaveMessage(String UserID, String limit, String page) {
+        mModel.GetNewsLeaveMessage(UserID, limit, page)
+                .subscribe(new BaseObserver<Data<LeaveMessage>>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<Data<LeaveMessage>> value) {
+                        mView.GetNewsLeaveMessage(value);
                     }
                 });
     }

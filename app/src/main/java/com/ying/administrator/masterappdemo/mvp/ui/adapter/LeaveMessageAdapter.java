@@ -26,7 +26,7 @@ public class LeaveMessageAdapter extends BaseQuickAdapter<WorkOrder.Leavemessage
         String time = "" + stringBuilder.replace(10, 11, " "); //去掉T
         helper.setText(R.id.tv_status,item.getContent())
                 .setText(R.id.tv_date,time)
-                .setText(R.id.tv_time,item.getUserId());
+                .setText(R.id.tv_time,item.getUserName());
         if (item.getPhoto()==null){
             helper.setGone(R.id.img,false);
         }else{

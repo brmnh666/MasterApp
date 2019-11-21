@@ -15,22 +15,20 @@ import com.blankj.utilcode.util.SPUtils;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Article;
+import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.LeaveMessage;
 import com.ying.administrator.masterappdemo.entity.Message;
 import com.ying.administrator.masterappdemo.entity.MessageData;
 import com.ying.administrator.masterappdemo.mvp.contract.ArticleContract;
 import com.ying.administrator.masterappdemo.mvp.model.ArticleModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.ArticlePresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.ArticleActivity;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.LoginActivity;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.OrderMessageActivity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.LeaveMessageActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.OrderMessageActivity2;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.TransactionMessageActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
-import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -67,13 +65,20 @@ public class InformationFragment extends BaseLazyFragment<ArticlePresenter, Arti
     @BindView(R.id.ll_transactionmessage)
     LinearLayout MLl_transactionmessage;
     Unbinder unbinder;
+    @BindView(R.id.tv_leave_message)
+    TextView mTvLeaveMessage;
+    @BindView(R.id.ll_leave)
+    LinearLayout mLlLeave;
+    @BindView(R.id.ll_leave_message)
+    LinearLayout mLlLeaveMessage;
 
     private QBadgeView workqBadgeView;
     private QBadgeView transactionqBadgeView;
+    private QBadgeView LeaveMessageBadgeView;
     private View view;
     private String mContentText;
     private SPUtils spUtils = SPUtils.getInstance("token");
-    private String userId= spUtils.getString("userName");
+    private String userId = spUtils.getString("userName");
 
     public InformationFragment() {
         // Required empty public constructor
@@ -122,19 +127,22 @@ public class InformationFragment extends BaseLazyFragment<ArticlePresenter, Arti
     protected void initData() {
 
 
-
         workqBadgeView = new QBadgeView(mActivity);
         workqBadgeView.bindTarget(MLl_workmessage);
-        workqBadgeView.setBadgeGravity(Gravity.CENTER|Gravity.END);
+        workqBadgeView.setBadgeGravity(Gravity.CENTER | Gravity.END);
 
 
-        transactionqBadgeView=new QBadgeView(mActivity);
+        transactionqBadgeView = new QBadgeView(mActivity);
         transactionqBadgeView.bindTarget(MLl_transactionmessage);
-         transactionqBadgeView.setBadgeGravity(Gravity.CENTER|Gravity.END);
+        transactionqBadgeView.setBadgeGravity(Gravity.CENTER | Gravity.END);
 
+        LeaveMessageBadgeView = new QBadgeView(mActivity);
+        LeaveMessageBadgeView.bindTarget(mLlLeave);
+        LeaveMessageBadgeView.setBadgeGravity(Gravity.CENTER | Gravity.END);
 
-       mPresenter.GetOrderMessageList(userId,"0","99","1");
-       mPresenter.GetTransactionMessageList(userId,"0","99","1");
+        mPresenter.GetOrderMessageList(userId, "0", "99", "1");
+        mPresenter.GetTransactionMessageList(userId, "0", "99", "1");
+        mPresenter.GetNewsLeaveMessage(userId,"10","1");
     }
 
     @Override
@@ -146,6 +154,7 @@ public class InformationFragment extends BaseLazyFragment<ArticlePresenter, Arti
         mLlWorkOrderMessage.setOnClickListener(this);
         mLlTransactionNews.setOnClickListener(this);
         mLlAnnouncement.setOnClickListener(this);
+        mLlLeaveMessage.setOnClickListener(this);
     }
 
     @Override
@@ -153,19 +162,22 @@ public class InformationFragment extends BaseLazyFragment<ArticlePresenter, Arti
         Intent intent;
         switch (v.getId()) {
             case R.id.ll_work_order_message://工单消息
-                intent=new Intent(getActivity(), OrderMessageActivity2.class);
-                intent.putExtra("type",2);
+                intent = new Intent(getActivity(), OrderMessageActivity2.class);
+                intent.putExtra("type", 2);
                 startActivity(intent);
                 break;
             case R.id.ll_transaction_news://交易信息
-                intent=new Intent(getActivity(), OrderMessageActivity2.class);
-                intent.putExtra("type",1);
+                intent = new Intent(getActivity(), OrderMessageActivity2.class);
+                intent.putExtra("type", 1);
                 startActivity(intent);
                 break;
             case R.id.ll_announcement:
                 intent = new Intent(mActivity, ArticleActivity.class);
-                intent.putExtra("CategoryID","7");
+                intent.putExtra("CategoryID", "7");
                 startActivity(intent);
+                break;
+            case R.id.ll_leave_message:
+                startActivity(new Intent(mActivity, LeaveMessageActivity.class));
                 break;
             default:
                 break;
@@ -188,41 +200,60 @@ public class InformationFragment extends BaseLazyFragment<ArticlePresenter, Arti
     /*获取工单消息数*/
     @Override
     public void GetOrderMessageList(BaseResult<MessageData<List<Message>>> baseResult) {
-     switch (baseResult.getStatusCode()){
-         case 200:
-             if (baseResult.getData().getCount()==0){
-                 workqBadgeView.setVisibility(View.INVISIBLE);
-                 return;
-             }else if (baseResult.getData().getCount()>=99){
-                 workqBadgeView.setVisibility(View.VISIBLE);
-                 workqBadgeView.setBadgeNumber(99);
-             }else {
-                 workqBadgeView.setVisibility(View.VISIBLE);
-                 workqBadgeView.setBadgeNumber(baseResult.getData().getCount());
-             }
-             break;
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                if (baseResult.getData().getCount() == 0) {
+                    workqBadgeView.setVisibility(View.INVISIBLE);
+                    return;
+                } else if (baseResult.getData().getCount() >= 99) {
+                    workqBadgeView.setVisibility(View.VISIBLE);
+                    workqBadgeView.setBadgeNumber(99);
+                } else {
+                    workqBadgeView.setVisibility(View.VISIBLE);
+                    workqBadgeView.setBadgeNumber(baseResult.getData().getCount());
+                }
+                break;
 
-             default:
-                 break;
-     }
+            default:
+                break;
+        }
     }
+
     /*获取交易消息数*/
     @Override
     public void GetTransactionMessageList(BaseResult<MessageData<List<Message>>> baseResult) {
-        switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData().getCount()==0){
+                if (baseResult.getData().getCount() == 0) {
                     transactionqBadgeView.setVisibility(View.INVISIBLE);
                     return;
-                }else if (baseResult.getData().getCount()>=99){
+                } else if (baseResult.getData().getCount() >= 99) {
                     transactionqBadgeView.setVisibility(View.VISIBLE);
                     transactionqBadgeView.setBadgeNumber(99);
-                }else {
+                } else {
                     transactionqBadgeView.setVisibility(View.VISIBLE);
                     transactionqBadgeView.setBadgeNumber(baseResult.getData().getCount());
                 }
                 break;
             default:
+                break;
+        }
+    }
+
+    @Override
+    public void GetNewsLeaveMessage(BaseResult<Data<LeaveMessage>> baseResult) {
+        switch (baseResult.getStatusCode()){
+            case 200:
+                if (baseResult.getData().getItem2().getNoLeaveMessage()==0) {
+                    LeaveMessageBadgeView.setVisibility(View.INVISIBLE);
+                    return;
+                } else if (baseResult.getData().getItem2().getNoLeaveMessage() >= 99) {
+                    LeaveMessageBadgeView.setVisibility(View.VISIBLE);
+                    LeaveMessageBadgeView.setBadgeNumber(99);
+                } else {
+                    LeaveMessageBadgeView.setVisibility(View.VISIBLE);
+                    LeaveMessageBadgeView.setBadgeNumber(baseResult.getData().getItem2().getNoLeaveMessage());
+                }
                 break;
         }
     }
@@ -237,15 +268,18 @@ public class InformationFragment extends BaseLazyFragment<ArticlePresenter, Arti
 
     @Subscribe
     public void Event(String message) {
-       switch (message){
-           case "transaction_num":
-               mPresenter.GetTransactionMessageList(userId,"0","99","1");
-               break;
-           case "order_num":
-               mPresenter.GetOrderMessageList(userId,"0","99","1");
-               break;
+        switch (message) {
+            case "transaction_num":
+                mPresenter.GetTransactionMessageList(userId, "0", "99", "1");
+                break;
+            case "order_num":
+                mPresenter.GetOrderMessageList(userId, "0", "99", "1");
+                break;
+            case "LeaveMessage":
+                mPresenter.GetNewsLeaveMessage(userId,"10","1");
+                break;
 
-       }
+        }
 
     }
 

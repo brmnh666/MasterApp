@@ -400,6 +400,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     CountdownView mCountdownview;
     @BindView(R.id.ll_expedited)
     LinearLayout mLlExpedited;
+    @BindView(R.id.tv_message_number)
+    TextView mTvMessageNumber;
 
     private String OrderID;
     private WorkOrder.DataBean data = new WorkOrder.DataBean();
@@ -1631,7 +1633,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 if (addressList.size() != 0) {
                     for (int i = 0; i < addressList.size(); i++) {
                         if ("1".equals(addressList.get(i).getIsDefault())) {
-                            AddressBack = addressList.get(0).getProvince() + addressList.get(0).getCity() + addressList.get(0).getArea() + addressList.get(0).getDistrict() +addressList.get(i).getAddress() + "(" + addressList.get(i).getUserName() + "收)" + addressList.get(i).getPhone();
+                            AddressBack = addressList.get(0).getProvince() + addressList.get(0).getCity() + addressList.get(0).getArea() + addressList.get(0).getDistrict() + addressList.get(i).getAddress() + "(" + addressList.get(i).getUserName() + "收)" + addressList.get(i).getPhone();
                             mTvAddressReturn.setText(AddressBack);
                             returnAddress = AddressBack;
                             mTvModify.setText("修改地址");
@@ -1750,16 +1752,16 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
 //                        mTvTotalPrice.setText(str);
 ////                        ToastUtils.showShort(str);
 //                    } else {
-                        String str = "";
-                        if ("-1".equals(data.getBeyondState())) {
-                            str = "服务金额：¥" + (money3);
-                            factorymoney = money3;
-                        } else {
-                            str = "服务金额：¥" + (money3 + beyond);
-                            factorymoney = money3 + beyond;
-                        }
-                        mTvServiceAmount.setText(str);
-                        mTvTotalPrice.setText(str);
+                    String str = "";
+                    if ("-1".equals(data.getBeyondState())) {
+                        str = "服务金额：¥" + (money3);
+                        factorymoney = money3;
+                    } else {
+                        str = "服务金额：¥" + (money3 + beyond);
+                        factorymoney = money3 + beyond;
+                    }
+                    mTvServiceAmount.setText(str);
+                    mTvTotalPrice.setText(str);
 //                        ToastUtils.showShort(str);
 //                    }
 
@@ -1888,7 +1890,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mLlSelectTime.setVisibility(View.GONE);
                         mView.setVisibility(View.GONE);
                     }
-                    if ("1".equals(data.getTypeID())||"3".equals(data.getTypeID())) {//维修
+                    if ("1".equals(data.getTypeID()) || "3".equals(data.getTypeID())) {//维修
                         mTvType.setText(data.getTypeName() + "/" + data.getGuaranteeText());
                         mTvType.setBackgroundResource(R.color.color_custom_01);
                         mTvDescription.setText("故障说明");
@@ -2040,7 +2042,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                             mBtnCompleteSubmitOne.setVisibility(View.GONE);
                         }
                     } else if ("".equals(AccessoryAndServiceApplyState) && BeyondState != null) {
-                        if ("9".equals(data.getState())||"2".equals(data.getState())) {
+                        if ("9".equals(data.getState()) || "2".equals(data.getState())) {
                             mBtnCompleteSubmit.setVisibility(View.GONE);
                             mRlCompleteSubmit.setVisibility(View.GONE);
                             mBtnCompleteSubmitOne.setVisibility(View.GONE);
@@ -2211,172 +2213,6 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         }
                     }
 
-//                if ("".equals(AccessoryApplyState) && "".equals(ServiceApplyState) && BeyondState == null) {
-//                    //nnn  配件  服务  远程
-//                    mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-//                    mRlCompleteSubmit.setVisibility(View.VISIBLE);
-//                    mBtnCompleteSubmitOne.setVisibility(View.GONE);
-//                    mBtnTrial.setVisibility(View.GONE);
-//                } else if (!"".equals(AccessoryApplyState) && "".equals(ServiceApplyState) && BeyondState == null) {
-//                    //ynn
-//                    if ("1".equals(AccessoryApplyState)) {
-//                        if ("Y".equals(data.getAccessorySendState())) {
-//                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-//                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
-//                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
-//                        } else {
-//                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-//                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
-//                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
-//                        }
-//                    } else {
-//                        mBtnCompleteSubmit.setVisibility(View.GONE);
-//                        mRlCompleteSubmit.setVisibility(View.GONE);
-//                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
-//                    }
-//                } else if ("".equals(AccessoryApplyState) && !"".equals(ServiceApplyState) && BeyondState == null) {
-//                    //nyn
-//                    if ("1".equals(ServiceApplyState)) {
-//                        mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-//                        mRlCompleteSubmit.setVisibility(View.VISIBLE);
-//                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
-//                    } else {
-//                        mBtnCompleteSubmit.setVisibility(View.GONE);
-//                        mRlCompleteSubmit.setVisibility(View.GONE);
-//                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
-//                    }
-//                } else if ("".equals(AccessoryApplyState) && "".equals(ServiceApplyState) && BeyondState != null) {
-//                    //nny
-////                    mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-////                    mRlCompleteSubmit.setVisibility(View.VISIBLE);
-//                    if ("1".equals(BeyondState)) {
-//                        mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-//                        mRlCompleteSubmit.setVisibility(View.VISIBLE);
-//                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
-//                    } else if ("-1".equals(BeyondState)) {
-//                        mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-//                        mRlCompleteSubmit.setVisibility(View.VISIBLE);
-//                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
-//                    } else if ("2".equals(BeyondState)) {
-//                        mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-//                        mRlCompleteSubmit.setVisibility(View.VISIBLE);
-//                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
-//                    } else {
-//                        mBtnCompleteSubmit.setVisibility(View.GONE);
-//                        mRlCompleteSubmit.setVisibility(View.GONE);
-//                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
-//                    }
-//                } else if (!"".equals(AccessoryApplyState) && !"".equals(ServiceApplyState) && BeyondState == null) {
-//                    //yyn
-//                    if ("1".equals(AccessoryApplyState) && "1".equals(ServiceApplyState)) {
-//                        if ("Y".equals(data.getAccessorySendState())) {
-//                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-//                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
-//                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
-//                        } else {
-//                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-//                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
-//                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
-//                        }
-//                    } else {
-//                        mBtnCompleteSubmit.setVisibility(View.GONE);
-//                        mRlCompleteSubmit.setVisibility(View.GONE);
-//                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
-//                    }
-//                } else if (!"".equals(AccessoryApplyState) && "".equals(ServiceApplyState)) {
-//                    //yny
-//                    if ("1".equals(AccessoryApplyState) && "1".equals(BeyondState)) {
-//                        if ("Y".equals(data.getAccessorySendState())) {
-//                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-//                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
-//                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
-//                        } else {
-//                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-//                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
-//                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
-//                        }
-//                    } else if ("1".equals(AccessoryApplyState) && "-1".equals(BeyondState)) {
-//                        if ("Y".equals(data.getAccessorySendState())) {
-//                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-//                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
-//                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
-//                        } else {
-//                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-//                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
-//                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
-//                        }
-//                    } else if ("1".equals(AccessoryApplyState) && "2".equals(BeyondState)) {
-//                        if ("Y".equals(data.getAccessorySendState())) {
-//                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-//                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
-//                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
-//                        } else {
-//                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-//                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
-//                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
-//                        }
-//                    } else {
-//                        mBtnCompleteSubmit.setVisibility(View.GONE);
-//                        mRlCompleteSubmit.setVisibility(View.GONE);
-//                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
-//                    }
-//                } else if ("".equals(AccessoryApplyState) && !"".equals(ServiceApplyState) && BeyondState != null) {
-//                    //nyy
-//                    if ("1".equals(ServiceApplyState) && "1".equals(BeyondState)) {
-//                        mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-//                        mRlCompleteSubmit.setVisibility(View.VISIBLE);
-//                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
-//                    } else if ("1".equals(ServiceApplyState) && "-1".equals(BeyondState)) {
-//                        mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-//                        mRlCompleteSubmit.setVisibility(View.VISIBLE);
-//                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
-//                    } else if ("1".equals(ServiceApplyState) && "2".equals(BeyondState)) {
-//                        mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-//                        mRlCompleteSubmit.setVisibility(View.VISIBLE);
-//                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
-//                    } else {
-//                        mBtnCompleteSubmit.setVisibility(View.GONE);
-//                        mRlCompleteSubmit.setVisibility(View.GONE);
-//                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
-//                    }
-//                } else {
-//                    //yyy
-//                    if ("1".equals(AccessoryApplyState) && "1".equals(ServiceApplyState) && "1".equals(BeyondState)) {
-//                        if ("Y".equals(data.getAccessorySendState())) {
-//                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-//                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
-//                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
-//                        } else {
-//                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-//                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
-//                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
-//                        }
-//                    } else if ("1".equals(AccessoryApplyState) && "1".equals(ServiceApplyState) && "-1".equals(BeyondState)) {
-//                        if ("Y".equals(data.getAccessorySendState())) {
-//                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-//                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
-//                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
-//                        } else {
-//                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-//                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
-//                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
-//                        }
-//                    } else if ("1".equals(AccessoryApplyState) && "1".equals(ServiceApplyState) && "2".equals(BeyondState)) {
-//                        if ("Y".equals(data.getAccessorySendState())) {
-//                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-//                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
-//                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
-//                        } else {
-//                            mBtnCompleteSubmit.setVisibility(View.VISIBLE);
-//                            mRlCompleteSubmit.setVisibility(View.VISIBLE);
-//                            mBtnCompleteSubmitOne.setVisibility(View.GONE);
-//                        }
-//                    } else {
-//                        mBtnCompleteSubmit.setVisibility(View.GONE);
-//                        mRlCompleteSubmit.setVisibility(View.GONE);
-//                        mBtnCompleteSubmitOne.setVisibility(View.GONE);
-//                    }
-//                }
 
                     if ("2".equals(data.getTypeID())) {
                         if (!"0".equals(data.getMallID())) {
@@ -2766,20 +2602,27 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     } else {
                         mLlExpedited.setVisibility(View.GONE);
                     }
-                    if ("安装".equals(data.getTypeName())){
+                    if ("安装".equals(data.getTypeName())) {
                         mLlAddAccessory.setVisibility(View.GONE);
                         mLlPrompt.setVisibility(View.GONE);
                         mLlAddService.setVisibility(View.GONE);
-                    }else {
-                        if (!"".equals(data.getAccessoryAndServiceApplyState())){
+                    } else {
+                        if (!"".equals(data.getAccessoryAndServiceApplyState())) {
                             mLlAddAccessory.setVisibility(View.GONE);
                             mLlAddService.setVisibility(View.GONE);
                             mLlPrompt.setVisibility(View.GONE);
-                        }else {
+                        } else {
                             mLlAddAccessory.setVisibility(View.VISIBLE);
                             mLlAddService.setVisibility(View.VISIBLE);
                             mLlPrompt.setVisibility(View.VISIBLE);
                         }
+                    }
+
+                    if ("0".equals(data.getIsOnLookMessage())){
+                        mTvMessageNumber.setVisibility(View.GONE);
+                    }else {
+                        mTvMessageNumber.setVisibility(View.VISIBLE);
+                        mTvMessageNumber.setText(data.getIsOnLookMessage());
                     }
 
                     break;
@@ -3418,10 +3261,13 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(String name) {
+        if ("read".equals(name)){
+            mPresenter.GetOrderInfo(OrderID);
+        }
         if (!"WorkOrderDetailsActivity".equals(name)) {
             return;
         }
-        mPresenter.GetOrderInfo(OrderID);
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -3949,11 +3795,11 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
      * 添加完配件和服务之后返回多少钱
      */
     public void getMoney(List<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> accessoryList, List<FService.OrderServiceStrBean.OrderServiceBean> serviceList) {
-        double price=0;
+        double price = 0;
         List<Integer> list = new ArrayList<>();
         for (int i = 0; i < accessoryList.size(); i++) {
             list.add(Integer.parseInt(accessoryList.get(i).getSizeID()));
-            price+=accessoryList.get(i).getDiscountPrice();
+            price += accessoryList.get(i).getDiscountPrice();
         }
         for (int i = 0; i < serviceList.size(); i++) {
             list.add(Integer.parseInt(serviceList.get(i).getSizeID()));
@@ -3961,10 +3807,10 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         if (list.size() > 0) {
             System.out.println(Collections.max(list));
             sizeId = Collections.max(list);
-            if(select_state==1){
-                mPresenter.GetFactoryAccessoryMoney(OrderID, data.getProductTypeID(), String.valueOf(Collections.max(list)),Double.toString(price));
-            }else{
-                mPresenter.GetFactoryAccessoryMoney(OrderID, data.getProductTypeID(), String.valueOf(Collections.max(list)),"0");
+            if (select_state == 1) {
+                mPresenter.GetFactoryAccessoryMoney(OrderID, data.getProductTypeID(), String.valueOf(Collections.max(list)), Double.toString(price));
+            } else {
+                mPresenter.GetFactoryAccessoryMoney(OrderID, data.getProductTypeID(), String.valueOf(Collections.max(list)), "0");
             }
 
         } else {
@@ -3977,11 +3823,11 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
 ////                ToastUtils.showShort(str);
 //                factorymoney = money1;
 //            } else {
-                String str = "服务金额：¥" + (money2);
-                mTvServiceAmount.setText(str);
-                mTvTotalPrice.setText(str);
+            String str = "服务金额：¥" + (money2);
+            mTvServiceAmount.setText(str);
+            mTvTotalPrice.setText(str);
 //                ToastUtils.showShort(str);
-                factorymoney = money2;
+            factorymoney = money2;
 //            }
         }
     }

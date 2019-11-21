@@ -63,14 +63,33 @@
                         android:textColor="@color/white"
                         android:textSize="10sp" />
 
-                    <TextView
-                        android:id="@+id/tv_leave_message"
+                    <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="20dp"
-                        android:text="留言及反馈"
-                        android:textColor="@color/white"
-                        android:textSize="16sp" />
+                        android:layout_marginRight="20dp">
+
+                        <TextView
+                            android:id="@+id/tv_leave_message"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="留言及反馈"
+                            android:textColor="@color/white"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/tv_message_number"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_toRightOf="@+id/tv_leave_message"
+                            android:background="@drawable/red_shape"
+                            android:text="0"
+                            android:textColor="@color/white"
+                            android:textSize="10sp"
+                            android:gravity="center"
+                            android:visibility="gone"/>
+
+                    </RelativeLayout>
+
                 </LinearLayout>
 
 
@@ -195,26 +214,27 @@
                         android:id="@+id/ll_expedited"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         android:layout_marginLeft="16dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginRight="@dimen/dp_10"
-                        android:background="@color/white">
+                        android:background="@color/white"
+                        android:orientation="horizontal">
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:text="未在"
                             android:textColor="@color/red"
-                            android:textSize="13sp"
-                            android:layout_gravity="center"/>
+                            android:textSize="13sp" />
 
                         <cn.iwgang.countdownview.CountdownView
                             android:id="@+id/countdownview"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
-                            android:layout_gravity="center"
                             app:isHideTimeBackground="true"
                             app:isShowDay="false"
                             app:isShowHour="true"
@@ -233,13 +253,14 @@
                             app:timeBgRadius="3dp"
                             app:timeTextColor="@color/red"
                             app:timeTextSize="13sp" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:text="完成工单，将取消加急费用"
                             android:textColor="@color/red"
-                            android:textSize="13sp"
-                            android:layout_gravity="center"/>
+                            android:textSize="13sp" />
                     </LinearLayout>
 
 
@@ -323,21 +344,21 @@
                         android:layout_marginRight="10dp"
                         android:background="#eee" />
 
-                   
 
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="10dp"
-                    android:orientation="vertical"
                     android:background="@color/white"
+                    android:orientation="vertical"
                     android:paddingLeft="16dp"
-                    android:paddingBottom="13dp"
                     android:paddingTop="13dp"
-                    android:paddingRight="16dp">
+                    android:paddingRight="16dp"
+                    android:paddingBottom="13dp">
 
                     <TextView
                         android:id="@+id/tv_description"
@@ -346,22 +367,25 @@
                         android:text="故障说明："
                         android:textColor="#6A6A6A"
                         android:textSize="16sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="#eee"
-                        android:layout_marginTop="10dp"
                         android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"/>
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="5dp"
+                        android:background="#eee" />
+
                     <TextView
                         android:id="@+id/tv_product_type"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
                         android:textColor="#A4A4A4"
-                        android:textSize="15sp"
-                        android:layout_marginTop="10dp"/>
+                        android:textSize="15sp" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -472,7 +496,7 @@
                             android:text="是否已到货"
                             android:textColor="#6A6A6A"
                             android:textSize="16sp"
-                            android:textStyle="bold"/>
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/tv_signing"
@@ -746,8 +770,7 @@
                             android:padding="10dp"
                             android:text="添加配件"
                             android:textColor="#6A6A6A"
-                            android:textSize="14sp"
-                             />
+                            android:textSize="14sp" />
 
                         <TextView
                             android:id="@+id/tv_submit_add_accessories"
@@ -763,7 +786,7 @@
                             android:text="提交配件申请"
                             android:textColor="#6A6A6A"
                             android:textSize="14sp"
-                            
+
                             android:visibility="gone" />
                     </LinearLayout>
 
@@ -812,10 +835,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:paddingTop="16dp"
-                    android:paddingBottom="16dp"
                     android:background="@color/white"
                     android:orientation="vertical"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
                     android:visibility="gone">
 
                     <LinearLayout
@@ -829,14 +852,15 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="寄送至："
-                            android:textSize="16sp"
-                            android:textColor="@color/black"/>
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+
                         <TextView
                             android:id="@+id/tv_modify"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"
                             android:layout_marginRight="10dp"
+                            android:layout_weight="1"
                             android:gravity="right"
                             android:text="修改地址"
                             android:textColor="@color/black"
@@ -844,17 +868,18 @@
 
 
                     </LinearLayout>
+
                     <TextView
                         android:id="@+id/tv_address_return"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
                         android:layout_weight="1"
-                        android:text=""
-                        android:textColor="#808080"
-                        android:textSize="16sp"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:layout_marginTop="10dp"/>
+                        android:text=""
+                        android:textColor="#808080"
+                        android:textSize="16sp" />
 
                 </LinearLayout>
 
@@ -863,11 +888,11 @@
                     android:id="@+id/ll_shipping_type"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:background="@color/white"
                     android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp">
+                    android:background="@color/white"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -881,7 +906,7 @@
                         android:text="寄件类型："
                         android:textColor="#6A6A6A"
                         android:textSize="16sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tv_accessory_sequency"
@@ -944,7 +969,7 @@
                             android:textSize="12sp" />
 
                     </LinearLayout>
-                    
+
 
                     <LinearLayout
                         android:id="@+id/ll_new_money"
@@ -1003,8 +1028,7 @@
                                 android:padding="10dp"
                                 android:text="取消"
                                 android:textColor="#6A6A6A"
-                                android:textSize="14sp"
-                                 />
+                                android:textSize="14sp" />
 
                             <TextView
                                 android:id="@+id/tv_confirm"
@@ -1019,8 +1043,7 @@
                                 android:padding="10dp"
                                 android:text="确认"
                                 android:textColor="#6A6A6A"
-                                android:textSize="14sp"
-                                 />
+                                android:textSize="14sp" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -1152,7 +1175,7 @@
                             android:text="再次申请"
                             android:textColor="#6A6A6A"
                             android:textSize="14sp"
-                            
+
                             android:visibility="gone" />
 
                         <TextView
@@ -1167,8 +1190,7 @@
                             android:padding="10dp"
                             android:text="催    审"
                             android:textColor="#6A6A6A"
-                            android:textSize="14sp"
-                             />
+                            android:textSize="14sp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -1192,8 +1214,7 @@
                         android:layout_marginBottom="15dp"
                         android:text="服务内容"
                         android:textColor="#6A6A6A"
-                        android:textSize="16sp"
-                         />
+                        android:textSize="16sp" />
 
                     <View
                         android:layout_width="match_parent"
@@ -1238,7 +1259,7 @@
                             android:text="添加服务"
                             android:textColor="#6A6A6A"
                             android:textSize="14sp"
-                            
+
 
                             />
 
@@ -1259,7 +1280,7 @@
                             android:text="提交服务申请"
                             android:textColor="#6A6A6A"
                             android:textSize="14sp"
-                            
+
                             android:visibility="gone" />
                     </LinearLayout>
                 </LinearLayout>
@@ -1288,7 +1309,7 @@
                             android:text="服务信息"
                             android:textColor="#6A6A6A"
                             android:textSize="16sp"
-                            android:textStyle="bold"/>
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/tv_service_apply_state"
@@ -1349,7 +1370,7 @@
                             android:text="再次申请"
                             android:textColor="#6A6A6A"
                             android:textSize="14sp"
-                            
+
                             android:visibility="gone" />
 
                         <TextView
@@ -1364,8 +1385,7 @@
                             android:padding="10dp"
                             android:text="催    审"
                             android:textColor="#6A6A6A"
-                            android:textSize="14sp"
-                             />
+                            android:textSize="14sp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -1393,8 +1413,7 @@
                             android:layout_marginBottom="15dp"
                             android:text="申请远程费"
                             android:textColor="#6A6A6A"
-                            android:textSize="16sp"
-                             />
+                            android:textSize="16sp" />
                     </LinearLayout>
 
 
@@ -1535,8 +1554,7 @@
                         android:padding="10dp"
                         android:text="提交远程费申请"
                         android:textColor="#6A6A6A"
-                        android:textSize="14sp"
-                         />
+                        android:textSize="14sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -1563,8 +1581,7 @@
                             android:layout_marginBottom="16dp"
                             android:text="远程费"
                             android:textColor="#6A6A6A"
-                            android:textSize="16sp"
-                             />
+                            android:textSize="16sp" />
 
                         <TextView
                             android:id="@+id/tv_beyond_state"
@@ -1662,8 +1679,8 @@
                             android:text="再次申请"
                             android:textColor="#6A6A6A"
                             android:textSize="14sp"
-                            
-                            android:visibility="gone"/>
+
+                            android:visibility="gone" />
 
                         <TextView
                             android:id="@+id/tv_remote_fee_information"
@@ -1678,8 +1695,7 @@
                             android:padding="10dp"
                             android:text="催    审"
                             android:textColor="#6A6A6A"
-                            android:textSize="14sp"
-                             />
+                            android:textSize="14sp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -1701,7 +1717,7 @@
                         android:text="完结图片"
                         android:textColor="#6A6A6A"
                         android:textSize="16sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
 
 
                     <LinearLayout
@@ -1822,23 +1838,23 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="6dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="6dp"
                         android:layout_weight="1"
                         android:text="工单价格："
                         android:textColor="#333"
-                        android:textSize="16sp"
-                        android:layout_marginTop="6dp"
-                        android:layout_marginBottom="6dp"
-                        android:layout_marginLeft="6dp"/>
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/tv_order_money_finish"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="6dp"
                         android:text=""
                         android:textColor="@color/red"
-                        android:textSize="16sp"
-                        android:layout_gravity="center"
-                        android:layout_marginRight="6dp"/>
+                        android:textSize="16sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -1976,8 +1992,7 @@
                         android:layout_marginLeft="13dp"
                         android:text="服务金额:¥0.00"
                         android:textColor="#D81E06"
-                        android:textSize="16sp"
-                         />
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/btn_complete_submit"
@@ -2039,8 +2054,7 @@
                         android:layout_marginLeft="13dp"
                         android:text="服务金额:¥0.00"
                         android:textColor="#6A6A6A"
-                        android:textSize="16sp"
-                         />
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/tv_detail_submit"

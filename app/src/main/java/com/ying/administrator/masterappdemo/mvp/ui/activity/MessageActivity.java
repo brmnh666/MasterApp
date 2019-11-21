@@ -38,7 +38,6 @@ import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.Data;
-import com.ying.administrator.masterappdemo.entity.ReadMessage;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.MessageContract;
 import com.ying.administrator.masterappdemo.mvp.model.MessageModel;
@@ -51,6 +50,8 @@ import com.ying.administrator.masterappdemo.util.SingleClick;
 import com.ying.administrator.masterappdemo.util.imageutil.CompressHelper;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -126,6 +127,7 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
         //获取用户id
         userID = spUtils.getString("userName");
         orderId = getIntent().getStringExtra("orderId");
+        showProgress();
         mPresenter.GetOrderInfo(orderId);
 
         leaveMessageAdapter = new LeaveMessageAdapter(R.layout.leave_message_item, list);
@@ -270,7 +272,8 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
                     leaveMessageAdapter.setNewData(list);
 //                    leaveMessageAdapter.setNewData(data.getLeavemessageList());
                 }
-                    break;
+                hideProgress();
+                break;
         }
     }
 
@@ -308,8 +311,12 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
     }
 
     @Override
-    public void LeaveMessageWhetherLook(BaseResult<Data<List<ReadMessage>>> baseResult) {
-
+    public void LeaveMessageWhetherLook(BaseResult<Data> baseResult) {
+        switch (baseResult.getStatusCode()){
+            case 200:
+                EventBus.getDefault().post("read");
+                break;
+        }
     }
 
     //请求权限

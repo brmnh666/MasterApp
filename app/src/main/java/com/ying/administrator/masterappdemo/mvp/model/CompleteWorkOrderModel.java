@@ -14,7 +14,7 @@ import okhttp3.RequestBody;
 public class CompleteWorkOrderModel implements CompleteWorkOrderContract.Model {
     @Override
     public Observable<BaseResult<WorkOrder.DataBean>> GetOrderInfo(String OrderID) {
-        return ApiRetrofit.getDefault().GetOrderInfo(OrderID)
+        return ApiRetrofit.getDefault().GetOrderInfo(OrderID,"2")
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

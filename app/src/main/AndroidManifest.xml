@@ -301,6 +301,11 @@
             android:theme="@style/AppTheme.NoActionBar"
              android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
+        <!--留言消息-->
+        <activity android:name=".mvp.ui.activity.LeaveMessageActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
 
         <activity android:name="com.amap.searchdemo.MainActivity"
             android:theme="@style/AppTheme.Splash"

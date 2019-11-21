@@ -223,6 +223,15 @@ public class WorkOrder implements Serializable {
         private Double terraceMoney;
         private String IsCall;
         private String IsLook;
+        private String isOnLookMessage;
+
+        public String getIsOnLookMessage() {
+            return isOnLookMessage;
+        }
+
+        public void setIsOnLookMessage(String isOnLookMessage) {
+            this.isOnLookMessage = isOnLookMessage;
+        }
 
         public String getIsLook() {
             return IsLook;
@@ -1072,6 +1081,15 @@ public class WorkOrder implements Serializable {
         private int page;
         private int limit;
         private int Version;
+        private String UserName;
+
+        public String getUserName() {
+            return UserName;
+        }
+
+        public void setUserName(String userName) {
+            UserName = userName;
+        }
 
         public String getPhoto() {
             return photo;

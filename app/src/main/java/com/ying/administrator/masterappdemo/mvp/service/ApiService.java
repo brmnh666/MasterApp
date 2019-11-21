@@ -16,13 +16,13 @@ import com.ying.administrator.masterappdemo.entity.District;
 import com.ying.administrator.masterappdemo.entity.GAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
 import com.ying.administrator.masterappdemo.entity.IDCard;
+import com.ying.administrator.masterappdemo.entity.LeaveMessage;
 import com.ying.administrator.masterappdemo.entity.Logistics;
 import com.ying.administrator.masterappdemo.entity.Message;
 import com.ying.administrator.masterappdemo.entity.MessageData;
 import com.ying.administrator.masterappdemo.entity.Province;
 import com.ying.administrator.masterappdemo.entity.QuestBean;
 import com.ying.administrator.masterappdemo.entity.QuestResult;
-import com.ying.administrator.masterappdemo.entity.ReadMessage;
 import com.ying.administrator.masterappdemo.entity.RedPointData;
 import com.ying.administrator.masterappdemo.entity.Service;
 import com.ying.administrator.masterappdemo.entity.Skill;
@@ -186,7 +186,8 @@ public interface ApiService {
      * */
     @FormUrlEncoded
     @POST("Order/GetOrderInfo")
-    Observable<BaseResult<WorkOrder.DataBean>> GetOrderInfo(@Field("OrderID") String OrderID);
+    Observable<BaseResult<WorkOrder.DataBean>> GetOrderInfo(@Field("OrderID") String OrderID,
+                                                            @Field("MessageType") String MessageType);
 
 
     /**
@@ -975,10 +976,26 @@ public interface ApiService {
      * */
     @FormUrlEncoded
     @POST("LeaveMessage/LeaveMessageWhetherLook")
-    Observable<BaseResult<Data<List<ReadMessage>>>> LeaveMessageWhetherLook(@Field("OrderID") String OrderID,
+    Observable<BaseResult<Data>> LeaveMessageWhetherLook(@Field("OrderID") String OrderID,
                                                                             @Field("factoryIslook") String factoryIslook,
                                                                             @Field("workerIslook") String workerIslook,
                                                                             @Field("platformIslook") String platformIslook
+
+    );
+
+
+    /*
+     * 留言消息
+     * 1  师傅
+     * 2 工厂
+     * 3 平台
+     * */
+    @FormUrlEncoded
+    @POST("LeaveMessage/GetNewsLeaveMessage")
+    Observable<BaseResult<Data<LeaveMessage>>> GetNewsLeaveMessage(@Field("UserID") String UserID,
+                                                                         @Field("Type") String Type,
+                                                                         @Field("limit") String limit,
+                                                                         @Field("page") String page
 
     );
 

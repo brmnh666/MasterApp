@@ -3,7 +3,6 @@ package com.ying.administrator.masterappdemo.mvp.presenter;
 import com.ying.administrator.masterappdemo.base.BaseObserver;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
-import com.ying.administrator.masterappdemo.entity.ReadMessage;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.MessageContract;
 
@@ -59,9 +58,9 @@ public class MessagePresenter extends MessageContract.Presenter {
     @Override
     public void LeaveMessageWhetherLook(String OrderID) {
         mModel.LeaveMessageWhetherLook(OrderID)
-                .subscribe(new BaseObserver<Data<List<ReadMessage>>>() {
+                .subscribe(new BaseObserver<Data>() {
                     @Override
-                    protected void onHandleSuccess(BaseResult<Data<List<ReadMessage>>> value) {
+                    protected void onHandleSuccess(BaseResult<Data> value) {
                         mView.LeaveMessageWhetherLook(value);
                     }
                 });

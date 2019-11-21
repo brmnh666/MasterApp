@@ -3,7 +3,6 @@ package com.ying.administrator.masterappdemo.mvp.model;
 import com.alipay.sdk.auth.APAuthInfo;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
-import com.ying.administrator.masterappdemo.entity.ReadMessage;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.MessageContract;
 import com.ying.administrator.masterappdemo.mvp.contract.MyMessageContract;
@@ -26,7 +25,7 @@ public class MessageModel implements MessageContract.Model {
 
     @Override
     public Observable<BaseResult<WorkOrder.DataBean>> GetOrderInfo(String OrderID) {
-        return ApiRetrofit.getDefault().GetOrderInfo(OrderID)
+        return ApiRetrofit.getDefault().GetOrderInfo(OrderID,"2")
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }
@@ -46,7 +45,7 @@ public class MessageModel implements MessageContract.Model {
     }
 
     @Override
-    public Observable<BaseResult<Data<List<ReadMessage>>>> LeaveMessageWhetherLook(String OrderID) {
+    public Observable<BaseResult<Data>> LeaveMessageWhetherLook(String OrderID) {
         return ApiRetrofit.getDefault().LeaveMessageWhetherLook(OrderID,"1","2","1")
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
