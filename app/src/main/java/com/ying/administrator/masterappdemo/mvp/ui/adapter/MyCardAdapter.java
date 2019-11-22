@@ -29,7 +29,11 @@ public class MyCardAdapter extends BaseQuickAdapter<BankCard, BaseViewHolder> {
     @Override
     protected void convert(BaseViewHolder helper, BankCard item) {
         cardView = helper.getView(R.id.cardview);
-        switch (item.getPayInfoName()){
+        String bankName=item.getPayInfoName();
+        if (bankName==null){
+            bankName="";
+        }
+        switch (bankName){
             case "光大银行":
                 Glide.with(context)
                         .load(R.mipmap.gaungda)
@@ -202,7 +206,7 @@ public class MyCardAdapter extends BaseQuickAdapter<BankCard, BaseViewHolder> {
                      .load(R.drawable.avatar)
                      .apply(RequestOptions.bitmapTransform(new CircleCrop()))
                      .into((ImageView) helper.getView(R.id.iv_bank_card));
-             helper.setText(R.id.tv_bank_name,item.getPayInfoName());
+             helper.setText(R.id.tv_bank_name,bankName);
              cardView.setCardBackgroundColor(context.getResources().getColor(R.color.color_custom_01));
              break;
 

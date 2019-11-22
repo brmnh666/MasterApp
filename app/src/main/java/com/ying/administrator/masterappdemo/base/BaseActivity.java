@@ -23,6 +23,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.ActivityUtils;
+import com.blankj.utilcode.util.Utils;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.util.Util;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.LoginActivity;
 import com.ying.administrator.masterappdemo.util.TUtil;
@@ -197,11 +200,17 @@ public abstract class BaseActivity<P extends BasePresenter, M extends BaseModel>
     @Override
     protected void onResume() {
         super.onResume();
+        if (Util.isOnMainThread()){
+            Glide.with(this).resumeRequests();
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        if (Util.isOnMainThread()){
+            Glide.with(this).pauseRequests();
+        }
     }
 
     @Override
