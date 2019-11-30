@@ -147,13 +147,15 @@ public class ApplyFeeActivity extends BaseActivity<AllWorkOrdersPresenter, AllWo
                     return;
                 }
                 Distance = mEtOrderBeyondKm.getText().toString();
-                if (!Distance.isEmpty()) {
-                    BeyondMoney = Double.parseDouble(Distance) + "";
-                    Distance = BeyondMoney;
-                } else {
+                if (Distance.isEmpty()) {
                     ToastUtils.showShort("请输入超出公里数！");
                     hideProgress();
                     return;
+                }else if (Double.parseDouble(Distance)<=0.0){
+                    ToastUtils.showShort("请输入大于0的远程费");
+                } else {
+                    BeyondMoney = Double.parseDouble(Distance) + "";
+                    Distance = BeyondMoney;
                 }
                 OrderByondImgPicUpload(files_map_remote);
                 break;

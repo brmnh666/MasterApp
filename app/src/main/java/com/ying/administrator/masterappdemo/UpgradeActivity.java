@@ -8,21 +8,30 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.tencent.bugly.beta.Beta;
 import com.tencent.bugly.beta.download.DownloadListener;
 import com.tencent.bugly.beta.download.DownloadTask;
+import com.ying.administrator.masterappdemo.widget.MyProgress;
+import com.ying.administrator.masterappdemo.widget.SaleProgressView;
 
-public class UpgradeActivity extends Activity {
-//    private TextView tv;
+public class UpgradeActivity  extends Activity {
+    //    private TextView tv;
     private TextView title;
     private TextView version;
-//    private TextView size;
+    //    private TextView size;
 //    private TextView time;
     private TextView content;
     private ImageView cancel;
     private Button start;
+    int upgradeType = Beta.getUpgradeInfo().upgradeType;
+    private SaleProgressView spv;
+    private int fileSize;
+    private MyProgress progress;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,29 +45,42 @@ public class UpgradeActivity extends Activity {
         content = getView(R.id.tv_content);
         cancel = getView(R.id.iv_close);
         start = getView(R.id.btn_start);
-
+        spv = getView(R.id.spv);
+        progress = getView(R.id.progress);
         /*获取下载任务，初始化界面信息*/
         updateBtn(Beta.getStrategyTask());
 //        tv.setText(tv.getText().toString() + Beta.getStrategyTask().getSavedLength() + "");
 
+        //包大小
+        fileSize = new Long(Beta.getUpgradeInfo().fileSize).intValue();
+        progress.setMax(fileSize);
         /*获取策略信息，初始化界面信息*/
         title.setText(title.getText().toString() + Beta.getUpgradeInfo().title);
         version.setText(version.getText().toString() + Beta.getUpgradeInfo().versionName);
 //        size.setText(size.getText().toString() + Beta.getUpgradeInfo().fileSize + "");
 //        time.setText(time.getText().toString() + Beta.getUpgradeInfo().publishTime + "");
         content.setText(Beta.getUpgradeInfo().newFeature);
+        if (upgradeType==2){
+            cancel.setVisibility(View.GONE);
+        }else {
+            cancel.setVisibility(View.VISIBLE);
+        }
 
         /*为下载按钮设置监听*/
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progress.setVisibility(View.VISIBLE);
+                start.setVisibility(View.GONE);
                 DownloadTask task = Beta.startDownload();
                 updateBtn(task);
                 if (task.getStatus() == DownloadTask.DOWNLOADING) {
-                    finish();
+//                    finish();
+                    ToastUtils.showShort("开始下载");
                 }
             }
         });
+
 
         /*为取消按钮设置监听*/
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -75,6 +97,12 @@ public class UpgradeActivity extends Activity {
             public void onReceive(DownloadTask task) {
                 updateBtn(task);
 //                tv.setText(task.getSavedLength() + "");
+                int li=  new Long(task.getSavedLength()).intValue();
+                progress.setProgress(li);//更新进度条
+                if (li==fileSize){
+                    progress.setVisibility(View.GONE);
+                    start.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
@@ -87,7 +115,7 @@ public class UpgradeActivity extends Activity {
             public void onFailed(DownloadTask task, int code, String extMsg) {
                 updateBtn(task);
 //                tv.setText("failed");
-
+                progress.setVisibility(View.GONE);
             }
         });
         //窗口对齐屏幕宽度

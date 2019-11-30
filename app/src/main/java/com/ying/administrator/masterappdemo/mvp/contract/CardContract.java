@@ -21,7 +21,7 @@ public interface CardContract {
         Observable<BaseResult<Data<String>>> AddorUpdateAccountPayInfo(String UserId,String PayInfoCode ,String PayInfoName,String PayNo,String PayName);
         Observable<BaseResult<List<BankCard>>> GetAccountPayInfoList(String UserId);
         Observable<BaseResult<Data<String>>> GetBankNameByCardNo(String CardNo);
-
+        Observable<BaseResult<Data<String>>> DeleteAccountPayInfo(String UserId,String PayInfoCode ,String PayInfoName,String PayNo,String PayName,String IsUse,String AccountPayID);
 
     }
 
@@ -30,6 +30,7 @@ public interface CardContract {
         void AddorUpdateAccountPayInfo(BaseResult<Data<String>> baseResult);
         void GetAccountPayInfoList(BaseResult<List<BankCard>> baseResult);
         void GetBankNameByCardNo(BaseResult<Data<String>> baseResult);
+        void DeleteAccountPayInfo(BaseResult<Data<String>> baseResult);
     }
 
     abstract class Presenter extends BasePresenter<View,Model>{
@@ -37,5 +38,6 @@ public interface CardContract {
         public abstract void AddorUpdateAccountPayInfo(String UserId,String PayInfoCode ,String PayInfoName,String PayNo,String PayName);
         public abstract void GetAccountPayInfoList(String UserId);
         public abstract void GetBankNameByCardNo(String CardNo);
+        public abstract void DeleteAccountPayInfo(String UserId,String PayInfoCode ,String PayInfoName,String PayNo,String PayName,String IsUse,String AccountPayID);
     }
 }

@@ -679,6 +679,17 @@ public interface ApiService {
                                                                    @Field("PayNo") String PayNo,
                                                                    @Field("PayName") String PayName);
 
+    /*删除银行卡*/
+    @FormUrlEncoded
+    @POST("Account/AddorUpdateAccountPayInfo")
+    Observable<BaseResult<Data<String>>> DeleteAccountPayInfo(@Field("UserID") String UserID,
+                                                                   @Field("PayInfoCode") String PayInfoCode,
+                                                                   @Field("PayInfoName") String PayInfoName,
+                                                                   @Field("PayNo") String PayNo,
+                                                                   @Field("PayName") String PayName,
+                                                                   @Field("IsUse") String IsUse,
+                                                              @Field("AccountPayID") String AccountPayID);
+
     /*获取银行卡*/
     @FormUrlEncoded
     @POST("Account/GetAccountPayInfoList")

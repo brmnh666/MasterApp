@@ -1310,7 +1310,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
             mPresenter.AddOrderAccessoryAndService(body);
         } else if (list.size() > 0 && mPre_order_Add_Service_Adapter.getData().size() > 0) {
             if ("".equals(returnAddress)) {
-                ToastUtils.showShort("请选择收货地址");
+                MyUtils.showToast(mActivity, "请选择收货地址");
                 hideProgress();
                 return;
             } else {
@@ -1536,12 +1536,12 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 AccessoryMemo = mEtMemo.getText().toString().trim();
 //                returnAddress = mTvAddressReturn.getText().toString().trim();
                 if (select_state == -1) {
-                    ToastUtils.showShort("请选择配件类型");
+                    MyUtils.showToast(mActivity, "请选择配件类型");
                 } else {
                     if (mPre_order_add_ac_adapter.getData().size() == 0) {
-                        ToastUtils.showShort("请添加配件");
+                        MyUtils.showToast(mActivity, "请添加配件");
                     } else if ("".equals(returnAddress)) {
-                        ToastUtils.showShort("请选择收货地址");
+                        MyUtils.showToast(mActivity, "请选择收货地址");
                     } else {
 //                        if (accessories_picture.size() > 0) {
                         orderAccessoryStrBean = new FAccessory.OrderAccessoryStrBean();
@@ -2060,8 +2060,8 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                                 mRlCompleteSubmit.setVisibility(View.VISIBLE);
                                 mBtnCompleteSubmitOne.setVisibility(View.GONE);
                             } else {
-                                mBtnCompleteSubmit.setVisibility(View.GONE);
-                                mRlCompleteSubmit.setVisibility(View.GONE);
+                                mBtnCompleteSubmit.setVisibility(View.VISIBLE);
+                                mRlCompleteSubmit.setVisibility(View.VISIBLE);
                                 mBtnCompleteSubmitOne.setVisibility(View.GONE);
                             }
                         }
@@ -2303,7 +2303,15 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                             mTvAccessoryApplyState.setText("审核中");
                             mTvAccessoryApplication.setVisibility(View.GONE);
                         } else if ("1".equals(data.getAccessoryAndServiceApplyState())) {
-                            mTvAccessoryApplyState.setText("审核通过");
+                            if (data.getOrderAccessroyDetail().size()>0){
+                                if (data.getOrderAccessroyDetail().get(0).getExpressNo()!=null||!"".equals(data.getOrderAccessroyDetail().get(0).getExpressNo())){
+                                    mTvAccessoryApplyState.setText("审核通过已发货");
+                                }else {
+                                    mTvAccessoryApplyState.setText("审核通过未发货");
+                                }
+                            }else {
+                                mTvAccessoryApplyState.setText("审核通过");
+                            }
                             mTvAccessoryApplication.setVisibility(View.GONE);
 //                    } else if ("".equals(data.getAccessoryAndServiceApplyState())) {
 //                        mTvAccessoryApplyState.setText("厂家已寄件");
@@ -2607,7 +2615,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mLlPrompt.setVisibility(View.GONE);
                         mLlAddService.setVisibility(View.GONE);
                     } else {
-                        if (!"".equals(data.getAccessoryAndServiceApplyState())) {
+                        if (!"".equals(data.getAccessoryAndServiceApplyState())||data.getOrderAccessroyDetail().size()>0) {
                             mLlAddAccessory.setVisibility(View.GONE);
                             mLlAddService.setVisibility(View.GONE);
                             mLlPrompt.setVisibility(View.GONE);
@@ -2624,7 +2632,21 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mTvMessageNumber.setVisibility(View.VISIBLE);
                         mTvMessageNumber.setText(data.getIsOnLookMessage());
                     }
-
+                    if ("0".equals(data.getAccessoryAndServiceApplyState())){
+                        mTvAccessoryInformation.setText("催    审");
+                    }else if ("1".equals(data.getAccessoryAndServiceApplyState())){
+                        if (data.getOrderAccessroyDetail().size()>0){
+                            if (data.getOrderAccessroyDetail().get(0).getExpressNo()==null||"".equals(data.getOrderAccessroyDetail().get(0).getExpressNo())){
+                                mTvAccessoryInformation.setText("提醒发货");
+                            }else {
+                                mTvAccessoryInformation.setVisibility(View.GONE);
+                            }
+                        }else if (data.getOrderServiceDetail().size()>0){
+                            mTvServiceInformation.setText("催    审");
+                        }else {
+                            mTvServiceInformation.setVisibility(View.GONE);
+                        }
+                    }
                     break;
 
                 } else {
@@ -3000,7 +3022,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mfAccessory.setDiscountPrice(accessory.getAccessoryPrice());//原价
                     } else if (select_state == 1) {//师傅自购 还要判断保内保外
                         if ("".equals(price)) {
-                            ToastUtils.showShort("请输入配件价格");
+                            MyUtils.showToast(mActivity, "请输入配件价格");
                             return;
                         }
                         mfAccessory.setPrice(Double.parseDouble(price));
@@ -3067,7 +3089,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mfAccessory.setDiscountPrice(Double.valueOf("0"));//原价
                     } else if (select_state == 1) {//师傅自购 还要判断保内保外
                         if ("".equals(price)) {
-                            ToastUtils.showShort("请输入配件价格");
+                            MyUtils.showToast(mActivity, "请输入配件价格");
                             return;
                         }
                         mfAccessory.setPrice(Double.parseDouble(price));
@@ -3176,7 +3198,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     push_dialog.dismiss();
                     ToastUtils.showShort("催审成功");
                 } else {
-                    ToastUtils.showShort("催审失败！请联系客服4006262365");
+                    MyUtils.showToast(mActivity, "催审失败！请联系客服4006262365");
                 }
                 break;
         }

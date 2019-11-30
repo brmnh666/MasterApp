@@ -11,6 +11,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.SPUtils;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
@@ -111,6 +114,10 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
     TextView mTvRechargeMore;
     @BindView(R.id.tv_freeze)
     TextView mTvFreeze;
+    @BindView(R.id.tv_message)
+    TextView mTvMessage;
+    @BindView(R.id.refreshLayout)
+    SmartRefreshLayout mRefreshLayout;
 
     private Wallet_record_Adapter wallet_record_adapter1;
     private Wallet_record_Adapter wallet_record_adapter2;
@@ -122,6 +129,7 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
     private List<Bill.DataBean> recharge_list = new ArrayList<>();//充值记录
     private List<Bill.DataBean> withdraw_list = new ArrayList<>();//提现记录
     private List<Bill.DataBean> expend_income_list = new ArrayList<>();//收入支出记录
+    private int cardList = 0;
 
     @Override
     protected int setLayoutId() {
@@ -134,11 +142,22 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
         userId = spUtils.getString("userName");
         mPresenter.GetUserInfoList(userId, "1");
 
-        mPresenter.AccountBill(userId, "1","1","999");//充值
-        mPresenter.AccountBill(userId, "3","1","999");//提现
-        mPresenter.AccountBill(userId, "2,5","1","999");//收入和支出
+        mPresenter.AccountBill(userId, "1", "1", "999");//充值
+        mPresenter.AccountBill(userId, "3", "1", "999");//提现
+        mPresenter.AccountBill(userId, "2,5", "1", "999");//收入和支出
         //  mPresenter.AccountBill(userId,"4");//待支付
         mPresenter.GetAccountPayInfoList(userId);
+
+        mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                mPresenter.GetUserInfoList(userId, "1");
+                mPresenter.GetAccountPayInfoList(userId);
+                mPresenter.AccountBill(userId, "1", "1", "999");//充值
+                mPresenter.AccountBill(userId, "3", "1", "999");//提现
+                mPresenter.AccountBill(userId, "2,5", "1", "999");//收入和支出
+            }
+        });
     }
 
     @Override
@@ -363,13 +382,19 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
     public void GetAccountPayInfoList(BaseResult<List<BankCard>> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
+                cardList = 0;
                 if (baseResult.getData() == null) {
                     mIvBankNo.setVisibility(View.VISIBLE);
                     mTvBank.setVisibility(View.VISIBLE);
                 } else {
                     mIvBankNo.setVisibility(View.GONE);
                     mTvBank.setVisibility(View.VISIBLE);
-                    mTvBank.setText("已绑定" + baseResult.getData().size() + "张银行卡");
+                    for (int i = 0; i < baseResult.getData().size(); i++) {
+                        if ("Y".equals(baseResult.getData().get(i).getIsUse())) {
+                            cardList = cardList + 1;
+                        }
+                    }
+                    mTvBank.setText("已绑定" + cardList + "张银行卡");
 
                 }
                 break;
@@ -383,7 +408,10 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(String message) {
         if ("GetUserInfoList".equals(message)) {
-            mPresenter.GetUserInfoList(userId,"1");
+            mPresenter.GetUserInfoList(userId, "1");
+        }
+        if ("card".equals(message)) {
+            mPresenter.GetAccountPayInfoList(userId);
         }
         if (!"GetAccountPayInfoList".equals(message)) {
             return;

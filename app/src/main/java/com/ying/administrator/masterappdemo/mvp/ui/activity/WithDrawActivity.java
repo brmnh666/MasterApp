@@ -389,10 +389,16 @@ public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
     public void GetAccountPayInfoList(BaseResult<List<BankCard>> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
+                list.clear();
                 if (baseResult.getData() == null) {
                     return;
                 } else {
-                    list.addAll(baseResult.getData());
+                    for (int i = 0; i < baseResult.getData().size(); i++) {
+                        if ("Y".equals(baseResult.getData().get(i).getIsUse())){
+                            list.add(baseResult.getData().get(i));
+                        }
+                    }
+//                    list.addAll(baseResult.getData());
                     final RecyclerView recyclerView = popupWindow_view.findViewById(R.id.rv_popwindow_bank);
                     recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
                     popwidowBankAdapter = new PopwidowBankAdapter(R.layout.item_popwindow_bank, list);

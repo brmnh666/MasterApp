@@ -409,6 +409,12 @@ public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> im
                 break;
         }
     }
+
+    @Override
+    public void DeleteAccountPayInfo(BaseResult<Data<String>> baseResult) {
+
+    }
+
     /**
      * 用明文ak，sk初始化
      */

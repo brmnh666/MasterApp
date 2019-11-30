@@ -112,7 +112,7 @@ public class MyApplication extends Application {
         XGPushManager.bindAccount(getApplicationContext(), "XINGE");
         XGPushManager.setTag(this,"XINGE");
 
-//        initUpgradeDialog();
+        initUpgradeDialog();
         /**
          * 只允许在MainActivity上显示更新弹窗，其他activity上不显示弹窗; 不设置会默认所有activity都可以显示弹窗;
          */
@@ -242,14 +242,7 @@ public class MyApplication extends Application {
 
         /*在application中初始化时设置监听，监听策略的收取*/
         Beta.upgradeListener = new UpgradeListener() {
-            /**
-             * 接收到更新策略
-             * @param ret  0:正常 －1:请求失败
-             * @param strategy 更新策略
-             * @param isManual true:手动请求 false:自动请求
-             * @param isSilence true:不弹窗 false:弹窗
-             * @return 是否放弃SDK处理此策略，true:SDK将不会弹窗，策略交由app自己处理
-             */
+
             @Override
             public void onUpgrade(int ret, UpgradeInfo strategy, boolean isManual, boolean isSilence) {
                 if (strategy != null) {
@@ -261,13 +254,11 @@ public class MyApplication extends Application {
                             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(i);
                         }
-                    }, 1000);
+                    }, 3000);
 
                 } else {
 //                    Log.e("bugly", "不需要更新,没有更新策略");
-                    if (isManual){
-                        ToastUtils.showShort("已经是最新版本");
-                    }
+//                    ToastUtils.showShort("已经是最新版本");
                 }
             }
         };
@@ -300,78 +291,6 @@ public class MyApplication extends Application {
             }
         };
 
-//        Beta.upgradeDialogLayoutId = R.layout.dialog_update;
-////        Beta.tipsDialogLayoutId = R.layout.dialog_update;
-//        /*
-//         * 已经确认过的弹窗在APP下次启动自动检查更新时会再次显示;
-//         */
-//        Beta.showInterruptedStrategy = true;
-//
-//        Beta.enableNotification = false;
-//
-//        /*
-//         * 用于去除弹出的tips这里不是很需要 看你们具体的需求了啊
-//         */
-//        Beta.strToastYourAreTheLatestVersion = "";
-//        Beta.strToastCheckingUpgrade = "";
-//
-//        /*
-//         * 只允许在MainActivity上显示更新弹窗，其他activity上不显示弹窗; 不设置会默认所有activity都可以显示弹窗;
-//         */
-////        Beta.canShowUpgradeActs.add(MainActivity.class);
-//
-//        Beta.upgradeDialogLifecycleListener = new UILifecycleListener<UpgradeInfo>() {
-//            private String TAG;
-//
-//            @Override
-//            public void onCreate(Context context, View view, UpgradeInfo upgradeInfo) {
-//                Log.d(TAG, "onCreate");
-//                // 注：可通过这个回调方式获取布局的控件，如果设置了id，可通过findViewById方式获取，如果设置了tag，可以通过findViewWithTag，具体参考下面例子:
-//
-//                // 通过id方式获取控件，并更改imageview图片
-////                ImageView imageView = (ImageView) view.findViewById(R.id.imageview);
-////                imageView.setImageResource(R.mipmap.ic_launcher);
-//
-//                // 通过tag方式获取控件，并更改布局内容
-////                TextView textView = (TextView) view.findViewWithTag("textview");
-////                textView.setText("my custom text");
-//
-//                // 更多的操作：比如设置控件的点击事件
-////                imageView.setOnClickListener(new View.OnClickListener() {
-////                    @Override
-////                    public void onClick(View v) {
-////                        Intent intent = new Intent(getApplicationContext(), OtherActivity.class);
-////                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-////                        startActivity(intent);
-////                    }
-////                });
-//            }
-//
-//            @Override
-//            public void onStart(Context context, View view, UpgradeInfo upgradeInfo) {
-//                Log.d(TAG, "onStart");
-//            }
-//
-//            @Override
-//            public void onResume(Context context, View view, UpgradeInfo upgradeInfo) {
-//                Log.d(TAG, "onResume");
-//            }
-//
-//            @Override
-//            public void onPause(Context context, View view, UpgradeInfo upgradeInfo) {
-//                Log.d(TAG, "onPause");
-//            }
-//
-//            @Override
-//            public void onStop(Context context, View view, UpgradeInfo upgradeInfo) {
-//                Log.d(TAG, "onStop");
-//            }
-//
-//            @Override
-//            public void onDestroy(Context context, View view, UpgradeInfo upgradeInfo) {
-//                Log.d(TAG, "onDestory");
-//            }
-//        };
 
     }
 }

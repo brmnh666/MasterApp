@@ -1,5 +1,6 @@
 package com.ying.administrator.masterappdemo.mvp.model;
 
+import com.huawei.hms.api.Api;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.BankCard;
 import com.ying.administrator.masterappdemo.entity.Bill;
@@ -40,6 +41,13 @@ public class CardModel implements CardContract.Model {
     @Override
     public Observable<BaseResult<Data<String>>> GetBankNameByCardNo(String CardNo) {
         return ApiRetrofit.getDefault().GetBankNameByCardNo(CardNo)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<BaseResult<Data<String>>> DeleteAccountPayInfo(String UserId, String PayInfoCode, String PayInfoName, String PayNo, String PayName, String IsUse,String AccountPayID) {
+        return ApiRetrofit.getDefault().DeleteAccountPayInfo(UserId, PayInfoCode, PayInfoName, PayNo, PayName, IsUse,AccountPayID)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

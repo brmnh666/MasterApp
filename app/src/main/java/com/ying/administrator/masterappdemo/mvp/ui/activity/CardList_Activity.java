@@ -11,6 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.ToastUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
@@ -21,6 +23,9 @@ import com.ying.administrator.masterappdemo.mvp.contract.CardContract;
 import com.ying.administrator.masterappdemo.mvp.model.CardModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.CardPresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.MyCardAdapter;
+import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -71,7 +76,81 @@ public class CardList_Activity extends BaseActivity<CardPresenter, CardModel> im
 
     @Override
     protected void initView() {
+        mRvCardList.setLayoutManager(new LinearLayoutManager(mActivity));
+        myCardAdapter = new MyCardAdapter(R.layout.item_mycard, list, mActivity);
+        mRvCardList.setAdapter(myCardAdapter);
+//        myCardAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+//            @Override
+//            public void onItemChildClick(BaseQuickAdapter adapter, View view, final int position) {
+//                switch (view.getId()){
+//                    case R.id.ll_card:
+//                        final CommonDialog_Home dialog = new CommonDialog_Home(mActivity);
+//                        dialog.setMessage("是否删除该银行卡")
+//                                //.setImageResId(R.mipmap.ic_launcher)
+//                                .setTitle("提示")
+//                                .setSingle(true)
+//                                /*.setNegtive("重设密码")*/
+//                                .setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
+//                                    @Override
+//                                    public void onPositiveClick() {//重新登录
+//                                        mPresenter.DeleteAccountPayInfo(userId,list.get(position).getPayInfoCode(),list.get(position).getPayInfoName(),list.get(position).getPayNo(),list.get(position).getPayName(),"N");
+//                                        dialog.dismiss();
+//                                    }
+//
+//                                    @Override
+//                                    public void onNegtiveClick() {
+//                                        dialog.dismiss();
+//                                    }
+//
+//                           /* @Override
+//                            public void onNegtiveClick() {//取消
+//                                startActivity(new Intent(mActivity, ForgetPasswordActivity.class));
+//                                getActivity().finish();
+//                                dialog.dismiss();
+//                                // Toast.makeText(MainActivity.this,"ssss",Toast.LENGTH_SHORT).show();
+//                            }*/
+//                                }).show();
+//                        break;
+//                }
+//            }
+//        });
+        myCardAdapter.setOnItemChildLongClickListener(new BaseQuickAdapter.OnItemChildLongClickListener() {
+                        @Override
+                        public boolean onItemChildLongClick(BaseQuickAdapter adapter, View view, final int position) {
+                            switch (view.getId()){
+                                case R.id.ll_card:
+                                    final CommonDialog_Home dialog = new CommonDialog_Home(mActivity);
+                                    dialog.setMessage("是否删除该银行卡")
+                                            //.setImageResId(R.mipmap.ic_launcher)
+                                            .setTitle("提示")
+                                            .setSingle(true)
+                                            /*.setNegtive("重设密码")*/
+                                            .setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
+                                                @Override
+                                                public void onPositiveClick() {//重新登录
+                                                    mPresenter.DeleteAccountPayInfo(userId,list.get(position).getPayInfoCode(),list.get(position).getPayInfoName(),list.get(position).getPayNo(),list.get(position).getPayName(),"N",list.get(position).getAccountPayID());
+                                                    dialog.dismiss();
+                                                }
 
+                                                @Override
+                                                public void onNegtiveClick() {
+                                                    dialog.dismiss();
+                                                }
+
+                           /* @Override
+                            public void onNegtiveClick() {//取消
+                                startActivity(new Intent(mActivity, ForgetPasswordActivity.class));
+                                getActivity().finish();
+                                dialog.dismiss();
+                                // Toast.makeText(MainActivity.this,"ssss",Toast.LENGTH_SHORT).show();
+                            }*/
+                                            }).show();
+                                    break;
+                            }
+
+                            return true;
+                        }
+                    });
     }
 
     @Override
@@ -114,16 +193,20 @@ public class CardList_Activity extends BaseActivity<CardPresenter, CardModel> im
 
     /*获取银行卡*/
     @Override
-    public void GetAccountPayInfoList(BaseResult<List<BankCard>> baseResult) {
+    public void GetAccountPayInfoList(final BaseResult<List<BankCard>> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
+                list.clear();
                 if (baseResult.getData() == null) {
                     return;
                 } else {
-                    mRvCardList.setLayoutManager(new LinearLayoutManager(mActivity));
-                    list=baseResult.getData();
-                    myCardAdapter = new MyCardAdapter(R.layout.item_mycard, baseResult.getData(), mActivity);
-                    mRvCardList.setAdapter(myCardAdapter);
+                    for (int i = 0; i < baseResult.getData().size(); i++) {
+                        if ("Y".equals(baseResult.getData().get(i).getIsUse())){
+                            list.add(baseResult.getData().get(i));
+                        }
+                    }
+
+                    myCardAdapter.setNewData(list);
                 }
                 break;
             default:
@@ -134,6 +217,17 @@ public class CardList_Activity extends BaseActivity<CardPresenter, CardModel> im
     @Override
     public void GetBankNameByCardNo(BaseResult<Data<String>> baseResult) {
 
+    }
+
+    @Override
+    public void DeleteAccountPayInfo(BaseResult<Data<String>> baseResult) {
+        switch (baseResult.getStatusCode()){
+            case 200:
+                ToastUtils.showShort("删除成功");
+                mPresenter.GetAccountPayInfoList(userId);
+                EventBus.getDefault().post("card");
+                break;
+        }
     }
 
 

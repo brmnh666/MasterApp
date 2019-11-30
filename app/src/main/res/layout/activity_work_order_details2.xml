@@ -1581,7 +1581,8 @@
                             android:layout_marginBottom="16dp"
                             android:text="远程费"
                             android:textColor="#6A6A6A"
-                            android:textSize="16sp" />
+                            android:textSize="16sp"
+                            android:textStyle="bold"/>
 
                         <TextView
                             android:id="@+id/tv_beyond_state"

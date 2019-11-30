@@ -19,7 +19,7 @@ public class BankCard implements Serializable {
      */
 
     private int Id;
-    private int AccountPayID;
+    private String AccountPayID;
     private String UserID;
     private String PayInfoCode;
     private String PayInfoName;
@@ -55,11 +55,11 @@ public class BankCard implements Serializable {
         this.Id = Id;
     }
 
-    public int getAccountPayID() {
+    public String getAccountPayID() {
         return AccountPayID;
     }
 
-    public void setAccountPayID(int AccountPayID) {
+    public void setAccountPayID(String AccountPayID) {
         this.AccountPayID = AccountPayID;
     }
 

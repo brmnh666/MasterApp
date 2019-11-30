@@ -16,6 +16,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+            <com.scwang.smartrefresh.layout.SmartRefreshLayout
+                android:id="@+id/refreshLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:srlAccentColor="#00000000"
+                app:srlEnablePreviewInEditMode="true"
+                app:srlPrimaryColor="#00000000">
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -652,6 +659,7 @@
 
             </LinearLayout>
 
+            </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
         </LinearLayout>
     </ScrollView>

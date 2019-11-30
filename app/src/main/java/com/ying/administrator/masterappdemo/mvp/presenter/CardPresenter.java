@@ -56,5 +56,16 @@ public class CardPresenter extends CardContract.Presenter {
                 });
     }
 
+    @Override
+    public void DeleteAccountPayInfo(String UserId, String PayInfoCode, String PayInfoName, String PayNo, String PayName, String IsUse,String AccountPayID) {
+        mModel.DeleteAccountPayInfo(UserId, PayInfoCode, PayInfoName, PayNo, PayName, IsUse,AccountPayID)
+                .subscribe(new BaseObserver<Data<String>>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<Data<String>> value) {
+                        mView.DeleteAccountPayInfo(value);
+                    }
+                });
+    }
+
 
 }
