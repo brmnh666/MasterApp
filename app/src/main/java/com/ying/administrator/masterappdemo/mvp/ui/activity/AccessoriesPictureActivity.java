@@ -193,8 +193,8 @@ public class AccessoriesPictureActivity extends BaseActivity<NewAddAccessoriesPr
                 finish();
                 break;
             case R.id.btn_sure:
-                if (accessories_picture.size()!=nameList.size()) {
-                    ToastUtils.showShort("请添加全部图片");
+                if (img_list.size()!=nameList.size()) {
+                    ToastUtils.showShort("未添加全部图片或图片上传失败，请重试");
                     return;
                 }else{
                     for (int i = 0; i < list.size(); i++) {
