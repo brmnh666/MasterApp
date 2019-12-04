@@ -124,7 +124,7 @@ public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> im
         initAccessTokenWithAkSk();
         list= (List<BankCard>) getIntent().getSerializableExtra("cardlist");
     }
-    public void isCardNo(String cardNo){
+    public void isCardNo(final String cardNo){
         //接口
         String path = "https://ccdcapi.alipay.com/validateAndCacheCardInfo.json?_input_charset=utf-8&cardNo="+cardNo+"&cardBinCheck=true";
 
@@ -151,7 +151,7 @@ public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> im
                 Gson gson=new Gson();
                 IsCardNo result=gson.fromJson(str.replaceAll(" ",""),IsCardNo.class);
                 if (result.isValidated()){
-                    mPresenter.AddorUpdateAccountPayInfo(userId, phone, bankname, result.getKey(),name);
+                    mPresenter.AddorUpdateAccountPayInfo(userId, phone, bankname, cardNo,name);
                 }else{
                     ToastUtils.showShort("请输入有效的银行卡号");
                     hideProgress();

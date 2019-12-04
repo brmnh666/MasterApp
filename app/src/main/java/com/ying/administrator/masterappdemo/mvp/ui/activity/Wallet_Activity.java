@@ -147,7 +147,7 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
         mPresenter.AccountBill(userId, "2,5", "1", "999");//收入和支出
         //  mPresenter.AccountBill(userId,"4");//待支付
         mPresenter.GetAccountPayInfoList(userId);
-
+        mRefreshLayout.setEnableLoadmore(false);
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
@@ -156,6 +156,7 @@ public class Wallet_Activity extends BaseActivity<WalletPresenter, WalletModel> 
                 mPresenter.AccountBill(userId, "1", "1", "999");//充值
                 mPresenter.AccountBill(userId, "3", "1", "999");//提现
                 mPresenter.AccountBill(userId, "2,5", "1", "999");//收入和支出
+                refreshlayout.finishRefresh();
             }
         });
     }
