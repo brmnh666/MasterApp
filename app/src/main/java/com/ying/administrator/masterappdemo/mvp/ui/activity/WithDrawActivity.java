@@ -30,6 +30,7 @@ import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.BankCard;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.IDCard;
 import com.ying.administrator.masterappdemo.entity.WithDrawMoney;
 import com.ying.administrator.masterappdemo.mvp.contract.WithDrawContract;
 import com.ying.administrator.masterappdemo.mvp.model.WithDrawModel;
@@ -135,6 +136,7 @@ public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
     private String DrawMoney;
     private String CardNo;
     private String payName;
+    private boolean ifTrue;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -154,6 +156,7 @@ public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
         userId = spUtils.getString("userName");
         mPresenter.GetDepositMoneyDisplay(userId);
         mPresenter.GetAccountPayInfoList(userId);
+        mPresenter.GetIDCardImg(userId);
     }
 
     @Override
@@ -162,7 +165,17 @@ public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
         popipwinow_addcard = LayoutInflater.from(mActivity).inflate(R.layout.popwindow_foot_add, null);
         mPopupWindow = new PopupWindow(popupWindow_view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
+        mImgWithdrawBank.setSelected(true);
+        mImgWithdrawAlipay.setSelected(false);
+        mImgWithdrawWechat.setSelected(false);
 
+        if (mImgWithdrawBank.isSelected()) {
+            mll_choose_withdraw_bank.setVisibility(View.VISIBLE);
+            mView.setVisibility(View.VISIBLE);
+        } else {
+            mll_choose_withdraw_bank.setVisibility(View.GONE);
+            mView.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -297,7 +310,7 @@ public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
             case R.id.ll_choose_withdraw_bank://选择银行
                 if (list.size()==0){
                     final CommonDialog_Home dialog = new CommonDialog_Home(mActivity);
-                    dialog.setMessage("是否去添加银行卡")
+                    dialog.setMessage("您还未绑定银行卡，去绑定")
                             //.setImageResId(R.mipmap.ic_launcher)
                             .setTitle("提示")
                             .setSingle(false).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
@@ -319,19 +332,41 @@ public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
 
                 break;
             case R.id.confirm_withdrawal_btn: //提交
-
-                if (mMoneyEt.getText().toString().isEmpty() || CardNo == null) {
-                    Toast.makeText(WithDrawActivity.this, "请输入金额并选择银行卡", Toast.LENGTH_SHORT).show();
-                } else {
-                    double money = Double.parseDouble(mMoneyEt.getText().toString());
-                    if (money == 0) {
-                        Toast.makeText(WithDrawActivity.this, "不能提现0元", Toast.LENGTH_SHORT).show();
+                if (ifTrue==true){
+                    if (mMoneyEt.getText().toString().isEmpty() || CardNo == null) {
+                        Toast.makeText(WithDrawActivity.this, "请输入金额并选择银行卡", Toast.LENGTH_SHORT).show();
                     } else {
-                        DrawMoney = mMoneyEt.getText().toString();
-                        mPresenter.WithDraw(DrawMoney, CardNo, userId,payName);
-                    }
+                        double money = Double.parseDouble(mMoneyEt.getText().toString());
+                        if (money == 0) {
+                            Toast.makeText(WithDrawActivity.this, "不能提现0元", Toast.LENGTH_SHORT).show();
+                        } else {
+                            DrawMoney = mMoneyEt.getText().toString();
+                            mPresenter.WithDraw(DrawMoney, CardNo, userId,payName);
+                        }
 
+                    }
+                }else {
+                    final CommonDialog_Home dialog = new CommonDialog_Home(mActivity);
+                    dialog.setMessage("您实名认证不完善，不能提现，是否去完善并提现")
+                            //.setImageResId(R.mipmap.ic_launcher)
+                            .setTitle("提示")
+                            .setNegtive("否")
+                            .setPositive("是")
+                            .setSingle(false).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
+                        @Override
+                        public void onPositiveClick() {//添加银行卡
+                            dialog.dismiss();
+                            startActivity(new Intent(mActivity,VerifiedPhotoActivity.class));
+                        }
+
+                        @Override
+                        public void onNegtiveClick() {//取消
+                            dialog.dismiss();
+                            // Toast.makeText(MainActivity.this,"ssss",Toast.LENGTH_SHORT).show();
+                        }
+                    }).show();
                 }
+
 
 
                 break;
@@ -491,6 +526,19 @@ public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
 
     }
 
+    @Override
+    public void GetIDCardImg(BaseResult<List<IDCard.IDCardBean>> baseResult) {
+        switch (baseResult.getStatusCode()){
+            case 200:
+                if (baseResult.getData().size()==0){
+                    ifTrue = false;
+                }else {
+                    ifTrue=true;
+                }
+                break;
+        }
+    }
+
 
     /**
      * 弹出Popupwindow
@@ -523,6 +571,9 @@ public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(String message) {
+        if ("verified".equals(message)){
+            mPresenter.GetIDCardImg(userId);
+        }
         if (!"GetAccountPayInfoList".equals(message)){
             return;
         }

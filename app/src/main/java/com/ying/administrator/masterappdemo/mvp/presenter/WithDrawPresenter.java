@@ -3,6 +3,7 @@ import com.ying.administrator.masterappdemo.base.BaseObserver;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.BankCard;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.IDCard;
 import com.ying.administrator.masterappdemo.entity.WithDrawMoney;
 import com.ying.administrator.masterappdemo.mvp.contract.WithDrawContract;
 
@@ -42,5 +43,15 @@ public class WithDrawPresenter extends WithDrawContract.Presenter {
                 });
     }
 
+    @Override
+    public void GetIDCardImg(String UserID) {
+        mModel.GetIDCardImg(UserID)
+                .subscribe(new BaseObserver<List<IDCard.IDCardBean>>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<List<IDCard.IDCardBean>> value) {
+                        mView.GetIDCardImg(value);
+                    }
+                });
+    }
 
 }

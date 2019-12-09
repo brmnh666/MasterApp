@@ -226,7 +226,6 @@
         <!--引导页-->
         <activity android:name=".mvp.ui.activity.SplashActivity"
             android:theme="@style/NoActionBar"
-             android:launchMode="singleTask"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -453,6 +452,12 @@
         <activity android:name=".mvp.ui.activity.AddAddressActivity"
             android:theme="@style/AppTheme.NoActionBar"
              android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"/>
+        <!--实名照片-->
+        <activity android:name=".mvp.ui.activity.VerifiedPhotoActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden"/>
         <!--结算完成-->

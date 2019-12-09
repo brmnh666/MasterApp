@@ -371,18 +371,18 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                         ToastUtils.showShort("身份证号码格式错误！");
                         return;
                     }
-                    if ("".equals(mPositiveCard)) {
-                        ToastUtils.showShort("请添加正面身份证照片！");
-                        return;
-                    }
-                    if ("".equals(mNegativeCard)) {
-                        ToastUtils.showShort("请添加反面身份证照片！");
-                        return;
-                    }
-                    if ("".equals(mSelfie)) {
-                        ToastUtils.showShort("请添加清晰自拍照！");
-                        return;
-                    }
+//                    if ("".equals(mPositiveCard)) {
+//                        ToastUtils.showShort("请添加正面身份证照片！");
+//                        return;
+//                    }
+//                    if ("".equals(mNegativeCard)) {
+//                        ToastUtils.showShort("请添加反面身份证照片！");
+//                        return;
+//                    }
+//                    if ("".equals(mSelfie)) {
+//                        ToastUtils.showShort("请添加清晰自拍照！");
+//                        return;
+//                    }
 
                     showLoading();
                     UserInfo.UserInfoDean parentuserInfoDean = parentUserInfo.getData().get(0);
@@ -417,18 +417,18 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                         ToastUtils.showShort("身份证号码格式错误！");
                         return;
                     }
-                    if ("".equals(mPositiveCard)) {
-                        ToastUtils.showShort("请添加正面身份证照片！");
-                        return;
-                    }
-                    if ("".equals(mNegativeCard)) {
-                        ToastUtils.showShort("请添加反面身份证照片！");
-                        return;
-                    }
-                    if ("".equals(mSelfie)) {
-                        ToastUtils.showShort("请添加清晰自拍照！");
-                        return;
-                    }
+//                    if ("".equals(mPositiveCard)) {
+//                        ToastUtils.showShort("请添加正面身份证照片！");
+//                        return;
+//                    }
+//                    if ("".equals(mNegativeCard)) {
+//                        ToastUtils.showShort("请添加反面身份证照片！");
+//                        return;
+//                    }
+//                    if ("".equals(mSelfie)) {
+//                        ToastUtils.showShort("请添加清晰自拍照！");
+//                        return;
+//                    }
                     if ("".equals(mSkills)) {
                         ToastUtils.showShort("请添加你的服务技能！");
                         return;

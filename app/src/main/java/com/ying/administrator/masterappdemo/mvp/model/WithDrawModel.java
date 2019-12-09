@@ -3,6 +3,7 @@ package com.ying.administrator.masterappdemo.mvp.model;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.BankCard;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.IDCard;
 import com.ying.administrator.masterappdemo.entity.WithDrawMoney;
 import com.ying.administrator.masterappdemo.mvp.contract.WithDrawContract;
 import com.ying.administrator.masterappdemo.mvp.service.ApiRetrofit;
@@ -34,6 +35,13 @@ public class WithDrawModel implements WithDrawContract.Model {
     @Override
     public Observable<BaseResult<Data<String>>> WithDraw(String DrawMoney, String CardNo, String UserID,String CardName) {
         return ApiRetrofit.getDefault().WithDraw(DrawMoney,CardNo,UserID,CardName)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<BaseResult<List<IDCard.IDCardBean>>> GetIDCardImg(String UserID) {
+        return ApiRetrofit.getDefault().GetIDCardImg(UserID)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }
