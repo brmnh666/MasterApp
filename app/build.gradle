@@ -280,4 +280,7 @@ dependencies {
     implementation 'skin.support:skin-support-constraint-layout:3.1.4'
     implementation project(path: ':ocr_ui')
     // skin-support-constraint-layout ConstraintLayout 控件支持[可选]
+//添加闪关灯,自定义左右按钮图标资源
+    compile 'cjt.library.wheel:camera:1.1.9'
+
 }

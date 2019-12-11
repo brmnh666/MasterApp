@@ -89,6 +89,14 @@
 
     <uses-permission android:name="android.permission.GET_TASKS"/>
 
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
 <!--
 
 
@@ -361,7 +369,13 @@
         <!--修改服务区域-->
         <activity android:name=".mvp.ui.activity.AddServiceAreaUpdataActivity"
             android:theme="@style/AppTheme.NoActionBar"
-             android:launchMode="singleTask"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"/>
+        <!--拍摄-->
+        <activity android:name=".mvp.ui.activity.ShootActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden"/>
         <!--修改个人服务区域-->
@@ -532,8 +546,7 @@
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"  android:launchMode="singleTask"
-            android:screenOrientation="portrait"/>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"  android:launchMode="singleTask" />
         <!--微信end-->
         <!--QQstart-->
         <activity

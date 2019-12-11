@@ -1155,22 +1155,26 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     public void onClick(View v) {
                         showProgress();
                         expressno = et_expressno.getText().toString().trim();
-                        if ("2".equals(data.getPostPayType())) {
-                            post_money = et_post_money.getText().toString();
-                            if ("".equals(post_money)) {
-                                showToast(mActivity, "请填写邮费");
-                                hideProgress();
-                                return;
-                            }
-                        } else {
-                            post_money = "0";
-                        }
+                        post_money = et_post_money.getText().toString();
                         if ("".equals(expressno)) {
                             showToast(mActivity, "请填写快递单号");
                             hideProgress();
                             return;
                         }
-                        mPresenter.AddReturnAccessory(OrderID, expressno, post_money);
+                        if ("2".equals(data.getPostPayType())) {
+                            if ("".equals(post_money)) {
+                                showToast(mActivity, "请填写邮费");
+                                hideProgress();
+                                return;
+                            }else {
+                                mPresenter.AddReturnAccessory(OrderID, expressno, post_money);
+                            }
+                        } else {
+                            post_money = "0";
+                            mPresenter.AddReturnAccessory(OrderID, expressno, post_money);
+                        }
+
+
                     }
                 });
 

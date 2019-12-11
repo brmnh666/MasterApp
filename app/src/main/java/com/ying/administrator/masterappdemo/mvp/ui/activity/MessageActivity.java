@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -52,6 +53,8 @@ import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -108,6 +111,7 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
     private Uri uri;
     private HashMap<Integer, File> img = new HashMap<>();
     private String position;
+    private Bitmap bitmap;
 
     @Override
     protected int setLayoutId() {
@@ -332,6 +336,9 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
             if (mActivity.checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 permissions.add(Manifest.permission.CAMERA);
             }
+            if (mActivity.checkSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+                permissions.add(Manifest.permission.RECORD_AUDIO);
+            }
             if (permissions.size() == 0) {
                 return true;
             } else {
@@ -392,31 +399,32 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View view) {
+                startActivity(new Intent(mActivity,ShootActivity.class));
 //                if (requestPermissions()) {
-                Intent intent = new Intent();
-                // 指定开启系统相机的Action
-                intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-                intent.addCategory(Intent.CATEGORY_DEFAULT);
-                String f = System.currentTimeMillis() + ".jpg";
-                String fileDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy";
-                FilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy/" + f;
-                File dirfile = new File(fileDir);
-                if (!dirfile.exists()) {
-                    dirfile.mkdirs();
-                }
-                File file = new File(FilePath);
-                Uri fileUri;
-                if (Build.VERSION.SDK_INT >= 24) {
-                    fileUri = FileProvider.getUriForFile(mActivity, "com.ying.administrator.masterappdemo.fileProvider", file);
-                } else {
-                    fileUri = Uri.fromFile(file);
-                }
-
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-                startActivityForResult(intent, code1);
-//                } else {
-//                    requestPermissions(permissions.toArray(new String[permissions.size()]), 10001);
+//                Intent intent = new Intent();
+//                // 指定开启系统相机的Action
+//                intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+//                intent.addCategory(Intent.CATEGORY_DEFAULT);
+//                String f = System.currentTimeMillis() + ".jpg";
+//                String fileDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy";
+//                FilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy/" + f;
+//                File dirfile = new File(fileDir);
+//                if (!dirfile.exists()) {
+//                    dirfile.mkdirs();
 //                }
+//                File file = new File(FilePath);
+//                Uri fileUri;
+//                if (Build.VERSION.SDK_INT >= 24) {
+//                    fileUri = FileProvider.getUriForFile(mActivity, "com.ying.administrator.masterappdemo.fileProvider", file);
+//                } else {
+//                    fileUri = Uri.fromFile(file);
+//                }
+//
+//                intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+//                startActivityForResult(intent, code1);
+////                } else {
+////                    requestPermissions(permissions.toArray(new String[permissions.size()]), 10001);
+////                }
                 mPopupWindow.dismiss();
             }
         });
@@ -521,5 +529,12 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
         MultipartBody requestBody = builder.build();
         mPresenter.LeaveMessageImg(requestBody);
 
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(Bitmap name) {
+        bitmap = name;
+        ToastUtils.showShort(bitmap+"");
+        Glide.with(mActivity).load(bitmap).into(mAnnexIv);
     }
 }
