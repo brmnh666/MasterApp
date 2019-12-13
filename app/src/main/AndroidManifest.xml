@@ -683,7 +683,6 @@
         <activity android:name=".mvp.ui.activity.ForgetPasswordActivity"
             android:theme="@style/AppTheme.Splash"
              android:launchMode="singleTask"
-            android:screenOrientation="portrait"
             />
 
        <!--验证码登陆-->

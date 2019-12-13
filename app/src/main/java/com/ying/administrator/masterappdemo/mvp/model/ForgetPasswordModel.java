@@ -42,7 +42,7 @@ public class ForgetPasswordModel implements ForgetPasswordContract.Model {
 
     @Override
     public Observable<BaseResult<Data<String>>> LoginOnMessage(String mobile, String code) {
-        return ApiRetrofit.getDefault().LoginOnMessage(mobile,code,"7")
+        return ApiRetrofit.getDefault().LoginOnMessage(mobile,code,"3","7")
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

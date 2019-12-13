@@ -79,6 +79,7 @@ public interface ApiService {
     @POST("Account/LoginOnMessage")
     Observable<BaseResult<Data<String>>> LoginOnMessage(@Field("mobile") String mobile,
                                                         @Field("code") String code,
+                                                        @Field("type") String type,
                                                         @Field("roleType") String roleType);
 
 

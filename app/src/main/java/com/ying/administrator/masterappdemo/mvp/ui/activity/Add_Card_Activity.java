@@ -151,7 +151,7 @@ public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> im
                 Gson gson=new Gson();
                 IsCardNo result=gson.fromJson(str.replaceAll(" ",""),IsCardNo.class);
                 if (result.isValidated()){
-                    mPresenter.AddorUpdateAccountPayInfo(userId, phone, bankname, cardNo,name);
+                   mPresenter.AddorUpdateAccountPayInfo(userId, phone, bankname, cardNo,name);
                 }else{
                     ToastUtils.showShort("请输入有效的银行卡号");
                     hideProgress();
@@ -289,6 +289,11 @@ public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> im
 //                    ToastUtils.showShort("请输入正确的手机号码");
 //                    return;
 //                }
+                if (bankname.isEmpty()||bankname==null){
+                    ToastUtils.showShort("开户行未识别，请重新识别");
+                    hideProgress();
+                    return;
+                }
                 isCardNo(num);
 //                if ("".equals(name)||name==null){
 //                    ToastUtils.showShort("请输入姓名");

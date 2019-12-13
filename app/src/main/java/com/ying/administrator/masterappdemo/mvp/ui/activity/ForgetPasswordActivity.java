@@ -1,6 +1,7 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -9,8 +10,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.RegexUtils;
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.tencent.android.tpush.XGPushConfig;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
@@ -42,6 +46,10 @@ public class ForgetPasswordActivity extends BaseActivity<ForgetPasswordPresenter
     TextView mTvLogin;
 
     private String phone;
+    private String password;
+    private String passwordagain;
+    private SPUtils spUtils;
+
     @Override
     protected int setLayoutId() {
         return R.layout.activity_forgetpassword;
@@ -92,8 +100,8 @@ public class ForgetPasswordActivity extends BaseActivity<ForgetPasswordPresenter
                 break;
                 case R.id.tv_login:
 
-                    String password=mEtForgetPassword.getText().toString();
-                    String passwordagain=mEtForgetPasswordAgain.getText().toString();
+                    password = mEtForgetPassword.getText().toString();
+                    passwordagain = mEtForgetPasswordAgain.getText().toString();
                     phone=mEtForgetPhone.getText().toString();
                     String code=mEtForgetYzm.getText().toString();
                     if (phone.isEmpty()){
@@ -119,7 +127,7 @@ public class ForgetPasswordActivity extends BaseActivity<ForgetPasswordPresenter
                         return;
                     }
 
-                    mPresenter.ForgetPassword(phone,"2",code,password);
+                    mPresenter.ForgetPassword(phone,"2",code, password);
 
 
 
@@ -140,7 +148,23 @@ public class ForgetPasswordActivity extends BaseActivity<ForgetPasswordPresenter
 
     @Override
     public void Login(BaseResult<Data<String>> baseResult) {
-
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                Data<String> data = baseResult.getData();
+                if (data.isItem1()) {
+                    spUtils = SPUtils.getInstance("token");
+                    spUtils.put("adminToken", data.getItem2());
+                    spUtils.put("userName", phone);
+                    spUtils.put("passWord", password);
+                    spUtils.put("isLogin", true);
+                    mPresenter.AddAndUpdatePushAccount(XGPushConfig.getToken(this), "7", phone);
+                    startActivity(new Intent(mActivity, MainActivity.class));
+                    ActivityUtils.finishAllActivities();
+                } else {
+                }
+                hideProgress();
+                break;
+        }
     }
 
     @Override
@@ -192,6 +216,13 @@ public class ForgetPasswordActivity extends BaseActivity<ForgetPasswordPresenter
     public void ForgetPassword(BaseResult<Data<String>> baseResult) {
         switch (baseResult.getStatusCode()){
             case 200:
+                if (baseResult.getData().isItem1()){
+                    ToastUtils.showShort("修改成功");
+                    showProgress();
+                    mPresenter.Login(phone,password);
+                }else {
+                    ToastUtils.showShort(baseResult.getData().getItem2());
+                }
 
                 break;
         }

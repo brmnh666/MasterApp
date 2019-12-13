@@ -13,7 +13,7 @@ import io.reactivex.schedulers.Schedulers;
 public class RegisterModel implements RegisterContract.Model {
     @Override
     public Observable<BaseResult<Data<String>>> Reg(String userName, String code,String password) {
-        return ApiRetrofit.getDefault().Reg(userName,"Reg",code,"worker",password)
+        return ApiRetrofit.getDefault().Reg(userName,"1",code,"worker",password)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

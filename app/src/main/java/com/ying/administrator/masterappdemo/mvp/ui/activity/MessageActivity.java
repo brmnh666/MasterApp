@@ -399,32 +399,32 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(mActivity,ShootActivity.class));
+//                startActivity(new Intent(mActivity,ShootActivity.class));
 //                if (requestPermissions()) {
-//                Intent intent = new Intent();
-//                // 指定开启系统相机的Action
-//                intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-//                intent.addCategory(Intent.CATEGORY_DEFAULT);
-//                String f = System.currentTimeMillis() + ".jpg";
-//                String fileDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy";
-//                FilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy/" + f;
-//                File dirfile = new File(fileDir);
-//                if (!dirfile.exists()) {
-//                    dirfile.mkdirs();
-//                }
-//                File file = new File(FilePath);
-//                Uri fileUri;
-//                if (Build.VERSION.SDK_INT >= 24) {
-//                    fileUri = FileProvider.getUriForFile(mActivity, "com.ying.administrator.masterappdemo.fileProvider", file);
+                Intent intent = new Intent();
+                // 指定开启系统相机的Action
+                intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+                intent.addCategory(Intent.CATEGORY_DEFAULT);
+                String f = System.currentTimeMillis() + ".jpg";
+                String fileDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy";
+                FilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy/" + f;
+                File dirfile = new File(fileDir);
+                if (!dirfile.exists()) {
+                    dirfile.mkdirs();
+                }
+                File file = new File(FilePath);
+                Uri fileUri;
+                if (Build.VERSION.SDK_INT >= 24) {
+                    fileUri = FileProvider.getUriForFile(mActivity, "com.ying.administrator.masterappdemo.fileProvider", file);
+                } else {
+                    fileUri = Uri.fromFile(file);
+                }
+
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+                startActivityForResult(intent, code1);
 //                } else {
-//                    fileUri = Uri.fromFile(file);
+//                    requestPermissions(permissions.toArray(new String[permissions.size()]), 10001);
 //                }
-//
-//                intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-//                startActivityForResult(intent, code1);
-////                } else {
-////                    requestPermissions(permissions.toArray(new String[permissions.size()]), 10001);
-////                }
                 mPopupWindow.dismiss();
             }
         });

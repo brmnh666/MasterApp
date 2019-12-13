@@ -36,9 +36,9 @@ public class ToteLoginActivity extends BaseActivity<LoginPresenter, LoginModel> 
     @BindView(R.id.tv_yzm)
     TextView mTvYzm;
     @BindView(R.id.tv_username) //账号密码登陆
-    TextView mTvUsername;
+            TextView mTvUsername;
     @BindView(R.id.tv_login) //登陆
-    TextView mTv_login;
+            TextView mTv_login;
 
 
     private String Phone;
@@ -75,45 +75,45 @@ public class ToteLoginActivity extends BaseActivity<LoginPresenter, LoginModel> 
 
     @Override
     public void onClick(View v) {
-switch (v.getId()){
-    case R.id.tv_yzm:
-        Phone=mEtLoginUsername.getText().toString();
-        if (Phone.isEmpty()){
-            ToastUtils.showShort("请输入手机号");
-            return;
+        switch (v.getId()) {
+            case R.id.tv_yzm:
+                Phone = mEtLoginUsername.getText().toString();
+                if (Phone.isEmpty()) {
+                    ToastUtils.showShort("请输入手机号");
+                    return;
+                }
+                if (!RegexUtils.isMobileExact(Phone)) {
+                    ToastUtils.showShort("手机格式不正确！");
+                    return;
+                }
+                mPresenter.ValidateUserName(Phone);
+                break;
+            case R.id.tv_login:
+
+                if ("".equals(mEtLoginUsername.getText().toString())) {
+                    ToastUtils.showShort("请输入手机号！");
+                    return;
+                }
+                if (!RegexUtils.isMobileExact(mEtLoginUsername.getText().toString())) {
+                    ToastUtils.showShort("手机号格式不正确！");
+                    return;
+                }
+                if ("".equals(mEtLoginCode.getText().toString())) {
+                    ToastUtils.showShort("请输入验证码！");
+                    return;
+                }
+                showLoading();
+                mPresenter.LoginOnMessage(Phone, mEtLoginCode.getText().toString());
+
+                break;
+
+            case R.id.tv_username:
+                ToteLoginActivity.this.finish();
+
+                break;
+
+
         }
-        if (!RegexUtils.isMobileExact(Phone)){
-            ToastUtils.showShort("手机格式不正确！");
-            return;
-        }
-        mPresenter.ValidateUserName(Phone);
-        break;
-    case R.id.tv_login:
-
-        if ("".equals(mEtLoginUsername.getText().toString())) {
-            ToastUtils.showShort("请输入手机号！");
-            return;
-        }
-        if (!RegexUtils.isMobileExact(mEtLoginUsername.getText().toString())){
-            ToastUtils.showShort("手机号格式不正确！");
-            return;
-        }
-        if ("".equals(mEtLoginCode.getText().toString())) {
-            ToastUtils.showShort("请输入验证码！");
-            return;
-        }
-        showLoading();
-        mPresenter.LoginOnMessage(Phone,mEtLoginCode.getText().toString());
-
-        break;
-
-    case R.id.tv_username:
-        ToteLoginActivity.this.finish();
-
-        break;
-
-
-      }
 
 
     }
@@ -136,13 +136,12 @@ switch (v.getId()){
     @Override
     public void GetCode(BaseResult<Data<String>> baseResult) {
 
-        switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData().isItem1()){
+                if (baseResult.getData().isItem1()) {
 
-                }
-                else {
-                    Toast.makeText(this,"频繁请求验证码请稍后再试",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "频繁请求验证码请稍后再试", Toast.LENGTH_SHORT).show();
                 }
                 break;
             default:
@@ -154,15 +153,15 @@ switch (v.getId()){
     @Override
     public void ValidateUserName(BaseResult<String> baseResult) {
 
-        switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
-                if ("true".equals(baseResult.getData())){
+                if ("true".equals(baseResult.getData())) {
 
                     ToastUtils.showShort("手机号还未注册！");
-                }else {
-                    TimeCount timeCount=new TimeCount(60000,1000);
+                } else {
+                    TimeCount timeCount = new TimeCount(60000, 1000);
                     timeCount.start();
-                    mPresenter.GetCode(Phone,"Login");
+                    mPresenter.GetCode(Phone, "3");
                 }
                 break;
             case 401:
@@ -174,28 +173,29 @@ switch (v.getId()){
 
     @Override
     public void LoginOnMessage(BaseResult<Data<String>> baseResult) {
-        switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData().isItem1()){
+                if (baseResult.getData().isItem1()) {
                     cancleLoading();
-                    Log.d("=====>","登陆成功");
+                    Log.d("=====>", "登陆成功");
 
                     spUtils.put("adminToken", baseResult.getData().getItem2());
                     spUtils.put("userName", mEtLoginUsername.getText().toString());
                     //spUtils.put("passWord", passWord);
                     spUtils.put("isLogin", true);
-                    startActivity(new Intent(ToteLoginActivity.this,MainActivity.class));
+                    startActivity(new Intent(ToteLoginActivity.this, MainActivity.class));
                     ActivityUtils.finishAllActivities();
-                }else {
+                } else {
+                    ToastUtils.showShort(baseResult.getData().getItem2());
                 }
                 break;
 
             case 400:
-                Toast.makeText(ToteLoginActivity.this,"请输入正确的验证码",Toast.LENGTH_SHORT).show();
+                Toast.makeText(ToteLoginActivity.this, "请输入正确的验证码", Toast.LENGTH_SHORT).show();
                 break;
-                default:
-                    cancleLoading();
-                    break;
+            default:
+                cancleLoading();
+                break;
         }
     }
 
@@ -220,17 +220,17 @@ switch (v.getId()){
         @SuppressLint("ResourceAsColor")
         @Override
         public void onTick(long millisUntilFinished) {
-            if (mTvYzm==null){
+            if (mTvYzm == null) {
                 return;
             }
             mTvYzm.setClickable(false);
             mTvYzm.setTextColor(R.color.color_custom_06);
-            mTvYzm.setText(millisUntilFinished/1000+"秒后重新获取");
+            mTvYzm.setText(millisUntilFinished / 1000 + "秒后重新获取");
         }
 
         @Override
         public void onFinish() {
-            if (mTvYzm==null){
+            if (mTvYzm == null) {
                 return;
             }
             mTvYzm.setText("重新获取验证码");
@@ -239,8 +239,7 @@ switch (v.getId()){
     }
 
 
-
-    public void showLoading(){
+    public void showLoading() {
         dialog.setLoadingBuilder(Z_TYPE.SINGLE_CIRCLE)//设置类型
                 .setLoadingColor(Color.BLACK)//颜色
                 .setHintText("登陆中请稍后...")
@@ -251,7 +250,7 @@ switch (v.getId()){
                 .show();
     }
 
-    public void cancleLoading(){
+    public void cancleLoading() {
         dialog.dismiss();
     }
 }
