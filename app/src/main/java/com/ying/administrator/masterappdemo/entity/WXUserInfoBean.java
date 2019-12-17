@@ -20,7 +20,7 @@ public class WXUserInfoBean implements Serializable {
 
     private String openid;
     private String nickname;
-    private int sex;
+    private String sex;
     private String language;
     private String city;
     private String province;
@@ -45,11 +45,11 @@ public class WXUserInfoBean implements Serializable {
         this.nickname = nickname;
     }
 
-    public int getSex() {
+    public String getSex() {
         return sex;
     }
 
-    public void setSex(int sex) {
+    public void setSex(String sex) {
         this.sex = sex;
     }
 

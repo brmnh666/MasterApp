@@ -28,6 +28,7 @@ import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.WXAccessTokenBean;
 import com.ying.administrator.masterappdemo.entity.WXUserInfoBean;
+import com.ying.administrator.masterappdemo.entity.WxRegister;
 import com.ying.administrator.masterappdemo.mvp.contract.LoginContract;
 import com.ying.administrator.masterappdemo.mvp.model.LoginModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.LoginPresenter;
@@ -84,6 +85,7 @@ public class Login_New_Activity extends BaseActivity<LoginPresenter, LoginModel>
     private SPUtils spUtils;
     ZLoadingDialog dialog = new ZLoadingDialog(this); //loading
     private String code;
+    private WXUserInfoBean result;
 
     @Override
     protected int setLayoutId() {
@@ -253,6 +255,31 @@ public class Login_New_Activity extends BaseActivity<LoginPresenter, LoginModel>
     }
 
     @Override
+    public void WxRegister(BaseResult<Data<WxRegister>> baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                if (baseResult.getData().isItem1()) {
+                    WxRegister data = baseResult.getData().getItem2();
+                    spUtils.put("adminToken", data.getData());
+                    spUtils.put("userName", data.getUserID());
+                    spUtils.put("isLogin", true);
+                    mPresenter.AddAndUpdatePushAccount(XGPushConfig.getToken(this), "7", data.getUserID());
+                    startActivity(new Intent(mActivity, MainActivity.class));
+                    finish();
+                } else {
+//                    if ("未绑定手机号".equals(baseResult.getData().getItem2())){
+                    Intent intent = new Intent(mActivity, BindPhoneActivity.class);
+                    intent.putExtra("openid", result);
+                    startActivity(intent);
+//                    }else {
+//                        ToastUtils.showShort();
+//                    }
+                }
+                break;
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
@@ -312,11 +339,11 @@ public class Login_New_Activity extends BaseActivity<LoginPresenter, LoginModel>
 //                Log.i(TAG, "onCompleted:-------->" + str);
 
                 Gson gson = new Gson();
-                WXAccessTokenBean result = gson.fromJson(str.replaceAll(" ", ""), WXAccessTokenBean.class);
-                String access_token = result.getAccess_token(); //接口调用凭证
-                String openid = result.getOpenid(); //授权用户唯一标识
+                WXAccessTokenBean result1 = gson.fromJson(str.replaceAll(" ", ""), WXAccessTokenBean.class);
+                String access_token = result1.getAccess_token(); //接口调用凭证
+                String openid = result1.getOpenid(); //授权用户唯一标识
                 //当且仅当该移动应用已获得该用户的userinfo授权时，才会出现该字段
-                String unionid = result.getUnionid();
+                String unionid = result1.getUnionid();
 //                Log.i(TAG, "access_token:----->" + access_token);
 //                Log.i(TAG, "openid:----->" + openid);
 //                Log.i(TAG, "unionid:----->" + unionid);
@@ -342,7 +369,7 @@ public class Login_New_Activity extends BaseActivity<LoginPresenter, LoginModel>
                 .connectTimeout(5, TimeUnit.MINUTES)
                 .readTimeout(5, TimeUnit.MINUTES)
                 .build();
-        Request request = new Request.Builder()
+        final Request request = new Request.Builder()
                 .url(path)
                 .get()
                 .build();
@@ -357,12 +384,12 @@ public class Login_New_Activity extends BaseActivity<LoginPresenter, LoginModel>
             public void onResponse(Call call, Response response) throws IOException {
                 String str = response.body().string();
 //                System.out.println(str);
-                ToastUtils.showShort(str);
+//                ToastUtils.showShort(str);
                 Log.i(TAG, ":-------->" + str);
 
                 Gson gson = new Gson();
-                WXUserInfoBean result = gson.fromJson(str.replaceAll(" ", ""), WXUserInfoBean.class);
-
+                result = gson.fromJson(str.replaceAll(" ", ""), WXUserInfoBean.class);
+                mPresenter.WxRegister(result.getOpenid(), result.getNickname(), result.getSex(), result.getLanguage(), result.getCity(), result.getProvince(), result.getCountry(), result.getHeadimgurl(), result.getUnionid());
 
             }
         });

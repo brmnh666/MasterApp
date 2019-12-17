@@ -34,6 +34,7 @@ import com.bumptech.glide.Glide;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.Article;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
@@ -249,6 +250,11 @@ public class ApplyFeeActivity extends BaseActivity<AllWorkOrdersPresenter, AllWo
             default:
                 break;
         }
+    }
+
+    @Override
+    public void GetListCategoryContentByCategoryID(BaseResult<Article> baseResult) {
+
     }
 
 

@@ -44,6 +44,7 @@ import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.GetOrderListForMeContract;
 import com.ying.administrator.masterappdemo.mvp.model.GetOrderListForMeModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.GetOrderListForMePresenter;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.ComplaintActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.CompleteWorkOrderActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_Add_Accessories_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_details_Activity;
@@ -226,33 +227,36 @@ public class InService_Fragement extends BaseFragment<GetOrderListForMePresenter
                         showPopupWindow(((WorkOrder.DataBean) adapter.getData().get(position)).getAddress());
                         break;
                     case R.id.tv_complaint:
-                        View complaint_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_complaint, null);
-                        TextView title = complaint_view.findViewById(R.id.title);
-                        Button btn_negtive = complaint_view.findViewById(R.id.negtive);
-                        Button btn_positive = complaint_view.findViewById(R.id.positive);
-                        et_content = complaint_view.findViewById(R.id.et_content);
-                        title.setText("投诉");
-                        complaint_dialog = new AlertDialog.Builder(mActivity)
-                                .setView(complaint_view)
-                                .create();
-                        complaint_dialog.show();
-                        btn_negtive.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                complaint_dialog.dismiss();
-                            }
-                        });
-                        btn_positive.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                String content = et_content.getText().toString().trim();
-                                if ("".equals(content)) {
-                                    MyUtils.showToast(mActivity, "请输入投诉原因");
-                                } else {
-                                    mPresenter.WorkerComplaint(workOrder.getData().get(position).getOrderID(), content);
-                                }
-                            }
-                        });
+                        Intent intent1=new Intent(mActivity, ComplaintActivity.class);
+                        intent1.putExtra("orderId",list.get(position).getOrderID());
+                        startActivity(intent1);
+//                        View complaint_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_complaint, null);
+//                        TextView title = complaint_view.findViewById(R.id.title);
+//                        Button btn_negtive = complaint_view.findViewById(R.id.negtive);
+//                        Button btn_positive = complaint_view.findViewById(R.id.positive);
+//                        et_content = complaint_view.findViewById(R.id.et_content);
+//                        title.setText("投诉");
+//                        complaint_dialog = new AlertDialog.Builder(mActivity)
+//                                .setView(complaint_view)
+//                                .create();
+//                        complaint_dialog.show();
+//                        btn_negtive.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//                                complaint_dialog.dismiss();
+//                            }
+//                        });
+//                        btn_positive.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//                                String content = et_content.getText().toString().trim();
+//                                if ("".equals(content)) {
+//                                    MyUtils.showToast(mActivity, "请输入投诉原因");
+//                                } else {
+//                                    mPresenter.WorkerComplaint(workOrder.getData().get(position).getOrderID(), content);
+//                                }
+//                            }
+//                        });
                         break;
                     default:
                         break;

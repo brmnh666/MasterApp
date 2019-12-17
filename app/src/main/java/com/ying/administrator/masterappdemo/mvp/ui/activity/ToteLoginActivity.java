@@ -19,6 +19,7 @@ import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.WxRegister;
 import com.ying.administrator.masterappdemo.mvp.contract.LoginContract;
 import com.ying.administrator.masterappdemo.mvp.model.LoginModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.LoginPresenter;
@@ -201,6 +202,11 @@ public class ToteLoginActivity extends BaseActivity<LoginPresenter, LoginModel> 
 
     @Override
     public void LoginOut(BaseResult<Data<String>> baseResult) {
+
+    }
+
+    @Override
+    public void WxRegister(BaseResult<Data<WxRegister>> baseResult) {
 
     }
 

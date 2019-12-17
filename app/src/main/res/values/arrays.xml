@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="object">
+        <item>请选择</item>
+        <item>工厂</item>
+        <item>平台</item>
+        <item>消费者</item>
+    </string-array>
+    <string-array name="type">
+        <item>姓名</item>
+        <item>手机号</item>
+        <item>工号</item>
+    </string-array>
+
+</resources>

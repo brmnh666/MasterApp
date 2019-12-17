@@ -630,6 +630,13 @@
             android:screenOrientation="portrait"
             />
 
+        <!--绑定手机号-->
+
+        <activity android:name=".mvp.ui.activity.BindPhoneActivity"
+            android:theme="@style/AppTheme.Splash"
+            android:launchMode="singleTask"
+            />
+
         <!--添加银行卡页面-->
          <activity android:name=".mvp.ui.activity.Add_Card_Activity"
              android:theme="@style/AppTheme.NoActionBar"
@@ -654,6 +661,11 @@
         <activity android:name=".mvp.ui.activity.OrderMessageActivity2"
             android:theme="@style/AppTheme.NoActionBar"
             />
+        <!--投诉-->
+
+        <activity android:name=".mvp.ui.activity.ComplaintActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
         <!--交易信息-->
         <activity android:name=".mvp.ui.activity.TransactionMessageActivity"
             android:theme="@style/AppTheme.NoActionBar"
@@ -670,6 +682,7 @@
             android:theme="@style/AppTheme.Splash"
              android:launchMode="singleTask"
             />
+
 
         <!--新的登陆-->
 

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.ClipData;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -74,6 +75,7 @@ import com.umeng.socialize.utils.ShareBoardlistener;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.common.Config;
+import com.ying.administrator.masterappdemo.entity.Article;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
@@ -89,6 +91,7 @@ import com.ying.administrator.masterappdemo.mvp.ui.activity.RechargeActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.VerifiedUpdateActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Verified_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Wallet_Activity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.WebActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.WorkOrderDetailsActivity2;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.GrabsheetAdapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Pending_Adapter;
@@ -104,6 +107,7 @@ import com.ying.administrator.masterappdemo.widget.CustomDialog;
 import com.ying.administrator.masterappdemo.widget.CustomDialog_UnSuccess;
 import com.ying.administrator.masterappdemo.widget.GlideCircleWithBorder_Home;
 import com.ying.administrator.masterappdemo.widget.ShareDialog;
+import com.ying.administrator.masterappdemo.widget.SwitchView;
 import com.ying.administrator.masterappdemo.widget.WrapContentLinearLayoutManager;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
@@ -203,6 +207,8 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
     LinearLayout mLlFinsh;
     @BindView(R.id.ll_complaint)
     LinearLayout mLlComplaint;
+    @BindView(R.id.scrolltv)
+    SwitchView mScrolltv;
 
     // private WaveSwipeRefreshLayout mWaveSwipeRefreshLayout;
     private String mContentText;
@@ -240,6 +246,8 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
     private String mFloor;
     private int mGpsAccuracyStatus;
     private String mTime;
+    private int i = 0;
+    private List<Article.DataBean> datalist=new ArrayList<Article.DataBean>();
     private ObjectAnimator animator; //刷新图片属性动画
 
     private ObjectAnimator animator_order; //刷新图片属性动画
@@ -369,7 +377,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
         dialog = new ZLoadingDialog(mActivity);
         vibrator = (Vibrator) getActivity().getSystemService(getActivity().VIBRATOR_SERVICE);
         mPresenter.GetUserInfoList(userID, "1");
-
+        mPresenter.GetListCategoryContentByCategoryID("7","1","999");
 
     }
 
@@ -404,7 +412,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 refreshlayout.resetNoMoreData();
 
                 mPresenter.GetUserInfoList(userID, "1");//根据 手机号码获取用户详细信息
-
+                mPresenter.GetListCategoryContentByCategoryID("7","1","999");
                 animator = ObjectAnimator.ofFloat(mimg_home_refresh, "rotation", 0f, 360f);
                 animator.setDuration(2000);
                 animator.start();
@@ -1220,7 +1228,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 mActivity.overridePendingTransition(R.anim.anim_no, R.anim.anim_no);
                 break;
             case R.id.tv_name:
-                startActivity(new Intent(mActivity,Personal_Information_Activity.class));
+                startActivity(new Intent(mActivity, Personal_Information_Activity.class));
                 break;
             default:
                 break;
@@ -1917,6 +1925,44 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 }
                 break;
             default:
+                break;
+        }
+    }
+
+    @Override
+    public void GetListCategoryContentByCategoryID(BaseResult<Article> baseResult) {
+        switch (baseResult.getStatusCode()){
+            case 200:
+
+                datalist= baseResult.getData().getData();
+                mScrolltv.removeAllViews();
+                mScrolltv.initView(R.layout.item_switchview, new SwitchView.ViewBuilder() {
+                    @Override
+                    public void initView(View view) {
+                        final TextView tv_name = (TextView) view.findViewById(R.id.tv_content);
+                        final TextView tv_url=(TextView) view.findViewById(R.id.tv_url);
+                        tv_name.setText(datalist.get(i % datalist.size()).getTitle());
+                        tv_url.setText(datalist.get(i % datalist.size()).getContent());
+                        tv_name.setTag(i);
+
+                        i++;
+                        if (i == datalist.size()) {
+                            i = 0;
+                        }
+
+                        tv_name.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                String title=tv_name.getText().toString();
+                                String content=tv_url.getText().toString();
+                                Intent intent=new Intent(mActivity, WebActivity.class);
+                                intent.putExtra("Url",content);
+                                intent.putExtra("Title",title);
+                                startActivity(intent);
+                            }
+                        });
+                    }
+                });
                 break;
         }
     }

@@ -31,6 +31,7 @@ import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WXpayInfo;
 import com.ying.administrator.masterappdemo.entity.WithDrawMoney;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
+import com.ying.administrator.masterappdemo.entity.WxRegister;
 
 import org.json.JSONArray;
 
@@ -71,6 +72,19 @@ public interface ApiService {
                                              @Field("code") String code,
                                              @Field("roleType") String roleType,
                                              @Field("password") String password
+    );
+
+
+    /**
+     * 绑定手机号
+     */
+    @FormUrlEncoded
+    @POST("Account/WxReg")
+    Observable<BaseResult<Data<String>>> WxReg(@Field("mobile") String mobile,
+                                             @Field("type") String type,
+                                             @Field("code") String code,
+                                             @Field("roleType") String roleType,
+                                             @Field("openid") String openid
     );
 
 
@@ -839,6 +853,22 @@ public interface ApiService {
             @Field("Content") String Content
     );
 
+    @FormUrlEncoded
+    @POST("Order/WorkerComplaint")
+    Observable<BaseResult<Data<String>>> WorkerComplaint2(
+            @Field("OrderID") String OrderID,
+            @Field("Content") String Content,
+            @Field("ComplaintType") String ComplaintType,
+            @Field("Photo") String photo
+    );
+
+    /*
+     * 投诉图片
+     * */
+    @POST("Upload/ComPlaintImg")
+    Observable<BaseResult<Data<String>>> ComPlaintImg(@Body RequestBody json);
+
+
     /*修改支付密码*/
     @FormUrlEncoded
     @POST("Account/ChangePayPassword")
@@ -1010,6 +1040,22 @@ public interface ApiService {
                                                                          @Field("page") String page
 
     );
+
+
+    /**
+     * 微信登录
+     * */
+    @FormUrlEncoded
+    @POST("Account/WxRegister")
+    Observable<BaseResult<Data<WxRegister>>> WxRegister(@Field("openid") String openid,
+                                                        @Field("nickname") String nickname,
+                                                        @Field("sex") String sex,
+                                                        @Field("language") String language,
+                                                        @Field("city") String city,
+                                                        @Field("province") String province,
+                                                        @Field("country") String country,
+                                                        @Field("headimgurl") String headimgurl,
+                                                        @Field("unionid") String unionid);
 
 
 }

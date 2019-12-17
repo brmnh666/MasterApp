@@ -19,6 +19,7 @@ import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.WxRegister;
 import com.ying.administrator.masterappdemo.mvp.contract.RegisterContract;
 import com.ying.administrator.masterappdemo.mvp.model.RegisterModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.RegisterPresenter;
@@ -205,6 +206,17 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter, RegisterMo
                 break;
         }
     }
+
+    @Override
+    public void WxReg(BaseResult<Data<String>> baseResult) {
+
+    }
+
+    @Override
+    public void WxRegister(BaseResult<Data<WxRegister>> baseResult) {
+
+    }
+
     class TimeCount extends CountDownTimer{
         public TimeCount(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);

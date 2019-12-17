@@ -2,6 +2,7 @@ package com.ying.administrator.masterappdemo.mvp.model;
 
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.WxRegister;
 import com.ying.administrator.masterappdemo.mvp.contract.LoginContract;
 import com.ying.administrator.masterappdemo.mvp.service.ApiRetrofit;
 
@@ -59,6 +60,13 @@ public class LoginModel implements LoginContract.Model {
     @Override
     public Observable<BaseResult<Data<String>>> LoginOut(String UserID) {
         return ApiRetrofit.getDefault().LoginOut(UserID,"7")
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<BaseResult<Data<WxRegister>>> WxRegister(String openid, String nickname, String sex, String language, String city, String province, String country, String headimgurl, String unionid) {
+        return ApiRetrofit.getDefault().WxRegister(openid, nickname, sex, language, city, province, country, headimgurl, unionid)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

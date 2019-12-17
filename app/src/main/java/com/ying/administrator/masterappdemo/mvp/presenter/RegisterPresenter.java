@@ -3,6 +3,7 @@ package com.ying.administrator.masterappdemo.mvp.presenter;
 import com.ying.administrator.masterappdemo.base.BaseObserver;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.WxRegister;
 import com.ying.administrator.masterappdemo.mvp.contract.RegisterContract;
 
 public class RegisterPresenter extends RegisterContract.Presenter {
@@ -53,6 +54,28 @@ public class RegisterPresenter extends RegisterContract.Presenter {
                     @Override
                     protected void onHandleSuccess(BaseResult<Data<String>> value) {
                         mView.AddAndUpdatePushAccount(value);
+                    }
+                });
+    }
+
+    @Override
+    public void WxReg(String userName, String code, String openid) {
+        mModel.WxReg(userName, code, openid)
+                .subscribe(new BaseObserver<Data<String>>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<Data<String>> value) {
+                        mView.WxReg(value);
+                    }
+                });
+    }
+
+    @Override
+    public void WxRegister(String openid, String nickname, String sex, String language, String city, String province, String country, String headimgurl, String unionid) {
+        mModel.WxRegister(openid, nickname, sex, language, city, province, country, headimgurl, unionid)
+                .subscribe(new BaseObserver<Data<WxRegister>>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<Data<WxRegister>> value) {
+                        mView.WxRegister(value);
                     }
                 });
     }

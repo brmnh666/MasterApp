@@ -3,6 +3,7 @@ package com.ying.administrator.masterappdemo.mvp.presenter;
 
 import com.ying.administrator.masterappdemo.base.BaseObserver;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.Article;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.Data2;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
@@ -130,5 +131,16 @@ public class AllWorkOrdersPresenter extends AllWorkOrdersContract.Presenter {
                 mView.ApplyBeyondMoney(value);
             }
         });
+    }
+
+    @Override
+    public void GetListCategoryContentByCategoryID(String CategoryID,String page, String limit) {
+        mModel.GetListCategoryContentByCategoryID(CategoryID,page,limit)
+                .subscribe(new BaseObserver<Article>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<Article> value) {
+                        mView.GetListCategoryContentByCategoryID(value);
+                    }
+                });
     }
 }

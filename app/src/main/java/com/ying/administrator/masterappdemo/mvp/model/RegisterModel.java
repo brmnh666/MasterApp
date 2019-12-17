@@ -3,6 +3,7 @@ package com.ying.administrator.masterappdemo.mvp.model;
 import com.huawei.hms.api.Api;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.WxRegister;
 import com.ying.administrator.masterappdemo.mvp.contract.RegisterContract;
 import com.ying.administrator.masterappdemo.mvp.service.ApiRetrofit;
 
@@ -42,6 +43,20 @@ public class RegisterModel implements RegisterContract.Model {
     @Override
     public Observable<BaseResult<Data<String>>> AddAndUpdatePushAccount(String token, String type, String UserID) {
         return ApiRetrofit.getDefault().AddAndUpdatePushAccount(token,type,UserID)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<BaseResult<Data<String>>> WxReg(String userName, String code, String openid) {
+        return ApiRetrofit.getDefault().WxReg(userName,"1",code,"worker",openid)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<BaseResult<Data<WxRegister>>> WxRegister(String openid, String nickname, String sex, String language, String city, String province, String country, String headimgurl, String unionid) {
+        return ApiRetrofit.getDefault().WxRegister(openid, nickname, sex, language, city, province, country, headimgurl, unionid)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

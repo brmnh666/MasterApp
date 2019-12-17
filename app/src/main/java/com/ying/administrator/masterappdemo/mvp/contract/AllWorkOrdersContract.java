@@ -5,6 +5,7 @@ import com.ying.administrator.masterappdemo.base.BaseModel;
 import com.ying.administrator.masterappdemo.base.BasePresenter;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.base.BaseView;
+import com.ying.administrator.masterappdemo.entity.Article;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
@@ -41,6 +42,8 @@ public interface AllWorkOrdersContract {
         Observable<BaseResult<Data<String>>> OrderByondImgPicUpload(RequestBody json);
         //申请远程费
         Observable<BaseResult<Data<String>>> ApplyBeyondMoney(String OrderID,String BeyondMoney,String BeyondDistance);
+
+        Observable<BaseResult<Article>> GetListCategoryContentByCategoryID(String CategoryID, String page, String limit);
     }
 
     interface View extends BaseView {
@@ -70,6 +73,8 @@ public interface AllWorkOrdersContract {
 
         //申请远程费
         void ApplyBeyondMoney(BaseResult<Data<String>> baseResult);
+
+        void GetListCategoryContentByCategoryID(BaseResult<Article> baseResult);
     }
 
     abstract class Presenter extends BasePresenter<View,Model> {
@@ -97,5 +102,7 @@ public interface AllWorkOrdersContract {
         public abstract void OrderByondImgPicUpload(RequestBody json);
         //申请远程费
         public abstract void ApplyBeyondMoney(String OrderID,String BeyondMoney,String BeyondDistance);
+
+        public abstract void GetListCategoryContentByCategoryID(String CategoryID,String page, String limit);
     }
 }

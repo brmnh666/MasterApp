@@ -4,6 +4,7 @@ package com.ying.administrator.masterappdemo.mvp.presenter;
 import com.ying.administrator.masterappdemo.base.BaseObserver;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.WxRegister;
 import com.ying.administrator.masterappdemo.mvp.contract.LoginContract;
 
 import okhttp3.RequestBody;
@@ -82,5 +83,16 @@ public class LoginPresenter extends LoginContract.Presenter {
                 mView.LoginOut(value);
             }
         });
+    }
+
+    @Override
+    public void WxRegister(String openid, String nickname, String sex, String language, String city, String province, String country, String headimgurl, String unionid) {
+        mModel.WxRegister(openid, nickname, sex, language, city, province, country, headimgurl, unionid)
+                .subscribe(new BaseObserver<Data<WxRegister>>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<Data<WxRegister>> value) {
+                        mView.WxRegister(value);
+                    }
+                });
     }
 }

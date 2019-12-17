@@ -1,6 +1,7 @@
 package com.ying.administrator.masterappdemo.mvp.model;
 
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.Article;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.Data2;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
@@ -94,4 +95,12 @@ public class AllWorkOrdersModel implements AllWorkOrdersContract.Model {
                 .subscribeOn(Schedulers.io());
 
     }
+
+    @Override
+    public Observable<BaseResult<Article>> GetListCategoryContentByCategoryID(String CategoryID, String page, String limit) {
+        return  ApiRetrofit.getDefault().GetListCategoryContentByCategoryID(CategoryID,page,limit)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
 }

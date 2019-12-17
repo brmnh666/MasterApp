@@ -25,6 +25,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.m7.imkfsdk.MainActivity;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.Article;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.ProductList;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
@@ -263,6 +264,11 @@ public class BlankFragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
 
     @Override
     public void ApplyBeyondMoney(BaseResult<Data<String>> baseResult) {
+
+    }
+
+    @Override
+    public void GetListCategoryContentByCategoryID(BaseResult<Article> baseResult) {
 
     }
 }
