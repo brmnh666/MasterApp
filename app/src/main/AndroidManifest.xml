@@ -546,7 +546,8 @@
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"  android:launchMode="singleTask" />
+            android:theme="@android:style/Theme.Translucent"
+             android:launchMode="singleTask" />
         <!--微信end-->
         <!--QQstart-->
         <activity
@@ -664,6 +665,12 @@
         <!--投诉-->
 
         <activity android:name=".mvp.ui.activity.ComplaintActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
+        <!--投诉详情-->
+
+        <activity android:name=".mvp.ui.activity.ComplaintDetailActivity"
             android:theme="@style/AppTheme.NoActionBar"
             />
         <!--交易信息-->

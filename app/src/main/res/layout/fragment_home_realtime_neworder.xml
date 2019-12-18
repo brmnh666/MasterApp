@@ -1,30 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="137dp"
+    android:layout_height="127dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_alignParentBottom="true"
     android:background="@color/white"
-
     >
+
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="80dp"-->
+        <!--android:background="#eee"-->
+        <!--android:layout_above="@+id/ll_switch"></LinearLayout>-->
+
     <!--实时新订单-->
     <LinearLayout
+        android:id="@+id/ll_switch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_above="@+id/img_new_order"
+        android:layout_above="@+id/view"
+        android:background="@color/white"
+        android:paddingLeft="10dp"
+        android:layout_alignParentBottom="true"
+        android:paddingRight="20dp"
         android:layout_marginBottom="10dp">
+
         <ImageView
-            android:layout_width="20dp"
+            android:layout_width="16dp"
             android:layout_height="20dp"
-            android:layout_marginLeft="20dp"
             android:layout_gravity="center"
-            android:src="@drawable/tonggao"/>
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/gonggao" />
         <com.ying.administrator.masterappdemo.widget.SwitchView
             android:id="@+id/scrolltv"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_gravity="center_vertical"
+            android:layout_height="40dp"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
             app:layout_constraintHorizontal_bias="1.0"
@@ -32,6 +44,13 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </LinearLayout>
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="#eee"
+        android:layout_marginBottom="5dp"
+        android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/img_new_order"
@@ -40,7 +59,8 @@
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="30dp"
         android:layout_marginBottom="12dp"
-        android:src="@mipmap/icon_home_sheet" />
+        android:src="@mipmap/icon_home_sheet"
+        android:visibility="gone"/>
 
     <TextView
 
@@ -53,7 +73,8 @@
         android:layout_toRightOf="@+id/img_new_order"
         android:text="实时新订单"
         android:textSize="17sp"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/tv_home_refresh"
@@ -65,7 +86,8 @@
         android:layout_marginBottom="12dp"
         android:text="点击刷新工单"
         android:textSize="17sp"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black"
+        android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/img_home_refresh"
@@ -76,7 +98,7 @@
         android:layout_marginBottom="12dp"
         android:layout_toLeftOf="@+id/tv_home_refresh"
         android:src="@drawable/shou_red"
-
+        android:visibility="gone"
         />
 
     <ImageView
@@ -86,6 +108,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="25dp"
-        android:layout_marginRight="20dp"/>
+        android:layout_marginRight="20dp"
+        android:visibility="gone"/>
 
 </RelativeLayout>

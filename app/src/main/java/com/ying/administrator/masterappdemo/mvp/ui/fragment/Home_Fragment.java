@@ -4,7 +4,6 @@ import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.ClipData;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +14,7 @@ import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -55,6 +55,7 @@ import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -209,6 +210,14 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
     LinearLayout mLlComplaint;
     @BindView(R.id.scrolltv)
     SwitchView mScrolltv;
+    @BindView(R.id.ll_switch)
+    LinearLayout mLlSwitch;
+    @BindView(R.id.view)
+    View mView;
+    @BindView(R.id.ll_infor)
+    LinearLayout mLlInfor;
+    @BindView(R.id.iv_ads)
+    ImageView mIvAds;
 
     // private WaveSwipeRefreshLayout mWaveSwipeRefreshLayout;
     private String mContentText;
@@ -247,7 +256,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
     private int mGpsAccuracyStatus;
     private String mTime;
     private int i = 0;
-    private List<Article.DataBean> datalist=new ArrayList<Article.DataBean>();
+    private List<Article.DataBean> datalist = new ArrayList<Article.DataBean>();
     private ObjectAnimator animator; //刷新图片属性动画
 
     private ObjectAnimator animator_order; //刷新图片属性动画
@@ -374,11 +383,24 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
 
     @Override
     protected void initView() {
+
         dialog = new ZLoadingDialog(mActivity);
         vibrator = (Vibrator) getActivity().getSystemService(getActivity().VIBRATOR_SERVICE);
         mPresenter.GetUserInfoList(userID, "1");
-        mPresenter.GetListCategoryContentByCategoryID("7","1","999");
+        mPresenter.GetListCategoryContentByCategoryID("7", "1", "999");
 
+//        RequestOptions options = new RequestOptions()
+//                .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+//        Glide.with(mActivity).load(R.drawable.dongheiban).apply(options).into(mIvAds);
+        AnimationDrawable anim = null;
+
+        Object ob = mIvAds.getBackground();
+
+        anim = (AnimationDrawable) ob;
+
+        anim.stop();
+
+        anim.start();
     }
 
     @Override
@@ -403,6 +425,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
         mLlMoney.setOnClickListener(this);
         mLlFinsh.setOnClickListener(this);
         mTvName.setOnClickListener(this);
+        mIvAds.setOnClickListener(this);
         /*下拉刷新*/
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -412,7 +435,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 refreshlayout.resetNoMoreData();
 
                 mPresenter.GetUserInfoList(userID, "1");//根据 手机号码获取用户详细信息
-                mPresenter.GetListCategoryContentByCategoryID("7","1","999");
+                mPresenter.GetListCategoryContentByCategoryID("7", "1", "999");
                 animator = ObjectAnimator.ofFloat(mimg_home_refresh, "rotation", 0f, 360f);
                 animator.setDuration(2000);
                 animator.start();
@@ -926,6 +949,7 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                     mTvCertification.setText("已实名认证");
                     mImg_un_certification.setVisibility(View.INVISIBLE);
                     mImgCertification.setVisibility(View.VISIBLE);
+
                 }
 
                 /*设置金额*/
@@ -1230,6 +1254,9 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
             case R.id.tv_name:
                 startActivity(new Intent(mActivity, Personal_Information_Activity.class));
                 break;
+            case R.id.iv_ads:
+                showAd();
+                break;
             default:
                 break;
         }
@@ -1376,33 +1403,23 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
     }
 
     public void showAd() {
-        under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_ad, null);
-        iv_close = under_review.findViewById(R.id.iv_close);
-        tv_share = under_review.findViewById(R.id.tv_share);
-        iv_gotoshop = under_review.findViewById(R.id.tv_go);
-
-        iv_gotoshop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openShopApp("com.zhenghaikj.shop");
-                underReviewDialog.dismiss();
-            }
-        });
-
-
+        under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_tixing, null);
+        TextView tv_know = under_review.findViewById(R.id.tv_know);
+        ImageView iv_close = under_review.findViewById(R.id.iv_close);
         iv_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 underReviewDialog.dismiss();
             }
         });
-        tv_share.setOnClickListener(new View.OnClickListener() {
+
+        tv_know.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 underReviewDialog.dismiss();
-                mShareAction.open();
             }
         });
+
         underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review)
                 .create();
         underReviewDialog.show();
@@ -1412,13 +1429,57 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
 //                lp.alpha = 0.5f;
         // 也可按屏幕宽高比例进行设置宽高
 //                Display display = mActivity.getWindowManager().getDefaultDisplay();
-//                lp.width = (int) (display.getWidth() * 0.6);
+//                lp.width = (int) (display.getWidth() * 1);
 //                lp.height = under_review.getHeight();
 //                lp.width = 300;
 //                lp.height = 400;
         window.setAttributes(lp);
 //                window.setDimAmount(0.1f);
         window.setBackgroundDrawable(new ColorDrawable());
+
+//        under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_ad, null);
+//        iv_close = under_review.findViewById(R.id.iv_close);
+//        tv_share = under_review.findViewById(R.id.tv_share);
+//        iv_gotoshop = under_review.findViewById(R.id.tv_go);
+//
+//        iv_gotoshop.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                openShopApp("com.zhenghaikj.shop");
+//                underReviewDialog.dismiss();
+//            }
+//        });
+//
+//
+//        iv_close.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                underReviewDialog.dismiss();
+//            }
+//        });
+//        tv_share.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                underReviewDialog.dismiss();
+//                mShareAction.open();
+//            }
+//        });
+//        underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review)
+//                .create();
+//        underReviewDialog.show();
+//        window = underReviewDialog.getWindow();
+////                window.setContentView(under_review);
+//        WindowManager.LayoutParams lp = window.getAttributes();
+////                lp.alpha = 0.5f;
+//        // 也可按屏幕宽高比例进行设置宽高
+////                Display display = mActivity.getWindowManager().getDefaultDisplay();
+////                lp.width = (int) (display.getWidth() * 0.6);
+////                lp.height = under_review.getHeight();
+////                lp.width = 300;
+////                lp.height = 400;
+//        window.setAttributes(lp);
+////                window.setDimAmount(0.1f);
+//        window.setBackgroundDrawable(new ColorDrawable());
     }
 
     @Override
@@ -1931,16 +1992,16 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
 
     @Override
     public void GetListCategoryContentByCategoryID(BaseResult<Article> baseResult) {
-        switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
 
-                datalist= baseResult.getData().getData();
+                datalist = baseResult.getData().getData();
                 mScrolltv.removeAllViews();
                 mScrolltv.initView(R.layout.item_switchview, new SwitchView.ViewBuilder() {
                     @Override
                     public void initView(View view) {
                         final TextView tv_name = (TextView) view.findViewById(R.id.tv_content);
-                        final TextView tv_url=(TextView) view.findViewById(R.id.tv_url);
+                        final TextView tv_url = (TextView) view.findViewById(R.id.tv_url);
                         tv_name.setText(datalist.get(i % datalist.size()).getTitle());
                         tv_url.setText(datalist.get(i % datalist.size()).getContent());
                         tv_name.setTag(i);
@@ -1953,11 +2014,11 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                         tv_name.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                String title=tv_name.getText().toString();
-                                String content=tv_url.getText().toString();
-                                Intent intent=new Intent(mActivity, WebActivity.class);
-                                intent.putExtra("Url",content);
-                                intent.putExtra("Title",title);
+                                String title = tv_name.getText().toString();
+                                String content = tv_url.getText().toString();
+                                Intent intent = new Intent(mActivity, WebActivity.class);
+                                intent.putExtra("Url", content);
+                                intent.putExtra("Title", title);
                                 startActivity(intent);
                             }
                         });

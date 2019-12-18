@@ -73,7 +73,8 @@
             android:hint="快递单号"
             android:padding="5dp"
             android:textColor="@color/black"
-            android:textSize="12dp" />
+            android:textSize="12dp"
+            android:digits="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"/>
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"

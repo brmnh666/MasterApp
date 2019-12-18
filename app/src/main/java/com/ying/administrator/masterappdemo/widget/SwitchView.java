@@ -35,7 +35,7 @@ public class SwitchView extends ViewSwitcher implements ViewSwitcher.ViewFactory
                 setInAnimation(getContext(), R.anim.slide_in);
                 setOutAnimation(getContext(), R.anim.slide_out);
                 showNext();
-                handler.sendEmptyMessageDelayed(0, 2000);
+                handler.sendEmptyMessageDelayed(0, 5000);
             }
         }
     };

@@ -275,6 +275,7 @@ public class Login_New_Activity extends BaseActivity<LoginPresenter, LoginModel>
 //                        ToastUtils.showShort();
 //                    }
                 }
+//                cancleLoading();
                 break;
         }
     }
@@ -289,7 +290,7 @@ public class Login_New_Activity extends BaseActivity<LoginPresenter, LoginModel>
     public void showLoading() {
         dialog.setLoadingBuilder(Z_TYPE.SINGLE_CIRCLE)//设置类型
                 .setLoadingColor(Color.BLACK)//颜色
-                .setHintText("登陆中请稍后...")
+                .setHintText("登录中请稍后...")
                 .setHintTextSize(14) // 设置字体大小 dp
                 .setHintTextColor(Color.BLACK)  // 设置字体颜色
                 .setDurationTime(0.5) // 设置动画时间百分比 - 0.5倍
@@ -304,6 +305,7 @@ public class Login_New_Activity extends BaseActivity<LoginPresenter, LoginModel>
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(String name) {
         code = name;
+        showLoading();
         getAccessToken(code);
     }
 

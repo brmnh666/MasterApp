@@ -2,6 +2,7 @@ package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,8 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -92,7 +95,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
     @BindView(R.id.ll_order)
     LinearLayout mLlOrder;
     @BindView(R.id.rootview)
-    FrameLayout  rootview;
+    FrameLayout rootview;
     private List<Fragment> fragmentList;
     SPUtils spUtils = SPUtils.getInstance("token");
     private UserInfo.UserInfoDean userInfo = new UserInfo.UserInfoDean();
@@ -108,6 +111,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
     private TextView content;
 
     private SkeletonScreen skeletonScreen;
+    private Window window;
 
     @Override
     protected int setLayoutId() {
@@ -120,14 +124,13 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
 
         userID = spUtils.getString("userName"); //获取用户id
         mPresenter.GetUserInfoList(userID, "1");
-        qBadgeView= new QBadgeView(mActivity);
+        qBadgeView = new QBadgeView(mActivity);
         qBadgeView.bindTarget(mImg_message_invisible);
-        qBadgeView.setBadgeGravity(Gravity.END|Gravity.TOP);
-        qBadgeView.setBadgeTextSize(0,false);
+        qBadgeView.setBadgeGravity(Gravity.END | Gravity.TOP);
+        qBadgeView.setBadgeTextSize(0, false);
 
-        mPresenter.GetMessageList(userID,"0","999","0");
-        mPresenter.GetTransactionMessageList(userID,"0","999","0");
-
+        mPresenter.GetMessageList(userID, "0", "999", "0");
+        mPresenter.GetTransactionMessageList(userID, "0", "999", "0");
 
 
     }
@@ -163,10 +166,11 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
             }
         });
     }
+
     public void showRejectDialog() {
         under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_audit_failure, null);
         content = under_review.findViewById(R.id.tv_content);
-        content.setText(userInfo.getAuthMessage()+",有疑问请咨询客服电话。");
+        content.setText(userInfo.getAuthMessage() + ",有疑问请咨询客服电话。");
         btnConfirm = under_review.findViewById(R.id.btn_confirm);
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -178,6 +182,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
         underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review).create();
         underReviewDialog.show();
     }
+
     public void showUnderDialog() {
         under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_under_review, null);
         btnConfirm = under_review.findViewById(R.id.btn_confirm);
@@ -190,6 +195,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
         underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review).create();
         underReviewDialog.show();
     }
+
     public void showPassDialog() {
         under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_successful_review, null);
         btnConfirm = under_review.findViewById(R.id.btn_confirm);
@@ -209,6 +215,43 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
         });
         underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review).create();
         underReviewDialog.show();
+    }
+
+    public void showAd() {
+        under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_tixing, null);
+        TextView tv_know = under_review.findViewById(R.id.tv_know);
+        ImageView iv_close = under_review.findViewById(R.id.iv_close);
+        iv_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                underReviewDialog.dismiss();
+            }
+        });
+
+        tv_know.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                underReviewDialog.dismiss();
+            }
+        });
+
+        underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review)
+                .create();
+        underReviewDialog.show();
+        window = underReviewDialog.getWindow();
+//                window.setContentView(under_review);
+        WindowManager.LayoutParams lp = window.getAttributes();
+//                lp.alpha = 0.5f;
+        // 也可按屏幕宽高比例进行设置宽高
+//                Display display = mActivity.getWindowManager().getDefaultDisplay();
+//                lp.width = (int) (display.getWidth() * 1);
+//                lp.height = under_review.getHeight();
+//                lp.width = 300;
+//                lp.height = 400;
+        window.setAttributes(lp);
+//                window.setDimAmount(0.1f);
+        window.setBackgroundDrawable(new ColorDrawable());
+
     }
 
     @Override
@@ -288,22 +331,23 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
 
         switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData().getData()==null){
+                if (baseResult.getData().getData() == null) {
 
-                }else {
+                } else {
                     userInfo = baseResult.getData().getData().get(0);
-                    if (userInfo!=null){
-                        if ("0".equals(userInfo.getIfAuth())){
+                    if (userInfo != null) {
+                        if ("0".equals(userInfo.getIfAuth())) {
                             showUnderDialog();
-                        }else if ("-1".equals(userInfo.getIfAuth())){
+                        } else if ("-1".equals(userInfo.getIfAuth())) {
                             showRejectDialog();
-                        }else if ("1".equals(userInfo.getIfAuth())){
+                        } else if ("1".equals(userInfo.getIfAuth())) {
 //                            showPassDialog();
-                        }else{
+                            showAd();
+                        } else {
                             showVerifiedDialog();
                         }
                     }
-                    if(skeletonScreen!=null){
+                    if (skeletonScreen != null) {
                         skeletonScreen.hide();
                     }
                 }
@@ -312,7 +356,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
                 break;
 
             default:
-                if(skeletonScreen!=null){
+                if (skeletonScreen != null) {
                     skeletonScreen.hide();
                 }
                 break;
@@ -322,28 +366,28 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
 
     @Override
     public void GetMessageList(BaseResult<MessageData<List<Message>>> baseResult) {
-        switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData().getCount()==0){
+                if (baseResult.getData().getCount() == 0) {
                     qBadgeView.hide(true);
 
-                }else {
+                } else {
                     qBadgeView.setBadgeNumber(1);
 
                 }
                 break;
-                default:
-                    break;
+            default:
+                break;
         }
     }
 
     @Override
     public void GetTransactionMessageList(BaseResult<MessageData<List<Message>>> baseResult) {
-        switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData().getCount()==0){
+                if (baseResult.getData().getCount() == 0) {
                     qBadgeView.hide(true);
-                }else {
+                } else {
                     qBadgeView.setBadgeNumber(1);
                 }
                 break;
@@ -354,12 +398,12 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(String message) {
-        switch (message){
+        switch (message) {
             case "GetUserInfoList":
                 mPresenter.GetUserInfoList(userID, "1");
                 break;
             case "orderempty":
-                mPresenter.GetMessageList(userID,"0","999","1");
+                mPresenter.GetMessageList(userID, "0", "999", "1");
                 break;
             case "transactionempty":
                 mPresenter.GetTransactionMessageList(userID, "0", "999", "1");
@@ -384,7 +428,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
                     if (userInfo.getIfAuth().equals("1")) {
                         Intent intent = new Intent(MainActivity.this, Order_Receiving_Activity.class);
                         intent.putExtra("intent", "confirmedFragement");
-                        startActivityForResult(intent,20202);
+                        startActivityForResult(intent, 20202);
                         overridePendingTransition(R.anim.anim_no, R.anim.anim_no);
                     } else if (userInfo.getIfAuth().equals("0")) {
                         showUnderDialog();
@@ -415,6 +459,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
                 break;
         }
     }
+
     private void tabSelected(LinearLayout linearLayout) {
         mLlHome.setSelected(false);
         mLlMessage.setSelected(false);
@@ -426,10 +471,10 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        fragmentList.get(0).onActivityResult(requestCode,resultCode,data);
-        if (resultCode==10202){
-            if (requestCode==20202){
-                Log.d("=========>","进入onActivityResult");
+        fragmentList.get(0).onActivityResult(requestCode, resultCode, data);
+        if (resultCode == 10202) {
+            if (requestCode == 20202) {
+                Log.d("=========>", "进入onActivityResult");
                 mViewPager.setCurrentItem(1);
                 tabSelected(mLlMessage);
             }

@@ -34,6 +34,7 @@ import com.gyf.barlibrary.ImmersionBar;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.ComplaintList;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.mvp.contract.ComplaintContract;
 import com.ying.administrator.masterappdemo.mvp.model.ComplaintModel;
@@ -44,6 +45,7 @@ import com.ying.administrator.masterappdemo.util.imageutil.CompressHelper;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -154,6 +156,8 @@ public class ComplaintActivity extends BaseActivity<ComplaintPresenter, Complain
     @Override
     protected void initView() {
         mTvActionbarTitle.setText("投诉");
+        mTvMessage.setText("投诉详情");
+        mTvMessage.setVisibility(View.VISIBLE);
         orderId = getIntent().getStringExtra("orderId");
         mTvOrderid.setText(orderId);
         myClipboard = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
@@ -165,6 +169,7 @@ public class ComplaintActivity extends BaseActivity<ComplaintPresenter, Complain
         mIvCopy.setOnClickListener(this);
         mBtnComplaint.setOnClickListener(this);
         mIvPicture.setOnClickListener(this);
+        mTvMessage.setOnClickListener(this);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -203,6 +208,11 @@ public class ComplaintActivity extends BaseActivity<ComplaintPresenter, Complain
 
                 }
                 break;
+            case R.id.tv_message:
+                Intent intent=new Intent(mActivity,ComplaintDetailActivity.class);
+                intent.putExtra("orderId",orderId);
+                startActivity(intent);
+                break;
         }
     }
 
@@ -235,6 +245,11 @@ public class ComplaintActivity extends BaseActivity<ComplaintPresenter, Complain
                 ToastUtils.showShort("图片上传失败");
                 break;
         }
+    }
+
+    @Override
+    public void GetComplaintListByOrderId(BaseResult<List<ComplaintList>> baseResult) {
+
     }
 
     //请求权限

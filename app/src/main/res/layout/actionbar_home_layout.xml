@@ -1,69 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="150dp"
+    android:layout_height="50dp"
     android:background="#1690FF"
     android:id="@+id/actionbar_layout"
     >
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="5dp">
-        <ImageView
-            android:id="@+id/img_home_qr_code"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@mipmap/icon_qr_code"
-            android:padding="5dp"
-            android:layout_gravity="center"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/img_home_qr_code"
-            android:text="分享商城"
-            android:layout_gravity="center"
-            android:textSize="10sp"
-            android:textColor="@color/white"/>
+    <!--<LinearLayout-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_marginLeft="20dp"-->
+        <!--android:layout_marginTop="5dp"-->
+        <!--android:visibility="gone">-->
+        <!--<ImageView-->
+            <!--android:id="@+id/img_home_qr_code"-->
+            <!--android:layout_width="30dp"-->
+            <!--android:layout_height="30dp"-->
+            <!--android:src="@mipmap/icon_qr_code"-->
+            <!--android:padding="5dp"-->
+            <!--android:layout_gravity="center"/>-->
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@+id/img_home_qr_code"-->
+            <!--android:text="分享商城"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:textSize="10sp"-->
+            <!--android:textColor="@color/white"/>-->
 
-    </LinearLayout>
+    <!--</LinearLayout>-->
 
 
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-       android:layout_centerHorizontal="true"
-        android:text="首页"
-        android:textSize="20sp"
-        android:textColor="@color/color_white"
-        android:layout_marginTop="10dp"
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+       <!--android:layout_centerHorizontal="true"-->
+        <!--android:text="首页"-->
+        <!--android:textSize="20sp"-->
+        <!--android:textColor="@color/color_white"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:visibility="gone"-->
+        <!--/>-->
 
-        />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="20dp">
-        <ImageView
-            android:id="@+id/img_home_customer_service"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@mipmap/icon_customer_services"
-            android:layout_gravity="center"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="联系客服"
-            android:layout_gravity="center"
-            android:textSize="10sp"
-            android:textColor="@color/white"
-            android:layout_marginTop="5dp"/>
-    </LinearLayout>
+    <!--<LinearLayout-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:layout_marginRight="20dp"-->
+        <!--android:visibility="gone">-->
+        <!--<ImageView-->
+            <!--android:id="@+id/img_home_customer_service"-->
+            <!--android:layout_width="20dp"-->
+            <!--android:layout_height="20dp"-->
+            <!--android:src="@mipmap/icon_customer_services"-->
+            <!--android:layout_gravity="center"/>-->
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="联系客服"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:textSize="10sp"-->
+            <!--android:textColor="@color/white"-->
+            <!--android:layout_marginTop="5dp"/>-->
+    <!--</LinearLayout>-->
 
 </RelativeLayout>

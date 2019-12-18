@@ -10,6 +10,7 @@ import com.ying.administrator.masterappdemo.entity.BankCard;
 import com.ying.administrator.masterappdemo.entity.Bill;
 import com.ying.administrator.masterappdemo.entity.CategoryData;
 import com.ying.administrator.masterappdemo.entity.City;
+import com.ying.administrator.masterappdemo.entity.ComplaintList;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.Data2;
 import com.ying.administrator.masterappdemo.entity.District;
@@ -868,6 +869,16 @@ public interface ApiService {
     @POST("Upload/ComPlaintImg")
     Observable<BaseResult<Data<String>>> ComPlaintImg(@Body RequestBody json);
 
+
+    /*
+     *投诉详情
+     * */
+    @FormUrlEncoded
+    @POST("Order/GetComplaintListByOrderId")
+    Observable<BaseResult<List<ComplaintList>>> GetComplaintListByOrderId(
+            @Field("OrderId") String OrderId,
+            @Field("UserID") String UserID
+    );
 
     /*修改支付密码*/
     @FormUrlEncoded

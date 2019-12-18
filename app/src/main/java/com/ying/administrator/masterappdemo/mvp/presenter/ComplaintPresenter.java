@@ -3,8 +3,11 @@ package com.ying.administrator.masterappdemo.mvp.presenter;
 
 import com.ying.administrator.masterappdemo.base.BaseObserver;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.ComplaintList;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.mvp.contract.ComplaintContract;
+
+import java.util.List;
 
 import okhttp3.RequestBody;
 
@@ -27,6 +30,17 @@ public class ComplaintPresenter extends ComplaintContract.Presenter {
                     @Override
                     protected void onHandleSuccess(BaseResult<Data<String>> value) {
                         mView.ComPlaintImg(value);
+                    }
+                });
+    }
+
+    @Override
+    public void GetComplaintListByOrderId(String OrderId,String UserID) {
+        mModel.GetComplaintListByOrderId(OrderId,UserID)
+                .subscribe(new BaseObserver<List<ComplaintList>>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<List<ComplaintList>> value) {
+                        mView.GetComplaintListByOrderId(value);
                     }
                 });
     }

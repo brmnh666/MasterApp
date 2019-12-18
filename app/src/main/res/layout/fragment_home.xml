@@ -8,42 +8,141 @@
     >-->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_custom_08"
     android:orientation="vertical">
-
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp">
+        android:layout_height="wrap_content"
+        android:background="#1690FF"
+        android:id="@+id/actionbar_layout">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp">
+            <ImageView
+                android:id="@+id/img_home_qr_code"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@mipmap/icon_qr_code"
+                android:padding="5dp"
+                android:layout_gravity="center"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/img_home_qr_code"
+                android:text="分享商城"
+                android:layout_gravity="center"
+                android:textSize="10sp"
+                android:textColor="@color/white"/>
 
-        <include layout="@layout/actionbar_home_layout" />
+        </LinearLayout>
 
 
 
 
-        <include layout="@layout/fragment_home_realtime_neworder" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="首页"
+            android:textSize="20sp"
+            android:textColor="@color/color_white"
+            android:layout_marginTop="10dp"
 
-        <include layout="@layout/fragment_home_user" />
+            />
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp">
+            <ImageView
+                android:id="@+id/img_home_customer_service"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@mipmap/icon_customer_services"
+                android:layout_gravity="center"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="联系客服"
+                android:layout_gravity="center"
+                android:textSize="10sp"
+                android:textColor="@color/white"
+                android:layout_marginTop="5dp"/>
+        </LinearLayout>
 
     </RelativeLayout>
-    <!-- <View
-         android:layout_width="match_parent"
-         android:layout_height="10dp"
-         android:background="@color/color_custom_08"/>-->
-
-    <!--实时订单-->
-
-    <!--实时订单-->
-    <!--<View
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:background="@color/color_custom_08"/>-->
+        android:layout_height="match_parent"
+        app:srlAccentColor="#00000000"
+        app:srlEnablePreviewInEditMode="true"
+        app:srlPrimaryColor="#00000000">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp">
+
+                    <include layout="@layout/actionbar_home_layout" />
 
 
-    <include layout="@layout/fragment_order_receiving" />
+                    <include layout="@layout/fragment_home_realtime_neworder" />
 
+                    <include layout="@layout/fragment_home_user" />
+
+
+                </RelativeLayout>
+                <!-- <View
+                     android:layout_width="match_parent"
+                     android:layout_height="10dp"
+                     android:background="@color/color_custom_08"/>-->
+
+                <!--实时订单-->
+
+                <!--实时订单-->
+                <!--<View
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:background="@color/color_custom_08"/>-->
+
+
+                <!--<include layout="@layout/fragment_order_receiving" />-->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:descendantFocusability="blocksDescendants">
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recyclerview_order_receiving"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:nestedScrollingEnabled="false">
+                    </android.support.v7.widget.RecyclerView>
+                </RelativeLayout>
+
+
+            </LinearLayout>
+        </ScrollView>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </LinearLayout><!--用于填充布局-->
 
 

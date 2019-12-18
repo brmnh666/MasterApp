@@ -15,6 +15,7 @@ import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.tencent.android.tpush.XGPushConfig;
+import com.tencent.tinker.loader.TinkerDexOptimizer;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
@@ -82,7 +83,10 @@ public class BindPhoneActivity extends BaseActivity<RegisterPresenter, RegisterM
                     ToastUtils.showShort("手机格式不正确！");
                     return;
                 }
-                mPresenter.ValidateUserName(phone);
+//                mPresenter.ValidateUserName(phone);
+                TimeCount timeCount = new TimeCount(60000, 1000);
+                timeCount.start();
+                mPresenter.GetCode(phone, "1");
                 break;
             case R.id.tv_register:
                 phone = mEtRegisterPhone.getText().toString();
@@ -165,7 +169,8 @@ public class BindPhoneActivity extends BaseActivity<RegisterPresenter, RegisterM
 
                     mPresenter.WxRegister(result.getOpenid(), result.getNickname(), result.getSex(), result.getLanguage(), result.getCity(), result.getProvince(), result.getCountry(), result.getHeadimgurl(), result.getUnionid());
                 } else {
-                    Toast.makeText(this, "验证码出错", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(this, "验证码出错", Toast.LENGTH_SHORT).show();
+                    ToastUtils.showShort(baseResult.getData().getItem2());
                 }
                 break;
 

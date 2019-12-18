@@ -87,6 +87,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                     String code = ((SendAuth.Resp) baseResp).code;
                     Log.i(TAG, "code:------>" + code);
                     EventBus.getDefault().post(code);
+                    finish();
                     //这里拿到了这个code，去做2次网络请求获取access_token和用户个人信息
 //                    WXLoginUtils().getWXLoginResult(code, this);
 //                    getAccessToken(code);
