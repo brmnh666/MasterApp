@@ -30,6 +30,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -1406,6 +1407,13 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
         under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_tixing, null);
         TextView tv_know = under_review.findViewById(R.id.tv_know);
         ImageView iv_close = under_review.findViewById(R.id.iv_close);
+        LinearLayout ll_ad = under_review.findViewById(R.id.ll_ad);
+        ll_ad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                underReviewDialog.dismiss();
+            }
+        });
         iv_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1428,11 +1436,12 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
         WindowManager.LayoutParams lp = window.getAttributes();
 //                lp.alpha = 0.5f;
         // 也可按屏幕宽高比例进行设置宽高
-//                Display display = mActivity.getWindowManager().getDefaultDisplay();
-//                lp.width = (int) (display.getWidth() * 1);
-//                lp.height = under_review.getHeight();
-//                lp.width = 300;
-//                lp.height = 400;
+//        Display display = mActivity.getWindowManager().getDefaultDisplay();
+//        lp.width = (int) (display.getWidth() * 1);
+//        lp.height = under_review.getHeight();
+//        lp.width = 300;
+//        lp.height = 400;
+        lp.width=WindowManager.LayoutParams.MATCH_PARENT;
         window.setAttributes(lp);
 //                window.setDimAmount(0.1f);
         window.setBackgroundDrawable(new ColorDrawable());

@@ -275,7 +275,7 @@ public class Login_New_Activity extends BaseActivity<LoginPresenter, LoginModel>
 //                        ToastUtils.showShort();
 //                    }
                 }
-//                cancleLoading();
+                cancleLoading();
                 break;
         }
     }

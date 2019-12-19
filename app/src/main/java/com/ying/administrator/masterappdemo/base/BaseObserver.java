@@ -38,11 +38,11 @@ public abstract class BaseObserver<T> implements Observer<BaseResult<T>> {
     @Override
     public void onNext(BaseResult<T> value) {
         onHandleSuccess(value);
-        switch (value.getStatusCode()){
-            case 406:
-                EventBus.getDefault().post("账号在别处登录");
-                break;
-        }
+//        switch (value.getStatusCode()){
+//            case 406:
+//                EventBus.getDefault().post("账号在别处登录");
+//                break;
+//        }
     }
 
     @Override

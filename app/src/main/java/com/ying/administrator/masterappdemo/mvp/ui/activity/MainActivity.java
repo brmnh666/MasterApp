@@ -221,6 +221,14 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
         under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_tixing, null);
         TextView tv_know = under_review.findViewById(R.id.tv_know);
         ImageView iv_close = under_review.findViewById(R.id.iv_close);
+        LinearLayout ll_ad=under_review.findViewById(R.id.ll_ad);
+        ll_ad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                underReviewDialog.dismiss();
+            }
+        });
+
         iv_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -248,6 +256,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
 //                lp.height = under_review.getHeight();
 //                lp.width = 300;
 //                lp.height = 400;
+        lp.width=WindowManager.LayoutParams.MATCH_PARENT;
         window.setAttributes(lp);
 //                window.setDimAmount(0.1f);
         window.setBackgroundDrawable(new ColorDrawable());

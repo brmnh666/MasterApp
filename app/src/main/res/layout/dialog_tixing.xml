@@ -6,20 +6,22 @@
     android:gravity="center">
 
     <LinearLayout
+        android:id="@+id/ll_ad"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="450dp"
         android:orientation="vertical"
-        android:background="@drawable/tixing_bg"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp">
+        android:background="@drawable/tixing2"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="60dp"
             android:gravity="center"
-            android:text="职业道德操守准则"
-            android:textSize="18sp"
-            android:textStyle="bold"/>
+            android:text="温馨提示"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -27,8 +29,9 @@
             android:layout_marginTop="10dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:text="敬爱的师傅，您好！我们的利益来源于对产品的服务，希望通过您的优质服务和新人分享让用户感受到其购买的是高品质产品，这也是我们职业道德操守准则的体现。"/>
-
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:text="敬爱的师傅，您好！我们的利益来源于对产品的服务，希望通过您的优质服务和信任分享让用户感受到其购买的是高品质产品，这也是我们职业道德操守准则的体现。"/>
         <TextView
             android:id="@+id/tv_know"
             android:layout_width="wrap_content"
@@ -39,13 +42,16 @@
             android:gravity="center"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="#0570ff"/>
+            android:textColor="#0570ff"
+            android:layout_marginBottom="100dp"
+            android:visibility="gone"/>
     </LinearLayout>
 
     <ImageView
         android:id="@+id/iv_close"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:src="@drawable/tixing_close"/>
+        android:src="@drawable/tixing_close"
+        android:visibility="gone"/>
 
 </LinearLayout>

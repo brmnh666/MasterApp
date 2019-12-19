@@ -299,29 +299,29 @@ public abstract class BaseActivity<P extends BasePresenter, M extends BaseModel>
             startActivity(intent);
         }
     }
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void Event(String message) {
-        if ("账号在别处登录".equals(message)){
-            final CommonDialog_Home dialog = new CommonDialog_Home(mActivity);
-            dialog.setMessage("账号在别处登录是否重新登录")
-                    //.setImageResId(R.mipmap.ic_launcher)
-                    .setTitle("提示")
-                    .setSingle(true).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
-                @Override
-                public void onPositiveClick() {//重新登录
-                    ActivityUtils.finishAllActivities();
-                    startActivity(new Intent(mActivity, LoginActivity.class));
-//                    finish();
-                }
-
-                @Override
-                public void onNegtiveClick() {//取消
-                    dialog.dismiss();
-                    // Toast.makeText(MainActivity.this,"ssss",Toast.LENGTH_SHORT).show();
-                }
-            }).show();
-        }
-    }
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void Event(String message) {
+//        if ("账号在别处登录".equals(message)){
+//            final CommonDialog_Home dialog = new CommonDialog_Home(mActivity);
+//            dialog.setMessage("账号在别处登录是否重新登录")
+//                    //.setImageResId(R.mipmap.ic_launcher)
+//                    .setTitle("提示")
+//                    .setSingle(true).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
+//                @Override
+//                public void onPositiveClick() {//重新登录
+//                    ActivityUtils.finishAllActivities();
+//                    startActivity(new Intent(mActivity, LoginActivity.class));
+////                    finish();
+//                }
+//
+//                @Override
+//                public void onNegtiveClick() {//取消
+//                    dialog.dismiss();
+//                    // Toast.makeText(MainActivity.this,"ssss",Toast.LENGTH_SHORT).show();
+//                }
+//            }).show();
+//        }
+//    }
 
     @NonNull
     @Override
