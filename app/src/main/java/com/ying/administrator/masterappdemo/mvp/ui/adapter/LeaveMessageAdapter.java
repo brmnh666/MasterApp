@@ -1,6 +1,10 @@
 package com.ying.administrator.masterappdemo.mvp.ui.adapter;
 
+import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -9,13 +13,22 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.PhotoViewActivity;
 import com.ying.administrator.masterappdemo.util.DensityUtil;
 import com.ying.administrator.masterappdemo.viewholder.LayoutParamsViewHolder;
 import com.ying.administrator.masterappdemo.widget.GlideUtil;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class LeaveMessageAdapter extends BaseQuickAdapter<WorkOrder.LeavemessageListBean, LayoutParamsViewHolder> {
+
+    private RecyclerView rv_img;
+    private String photo;
+
+    private ImgPicAdapter picAdapter;
+
     public LeaveMessageAdapter(int layoutResId, @Nullable List<WorkOrder.LeavemessageListBean> data) {
         super(layoutResId, data);
     }
@@ -27,13 +40,32 @@ public class LeaveMessageAdapter extends BaseQuickAdapter<WorkOrder.Leavemessage
         helper.setText(R.id.tv_status,item.getContent())
                 .setText(R.id.tv_date,time)
                 .setText(R.id.tv_time,item.getUserName());
-        if (item.getPhoto()==null){
-            helper.setGone(R.id.img,false);
+        rv_img =helper.getView(R.id.rv_img);
+        ArrayList<String> imglist=new ArrayList<>();
+        if(item.getPhoto()==null){
+            rv_img.setVisibility(View.GONE);
         }else{
-            helper.setGone(R.id.img,true);
+            rv_img.setVisibility(View.VISIBLE);
+            photo=item.getPhoto();
+            if (photo.contains(",")){
+                String[] s=photo.split(",");
+                imglist.addAll(Arrays.asList(s));
+            }else{
+                imglist.add(photo);
+            }
         }
-        GlideUtil.loadImageViewLoding(mContext, Config.Leave_Message_URL +item.getPhoto(), (ImageView) helper.getView(R.id.img), R.drawable.image_loading,R.drawable.image_loading);
-        helper.addOnClickListener(R.id.img);
+        picAdapter = new ImgPicAdapter(R.layout.item_picture, imglist);
+        rv_img.setLayoutManager(new GridLayoutManager(mContext,5));
+        rv_img.setAdapter(picAdapter);
+        picAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Intent intent = new Intent(mContext, PhotoViewActivity.class);
+                intent.putExtra("PhotoUrl", Config.Leave_Message_URL+adapter.getData().get(position));
+                mContext.startActivity(intent);
+            }
+        });
+
         int position=helper.getAdapterPosition();
         if (position==0){
             helper.setImageResource(R.id.iv_status,R.drawable.blue_bot);

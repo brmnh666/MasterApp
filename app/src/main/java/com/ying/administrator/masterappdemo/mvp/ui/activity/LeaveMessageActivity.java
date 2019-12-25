@@ -127,7 +127,7 @@ public class LeaveMessageActivity extends BaseActivity<LeaveMeaasgePreaenter, Le
                     case R.id.ll_order_message:
                         mPresenter.LeaveMessageWhetherLook(list.get(position).getOrderId());
                         if (!"0".equals(list.get(position).getOrderId())) {
-                            Intent intent = new Intent(mActivity, MessageActivity.class);
+                            Intent intent = new Intent(mActivity, MessageActivity2.class);
                             intent.putExtra("orderId", list.get(position).getOrderId());
                             startActivity(intent);
                         }

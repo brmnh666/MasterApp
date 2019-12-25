@@ -73,12 +73,12 @@
             android:text="正在派送途中,请您准备签收(派件人:张小建,电话:18513394441)正在派送途中,请您准备签收(派件人:张小建,电话:18513394441)正在派送途中,请您准备签收(派件人:张小建,电话:18513394441)正在派送途中,请您准备签收(派件人:张小建,电话:18513394441)"
             android:textColor="#808080"
             android:layout_marginLeft="5dp"/>
-        <ImageView
-            android:id="@+id/img"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="5dp"
-            android:scaleType="fitXY"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_img"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="5dp"
+            android:overScrollMode="never"/>
     </LinearLayout>
 
 

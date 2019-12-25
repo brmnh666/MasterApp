@@ -548,36 +548,36 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                 ToastUtils.showShort(baseResult.getInfo());
                 break;
 
-            case 406:
-                final CommonDialog_Home dialog = new CommonDialog_Home(getActivity());
-                dialog.setMessage("账号在别处登录是否重新登录")
-                        //.setImageResId(R.mipmap.ic_launcher)
-                        .setTitle("提示")
-                        .setSingle(true)
-                        /*.setNegtive("重设密码")*/
-                        .setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
-                            @Override
-                            public void onPositiveClick() {//重新登录
-
-                                startActivity(new Intent(getActivity(), Login_New_Activity.class));
-                                getActivity().finish();
-                            }
-
-                            @Override
-                            public void onNegtiveClick() {
-
-                            }
-
-                           /* @Override
-                            public void onNegtiveClick() {//取消
-                                startActivity(new Intent(mActivity, ForgetPasswordActivity.class));
-                                getActivity().finish();
-                                dialog.dismiss();
-                                // Toast.makeText(MainActivity.this,"ssss",Toast.LENGTH_SHORT).show();
-                            }*/
-                        }).show();
-
-                break;
+//            case 406:
+//                final CommonDialog_Home dialog = new CommonDialog_Home(getActivity());
+//                dialog.setMessage("账号在别处登录是否重新登录")
+//                        //.setImageResId(R.mipmap.ic_launcher)
+//                        .setTitle("提示")
+//                        .setSingle(true)
+//                        /*.setNegtive("重设密码")*/
+//                        .setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
+//                            @Override
+//                            public void onPositiveClick() {//重新登录
+//
+//                                startActivity(new Intent(getActivity(), Login_New_Activity.class));
+//                                getActivity().finish();
+//                            }
+//
+//                            @Override
+//                            public void onNegtiveClick() {
+//
+//                            }
+//
+//                           /* @Override
+//                            public void onNegtiveClick() {//取消
+//                                startActivity(new Intent(mActivity, ForgetPasswordActivity.class));
+//                                getActivity().finish();
+//                                dialog.dismiss();
+//                                // Toast.makeText(MainActivity.this,"ssss",Toast.LENGTH_SHORT).show();
+//                            }*/
+//                        }).show();
+//
+//                break;
 
         }
     }
