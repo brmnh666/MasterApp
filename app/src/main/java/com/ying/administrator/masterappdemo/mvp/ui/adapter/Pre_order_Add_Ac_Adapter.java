@@ -32,8 +32,8 @@ public class Pre_order_Add_Ac_Adapter extends BaseQuickAdapter<FAccessory.OrderA
             helper.setText(R.id.tv_accessories_number,"数量："+item.getQuantity());
 
         }
-        Glide.with(mContext).load("https://img.xigyu.com/Pics/Accessory/"+item.getPhoto1()).into((ImageView) helper.getView(R.id.photo1));
-        Glide.with(mContext).load("https://img.xigyu.com/Pics/Accessory/"+item.getPhoto2()).into((ImageView) helper.getView(R.id.photo2));
+        Glide.with(mContext).load(item.getPhoto1()).into((ImageView) helper.getView(R.id.photo1));
+        Glide.with(mContext).load(item.getPhoto2()).into((ImageView) helper.getView(R.id.photo2));
         helper.addOnClickListener(R.id.iv_accessories_delete);
            if (item.getSendState()==null){
                helper.setGone(R.id.tv_accessories_sendstate,false);

@@ -98,7 +98,7 @@ public class AccessoriesPictureActivity extends BaseActivity<NewAddAccessoriesPr
     private String FilePath;
     private ArrayList<Object> permissions;
     private PopupWindow mPopupWindow;
-    private HashMap<Integer, File> accessories_picture = new HashMap<>();
+    private HashMap<Integer, String> accessories_picture = new HashMap<>();
     private Map<Integer, Accessory> map_collect = new HashMap<>();//收藏的配件map集合
     private List<Uri> mSelected;
     private Uri uri;
@@ -193,13 +193,13 @@ public class AccessoriesPictureActivity extends BaseActivity<NewAddAccessoriesPr
                 finish();
                 break;
             case R.id.btn_sure:
-                if (img_list.size()!=nameList.size()) {
-                    ToastUtils.showShort("未添加全部图片或图片上传失败，请重试");
+                if (nameList.size()!=accessories_picture.size()) {
+                    ToastUtils.showShort("未添加全部图片");
                     return;
                 }else{
                     for (int i = 0; i < list.size(); i++) {
-                        list.get(i).setImg1(img_list.get(i));//配件照片
-                        list.get(i).setImg2(img_list.get(list.size()));//整机照片
+                        list.get(i).setImg1(accessories_picture.get(i));//配件照片
+                        list.get(i).setImg2(accessories_picture.get(list.size()));//整机照片
                     }
                     if ("1".equals(select_state)){
                         for (int i = 0; i < list.size(); i++) {
@@ -358,10 +358,10 @@ public class AccessoriesPictureActivity extends BaseActivity<NewAddAccessoriesPr
                 }
                 if (file != null) {
                     File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
-                    accessories_picture.put(pos, newFile);
+                    accessories_picture.put(pos, FilePath);
                     nameList.get(pos).setPic(newFile);
                     accessoriesPictureAdapter.setNewData(nameList);
-                    ApplyAccessoryphotoUpload(newFile);
+//                    ApplyAccessoryphotoUpload(newFile);
                 }
                 break;
             //相册
@@ -375,10 +375,10 @@ public class AccessoriesPictureActivity extends BaseActivity<NewAddAccessoriesPr
                 }
                 if (file != null) {
                     File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
-                    accessories_picture.put(pos, newFile);
+                    accessories_picture.put(pos, MyUtils.getRealPathFromUri(mActivity, uri));
                     nameList.get(pos).setPic(newFile);
                     accessoriesPictureAdapter.setNewData(nameList);
-                    ApplyAccessoryphotoUpload(newFile);
+//                    ApplyAccessoryphotoUpload(newFile);
                 }
                 break;
         }

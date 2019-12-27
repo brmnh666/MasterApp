@@ -66,6 +66,7 @@ import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.common.Config;
+import com.ying.administrator.masterappdemo.entity.AccPicResult;
 import com.ying.administrator.masterappdemo.entity.Accessory;
 import com.ying.administrator.masterappdemo.entity.AddressList;
 import com.ying.administrator.masterappdemo.entity.Data;
@@ -75,6 +76,7 @@ import com.ying.administrator.masterappdemo.entity.FService;
 import com.ying.administrator.masterappdemo.entity.GAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
 import com.ying.administrator.masterappdemo.entity.Logistics;
+import com.ying.administrator.masterappdemo.entity.PicResult;
 import com.ying.administrator.masterappdemo.entity.SAccessory;
 import com.ying.administrator.masterappdemo.entity.SService;
 import com.ying.administrator.masterappdemo.entity.Service;
@@ -95,6 +97,7 @@ import com.ying.administrator.masterappdemo.util.SingleClick;
 import com.ying.administrator.masterappdemo.util.calendarutil.CalendarEvent;
 import com.ying.administrator.masterappdemo.util.calendarutil.CalendarProviderManager;
 import com.ying.administrator.masterappdemo.util.imageutil.CompressHelper;
+import com.ying.administrator.masterappdemo.util.imageutil.ImageCompress;
 import com.ying.administrator.masterappdemo.widget.BottomDialog;
 import com.ying.administrator.masterappdemo.widget.ClearEditText;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
@@ -110,6 +113,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -119,14 +123,20 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.iwgang.countdownview.CountdownView;
 import io.reactivex.functions.Consumer;
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.Response;
 
 import static com.ying.administrator.masterappdemo.util.MyUtils.showToast;
 
@@ -505,6 +515,13 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     private XGPushClickedResult clickedResult;
 
     private List<Logistics> list = new ArrayList<>();
+    // <editor-fold defaultstate="collapsed" desc="压缩后的配件图片集合">
+    private ArrayList<String> accImglist = new ArrayList<>();
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="压缩后的配件图片上传成功之后返回的图片名称的集合">
+    private Map<Integer,String> successpiclist = new HashMap<>();
+    // </editor-fold>
     private String content;
     private CommonDialog_Home reject;
     private AlertDialog underReviewDialog;
@@ -1722,11 +1739,14 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 if (baseResult.getData().isItem1()) {
                     gson = new Gson();
                     if (select_state == 0) {
-                        select_state2(fAcList);
+//                        select_state2(fAcList);
+                        uploadImg(fAcList);
                     } else if (select_state == 1) {
-                        select_state2(mAcList);
+//                        select_state2(mAcList);
+                        uploadImg(mAcList);
                     } else {
-                        select_state2(sAcList);
+//                        select_state2(sAcList);
+                        uploadImg(sAcList);
                     }
                 } else {
                     ToastUtils.showShort("添加寄件地址失败");
@@ -3858,5 +3878,62 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         }
     }
 
+    // <editor-fold defaultstate="collapsed" desc="上传配件图片">
+    public void uploadImg(final List<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> accesslist) {//accesslist配件集合，图片还未上传
+        accImglist.clear();
+        successpiclist.clear();
+        for (int i = 0; i < accesslist.size(); i++) {
+            accImglist.add(ImageCompress.compressImage(accesslist.get(i).getPhoto1(),Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy/" + System.currentTimeMillis() + ".jpg",80));
+            if (i==accesslist.size()-1){
+                accImglist.add(ImageCompress.compressImage(accesslist.get(i).getPhoto2(),Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy/" + System.currentTimeMillis() + ".jpg",80));
+            }
+        }
+        for (int i = 0; i < accImglist.size(); i++) {
+            File file=new File(accImglist.get(i));
+            MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+            builder.addFormDataPart("img", file.getName(), RequestBody.create(MediaType.parse("img/png"), file));
+            MultipartBody requestBody = builder.build();
+            //接口
+            String path = Config.BASE_URL+"Upload/ApplyAccessoryphotoUpload";
+            OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                    .connectTimeout(5, TimeUnit.MINUTES)
+                    .readTimeout(5, TimeUnit.MINUTES)
+                    .build();
+            final Request request = new Request.Builder()
+                    .url(path)
+                    .post(requestBody)
+                    .build();
+            Call call = okHttpClient.newCall(request);
+            final int finalI = i;
+            call.enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    hideProgress();
+                    ToastUtils.showShort("配件图片上传失败，请稍后重试");
+                }
 
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    String str = response.body().string();
+                    System.out.println(str);
+                    Gson gson=new Gson();
+                    AccPicResult result=gson.fromJson(str.replaceAll(" ",""), AccPicResult.class);
+                    if (result.getStatusCode()==200){
+                        successpiclist.put(finalI,result.getData().getItem1());
+                        if(successpiclist.size()==accImglist.size()){
+                            for (int i = 0; i <accesslist.size() ; i++) {
+                                accesslist.get(i).setPhoto1(successpiclist.get(i));
+                                accesslist.get(i).setPhoto2(successpiclist.get(successpiclist.size()-1));
+                            }
+                            select_state2(accesslist);
+                        }
+                    }else{
+                        hideProgress();
+                        ToastUtils.showShort("配件图片上传失败，请稍后重试");
+                    }
+                }
+            });
+        }
+    }
+    // </editor-fold>
 }
