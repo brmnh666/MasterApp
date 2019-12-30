@@ -243,7 +243,7 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
                 mIvWechat.setSelected(true);
                 break;
             case R.id.tv_recharge_agreement:
-                Intent intent = new Intent(mActivity, WebActivity.class);
+                Intent intent = new Intent(mActivity, WebActivity2.class);
                 intent.putExtra("Url", "http://admin.xigyu.com/message/ffdbdaa");
                 intent.putExtra("Title", "充值协议");
                 startActivity(intent);

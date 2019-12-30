@@ -241,8 +241,8 @@ public interface ApiService {
      * 快递信息
      * */
     @FormUrlEncoded
-    @POST("Order/GetExpressInfo")
-    Observable<BaseResult<Data<List<Logistics>>>> GetExpressInfo(@Field("ExpressNo") String ExpressNo);
+    @POST("Mall/GetExpressInfo")
+    Observable<BaseResult<Data<Logistics>>> GetExpressInfo(@Field("ExpressNo") String ExpressNo);
 
 
     /*  *//*获取派单列表*//*

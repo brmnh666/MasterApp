@@ -23,6 +23,7 @@ import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
+import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
@@ -60,10 +61,11 @@ public class MyApplication extends Application {
                 MaterialHeader header=new MaterialHeader(context);
                 header.setPrimaryColors(Color.parseColor("#00000000"));
                 header.setShowBezierWave(true);
-                layout.setEnableHeaderTranslationContent(false);
+//                layout.setEnableHeaderTranslationContent(false);
                 layout.setDisableContentWhenRefresh(true);
-                return header;//指定为经典Header，默认是 贝塞尔雷达Header
-//                return new ClassicsHeader(context).setSpinnerStyle(SpinnerStyle.Translate);//指定为经典Header，默认是 贝塞尔雷达Header
+                layout.setEnableHeaderTranslationContent(true);
+//                return header;//指定为经典Header，默认是 贝塞尔雷达Header
+                return new ClassicsHeader(context).setSpinnerStyle(SpinnerStyle.Translate);//指定为经典Header，默认是 贝塞尔雷达Header
             }
         });
         //设置全局的Footer构建器

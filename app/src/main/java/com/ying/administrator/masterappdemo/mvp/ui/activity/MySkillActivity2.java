@@ -91,32 +91,36 @@ public class MySkillActivity2 extends BaseActivity<AddSkillsPresenter, AddSkills
                 finish();
                 break;
             case R.id.btn_skill:
-                skills ="";
-                NodeIds ="";
-                for (int i = 0; i < circuitAdapter.getGroup().size(); i++) {
-                    if (circuitAdapter.getGroup().get(i).isSelected()){
-                        skills +=circuitAdapter.getGroup().get(i).getCategory().getFCategoryName()+"/";
-                        NodeIds +=circuitAdapter.getGroup().get(i).getCategory().getFCategoryID()+",";
-                    }
-                    for (int j = 0; j < circuitAdapter.getGroup().get(i).getCategoryArrayList().size(); j++) {
-                        if (circuitAdapter.getGroup().get(i).getCategoryArrayList().get(j).isSelected()){
-                            skills +=circuitAdapter.getGroup().get(i).getCategoryArrayList().get(j).getFCategoryName()+"/";
-                            NodeIds +=circuitAdapter.getGroup().get(i).getCategoryArrayList().get(j).getFCategoryID()+",";
+                skills = "";
+                NodeIds = "";
+                if (circuitAdapter != null) {
+
+                    for (int i = 0; i < circuitAdapter.getGroup().size(); i++) {
+                        if (circuitAdapter.getGroup().get(i).isSelected()) {
+                            skills += circuitAdapter.getGroup().get(i).getCategory().getFCategoryName() + "/";
+                            NodeIds += circuitAdapter.getGroup().get(i).getCategory().getFCategoryID() + ",";
+                        }
+                        for (int j = 0; j < circuitAdapter.getGroup().get(i).getCategoryArrayList().size(); j++) {
+                            if (circuitAdapter.getGroup().get(i).getCategoryArrayList().get(j).isSelected()) {
+                                skills += circuitAdapter.getGroup().get(i).getCategoryArrayList().get(j).getFCategoryName() + "/";
+                                NodeIds += circuitAdapter.getGroup().get(i).getCategoryArrayList().get(j).getFCategoryID() + ",";
+                            }
                         }
                     }
+
                 }
-                if (skills.contains("/")){
+                if (skills.contains("/")) {
                     skills = skills.substring(0, skills.lastIndexOf("/"));
                 }
-                if (NodeIds.contains(",")){
+                if (NodeIds.contains(",")) {
                     NodeIds = NodeIds.substring(0, NodeIds.lastIndexOf(","));
                 }
                 System.out.println(skills);
                 System.out.println(NodeIds);
-                Intent intent=new Intent();
+                Intent intent = new Intent();
                 intent.putExtra("skills", skills);
                 intent.putExtra("NodeIds", NodeIds);
-                setResult(1000,intent);
+                setResult(1000, intent);
                 finish();
                 break;
         }
@@ -139,7 +143,7 @@ public class MySkillActivity2 extends BaseActivity<AddSkillsPresenter, AddSkills
                     if (popularList.size() == 0) {
                     } else {
                         for (int i = 0; i < popularList.size(); i++) {
-                                mySkillsList.add(new MySkills(false, popularList.get(i), new ArrayList<Category>()));
+                            mySkillsList.add(new MySkills(false, popularList.get(i), new ArrayList<Category>()));
                         }
                         circuitAdapter = new CarCircuitAdapter(this);
                         circuitAdapter.addGroupList(mySkillsList);
@@ -151,13 +155,13 @@ public class MySkillActivity2 extends BaseActivity<AddSkillsPresenter, AddSkills
                             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
                                 String circuit_id = circuitAdapter.getGroup(groupPosition).getCategory().getFCategoryID();
                                 position = groupPosition;
-                                if (circuitAdapter.getChildrenCount(groupPosition)>0){
-                                    if (parent.isGroupExpanded(groupPosition)){
+                                if (circuitAdapter.getChildrenCount(groupPosition) > 0) {
+                                    if (parent.isGroupExpanded(groupPosition)) {
                                         parent.collapseGroup(groupPosition);
-                                    }else{
+                                    } else {
                                         parent.expandGroup(groupPosition);
                                     }
-                                }else{
+                                } else {
                                     mPresenter.GetChildFactoryCategory(circuit_id);
                                 }
                                 return true;
@@ -166,22 +170,22 @@ public class MySkillActivity2 extends BaseActivity<AddSkillsPresenter, AddSkills
                         mExpandablelistview.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
 
                             private List<Category> categoryArrayList;
-                            private int count=0;
+                            private int count = 0;
 
                             @Override
                             public boolean onChildClick(ExpandableListView expandableListView, View view, int groupPosition, int childPosition, long l) {
-                                count=0;
+                                count = 0;
                                 categoryArrayList = circuitAdapter.getGroup(groupPosition).getCategoryArrayList();
                                 Category category = categoryArrayList.get(childPosition);
                                 category.setSelected(!category.isSelected());
-                                for (int i = 0; i < categoryArrayList.size() ; i++) {
-                                    if (categoryArrayList.get(i).isSelected()){
+                                for (int i = 0; i < categoryArrayList.size(); i++) {
+                                    if (categoryArrayList.get(i).isSelected()) {
                                         count++;
                                     }
                                 }
-                                if (count==categoryArrayList.size()){
+                                if (count == categoryArrayList.size()) {
                                     circuitAdapter.getGroup(groupPosition).setSelected(true);
-                                }else{
+                                } else {
                                     circuitAdapter.getGroup(groupPosition).setSelected(false);
                                 }
                                 circuitAdapter.notifyDataSetChanged();
@@ -209,8 +213,8 @@ public class MySkillActivity2 extends BaseActivity<AddSkillsPresenter, AddSkills
                     popularList = data.getData();
                     if (popularList.size() == 0) {
                     } else {
-                       circuitAdapter.addAllChild(position,popularList);
-                       mExpandablelistview.expandGroup(position);
+                        circuitAdapter.addAllChild(position, popularList);
+                        mExpandablelistview.expandGroup(position);
                     }
                 } else {
                     ToastUtils.showShort("获取分类失败！");

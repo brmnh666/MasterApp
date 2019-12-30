@@ -514,7 +514,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     private String time;
     private XGPushClickedResult clickedResult;
 
-    private List<Logistics> list = new ArrayList<>();
+    private List<Logistics.ExpressDetailListBean.DataBean> list = new ArrayList<>();
     // <editor-fold defaultstate="collapsed" desc="压缩后的配件图片集合">
     private ArrayList<String> accImglist = new ArrayList<>();
     // </editor-fold>
@@ -543,6 +543,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     private String AccessoryAndServiceApplyState;
     private Double factorymoney;//申请配件服务传给工厂的钱
     private Integer sizeId;//申请配件服务传给工厂的值
+    private String service="0";
 
 
     @Override
@@ -853,7 +854,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_leave_message:
-                intent = new Intent(mActivity, MessageActivity.class);
+                intent = new Intent(mActivity, MessageActivity2.class);
                 intent.putExtra("orderId", data.getOrderID());
                 startActivity(intent);
                 break;
@@ -1315,6 +1316,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 mPresenter.UpdateOrderAddressByOrderID(OrderID, returnAddress);
             }
         } else if (list.size() == 0 && mPre_order_Add_Service_Adapter.getData().size() > 0) {
+            service="1";
             orderServiceStrBean = new FService.OrderServiceStrBean();
             orderServiceStrBean.setOrderService(mPre_order_Add_Service_Adapter.getData());
             String s2 = gson.toJson(orderServiceStrBean);
@@ -1622,17 +1624,17 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     }
 
     @Override
-    public void GetExpressInfo(BaseResult<Data<List<Logistics>>> baseResult) {
+    public void GetExpressInfo(BaseResult<Data<Logistics>> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
                 if (baseResult.getData().isItem1()) {
                     if (baseResult.getData().getItem2() != null) {
                         if (expressType == 1) {
                             if (mTvContent != null) {
-                                mTvContent.setText(baseResult.getData().getItem2().get(0).getContent());
+                                mTvContent.setText(baseResult.getData().getItem2().getExpressDetailList().getData().get(0).getContent());
                             }
                         } else {
-                            list.addAll(baseResult.getData().getItem2());
+                            list.addAll(baseResult.getData().getItem2().getExpressDetailList().getData());
                             content = list.get(0).getContent();
 //                    ToastUtils.showShort(content);
                             returnAccessoryAdapter.setContent(content);
@@ -1696,6 +1698,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
             body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), s);
             mPresenter.AddOrderAccessoryAndService(body);
         } else if (list.size() == 0 && mPre_order_Add_Service_Adapter.getData().size() > 0) {
+            service = "1";
             orderServiceStrBean = new FService.OrderServiceStrBean();
             orderServiceStrBean.setOrderService(mPre_order_Add_Service_Adapter.getData());
             String s2 = gson.toJson(orderServiceStrBean);
@@ -2890,7 +2893,11 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 if (baseResult.getData().isItem1()) {
                     ToastUtils.showShort("提交成功");
                     EventBus.getDefault().post("WorkOrderDetailsActivity");
-                    EventBus.getDefault().post(5);
+                    if ("1".equals(service)){
+                        finish();
+                    }else {
+                        EventBus.getDefault().post(5);
+                    }
                     mAcList.clear();
                     fAcList.clear();
                     sAcList.clear();

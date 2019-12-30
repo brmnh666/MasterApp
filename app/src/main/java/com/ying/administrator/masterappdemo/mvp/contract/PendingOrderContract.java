@@ -73,7 +73,7 @@ public interface PendingOrderContract {
         Observable<BaseResult<Data<String>>> ConfirmtoFreezeByOrderID(String OrderID,String type,String AccessoryId);
 
         //物流信息
-        Observable<BaseResult<Data<List<Logistics>>>> GetExpressInfo( String ExpressNo);
+        Observable<BaseResult<Data<Logistics>>> GetExpressInfo( String ExpressNo);
 
         Observable<BaseResult<List<AddressList>>> GetAccountAddress(String UserId);
 
@@ -129,7 +129,7 @@ public interface PendingOrderContract {
         void UpdateOrderState(BaseResult<Data<String>> baseResult);
         void ConfirmtoFreezeByOrderID(BaseResult<Data<String>> baseResult);
 
-        void GetExpressInfo(BaseResult<Data<List<Logistics>>> baseResult);
+        void GetExpressInfo(BaseResult<Data<Logistics>> baseResult);
         void GetAccountAddress(BaseResult<List<AddressList>> baseResult);
 
         void UpdateOrderAddressByOrderID(BaseResult<Data<String>> baseResult);

@@ -44,6 +44,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -317,7 +318,10 @@ public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
                         @Override
                         public void onPositiveClick() {//添加银行卡
                             dialog.dismiss();
-                            startActivity(new Intent(mActivity,Add_Card_Activity.class));
+                            Intent intent=new Intent(mActivity, Add_Card_Activity.class);
+                            intent.putExtra("cardlist", (Serializable) list);
+                            startActivityForResult(intent, 2002);
+//                            startActivity(new Intent(mActivity,Add_Card_Activity.class));
                         }
 
                         @Override

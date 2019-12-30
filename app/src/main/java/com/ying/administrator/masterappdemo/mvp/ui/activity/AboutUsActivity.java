@@ -106,7 +106,7 @@ public class AboutUsActivity extends BaseActivity implements View.OnClickListene
                 startActivity(new Intent(mActivity,Opinion_Activity.class));
                 break;
             case R.id.tv_user_Agreement:
-                intent =new Intent(mActivity,WebActivity.class);
+                intent =new Intent(mActivity,WebActivity2.class);
                 intent.putExtra("Url","http://admin.xigyu.com/Agreement");
                 intent.putExtra("Title","用户协议");
                 startActivity(intent);

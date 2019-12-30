@@ -1395,7 +1395,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
     }
 
     @Override
-    public void GetExpressInfo(BaseResult<Data<List<Logistics>>> baseResult) {
+    public void GetExpressInfo(BaseResult<Data<Logistics>> baseResult) {
 
     }
 

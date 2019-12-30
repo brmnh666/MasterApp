@@ -211,9 +211,9 @@ public class PendingOrderPresenter extends PendingOrderContract.Presenter {
     @Override
     public void GetExpressInfo(String ExpressNo) {
         mModel.GetExpressInfo(ExpressNo)
-                .subscribe(new BaseObserver<Data<List<Logistics>>>() {
+                .subscribe(new BaseObserver<Data<Logistics>>() {
                     @Override
-                    protected void onHandleSuccess(BaseResult<Data<List<Logistics>>> value) {
+                    protected void onHandleSuccess(BaseResult<Data<Logistics>> value) {
                         mView.GetExpressInfo(value);
                     }
                 });

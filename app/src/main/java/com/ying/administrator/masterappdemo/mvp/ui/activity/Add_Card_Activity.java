@@ -259,7 +259,8 @@ public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> im
                 break;*/
             case R.id.tv_bind_card:
                 showProgress();
-                name = mEtAddCardName.getText().toString();
+                String name1 = mEtAddCardName.getText().toString();
+                name=name1.replaceAll(" ","");
                 bankname = mTvAddCardBankname.getText().toString();
                 String num=met_banknumber.getText().toString();
                 phone = met_add_card_phone.getText().toString();

@@ -156,7 +156,7 @@ public class PendingOrderModel implements PendingOrderContract.Model {
     }
 
     @Override
-    public Observable<BaseResult<Data<List<Logistics>>>> GetExpressInfo(String ExpressNo) {
+    public Observable<BaseResult<Data<Logistics>>> GetExpressInfo(String ExpressNo) {
         return ApiRetrofit.getDefault().GetExpressInfo(ExpressNo)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());

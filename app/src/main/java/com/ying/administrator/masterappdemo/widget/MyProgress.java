@@ -37,7 +37,8 @@ public class MyProgress extends ProgressBar {
     @Override
     public synchronized void setProgress(int progress) {
         // TODO Auto-generated method stub
-        setText(progress);
+        Double a=Double.valueOf(progress);
+        setText(a);
         super.setProgress(progress);
 
     }
@@ -64,13 +65,14 @@ public class MyProgress extends ProgressBar {
     }
 
     private void setText(){
-        setText(this.getProgress());
+//        setText(this.getProgress());
     }
 
     //设置文字内容
-    private void setText(int progress){
-        int i = (progress * 100)/this.getMax();
-        this.text = String.valueOf(i) + "%";
+    private void setText(Double progress){
+        Double i = (progress /this.getMax())*100;
+//        Double a= Double.parseDouble(String.format("%.2f", i))*100;
+        this.text = String.format("%.0f", i) + "%";
     }
 
 
