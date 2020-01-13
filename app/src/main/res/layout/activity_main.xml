@@ -45,8 +45,8 @@
 
                     <ImageView
                         android:id="@+id/img_home"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
                         android:layout_gravity="center"
                         android:background="@drawable/tab_home_selector"
                         android:gravity="center" />
@@ -81,8 +81,8 @@
 
                 <ImageView
                     android:id="@+id/img_message"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:layout_gravity="center"
                     android:background="@drawable/tab_message_selector"
                     android:gravity="center" />
@@ -143,8 +143,8 @@
                         android:gravity="center" />
                 <ImageView
                     android:id="@+id/img_cart"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:layout_gravity="center"
                     android:background="@drawable/tab_accessories_shop_selector"
                     android:gravity="center" />
@@ -176,8 +176,8 @@
                  android:gravity="center" />
                 <ImageView
                     android:id="@+id/img_my"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:layout_gravity="center"
                     android:background="@drawable/tab_me_selector"
                     android:gravity="center" />

@@ -1955,6 +1955,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
 
 
 
+
                     /*获取订单的距离*/
                     distance = Double.parseDouble(data.getDistance());
                     if (Service_range >= distance) {
@@ -2674,6 +2675,16 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                             mTvServiceInformation.setVisibility(View.GONE);
                         }
                     }
+                    if ("2".equals(data.getState())){
+                        mLlAddAccessory.setVisibility(View.GONE);
+                        mLlAddService.setVisibility(View.GONE);
+                        mLlPrompt.setVisibility(View.GONE);
+                        mRlSelectTime.setVisibility(View.GONE);
+                        mRlCompleteSubmit.setVisibility(View.GONE);
+                    }else {
+                        return;
+                    }
+
                     break;
 
                 } else {

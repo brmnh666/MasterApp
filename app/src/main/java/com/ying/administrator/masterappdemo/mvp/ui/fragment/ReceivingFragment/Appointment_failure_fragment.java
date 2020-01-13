@@ -1,5 +1,6 @@
 package com.ying.administrator.masterappdemo.mvp.ui.fragment.ReceivingFragment;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -29,6 +30,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
@@ -39,18 +41,32 @@ import com.ying.administrator.masterappdemo.mvp.contract.GetOrderListForMeContra
 import com.ying.administrator.masterappdemo.mvp.model.GetOrderListForMeModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.GetOrderListForMePresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_details_Activity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.WorkOrderDetailsActivity2;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Appointment_failure_Adapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Redeploy_Adapter;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseFragment;
+import com.ying.administrator.masterappdemo.util.MyUtils;
+import com.ying.administrator.masterappdemo.util.calendarutil.CalendarEvent;
+import com.ying.administrator.masterappdemo.util.calendarutil.CalendarProviderManager;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 import com.ying.administrator.masterappdemo.widget.CustomDialog_Redeploy;
 import com.ying.administrator.masterappdemo.widget.CustomDialog_UnSuccess;
 
+import org.feezu.liuli.timeselector.TimeSelector;
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import io.reactivex.functions.Consumer;
+
+import static android.widget.Toast.LENGTH_SHORT;
 
 /*预约不成功*/
 public class Appointment_failure_fragment extends BaseFragment<GetOrderListForMePresenter, GetOrderListForMeModel> implements GetOrderListForMeContract.View {
@@ -60,6 +76,9 @@ public class Appointment_failure_fragment extends BaseFragment<GetOrderListForMe
     private Button negtive;
     private Button positive;
     private AlertDialog cancelDialog;
+    private WorkOrder.DataBean data = new WorkOrder.DataBean();
+    private long recommendedtime;
+    private int successposition;
 
     @Override
     public void UpdateContinueServiceState(BaseResult<Data<String>> baseResult) {
@@ -78,7 +97,44 @@ public class Appointment_failure_fragment extends BaseFragment<GetOrderListForMe
 
     @Override
     public void UpdateSendOrderUpdateTime(BaseResult<Data> baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
 
+                if (baseResult.getData().isItem1()) {
+                    mPresenter.AddOrderSuccess(OrderId,"1","预约成功");
+                    if (data.getAddress() == null) {
+                        Log.d("=====>", "地址为空");
+                    } else {
+                        Log.d("=====>", data.getAddress());
+                    }
+                    CalendarEvent calendarEvent = new CalendarEvent(
+                            data.getTypeName() + "工单号：" + data.getOrderID(),
+                            "客户名:" + data.getUserName() + " 客户手机号:" + data.getPhone() + "故障原因" + data.getMemo(),
+                            data.getAddress(),
+                            recommendedtime,
+                            recommendedtime,
+                            60, null    //提前一个小时提醒  单位分钟
+                    );
+                    // 添加事件
+                    int result = CalendarProviderManager.addCalendarEvent(mActivity, calendarEvent);
+                    if (result == 0) {
+                        Toast.makeText(mActivity, "已为您添加行程至日历,将提前一小时提醒您！！", Toast.LENGTH_SHORT).show();
+                    } else if (result == -1) {
+                        Toast.makeText(mActivity, "插入失败", LENGTH_SHORT).show();
+                    } else if (result == -2) {
+                        Toast.makeText(mActivity, "没有权限", LENGTH_SHORT).show();
+                    }
+
+
+
+
+
+
+
+
+
+                }
+        }
     }
 
     @Override
@@ -98,7 +154,13 @@ public class Appointment_failure_fragment extends BaseFragment<GetOrderListForMe
 
     @Override
     public void OrderIsCall(BaseResult<Data<String>> baseResult) {
-
+        switch (baseResult.getStatusCode()){
+            case 200:
+                if (baseResult.getData().isItem1()){
+                    mPresenter.WorkerGetOrderList(userID, "7", Integer.toString(pageIndex), "5");
+                }
+                break;
+        }
     }
 
     private Appointment_failure_Adapter pending_appointment_adapter;
@@ -210,12 +272,40 @@ public class Appointment_failure_fragment extends BaseFragment<GetOrderListForMe
                 switch (view.getId()){
                     /*预约成功*/
                     case R.id.tv_pending_appointment_success:
-                        Intent intent=new Intent(getActivity(),Order_details_Activity.class);
-                        //传递工单号
-                        intent.putExtra("OrderID",((WorkOrder.DataBean)adapter.getItem(position)).getOrderID());
+//                        Intent intent=new Intent(getActivity(),Order_details_Activity.class);
+//                        //传递工单号
+//                        intent.putExtra("OrderID",((WorkOrder.DataBean)adapter.getItem(position)).getOrderID());
+//
+//                        //startActivity(intent);
+//                        startActivityForResult(intent,1);
+                        if (((WorkOrder.DataBean) adapter.getItem(position)).getIsCall()==null){
+                            MyUtils.showToast(mActivity,"您还没有预约客户，请先预约客户");
+                            return;
+                        }else {
+                            data.setOrderID(((WorkOrder.DataBean) adapter.getItem(position)).getOrderID());
+                            data.setTypeName(((WorkOrder.DataBean) adapter.getItem(position)).getTypeName());
+                            data.setAddress(((WorkOrder.DataBean) adapter.getItem(position)).getAddress());
+                            data.setUserName(((WorkOrder.DataBean) adapter.getItem(position)).getUserName());
+                            data.setPhone(((WorkOrder.DataBean) adapter.getItem(position)).getPhone());
+                            data.setMemo(((WorkOrder.DataBean) adapter.getItem(position)).getMemo());
 
-                        //startActivity(intent);
-                        startActivityForResult(intent,1);
+                            RxPermissions rxPermissions = new RxPermissions(mActivity);
+                            rxPermissions.request(Manifest.permission.WRITE_CALENDAR, Manifest.permission.READ_CALENDAR)
+                                    .subscribe(new Consumer<Boolean>() {
+                                        @Override
+                                        public void accept(Boolean aBoolean) throws Exception {
+                                            if (aBoolean) {
+                                                // 获取全部权限成功
+
+                                                chooseTime(position,"请选择上门时间");
+                                            } else {
+                                                // 获取全部权限失败
+//                                                Log.d("=====>", "权限获取失败");
+                                                ToastUtils.showShort("权限获取失败");
+                                            }
+                                        }
+                                    });
+                        }
                         break;
                     case R.id.tv_pending_appointment_failure:
 
@@ -301,9 +391,9 @@ public class Appointment_failure_fragment extends BaseFragment<GetOrderListForMe
                     /*预约未成功*/
 
                     /*电话预约*/
-                    case R.id.img_pending_appointment_phone:
+                    case R.id.img_pending_appointment_failure_phone:
                         call("tel:"+ ((WorkOrder.DataBean)adapter.getItem(position)).getPhone());
-
+                        mPresenter.OrderIsCall(((WorkOrder.DataBean) adapter.getItem(position)).getOrderID(),"Y");
                         break;
                     /*电话预约*/
 
@@ -464,6 +554,54 @@ public class Appointment_failure_fragment extends BaseFragment<GetOrderListForMe
             }
         });
 
+        pending_appointment_adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Intent intent = new Intent(getActivity(), WorkOrderDetailsActivity2.class);
+                //传递工单号
+                intent.putExtra("OrderID", ((WorkOrder.DataBean) adapter.getItem(position)).getOrderID());
+                startActivity(intent);
+            }
+        });
+
+    }
+
+    /**
+     * 选择上门时间
+     */
+    public void chooseTime(final int position,final String title) {
+        Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        String format1 = format.format(date);
+
+        TimeSelector timeSelector = new TimeSelector(mActivity, new TimeSelector.ResultHandler() {
+            @Override
+            public void handle(String time) {
+
+                DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                try {
+                    recommendedtime = format.parse(time).getTime();
+                } catch (ParseException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                OrderId= workOrder.getData().get(position).getOrderID();
+                mPresenter.UpdateSendOrderUpdateTime(OrderId, time, time);
+
+
+//               Intent intent=new Intent(mActivity, WorkOrderDetailsActivity2.class);
+//                intent.putExtra("OrderID",OrderId);
+//                intent.putExtra("time",time);
+//                startActivity(intent);
+                successposition = position;
+
+
+            }
+        }, format1, "2022-1-1 24:00");
+
+        timeSelector.setTitle(title);
+        timeSelector.setNextBtTip("确定");
+        timeSelector.show();
     }
 
 
@@ -519,7 +657,23 @@ public class Appointment_failure_fragment extends BaseFragment<GetOrderListForMe
 
     @Override
     public void AddOrderSuccess(BaseResult<Data> baseResult) {
+        switch (baseResult.getStatusCode()) {
 
+            case 200:
+                if (baseResult.getData().isItem1()) {
+                    pending_appointment_adapter.remove(successposition);
+                    //Toast.makeText(getActivity(),"预约成功请到服务中",Toast.LENGTH_SHORT).show();
+                    EventBus.getDefault().post(2);//预约成功跳转到服务中
+                    EventBus.getDefault().post("服务中");
+                } else {
+
+
+                }
+                break;
+            default:
+                break;
+
+        }
     }
 
     @Override
@@ -609,6 +763,9 @@ public class Appointment_failure_fragment extends BaseFragment<GetOrderListForMe
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(String message) {
+        if ("预约不成功".equals(message)) {
+            mPresenter.WorkerGetOrderList(userID,"7",Integer.toString(pageIndex),"5");
+        }
         if (!"8".equals(message)){
             return;
         }

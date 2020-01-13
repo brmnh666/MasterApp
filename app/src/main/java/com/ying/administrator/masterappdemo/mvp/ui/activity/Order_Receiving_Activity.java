@@ -214,6 +214,9 @@ public class Order_Receiving_Activity extends BaseActivity<ReceivingPresenter, R
             case 7:
                 mReceivingViewpager.setCurrentItem(4);//待寄件  state 4
                 break;
+            case 8:
+                mReceivingViewpager.setCurrentItem(8);//预约不成功
+                break;
 
             case Config.ORDER_READ:
 

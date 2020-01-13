@@ -224,6 +224,15 @@ public class WorkOrder implements Serializable {
         private String IsCall;
         private String IsLook;
         private String isOnLookMessage;
+        private String barCodeIsNo;
+
+        public String getBarCodeIsNo() {
+            return barCodeIsNo;
+        }
+
+        public void setBarCodeIsNo(String barCodeIsNo) {
+            this.barCodeIsNo = barCodeIsNo;
+        }
 
         public String getIsOnLookMessage() {
             return isOnLookMessage;

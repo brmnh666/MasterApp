@@ -30,6 +30,7 @@ public interface CompleteWorkOrderContract {
 
         //提交快递信息
         Observable<BaseResult<Data<String>>> AddReturnAccessory(String OrderID,String ReturnAccessoryMsg,String PostMoney);
+        Observable<BaseResult<Data<String>>> AddbarCode(String barCode,String OrderID);
     }
 
     interface View extends BaseView{
@@ -53,6 +54,7 @@ public interface CompleteWorkOrderContract {
 
         //提交快递信息
         void AddReturnAccessory(BaseResult<Data<String>> baseResult);
+        void AddbarCode(BaseResult<Data<String>> baseResult);
 
     }
    abstract class Presenter extends BasePresenter<View,Model> {
@@ -72,5 +74,6 @@ public interface CompleteWorkOrderContract {
 
        //提交快递信息
        public abstract void AddReturnAccessory(String OrderID,String ReturnAccessoryMsg,String PostMoney);
+       public abstract void AddbarCode(String barCode,String OrderID);
    }
 }

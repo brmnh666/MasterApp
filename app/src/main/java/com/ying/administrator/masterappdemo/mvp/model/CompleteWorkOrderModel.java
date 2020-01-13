@@ -1,5 +1,6 @@
 package com.ying.administrator.masterappdemo.mvp.model;
 
+import com.huawei.hms.api.Api;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
@@ -57,6 +58,13 @@ public class CompleteWorkOrderModel implements CompleteWorkOrderContract.Model {
     @Override
     public Observable<BaseResult<Data<String>>> AddReturnAccessory(String OrderID, String ReturnAccessoryMsg,String PostMoney) {
         return ApiRetrofit.getDefault().AddReturnAccessory(OrderID,ReturnAccessoryMsg, PostMoney)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<BaseResult<Data<String>>> AddbarCode(String barCode, String OrderID) {
+        return ApiRetrofit.getDefault().AddbarCode(barCode, OrderID)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

@@ -530,6 +530,15 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
 
             }
         });
+        pending_appointment_adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Intent intent = new Intent(getActivity(), WorkOrderDetailsActivity2.class);
+                //传递工单号
+                intent.putExtra("OrderID", ((WorkOrder.DataBean) adapter.getItem(position)).getOrderID());
+                startActivity(intent);
+            }
+        });
 
     }
 
@@ -573,6 +582,8 @@ public class Pending_appointment_fragment extends BaseFragment<GetOrderListForMe
     public void AddOrderfailureReason(BaseResult<Data> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
+                EventBus.getDefault().post(8);//预约成功跳转到服务中
+                EventBus.getDefault().post("预约不成功");
                 break;
             default:
                 break;

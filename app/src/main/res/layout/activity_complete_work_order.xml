@@ -354,7 +354,7 @@
                     android:textSize="16sp" />
 
                 <LinearLayout
-                    android:visibility="gone"
+                    android:id="@+id/ll_code"
                     android:layout_width="match_parent"
                     android:layout_height="43dp"
                     android:layout_marginLeft="10dp"
@@ -372,14 +372,15 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@null"
-                        android:hint="快递单号:"
+                        android:hint="条形码"
                         android:textColor="#ABABAB"
                         android:textSize="12dp" />
 
                     <View
                         android:layout_width="1dp"
                         android:layout_height="match_parent"
-                        android:background="#B5B5B5" />
+                        android:background="#B5B5B5"
+                        android:visibility="gone"/>
 
                     <EditText
                         android:id="@+id/et_express_name"
@@ -389,7 +390,8 @@
                         android:background="@null"
                         android:hint="快递公司名称"
                         android:textColor="#ABABAB"
-                        android:textSize="12dp" />
+                        android:textSize="12dp"
+                        android:visibility="gone"/>
 
                     <View
                         android:layout_width="1dp"

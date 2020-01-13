@@ -158,6 +158,8 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
     ImageView mIvCall;
     @BindView(R.id.iv_copy)
     ImageView mIvCopy;
+    @BindView(R.id.ll_code)
+    LinearLayout mLlCode;
     private String orderID;
 
     /*工单详情*/
@@ -178,6 +180,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
     private List<Uri> mSelected;
     private Uri uri;
     private ClipboardManager myClipboard;
+    private String barCode;
 
     @Override
     protected int setLayoutId() {
@@ -270,6 +273,11 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                     mTvName.setText(data.getUserName());
                     mTvPhone.setText(data.getPhone());
 
+                    if ("1".equals(data.getBarCodeIsNo())){
+                        mLlCode.setVisibility(View.VISIBLE);
+                    }else {
+                        mLlCode.setVisibility(View.GONE);
+                    }
 
                     break;
 
@@ -315,12 +323,17 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 //                    if ("0".equals(data.getAccessorySearchState())){
 //                        mPresenter.UpdateOrderState(orderID, "7");
 //                    }else{
-
-                    if (!"1".equals(data.getIsReturn())) {//不需要返件
-                        mPresenter.UpdateOrderState(orderID, "5", "");
-                    } else {
-                        mPresenter.UpdateOrderState(orderID, "8", "");
+                    if ("1".equals(data.getBarCodeIsNo())){
+                        mPresenter.AddbarCode(barCode,orderID);
+                    }else {
+                        if (!"1".equals(data.getIsReturn())) {//不需要返件
+                            mPresenter.UpdateOrderState(orderID, "5", "");
+                        } else {
+                            mPresenter.UpdateOrderState(orderID, "8", "");
+                        }
                     }
+
+
 
 //                    }
 
@@ -374,6 +387,23 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
     @Override
     public void AddReturnAccessory(BaseResult<Data<String>> baseResult) {
 
+    }
+
+    @Override
+    public void AddbarCode(BaseResult<Data<String>> baseResult) {
+        switch (baseResult.getStatusCode()){
+            case 200:
+                if (baseResult.getData().isItem1()){
+                    if (!"1".equals(data.getIsReturn())) {//不需要返件
+                        mPresenter.UpdateOrderState(orderID, "5", "");
+                    } else {
+                        mPresenter.UpdateOrderState(orderID, "8", "");
+                    }
+                }else {
+                    ToastUtils.showShort(baseResult.getData().getItem2());
+                }
+                break;
+        }
     }
 
     @Override
@@ -433,7 +463,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                 // 设置要扫描的条码类型，ONE_D_CODE_TYPES：一维码，QR_CODE_TYPES-二维码
                 integrator.setDesiredBarcodeFormats(IntentIntegrator.ONE_D_CODE_TYPES);
                 integrator.setCaptureActivity(ScanActivity.class); //设置打开摄像头的Activity
-                integrator.setPrompt("请扫描快递码"); //底部的提示文字，设为""可以置空
+                integrator.setPrompt("请扫描条形码"); //底部的提示文字，设为""可以置空
                 integrator.setCameraId(0); //前置或者后置摄像头
                 integrator.setBeepEnabled(true); //扫描成功的「哔哔」声，默认开启
                 integrator.setBarcodeImageEnabled(true);
@@ -455,6 +485,14 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                      }
 
                     }*/
+                barCode = mEtSingleNumber.getText().toString();
+                if ("1".equals(data.getBarCodeIsNo())){
+                    if (barCode.isEmpty()){
+                        ToastUtils.showShort("请填写条形码");
+                        return;
+                    }
+                }
+
                 if ("2".equals(data.getTypeID())) {//安装
                     if (service_img_map.get(0) == null || service_img_map.get(1) == null) {
                         MyUtils.showToast(mActivity, "请上传安装前照片以及安装后一张照片");

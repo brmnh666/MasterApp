@@ -130,23 +130,27 @@ public class Register_New_Activity extends BaseActivity<RegisterPresenter, Regis
                 Phone = mEtRegisterPhone.getText().toString();
                 code = mEtRegisterYzm.getText().toString();
                 password = mEtRegisterPassword.getText().toString();
-
+                showProgress();
                 if (Phone.isEmpty()) {
                     ToastUtils.showShort("请输入手机号！");
+                    hideProgress();
                     return;
                 }
                 if (code.isEmpty()) {
                     ToastUtils.showShort("请输入验证码！");
+                    hideProgress();
                     return;
                 }
 
                 if (password.isEmpty()) {
                     ToastUtils.showShort("请输入密码");
+                    hideProgress();
                     return;
                 }
 
                 if (!mImg_agreement.isSelected()) {
                     ToastUtils.showShort("请阅读并同意用户协议");
+                    hideProgress();
                     return;
 
                 }
@@ -217,6 +221,7 @@ public class Register_New_Activity extends BaseActivity<RegisterPresenter, Regis
                     mPresenter.AddAndUpdatePushAccount(XGPushConfig.getToken(this), "7", Phone);
                     startActivity(new Intent(mActivity, MainActivity.class));
                     ActivityUtils.finishAllActivities();
+                    hideProgress();
                 } else {
                 }
                 break;

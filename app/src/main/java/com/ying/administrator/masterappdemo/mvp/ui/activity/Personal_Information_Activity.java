@@ -31,6 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
@@ -216,6 +217,7 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
             case R.id.ll_my_skills:
 
                 if (userInfo.getIfAuth() == null) {//未实名认证
+                    ToastUtils.showShort("您暂未实名");
                     return;
                 } else {
                     startActivity(new Intent(this, MyInfoSkillActivity2.class));

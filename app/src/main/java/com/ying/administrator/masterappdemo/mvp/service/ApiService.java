@@ -1068,5 +1068,12 @@ public interface ApiService {
                                                         @Field("headimgurl") String headimgurl,
                                                         @Field("unionid") String unionid);
 
+    /**
+     * 上传条形码
+     * */
+    @FormUrlEncoded
+    @POST("Account/AddbarCode")
+    Observable<BaseResult<Data<String>>> AddbarCode(@Field("barCode") String barCode,
+                                                        @Field("OrderID") String OrderID);
 
 }

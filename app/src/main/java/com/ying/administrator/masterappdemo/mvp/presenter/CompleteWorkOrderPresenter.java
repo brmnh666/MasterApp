@@ -83,4 +83,15 @@ public class CompleteWorkOrderPresenter extends CompleteWorkOrderContract.Presen
             }
         });
     }
+
+    @Override
+    public void AddbarCode(String barCode, String OrderID) {
+        mModel.AddbarCode(barCode, OrderID)
+                .subscribe(new BaseObserver<Data<String>>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<Data<String>> value) {
+                        mView.AddbarCode(value);
+                    }
+                });
+    }
 }

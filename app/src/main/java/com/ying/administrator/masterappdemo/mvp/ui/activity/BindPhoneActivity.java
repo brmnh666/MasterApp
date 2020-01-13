@@ -89,14 +89,17 @@ public class BindPhoneActivity extends BaseActivity<RegisterPresenter, RegisterM
                 mPresenter.GetCode(phone, "1");
                 break;
             case R.id.tv_register:
+                showProgress();
                 phone = mEtRegisterPhone.getText().toString();
                 code = mEtRegisterYzm.getText().toString();
 
                 if (phone.isEmpty()) {
+                    hideProgress();
                     ToastUtils.showShort("请输入手机号！");
                     return;
                 }
                 if (code.isEmpty()) {
+                    hideProgress();
                     ToastUtils.showShort("请输入验证码！");
                     return;
                 }
@@ -195,6 +198,7 @@ public class BindPhoneActivity extends BaseActivity<RegisterPresenter, RegisterM
                 }else {
 
                 }
+                hideProgress();
                 break;
         }
     }
