@@ -13,6 +13,7 @@ import com.ying.administrator.masterappdemo.entity.City;
 import com.ying.administrator.masterappdemo.entity.ComplaintList;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.Data2;
+import com.ying.administrator.masterappdemo.entity.Data3;
 import com.ying.administrator.masterappdemo.entity.District;
 import com.ying.administrator.masterappdemo.entity.GAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
@@ -29,6 +30,7 @@ import com.ying.administrator.masterappdemo.entity.Service;
 import com.ying.administrator.masterappdemo.entity.Skill;
 import com.ying.administrator.masterappdemo.entity.SubUserInfo;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
+import com.ying.administrator.masterappdemo.entity.WXOfferQuery;
 import com.ying.administrator.masterappdemo.entity.WXpayInfo;
 import com.ying.administrator.masterappdemo.entity.WithDrawMoney;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
@@ -82,10 +84,10 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("Account/WxReg")
     Observable<BaseResult<Data<String>>> WxReg(@Field("mobile") String mobile,
-                                             @Field("type") String type,
-                                             @Field("code") String code,
-                                             @Field("roleType") String roleType,
-                                             @Field("openid") String openid
+                                               @Field("type") String type,
+                                               @Field("code") String code,
+                                               @Field("roleType") String roleType,
+                                               @Field("openid") String openid
     );
 
 
@@ -699,11 +701,11 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("Account/AddorUpdateAccountPayInfo")
     Observable<BaseResult<Data<String>>> DeleteAccountPayInfo(@Field("UserID") String UserID,
-                                                                   @Field("PayInfoCode") String PayInfoCode,
-                                                                   @Field("PayInfoName") String PayInfoName,
-                                                                   @Field("PayNo") String PayNo,
-                                                                   @Field("PayName") String PayName,
-                                                                   @Field("IsUse") String IsUse,
+                                                              @Field("PayInfoCode") String PayInfoCode,
+                                                              @Field("PayInfoName") String PayInfoName,
+                                                              @Field("PayNo") String PayNo,
+                                                              @Field("PayName") String PayName,
+                                                              @Field("IsUse") String IsUse,
                                                               @Field("AccountPayID") String AccountPayID);
 
     /*获取银行卡*/
@@ -1030,9 +1032,9 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("LeaveMessage/LeaveMessageWhetherLook")
     Observable<BaseResult<Data>> LeaveMessageWhetherLook(@Field("OrderID") String OrderID,
-                                                                            @Field("factoryIslook") String factoryIslook,
-                                                                            @Field("workerIslook") String workerIslook,
-                                                                            @Field("platformIslook") String platformIslook
+                                                         @Field("factoryIslook") String factoryIslook,
+                                                         @Field("workerIslook") String workerIslook,
+                                                         @Field("platformIslook") String platformIslook
 
     );
 
@@ -1046,16 +1048,16 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("LeaveMessage/GetNewsLeaveMessage")
     Observable<BaseResult<Data<LeaveMessage>>> GetNewsLeaveMessage(@Field("UserID") String UserID,
-                                                                         @Field("Type") String Type,
-                                                                         @Field("limit") String limit,
-                                                                         @Field("page") String page
+                                                                   @Field("Type") String Type,
+                                                                   @Field("limit") String limit,
+                                                                   @Field("page") String page
 
     );
 
 
     /**
      * 微信登录
-     * */
+     */
     @FormUrlEncoded
     @POST("Account/WxRegister")
     Observable<BaseResult<Data<WxRegister>>> WxRegister(@Field("openid") String openid,
@@ -1070,10 +1072,27 @@ public interface ApiService {
 
     /**
      * 上传条形码
-     * */
+     */
     @FormUrlEncoded
     @POST("Account/AddbarCode")
     Observable<BaseResult<Data<String>>> AddbarCode(@Field("barCode") String barCode,
-                                                        @Field("OrderID") String OrderID);
+                                                    @Field("OrderID") String OrderID);
 
+    /*报价*/
+    @FormUrlEncoded
+    @POST("Order/WX_orderOffer")
+    Observable<BaseResult<Data<String>>> WXOrderOffer(@Field("SenUserId") String SenUserId,
+                                                      @Field("price") String Price,
+                                                      @Field("OrderId") String OrderId,
+                                                      @Field("Reason") String Reason,
+                                                      @Field("OrderofferId") String OrderofferId,
+                                                      @Field("IsUse") String IsUse);
+
+    /*查询是否报价*/
+    @FormUrlEncoded
+    @POST("Order/WX_OfferQuery")
+    Observable<BaseResult<Data3<List<WXOfferQuery>>>> WXOfferQuery(@Field("SenUserId") String SenUserId,
+                                                                   @Field("OrderId") String OrderId,
+                                                                   @Field("limit") String limit,
+                                                                   @Field("page") String page);
 }

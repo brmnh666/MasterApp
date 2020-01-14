@@ -23,6 +23,7 @@ public class Config {
 //    public static final String BASE_URL = "http://admin.xigyu.com/api/";//服务端地址
     public static final String HEAD_URL="https://img.xigyu.com/Pics/Avator/";//头像地址
     public static final String Leave_Message_URL="https://img.xigyu.com/Pics/LeaveMessageImg/";//留言地址
+    public static final String Leave_quote_URL="https://img.xigyu.com/Pics/WX_indxModelImage/";//报价图片地址
     public static final String SUB_ACCOUNT_QRCODE="http://admin.xigyu.com/api/VerifyCode/GetQrCodeToReg?ParentUserID=";//二维码
     public static final String RETURN_IMG="https://img.xigyu.com/Pics/OldAccessory/";//返回返件路径
     public static final String Service_IMG="https://img.xigyu.com/Pics/FinishOrder/";//服务过程图片

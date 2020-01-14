@@ -88,6 +88,7 @@ import com.ying.administrator.masterappdemo.mvp.ui.activity.ApplyFeeActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_Receiving_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_details_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Personal_Information_Activity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.QuoteActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.RechargeActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.VerifiedUpdateActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Verified_Activity;
@@ -843,6 +844,46 @@ public class Home_Fragment extends BaseLazyFragment<AllWorkOrdersPresenter, AllW
                                     mPresenter.UpdateSendOrderState(OrderID, "1", "");
                                 }
 
+                            } else if (userInfo.getIfAuth().equals("0")) {
+                                under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_under_review, null);
+                                btnConfirm = under_review.findViewById(R.id.btn_confirm);
+                                btnConfirm.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        underReviewDialog.dismiss();
+                                    }
+                                });
+                                underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review).create();
+                                underReviewDialog.show();
+                            } else if (userInfo.getIfAuth().equals("-1")) {
+                                under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_audit_failure, null);
+                                btnConfirm = under_review.findViewById(R.id.btn_confirm);
+                                content = under_review.findViewById(R.id.tv_content);
+                                content.setText(userInfo.getAuthMessage() + ",有疑问请咨询客服电话。");
+                                btnConfirm.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        underReviewDialog.dismiss();
+                                        startActivity(new Intent(mActivity, Verified_Activity.class));
+                                    }
+                                });
+                                underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review).create();
+                                underReviewDialog.show();
+                            } else {
+                                showVerifiedDialog();
+                            }
+                        } else {
+                            showVerifiedDialog();
+                        }
+                        break;
+                    case R.id.tv_quote:
+                        if (userInfo.getIfAuth() != null) {
+                            if (userInfo.getIfAuth().equals("1")) {
+                                final WorkOrder.DataBean item = (WorkOrder.DataBean) adapter.getItem(position);
+                                OrderID = item.getOrderID();
+                                Intent intent = new Intent(mActivity, QuoteActivity.class);
+                                intent.putExtra("orderId", OrderID);
+                                startActivity(intent);
                             } else if (userInfo.getIfAuth().equals("0")) {
                                 under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_under_review, null);
                                 btnConfirm = under_review.findViewById(R.id.btn_confirm);

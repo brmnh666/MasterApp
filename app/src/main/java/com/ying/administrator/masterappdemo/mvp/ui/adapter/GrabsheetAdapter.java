@@ -37,13 +37,22 @@ public class GrabsheetAdapter extends BaseQuickAdapter<WorkOrder.DataBean,BaseVi
 
       baseViewHolder.setText(R.id.tv_address,"地址:"+item.getAddress()); //地址
       baseViewHolder.setText(R.id.tv_grabsheet_time, MyUtils.getTimebefore(item.getCreateDate()));//将订单生产的时间传入
-      baseViewHolder.addOnClickListener(R.id.img_grabsheet);
+      baseViewHolder.addOnClickListener(R.id.img_grabsheet)
+              .addOnClickListener(R.id.tv_quote);
       if ("维修".equals(item.getTypeName())){
           baseViewHolder.setText(R.id.tv_reason,"故障:"+item.getMemo()); //故障原因
           baseViewHolder.setBackgroundColor(R.id.tv_grabsheet_status_repair, Color.parseColor("#FF0000"));
       }else {
           baseViewHolder.setText(R.id.tv_reason,item.getMemo()); //故障原因
           baseViewHolder.setBackgroundColor(R.id.tv_grabsheet_status_repair, Color.parseColor("#1690FF"));
+      }
+
+      if ("1".equals(item.getPartyNo())){
+          baseViewHolder.setGone(R.id.img_grabsheet,false);
+          baseViewHolder.setVisible(R.id.tv_quote,true);
+      }else {
+          baseViewHolder.setGone(R.id.tv_quote,false);
+          baseViewHolder.setVisible(R.id.img_grabsheet,true);
       }
     }
 }

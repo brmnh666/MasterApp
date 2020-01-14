@@ -76,7 +76,6 @@ import com.ying.administrator.masterappdemo.entity.FService;
 import com.ying.administrator.masterappdemo.entity.GAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
 import com.ying.administrator.masterappdemo.entity.Logistics;
-import com.ying.administrator.masterappdemo.entity.PicResult;
 import com.ying.administrator.masterappdemo.entity.SAccessory;
 import com.ying.administrator.masterappdemo.entity.SService;
 import com.ying.administrator.masterappdemo.entity.Service;
@@ -90,6 +89,7 @@ import com.ying.administrator.masterappdemo.mvp.ui.adapter.Add_Service_Adapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.GServiceAdapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Pre_order_Add_Ac_Adapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Pre_order_Add_Service_Adapter;
+import com.ying.administrator.masterappdemo.mvp.ui.adapter.QuoteAdapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.ReturnAccessoryAdapter;
 import com.ying.administrator.masterappdemo.util.Glide4Engine;
 import com.ying.administrator.masterappdemo.util.MyUtils;
@@ -412,6 +412,10 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     LinearLayout mLlExpedited;
     @BindView(R.id.tv_message_number)
     TextView mTvMessageNumber;
+    @BindView(R.id.rv_picture)
+    RecyclerView mRvPicture;
+    @BindView(R.id.ll_picture)
+    LinearLayout mLlPicture;
 
     private String OrderID;
     private WorkOrder.DataBean data = new WorkOrder.DataBean();
@@ -520,7 +524,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="压缩后的配件图片上传成功之后返回的图片名称的集合">
-    private Map<Integer,String> successpiclist = new HashMap<>();
+    private Map<Integer, String> successpiclist = new HashMap<>();
     // </editor-fold>
     private String content;
     private CommonDialog_Home reject;
@@ -543,7 +547,9 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     private String AccessoryAndServiceApplyState;
     private Double factorymoney;//申请配件服务传给工厂的钱
     private Integer sizeId;//申请配件服务传给工厂的值
-    private String service="0";
+    private String service = "0";
+    private QuoteAdapter adapter;
+    private List<String> prictureList=new ArrayList<>();
 
 
     @Override
@@ -1184,7 +1190,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                                 showToast(mActivity, "请填写邮费");
                                 hideProgress();
                                 return;
-                            }else {
+                            } else {
                                 mPresenter.AddReturnAccessory(OrderID, expressno, post_money);
                             }
                         } else {
@@ -1316,7 +1322,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 mPresenter.UpdateOrderAddressByOrderID(OrderID, returnAddress);
             }
         } else if (list.size() == 0 && mPre_order_Add_Service_Adapter.getData().size() > 0) {
-            service="1";
+            service = "1";
             orderServiceStrBean = new FService.OrderServiceStrBean();
             orderServiceStrBean.setOrderService(mPre_order_Add_Service_Adapter.getData());
             String s2 = gson.toJson(orderServiceStrBean);
@@ -1333,7 +1339,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
             mPresenter.AddOrderAccessoryAndService(body);
         } else if (list.size() > 0 && mPre_order_Add_Service_Adapter.getData().size() > 0) {
             if ("".equals(returnAddress)) {
-                MyUtils.showToast(mActivity, "请选择收货地址");
+                showToast(mActivity, "请选择收货地址");
                 hideProgress();
                 return;
             } else {
@@ -1559,12 +1565,12 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 AccessoryMemo = mEtMemo.getText().toString().trim();
 //                returnAddress = mTvAddressReturn.getText().toString().trim();
                 if (select_state == -1) {
-                    MyUtils.showToast(mActivity, "请选择配件类型");
+                    showToast(mActivity, "请选择配件类型");
                 } else {
                     if (mPre_order_add_ac_adapter.getData().size() == 0) {
-                        MyUtils.showToast(mActivity, "请添加配件");
+                        showToast(mActivity, "请添加配件");
                     } else if ("".equals(returnAddress)) {
-                        MyUtils.showToast(mActivity, "请选择收货地址");
+                        showToast(mActivity, "请选择收货地址");
                     } else {
 //                        if (accessories_picture.size() > 0) {
                         orderAccessoryStrBean = new FAccessory.OrderAccessoryStrBean();
@@ -2324,20 +2330,20 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
 
                         mLlAccessory.setVisibility(View.VISIBLE);
                         mLlShippingType.setVisibility(View.VISIBLE);
-                        mLlAddAccessory.setVisibility(View.GONE);
+                        mLlPicture.setVisibility(View.GONE);
                         mLlPrompt.setVisibility(View.GONE);
 //                    mLlMemo.setVisibility(View.GONE);
                         if ("0".equals(data.getAccessoryAndServiceApplyState())) {
                             mTvAccessoryApplyState.setText("审核中");
                             mTvAccessoryApplication.setVisibility(View.GONE);
                         } else if ("1".equals(data.getAccessoryAndServiceApplyState())) {
-                            if (data.getOrderAccessroyDetail().size()>0){
-                                if (data.getOrderAccessroyDetail().get(0).getExpressNo()!=null||!"".equals(data.getOrderAccessroyDetail().get(0).getExpressNo())){
+                            if (data.getOrderAccessroyDetail().size() > 0) {
+                                if (data.getOrderAccessroyDetail().get(0).getExpressNo() != null || !"".equals(data.getOrderAccessroyDetail().get(0).getExpressNo())) {
                                     mTvAccessoryApplyState.setText("审核通过已发货");
-                                }else {
+                                } else {
                                     mTvAccessoryApplyState.setText("审核通过未发货");
                                 }
-                            }else {
+                            } else {
                                 mTvAccessoryApplyState.setText("审核通过");
                             }
                             mTvAccessoryApplication.setVisibility(View.GONE);
@@ -2642,49 +2648,79 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mLlAddAccessory.setVisibility(View.GONE);
                         mLlPrompt.setVisibility(View.GONE);
                         mLlAddService.setVisibility(View.GONE);
+                        mLlPicture.setVisibility(View.GONE);
+                    }else if("1".equals(data.getPartyNo())){
+                        mLlPicture.setVisibility(View.VISIBLE);
+                        mLlAddAccessory.setVisibility(View.GONE);
+                        mLlPrompt.setVisibility(View.GONE);
+                        mLlAddService.setVisibility(View.GONE);
                     } else {
-                        if (!"".equals(data.getAccessoryAndServiceApplyState())||data.getOrderAccessroyDetail().size()>0) {
+                        if (!"".equals(data.getAccessoryAndServiceApplyState()) || data.getOrderAccessroyDetail().size() > 0) {
                             mLlAddAccessory.setVisibility(View.GONE);
                             mLlAddService.setVisibility(View.GONE);
                             mLlPrompt.setVisibility(View.GONE);
+                            mLlPicture.setVisibility(View.GONE);
                         } else {
                             mLlAddAccessory.setVisibility(View.VISIBLE);
                             mLlAddService.setVisibility(View.VISIBLE);
                             mLlPrompt.setVisibility(View.VISIBLE);
+                            mLlPicture.setVisibility(View.GONE);
                         }
                     }
 
-                    if ("0".equals(data.getIsOnLookMessage())){
+                    if ("0".equals(data.getIsOnLookMessage())) {
                         mTvMessageNumber.setVisibility(View.GONE);
-                    }else {
+                    } else {
                         mTvMessageNumber.setVisibility(View.VISIBLE);
                         mTvMessageNumber.setText(data.getIsOnLookMessage());
                     }
-                    if ("0".equals(data.getAccessoryAndServiceApplyState())){
+                    if ("0".equals(data.getAccessoryAndServiceApplyState())) {
                         mTvAccessoryInformation.setText("催    审");
-                    }else if ("1".equals(data.getAccessoryAndServiceApplyState())){
-                        if (data.getOrderAccessroyDetail().size()>0){
-                            if (data.getOrderAccessroyDetail().get(0).getExpressNo()==null||"".equals(data.getOrderAccessroyDetail().get(0).getExpressNo())){
+                    } else if ("1".equals(data.getAccessoryAndServiceApplyState())) {
+                        if (data.getOrderAccessroyDetail().size() > 0) {
+                            if (data.getOrderAccessroyDetail().get(0).getExpressNo() == null || "".equals(data.getOrderAccessroyDetail().get(0).getExpressNo())) {
                                 mTvAccessoryInformation.setText("提醒发货");
-                            }else {
+                            } else {
                                 mTvAccessoryInformation.setVisibility(View.GONE);
                             }
-                        }else if (data.getOrderServiceDetail().size()>0){
+                        } else if (data.getOrderServiceDetail().size() > 0) {
                             mTvServiceInformation.setText("催    审");
-                        }else {
+                        } else {
                             mTvServiceInformation.setVisibility(View.GONE);
                         }
                     }
-                    if ("2".equals(data.getState())){
+                    if ("2".equals(data.getState())) {
                         mLlAddAccessory.setVisibility(View.GONE);
+                        mLlPicture.setVisibility(View.GONE);
                         mLlAddService.setVisibility(View.GONE);
                         mLlPrompt.setVisibility(View.GONE);
                         mRlSelectTime.setVisibility(View.GONE);
                         mRlCompleteSubmit.setVisibility(View.GONE);
-                    }else {
+                    } else {
                         return;
                     }
 
+                    if ("1".equals(data.getPartyNo())){
+                        String[] picture = data.getPicture().split(",");
+                        for (int i = 0; i < picture.length; i++) {
+                            prictureList.add(picture[i]);
+                        }
+                        adapter = new QuoteAdapter(R.layout.item_quote_picture, prictureList);
+                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
+                        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+                        mRvPicture.setLayoutManager(linearLayoutManager);
+                        mRvPicture.setAdapter(adapter);
+                        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                                Intent intent = new Intent(mActivity, PhotoViewActivity.class);
+                                intent.putExtra("PhotoUrl", Config.Leave_quote_URL + prictureList.get(position));
+                                startActivity(intent);
+                            }
+                        });
+                    }else {
+                        return;
+                    }
                     break;
 
                 } else {
@@ -2904,9 +2940,9 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 if (baseResult.getData().isItem1()) {
                     ToastUtils.showShort("提交成功");
                     EventBus.getDefault().post("WorkOrderDetailsActivity");
-                    if ("1".equals(service)){
+                    if ("1".equals(service)) {
                         finish();
-                    }else {
+                    } else {
                         EventBus.getDefault().post(5);
                     }
                     mAcList.clear();
@@ -3064,7 +3100,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mfAccessory.setDiscountPrice(accessory.getAccessoryPrice());//原价
                     } else if (select_state == 1) {//师傅自购 还要判断保内保外
                         if ("".equals(price)) {
-                            MyUtils.showToast(mActivity, "请输入配件价格");
+                            showToast(mActivity, "请输入配件价格");
                             return;
                         }
                         mfAccessory.setPrice(Double.parseDouble(price));
@@ -3131,7 +3167,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         mfAccessory.setDiscountPrice(Double.valueOf("0"));//原价
                     } else if (select_state == 1) {//师傅自购 还要判断保内保外
                         if ("".equals(price)) {
-                            MyUtils.showToast(mActivity, "请输入配件价格");
+                            showToast(mActivity, "请输入配件价格");
                             return;
                         }
                         mfAccessory.setPrice(Double.parseDouble(price));
@@ -3240,7 +3276,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     push_dialog.dismiss();
                     ToastUtils.showShort("催审成功");
                 } else {
-                    MyUtils.showToast(mActivity, "催审失败！请联系客服4006262365");
+                    showToast(mActivity, "催审失败！请联系客服4006262365");
                 }
                 break;
         }
@@ -3325,7 +3361,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(String name) {
-        if ("read".equals(name)){
+        if ("read".equals(name)) {
             mPresenter.GetOrderInfo(OrderID);
         }
         if (!"WorkOrderDetailsActivity".equals(name)) {
@@ -3901,18 +3937,18 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         accImglist.clear();
         successpiclist.clear();
         for (int i = 0; i < accesslist.size(); i++) {
-            accImglist.add(ImageCompress.compressImage(accesslist.get(i).getPhoto1(),Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy/" + System.currentTimeMillis() + ".jpg",80));
-            if (i==accesslist.size()-1){
-                accImglist.add(ImageCompress.compressImage(accesslist.get(i).getPhoto2(),Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy/" + System.currentTimeMillis() + ".jpg",80));
+            accImglist.add(ImageCompress.compressImage(accesslist.get(i).getPhoto1(), Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy/" + System.currentTimeMillis() + ".jpg", 80));
+            if (i == accesslist.size() - 1) {
+                accImglist.add(ImageCompress.compressImage(accesslist.get(i).getPhoto2(), Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy/" + System.currentTimeMillis() + ".jpg", 80));
             }
         }
         for (int i = 0; i < accImglist.size(); i++) {
-            File file=new File(accImglist.get(i));
+            File file = new File(accImglist.get(i));
             MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
             builder.addFormDataPart("img", file.getName(), RequestBody.create(MediaType.parse("img/png"), file));
             MultipartBody requestBody = builder.build();
             //接口
-            String path = Config.BASE_URL+"Upload/ApplyAccessoryphotoUpload";
+            String path = Config.BASE_URL + "Upload/ApplyAccessoryphotoUpload";
             OkHttpClient okHttpClient = new OkHttpClient.Builder()
                     .connectTimeout(5, TimeUnit.MINUTES)
                     .readTimeout(5, TimeUnit.MINUTES)
@@ -3934,18 +3970,18 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 public void onResponse(Call call, Response response) throws IOException {
                     String str = response.body().string();
                     System.out.println(str);
-                    Gson gson=new Gson();
-                    AccPicResult result=gson.fromJson(str.replaceAll(" ",""), AccPicResult.class);
-                    if (result.getStatusCode()==200){
-                        successpiclist.put(finalI,result.getData().getItem1());
-                        if(successpiclist.size()==accImglist.size()){
-                            for (int i = 0; i <accesslist.size() ; i++) {
+                    Gson gson = new Gson();
+                    AccPicResult result = gson.fromJson(str.replaceAll(" ", ""), AccPicResult.class);
+                    if (result.getStatusCode() == 200) {
+                        successpiclist.put(finalI, result.getData().getItem1());
+                        if (successpiclist.size() == accImglist.size()) {
+                            for (int i = 0; i < accesslist.size(); i++) {
                                 accesslist.get(i).setPhoto1(successpiclist.get(i));
-                                accesslist.get(i).setPhoto2(successpiclist.get(successpiclist.size()-1));
+                                accesslist.get(i).setPhoto2(successpiclist.get(successpiclist.size() - 1));
                             }
                             select_state2(accesslist);
                         }
-                    }else{
+                    } else {
                         hideProgress();
                         ToastUtils.showShort("配件图片上传失败，请稍后重试");
                     }
