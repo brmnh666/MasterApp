@@ -129,6 +129,20 @@
         android:src="@mipmap/icon_home_grabsheet"
         />
 
+    <TextView
+        android:id="@+id/tv_quote"
+        android:layout_width="51dp"
+        android:layout_height="51dp"
+        android:background="@drawable/blue_circle_shape"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="42dp"
+        android:layout_marginRight="16dp"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:text="报价"
+        android:textColor="@color/white"
+        android:visibility="gone"/>
+
 </RelativeLayout>
 
 
