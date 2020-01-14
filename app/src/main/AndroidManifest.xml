@@ -803,6 +803,15 @@
 
 
         <!-- wx sdk end -->
+
+
+        <!--v3主页-->
+        <activity android:name=".v3.activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar1"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+
     </application>
 
 
