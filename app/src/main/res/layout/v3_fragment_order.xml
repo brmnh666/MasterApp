@@ -1,15 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
-    <include
-        android:id="@+id/setting_new_i_title"
-        layout="@layout/titlebar"/>
-    <WebView
-        android:id="@+id/webView1"
+    xmlns:tl="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.flyco.tablayout.SlidingTabLayout
+        android:id="@+id/tab_receiving_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </WebView>
+        android:layout_height="43dp"
+        android:background="@color/color_white"
+        tl:tl_divider_color="#1A000000"
+        tl:tl_divider_padding="10dp"
+        tl:tl_textsize="14sp"
+        tl:tl_indicator_color="#46B3FC"
+        tl:tl_indicator_height="1dp"
+        tl:tl_tab_padding="15dp"
+        tl:tl_textSelectColor="#46B3FC"
+        tl:tl_textUnselectColor="@color/color_black"
+        tl:tl_underline_color="#1A000000"
+        tl:tl_underline_height="1dp"/>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/receiving_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/color_custom_02"
+        >
+
+    </android.support.v4.view.ViewPager>
 
 </LinearLayout>

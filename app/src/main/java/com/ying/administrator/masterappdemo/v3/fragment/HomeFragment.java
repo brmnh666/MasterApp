@@ -2,6 +2,7 @@ package com.ying.administrator.masterappdemo.v3.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +12,10 @@ import android.widget.TextView;
 
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.entity.Article;
+import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.WebActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
+import com.ying.administrator.masterappdemo.v3.adapter.HomeAdapter;
 import com.ying.administrator.masterappdemo.widget.SwitchView;
 
 import java.util.ArrayList;
@@ -36,6 +39,9 @@ public class HomeFragment extends BaseLazyFragment {
     private String mContentText;
     private int i = 0;
     private List<String> datalist = new ArrayList<>();
+    private List<WorkOrder.DataBean> list=new ArrayList<>();
+    private HomeAdapter adapter;
+
     public static HomeFragment newInstance(String param1) {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
@@ -60,7 +66,13 @@ public class HomeFragment extends BaseLazyFragment {
 
     @Override
     protected void initData() {
-
+        for (int j = 0; j < 10; j++) {
+            list.add(new WorkOrder.DataBean());
+        }
+        adapter = new HomeAdapter(R.layout.v3_item_home,list);
+        mRvNewOrder.setLayoutManager(new LinearLayoutManager(mActivity));
+        mRvNewOrder.setAdapter(adapter);
+        adapter.setEmptyView(getHomeEmptyView());
     }
 
     @Override

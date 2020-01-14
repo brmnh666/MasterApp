@@ -203,6 +203,9 @@ public abstract class BaseLazyFragment<P extends BasePresenter, M extends BaseMo
         return  LayoutInflater.from(mActivity).inflate(R.layout.layout_empty,null);
     }
 
+    public View getHomeEmptyView() {
+        return  LayoutInflater.from(mActivity).inflate(R.layout.v3_layout_home_empty,null);
+    }
 
 
 
