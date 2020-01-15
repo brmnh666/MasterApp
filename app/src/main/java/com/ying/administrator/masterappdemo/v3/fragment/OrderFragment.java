@@ -37,8 +37,8 @@ public class OrderFragment extends BaseLazyFragment {
     private String mContentText;
     private ArrayList<Fragment> mFragments =new ArrayList<>();
     private final String[] mTitles = {
-            "(0)待处理","(0)待预约", "(0)待服务", "(0)待寄件"
-            , "(0)待返件", "(0)待结算"
+            "待处理(0)","待预约(0)", "待服务(0)", "待寄件(0)"
+            , "待返件(0)", "待结算(0)"
     };
 
     private MyPagerAdapter mAdapter;
