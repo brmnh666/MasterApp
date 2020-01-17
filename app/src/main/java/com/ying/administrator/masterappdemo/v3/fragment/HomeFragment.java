@@ -15,9 +15,11 @@ import com.ying.administrator.masterappdemo.entity.Article;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.WebActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
+import com.ying.administrator.masterappdemo.v3.activity.MessageActivity;
 import com.ying.administrator.masterappdemo.v3.adapter.HomeAdapter;
 import com.ying.administrator.masterappdemo.widget.SwitchView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +27,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class HomeFragment extends BaseLazyFragment {
+public class HomeFragment extends BaseLazyFragment implements View.OnClickListener {
     private static final String ARG_SHOW_TEXT = "text";
     @BindView(R.id.ll_message)
     LinearLayout mLlMessage;
@@ -110,7 +112,7 @@ public class HomeFragment extends BaseLazyFragment {
 
     @Override
     protected void setListener() {
-
+        mLlMessage.setOnClickListener(this);
     }
 
     @Override
@@ -125,5 +127,14 @@ public class HomeFragment extends BaseLazyFragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.ll_message:
+                startActivity(new Intent(mActivity, MessageActivity.class));
+                break;
+        }
     }
 }

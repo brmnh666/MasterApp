@@ -16,7 +16,40 @@
             android:layout_marginRight="14dp"
             android:layout_marginBottom="5dp"
             android:background="@drawable/v3_blue_shape">
-
+            <TextView
+                android:id="@+id/tv_urgently_needed"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="急需处理"
+                android:textSize="14sp"
+                android:textColor="@drawable/v3_order_selector"
+                android:background="@drawable/v3_order_left_selector"/>
+            <TextView
+                android:id="@+id/tv_come_tomorrow"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="明日需上门"
+                android:textSize="14sp"
+                android:textColor="@drawable/v3_order_selector"
+                android:background="@drawable/v3_order_center_selector"/>
+            <TextView
+                android:id="@+id/tv_timed_out"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="已超时"
+                android:textSize="14sp"
+                android:textColor="@drawable/v3_order_selector"
+                android:background="@drawable/v3_order_right_selector"/>
         </LinearLayout>
     </LinearLayout>
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/rv_pending"/>
 </LinearLayout>
