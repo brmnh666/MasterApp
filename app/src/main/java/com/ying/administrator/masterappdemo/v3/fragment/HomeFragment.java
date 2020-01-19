@@ -10,12 +10,14 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.entity.Article;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.WebActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
 import com.ying.administrator.masterappdemo.v3.activity.MessageActivity;
+import com.ying.administrator.masterappdemo.v3.activity.QuoteDetailsActivity;
 import com.ying.administrator.masterappdemo.v3.adapter.HomeAdapter;
 import com.ying.administrator.masterappdemo.widget.SwitchView;
 
@@ -75,6 +77,16 @@ public class HomeFragment extends BaseLazyFragment implements View.OnClickListen
         mRvNewOrder.setLayoutManager(new LinearLayoutManager(mActivity));
         mRvNewOrder.setAdapter(adapter);
         adapter.setEmptyView(getHomeEmptyView());
+        adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                switch (view.getId()){
+                    case R.id.tv_orders:
+                        startActivity(new Intent(mActivity, QuoteDetailsActivity.class));
+                        break;
+                }
+            }
+        });
     }
 
     @Override

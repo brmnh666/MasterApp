@@ -1,5 +1,6 @@
 package com.ying.administrator.masterappdemo.v3.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -51,6 +52,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected void setListener() {
         mIvBack.setOnClickListener(this);
+        mLlOrderSetting.setOnClickListener(this);
     }
 
     @Override
@@ -58,6 +60,9 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         switch (v.getId()){
             case R.id.iv_back:
                 finish();
+                break;
+            case R.id.ll_order_setting:
+                startActivity(new Intent(mActivity,OrderSettingActivity.class));
                 break;
         }
     }

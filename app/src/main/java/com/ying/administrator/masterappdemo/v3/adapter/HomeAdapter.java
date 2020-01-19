@@ -4,6 +4,7 @@ import android.support.annotation.Nullable;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 
 import java.util.List;
@@ -15,6 +16,6 @@ public class HomeAdapter extends BaseQuickAdapter<WorkOrder.DataBean, BaseViewHo
 
     @Override
     protected void convert(BaseViewHolder helper, WorkOrder.DataBean item) {
-
+        helper.addOnClickListener(R.id.tv_orders);
     }
 }
