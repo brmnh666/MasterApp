@@ -1076,4 +1076,15 @@ public interface ApiService {
     Observable<BaseResult<Data<String>>> AddbarCode(@Field("barCode") String barCode,
                                                         @Field("OrderID") String OrderID);
 
+    /**
+     * 新版首页今日待处理
+     * state=0
+     * */
+    @FormUrlEncoded
+    @POST("Order/NewWorkerGetOrderList")
+    Observable<BaseResult<WorkOrder>> NewWorkerGetOrderList(@Field("UserID") String UserID,
+                                                            @Field("State") String State,
+                                                            @Field("page") String page,
+                                                            @Field("limit") String limit);
+
 }
