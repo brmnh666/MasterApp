@@ -9,8 +9,19 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.SPUtils;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.request.RequestOptions;
 import com.ying.administrator.masterappdemo.R;
+import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.common.Config;
+import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
+import com.ying.administrator.masterappdemo.v3.MVC.Presenter.MinePresenter;
+import com.ying.administrator.masterappdemo.v3.MVC.contract.MineContract;
+import com.ying.administrator.masterappdemo.v3.MVC.model.MineModel;
 import com.ying.administrator.masterappdemo.v3.activity.PersonalInformationActivity;
 import com.ying.administrator.masterappdemo.v3.activity.SettingActivity;
 import com.ying.administrator.masterappdemo.v3.activity.WalletActivity;
@@ -19,7 +30,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class MineFragment extends BaseLazyFragment implements View.OnClickListener {
+public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> implements View.OnClickListener, MineContract.View {
     private static final String ARG_SHOW_TEXT = "text";
     @BindView(R.id.iv_avatar)
     ImageView mIvAvatar;
@@ -53,6 +64,8 @@ public class MineFragment extends BaseLazyFragment implements View.OnClickListen
     LinearLayout mLlAboutUs;
     Unbinder unbinder;
     private String mContentText;
+    private String userID;
+    private UserInfo.UserInfoDean userInfo;
 
     public static MineFragment newInstance(String param1) {
         MineFragment fragment = new MineFragment();
@@ -83,7 +96,9 @@ public class MineFragment extends BaseLazyFragment implements View.OnClickListen
 
     @Override
     protected void initView() {
-
+        SPUtils spUtils = SPUtils.getInstance("token");
+        userID = spUtils.getString("userName");
+        mPresenter.GetUserInfoList(userID, "1");
     }
 
     @Override
@@ -91,7 +106,7 @@ public class MineFragment extends BaseLazyFragment implements View.OnClickListen
         mLlWallet.setOnClickListener(this);
         mLlPersonalInformation.setOnClickListener(this);
         mLlSetting.setOnClickListener(this);
-
+        mIvAvatar.setOnClickListener(this);
     }
 
     @Override
@@ -105,6 +120,9 @@ public class MineFragment extends BaseLazyFragment implements View.OnClickListen
                 break;
             case R.id.ll_setting:
                 startActivity(new Intent(mActivity, SettingActivity.class));
+                break;
+            case R.id.iv_avatar:
+                startActivity(new Intent(getActivity(), PersonalInformationActivity.class));
                 break;
         }
     }
@@ -121,5 +139,34 @@ public class MineFragment extends BaseLazyFragment implements View.OnClickListen
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void GetUserInfoList(BaseResult<UserInfo> baseResult) {
+        switch (baseResult.getStatusCode()){
+            case 200:
+                userInfo = baseResult.getData().getData().get(0);
+                if (userInfo.getAvator() == null) {//显示默认头像
+                    return;
+                } else {
+                    Glide.with(mActivity)
+                            .load(Config.HEAD_URL + userInfo.getAvator())
+                            .apply(RequestOptions.bitmapTransform(new CircleCrop()))
+                            .into(mIvAvatar);
+                }
+                /*真实姓名*/
+                if (userInfo.getTrueName() == null) { //如果为空说明未认证
+                    mTvCertified.setText("未认证");
+                } else {
+                    mTvCertified.setText(userInfo.getTrueName());
+                    mTvSuggest.setVisibility(View.GONE);
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void UploadAvator(BaseResult<Data<String>> baseResult) {
+
     }
 }

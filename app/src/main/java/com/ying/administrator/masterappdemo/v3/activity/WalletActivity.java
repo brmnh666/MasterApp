@@ -5,13 +5,24 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
+import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.BankCard;
+import com.ying.administrator.masterappdemo.entity.Bill;
+import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.UserInfo;
+import com.ying.administrator.masterappdemo.v3.MVC.Presenter.WalletPresenter;
+import com.ying.administrator.masterappdemo.v3.MVC.contract.WalletContract;
+import com.ying.administrator.masterappdemo.v3.MVC.model.WalletModel;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class WalletActivity extends BaseActivity implements View.OnClickListener {
+public class WalletActivity extends BaseActivity<WalletPresenter, WalletModel> implements View.OnClickListener, WalletContract.View {
 
     @BindView(R.id.tv_title)
     TextView mTvTitle;
@@ -35,6 +46,8 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
     TextView mTvWarranty;
     @BindView(R.id.iv_back)
     ImageView mIvBack;
+    private String userId;
+    private UserInfo.UserInfoDean userInfo;
 
     @Override
     protected int setLayoutId() {
@@ -49,6 +62,9 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
     @Override
     protected void initView() {
         mTvTitle.setText("我的钱包");
+        SPUtils spUtils = SPUtils.getInstance("token");
+        userId = spUtils.getString("userName");
+        mPresenter.GetUserInfoList(userId, "1");
     }
 
     @Override
@@ -70,5 +86,35 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
+    }
+
+    @Override
+    public void GetUserInfoList(BaseResult<UserInfo> baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                if (baseResult.getData() != null) {
+                    userInfo = baseResult.getData().getData().get(0);
+                    String CanWithdraw = String.format("%.2f", userInfo.getTotalMoney() - userInfo.getFrozenMoney());
+                    mTvMoney.setText(CanWithdraw);
+                    String Unfinished = String.format("%.2f", userInfo.getUnfinishedAmount());
+                    mTvConfirmed.setText("￥"+Unfinished );
+                    mTvCumulativeIncome.setText("￥"+String.format("%.2f",userInfo.getServiceTotalMoney()));
+                    mTvWarranty.setText("￥"+userInfo.getDepositMoney());
+                }
+
+                break;
+            case 401:
+                break;
+        }
+    }
+
+    @Override
+    public void AccountBill(BaseResult<Data<Bill>> baseResult) {
+
+    }
+
+    @Override
+    public void GetAccountPayInfoList(BaseResult<List<BankCard>> baseResult) {
+
     }
 }

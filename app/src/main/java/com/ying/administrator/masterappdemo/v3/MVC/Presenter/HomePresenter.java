@@ -2,6 +2,7 @@ package com.ying.administrator.masterappdemo.v3.MVC.Presenter;
 
 import com.ying.administrator.masterappdemo.base.BaseObserver;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.Article;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.v3.MVC.contract.HomeContract;
 
@@ -13,6 +14,17 @@ public class HomePresenter extends HomeContract.Presenter {
                     @Override
                     protected void onHandleSuccess(BaseResult<WorkOrder> value) {
                         mView.WorkerGetOrderList(value);
+                    }
+                });
+    }
+
+    @Override
+    public void GetListCategoryContentByCategoryID(String CategoryID, String page, String limit) {
+        mModel.GetListCategoryContentByCategoryID(CategoryID, page, limit)
+                .subscribe(new BaseObserver<Article>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<Article> value) {
+                        mView.GetListCategoryContentByCategoryID(value);
                     }
                 });
     }

@@ -130,6 +130,15 @@ public class UserInfo implements Serializable {
         private String ServiceTotalOrderNum;
         private String ServiceComplaintNum;
         private Double UnfinishedAmount;
+        private double ServiceTotalMoney;
+
+        public double getServiceTotalMoney() {
+            return ServiceTotalMoney;
+        }
+
+        public void setServiceTotalMoney(double serviceTotalMoney) {
+            ServiceTotalMoney = serviceTotalMoney;
+        }
 
         public Double getUnfinishedAmount() {
             return UnfinishedAmount;

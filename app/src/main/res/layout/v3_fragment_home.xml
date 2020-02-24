@@ -89,9 +89,15 @@
                     app:layout_constraintTop_toTopOf="parent" />
             </LinearLayout>
         </LinearLayout>
-    <android.support.v7.widget.RecyclerView
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/rv_new_order"
-        android:background="#eee"></android.support.v7.widget.RecyclerView>
+        android:id="@+id/refreshLayout">
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/rv_new_order"
+            android:background="#eee"></android.support.v7.widget.RecyclerView>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
 </LinearLayout>
