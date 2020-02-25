@@ -225,6 +225,15 @@ public class WorkOrder implements Serializable {
         private String IsLook;
         private String isOnLookMessage;
         private String barCodeIsNo;
+        private String partyNo;
+
+        public String getPartyNo() {
+            return partyNo;
+        }
+
+        public void setPartyNo(String partyNo) {
+            this.partyNo = partyNo;
+        }
 
         public String getBarCodeIsNo() {
             return barCodeIsNo;

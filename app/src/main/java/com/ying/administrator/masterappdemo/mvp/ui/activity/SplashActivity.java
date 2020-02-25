@@ -15,6 +15,7 @@ import com.ying.administrator.masterappdemo.entity.WxRegister;
 import com.ying.administrator.masterappdemo.mvp.contract.LoginContract;
 import com.ying.administrator.masterappdemo.mvp.model.LoginModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.LoginPresenter;
+import com.ying.administrator.masterappdemo.v3.activity.MainActivity;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -125,6 +126,7 @@ public class SplashActivity extends BaseActivity<LoginPresenter, LoginModel> imp
 
                 /*调转到主界面界面*/
                 if (userName != null && isLogin) { //存在用户名说明登录过 直接登录到主界面
+//                    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                     Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                     startActivity(intent);
                     SplashActivity.this.finish();

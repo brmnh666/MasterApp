@@ -1,4 +1,4 @@
-package com.ying.administrator.masterappdemo.v3.MVC.contract;
+package com.ying.administrator.masterappdemo.v3.mvp.contract;
 
 import com.ying.administrator.masterappdemo.base.BaseModel;
 import com.ying.administrator.masterappdemo.base.BasePresenter;

@@ -1,19 +1,32 @@
 package com.ying.administrator.masterappdemo.v3.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
-import android.view.ViewGroup;
 
+import com.blankj.utilcode.util.SPUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.flyco.tablayout.SlidingTabLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.ying.administrator.masterappdemo.R;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_Receiving_Activity;
-import com.ying.administrator.masterappdemo.mvp.ui.adapter.MyPagerAdapter;
+import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.NavigationBarNumber;
+import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
+import com.ying.administrator.masterappdemo.v3.activity.QuoteDetailsActivity;
+import com.ying.administrator.masterappdemo.v3.adapter.HomeAdapter;
+import com.ying.administrator.masterappdemo.v3.adapter.OrderAdapter;
+import com.ying.administrator.masterappdemo.v3.mvp.Presenter.OrderPresenter;
+import com.ying.administrator.masterappdemo.v3.mvp.contract.OrderContract;
+import com.ying.administrator.masterappdemo.v3.mvp.model.OrderModel;
 import com.ying.administrator.masterappdemo.v3.fragment.order.PendingAppointmentFragment;
 import com.ying.administrator.masterappdemo.v3.fragment.order.PendingFragment;
 import com.ying.administrator.masterappdemo.v3.fragment.order.ReturnedFragment;
@@ -24,10 +37,9 @@ import com.ying.administrator.masterappdemo.v3.fragment.order.ShippingFragment;
 import java.util.ArrayList;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class OrderFragment extends BaseLazyFragment {
+public class OrderFragment extends BaseLazyFragment<OrderPresenter, OrderModel> implements OrderContract.View {
     private static final String ARG_SHOW_TEXT = "text";
     @BindView(R.id.tab_receiving_layout)
     SlidingTabLayout mTabReceivingLayout;
@@ -36,10 +48,7 @@ public class OrderFragment extends BaseLazyFragment {
     Unbinder unbinder;
     private String mContentText;
     private ArrayList<Fragment> mFragments =new ArrayList<>();
-    private final String[] mTitles = {
-            "待处理(0)","待预约(0)", "待服务(0)", "待寄件(0)"
-            , "待返件(0)", "待结算(0)"
-    };
+
 
     private MyPagerAdapter mAdapter;
     private PendingFragment pendingFragment;
@@ -48,6 +57,14 @@ public class OrderFragment extends BaseLazyFragment {
     private ShippingFragment shippingFragment;
     private ReturnedFragment returnedFragment;
     private SettlementFragment settlementFragment;
+    private String userId;
+    private String[] mTitles;
+    private int one;
+    private int two;
+    private int three;
+    private int four;
+    private int five;
+    private int six;
 
     public static OrderFragment newInstance(String param1) {
         OrderFragment fragment = new OrderFragment();
@@ -73,37 +90,14 @@ public class OrderFragment extends BaseLazyFragment {
 
     @Override
     protected void initData() {
-        pendingFragment=PendingFragment.newInstance();
-        pendingAppointmentFragment=PendingAppointmentFragment.newInstance();
-        serviceFragment=ServiceFragment.newInstance();
-        shippingFragment=ShippingFragment.newInstance();
-        returnedFragment=ReturnedFragment.newInstance();
-        settlementFragment=SettlementFragment.newInstance();
-        mFragments.add(pendingFragment);
-        mFragments.add(pendingAppointmentFragment);
-        mFragments.add(serviceFragment);
-        mFragments.add(shippingFragment);
-        mFragments.add(returnedFragment);
-        mFragments.add(settlementFragment);
-//        mFragments.add(PendingFragment.newInstance(""));
-//        mFragments.add(PendingAppointmentFragment.newInstance(""));
-//        mFragments.add(ServiceFragment.newInstance(""));
-//        mFragments.add(ShippingFragment.newInstance(""));
-//        mFragments.add(ReturnedFragment.newInstance(""));
-//        mFragments.add(SettlementFragment.newInstance(""));
-//        mAdapter = new MyPagerAdapter(getFragmentManager());
-//        mReceivingViewpager.setAdapter(mAdapter);
-//        mReceivingViewpager.setOffscreenPageLimit(mFragments.size());
-//        mTabReceivingLayout.setViewPager(mReceivingViewpager);
-        mAdapter = new MyPagerAdapter(getFragmentManager());
-        mReceivingViewpager.setAdapter(mAdapter);
-        mReceivingViewpager.setOffscreenPageLimit(mFragments.size());
-        mTabReceivingLayout.setViewPager(mReceivingViewpager);
 
     }
 
     @Override
     protected void initView() {
+        SPUtils spUtils = SPUtils.getInstance("token");
+        userId = spUtils.getString("userName");
+        mPresenter.NavigationBarNumber(userId,"1","10");
 //        pendingFragment = new PendingFragment();
 //        pendingAppointmentFragment = new PendingAppointmentFragment();
 //        serviceFragment = new ServiceFragment();
@@ -119,6 +113,56 @@ public class OrderFragment extends BaseLazyFragment {
 
     }
 
+    @Override
+    public void NavigationBarNumber(BaseResult<Data<NavigationBarNumber>> baseResult) {
+        switch (baseResult.getStatusCode()){
+            case 200:
+                if (baseResult.getData().isItem1()){
+                    one = baseResult.getData().getItem2().getCount1();
+                    two = baseResult.getData().getItem2().getCount2();
+                    three = baseResult.getData().getItem2().getCount3();
+                    four = baseResult.getData().getItem2().getCount4();
+                    five = baseResult.getData().getItem2().getCount5();
+                    six = baseResult.getData().getItem2().getCount6();
+                }
+                mTitles = new String[]{
+                        "待处理("+one+")","待预约("+two+")", "待服务("+three+")", "待寄件("+four+")"
+                        , "待返件("+five+")", "待结算("+six+")"
+                };
+                pendingFragment=PendingFragment.newInstance();
+                pendingAppointmentFragment=PendingAppointmentFragment.newInstance();
+                serviceFragment=ServiceFragment.newInstance();
+                shippingFragment=ShippingFragment.newInstance();
+                returnedFragment=ReturnedFragment.newInstance();
+                settlementFragment=SettlementFragment.newInstance();
+                mFragments.add(pendingFragment);
+                mFragments.add(pendingAppointmentFragment);
+                mFragments.add(serviceFragment);
+                mFragments.add(shippingFragment);
+                mFragments.add(returnedFragment);
+                mFragments.add(settlementFragment);
+//        mFragments.add(PendingFragment.newInstance(""));
+//        mFragments.add(PendingAppointmentFragment.newInstance(""));
+//        mFragments.add(ServiceFragment.newInstance(""));
+//        mFragments.add(ShippingFragment.newInstance(""));
+//        mFragments.add(ReturnedFragment.newInstance(""));
+//        mFragments.add(SettlementFragment.newInstance(""));
+//        mAdapter = new MyPagerAdapter(getFragmentManager());
+//        mReceivingViewpager.setAdapter(mAdapter);
+//        mReceivingViewpager.setOffscreenPageLimit(mFragments.size());
+//        mTabReceivingLayout.setViewPager(mReceivingViewpager);
+                mAdapter = new MyPagerAdapter(getFragmentManager());
+                mReceivingViewpager.setAdapter(mAdapter);
+                mReceivingViewpager.setOffscreenPageLimit(mFragments.size());
+                mTabReceivingLayout.setViewPager(mReceivingViewpager);
+                break;
+        }
+    }
+
+    @Override
+    public void WorkerGetOrderList(BaseResult<WorkOrder> baseResult) {
+
+    }
 
 
     private class MyPagerAdapter extends FragmentPagerAdapter {

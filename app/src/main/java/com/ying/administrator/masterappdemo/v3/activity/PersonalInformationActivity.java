@@ -40,13 +40,12 @@ import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.Personal_Information_Activity;
 import com.ying.administrator.masterappdemo.util.Glide4Engine;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.util.imageutil.CompressHelper;
-import com.ying.administrator.masterappdemo.v3.MVC.Presenter.PersonalInformationPresenter;
-import com.ying.administrator.masterappdemo.v3.MVC.contract.PersonalInformationContract;
-import com.ying.administrator.masterappdemo.v3.MVC.model.PersonalInformationModel;
+import com.ying.administrator.masterappdemo.v3.mvp.Presenter.PersonalInformationPresenter;
+import com.ying.administrator.masterappdemo.v3.mvp.contract.PersonalInformationContract;
+import com.ying.administrator.masterappdemo.v3.mvp.model.PersonalInformationModel;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 

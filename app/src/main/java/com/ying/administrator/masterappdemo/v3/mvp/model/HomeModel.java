@@ -1,11 +1,10 @@
-package com.ying.administrator.masterappdemo.v3.MVC.model;
+package com.ying.administrator.masterappdemo.v3.mvp.model;
 
-import com.huawei.hms.api.Api;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Article;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.service.ApiRetrofit;
-import com.ying.administrator.masterappdemo.v3.MVC.contract.HomeContract;
+import com.ying.administrator.masterappdemo.v3.mvp.contract.HomeContract;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;

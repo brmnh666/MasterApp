@@ -1,4 +1,4 @@
-package com.ying.administrator.masterappdemo.v3.MVC.model;
+package com.ying.administrator.masterappdemo.v3.mvp.model;
 
 
 import com.ying.administrator.masterappdemo.base.BaseResult;
@@ -7,7 +7,7 @@ import com.ying.administrator.masterappdemo.entity.Bill;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.mvp.service.ApiRetrofit;
-import com.ying.administrator.masterappdemo.v3.MVC.contract.WalletContract;
+import com.ying.administrator.masterappdemo.v3.mvp.contract.WalletContract;
 
 import java.util.List;
 

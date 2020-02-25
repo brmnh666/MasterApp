@@ -1,10 +1,10 @@
-package com.ying.administrator.masterappdemo.v3.MVC.Presenter;
+package com.ying.administrator.masterappdemo.v3.mvp.Presenter;
 
 import com.ying.administrator.masterappdemo.base.BaseObserver;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
-import com.ying.administrator.masterappdemo.v3.MVC.contract.PersonalInformationContract;
+import com.ying.administrator.masterappdemo.v3.mvp.contract.PersonalInformationContract;
 
 import okhttp3.RequestBody;
 

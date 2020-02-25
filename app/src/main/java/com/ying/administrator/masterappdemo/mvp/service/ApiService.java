@@ -21,6 +21,7 @@ import com.ying.administrator.masterappdemo.entity.LeaveMessage;
 import com.ying.administrator.masterappdemo.entity.Logistics;
 import com.ying.administrator.masterappdemo.entity.Message;
 import com.ying.administrator.masterappdemo.entity.MessageData;
+import com.ying.administrator.masterappdemo.entity.NavigationBarNumber;
 import com.ying.administrator.masterappdemo.entity.Province;
 import com.ying.administrator.masterappdemo.entity.QuestBean;
 import com.ying.administrator.masterappdemo.entity.QuestResult;
@@ -1079,6 +1080,10 @@ public interface ApiService {
     /**
      * 新版首页今日待处理
      * state=0
+     * 待服务 state=2
+     * 待寄件 state=11
+     * 待返件  state=8
+     * 待结算  state=12
      * */
     @FormUrlEncoded
     @POST("Order/NewWorkerGetOrderList")
@@ -1087,4 +1092,18 @@ public interface ApiService {
                                                             @Field("page") String page,
                                                             @Field("limit") String limit);
 
+    /**
+     * 各工单数量
+     * var Count1 = 0;//待处理数量
+     *             var Count2 = 0;//待预约数量
+     *             var Count3 = 0;//待服务数量
+     *             var Count4 = 0;//待寄件数量
+     *             var Count5 = 0;//待返件数量
+     *             var Count6 = 0;//待结算数量
+     * */
+    @FormUrlEncoded
+    @POST("Order/NavigationBarNumber")
+    Observable<BaseResult<Data<NavigationBarNumber>>> NavigationBarNumber(@Field("UserID") String UserID,
+                                                                    @Field("page") String page,
+                                                                    @Field("limit") String limit);
 }

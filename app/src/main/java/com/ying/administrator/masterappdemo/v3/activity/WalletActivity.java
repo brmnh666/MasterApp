@@ -13,9 +13,9 @@ import com.ying.administrator.masterappdemo.entity.BankCard;
 import com.ying.administrator.masterappdemo.entity.Bill;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
-import com.ying.administrator.masterappdemo.v3.MVC.Presenter.WalletPresenter;
-import com.ying.administrator.masterappdemo.v3.MVC.contract.WalletContract;
-import com.ying.administrator.masterappdemo.v3.MVC.model.WalletModel;
+import com.ying.administrator.masterappdemo.v3.mvp.Presenter.WalletPresenter;
+import com.ying.administrator.masterappdemo.v3.mvp.contract.WalletContract;
+import com.ying.administrator.masterappdemo.v3.mvp.model.WalletModel;
 
 import java.util.List;
 

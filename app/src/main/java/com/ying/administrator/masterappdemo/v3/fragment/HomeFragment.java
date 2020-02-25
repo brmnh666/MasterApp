@@ -22,9 +22,9 @@ import com.ying.administrator.masterappdemo.entity.Article;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.WebActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
-import com.ying.administrator.masterappdemo.v3.MVC.Presenter.HomePresenter;
-import com.ying.administrator.masterappdemo.v3.MVC.contract.HomeContract;
-import com.ying.administrator.masterappdemo.v3.MVC.model.HomeModel;
+import com.ying.administrator.masterappdemo.v3.mvp.Presenter.HomePresenter;
+import com.ying.administrator.masterappdemo.v3.mvp.contract.HomeContract;
+import com.ying.administrator.masterappdemo.v3.mvp.model.HomeModel;
 import com.ying.administrator.masterappdemo.v3.activity.MessageActivity;
 import com.ying.administrator.masterappdemo.v3.activity.QuoteDetailsActivity;
 import com.ying.administrator.masterappdemo.v3.adapter.HomeAdapter;
@@ -103,7 +103,7 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 page=1;
-//                mPresenter.WorkerGetOrderList(userId, "0", page + "", "5");
+                mPresenter.WorkerGetOrderList(userId, "0", page + "", "5");
                 mPresenter.GetListCategoryContentByCategoryID("7", "1", "999");
                 refreshlayout.resetNoMoreData();
             }
@@ -117,7 +117,8 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++; //页数加1
-//                mPresenter.WorkerGetOrderList(userId, "0", page + "", "5");
+                mPresenter.WorkerGetOrderList(userId, "0", page + "", "5");
+                refreshlayout.finishLoadmore();
             }
         });
 
@@ -127,7 +128,7 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
     protected void initView() {
         SPUtils spUtils = SPUtils.getInstance("token");
         userId = spUtils.getString("userName");
-//        mPresenter.WorkerGetOrderList(userId, "0", page + "", "5");
+        mPresenter.WorkerGetOrderList(userId, "0", page + "", "5");
         mPresenter.GetListCategoryContentByCategoryID("7", "1", "999");
 
     }
@@ -164,8 +165,8 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
     public void WorkerGetOrderList(BaseResult<WorkOrder> baseResult) {
         switch (baseResult.getStatusCode()){
             case 200:
+                workOrder = baseResult.getData();
                 if (workOrder.getData()!=null){
-                    workOrder = baseResult.getData();
                     list.addAll(workOrder.getData());
                     adapter.setNewData(list);
                 }else {
