@@ -1084,6 +1084,14 @@ public interface ApiService {
      * 待寄件 state=11
      * 待返件  state=8
      * 待结算  state=12
+     *
+     * "11"://待寄件
+     * "12"://待结算
+     * "13"://急需处理
+     * "14"://明日需处理
+     * "15"://已超时
+     * "1"://待预约
+     * "16"://待发货
      * */
     @FormUrlEncoded
     @POST("Order/NewWorkerGetOrderList")

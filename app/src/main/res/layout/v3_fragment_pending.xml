@@ -48,8 +48,15 @@
                 android:background="@drawable/v3_order_right_selector"/>
         </LinearLayout>
     </LinearLayout>
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/refreshLayout">
+
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/rv_pending"/>
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </LinearLayout>
