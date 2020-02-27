@@ -1114,4 +1114,15 @@ public interface ApiService {
     Observable<BaseResult<Data<NavigationBarNumber>>> NavigationBarNumber(@Field("UserID") String UserID,
                                                                     @Field("page") String page,
                                                                     @Field("limit") String limit);
+
+    /*
+     *搜索
+     * */
+    @FormUrlEncoded
+    @POST("Order/GetOrderInfoList")
+    Observable<BaseResult<WorkOrder>> GetOrderInfoList(@Field("Phone") String Phone,
+                                                    @Field("OrderID") String OrderID,
+                                                    @Field("UserID") String UserID,
+                                                    @Field("limit") String limit,
+                                                    @Field("page") String page);
 }

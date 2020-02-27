@@ -6,37 +6,34 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.LinearLayoutManager;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.blankj.utilcode.util.SPUtils;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.flyco.tablayout.SlidingTabLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.NavigationBarNumber;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
-import com.ying.administrator.masterappdemo.v3.activity.QuoteDetailsActivity;
-import com.ying.administrator.masterappdemo.v3.adapter.HomeAdapter;
-import com.ying.administrator.masterappdemo.v3.adapter.OrderAdapter;
-import com.ying.administrator.masterappdemo.v3.mvp.Presenter.OrderPresenter;
-import com.ying.administrator.masterappdemo.v3.mvp.contract.OrderContract;
-import com.ying.administrator.masterappdemo.v3.mvp.model.OrderModel;
+import com.ying.administrator.masterappdemo.v3.activity.SearchOrderActivity;
 import com.ying.administrator.masterappdemo.v3.fragment.order.PendingAppointmentFragment;
 import com.ying.administrator.masterappdemo.v3.fragment.order.PendingFragment;
 import com.ying.administrator.masterappdemo.v3.fragment.order.ReturnedFragment;
 import com.ying.administrator.masterappdemo.v3.fragment.order.ServiceFragment;
 import com.ying.administrator.masterappdemo.v3.fragment.order.SettlementFragment;
 import com.ying.administrator.masterappdemo.v3.fragment.order.ShippingFragment;
+import com.ying.administrator.masterappdemo.v3.mvp.Presenter.OrderPresenter;
+import com.ying.administrator.masterappdemo.v3.mvp.contract.OrderContract;
+import com.ying.administrator.masterappdemo.v3.mvp.model.OrderModel;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public class OrderFragment extends BaseLazyFragment<OrderPresenter, OrderModel> implements OrderContract.View {
@@ -46,8 +43,11 @@ public class OrderFragment extends BaseLazyFragment<OrderPresenter, OrderModel> 
     @BindView(R.id.receiving_viewpager)
     ViewPager mReceivingViewpager;
     Unbinder unbinder;
+    @BindView(R.id.ll_search)
+    LinearLayout mLlSearch;
+    Unbinder unbinder1;
     private String mContentText;
-    private ArrayList<Fragment> mFragments =new ArrayList<>();
+    private ArrayList<Fragment> mFragments = new ArrayList<>();
 
 
     private MyPagerAdapter mAdapter;
@@ -97,7 +97,7 @@ public class OrderFragment extends BaseLazyFragment<OrderPresenter, OrderModel> 
     protected void initView() {
         SPUtils spUtils = SPUtils.getInstance("token");
         userId = spUtils.getString("userName");
-        mPresenter.NavigationBarNumber(userId,"1","10");
+        mPresenter.NavigationBarNumber(userId, "1", "10");
 //        pendingFragment = new PendingFragment();
 //        pendingAppointmentFragment = new PendingAppointmentFragment();
 //        serviceFragment = new ServiceFragment();
@@ -110,14 +110,19 @@ public class OrderFragment extends BaseLazyFragment<OrderPresenter, OrderModel> 
 
     @Override
     protected void setListener() {
-
+        mLlSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(mActivity, SearchOrderActivity.class));
+            }
+        });
     }
 
     @Override
     public void NavigationBarNumber(BaseResult<Data<NavigationBarNumber>> baseResult) {
-        switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData().isItem1()){
+                if (baseResult.getData().isItem1()) {
                     one = baseResult.getData().getItem2().getCount1();
                     two = baseResult.getData().getItem2().getCount2();
                     three = baseResult.getData().getItem2().getCount3();
@@ -126,15 +131,15 @@ public class OrderFragment extends BaseLazyFragment<OrderPresenter, OrderModel> 
                     six = baseResult.getData().getItem2().getCount6();
                 }
                 mTitles = new String[]{
-                        "待处理("+one+")","待预约("+two+")", "待服务("+three+")", "待寄件("+four+")"
-                        , "待返件("+five+")", "待结算("+six+")"
+                        "待处理(" + one + ")", "待预约(" + two + ")", "待服务(" + three + ")", "待寄件(" + four + ")"
+                        , "待返件(" + five + ")", "待结算(" + six + ")"
                 };
-                pendingFragment=PendingFragment.newInstance();
-                pendingAppointmentFragment=PendingAppointmentFragment.newInstance();
-                serviceFragment=ServiceFragment.newInstance();
-                shippingFragment=ShippingFragment.newInstance();
-                returnedFragment=ReturnedFragment.newInstance();
-                settlementFragment=SettlementFragment.newInstance();
+                pendingFragment = PendingFragment.newInstance();
+                pendingAppointmentFragment = PendingAppointmentFragment.newInstance();
+                serviceFragment = ServiceFragment.newInstance();
+                shippingFragment = ShippingFragment.newInstance();
+                returnedFragment = ReturnedFragment.newInstance();
+                settlementFragment = SettlementFragment.newInstance();
                 mFragments.add(pendingFragment);
                 mFragments.add(pendingAppointmentFragment);
                 mFragments.add(serviceFragment);
@@ -162,6 +167,20 @@ public class OrderFragment extends BaseLazyFragment<OrderPresenter, OrderModel> 
     @Override
     public void WorkerGetOrderList(BaseResult<WorkOrder> baseResult) {
 
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        unbinder1 = ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder1.unbind();
     }
 
 
