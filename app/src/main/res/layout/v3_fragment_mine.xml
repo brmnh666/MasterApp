@@ -256,7 +256,8 @@
                 android:paddingBottom="21dp"
                 android:paddingLeft="13dp"
                 android:paddingRight="29dp"
-                android:background="@color/white">
+                android:background="@color/white"
+                android:visibility="gone">
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

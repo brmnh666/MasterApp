@@ -15,6 +15,7 @@ import com.blankj.utilcode.util.SPUtils;
 import com.flyco.tablayout.SlidingTabLayout;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.NavigationBarNumber;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
@@ -29,6 +30,9 @@ import com.ying.administrator.masterappdemo.v3.fragment.order.ShippingFragment;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.OrderPresenter;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.OrderContract;
 import com.ying.administrator.masterappdemo.v3.mvp.model.OrderModel;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
@@ -204,4 +208,40 @@ public class OrderFragment extends BaseLazyFragment<OrderPresenter, OrderModel> 
             return mFragments.get(position);
         }
     }
+
+    //任意写一个方法，给这个方法一个@Subscribe注解，参数类型可以自定义，但是一定要与你发出的类型相同
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(Integer num) {
+        switch (num) {
+            case 1:
+                mReceivingViewpager.setCurrentItem(1); //待预约 state 1
+                break;
+            case 2:
+                mReceivingViewpager.setCurrentItem(2); //服务中 state 2
+                break;
+            case 3:
+                mReceivingViewpager.setCurrentItem(3);//待返件 state 5
+                break;
+            case 4:
+                mReceivingViewpager.setCurrentItem(7);//已完成 state 7
+                break;
+            case 5:
+                mReceivingViewpager.setCurrentItem(3);//配件单 state 3
+                break;
+            case 7:
+                mReceivingViewpager.setCurrentItem(4);//待寄件  state 4
+                break;
+            case 8:
+                mReceivingViewpager.setCurrentItem(8);//预约不成功
+                break;
+
+            case Config.ORDER_READ:
+
+//                mPresenter.WorkerGetOrderRed(userid);
+
+            default:
+                break;
+        }
+    }
+
 }

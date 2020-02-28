@@ -199,46 +199,137 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
+                android:layout_marginTop="6dp"
                 android:background="@color/white"
                 android:orientation="vertical"
                 android:paddingLeft="13dp"
                 android:paddingTop="15dp"
                 android:paddingRight="13dp"
-                android:paddingBottom="13dp">
+                android:paddingBottom="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="产品图片"
+                    android:text="用户信息"
                     android:textColor="@color/black"
-                    android:textSize="17sp" />
+                    android:textSize="17dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="14dp"
+                    android:background="#E5E5E5" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:background="@drawable/v3_gray_shape"
-                    android:paddingTop="7dp"
-                    android:paddingBottom="9dp">
+                    android:orientation="horizontal">
 
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/rc_pivture"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="14dp"
+                            android:text="蛋炒饭    18067138219"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tv_address"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="宁波市 江北区 同济路169号1901室"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_telephone"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/circle_black_shape">
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/v3_telephone"
+                            android:layout_gravity="center"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="预约"
+                            android:textColor="#808080"
+                            android:textSize="10sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/v3_localtion" />
+
+                    <TextView
+                        android:id="@+id/tv_distance"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="9dp"
+                        android:layout_weight="1"
+                        android:text="线路里程 34.58公里"
+                        android:textColor="#808080"
+                        android:textSize="12sp" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_change_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_change_address"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="更改地址"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:layout_width="9dp"
+                            android:layout_height="16dp"
+                            android:layout_marginLeft="8dp"
+                            android:src="@mipmap/v3_youjiantou" />
+                    </LinearLayout>
+
                 </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
+                android:layout_marginTop="6dp"
                 android:background="@color/white"
                 android:orientation="vertical"
                 android:paddingLeft="13dp"
                 android:paddingTop="15dp"
-                android:paddingRight="14dp"
-                android:paddingBottom="13dp">
+                android:paddingRight="13dp"
+                android:paddingBottom="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -246,37 +337,108 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
                         android:layout_weight="1"
-                        android:text="报价金额"
+                        android:text="产品信息"
                         android:textColor="@color/black"
-                        android:textSize="17sp" />
+                        android:textSize="17dp" />
 
-                    <TextView
-                        android:id="@+id/tv_price"
-                        android:layout_width="130dp"
-                        android:layout_height="38dp"
-                        android:background="@drawable/v3_gray_white_shape"
-                        android:gravity="center"
-                        android:hint="请输入报价金额"
-                        android:inputType="numberDecimal"
-                        android:textColor="#808080"
-                        android:textSize="14sp" />
+                    <LinearLayout
+                        android:id="@+id/ll_platform_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_platform_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="平台价格"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:layout_width="9dp"
+                            android:layout_height="16dp"
+                            android:layout_marginLeft="8dp"
+                            android:src="@mipmap/v3_youjiantou" />
+                    </LinearLayout>
                 </LinearLayout>
 
-                <EditText
-                    android:id="@+id/et_quote_description"
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="75dp"
-                    android:layout_marginTop="15dp"
-                    android:background="@drawable/v3_gray_white_shape"
-                    android:gravity="top"
-                    android:hint="报价描述"
-                    android:padding="10dp"
-                    android:textColor="#808080"
-                    android:textSize="14sp" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/v3_gray_shape"
+                    android:orientation="horizontal"
+                    android:paddingLeft="4dp"
+                    android:paddingTop="7dp"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="9dp">
+
+                    <ImageView
+                        android:id="@+id/iv_picture"
+                        android:layout_width="58dp"
+                        android:layout_height="58dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="19dp"
+                        android:layout_marginTop="9dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_product_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="小夫鹅 全自动洗衣机"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tv_specifications"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="产品规格：通用"
+                                android:textColor="#808080"
+                                android:textSize="12sp" />
+
+                            <LinearLayout
+                                android:id="@+id/ll_maintenance_information"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="7dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/tv_maintenance_information"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="维修资料"
+                                    android:textColor="@color/black"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold" />
+
+                                <ImageView
+                                    android:layout_width="9dp"
+                                    android:layout_height="16dp"
+                                    android:layout_marginLeft="8dp"
+                                    android:src="@mipmap/v3_youjiantou" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -297,46 +459,70 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
                         android:layout_gravity="center"
                         android:src="@drawable/v3_telephone" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
+                        android:layout_marginTop="4dp"
                         android:text="联系客服"
                         android:textColor="@color/black"
-                        android:textSize="12sp" />
+                        android:textSize="10sp" />
                 </LinearLayout>
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1" />
+
+                <LinearLayout
+                    android:id="@+id/ll_reservation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/tv_success"
+                        android:layout_width="90dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/v3_blue_white_shape"
+                        android:gravity="center"
+                        android:text="预约成功"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
                 <TextView
-                    android:id="@+id/tv_know"
-                    android:layout_width="100dp"
+                    android:id="@+id/tv_cancel"
+                    android:layout_width="90dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
                     android:background="@drawable/v3_blue_white_shape"
-                    android:text="报价需知"
+                    android:gravity="center"
+                    android:text="取消工单"
                     android:textColor="@color/black"
-                    android:textSize="14sp"
-                    android:gravity="center"/>
+                    android:textSize="14sp" />
                 <TextView
-                    android:id="@+id/tv_confirm_offer"
-                    android:layout_width="100dp"
+                    android:id="@+id/tv_reservation"
+                    android:layout_width="90dp"
                     android:layout_height="40dp"
-                    android:background="@drawable/v3_copy_bg_shape"
-                    android:textSize="14sp"
-                    android:text="确认报价"
-                    android:textColor="@color/white"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="25dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginRight="14dp"
-                    android:gravity="center"/>
+                    android:background="@drawable/v3_copy_bg_shape"
+                    android:gravity="center"
+                    android:text="已预约"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
             </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

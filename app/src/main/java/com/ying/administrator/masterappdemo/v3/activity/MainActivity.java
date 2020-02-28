@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
+import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BlankFragment;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.Home_Fragment;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.Me_Fragment;
@@ -18,6 +19,9 @@ import com.ying.administrator.masterappdemo.v3.fragment.MineFragment;
 import com.ying.administrator.masterappdemo.v3.fragment.OrderFragment;
 import com.ying.administrator.masterappdemo.v3.fragment.StudyFragment;
 import com.ying.administrator.masterappdemo.widget.CustomViewPager;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,5 +128,23 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mLlStudy.setSelected(false);
         mLlMine.setSelected(false);
         linearLayout.setSelected(true);
+    }
+
+
+    //任意写一个方法，给这个方法一个@Subscribe注解，参数类型可以自定义，但是一定要与你发出的类型相同
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(Integer num) {
+        switch (num) {
+            case 10:
+                mViewPager.setCurrentItem(1); //服务中 state 2
+                tabSelected(mLlOrder);
+                break;
+            case Config.ORDER_READ:
+
+//                mPresenter.WorkerGetOrderRed(userid);
+
+            default:
+                break;
+        }
     }
 }

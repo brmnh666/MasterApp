@@ -19,12 +19,14 @@ import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
+import com.ying.administrator.masterappdemo.v3.activity.FeedbackActivity;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.MinePresenter;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.MineContract;
 import com.ying.administrator.masterappdemo.v3.mvp.model.MineModel;
 import com.ying.administrator.masterappdemo.v3.activity.PersonalInformationActivity;
 import com.ying.administrator.masterappdemo.v3.activity.SettingActivity;
 import com.ying.administrator.masterappdemo.v3.activity.WalletActivity;
+import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -107,6 +109,8 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
         mLlPersonalInformation.setOnClickListener(this);
         mLlSetting.setOnClickListener(this);
         mIvAvatar.setOnClickListener(this);
+        mLlCustomerService.setOnClickListener(this);
+        mLlFeedback.setOnClickListener(this);
     }
 
     @Override
@@ -123,6 +127,28 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
                 break;
             case R.id.iv_avatar:
                 startActivity(new Intent(getActivity(), PersonalInformationActivity.class));
+                break;
+            case R.id.ll_customer_service:
+                final CommonDialog_Home dialog = new CommonDialog_Home(getActivity());
+                dialog.setMessage("是否拨打电话给客服")
+                        //.setImageResId(R.mipmap.ic_launcher)
+                        .setTitle("提示")
+                        .setSingle(false).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
+                    @Override
+                    public void onPositiveClick() {//拨打电话
+                        dialog.dismiss();
+                        call("tel:" + "4006262365");
+                    }
+
+                    @Override
+                    public void onNegtiveClick() {//取消
+                        dialog.dismiss();
+                        // Toast.makeText(MainActivity.this,"ssss",Toast.LENGTH_SHORT).show();
+                    }
+                }).show();
+                break;
+            case R.id.ll_feedback:
+                startActivity(new Intent(mActivity, FeedbackActivity.class));
                 break;
         }
     }

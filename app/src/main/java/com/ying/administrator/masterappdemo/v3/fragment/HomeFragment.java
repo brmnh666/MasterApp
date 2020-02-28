@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -19,9 +20,12 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Article;
+import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_Receiving_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.WebActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
+import com.ying.administrator.masterappdemo.v3.activity.ApplyFeeActivity;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.HomePresenter;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.HomeContract;
 import com.ying.administrator.masterappdemo.v3.mvp.model.HomeModel;
@@ -30,12 +34,16 @@ import com.ying.administrator.masterappdemo.v3.activity.QuoteDetailsActivity;
 import com.ying.administrator.masterappdemo.v3.adapter.HomeAdapter;
 import com.ying.administrator.masterappdemo.widget.SwitchView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+
+import static android.widget.Toast.LENGTH_SHORT;
 
 public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> implements View.OnClickListener, HomeContract.View {
     private static final String ARG_SHOW_TEXT = "text";
@@ -58,6 +66,7 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
     private String userId;
     private int page = 1;
     private WorkOrder workOrder;
+    private int grabposition;
 
     public static HomeFragment newInstance(String param1) {
         HomeFragment fragment = new HomeFragment();
@@ -93,7 +102,21 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 switch (view.getId()) {
                     case R.id.tv_orders:
-                        startActivity(new Intent(mActivity, QuoteDetailsActivity.class));
+                        grabposition = position;
+                        if ("1".equals(list.get(position).getPartyNo())) {
+                            startActivity(new Intent(mActivity, QuoteDetailsActivity.class));
+                        } else {
+                            if ("true".equals(list.get(position).getDistanceTureOrFalse())) {
+                                Intent intent = new Intent(mActivity, ApplyFeeActivity.class);
+                                intent.putExtra("position", position);
+                                intent.putExtra("orderId", list.get(position).getOrderID());
+                                startActivity(intent);
+                            } else {
+                                mPresenter.UpdateSendOrderState(list.get(position).getOrderID(), "1", "");
+                            }
+
+                        }
+
                         break;
                 }
             }
@@ -102,7 +125,8 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                page=1;
+                list.clear();
+                page = 1;
                 mPresenter.WorkerGetOrderList(userId, "0", page + "", "5");
                 mPresenter.GetListCategoryContentByCategoryID("7", "1", "999");
                 refreshlayout.resetNoMoreData();
@@ -163,13 +187,15 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
 
     @Override
     public void WorkerGetOrderList(BaseResult<WorkOrder> baseResult) {
-        switch (baseResult.getStatusCode()){
+        mRefreshLayout.finishRefresh();
+        mRefreshLayout.finishLoadmore();
+        switch (baseResult.getStatusCode()) {
             case 200:
                 workOrder = baseResult.getData();
-                if (workOrder.getData()!=null){
+                if (workOrder.getData() != null) {
                     list.addAll(workOrder.getData());
                     adapter.setNewData(list);
-                }else {
+                } else {
                     adapter.setEmptyView(getHomeEmptyView());
                 }
 
@@ -179,7 +205,7 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
 
     @Override
     public void GetListCategoryContentByCategoryID(BaseResult<Article> baseResult) {
-        switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
                 datalist = baseResult.getData().getData();
                 mScrolltv.removeAllViews();
@@ -210,6 +236,38 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
                         });
                     }
                 });
+                break;
+        }
+    }
+
+    @Override
+    public void UpdateSendOrderState(BaseResult<Data> baseResult) {
+        Data data = baseResult.getData();
+        switch (baseResult.getStatusCode()) {
+            case 200://200
+                if (data.isItem1()) {//接单成功
+
+//                    if (userInfo.getParentUserID() == null || "".equals(userInfo.getParentUserID())) {
+                    adapter.remove(grabposition);
+                    Toast.makeText(getActivity(), "接单成功", LENGTH_SHORT).show();
+                    EventBus.getDefault().post(10);
+                    EventBus.getDefault().post("工单");
+//                        Intent intent = new Intent(getActivity(), Order_Receiving_Activity.class);
+//                        intent.putExtra("intent", "pending_appointment");
+//                        startActivity(intent);
+
+//                    } else {
+//                        pending_appointment_adapter.remove(cancleposition);
+//                    }
+
+
+                } else {
+                    Toast.makeText(getActivity(), (CharSequence) data.getItem2(), LENGTH_SHORT).show();
+                }
+
+                break;
+
+            default:
                 break;
         }
     }

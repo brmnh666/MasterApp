@@ -3,6 +3,7 @@ package com.ying.administrator.masterappdemo.v3.mvp.Presenter;
 import com.ying.administrator.masterappdemo.base.BaseObserver;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Article;
+import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.HomeContract;
 
@@ -25,6 +26,17 @@ public class HomePresenter extends HomeContract.Presenter {
                     @Override
                     protected void onHandleSuccess(BaseResult<Article> value) {
                         mView.GetListCategoryContentByCategoryID(value);
+                    }
+                });
+    }
+
+    @Override
+    public void UpdateSendOrderState(String OrderID, String State, String Reason) {
+        mModel.UpdateSendOrderState(OrderID, State, Reason)
+                .subscribe(new BaseObserver<Data>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<Data> value) {
+                        mView.UpdateSendOrderState(value);
                     }
                 });
     }

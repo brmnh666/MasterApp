@@ -856,6 +856,60 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
+
+        <!--预约详情-->
+        <activity android:name=".v3.activity.AppointmentDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar1"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+
+        <!--意见反馈-->
+        <activity android:name=".v3.activity.FeedbackActivity"
+            android:theme="@style/AppTheme.NoActionBar1"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+
+        <!--服务中详情-->
+        <activity android:name=".v3.activity.ServingDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar1"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <!--远程费申请-->
+        <activity android:name=".v3.activity.ApplyFeeActivity"
+            android:theme="@style/AppTheme.NoActionBar1"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+
+        <!--添加配件与服务-->
+        <activity android:name=".v3.activity.ApplicationAccessoriesActivity"
+            android:theme="@style/AppTheme.NoActionBar1"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <!--添加配件-->
+        <activity android:name=".v3.activity.NewAddAccessoriesActivity"
+            android:theme="@style/AppTheme.NoActionBar1"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+
+        <!--添加配件图片-->
+        <activity android:name=".v3.activity.AccessoriesPictureActivity"
+            android:theme="@style/AppTheme.NoActionBar1"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+
+        <!--配件单详情-->
+        <activity android:name=".v3.activity.AccessoriesDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar1"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
     </application>
 
 

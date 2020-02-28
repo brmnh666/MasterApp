@@ -1,5 +1,6 @@
 package com.ying.administrator.masterappdemo.v3.fragment.order;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.SPUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
@@ -19,6 +21,7 @@ import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.NavigationBarNumber;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
+import com.ying.administrator.masterappdemo.v3.activity.AppointmentDetailsActivity;
 import com.ying.administrator.masterappdemo.v3.adapter.PendingAdapter;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.OrderPresenter;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.OrderContract;
@@ -107,6 +110,7 @@ public class PendingAppointmentFragment extends BaseLazyFragment<OrderPresenter,
         state = "1";
         SPUtils spUtils = SPUtils.getInstance("token");
         userId = spUtils.getString("userName");
+        mRefreshLayout.autoRefresh(0, 0, 1);
         mPresenter.WorkerGetOrderList(userId, state, page + "", "10");
 //        for (int i = 0; i < 10; i++) {
 //            list.add(new WorkOrder.DataBean());
@@ -115,6 +119,16 @@ public class PendingAppointmentFragment extends BaseLazyFragment<OrderPresenter,
         mRvPending.setLayoutManager(new LinearLayoutManager(mActivity));
         mRvPending.setAdapter(pendingAdapter);
         pendingAdapter.setEmptyView(getHomeEmptyView());
+        pendingAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                if ("1".equals(state)){
+                    Intent intent=new Intent(mActivity, AppointmentDetailsActivity.class);
+                    intent.putExtra("id",list.get(position).getOrderID());
+                    startActivity(intent);
+                }
+            }
+        });
     }
 
     @Override
