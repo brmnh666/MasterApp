@@ -131,6 +131,15 @@ public class UserInfo implements Serializable {
         private String ServiceComplaintNum;
         private Double UnfinishedAmount;
         private double ServiceTotalMoney;
+        private String emergencyContact;
+
+        public String getEmergencyContact() {
+            return emergencyContact;
+        }
+
+        public void setEmergencyContact(String emergencyContact) {
+            this.emergencyContact = emergencyContact;
+        }
 
         public double getServiceTotalMoney() {
             return ServiceTotalMoney;

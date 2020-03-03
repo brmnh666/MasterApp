@@ -1,6 +1,5 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -8,29 +7,24 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
-import com.ying.administrator.masterappdemo.common.DefineView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class AboutUsActivity extends BaseActivity implements View.OnClickListener {
-    @BindView(R.id.img_actionbar_return)
-    ImageView mImgActionbarReturn;
-    @BindView(R.id.tv_actionbar_return)
-    TextView mTvActionbarReturn;
-    @BindView(R.id.ll_return)
-    LinearLayout mLlReturn;
-    @BindView(R.id.tv_actionbar_title)
-    TextView mTvActionbarTitle;
-    @BindView(R.id.img_actionbar_message)
-    ImageView mImgActionbarMessage;
-    @BindView(R.id.actionbar_layout)
-    RelativeLayout mActionbarLayout;
+
+    @BindView(R.id.iv_back)
+    ImageView mIvBack;
+    @BindView(R.id.tv_title)
+    TextView mTvTitle;
+    @BindView(R.id.tv_save)
+    TextView mTvSave;
+    @BindView(R.id.ll_customer_service)
+    LinearLayout mLlCustomerService;
     @BindView(R.id.tv_version_number)
     TextView mTvVersionNumber;
     @BindView(R.id.tv_user_Agreement)
@@ -54,8 +48,8 @@ public class AboutUsActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     protected void initData() {
-        mTvActionbarTitle.setText("关于我们");
-        mImgActionbarMessage.setVisibility(View.INVISIBLE);
+        mTvTitle.setText("关于我们");
+//        mIvBack.setVisibility(View.INVISIBLE);
         PackageManager manager = mActivity.getPackageManager();
 //        int code = 0;
 //        try {
@@ -73,7 +67,7 @@ public class AboutUsActivity extends BaseActivity implements View.OnClickListene
             e.printStackTrace();
         }
 
-        mTvVersionNumber.setText("V "+name);
+        mTvVersionNumber.setText("V " + name);
     }
 
     @Override
@@ -84,7 +78,7 @@ public class AboutUsActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     protected void setListener() {
-        mLlReturn.setOnClickListener(this);
+        mIvBack.setOnClickListener(this);
         mTvOpinion.setOnClickListener(this);
         mTvUserAgreement.setOnClickListener(this);
     }
@@ -98,17 +92,17 @@ public class AboutUsActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.ll_return:
+        switch (v.getId()) {
+            case R.id.iv_back:
                 finish();
                 break;
             case R.id.tv_opinion:
-                startActivity(new Intent(mActivity,Opinion_Activity.class));
+                startActivity(new Intent(mActivity, Opinion_Activity.class));
                 break;
             case R.id.tv_user_Agreement:
-                intent =new Intent(mActivity,WebActivity2.class);
-                intent.putExtra("Url","http://admin.xigyu.com/Agreement");
-                intent.putExtra("Title","用户协议");
+                intent = new Intent(mActivity, WebActivity2.class);
+                intent.putExtra("Url", "http://admin.xigyu.com/Agreement");
+                intent.putExtra("Title", "用户协议");
                 startActivity(intent);
                 break;
         }

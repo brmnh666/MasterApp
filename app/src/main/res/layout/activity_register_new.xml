@@ -215,7 +215,7 @@
     android:text="注册并登陆"
     android:textColor="@color/white"
     android:textSize="19sp"
-    android:background="@drawable/bg_register"
+    android:background="@drawable/v3_btn_shape"
     />
 
 

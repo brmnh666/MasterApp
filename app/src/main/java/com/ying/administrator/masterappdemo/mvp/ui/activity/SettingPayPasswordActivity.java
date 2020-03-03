@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,7 +18,6 @@ import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.mvp.contract.ChangePayPasswordContract;
 import com.ying.administrator.masterappdemo.mvp.model.ChangePayPasswordModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.ChangePayPasswordPresenter;
-import com.ying.administrator.masterappdemo.util.SpUtils;
 import com.ying.administrator.masterappdemo.widget.paypassword.PasswordEditText;
 
 import java.util.ArrayList;
@@ -30,18 +28,15 @@ import butterknife.ButterKnife;
 
 public class SettingPayPasswordActivity extends BaseActivity<ChangePayPasswordPresenter, ChangePayPasswordModel> implements View.OnClickListener, PasswordEditText.PasswordFullListener, ChangePayPasswordContract.View {
 
-    @BindView(R.id.img_actionbar_return)
-    ImageView mImgActionbarReturn;
-    @BindView(R.id.tv_actionbar_return)
-    TextView mTvActionbarReturn;
-    @BindView(R.id.ll_return)
-    LinearLayout mLlReturn;
-    @BindView(R.id.tv_actionbar_title)
-    TextView mTvActionbarTitle;
-    @BindView(R.id.img_actionbar_message)
-    ImageView mImgActionbarMessage;
-    @BindView(R.id.actionbar_layout)
-    RelativeLayout mActionbarLayout;
+
+    @BindView(R.id.iv_back)
+    ImageView mIvBack;
+    @BindView(R.id.tv_title)
+    TextView mTvTitle;
+    @BindView(R.id.tv_save)
+    TextView mTvSave;
+    @BindView(R.id.ll_customer_service)
+    LinearLayout mLlCustomerService;
     @BindView(R.id.passwordEdt)
     PasswordEditText mPasswordEdt;
     @BindView(R.id.tv_prompt)
@@ -52,8 +47,6 @@ public class SettingPayPasswordActivity extends BaseActivity<ChangePayPasswordPr
     ImageView mImgDelete;
     @BindView(R.id.keyboard)
     LinearLayout mKeyboard;
-
-
     private int Type;  //1设置 2修改
 
     private String paypassword; //支付密码
@@ -71,15 +64,13 @@ public class SettingPayPasswordActivity extends BaseActivity<ChangePayPasswordPr
     protected void initData() {
 
 
-
-
     }
 
     @Override
     protected void initView() {
         spUtils = SPUtils.getInstance("token");
-        userID=spUtils.getString("userName");
-        mPresenter.GetUserInfoList(userID,"1");
+        userID = spUtils.getString("userName");
+        mPresenter.GetUserInfoList(userID, "1");
         mPasswordEdt.setPasswordFullListener(this);
         setItemClickListener(mKeyboard);
 
@@ -87,7 +78,7 @@ public class SettingPayPasswordActivity extends BaseActivity<ChangePayPasswordPr
 
     @Override
     protected void setListener() {
-        mLlReturn.setOnClickListener(this);
+        mIvBack.setOnClickListener(this);
     }
 
     @Override
@@ -119,7 +110,7 @@ public class SettingPayPasswordActivity extends BaseActivity<ChangePayPasswordPr
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ll_return:
+            case R.id.iv_back:
                 finish();
                 break;
         }
@@ -173,14 +164,14 @@ public class SettingPayPasswordActivity extends BaseActivity<ChangePayPasswordPr
                     /*判断是否有支付密码*/
 
                     if ("".equals(baseResult.getData().getData().get(0).getPayPassWord())) {
-                        mTvActionbarTitle.setText("设置支付密码");
-                        mTvActionbarTitle.setVisibility(View.VISIBLE);
+                        mTvTitle.setText("设置支付密码");
+//                        mTvActionbarTitle.setVisibility(View.VISIBLE);
                         Type = 1;
                         mTvPrompt.setText("请输入六位密码");
                     } else {
                         paypassword = baseResult.getData().getData().get(0).getPayPassWord();
-                        mTvActionbarTitle.setText("修改支付密码");
-                        mTvActionbarTitle.setVisibility(View.VISIBLE);
+                        mTvTitle.setText("修改支付密码");
+//                        mTvActionbarTitle.setVisibility(View.VISIBLE);
                         Type = 2;
                         mTvPrompt.setText("请输入旧支付密码");
                     }

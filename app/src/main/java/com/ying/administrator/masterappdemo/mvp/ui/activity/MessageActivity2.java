@@ -19,7 +19,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.SPUtils;
@@ -44,7 +43,6 @@ import com.ying.administrator.masterappdemo.mvp.ui.adapter.LeaveMessageAdapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.PicAdapter;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.util.SingleClick;
-import com.ying.administrator.masterappdemo.util.imageutil.CompressHelper;
 import com.ying.administrator.masterappdemo.util.imageutil.ImageCompress;
 
 import org.greenrobot.eventbus.EventBus;
@@ -71,26 +69,21 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class MessageActivity2 extends BaseActivity<MessagePresenter, MessageModel> implements View.OnClickListener, MessageContract.View {
-    @BindView(R.id.img_actionbar_return)
-    ImageView mImgActionbarReturn;
-    @BindView(R.id.tv_actionbar_return)
-    TextView mTvActionbarReturn;
-    @BindView(R.id.ll_return)
-    LinearLayout mLlReturn;
-    @BindView(R.id.tv_actionbar_title)
-    TextView mTvActionbarTitle;
-    @BindView(R.id.img_actionbar_message)
-    ImageView mImgActionbarMessage;
-    @BindView(R.id.tv_message)
-    TextView mTvMessage;
-    @BindView(R.id.actionbar_layout)
-    RelativeLayout mActionbarLayout;
+
+    @BindView(R.id.iv_back)
+    ImageView mIvBack;
+    @BindView(R.id.tv_title)
+    TextView mTvTitle;
+    @BindView(R.id.tv_save)
+    TextView mTvSave;
+    @BindView(R.id.ll_customer_service)
+    LinearLayout mLlCustomerService;
     @BindView(R.id.message_rv)
     RecyclerView mMessageRv;
-    @BindView(R.id.rv_icons)
-    RecyclerView mRv_icons;
     @BindView(R.id.et_message)
     EditText mEtMessage;
+    @BindView(R.id.rv_icons)
+    RecyclerView mRvIcons;
     @BindView(R.id.btn_submit)
     Button mBtnSubmit;
     private String userID;
@@ -124,7 +117,7 @@ public class MessageActivity2 extends BaseActivity<MessagePresenter, MessageMode
 
     @Override
     protected void initView() {
-        mTvActionbarTitle.setText("留言");
+        mTvTitle.setText("留言");
 
         SPUtils spUtils = SPUtils.getInstance("token");
         //获取用户id
@@ -139,10 +132,10 @@ public class MessageActivity2 extends BaseActivity<MessagePresenter, MessageMode
         leaveMessageAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                switch (view.getId()){
+                switch (view.getId()) {
                     case R.id.img:
                         Intent intent = new Intent(mActivity, PhotoViewActivity.class);
-                        intent.putExtra("PhotoUrl", Config.Leave_Message_URL+((WorkOrder.LeavemessageListBean)adapter.getData().get(position)).getPhoto());
+                        intent.putExtra("PhotoUrl", Config.Leave_Message_URL + ((WorkOrder.LeavemessageListBean) adapter.getData().get(position)).getPhoto());
                         startActivity(intent);
                         break;
                 }
@@ -151,21 +144,21 @@ public class MessageActivity2 extends BaseActivity<MessagePresenter, MessageMode
 
         piclist.add("add");
         picAdapter = new PicAdapter(R.layout.item_picture, piclist);
-        mRv_icons.setLayoutManager(new GridLayoutManager(mActivity,5));
-        mRv_icons.setAdapter(picAdapter);
+        mRvIcons.setLayoutManager(new GridLayoutManager(mActivity, 5));
+        mRvIcons.setAdapter(picAdapter);
         picAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                switch (view.getId()){
+                switch (view.getId()) {
                     case R.id.img:
-                        if ("add".equals(adapter.getItem(position))){
-                            if(requestPermissions()){
+                        if ("add".equals(adapter.getItem(position))) {
+                            if (requestPermissions()) {
                                 goImage();
-                            }else{
+                            } else {
                                 requestPermissions(permissions.toArray(new String[permissions.size()]), 10001);
                             }
-                        }else{
+                        } else {
                             goPreviewActivity();
                         }
                 }
@@ -179,7 +172,7 @@ public class MessageActivity2 extends BaseActivity<MessagePresenter, MessageMode
         selectpiclist.clear();
 //        selectpiclist.addAll(paths);
         for (int i = 0; i < paths.size(); i++) {
-            selectpiclist.add(ImageCompress.compressImage(paths.get(i),Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy/" + System.currentTimeMillis() + ".jpg",80));
+            selectpiclist.add(ImageCompress.compressImage(paths.get(i), Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy/" + System.currentTimeMillis() + ".jpg", 80));
         }
         if (piclist.size() != 5) {
             piclist.add("add");
@@ -187,24 +180,27 @@ public class MessageActivity2 extends BaseActivity<MessagePresenter, MessageMode
         System.out.println(selectpiclist);
         picAdapter.setNewData(piclist);
     }
-    void goImage(){
-        Intent intent =new Intent(mActivity, PickerActivity.class);
-        intent.putExtra(PickerConfig.SELECT_MODE,PickerConfig.PICKER_IMAGE);//default image and video (Optional)
-        long maxSize=188743680L;//long long long
-        intent.putExtra(PickerConfig.MAX_SELECT_SIZE,maxSize); //default 180MB (Optional)
-        intent.putExtra(PickerConfig.MAX_SELECT_COUNT,5-piclist.size()+1);  //default 40 (Optional)
+
+    void goImage() {
+        Intent intent = new Intent(mActivity, PickerActivity.class);
+        intent.putExtra(PickerConfig.SELECT_MODE, PickerConfig.PICKER_IMAGE);//default image and video (Optional)
+        long maxSize = 188743680L;//long long long
+        intent.putExtra(PickerConfig.MAX_SELECT_SIZE, maxSize); //default 180MB (Optional)
+        intent.putExtra(PickerConfig.MAX_SELECT_COUNT, 5 - piclist.size() + 1);  //default 40 (Optional)
 //        intent.putExtra(PickerConfig.DEFAULT_SELECTED_LIST,select); // (Optional)
-        startActivityForResult(intent,200);
+        startActivityForResult(intent, 200);
     }
-    void goPreviewActivity(){
-        Intent intent =new Intent(mActivity, PreviewActivity.class);
-        intent.putExtra(PickerConfig.PRE_RAW_LIST,select);//default image and video (Optional)
-        intent.putExtra(PickerConfig.MAX_SELECT_COUNT,select.size());//default image and video (Optional)
-        startActivityForResult(intent,300);
+
+    void goPreviewActivity() {
+        Intent intent = new Intent(mActivity, PreviewActivity.class);
+        intent.putExtra(PickerConfig.PRE_RAW_LIST, select);//default image and video (Optional)
+        intent.putExtra(PickerConfig.MAX_SELECT_COUNT, select.size());//default image and video (Optional)
+        startActivityForResult(intent, 300);
     }
+
     @Override
     protected void setListener() {
-        mLlReturn.setOnClickListener(this);
+        mIvBack.setOnClickListener(this);
         mBtnSubmit.setOnClickListener(this);
         mEtMessage.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -227,20 +223,21 @@ public class MessageActivity2 extends BaseActivity<MessagePresenter, MessageMode
 
     /**
      * EditText竖直方向是否可以滚动
+     *
      * @param editText 需要判断的EditText
      * @return true：可以滚动  false：不可以滚动
      */
-    public static  boolean canVerticalScroll(EditText editText) {
+    public static boolean canVerticalScroll(EditText editText) {
         //滚动的距离
         int scrollY = editText.getScrollY();
         //控件内容的总高度
         int scrollRange = editText.getLayout().getHeight();
         //控件实际显示的高度
-        int scrollExtent = editText.getHeight() - editText.getCompoundPaddingTop() -editText.getCompoundPaddingBottom();
+        int scrollExtent = editText.getHeight() - editText.getCompoundPaddingTop() - editText.getCompoundPaddingBottom();
         //控件内容总高度与实际显示高度的差值
         int scrollDifference = scrollRange - scrollExtent;
 
-        if(scrollDifference == 0) {
+        if (scrollDifference == 0) {
             return false;
         }
 
@@ -259,7 +256,7 @@ public class MessageActivity2 extends BaseActivity<MessagePresenter, MessageMode
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ll_return:
+            case R.id.iv_back:
                 finish();
                 break;
             case R.id.btn_submit:
@@ -294,7 +291,7 @@ public class MessageActivity2 extends BaseActivity<MessagePresenter, MessageMode
                 data = baseResult.getData();
                 if (data.getLeavemessageList().size() == 0) {
                 } else {
-                    list=data.getLeavemessageList();
+                    list = data.getLeavemessageList();
                     Collections.reverse(list);
                     leaveMessageAdapter.setNewData(list);
                 }
@@ -312,7 +309,7 @@ public class MessageActivity2 extends BaseActivity<MessagePresenter, MessageMode
                     if (message == null || "".equals(message)) {
                         ToastUtils.showShort("请输入留言内容");
                     } else {
-                        mPresenter.AddLeaveMessageForOrder(userID, orderId, message,baseResult.getData().getItem2());
+                        mPresenter.AddLeaveMessageForOrder(userID, orderId, message, baseResult.getData().getItem2());
                     }
 
                 }
@@ -333,7 +330,7 @@ public class MessageActivity2 extends BaseActivity<MessagePresenter, MessageMode
 
     @Override
     public void LeaveMessageWhetherLook(BaseResult<Data> baseResult) {
-        switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
                 EventBus.getDefault().post("read");
                 break;
@@ -386,30 +383,31 @@ public class MessageActivity2 extends BaseActivity<MessagePresenter, MessageMode
 
         }
     }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         File file = null;
-        if(requestCode==200&&resultCode==PickerConfig.RESULT_CODE){
-            select.addAll((ArrayList)data.getParcelableArrayListExtra(PickerConfig.EXTRA_RESULT));
-            ArrayList<String> list=new ArrayList<>();
-            Log.i("select","select.size"+select.size());
-            for(Media media:select){
+        if (requestCode == 200 && resultCode == PickerConfig.RESULT_CODE) {
+            select.addAll((ArrayList) data.getParcelableArrayListExtra(PickerConfig.EXTRA_RESULT));
+            ArrayList<String> list = new ArrayList<>();
+            Log.i("select", "select.size" + select.size());
+            for (Media media : select) {
                 list.add(media.path);
-                Log.i("media",media.path);
-                Log.e("media","s:"+media.size);
+                Log.i("media", media.path);
+                Log.e("media", "s:" + media.size);
             }
             loadAdpater(list);
         }
-        if(requestCode==300){
-            select=data.getParcelableArrayListExtra(PickerConfig.EXTRA_RESULT);
-            ArrayList<String> list=new ArrayList<>();
-            Log.i("select","select.size"+select.size());
-            for(Media media:select){
+        if (requestCode == 300) {
+            select = data.getParcelableArrayListExtra(PickerConfig.EXTRA_RESULT);
+            ArrayList<String> list = new ArrayList<>();
+            Log.i("select", "select.size" + select.size());
+            for (Media media : select) {
                 list.add(media.path);
-                Log.i("media",media.path);
-                Log.e("media","s:"+media.size);
+                Log.i("media", media.path);
+                Log.e("media", "s:" + media.size);
             }
             loadAdpater(list);
         }
@@ -422,17 +420,17 @@ public class MessageActivity2 extends BaseActivity<MessagePresenter, MessageMode
             return;
         }
         showProgress();
-        if (selectimg.size()==0){
-            mPresenter.AddLeaveMessageForOrder(userID,orderId,message,"");
-        }else{
+        if (selectimg.size() == 0) {
+            mPresenter.AddLeaveMessageForOrder(userID, orderId, message, "");
+        } else {
             successpiclist.clear();
             for (int i = 0; i < selectimg.size(); i++) {
-                File file=new File(selectimg.get(i));
+                File file = new File(selectimg.get(i));
                 MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
                 builder.addFormDataPart("img", file.getName(), RequestBody.create(MediaType.parse("img/png"), file));
                 MultipartBody requestBody = builder.build();
                 //接口
-                String path = Config.BASE_URL+"Upload/LeaveMessageImg";
+                String path = Config.BASE_URL + "Upload/LeaveMessageImg";
                 OkHttpClient okHttpClient = new OkHttpClient.Builder()
                         .connectTimeout(5, TimeUnit.MINUTES)
                         .readTimeout(5, TimeUnit.MINUTES)
@@ -453,19 +451,19 @@ public class MessageActivity2 extends BaseActivity<MessagePresenter, MessageMode
                     public void onResponse(Call call, Response response) throws IOException {
                         String str = response.body().string();
                         System.out.println(str);
-                        Gson gson=new Gson();
-                        PicResult result=gson.fromJson(str.replaceAll(" ",""), PicResult.class);
-                        if (result.getData().isItem1()){
+                        Gson gson = new Gson();
+                        PicResult result = gson.fromJson(str.replaceAll(" ", ""), PicResult.class);
+                        if (result.getData().isItem1()) {
                             successpiclist.add(result.getData().getItem2());
-                            if(successpiclist.size()==selectpiclist.size()){
-                                String photo="";
+                            if (successpiclist.size() == selectpiclist.size()) {
+                                String photo = "";
                                 for (int i = 0; i < successpiclist.size(); i++) {
-                                    photo+=successpiclist.get(i)+",";
+                                    photo += successpiclist.get(i) + ",";
                                 }
-                                photo=photo.substring(0,photo.lastIndexOf(","));
-                                mPresenter.AddLeaveMessageForOrder(userID,orderId,message,photo);
+                                photo = photo.substring(0, photo.lastIndexOf(","));
+                                mPresenter.AddLeaveMessageForOrder(userID, orderId, message, photo);
                             }
-                        }else{
+                        } else {
                             hideProgress();
                             ToastUtils.showShort("留言失败，请稍后重试");
                         }
@@ -478,6 +476,6 @@ public class MessageActivity2 extends BaseActivity<MessagePresenter, MessageMode
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(Bitmap name) {
         bitmap = name;
-        ToastUtils.showShort(bitmap+"");
+        ToastUtils.showShort(bitmap + "");
     }
 }

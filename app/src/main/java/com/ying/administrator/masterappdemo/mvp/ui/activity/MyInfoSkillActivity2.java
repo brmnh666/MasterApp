@@ -3,7 +3,6 @@ package com.ying.administrator.masterappdemo.mvp.ui.activity;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -12,9 +11,7 @@ import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
@@ -39,28 +36,23 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MyInfoSkillActivity2 extends BaseActivity<AddSkillsPresenter, AddSkillsModel> implements View.OnClickListener, AddSkillsContract.View {
-    @BindView(R.id.img_actionbar_return)
-    ImageView mImgActionbarReturn;
-    @BindView(R.id.tv_actionbar_return)
-    TextView mTvActionbarReturn;
-    @BindView(R.id.ll_return)
-    LinearLayout mLlReturn;
-    @BindView(R.id.tv_actionbar_title)
-    TextView mTvActionbarTitle;
-    @BindView(R.id.img_actionbar_message)
-    ImageView mImgActionbarMessage;
-    @BindView(R.id.tv_message)
-    TextView mTvMessage;
-    @BindView(R.id.actionbar_layout)
-    RelativeLayout mActionbarLayout;
+
 
     @BindView(R.id.btn_skill)
     Button mBtnSkill;
     @BindView(R.id.expandablelistview)
     ExpandableListView mExpandablelistview;
+    @BindView(R.id.iv_back)
+    ImageView mIvBack;
+    @BindView(R.id.tv_title)
+    TextView mTvTitle;
+    @BindView(R.id.tv_save)
+    TextView mTvSave;
+    @BindView(R.id.ll_customer_service)
+    LinearLayout mLlCustomerService;
 
     private List<MySkills> mySkillsList = new ArrayList<>();
-    private List<Skill> mSkillList=new ArrayList<>();
+    private List<Skill> mSkillList = new ArrayList<>();
     private List<Category> popularList;
     ZLoadingDialog dialog = new ZLoadingDialog(this); //loading
     private CarCircuitAdapter circuitAdapter;
@@ -83,13 +75,13 @@ public class MyInfoSkillActivity2 extends BaseActivity<AddSkillsPresenter, AddSk
     @Override
     protected void initView() {
         userID = spUtils.getString("userName"); //获取用户id
-        mTvActionbarTitle.setText("我的技能");
+        mTvTitle.setText("我的技能");
         mPresenter.GetFactoryCategory("999");
     }
 
     @Override
     protected void setListener() {
-        mLlReturn.setOnClickListener(this);
+        mIvBack.setOnClickListener(this);
         mBtnSkill.setOnClickListener(this);
     }
 
@@ -97,48 +89,48 @@ public class MyInfoSkillActivity2 extends BaseActivity<AddSkillsPresenter, AddSk
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ll_return:
+            case R.id.iv_back:
                 finish();
                 break;
             case R.id.btn_skill:
-                skills ="";
-                NodeIds ="";
+                skills = "";
+                NodeIds = "";
                 for (int i = 0; i < circuitAdapter.getGroup().size(); i++) {
-                    if (circuitAdapter.getGroup().get(i).isSelected()){
-                        skills +=circuitAdapter.getGroup().get(i).getCategory().getFCategoryName()+"/";
-                        NodeIds +=circuitAdapter.getGroup().get(i).getCategory().getFCategoryID()+",";
+                    if (circuitAdapter.getGroup().get(i).isSelected()) {
+                        skills += circuitAdapter.getGroup().get(i).getCategory().getFCategoryName() + "/";
+                        NodeIds += circuitAdapter.getGroup().get(i).getCategory().getFCategoryID() + ",";
                     }
                     for (int j = 0; j < circuitAdapter.getGroup().get(i).getCategoryArrayList().size(); j++) {
-                        if (circuitAdapter.getGroup().get(i).getCategoryArrayList().get(j).isSelected()){
-                            skills +=circuitAdapter.getGroup().get(i).getCategoryArrayList().get(j).getFCategoryName()+"/";
-                            NodeIds +=circuitAdapter.getGroup().get(i).getCategoryArrayList().get(j).getFCategoryID()+",";
+                        if (circuitAdapter.getGroup().get(i).getCategoryArrayList().get(j).isSelected()) {
+                            skills += circuitAdapter.getGroup().get(i).getCategoryArrayList().get(j).getFCategoryName() + "/";
+                            NodeIds += circuitAdapter.getGroup().get(i).getCategoryArrayList().get(j).getFCategoryID() + ",";
                         }
                     }
                 }
-                if (skills.contains("/")){
+                if (skills.contains("/")) {
                     skills = skills.substring(0, skills.lastIndexOf("/"));
                 }
-                if (NodeIds.contains(",")){
+                if (NodeIds.contains(",")) {
                     NodeIds = NodeIds.substring(0, NodeIds.lastIndexOf(","));
                 }
-                if ("".equals(skills)){
+                if ("".equals(skills)) {
                     ToastUtils.setBgColor(Color.BLACK);
                     ToastUtils.setMsgColor(Color.WHITE);
-                    ToastUtils.setGravity(Gravity.CENTER,0 , 0);
+                    ToastUtils.setGravity(Gravity.CENTER, 0, 0);
                     ToastUtils.showShort("未选择技能");
                     return;
                 }
                 System.out.println(skills);
                 System.out.println(NodeIds);
-                new AlertDialog.Builder(mActivity).setMessage("替换之前的技能？\n\n已选技能："+skills)
+                new AlertDialog.Builder(mActivity).setMessage("替换之前的技能？\n\n已选技能：" + skills)
                         .setPositiveButton("确认", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                mPresenter.UpdateAccountSkillData(userID,NodeIds);
+                                mPresenter.UpdateAccountSkillData(userID, NodeIds);
                                 dialogInterface.dismiss();
                             }
                         })
-                        .setNegativeButton("取消",null)
+                        .setNegativeButton("取消", null)
                         .create()
                         .show();
 
@@ -163,7 +155,7 @@ public class MyInfoSkillActivity2 extends BaseActivity<AddSkillsPresenter, AddSk
                     if (popularList.size() == 0) {
                     } else {
                         for (int i = 0; i < popularList.size(); i++) {
-                                mySkillsList.add(new MySkills(false, popularList.get(i), new ArrayList<Category>()));
+                            mySkillsList.add(new MySkills(false, popularList.get(i), new ArrayList<Category>()));
                         }
                         circuitAdapter = new CarCircuitAdapter(this);
                         circuitAdapter.addGroupList(mySkillsList);
@@ -175,13 +167,13 @@ public class MyInfoSkillActivity2 extends BaseActivity<AddSkillsPresenter, AddSk
                             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
                                 String circuit_id = circuitAdapter.getGroup(groupPosition).getCategory().getFCategoryID();
                                 position = groupPosition;
-                                if (circuitAdapter.getChildrenCount(groupPosition)>0){
-                                    if (parent.isGroupExpanded(groupPosition)){
+                                if (circuitAdapter.getChildrenCount(groupPosition) > 0) {
+                                    if (parent.isGroupExpanded(groupPosition)) {
                                         parent.collapseGroup(groupPosition);
-                                    }else{
+                                    } else {
                                         parent.expandGroup(groupPosition);
                                     }
-                                }else{
+                                } else {
                                     mPresenter.GetChildFactoryCategory(circuit_id);
                                 }
                                 return true;
@@ -190,22 +182,22 @@ public class MyInfoSkillActivity2 extends BaseActivity<AddSkillsPresenter, AddSk
                         mExpandablelistview.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
 
                             private List<Category> categoryArrayList;
-                            private int count=0;
+                            private int count = 0;
 
                             @Override
                             public boolean onChildClick(ExpandableListView expandableListView, View view, int groupPosition, int childPosition, long l) {
-                                count=0;
+                                count = 0;
                                 categoryArrayList = circuitAdapter.getGroup(groupPosition).getCategoryArrayList();
                                 Category category = categoryArrayList.get(childPosition);
                                 category.setSelected(!category.isSelected());
-                                for (int i = 0; i < categoryArrayList.size() ; i++) {
-                                    if (categoryArrayList.get(i).isSelected()){
+                                for (int i = 0; i < categoryArrayList.size(); i++) {
+                                    if (categoryArrayList.get(i).isSelected()) {
                                         count++;
                                     }
                                 }
-                                if (count==categoryArrayList.size()){
+                                if (count == categoryArrayList.size()) {
                                     circuitAdapter.getGroup(groupPosition).setSelected(true);
-                                }else{
+                                } else {
                                     circuitAdapter.getGroup(groupPosition).setSelected(false);
                                 }
                                 circuitAdapter.notifyDataSetChanged();
@@ -233,8 +225,8 @@ public class MyInfoSkillActivity2 extends BaseActivity<AddSkillsPresenter, AddSk
                     popularList = data.getData();
                     if (popularList.size() == 0) {
                     } else {
-                       circuitAdapter.addAllChild(position,popularList);
-                       mExpandablelistview.expandGroup(position);
+                        circuitAdapter.addAllChild(position, popularList);
+                        mExpandablelistview.expandGroup(position);
                     }
                     mPresenter.GetAccountSkill(userID);
                 } else {
@@ -258,11 +250,11 @@ public class MyInfoSkillActivity2 extends BaseActivity<AddSkillsPresenter, AddSk
                 } else {
                     for (int i = 0; i < mSkillList.size(); i++) {
                         for (int j = 0; j < mySkillsList.size(); j++) {
-                            if (mSkillList.get(i).getCategoryID().equals(mySkillsList.get(j).getCategory().getId())){
+                            if (mSkillList.get(i).getCategoryID().equals(mySkillsList.get(j).getCategory().getId())) {
                                 mySkillsList.get(j).setSelected(true);
                             }
                             for (int k = 0; k < mySkillsList.get(j).getCategoryArrayList().size(); k++) {
-                                if (mSkillList.get(i).getCategoryID().equals(mySkillsList.get(j).getCategoryArrayList().get(k).getId())){
+                                if (mSkillList.get(i).getCategoryID().equals(mySkillsList.get(j).getCategoryArrayList().get(k).getId())) {
                                     mySkillsList.get(j).getCategoryArrayList().get(k).setSelected(true);
                                 }
                             }

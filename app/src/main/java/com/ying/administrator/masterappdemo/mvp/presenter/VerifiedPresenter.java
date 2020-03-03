@@ -3,9 +3,12 @@ package com.ying.administrator.masterappdemo.mvp.presenter;
 
 import com.ying.administrator.masterappdemo.base.BaseObserver;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.AddressList;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.mvp.contract.VerifiedContract;
+
+import java.util.List;
 
 import okhttp3.RequestBody;
 
@@ -52,6 +55,17 @@ public class VerifiedPresenter extends VerifiedContract.Presenter {
                     @Override
                     protected void onHandleSuccess(BaseResult<Data<String>> value) {
                         mView.ApplyAuthInfoBysub(value);
+                    }
+                });
+    }
+
+    @Override
+    public void GetAccountAddress(String UserId) {
+        mModel.GetAccountAddress(UserId)
+                .subscribe(new BaseObserver<List<AddressList>>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<List<AddressList>> value) {
+                        mView.GetAccountAddress(value);
                     }
                 });
     }

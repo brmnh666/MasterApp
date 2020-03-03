@@ -13,11 +13,16 @@ import com.blankj.utilcode.util.SPUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.AboutUsActivity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.Opinion_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.VerifiedActivity2;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
 import com.ying.administrator.masterappdemo.v3.activity.FeedbackActivity;
@@ -75,6 +80,8 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
     TextView mTvPhone;
     @BindView(R.id.ll_name)
     LinearLayout mLlName;
+    @BindView(R.id.refreshLayout)
+    SmartRefreshLayout mRefreshLayout;
     private String mContentText;
     private String userID;
     private UserInfo.UserInfoDean userInfo;
@@ -103,7 +110,14 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
 
     @Override
     protected void initData() {
-
+        mRefreshLayout.setEnableLoadmore(false);
+        mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                mPresenter.GetUserInfoList(userID, "1");//根据 手机号码获取用户详细信息
+                refreshlayout.finishRefresh(1000);
+            }
+        });
     }
 
     @Override
@@ -122,6 +136,7 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
         mLlCustomerService.setOnClickListener(this);
         mLlFeedback.setOnClickListener(this);
         mLlPerson.setOnClickListener(this);
+        mLlAboutUs.setOnClickListener(this);
     }
 
     @Override
@@ -159,7 +174,7 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
                 }).show();
                 break;
             case R.id.ll_feedback:
-                startActivity(new Intent(mActivity, FeedbackActivity.class));
+                startActivity(new Intent(mActivity, Opinion_Activity.class));
                 break;
             case R.id.ll_person:
                 if (userInfo.getTrueName() == null) { //如果为空说明未认证
@@ -167,6 +182,9 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
                 } else {
                     startActivity(new Intent(mActivity, PersonalInformationActivity.class));
                 }
+                break;
+            case R.id.ll_about_us:
+                startActivity(new Intent(mActivity, AboutUsActivity.class));
                 break;
         }
     }
@@ -199,15 +217,25 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
                             .into(mIvAvatar);
                 }
                 /*真实姓名*/
-                if (userInfo.getTrueName() == null) { //如果为空说明未认证
+                if (userInfo.getIfAuth() == null || "".equals(userInfo.getIfAuth())) {
                     mTvCertified.setText("未认证");
                     mTvSuggest.setVisibility(View.VISIBLE);
                     mLlName.setVisibility(View.GONE);
-                } else {
+                } else if ("0".equals(userInfo.getIfAuth())) {
+                    mTvCertified.setText(userInfo.getTrueName());
+                    mTvSuggest.setVisibility(View.VISIBLE);
+                    mTvSuggest.setText("认证中");
+                    mLlName.setVisibility(View.GONE);
+                } else if ("-1".equals(userInfo.getIfAuth())) {
+                    mTvCertified.setText(userInfo.getTrueName());
+                    mTvSuggest.setVisibility(View.VISIBLE);
+                    mTvSuggest.setText("拒绝，请查看原因");
+                    mLlName.setVisibility(View.GONE);
+                } else if ("1".equals(userInfo.getIfAuth())) {
                     mTvCertified.setText(userInfo.getTrueName());
                     mTvSuggest.setVisibility(View.GONE);
                     mLlName.setVisibility(View.VISIBLE);
-                    mTvPhone.setText(userInfo.getUserID()+"");
+                    mTvPhone.setText(userInfo.getUserID() + "");
                 }
                 break;
         }
@@ -221,6 +249,8 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(String name) {
         if ("GetUserInfoList".equals(name)) {
+            mPresenter.GetUserInfoList(userID, "1");
+        } else if ("certification".equals(name)) {
             mPresenter.GetUserInfoList(userID, "1");
         }
     }

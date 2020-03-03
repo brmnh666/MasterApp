@@ -46,6 +46,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+import cn.jpush.android.api.JPushInterface;
 import skin.support.SkinCompatManager;
 import skin.support.app.SkinCardViewInflater;
 import skin.support.constraint.app.SkinConstraintViewInflater;
@@ -116,6 +117,9 @@ public class MyApplication extends Application {
         });
         XGPushManager.bindAccount(getApplicationContext(), "XINGE");
         XGPushManager.setTag(this,"XINGE");
+
+        JPushInterface.setDebugMode(true); 	// 设置开启日志,发布时请关闭日志
+        JPushInterface.init(this);     		// 初始化 JPush
 
         initUpgradeDialog();
         /**

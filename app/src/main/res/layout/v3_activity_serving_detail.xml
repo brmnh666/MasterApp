@@ -47,6 +47,18 @@
                     android:text="再次预约"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_tickets"
+                    android:layout_width="73dp"
+                    android:layout_height="36dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="50dp"
+                    android:background="@drawable/v3_blue_white_shape"
+                    android:gravity="center"
+                    android:text="工单留言"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
                 <TextView
                     android:id="@+id/tv_add_record"
                     android:layout_width="73dp"

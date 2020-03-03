@@ -2,13 +2,10 @@ package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,18 +29,16 @@ import butterknife.ButterKnife;
 public class ChagePasswordActivity extends BaseActivity<InfoManagePresenter, InfoMangeModel> implements View.OnClickListener, InfoManageContract.View {
 
 
-    @BindView(R.id.img_actionbar_return)
-    ImageView mImgActionbarReturn;
-    @BindView(R.id.tv_actionbar_return)
-    TextView mTvActionbarReturn;
-    @BindView(R.id.ll_return)
-    LinearLayout mLlReturn;
-    @BindView(R.id.tv_actionbar_title)
-    TextView mTvActionbarTitle;
-    @BindView(R.id.img_actionbar_message)
-    ImageView mImgActionbarMessage;
-    @BindView(R.id.actionbar_layout)
-    RelativeLayout mActionbarLayout;
+    @BindView(R.id.tv_change_password)
+    TextView mTv_change_password;
+    @BindView(R.id.iv_back)
+    ImageView mIvBack;
+    @BindView(R.id.tv_title)
+    TextView mTvTitle;
+    @BindView(R.id.tv_save)
+    TextView mTvSave;
+    @BindView(R.id.ll_customer_service)
+    LinearLayout mLlCustomerService;
     @BindView(R.id.et_old_password)
     EditText mEtOldPassword;
     @BindView(R.id.et_new_password)
@@ -51,16 +46,13 @@ public class ChagePasswordActivity extends BaseActivity<InfoManagePresenter, Inf
     @BindView(R.id.et_new_password_again)
     EditText mEtNewPasswordAgain;
 
-    @BindView(R.id.tv_change_password)
-    TextView mTv_change_password;
-
 
     private String old_password;
     private String new_password;
     private String new_password_again;
     SPUtils spUtils = SPUtils.getInstance("token");
     private String userID;
-    private UserInfo.UserInfoDean userInfoDean =new UserInfo.UserInfoDean();
+    private UserInfo.UserInfoDean userInfoDean = new UserInfo.UserInfoDean();
 
     @Override
     protected int setLayoutId() {
@@ -69,22 +61,21 @@ public class ChagePasswordActivity extends BaseActivity<InfoManagePresenter, Inf
 
     @Override
     protected void initData() {
-        userID=spUtils.getString("userName");
+        userID = spUtils.getString("userName");
 
-        mPresenter.GetUserInfoList(userID,"1");
+        mPresenter.GetUserInfoList(userID, "1");
     }
 
     @Override
     public void initView() {
 
-        mTvActionbarTitle.setText("修改密码");
-        mImgActionbarMessage.setVisibility(View.INVISIBLE);
+        mTvTitle.setText("修改密码");
 
     }
 
     @Override
     protected void setListener() {
-        mLlReturn.setOnClickListener(this);
+        mIvBack.setOnClickListener(this);
         mTv_change_password.setOnClickListener(this);
     }
 
@@ -97,43 +88,42 @@ public class ChagePasswordActivity extends BaseActivity<InfoManagePresenter, Inf
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ll_return:
+            case R.id.iv_back:
                 ChagePasswordActivity.this.finish();
                 break;
-               //修改密码
-               case R.id.tv_change_password:
-                   old_password=mEtOldPassword.getText().toString();
-                   new_password=mEtNewPassword.getText().toString();
-                   new_password_again=mEtNewPasswordAgain.getText().toString();
+            //修改密码
+            case R.id.tv_change_password:
+                old_password = mEtOldPassword.getText().toString();
+                new_password = mEtNewPassword.getText().toString();
+                new_password_again = mEtNewPasswordAgain.getText().toString();
 
-                  if (old_password.equals("")||new_password.equals("")||new_password_again.equals("")){
-                      Toast.makeText(ChagePasswordActivity.this,"密码不能为空",Toast.LENGTH_LONG).show();
-                  }else {
+                if (old_password.equals("") || new_password.equals("") || new_password_again.equals("")) {
+                    Toast.makeText(ChagePasswordActivity.this, "密码不能为空", Toast.LENGTH_LONG).show();
+                } else {
 
-                     // Log.d("用户的密码为11",userInfoDean.getPassWord());
-                     if (!old_password.equals(userInfoDean.getPassWord())){
-                         Toast.makeText(ChagePasswordActivity.this,"请输入正确的密码",Toast.LENGTH_LONG).show();
+                    // Log.d("用户的密码为11",userInfoDean.getPassWord());
+                    if (!old_password.equals(userInfoDean.getPassWord())) {
+                        Toast.makeText(ChagePasswordActivity.this, "请输入正确的密码", Toast.LENGTH_LONG).show();
 
-                     }else {
+                    } else {
 
-                         if (!new_password.equals(new_password_again)){ //两次输入的账号密码不一致
-                    Toast.makeText(ChagePasswordActivity.this,"两次输入的密码不一致",Toast.LENGTH_LONG).show();
+                        if (!new_password.equals(new_password_again)) { //两次输入的账号密码不一致
+                            Toast.makeText(ChagePasswordActivity.this, "两次输入的密码不一致", Toast.LENGTH_LONG).show();
 
-                         }else
-                             {
-                             Toast.makeText(ChagePasswordActivity.this,"修改成功",Toast.LENGTH_LONG).show();
-                             mPresenter.UpdatePassword(userID,new_password);
-                         }
+                        } else {
+                            Toast.makeText(ChagePasswordActivity.this, "修改成功", Toast.LENGTH_LONG).show();
+                            mPresenter.UpdatePassword(userID, new_password);
+                        }
 
-                     }
+                    }
 
-                  }
+                }
 
 
                 break;
-                default:
+            default:
 
-                    break;
+                break;
         }
     }
 
@@ -144,14 +134,14 @@ public class ChagePasswordActivity extends BaseActivity<InfoManagePresenter, Inf
 
     @Override
     public void GetUserInfoList(BaseResult<UserInfo> baseResult) {
-   switch (baseResult.getStatusCode()){
-       case 200:
-           userInfoDean=baseResult.getData().getData().get(0);
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                userInfoDean = baseResult.getData().getData().get(0);
 
-           break;
-           default:
-               break;
-   }
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
@@ -171,19 +161,19 @@ public class ChagePasswordActivity extends BaseActivity<InfoManagePresenter, Inf
 
     @Override
     public void UpdatePassword(BaseResult<Data> baseResult) {
-     switch (baseResult.getStatusCode()){
-         case 200:
-             if (baseResult.getData().isItem1()){
-                 startActivity(new Intent(ChagePasswordActivity.this,Login_New_Activity.class));
-                 spUtils.put("passWord","");
-                 spUtils.put("isLogin", false);
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                if (baseResult.getData().isItem1()) {
+                    startActivity(new Intent(ChagePasswordActivity.this, Login_New_Activity.class));
+                    spUtils.put("passWord", "");
+                    spUtils.put("isLogin", false);
 
-                 ActivityUtils.finishAllActivities();
-             }
-             break;
-             default:
-                 break;
-     }
+                    ActivityUtils.finishAllActivities();
+                }
+                break;
+            default:
+                break;
+        }
     }
 
     @Override

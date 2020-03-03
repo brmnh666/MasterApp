@@ -40,8 +40,6 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:orientation="horizontal"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
                 android:paddingTop="20dp"
                 android:paddingBottom="10dp">
 
@@ -64,9 +62,9 @@
 
                         <ImageView
                             android:id="@+id/iv_positive"
-                            android:layout_width="56dp"
-                            android:layout_height="37dp"
-                            android:src="@drawable/touxiang_card" />
+                            android:layout_width="match_parent"
+                            android:layout_height="87dp"
+                            android:src="@drawable/sf_tx" />
                     </LinearLayout>
 
                     <TextView
@@ -95,9 +93,9 @@
                         android:gravity="center">
                         <ImageView
                             android:id="@+id/iv_negative"
-                            android:layout_width="56dp"
-                            android:layout_height="37dp"
-                            android:src="@drawable/guohui_card"/>
+                            android:layout_width="match_parent"
+                            android:layout_height="87dp"
+                            android:src="@drawable/sf_gh"/>
                     </LinearLayout>
                     <TextView
                         android:layout_width="wrap_content"
@@ -123,9 +121,7 @@
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:background="@color/white"
-                android:orientation="horizontal"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp">
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -156,8 +152,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
                 android:background="@color/white"
                 android:orientation="horizontal">
 
@@ -197,13 +191,10 @@
                 android:id="@+id/ll_select_service_area"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
                 android:background="@color/color_white"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/tv_codestr"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -215,6 +206,7 @@
                     android:textSize="16sp" />
 
                 <TextView
+                    android:id="@+id/tv_codestr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -234,9 +226,7 @@
                 android:id="@+id/ll_shop_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:layout_marginTop="1dp"
-                android:layout_marginRight="10dp"
                 android:background="@color/color_white"
                 android:orientation="vertical">
 
@@ -293,9 +283,7 @@
                 android:id="@+id/ll_serive_origin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:layout_marginTop="1dp"
-                android:layout_marginRight="10dp"
                 android:background="@color/color_white"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
@@ -360,6 +348,43 @@
                         android:textSize="15sp" />
                 </LinearLayout>
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_shipping_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/color_white"
+                android:orientation="horizontal">
+
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_weight="1"
+                    android:text="收货地址"
+                    android:textColor="#5A5A5B"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_shipping_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="请选择服务区域"
+                    android:textColor="#5A5A5B"
+                    android:textSize="14sp"
+                    android:visibility="gone"/>
+
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="20dp"
+                    android:src="@mipmap/right_arrow" />
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/ll_identity"
@@ -369,7 +394,8 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
                 android:background="@color/color_white"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -402,9 +428,7 @@
                 android:id="@+id/ll_service_skill"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:layout_marginTop="1dp"
-                android:layout_marginRight="10dp"
                 android:background="@color/color_white"
                 android:orientation="horizontal"
                 android:padding="17dp">
@@ -445,7 +469,7 @@
                 android:layout_marginTop="35dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginBottom="30dp"
-                android:background="@drawable/btn_verified"
+                android:background="@drawable/v3_btn_shape"
                 android:text="确认并提交"
                 android:textColor="@color/color_white"
                 android:textSize="20sp" />

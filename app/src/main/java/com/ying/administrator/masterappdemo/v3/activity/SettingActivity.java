@@ -19,7 +19,9 @@ import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.ChagePasswordActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Login_New_Activity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.SettingPayPasswordActivity;
 import com.ying.administrator.masterappdemo.util.DataCleanManager;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.SettingPresenter;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.SettingContract;
@@ -101,6 +103,8 @@ public class SettingActivity extends BaseActivity<SettingPresenter, SettingModel
         mLlClean.setOnClickListener(this);
         mIvVersionNumber.setOnClickListener(this);
         mLlUpdate.setOnClickListener(this);
+        mLlModifyLoginPassword.setOnClickListener(this);
+        mLlChangeWithdrawalPassword.setOnClickListener(this);
     }
 
     @Override
@@ -156,13 +160,19 @@ public class SettingActivity extends BaseActivity<SettingPresenter, SettingModel
             case R.id.ll_update:
 
 //                Beta.checkUpgrade(true,true);
-                Beta.checkUpgrade();
                 UpgradeInfo upgradeInfo=Beta.getUpgradeInfo();
                 if (upgradeInfo==null){
                     ToastUtils.showShort("暂无更新");
                 }else {
                     return;
                 }
+                Beta.checkUpgrade();
+                break;
+            case R.id.ll_modify_login_password:
+                startActivity(new Intent(mActivity, ChagePasswordActivity.class));
+                break;
+            case R.id.ll_change_withdrawal_password:
+                startActivity(new Intent(mActivity, SettingPayPasswordActivity.class));
                 break;
         }
     }

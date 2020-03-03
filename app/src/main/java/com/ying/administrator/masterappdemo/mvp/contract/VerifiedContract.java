@@ -5,8 +5,11 @@ import com.ying.administrator.masterappdemo.base.BaseModel;
 import com.ying.administrator.masterappdemo.base.BasePresenter;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.base.BaseView;
+import com.ying.administrator.masterappdemo.entity.AddressList;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
@@ -49,7 +52,7 @@ public interface VerifiedContract {
 
 
 
-
+        Observable<BaseResult<List<AddressList>>> GetAccountAddress(String UserId);
 
     }
 
@@ -58,6 +61,7 @@ public interface VerifiedContract {
         void GetUserInfoList(BaseResult<UserInfo> baseResult);
         void ApplyAuthInfo(BaseResult<Data<String>> baseResult);
         void ApplyAuthInfoBysub(BaseResult<Data<String>> baseResult);
+        void GetAccountAddress(BaseResult<List<AddressList>> baseResult);
     }
 
     abstract class Presenter extends BasePresenter<View,Model> {
@@ -92,6 +96,7 @@ public interface VerifiedContract {
                                            String Dimension,
                                            String ISwoker
                                            );
+        public abstract void GetAccountAddress(String UserId);
     }
 
 

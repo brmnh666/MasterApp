@@ -6,7 +6,7 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <include layout="@layout/actionbar_wythdraw_layout"/>
+    <include layout="@layout/v3_activity_head"/>
 
     <View
         android:layout_width="match_parent"
@@ -29,7 +29,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:background="@drawable/rechage_shape"
+                android:background="@drawable/v3_blue_shape2"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -329,7 +329,7 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="10dp"
-                android:background="@drawable/btn_blue"
+                android:background="@drawable/v3_btn_shape"
                 android:text="去充值"
                 android:textColor="@color/white"
                 android:textSize="20sp" />

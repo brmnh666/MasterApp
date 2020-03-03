@@ -84,10 +84,10 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("Account/WxReg")
     Observable<BaseResult<Data<String>>> WxReg(@Field("mobile") String mobile,
-                                             @Field("type") String type,
-                                             @Field("code") String code,
-                                             @Field("roleType") String roleType,
-                                             @Field("openid") String openid
+                                               @Field("type") String type,
+                                               @Field("code") String code,
+                                               @Field("roleType") String roleType,
+                                               @Field("openid") String openid
     );
 
 
@@ -701,11 +701,11 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("Account/AddorUpdateAccountPayInfo")
     Observable<BaseResult<Data<String>>> DeleteAccountPayInfo(@Field("UserID") String UserID,
-                                                                   @Field("PayInfoCode") String PayInfoCode,
-                                                                   @Field("PayInfoName") String PayInfoName,
-                                                                   @Field("PayNo") String PayNo,
-                                                                   @Field("PayName") String PayName,
-                                                                   @Field("IsUse") String IsUse,
+                                                              @Field("PayInfoCode") String PayInfoCode,
+                                                              @Field("PayInfoName") String PayInfoName,
+                                                              @Field("PayNo") String PayNo,
+                                                              @Field("PayName") String PayName,
+                                                              @Field("IsUse") String IsUse,
                                                               @Field("AccountPayID") String AccountPayID);
 
     /*获取银行卡*/
@@ -1032,9 +1032,9 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("LeaveMessage/LeaveMessageWhetherLook")
     Observable<BaseResult<Data>> LeaveMessageWhetherLook(@Field("OrderID") String OrderID,
-                                                                            @Field("factoryIslook") String factoryIslook,
-                                                                            @Field("workerIslook") String workerIslook,
-                                                                            @Field("platformIslook") String platformIslook
+                                                         @Field("factoryIslook") String factoryIslook,
+                                                         @Field("workerIslook") String workerIslook,
+                                                         @Field("platformIslook") String platformIslook
 
     );
 
@@ -1048,16 +1048,16 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("LeaveMessage/GetNewsLeaveMessage")
     Observable<BaseResult<Data<LeaveMessage>>> GetNewsLeaveMessage(@Field("UserID") String UserID,
-                                                                         @Field("Type") String Type,
-                                                                         @Field("limit") String limit,
-                                                                         @Field("page") String page
+                                                                   @Field("Type") String Type,
+                                                                   @Field("limit") String limit,
+                                                                   @Field("page") String page
 
     );
 
 
     /**
      * 微信登录
-     * */
+     */
     @FormUrlEncoded
     @POST("Account/WxRegister")
     Observable<BaseResult<Data<WxRegister>>> WxRegister(@Field("openid") String openid,
@@ -1072,11 +1072,11 @@ public interface ApiService {
 
     /**
      * 上传条形码
-     * */
+     */
     @FormUrlEncoded
     @POST("Account/AddbarCode")
     Observable<BaseResult<Data<String>>> AddbarCode(@Field("barCode") String barCode,
-                                                        @Field("OrderID") String OrderID);
+                                                    @Field("OrderID") String OrderID);
 
     /**
      * 新版首页今日待处理
@@ -1085,7 +1085,7 @@ public interface ApiService {
      * 待寄件 state=11
      * 待返件  state=8
      * 待结算  state=12
-     *
+     * <p>
      * "11"://待寄件
      * "12"://待结算
      * "13"://急需处理
@@ -1093,7 +1093,7 @@ public interface ApiService {
      * "15"://已超时
      * "1"://待预约
      * "16"://待发货
-     * */
+     */
     @FormUrlEncoded
     @POST("Order/NewWorkerGetOrderList")
     Observable<BaseResult<WorkOrder>> NewWorkerGetOrderList(@Field("UserID") String UserID,
@@ -1104,17 +1104,17 @@ public interface ApiService {
     /**
      * 各工单数量
      * var Count1 = 0;//待处理数量
-     *             var Count2 = 0;//待预约数量
-     *             var Count3 = 0;//待服务数量
-     *             var Count4 = 0;//待寄件数量
-     *             var Count5 = 0;//待返件数量
-     *             var Count6 = 0;//待结算数量
-     * */
+     * var Count2 = 0;//待预约数量
+     * var Count3 = 0;//待服务数量
+     * var Count4 = 0;//待寄件数量
+     * var Count5 = 0;//待返件数量
+     * var Count6 = 0;//待结算数量
+     */
     @FormUrlEncoded
     @POST("Order/NavigationBarNumber")
     Observable<BaseResult<Data<NavigationBarNumber>>> NavigationBarNumber(@Field("UserID") String UserID,
-                                                                    @Field("page") String page,
-                                                                    @Field("limit") String limit);
+                                                                          @Field("page") String page,
+                                                                          @Field("limit") String limit);
 
     /*
      *搜索
@@ -1122,13 +1122,22 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("Order/GetOrderInfoList")
     Observable<BaseResult<WorkOrder>> GetOrderInfoList(@Field("Phone") String Phone,
-                                                    @Field("OrderID") String OrderID,
-                                                    @Field("UserID") String UserID,
-                                                    @Field("limit") String limit,
-                                                    @Field("page") String page);
+                                                       @Field("OrderID") String OrderID,
+                                                       @Field("UserID") String UserID,
+                                                       @Field("limit") String limit,
+                                                       @Field("page") String page);
 
     /*工单跟踪*/
     @FormUrlEncoded
     @POST("Order/GetOrderRecordByOrderID")
     Observable<BaseResult<List<Track>>> GetOrderRecordByOrderID(@Field("OrderID") String OrderID);
+
+
+    /**
+     * 添加紧急联系人
+     */
+    @FormUrlEncoded
+    @POST("Account/UpdateEmergencyContact")
+    Observable<BaseResult<Data<String>>> UpdateEmergencyContact(@Field("UserId") String UserId,
+                                                                @Field("emergencyContact") String emergencyContact);
 }

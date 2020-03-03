@@ -193,8 +193,13 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
             case 200:
                 workOrder = baseResult.getData();
                 if (workOrder.getData() != null) {
-                    list.addAll(workOrder.getData());
-                    adapter.setNewData(list);
+                    if (workOrder.getData().size()>0){
+                        list.addAll(workOrder.getData());
+                        adapter.setNewData(list);
+                    }else {
+                        return;
+//                        adapter.setEmptyView(getHomeEmptyView());
+                    }
                 } else {
                     adapter.setEmptyView(getHomeEmptyView());
                 }

@@ -1,36 +1,29 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
+import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class WebActivity extends BaseActivity {
-    @BindView(R.id.img_actionbar_return)
-    ImageView mImgActionbarReturn;
-    @BindView(R.id.tv_actionbar_return)
-    TextView mTvActionbarReturn;
-    @BindView(R.id.ll_return)
-    LinearLayout mLlReturn;
-    @BindView(R.id.tv_actionbar_title)
-    TextView mTvActionbarTitle;
-    @BindView(R.id.img_actionbar_message)
-    ImageView mImgActionbarMessage;
-    @BindView(R.id.actionbar_layout)
-    RelativeLayout mActionbarLayout;
+
+    @BindView(R.id.iv_back)
+    ImageView mIvBack;
+    @BindView(R.id.tv_title)
+    TextView mTvTitle;
+    @BindView(R.id.tv_save)
+    TextView mTvSave;
+    @BindView(R.id.ll_customer_service)
+    LinearLayout mLlCustomerService;
     @BindView(R.id.webview)
     WebView mWebview;
     private String url = "";
@@ -45,9 +38,9 @@ public class WebActivity extends BaseActivity {
     @Override
     protected void initData() {
 //        url = "https://h5.emjiayuan.com/Public/app/about/company.html";
-        url=getIntent().getStringExtra("Url");
-        Title =getIntent().getStringExtra("Title");
-        mTvActionbarTitle.setText(Title);
+        url = getIntent().getStringExtra("Url");
+        Title = getIntent().getStringExtra("Title");
+        mTvTitle.setText(Title);
         String html = "<!DOCTYPE html>\n" +
                 "<html lang=\"en\">\n" +
                 "<head>\n" +
@@ -120,12 +113,19 @@ public class WebActivity extends BaseActivity {
 
     @Override
     protected void setListener() {
-        mLlReturn.setOnClickListener(new View.OnClickListener() {
+        mIvBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }
 

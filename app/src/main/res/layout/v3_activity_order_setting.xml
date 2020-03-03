@@ -49,6 +49,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ll_service_area"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -70,7 +71,8 @@
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:layout_marginLeft="20dp"
-           android:id="@+id/rv_service">
+           android:id="@+id/rv_service"
+           android:visibility="gone">
        </android.support.v7.widget.RecyclerView>
 
         <ImageView
@@ -80,6 +82,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ll_service_product"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -105,7 +108,8 @@
             android:text="请选择分类"
             android:textColor="#808080"
             android:textSize="16sp"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:visibility="gone"/>
 
         <ImageView
             android:layout_width="9dp"
@@ -123,7 +127,8 @@
         android:paddingLeft="14dp"
         android:paddingRight="14dp"
         android:layout_marginTop="1dp"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:visibility="gone">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

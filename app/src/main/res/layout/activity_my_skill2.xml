@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include layout="@layout/actionbar_receiving_layout" />
+    <include layout="@layout/v3_activity_head"/>
 
     <ExpandableListView
         android:id="@+id/expandablelistview"
@@ -16,7 +16,7 @@
         android:id="@+id/btn_skill"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@drawable/btn_blue"
+        android:background="@drawable/v3_btn_shape"
         android:layout_margin="10dp"
         android:text="确    认"
         android:textColor="@color/color_white"

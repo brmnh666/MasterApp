@@ -1,5 +1,6 @@
 package com.ying.administrator.masterappdemo.v3.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,9 +14,16 @@ import com.ying.administrator.masterappdemo.entity.BankCard;
 import com.ying.administrator.masterappdemo.entity.Bill;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.CardList_Activity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.RechargeActivity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.VerifiedActivity2;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.Verified_Activity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.WithDrawActivity;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.WalletPresenter;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.WalletContract;
 import com.ying.administrator.masterappdemo.v3.mvp.model.WalletModel;
+import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
+import com.ying.administrator.masterappdemo.widget.VerifiedDialog;
 
 import java.util.List;
 
@@ -70,6 +78,9 @@ public class WalletActivity extends BaseActivity<WalletPresenter, WalletModel> i
     @Override
     protected void setListener() {
         mIvBack.setOnClickListener(this);
+        mIvSetting.setOnClickListener(this);
+        mTvWithdraw.setOnClickListener(this);
+        mTvRecharge.setOnClickListener(this);
     }
 
     @Override
@@ -77,6 +88,57 @@ public class WalletActivity extends BaseActivity<WalletPresenter, WalletModel> i
         switch (v.getId()){
             case R.id.iv_back:
                 finish();
+                break;
+            case R.id.iv_setting:
+                if (userInfo.getIfAuth() == null) {
+//                    return;
+                    final VerifiedDialog dialog = new VerifiedDialog(mActivity);
+                    dialog.setMessage("未实名认证不能绑定银行卡")
+                            //.setImageResId(R.mipmap.ic_launcher)
+                            .setTitle("提示")
+                            .setSingle(false).setOnClickBottomListener(new VerifiedDialog.OnClickBottomListener() {
+                        @Override
+                        public void onPositiveClick() {//去实名认证
+                            startActivity(new Intent(mActivity, VerifiedActivity2.class));
+                            dialog.dismiss();
+                        }
+
+                        @Override
+                        public void onNegtiveClick() {//取消
+                            dialog.dismiss();
+                            // Toast.makeText(MainActivity.this,"ssss",Toast.LENGTH_SHORT).show();
+                        }
+                    }).show();
+                } else if (userInfo.getIfAuth().equals("1")) {
+                    startActivity(new Intent(this, CardList_Activity.class));
+
+                } else {
+                    final CommonDialog_Home dialog = new CommonDialog_Home(mActivity);
+                    dialog.setMessage("未实名认证不能绑定银行卡")
+                            //.setImageResId(R.mipmap.ic_launcher)
+                            .setTitle("提示")
+                            .setSingle(false).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
+                        @Override
+                        public void onPositiveClick() {//去实名认证
+                            dialog.dismiss();
+                        }
+
+                        @Override
+                        public void onNegtiveClick() {//取消
+                            dialog.dismiss();
+                            // Toast.makeText(MainActivity.this,"ssss",Toast.LENGTH_SHORT).show();
+                        }
+                    }).show();
+
+
+                }
+
+                break;
+            case R.id.tv_withdraw:
+                startActivity(new Intent(mActivity, WithDrawActivity.class));
+                break;
+            case R.id.tv_recharge:
+                startActivity(new Intent(mActivity, RechargeActivity.class));
                 break;
         }
     }

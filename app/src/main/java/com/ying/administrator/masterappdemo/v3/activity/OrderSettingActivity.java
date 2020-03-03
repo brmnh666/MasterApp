@@ -1,14 +1,19 @@
 package com.ying.administrator.masterappdemo.v3.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.AddServiceAreaInfoActivity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.MyInfoSkillActivity2;
 import com.ying.administrator.masterappdemo.v3.adapter.OrderSettingAdapter;
 import com.ying.administrator.masterappdemo.v3.bean.OrderSettingBean;
 import com.ying.administrator.masterappdemo.v3.weight.AutoLineFeedLayoutManager;
@@ -38,7 +43,13 @@ public class OrderSettingActivity extends BaseActivity implements View.OnClickLi
     TextView mTvPerson;
     @BindView(R.id.tv_truck)
     TextView mTvTruck;
-    private List<OrderSettingBean> list=new ArrayList<>();
+    @BindView(R.id.ll_customer_service)
+    LinearLayout mLlCustomerService;
+    @BindView(R.id.ll_service_area)
+    LinearLayout mLlServiceArea;
+    @BindView(R.id.ll_service_product)
+    LinearLayout mLlServiceProduct;
+    private List<OrderSettingBean> list = new ArrayList<>();
     private OrderSettingAdapter adapter;
 
     @Override
@@ -48,10 +59,10 @@ public class OrderSettingActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     protected void initData() {
-        for (int i = 0; i < 2 ;i++) {
+        for (int i = 0; i < 2; i++) {
             list.add(new OrderSettingBean());
         }
-        adapter = new OrderSettingAdapter(R.layout.v3_item_service_area,list);
+        adapter = new OrderSettingAdapter(R.layout.v3_item_service_area, list);
         mRvService.setLayoutManager(new AutoLineFeedLayoutManager());
         mRvService.setAdapter(adapter);
     }
@@ -64,13 +75,26 @@ public class OrderSettingActivity extends BaseActivity implements View.OnClickLi
     @Override
     protected void setListener() {
         mIvBack.setOnClickListener(this);
+        mLlServiceArea.setOnClickListener(this);
+        mLlServiceProduct.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.iv_back:
                 finish();
+                break;
+            case R.id.ll_service_area:
+                startActivity(new Intent(mActivity, AddServiceAreaInfoActivity.class));
+                break;
+            case R.id.ll_service_product:
+//                if (userInfo.getIfAuth() == null) {//未实名认证
+//                    ToastUtils.showShort("您暂未实名");
+//                    return;
+//                } else {
+                    startActivity(new Intent(this, MyInfoSkillActivity2.class));
+//                }
                 break;
         }
     }

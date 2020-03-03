@@ -216,7 +216,7 @@ public class ReturnGoodsActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.icon_back:
+            case R.id.ll_return:
                 ReturnGoodsActivity.this.finish();
                 break;
             case R.id.rl_reason:

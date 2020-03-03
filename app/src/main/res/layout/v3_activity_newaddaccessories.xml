@@ -134,7 +134,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/color_custom_01">
+        android:background="@drawable/v3_btn_shape">
 
         <RelativeLayout
             android:id="@+id/ll_my_package"

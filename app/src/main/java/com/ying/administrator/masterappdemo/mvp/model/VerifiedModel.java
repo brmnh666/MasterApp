@@ -1,10 +1,13 @@
 package com.ying.administrator.masterappdemo.mvp.model;
 
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.AddressList;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.mvp.contract.VerifiedContract;
 import com.ying.administrator.masterappdemo.mvp.service.ApiRetrofit;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -40,6 +43,13 @@ public class VerifiedModel implements VerifiedContract.Model {
     @Override
     public Observable<BaseResult<Data<String>>> ApplyAuthInfoBysub(String UserID, String TrueName, String Sex, String IDCard, String Address, String Province, String City, String Area, String District, String Longitude, String Dimension,String ISwoker) {
         return  ApiRetrofit.getDefault().ApplyAuthInfoBysub(UserID, TrueName,Sex, IDCard, Address, Province, City, Area, District, Longitude, Dimension,ISwoker)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<BaseResult<List<AddressList>>> GetAccountAddress(String UserId) {
+        return ApiRetrofit.getDefault().GetAccountAddress(UserId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

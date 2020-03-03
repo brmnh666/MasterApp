@@ -1,5 +1,6 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -7,7 +8,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.SPUtils;
@@ -22,20 +22,19 @@ import com.ying.administrator.masterappdemo.mvp.presenter.OpinionPresenter;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class Opinion_Activity extends BaseActivity<OpinionPresenter, OpinionModel> implements View.OnClickListener, OpinionContract.View {
-    @BindView(R.id.img_actionbar_return)
-    ImageView mImgActionbarReturn;
-    @BindView(R.id.tv_actionbar_return)
-    TextView mTvActionbarReturn;
-    @BindView(R.id.ll_return)
-    LinearLayout mLlReturn;
-    @BindView(R.id.tv_actionbar_title)
-    TextView mTvActionbarTitle;
-    @BindView(R.id.img_actionbar_message)
-    ImageView mImgActionbarMessage;
-    @BindView(R.id.actionbar_layout)
-    RelativeLayout mActionbarLayout;
+
+
+    @BindView(R.id.iv_back)
+    ImageView mIvBack;
+    @BindView(R.id.tv_title)
+    TextView mTvTitle;
+    @BindView(R.id.tv_save)
+    TextView mTvSave;
+    @BindView(R.id.ll_customer_service)
+    LinearLayout mLlCustomerService;
     @BindView(R.id.tv_account_problem)
     TextView mTvAccountProblem;
     @BindView(R.id.tv_payment_issues)
@@ -48,11 +47,10 @@ public class Opinion_Activity extends BaseActivity<OpinionPresenter, OpinionMode
     TextView mTvWordCount;
     @BindView(R.id.btn_opinion)
     Button mBtnOpinion;
-
-    private String type="";
+    private String type = "";
     private String content;
     private String userId;
-    private int MAX_COUNT=200;
+    private int MAX_COUNT = 200;
 
     @Override
     protected int setLayoutId() {
@@ -61,14 +59,14 @@ public class Opinion_Activity extends BaseActivity<OpinionPresenter, OpinionMode
 
     @Override
     protected void initData() {
-        SPUtils spUtils=SPUtils.getInstance("token");
+        SPUtils spUtils = SPUtils.getInstance("token");
         userId = spUtils.getString("userName");
     }
 
     @Override
     protected void initView() {
-        mTvActionbarTitle.setText("意见反馈");
-        type="1";
+        mTvTitle.setText("意见反馈");
+        type = "1";
         mTvAccountProblem.setSelected(true);
         mTvPaymentIssues.setSelected(false);
         mTvOtherQuestions.setSelected(false);
@@ -85,14 +83,14 @@ public class Opinion_Activity extends BaseActivity<OpinionPresenter, OpinionMode
 
             @Override
             public void afterTextChanged(Editable editable) {
-                mTvWordCount.setText(editable.length()+"/200");
+                mTvWordCount.setText(editable.length() + "/200");
             }
         });
     }
 
     @Override
     protected void setListener() {
-        mLlReturn.setOnClickListener(this);
+        mIvBack.setOnClickListener(this);
         mTvAccountProblem.setOnClickListener(this);
         mTvPaymentIssues.setOnClickListener(this);
         mTvOtherQuestions.setOnClickListener(this);
@@ -102,38 +100,38 @@ public class Opinion_Activity extends BaseActivity<OpinionPresenter, OpinionMode
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ll_return:
+            case R.id.iv_back:
                 Opinion_Activity.this.finish();
                 break;
             case R.id.tv_account_problem:
-                type="1";
+                type = "1";
                 mTvAccountProblem.setSelected(true);
                 mTvPaymentIssues.setSelected(false);
                 mTvOtherQuestions.setSelected(false);
                 break;
             case R.id.tv_payment_issues:
-                type="2";
+                type = "2";
                 mTvAccountProblem.setSelected(false);
                 mTvPaymentIssues.setSelected(true);
                 mTvOtherQuestions.setSelected(false);
                 break;
             case R.id.tv_other_questions:
-                type="3";
+                type = "3";
                 mTvAccountProblem.setSelected(false);
                 mTvPaymentIssues.setSelected(false);
                 mTvOtherQuestions.setSelected(true);
                 break;
             case R.id.btn_opinion:
-                content =mEtOpinion.getText().toString().trim();
-                if ("".equals(type)){
-                    MyUtils.showToast(mActivity,"请选择问题类型");
+                content = mEtOpinion.getText().toString().trim();
+                if ("".equals(type)) {
+                    MyUtils.showToast(mActivity, "请选择问题类型");
                     return;
                 }
-                if ("".equals(content)){
-                    MyUtils.showToast(mActivity,"请输入反馈内容");
+                if ("".equals(content)) {
+                    MyUtils.showToast(mActivity, "请输入反馈内容");
                     return;
                 }
-                mPresenter.AddOpinion(userId,type,content);
+                mPresenter.AddOpinion(userId, type, content);
                 break;
 
         }
@@ -144,19 +142,26 @@ public class Opinion_Activity extends BaseActivity<OpinionPresenter, OpinionMode
     public void AddOpinion(BaseResult<Data<String>> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-                Data<String> data=baseResult.getData();
-                if (data.isItem1()){
+                Data<String> data = baseResult.getData();
+                if (data.isItem1()) {
 //                    ToastUtils.showShort(data.getItem2());
                     ToastUtils.showShort("反馈成功");
                     mEtOpinion.setText("");
-                    type="";
+                    type = "";
                     mTvAccountProblem.setSelected(false);
                     mTvPaymentIssues.setSelected(false);
                     mTvOtherQuestions.setSelected(false);
-                }else{
+                } else {
                     ToastUtils.showShort(data.getItem2());
                 }
                 break;
         }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

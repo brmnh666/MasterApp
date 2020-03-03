@@ -12,7 +12,6 @@ import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,16 +57,14 @@ import butterknife.ButterKnife;
 public class AddAddressActivity extends BaseActivity<AddressPresenter, AddressModel> implements View.OnClickListener, AddressContract.View {
 
 
-    @BindView(R.id.view)
-    View mView;
-    @BindView(R.id.icon_back)
-    ImageView mIconBack;
+    @BindView(R.id.iv_back)
+    ImageView mIvBack;
     @BindView(R.id.tv_title)
     TextView mTvTitle;
     @BindView(R.id.tv_save)
     TextView mTvSave;
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
+    @BindView(R.id.ll_customer_service)
+    LinearLayout mLlCustomerService;
     @BindView(R.id.et_receiver)
     EditText mEtReceiver;
     @BindView(R.id.iv_add)
@@ -84,6 +81,8 @@ public class AddAddressActivity extends BaseActivity<AddressPresenter, AddressMo
     Switch mSwitcherDefault;
     @BindView(R.id.ll_delete)
     LinearLayout mLlDelete;
+    @BindView(R.id.submit_application_bt)
+    Button mSubmitApplicationBt;
     private SPUtils spUtils;
     private String userId;
     private String UserName;
@@ -141,7 +140,7 @@ public class AddAddressActivity extends BaseActivity<AddressPresenter, AddressMo
         userId = spUtils.getString("userName");
         address = (AddressList) getIntent().getSerializableExtra("address");
         if (address != null) {
-            mLlDelete.setVisibility(View.VISIBLE);
+            mLlDelete.setVisibility(View.GONE);
             mTvTitle.setText("修改收货地址");
             mEtReceiver.setText(address.getUserName());
             mEtCellphoneNumber.setText(address.getPhone());
@@ -167,11 +166,11 @@ public class AddAddressActivity extends BaseActivity<AddressPresenter, AddressMo
 
     @Override
     protected void setListener() {
-        mIconBack.setOnClickListener(this);
+        mIvBack.setOnClickListener(this);
         mIvAdd.setOnClickListener(this);
         mLlDelete.setOnClickListener(this);
 
-        mTvSave.setOnClickListener(this);
+        mSubmitApplicationBt.setOnClickListener(this);
         mLlPickAddress.setOnClickListener(this);
         mSwitcherDefault.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -188,7 +187,7 @@ public class AddAddressActivity extends BaseActivity<AddressPresenter, AddressMo
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.icon_back:
+            case R.id.iv_back:
                 finish();
                 break;
             case R.id.ll_delete:
@@ -228,7 +227,7 @@ public class AddAddressActivity extends BaseActivity<AddressPresenter, AddressMo
             case R.id.tv_area:
                 mPresenter.GetArea(CityCode);
                 break;
-            case R.id.tv_save:
+            case R.id.submit_application_bt:
                 UserName = mEtReceiver.getText().toString().trim();
                 Phone = mEtCellphoneNumber.getText().toString().trim();
                 Address = mEtAddress.getText().toString().trim();
@@ -495,9 +494,9 @@ public class AddAddressActivity extends BaseActivity<AddressPresenter, AddressMo
 
         View contentView = LayoutInflater.from(mActivity).inflate(R.layout.address_pop, null);
         InputMethodManager imm = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(mEtCellphoneNumber.getWindowToken() , 0);
-        imm.hideSoftInputFromWindow(mEtReceiver.getWindowToken() , 0);
-        imm.hideSoftInputFromWindow(mEtAddress.getWindowToken() , 0);
+        imm.hideSoftInputFromWindow(mEtCellphoneNumber.getWindowToken(), 0);
+        imm.hideSoftInputFromWindow(mEtReceiver.getWindowToken(), 0);
+        imm.hideSoftInputFromWindow(mEtAddress.getWindowToken(), 0);
         tv_province = contentView.findViewById(R.id.tv_province);
         tv_city = contentView.findViewById(R.id.tv_city);
         tv_area = contentView.findViewById(R.id.tv_area);

@@ -54,76 +54,64 @@ import butterknife.ButterKnife;
 public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawModel> implements View.OnClickListener, WithDrawContract.View {
 
 
-    @BindView(R.id.img_actionbar_return)
-    ImageView mImgActionbarReturn;
+    @BindView(R.id.iv_back)
+    ImageView mIvBack;
     @BindView(R.id.tv_title)
     TextView mTvTitle;
-    @BindView(R.id.all_withdraw_tv)  //累计提现
-            TextView mAllWithdrawTv;
+    @BindView(R.id.tv_save)
+    TextView mTvSave;
+    @BindView(R.id.ll_customer_service)
+    LinearLayout mLlCustomerService;
+    @BindView(R.id.all_withdraw_tv)
+    TextView mAllWithdrawTv;
     @BindView(R.id.withdraw_ll)
     LinearLayout mWithdrawLl;
-    @BindView(R.id.income_tv)  //累计收入
-            TextView mIncomeTv;
+    @BindView(R.id.income_tv)
+    TextView mIncomeTv;
     @BindView(R.id.income_ll)
     LinearLayout mIncomeLl;
-    @BindView(R.id.margin_amount_tv)  //保证金金额
-            TextView mMarginAmountTv;
-    @BindView(R.id.cash_withdrawal_amount_tv) //可提现金额
-            TextView mCashWithdrawalAmountTv;
-    @BindView(R.id.withdraw_tv)   //提现中
-            TextView mWithdrawTv;
-    @BindView(R.id.amount_to_be_confirmed_tv) //待确认
-            TextView mAmountToBeConfirmedTv;
-
-
+    @BindView(R.id.margin_amount_tv)
+    TextView mMarginAmountTv;
+    @BindView(R.id.cash_withdrawal_amount_tv)
+    TextView mCashWithdrawalAmountTv;
+    @BindView(R.id.withdraw_tv)
+    TextView mWithdrawTv;
+    @BindView(R.id.amount_to_be_confirmed_tv)
+    TextView mAmountToBeConfirmedTv;
+    @BindView(R.id.img_withdraw_wechat)
+    ImageView mImgWithdrawWechat;
+    @BindView(R.id.img_wechat)
+    ImageView mImgWechat;
+    @BindView(R.id.wechat_pay_ll)
+    LinearLayout mWechatPayLl;
+    @BindView(R.id.img_withdraw_alipay)
+    ImageView mImgWithdrawAlipay;
+    @BindView(R.id.img_alipay)
+    ImageView mImgAlipay;
+    @BindView(R.id.alipay_ll)
+    LinearLayout mAlipayLl;
+    @BindView(R.id.img_withdraw_bank)
+    ImageView mImgWithdrawBank;
+    @BindView(R.id.img_bank)
+    ImageView mImgBank;
+    @BindView(R.id.unionpay_ll)
+    LinearLayout mUnionpayLl;
+    @BindView(R.id.tv_withdraw_bankname)
+    TextView mTvWithdrawBankname;
+    @BindView(R.id.tv_withdraw_banknum)
+    TextView mTvWithdrawBanknum;
+    @BindView(R.id.ll_choose_withdraw_bank)
+    LinearLayout mLlChooseWithdrawBank;
+    @BindView(R.id.view)
+    View mView;
     @BindView(R.id.money_et)
     EditText mMoneyEt;
     @BindView(R.id.full_withdrawal_tv)
     TextView mFullWithdrawalTv;
+    @BindView(R.id.tv_hint)
+    TextView mTvHint;
     @BindView(R.id.confirm_withdrawal_btn)
     Button mConfirmWithdrawalBtn;
-    /*提现到*/
-    @BindView(R.id.img_withdraw_wechat)
-    ImageView mImgWithdrawWechat;
-    @BindView(R.id.img_withdraw_alipay)
-    ImageView mImgWithdrawAlipay;
-    @BindView(R.id.img_withdraw_bank)
-    ImageView mImgWithdrawBank;
-    @BindView(R.id.tv_withdraw_bankname)
-    TextView mtv_withdraw_bankname;
-    @BindView(R.id.tv_withdraw_banknum)
-    TextView mtv_withdraw_banknum;
-
-/*
-    @BindView(R.id.img_wechat)
-    ImageView mImgWechat;
-    @BindView(R.id.img_alipay)
-    ImageView mImgAlipay;
-    @BindView(R.id.img_bank)
-    ImageView mImgBank;
-*/
-
-
-    @BindView(R.id.wechat_pay_ll)
-    LinearLayout mWechatPayLl;
-    @BindView(R.id.alipay_ll)
-    LinearLayout mAlipayLl;
-    @BindView(R.id.unionpay_ll)
-    LinearLayout mUnionpayLl;
-    @BindView(R.id.ll_choose_withdraw_bank)
-    LinearLayout mll_choose_withdraw_bank;
-    @BindView(R.id.tv_hint)
-    TextView mtv_hint;
-    @BindView(R.id.img_wechat)
-    ImageView mImgWechat;
-    @BindView(R.id.img_alipay)
-    ImageView mImgAlipay;
-    @BindView(R.id.img_bank)
-    ImageView mImgBank;
-    @BindView(R.id.view)
-    View mView;
-
-
     private PopwidowBankAdapter popwidowBankAdapter;
     private ImageView img_bankcancle;
     private String userId;
@@ -171,17 +159,17 @@ public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
         mImgWithdrawWechat.setSelected(false);
 
         if (mImgWithdrawBank.isSelected()) {
-            mll_choose_withdraw_bank.setVisibility(View.VISIBLE);
+            mLlChooseWithdrawBank.setVisibility(View.VISIBLE);
             mView.setVisibility(View.VISIBLE);
         } else {
-            mll_choose_withdraw_bank.setVisibility(View.GONE);
+            mLlChooseWithdrawBank.setVisibility(View.GONE);
             mView.setVisibility(View.GONE);
         }
     }
 
     @Override
     protected void setListener() {
-        mImgActionbarReturn.setOnClickListener(this);
+        mIvBack.setOnClickListener(this);
         mImgWithdrawWechat.setOnClickListener(this);
         mImgWithdrawAlipay.setOnClickListener(this);
         mImgWithdrawBank.setOnClickListener(this);
@@ -189,7 +177,7 @@ public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
         mAlipayLl.setOnClickListener(this);
         mUnionpayLl.setOnClickListener(this);
         mFullWithdrawalTv.setOnClickListener(this);
-        mll_choose_withdraw_bank.setOnClickListener(this);
+        mLlChooseWithdrawBank.setOnClickListener(this);
         mConfirmWithdrawalBtn.setOnClickListener(this);
       /*  mMoneyEt.addTextChangedListener(new TextWatcher() {
             @Override
@@ -309,7 +297,7 @@ public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
                 mMoneyEt.setSelection(mMoneyEt.getText().toString().length()); //光标移到最后
                 break;
             case R.id.ll_choose_withdraw_bank://选择银行
-                if (list.size()==0){
+                if (list.size() == 0) {
                     final CommonDialog_Home dialog = new CommonDialog_Home(mActivity);
                     dialog.setMessage("您还未绑定银行卡，去绑定")
                             //.setImageResId(R.mipmap.ic_launcher)
@@ -318,7 +306,7 @@ public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
                         @Override
                         public void onPositiveClick() {//添加银行卡
                             dialog.dismiss();
-                            Intent intent=new Intent(mActivity, Add_Card_Activity.class);
+                            Intent intent = new Intent(mActivity, Add_Card_Activity.class);
                             intent.putExtra("cardlist", (Serializable) list);
                             startActivityForResult(intent, 2002);
 //                            startActivity(new Intent(mActivity,Add_Card_Activity.class));
@@ -330,13 +318,13 @@ public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
                             // Toast.makeText(MainActivity.this,"ssss",Toast.LENGTH_SHORT).show();
                         }
                     }).show();
-                }else {
+                } else {
                     showPopupWindow();
                 }
 
                 break;
             case R.id.confirm_withdrawal_btn: //提交
-                if (ifTrue==true){
+                if (ifTrue == true) {
                     if (mMoneyEt.getText().toString().isEmpty() || CardNo == null) {
                         Toast.makeText(WithDrawActivity.this, "请输入金额并选择银行卡", Toast.LENGTH_SHORT).show();
                     } else {
@@ -345,11 +333,11 @@ public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
                             Toast.makeText(WithDrawActivity.this, "不能提现0元", Toast.LENGTH_SHORT).show();
                         } else {
                             DrawMoney = mMoneyEt.getText().toString();
-                            mPresenter.WithDraw(DrawMoney, CardNo, userId,payName);
+                            mPresenter.WithDraw(DrawMoney, CardNo, userId, payName);
                         }
 
                     }
-                }else {
+                } else {
                     final CommonDialog_Home dialog = new CommonDialog_Home(mActivity);
                     dialog.setMessage("您实名认证不完善，不能提现，是否去完善并提现")
                             //.setImageResId(R.mipmap.ic_launcher)
@@ -360,7 +348,7 @@ public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
                         @Override
                         public void onPositiveClick() {//添加银行卡
                             dialog.dismiss();
-                            startActivity(new Intent(mActivity,VerifiedPhotoActivity.class));
+                            startActivity(new Intent(mActivity, VerifiedPhotoActivity.class));
                         }
 
                         @Override
@@ -372,16 +360,15 @@ public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
                 }
 
 
-
                 break;
 
         }
 
         if (mImgWithdrawBank.isSelected()) {
-            mll_choose_withdraw_bank.setVisibility(View.VISIBLE);
+            mLlChooseWithdrawBank.setVisibility(View.VISIBLE);
             mView.setVisibility(View.VISIBLE);
         } else {
-            mll_choose_withdraw_bank.setVisibility(View.GONE);
+            mLlChooseWithdrawBank.setVisibility(View.GONE);
             mView.setVisibility(View.GONE);
         }
     }
@@ -433,7 +420,7 @@ public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
                     return;
                 } else {
                     for (int i = 0; i < baseResult.getData().size(); i++) {
-                        if ("Y".equals(baseResult.getData().get(i).getIsUse())){
+                        if ("Y".equals(baseResult.getData().get(i).getIsUse())) {
                             list.add(baseResult.getData().get(i));
                         }
                     }
@@ -468,11 +455,11 @@ public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
                                         list.get(position).setIscheck(true);
                                         popwidowBankAdapter.notifyDataSetChanged();
 
-                                        mtv_withdraw_bankname.setText(((BankCard) adapter.getData().get(position)).getPayInfoName());
+                                        mTvWithdrawBankname.setText(((BankCard) adapter.getData().get(position)).getPayInfoName());
                                         String cardNo = ((BankCard) adapter.getData().get(position)).getPayNo();
                                         CardNo = cardNo;//赋值给全局变量
                                         payName = ((BankCard) adapter.getData().get(position)).getPayName();
-                                        mtv_withdraw_banknum.setText("(" + cardNo.substring(cardNo.length() - 4, cardNo.length()) + ")");
+                                        mTvWithdrawBanknum.setText("(" + cardNo.substring(cardNo.length() - 4, cardNo.length()) + ")");
                                         mPopupWindow.dismiss();
                                     }
 
@@ -532,12 +519,12 @@ public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
 
     @Override
     public void GetIDCardImg(BaseResult<List<IDCard.IDCardBean>> baseResult) {
-        switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData().size()==0){
+                if (baseResult.getData().size() == 0) {
                     ifTrue = false;
-                }else {
-                    ifTrue=true;
+                } else {
+                    ifTrue = true;
                 }
                 break;
         }
@@ -575,10 +562,10 @@ public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(String message) {
-        if ("verified".equals(message)){
+        if ("verified".equals(message)) {
             mPresenter.GetIDCardImg(userId);
         }
-        if (!"GetAccountPayInfoList".equals(message)){
+        if (!"GetAccountPayInfoList".equals(message)) {
             return;
         }
         mPresenter.GetAccountPayInfoList(userId);

@@ -2,6 +2,7 @@ package com.ying.administrator.masterappdemo.v3.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -10,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,11 +19,15 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.FileProvider;
+import android.text.InputType;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -29,6 +35,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
@@ -38,8 +45,11 @@ import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.common.Config;
+import com.ying.administrator.masterappdemo.entity.AddressList;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
+import com.ying.administrator.masterappdemo.entity.WorkOrder;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.AddAddressActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.VerifiedActivity2;
 import com.ying.administrator.masterappdemo.util.Glide4Engine;
 import com.ying.administrator.masterappdemo.util.MyUtils;
@@ -51,6 +61,8 @@ import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -84,6 +96,10 @@ public class PersonalInformationActivity extends BaseActivity<PersonalInformatio
     LinearLayout mLlCustomerService;
     @BindView(R.id.tv_emergency_telephone_number)
     TextView mTvEmergencyTelephoneNumber;
+    @BindView(R.id.ll_shipping_address)
+    LinearLayout mLlShippingAddress;
+    @BindView(R.id.ll_emergency_telephone_number)
+    LinearLayout mLlEmergencyTelephoneNumber;
     private String userID;
     private UserInfo.UserInfoDean userInfo;
     private View popupWindow_view;
@@ -93,6 +109,12 @@ public class PersonalInformationActivity extends BaseActivity<PersonalInformatio
     private int size;
     private List<Uri> mSelected;
     private Uri uri;
+    private List<AddressList> addressList;
+    private EditText et_message;
+    private Button negtive;
+    private Button positive;
+    private TextView title;
+    private AlertDialog cancelDialog;
 
     @Override
     protected int setLayoutId() {
@@ -110,6 +132,7 @@ public class PersonalInformationActivity extends BaseActivity<PersonalInformatio
         SPUtils spUtils = SPUtils.getInstance("token");
         userID = spUtils.getString("userName");
         mPresenter.GetUserInfoList(userID, "1");
+        mPresenter.GetAccountAddress(userID);
     }
 
     @Override
@@ -117,6 +140,8 @@ public class PersonalInformationActivity extends BaseActivity<PersonalInformatio
         mIvBack.setOnClickListener(this);
         mIvAvatar.setOnClickListener(this);
         mTvMasterName.setOnClickListener(this);
+        mLlShippingAddress.setOnClickListener(this);
+        mLlEmergencyTelephoneNumber.setOnClickListener(this);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -135,10 +160,57 @@ public class PersonalInformationActivity extends BaseActivity<PersonalInformatio
                 break;
             case R.id.tv_master_name:
                 if (userInfo.getTrueName() == null) { //如果为空说明未认证
-                    startActivity(new Intent(mActivity,VerifiedActivity2.class));
+                    startActivity(new Intent(mActivity, VerifiedActivity2.class));
                 } else {
                     return;
                 }
+                break;
+            case R.id.ll_shipping_address:
+                if (addressList.size() == 0) {
+                    startActivity(new Intent(mActivity, AddAddressActivity.class));
+                } else {
+                    Intent intent = new Intent(mActivity, AddAddressActivity.class);
+                    intent.putExtra("address", addressList.get(0));
+                    startActivity(intent);
+                }
+                break;
+            case R.id.ll_emergency_telephone_number:
+                View Cancelview = LayoutInflater.from(mActivity).inflate(R.layout.dialog_cancel, null);
+                et_message = Cancelview.findViewById(R.id.et_message);
+                negtive = Cancelview.findViewById(R.id.negtive);
+                positive = Cancelview.findViewById(R.id.positive);
+                title = Cancelview.findViewById(R.id.title);
+                title.setText("紧急联系人");
+                et_message.setHint("请添加或修改紧急联系人");
+                et_message.setInputType(InputType.TYPE_CLASS_PHONE);
+                negtive.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        cancelDialog.dismiss();
+                    }
+                });
+
+                positive.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String message = et_message.getText().toString();
+                        if (message == null || "".equals(message)) {
+                            ToastUtils.showShort("请添加或修改紧急联系人");
+                        } else {
+//                                    mPresenter.UpdateOrderState(OrderId, "-1",message);
+                           mPresenter.UpdateEmergencyContact(userID,message);
+                            cancelDialog.dismiss();
+                        }
+
+                    }
+                });
+
+                cancelDialog = new AlertDialog.Builder(mActivity).setView(Cancelview).create();
+                cancelDialog.show();
+                Window window1 = cancelDialog.getWindow();
+                WindowManager.LayoutParams layoutParams = window1.getAttributes();
+                window1.setAttributes(layoutParams);
+                window1.setBackgroundDrawable(new ColorDrawable());
                 break;
         }
     }
@@ -152,7 +224,7 @@ public class PersonalInformationActivity extends BaseActivity<PersonalInformatio
 
     @Override
     public void GetUserInfoList(BaseResult<UserInfo> baseResult) {
-        switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
                 userInfo = baseResult.getData().getData().get(0);
                 /*设置头像*/
@@ -164,18 +236,34 @@ public class PersonalInformationActivity extends BaseActivity<PersonalInformatio
                             .apply(RequestOptions.bitmapTransform(new CircleCrop()))
                             .into(mIvAvatar);
                 }
+//                /*真实姓名*/
+//                if (userInfo.getTrueName() == null) { //如果为空说明未认证
+//                    mTvMasterName.setText("未认证");
+//                } else {
+//                    mTvMasterName.setText(userInfo.getTrueName());
+//                }
+
                 /*真实姓名*/
-                if (userInfo.getTrueName() == null) { //如果为空说明未认证
+                if (userInfo.getIfAuth() == null || "".equals(userInfo.getIfAuth())) {
                     mTvMasterName.setText("未认证");
-                } else {
+                } else if ("0".equals(userInfo.getIfAuth())) {
+                    mTvMasterName.setText("认证中");
+                } else if ("-1".equals(userInfo.getIfAuth())) {
+                    mTvMasterName.setText("未认证");
+                } else if ("1".equals(userInfo.getIfAuth())) {
                     mTvMasterName.setText(userInfo.getTrueName());
                 }
 
                 /*手机号*/
-                if (userInfo.getPhone() == null) {
-                    mTvPhone.setText("");
-                } else {
-                    mTvPhone.setText(userInfo.getPhone());
+//                if (userInfo.getPhone() == null) {
+//                    mTvPhone.setText("");
+//                } else {
+                    mTvPhone.setText(userInfo.getUserID());
+//                }
+                if (userInfo.getEmergencyContact()==null){
+                    mTvEmergencyTelephoneNumber.setText("暂未设置紧急联系人");
+                }else {
+                    mTvEmergencyTelephoneNumber.setText(userInfo.getEmergencyContact());
                 }
                 break;
         }
@@ -192,13 +280,32 @@ public class PersonalInformationActivity extends BaseActivity<PersonalInformatio
 
                     Toast.makeText(PersonalInformationActivity.this, "图片上传成功", Toast.LENGTH_SHORT).show();
                     EventBus.getDefault().post("GetUserInfoList");
-                    mPresenter.GetUserInfoList(userID,"1");
+                    mPresenter.GetUserInfoList(userID, "1");
                 }
 
                 break;
 
             default:
                 Toast.makeText(mActivity, "修改失败", Toast.LENGTH_SHORT).show();
+                break;
+        }
+    }
+
+    @Override
+    public void GetAccountAddress(BaseResult<List<AddressList>> baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                addressList = baseResult.getData();
+                break;
+        }
+    }
+
+    @Override
+    public void UpdateEmergencyContact(BaseResult<Data<String>> baseResult) {
+        switch (baseResult.getStatusCode()){
+            case 200:
+                ToastUtils.showShort("成功");
+                mPresenter.GetUserInfoList(userID,"1");
                 break;
         }
     }
@@ -491,4 +598,10 @@ public class PersonalInformationActivity extends BaseActivity<PersonalInformatio
         return file;
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(String name) {
+        if ("certification".equals(name)) {
+            mPresenter.GetUserInfoList(userID, "1");
+        }
+    }
 }

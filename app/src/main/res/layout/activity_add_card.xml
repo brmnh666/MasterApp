@@ -8,14 +8,14 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="#1690ff"
+        android:background="@color/white"
         >
         <ImageView
             android:id="@+id/img_actionbar_return"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginLeft="10dp"
-            android:src="@mipmap/left"
+            android:src="@mipmap/v3_back"
             android:layout_centerVertical="true"
             />
 
@@ -26,7 +26,7 @@
             android:layout_centerInParent="true"
             android:text="绑定"
             android:textSize="20sp"
-            android:textColor="@color/color_white"
+            android:textColor="@color/black"
             />
 
 
@@ -198,7 +198,7 @@
         android:text="确认绑定"
         android:textColor="@color/white"
         android:textSize="19sp"
-        android:background="@drawable/bg_register"
+        android:background="@drawable/v3_btn_shape"
         />
 
     <TextView

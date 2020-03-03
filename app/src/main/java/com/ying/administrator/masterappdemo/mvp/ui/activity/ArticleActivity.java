@@ -1,12 +1,12 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -26,22 +26,19 @@ import com.ying.administrator.masterappdemo.mvp.ui.adapter.ArticleAdapter;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class ArticleActivity extends BaseActivity<ArticlePresenter, ArticleModel> implements View.OnClickListener, ArticleContract.View {
 
 
-    @BindView(R.id.img_actionbar_return)
-    ImageView mImgActionbarReturn;
-    @BindView(R.id.tv_actionbar_return)
-    TextView mTvActionbarReturn;
-    @BindView(R.id.ll_return)
-    LinearLayout mLlReturn;
-    @BindView(R.id.tv_actionbar_title)
-    TextView mTvActionbarTitle;
-    @BindView(R.id.img_actionbar_message)
-    ImageView mImgActionbarMessage;
-    @BindView(R.id.actionbar_layout)
-    RelativeLayout mActionbarLayout;
+    @BindView(R.id.iv_back)
+    ImageView mIvBack;
+    @BindView(R.id.tv_title)
+    TextView mTvTitle;
+    @BindView(R.id.tv_save)
+    TextView mTvSave;
+    @BindView(R.id.ll_customer_service)
+    LinearLayout mLlCustomerService;
     @BindView(R.id.rv_article)
     RecyclerView mRvArticle;
     private List<Article.DataBean> list;
@@ -55,24 +52,24 @@ public class ArticleActivity extends BaseActivity<ArticlePresenter, ArticleModel
     @Override
     protected void initData() {
 
-        CategoryID =getIntent().getStringExtra("CategoryID");
-        switch(CategoryID){
+        CategoryID = getIntent().getStringExtra("CategoryID");
+        switch (CategoryID) {
             case "7":
-                mTvActionbarTitle.setText("系统消息");
+                mTvTitle.setText("系统消息");
                 break;
             case "8":
-                mTvActionbarTitle.setText("平台政策");
+                mTvTitle.setText("平台政策");
                 break;
             case "9":
-                mTvActionbarTitle.setText("平台新闻");
+                mTvTitle.setText("平台新闻");
                 break;
             case "10":
-                mTvActionbarTitle.setText("接单必读");
+                mTvTitle.setText("接单必读");
                 break;
             default:
                 break;
         }
-        mPresenter.GetListCategoryContentByCategoryID(CategoryID,"1","999");
+        mPresenter.GetListCategoryContentByCategoryID(CategoryID, "1", "999");
     }
 
     @Override
@@ -83,14 +80,14 @@ public class ArticleActivity extends BaseActivity<ArticlePresenter, ArticleModel
 
     @Override
     protected void setListener() {
-        mLlReturn.setOnClickListener(this);
+        mIvBack.setOnClickListener(this);
     }
 
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ll_return:
+            case R.id.iv_back:
                 finish();
                 break;
         }
@@ -98,19 +95,19 @@ public class ArticleActivity extends BaseActivity<ArticlePresenter, ArticleModel
 
     @Override
     public void GetListCategoryContentByCategoryID(BaseResult<Article> baseResult) {
-        switch(baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
-                list =baseResult.getData().getData();
-                ArticleAdapter articleAdapter=new ArticleAdapter(R.layout.item_order_must_read, list);
+                list = baseResult.getData().getData();
+                ArticleAdapter articleAdapter = new ArticleAdapter(R.layout.item_order_must_read, list);
                 mRvArticle.setLayoutManager(new LinearLayoutManager(mActivity));
                 articleAdapter.setEmptyView(getEmptyView());
                 mRvArticle.setAdapter(articleAdapter);
                 articleAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                        Intent intent=new Intent(mActivity,WebActivity.class);
-                        intent.putExtra("Url",list.get(position).getContent());
-                        intent.putExtra("Title",list.get(position).getTitle());
+                        Intent intent = new Intent(mActivity, WebActivity.class);
+                        intent.putExtra("Url", list.get(position).getContent());
+                        intent.putExtra("Title", list.get(position).getTitle());
                         startActivity(intent);
                     }
                 });
@@ -133,5 +130,12 @@ public class ArticleActivity extends BaseActivity<ArticlePresenter, ArticleModel
     @Override
     public void GetNewsLeaveMessage(BaseResult<Data<LeaveMessage>> baseResult) {
 
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

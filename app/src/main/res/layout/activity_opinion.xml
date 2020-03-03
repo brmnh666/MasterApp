@@ -5,13 +5,13 @@
     android:layout_height="match_parent"
     android:background="#F5F2F5">
 
-    <include layout="@layout/actionbar_receiving_layout"/>
+    <include layout="@layout/v3_activity_head"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@color/color_custom_01"
+        android:background="@color/white"
         android:paddingTop="36dp"
         android:paddingBottom="20dp"
         android:gravity="center">
@@ -21,20 +21,20 @@
             android:layout_height="33dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:background="@drawable/white_shape"
+            android:background="@drawable/v3_blue_shape2"
             android:text="账号问题"
             android:textSize="16sp"
-            android:textColor="@drawable/opinion_textcolor_selector" />
+            android:textColor="@drawable/v3_opinion_textcolor_selector" />
         <TextView
             android:id="@+id/tv_payment_issues"
             android:layout_width="82dp"
             android:layout_height="33dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:background="@drawable/white_shape"
+            android:background="@drawable/v3_blue_shape2"
             android:text="支付问题"
             android:textSize="16sp"
-            android:textColor="@drawable/opinion_textcolor_selector"
+            android:textColor="@drawable/v3_opinion_textcolor_selector"
             android:layout_marginLeft="24dp"/>
         <TextView
             android:id="@+id/tv_other_questions"
@@ -42,10 +42,10 @@
             android:layout_height="33dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:background="@drawable/white_shape"
+            android:background="@drawable/v3_blue_shape2"
             android:text="其它问题"
             android:textSize="16sp"
-            android:textColor="@drawable/opinion_textcolor_selector"
+            android:textColor="@drawable/v3_opinion_textcolor_selector"
             android:layout_marginLeft="24dp"/>
 
     </LinearLayout>
@@ -99,7 +99,7 @@
             android:id="@+id/btn_opinion"
             android:layout_width="match_parent"
             android:layout_height="43dp"
-            android:background="@drawable/btn_blue"
+            android:background="@drawable/v3_btn_shape"
             android:layout_marginLeft="18dp"
             android:layout_marginRight="18dp"
             android:text="提交反馈"

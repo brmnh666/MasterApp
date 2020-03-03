@@ -5,66 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#eee">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <View
-            android:id="@+id/view"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:background="@color/white" />
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:background="@color/color_custom_01" >
-            <ImageView
-                android:id="@+id/icon_back"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
-                android:paddingRight="15dp"
-                android:src="@drawable/back"/>
-            <TextView
-                android:id="@+id/tv_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="添加收货地址"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:singleLine="true"
-                android:ellipsize="end"
-                android:textSize="18sp"
-                android:textColor="@color/white"/>
-            <TextView
-                android:id="@+id/tv_save"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="保存"
-                android:gravity="center"
-                android:layout_gravity="right"
-                android:singleLine="true"
-                android:ellipsize="end"
-                android:padding="@dimen/dp_10"
-                android:layout_marginRight="@dimen/dp_10"
-                android:textSize="@dimen/sp_14"
-                android:textColor="@color/white"/>
-        </android.support.v7.widget.Toolbar>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#eee"/>
-    </LinearLayout>
+    <include layout="@layout/v3_activity_head"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:paddingLeft="14dp"
+        android:paddingTop="22dp"
+        android:paddingRight="29dp"
+        android:paddingBottom="22dp"
+        android:layout_marginTop="7dp">
 
         <EditText
             android:id="@+id/et_receiver"
@@ -94,7 +46,10 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:paddingLeft="14dp"
+        android:paddingTop="22dp"
+        android:paddingRight="29dp"
+        android:paddingBottom="22dp">
 
         <EditText
             android:id="@+id/et_cellphone_number"
@@ -119,7 +74,10 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:paddingLeft="14dp"
+        android:paddingTop="22dp"
+        android:paddingRight="29dp"
+        android:paddingBottom="22dp">
 
         <TextView
             android:id="@+id/tv_area"
@@ -145,15 +103,19 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:background="@color/white"
         android:orientation="horizontal"
-        android:padding="10dp">
+       >
 
         <EditText
             android:id="@+id/et_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="14dp"
+            android:paddingTop="22dp"
+            android:paddingRight="29dp"
+            android:paddingBottom="22dp"
             android:layout_weight="1"
             android:background="@null"
             android:hint="详细地址：如道路、门牌号、小区、楼栋号、单元室等"
@@ -165,14 +127,16 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#eee"/>
+        android:background="#eee"
+        android:visibility="gone"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:padding="10dp"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="match_parent"
@@ -200,7 +164,8 @@
         android:background="@color/white"
         android:orientation="horizontal"
         android:layout_marginTop="@dimen/dp_10"
-        android:padding="10dp">
+        android:padding="10dp"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="match_parent"
@@ -211,4 +176,17 @@
             android:text="删除收货地址"
             android:textSize="14sp"/>
     </LinearLayout>
+
+    <Button
+        android:id="@+id/submit_application_bt"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/v3_btn_shape"
+        android:text="保存"
+        android:textColor="@color/color_white"
+        android:textSize="16sp" />
 </LinearLayout>

@@ -43,6 +43,7 @@ import com.dmcbig.mediapicker.entity.Media;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.AddressList;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.mvp.contract.VerifiedContract;
@@ -877,6 +878,11 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                 }
                 break;
         }
+
+    }
+
+    @Override
+    public void GetAccountAddress(BaseResult<List<AddressList>> baseResult) {
 
     }
 

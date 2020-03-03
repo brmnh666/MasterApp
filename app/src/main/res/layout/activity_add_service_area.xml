@@ -6,14 +6,14 @@
     android:layout_height="match_parent"
     tools:ignore="MissingDefaultResource">
 
-    <include layout="@layout/actionbar_receiving_layout" />
+    <include layout="@layout/v3_activity_head"/>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:background="@color/color_custom_01"/>
+        android:background="@color/white"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -24,7 +24,8 @@
             android:layout_marginRight="@dimen/dp_10"
             android:layout_marginTop="30dp"
             android:paddingLeft="17dp"
-            android:paddingRight="17dp">
+            android:paddingRight="17dp"
+            android:elevation="5dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -180,7 +181,7 @@
                 android:id="@+id/btn_save"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:background="@drawable/bule_shape"
+                android:background="@drawable/v3_btn_shape"
                 android:text="保 存"
                 android:textSize="20sp"
                 android:textColor="@color/white"

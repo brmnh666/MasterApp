@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ToastUtils;
@@ -46,24 +45,28 @@ import butterknife.ButterKnife;
 public class AddServiceAreaActivity extends BaseActivity<AddServicePresenter, AddServiceModel> implements View.OnClickListener, AddServiceContract.View {
 
 
-    @BindView(R.id.img_actionbar_return)
-    ImageView mImgActionbarReturn;
-    @BindView(R.id.tv_actionbar_return)
-    TextView mTvActionbarReturn;
-    @BindView(R.id.ll_return)
-    LinearLayout mLlReturn;
-    @BindView(R.id.tv_actionbar_title)
-    TextView mTvActionbarTitle;
-    @BindView(R.id.img_actionbar_message)
-    ImageView mImgActionbarMessage;
-    @BindView(R.id.actionbar_layout)
-    RelativeLayout mActionbarLayout;
+    @BindView(R.id.iv_back)
+    ImageView mIvBack;
+    @BindView(R.id.tv_title)
+    TextView mTvTitle;
+    @BindView(R.id.tv_save)
+    TextView mTvSave;
+    @BindView(R.id.ll_customer_service)
+    LinearLayout mLlCustomerService;
+    @BindView(R.id.tv_province)
+    TextView mTvProvince;
     @BindView(R.id.ll_province)
     LinearLayout mLlProvince;
+    @BindView(R.id.tv_city)
+    TextView mTvCity;
     @BindView(R.id.ll_city)
     LinearLayout mLlCity;
+    @BindView(R.id.tv_area)
+    TextView mTvArea;
     @BindView(R.id.ll_area)
     LinearLayout mLlArea;
+    @BindView(R.id.tv_district)
+    TextView mTvDistrict;
     @BindView(R.id.ll_town)
     LinearLayout mLlTown;
     @BindView(R.id.iv_add)
@@ -72,14 +75,6 @@ public class AddServiceAreaActivity extends BaseActivity<AddServicePresenter, Ad
     RecyclerView mRvRegion;
     @BindView(R.id.btn_save)
     Button mBtnSave;
-    @BindView(R.id.tv_province)
-    TextView mTvProvince;
-    @BindView(R.id.tv_city)
-    TextView mTvCity;
-    @BindView(R.id.tv_area)
-    TextView mTvArea;
-    @BindView(R.id.tv_district)
-    TextView mTvDistrict;
     private Province mProvince;
     private City mCity;
     private Area mArea;
@@ -88,15 +83,15 @@ public class AddServiceAreaActivity extends BaseActivity<AddServicePresenter, Ad
     private List<City> cityList;
     private List<Area> areaList;
     private List<District> districtList;
-    private List<ServiceAddress> serviceAddressList=new ArrayList<>();
-    private List<ServiceAddress> tempServiceAddressList=new ArrayList<>();
+    private List<ServiceAddress> serviceAddressList = new ArrayList<>();
+    private List<ServiceAddress> tempServiceAddressList = new ArrayList<>();
     private ServiceAddressAdapter serviceAddressAdapter;
     private ProvinceAdapter provinceAdapter;
     private CityAdapter cityAdapter;
     private AreaAdapter areaAdapter;
     private DistrictAdapter districtAdapter;
     private PopupWindow popupWindow;
-    private String codestr="";
+    private String codestr = "";
     private String name;
 
     @Override
@@ -111,18 +106,18 @@ public class AddServiceAreaActivity extends BaseActivity<AddServicePresenter, Ad
 
     @Override
     public void initView() {
-        mTvActionbarTitle.setText("添加服务区域");
+        mTvTitle.setText("添加服务区域");
         mTvProvince.setText("省");
         mTvCity.setText("市");
         mTvArea.setText("区");
         mTvDistrict.setText("街道");
-        serviceAddressAdapter=new ServiceAddressAdapter(R.layout.item_region,serviceAddressList);
+        serviceAddressAdapter = new ServiceAddressAdapter(R.layout.item_region, serviceAddressList);
         mRvRegion.setLayoutManager(new LinearLayoutManager(mActivity));
         mRvRegion.setAdapter(serviceAddressAdapter);
         serviceAddressAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                switch (view.getId()){
+                switch (view.getId()) {
                     case R.id.iv_delete:
                         serviceAddressList.remove(position);
                         serviceAddressAdapter.notifyDataSetChanged();
@@ -134,7 +129,7 @@ public class AddServiceAreaActivity extends BaseActivity<AddServicePresenter, Ad
 
     @Override
     protected void setListener() {
-        mLlReturn.setOnClickListener(this);
+        mIvBack.setOnClickListener(this);
         mLlProvince.setOnClickListener(this);
         mLlCity.setOnClickListener(this);
         mLlArea.setOnClickListener(this);
@@ -154,7 +149,7 @@ public class AddServiceAreaActivity extends BaseActivity<AddServicePresenter, Ad
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ll_return:
+            case R.id.iv_back:
                 finish();
                 break;
             case R.id.ll_province:
@@ -179,14 +174,14 @@ public class AddServiceAreaActivity extends BaseActivity<AddServicePresenter, Ad
                     ToastUtils.showShort("请选择市！");
                     return;
                 }
-                if ("济源市".equals(mCity.getName())){
-                    mPresenter.GetDistrict("410881",0);
-                }else {
+                if ("济源市".equals(mCity.getName())) {
+                    mPresenter.GetDistrict("410881", 0);
+                } else {
                     if (mArea == null) {
                         ToastUtils.showShort("请选择区！");
                         return;
                     }
-                    mPresenter.GetDistrict(mArea.getCode(),0);
+                    mPresenter.GetDistrict(mArea.getCode(), 0);
                 }
                 break;
             case R.id.iv_add:
@@ -203,23 +198,23 @@ public class AddServiceAreaActivity extends BaseActivity<AddServicePresenter, Ad
                     return;
                 }
                 if (mDistrict == null) {
-                    mPresenter.GetDistrict(mArea.getCode(),1);
-                }else{
-                    if (serviceAddressList.size()>0){
+                    mPresenter.GetDistrict(mArea.getCode(), 1);
+                } else {
+                    if (serviceAddressList.size() > 0) {
                         for (int i = 0; i < serviceAddressList.size(); i++) {
-                            if (mDistrict.getCode().equals(serviceAddressList.get(i).getDistrict().getCode())){
+                            if (mDistrict.getCode().equals(serviceAddressList.get(i).getDistrict().getCode())) {
                                 serviceAddressList.remove(i);
                             }
                         }
-                        serviceAddressList.add(new ServiceAddress(mProvince,mCity,mArea,mDistrict));
-                    }else{
-                        serviceAddressList.add(new ServiceAddress(mProvince,mCity,mArea,mDistrict));
+                        serviceAddressList.add(new ServiceAddress(mProvince, mCity, mArea, mDistrict));
+                    } else {
+                        serviceAddressList.add(new ServiceAddress(mProvince, mCity, mArea, mDistrict));
                     }
                     serviceAddressAdapter.notifyDataSetChanged();
-                    mProvince=null;
-                    mCity=null;
-                    mArea=null;
-                    mDistrict=null;
+                    mProvince = null;
+                    mCity = null;
+                    mArea = null;
+                    mDistrict = null;
                     mTvProvince.setText("省");
                     mTvCity.setText("市");
                     mTvArea.setText("区");
@@ -228,18 +223,18 @@ public class AddServiceAreaActivity extends BaseActivity<AddServicePresenter, Ad
                 break;
             case R.id.btn_save:
                 for (int i = 0; i < serviceAddressList.size(); i++) {
-                    codestr+=serviceAddressList.get(i).getCodestr()+",";
+                    codestr += serviceAddressList.get(i).getCodestr() + ",";
                 }
-                if (codestr.contains(",")){
-                    codestr=codestr.substring(0,codestr.lastIndexOf(","));
+                if (codestr.contains(",")) {
+                    codestr = codestr.substring(0, codestr.lastIndexOf(","));
                 }
-                if ("".equals(codestr)){
+                if ("".equals(codestr)) {
                     ToastUtils.showShort("请添加至少一个服务区域");
                     return;
                 }
-                Intent intent=new Intent();
-                intent.putExtra("codestr",codestr);
-                setResult(317,intent);
+                Intent intent = new Intent();
+                intent.putExtra("codestr", codestr);
+                setResult(317, intent);
                 finish();
                 break;
         }
@@ -299,8 +294,8 @@ public class AddServiceAreaActivity extends BaseActivity<AddServicePresenter, Ad
     }
 
     @Override
-    public void GetDistrict(BaseResult<Data<List<District>>> baseResult,int code) {
-        switch (code){
+    public void GetDistrict(BaseResult<Data<List<District>>> baseResult, int code) {
+        switch (code) {
             case 0:
                 switch (baseResult.getStatusCode()) {
                     case 200:
@@ -324,10 +319,10 @@ public class AddServiceAreaActivity extends BaseActivity<AddServicePresenter, Ad
                         Data<List<District>> data = baseResult.getData();
                         if (data.isItem1()) {
                             districtList = data.getItem2();
-                            if (serviceAddressList.size()>0){
+                            if (serviceAddressList.size() > 0) {
                                 for (int i = 0; i < serviceAddressList.size(); i++) {
                                     for (int j = 0; j < districtList.size(); j++) {
-                                        if (serviceAddressList.get(i).getDistrict().getCode().equals(districtList.get(j).getCode())){
+                                        if (serviceAddressList.get(i).getDistrict().getCode().equals(districtList.get(j).getCode())) {
                                             serviceAddressList.remove(i);
                                         }
                                     }
@@ -337,10 +332,10 @@ public class AddServiceAreaActivity extends BaseActivity<AddServicePresenter, Ad
                                 serviceAddressList.add(new ServiceAddress(mProvince, mCity, mArea, districtList.get(j)));
                             }
                             serviceAddressAdapter.notifyDataSetChanged();
-                            mProvince=null;
-                            mCity=null;
-                            mArea=null;
-                            mDistrict=null;
+                            mProvince = null;
+                            mCity = null;
+                            mArea = null;
+                            mDistrict = null;
                             mTvProvince.setText("省");
                             mTvCity.setText("市");
                             mTvArea.setText("区");
@@ -381,9 +376,9 @@ public class AddServiceAreaActivity extends BaseActivity<AddServicePresenter, Ad
                 if (list.get(position) instanceof Province) {
                     mProvince = ((Province) list.get(position));
                     tv.setText(mProvince.getName());
-                    mCity=null;
-                    mArea=null;
-                    mDistrict=null;
+                    mCity = null;
+                    mArea = null;
+                    mDistrict = null;
                     mTvCity.setText("市");
                     mTvArea.setText("区");
                     mTvDistrict.setText("街道");
@@ -391,15 +386,15 @@ public class AddServiceAreaActivity extends BaseActivity<AddServicePresenter, Ad
                 if (list.get(position) instanceof City) {
                     mCity = ((City) list.get(position));
                     tv.setText(mCity.getName());
-                    mArea=null;
-                    mDistrict=null;
+                    mArea = null;
+                    mDistrict = null;
                     mTvArea.setText("区");
                     mTvDistrict.setText("街道");
                 }
                 if (list.get(position) instanceof Area) {
                     mArea = ((Area) list.get(position));
                     tv.setText(mArea.getName());
-                    mDistrict=null;
+                    mDistrict = null;
                     mTvDistrict.setText("街道");
                 }
                 if (list.get(position) instanceof District) {

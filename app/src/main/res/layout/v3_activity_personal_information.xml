@@ -107,9 +107,11 @@
                     android:layout_height="wrap_content"
                     android:src="@mipmap/v3_youjiantou"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="12dp"/>
+                    android:layout_marginLeft="12dp"
+                    android:visibility="gone"/>
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/ll_emergency_telephone_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -152,7 +154,8 @@
                 android:paddingBottom="22dp"
                 android:paddingLeft="14dp"
                 android:paddingRight="29dp"
-                android:layout_marginTop="1dp">
+                android:layout_marginTop="1dp"
+                android:visibility="gone">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -178,6 +181,7 @@
                     android:layout_marginLeft="12dp"/>
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/ll_shipping_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -202,7 +206,8 @@
                     android:layout_height="wrap_content"
                     android:text="浙江省  宁波市  江北区"
                     android:textSize="16sp"
-                    android:textColor="#808080"/>
+                    android:textColor="#808080"
+                    android:visibility="gone"/>
 
                 <ImageView
                     android:layout_width="wrap_content"

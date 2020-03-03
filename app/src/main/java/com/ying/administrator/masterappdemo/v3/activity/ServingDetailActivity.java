@@ -22,7 +22,6 @@ import android.widget.Toast;
 import com.blankj.utilcode.util.ToastUtils;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import com.moor.imkf.ormlite.stmt.query.In;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
@@ -30,8 +29,8 @@ import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.CompleteWorkOrderActivity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.MessageActivity2;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.ScanActivity;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.WorkOrderDetailsActivity2;
 import com.ying.administrator.masterappdemo.util.calendarutil.CalendarEvent;
 import com.ying.administrator.masterappdemo.util.calendarutil.CalendarProviderManager;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.ServingDetailPresenter;
@@ -42,7 +41,6 @@ import org.feezu.liuli.timeselector.TimeSelector;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.w3c.dom.Text;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -141,6 +139,8 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
     LinearLayout mLlOldAccessory;
     @BindView(R.id.tv_return)
     TextView mTvReturn;
+    @BindView(R.id.tv_tickets)
+    TextView mTvTickets;
     private String orderId;
     private WorkOrder.DataBean data;
     private Intent intent;
@@ -160,6 +160,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
     private long recommendedtime;
     private ClipboardManager myClipboard;
     private ClipData myClip;
+
     @Override
     protected int setLayoutId() {
         return R.layout.v3_activity_serving_detail;
@@ -190,6 +191,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
         mTvTicketTracking.setOnClickListener(this);
         mTvReservationAgain.setOnClickListener(this);
         mTvCopy.setOnClickListener(this);
+        mTvTickets.setOnClickListener(this);
     }
 
     @Override
@@ -207,15 +209,15 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                     intent.putExtra("OrderID", data.getOrderID());
                     startActivity(intent);
                 } else {
-                    if ("0".equals(data.getState())){
+                    if ("0".equals(data.getState())) {
                         puchsh_view = LayoutInflater.from(mActivity).inflate(R.layout.v3_dialog_prompt, null);
-                        TextView title=puchsh_view.findViewById(R.id.title);
-                        TextView message=puchsh_view.findViewById(R.id.message);
-                        Button negtive=puchsh_view.findViewById(R.id.negtive);
+                        TextView title = puchsh_view.findViewById(R.id.title);
+                        TextView message = puchsh_view.findViewById(R.id.message);
+                        Button negtive = puchsh_view.findViewById(R.id.negtive);
                         title.setText("提示");
-                        if ("pedding".equals(type)){
+                        if ("pedding".equals(type)) {
                             message.setText("您的配件暂未到货，请耐心等待");
-                        }else {
+                        } else {
                             message.setText("您的配件暂未审核通过，请耐心等待");
                         }
 
@@ -229,7 +231,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                                 .setView(puchsh_view)
                                 .create();
                         push_dialog.show();
-                    }else {
+                    } else {
                         if (data.getOrderAccessroyDetail().size() > 0 || data.getOrderServiceDetail().size() > 0) {
                             intent = new Intent(mActivity, CompleteWorkOrderActivity.class);
                             intent.putExtra("OrderID", data.getOrderID());
@@ -316,7 +318,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                                 showToast(mActivity, "请填写邮费");
                                 hideProgress();
                                 return;
-                            }else {
+                            } else {
                                 mPresenter.AddReturnAccessory(orderId, expressno, post_money);
                             }
                         } else {
@@ -330,8 +332,8 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
 
                 break;
             case R.id.tv_ticket_tracking:
-                intent=new Intent(mActivity,TicketTrackingActivity.class);
-                intent.putExtra("id",orderId);
+                intent = new Intent(mActivity, TicketTrackingActivity.class);
+                intent.putExtra("id", orderId);
                 startActivity(intent);
                 break;
             case R.id.tv_reservation_again:
@@ -353,9 +355,14 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                         });
                 break;
             case R.id.tv_copy:
-                myClip = ClipData.newPlainText("", data.getOrderID()+"");
+                myClip = ClipData.newPlainText("", data.getOrderID() + "");
                 myClipboard.setPrimaryClip(myClip);
                 ToastUtils.showShort("复制成功");
+                break;
+            case R.id.tv_tickets:
+                intent = new Intent(mActivity, MessageActivity2.class);
+                intent.putExtra("orderId", data.getOrderID());
+                startActivity(intent);
                 break;
         }
     }
@@ -438,7 +445,6 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                     }
 
 
-
                     if ("2".equals(data.getTypeID())) {
                         mLlOldAccessory.setVisibility(View.GONE);
                     } else {
@@ -468,7 +474,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                     if ("8".equals(data.getState())) {
                         mTvUpload.setVisibility(View.GONE);
                         mTvReturn.setVisibility(View.VISIBLE);
-                    }else {
+                    } else {
                         mTvUpload.setVisibility(View.VISIBLE);
                         mTvReturn.setVisibility(View.GONE);
                     }
@@ -539,7 +545,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                     // 添加事件
                     int result = CalendarProviderManager.addCalendarEvent(mActivity, calendarEvent);
                     if (result == 0) {
-                        Toast.makeText(mActivity, "已为您添加行程至日历,将提前一小时提醒您！！", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mActivity, "已为您添加行程至日历,将提前一小时提醒您！！", LENGTH_SHORT).show();
                     } else if (result == -1) {
                         Toast.makeText(mActivity, "插入失败", LENGTH_SHORT).show();
                     } else if (result == -2) {
@@ -555,7 +561,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
 //        if ("WorkOrderDetailsActivity".equals(name)) {
 //            mLlAccessoriesDetails.setVisibility(View.VISIBLE);
 //        }
-        switch (name){
+        switch (name) {
             case 21:
                 mLlAccessoriesDetails.setVisibility(View.VISIBLE);
                 break;

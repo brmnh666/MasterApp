@@ -8,7 +8,6 @@ import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ToastUtils;
@@ -33,25 +32,20 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MySkillActivity2 extends BaseActivity<AddSkillsPresenter, AddSkillsModel> implements View.OnClickListener, AddSkillsContract.View {
-    @BindView(R.id.img_actionbar_return)
-    ImageView mImgActionbarReturn;
-    @BindView(R.id.tv_actionbar_return)
-    TextView mTvActionbarReturn;
-    @BindView(R.id.ll_return)
-    LinearLayout mLlReturn;
-    @BindView(R.id.tv_actionbar_title)
-    TextView mTvActionbarTitle;
-    @BindView(R.id.img_actionbar_message)
-    ImageView mImgActionbarMessage;
-    @BindView(R.id.tv_message)
-    TextView mTvMessage;
-    @BindView(R.id.actionbar_layout)
-    RelativeLayout mActionbarLayout;
+
 
     @BindView(R.id.btn_skill)
     Button mBtnSkill;
     @BindView(R.id.expandablelistview)
     ExpandableListView mExpandablelistview;
+    @BindView(R.id.iv_back)
+    ImageView mIvBack;
+    @BindView(R.id.tv_title)
+    TextView mTvTitle;
+    @BindView(R.id.tv_save)
+    TextView mTvSave;
+    @BindView(R.id.ll_customer_service)
+    LinearLayout mLlCustomerService;
 
     private List<MySkills> mySkillsList = new ArrayList<>();
     private List<Category> popularList;
@@ -73,21 +67,21 @@ public class MySkillActivity2 extends BaseActivity<AddSkillsPresenter, AddSkills
 
     @Override
     protected void initView() {
-        mTvActionbarTitle.setText("我的技能");
+        mTvTitle.setText("我的技能");
         showLoading();
         mPresenter.GetFactoryCategory("999");
     }
 
     @Override
     protected void setListener() {
-        mLlReturn.setOnClickListener(this);
+        mIvBack.setOnClickListener(this);
         mBtnSkill.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ll_return:
+            case R.id.iv_back:
                 finish();
                 break;
             case R.id.btn_skill:

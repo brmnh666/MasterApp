@@ -82,7 +82,7 @@ public class PaymentSuccessActivity extends BaseActivity implements View.OnClick
     public void onClick(View v) {
 
         switch (v.getId()) {
-            case R.id.icon_back:
+            case R.id.ll_return:
                 PaymentSuccessActivity.this.finish();
                 break;
 

@@ -8,7 +8,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="#1690ff">
+        android:background="@color/white">
 
         <ImageView
             android:id="@+id/img_actionbar_return"
@@ -16,7 +16,7 @@
             android:layout_height="match_parent"
             android:padding="@dimen/dp_10"
             android:layout_centerVertical="true"
-            android:src="@mipmap/left" />
+            android:src="@mipmap/v3_back" />
 
         <TextView
             android:id="@+id/tv_title"
@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="我的银行卡"
-            android:textColor="@color/color_white"
+            android:textColor="@color/black"
             android:textSize="20sp" />
 
         <TextView
@@ -35,7 +35,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:text="添加"
-            android:textColor="@color/color_white"
+            android:textColor="@color/black"
             android:textSize="15sp" />
 
 

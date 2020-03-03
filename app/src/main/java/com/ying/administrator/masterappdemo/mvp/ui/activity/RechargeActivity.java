@@ -53,8 +53,23 @@ import butterknife.ButterKnife;
 
 public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeModel> implements View.OnClickListener, RechargeContract.View {
 
-    @BindView(R.id.img_actionbar_return)
-    ImageView mImgActionbarReturn;
+
+    @BindView(R.id.iv_back)
+    ImageView mIvBack;
+    @BindView(R.id.tv_title)
+    TextView mTvTitle;
+    @BindView(R.id.tv_save)
+    TextView mTvSave;
+    @BindView(R.id.ll_customer_service)
+    LinearLayout mLlCustomerService;
+    @BindView(R.id.tv_total_money)
+    TextView mTvTotalMoney;
+    @BindView(R.id.tv_can_withdraw)
+    TextView mTvCanWithdraw;
+    @BindView(R.id.tv_unfinished)
+    TextView mTvUnfinished;
+    @BindView(R.id.tv_margin)
+    TextView mTvMargin;
     @BindView(R.id.rl_recharge_amount)
     RecyclerView mRlRechargeAmount;
     @BindView(R.id.et_any_amount)
@@ -69,26 +84,12 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
     ImageView mIvWechat;
     @BindView(R.id.ll_wxpay)
     LinearLayout mLlWxpay;
-    @BindView(R.id.tv_recharge_agreement)
-    TextView mTvRechargeAgreement;
     @BindView(R.id.bt_recharge)
     Button mBtRecharge;
-    @BindView(R.id.tv_title)
-    TextView mTvTitle;
-
-
-    @BindView(R.id.tv_total_money)
-    TextView mTvTotalMoney;
-
     @BindView(R.id.img_agree)
-    ImageView mImgagree;
-    @BindView(R.id.tv_can_withdraw)
-    TextView mTvCanWithdraw;
-    @BindView(R.id.tv_unfinished)
-    TextView mTvUnfinished;
-    @BindView(R.id.tv_margin)
-    TextView mTvMargin;
-
+    ImageView mImgAgree;
+    @BindView(R.id.tv_recharge_agreement)
+    TextView mTvRechargeAgreement;
     private List<FaceValue> faceValueList = new ArrayList<>();
     private FaceValueAdapter faceValueAdapter;
     private String[] faceValues = new String[]{"100", "300", "500", "1000", "2000", "3000"};
@@ -117,7 +118,7 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
 
     @Override
     protected void initData() {
-        mImgagree.setSelected(true);
+        mImgAgree.setSelected(true);
         spUtils = SPUtils.getInstance("token");
         userID = spUtils.getString("userName");
         api = WXAPIFactory.createWXAPI(this, "wxd22da3eb42259071");
@@ -164,8 +165,8 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
     protected void setListener() {
 
 
-        mImgagree.setOnClickListener(this);
-        mImgActionbarReturn.setOnClickListener(this);
+        mImgAgree.setOnClickListener(this);
+        mIvBack.setOnClickListener(this);
         mLlAlipay.setOnClickListener(this);
         mLlWxpay.setOnClickListener(this);
         mBtRecharge.setOnClickListener(this);
@@ -222,14 +223,14 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_agree:
-                if (mImgagree.isSelected()) {
-                    mImgagree.setSelected(false);
+                if (mImgAgree.isSelected()) {
+                    mImgAgree.setSelected(false);
                 } else {
-                    mImgagree.setSelected(true);
+                    mImgAgree.setSelected(true);
                 }
                 break;
 
-            case R.id.img_actionbar_return:
+            case R.id.iv_back:
                 finish();
                 break;
             case R.id.ll_alipay:
@@ -254,7 +255,7 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
                     return;
                 }
 
-                if (!mImgagree.isSelected()) {
+                if (!mImgAgree.isSelected()) {
                     ToastUtils.showShort("同意充值协议才能进行充值！！");
                     return;
                 }
@@ -433,10 +434,10 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
                     mTvCanWithdraw.setText(format);
                     String TotalMoney = String.format("%.2f", userInfo.getTotalMoney());
                     mTvTotalMoney.setText(TotalMoney);
-                    String FrozenMoney = String.format("%.2f",userInfo.getFrozenMoney());
+                    String FrozenMoney = String.format("%.2f", userInfo.getFrozenMoney());
                     mTvUnfinished.setText(FrozenMoney);
                     //赠送金额暂无
-                    String Con = String.format("%.2f",userInfo.getCon());
+                    String Con = String.format("%.2f", userInfo.getCon());
                     mTvMargin.setText(Con);
 
                 }

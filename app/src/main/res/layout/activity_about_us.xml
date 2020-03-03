@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/color_white">
 
-    <include layout="@layout/actionbar_receiving_layout"/>
+    <include layout="@layout/v3_activity_head"/>
     
     <ImageView
         android:layout_width="match_parent"

@@ -30,6 +30,7 @@ import com.bumptech.glide.Glide;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.AddressList;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.mvp.contract.VerifiedContract;
@@ -223,6 +224,11 @@ public class VerifiedPhotoActivity extends BaseActivity<VerifiedPresenter, Verif
 
     @Override
     public void ApplyAuthInfoBysub(BaseResult<Data<String>> baseResult) {
+
+    }
+
+    @Override
+    public void GetAccountAddress(BaseResult<List<AddressList>> baseResult) {
 
     }
 

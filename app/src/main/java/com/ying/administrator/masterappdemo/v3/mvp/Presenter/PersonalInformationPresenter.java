@@ -2,9 +2,12 @@ package com.ying.administrator.masterappdemo.v3.mvp.Presenter;
 
 import com.ying.administrator.masterappdemo.base.BaseObserver;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.AddressList;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.PersonalInformationContract;
+
+import java.util.List;
 
 import okhttp3.RequestBody;
 
@@ -27,6 +30,28 @@ public class PersonalInformationPresenter extends PersonalInformationContract.Pr
                     @Override
                     protected void onHandleSuccess(BaseResult<Data<String>> value) {
                         mView.UploadAvator(value);
+                    }
+                });
+    }
+
+    @Override
+    public void GetAccountAddress(String UserId) {
+        mModel.GetAccountAddress(UserId)
+                .subscribe(new BaseObserver<List<AddressList>>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<List<AddressList>> value) {
+                        mView.GetAccountAddress(value);
+                    }
+                });
+    }
+
+    @Override
+    public void UpdateEmergencyContact(String UserId, String emergencyContact) {
+        mModel.UpdateEmergencyContact(UserId, emergencyContact)
+                .subscribe(new BaseObserver<Data<String>>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<Data<String>> value) {
+                        mView.UpdateEmergencyContact(value);
                     }
                 });
     }
