@@ -81,8 +81,8 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         //设置该CrashHandler为程序的默认处理器
-        UnCeHandler catchExcep = new UnCeHandler(this);
-        Thread.setDefaultUncaughtExceptionHandler(catchExcep);
+//        UnCeHandler catchExcep = new UnCeHandler(this);
+//        Thread.setDefaultUncaughtExceptionHandler(catchExcep);
 
         Log.d("====>","application启动了");
         // 主要是添加下面这句代码

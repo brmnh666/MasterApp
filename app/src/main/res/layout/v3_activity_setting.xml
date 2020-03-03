@@ -94,6 +94,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ll_clean"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="9dp"
@@ -122,6 +123,7 @@
             android:src="@mipmap/v3_clear" />
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/ll_update"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"

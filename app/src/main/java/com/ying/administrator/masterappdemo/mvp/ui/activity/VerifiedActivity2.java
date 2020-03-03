@@ -15,7 +15,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.FileProvider;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,14 +25,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
-import com.amap.api.location.AMapLocationListener;
 import com.amap.searchdemo.MainActivity;
 import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.SPUtils;
@@ -59,9 +55,7 @@ import com.zyao89.view.zloading.Z_TYPE;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -74,20 +68,14 @@ import okhttp3.RequestBody;
 public class VerifiedActivity2 extends BaseActivity<VerifiedPresenter, VerifiedModel> implements View.OnClickListener, VerifiedContract.View {
 
 
-    @BindView(R.id.img_actionbar_return)
-    ImageView mImgActionbarReturn;
-    @BindView(R.id.tv_actionbar_return)
-    TextView mTvActionbarReturn;
-    @BindView(R.id.ll_return)
-    LinearLayout mLlReturn;
-    @BindView(R.id.tv_actionbar_title)
-    TextView mTvActionbarTitle;
-    @BindView(R.id.img_actionbar_message)
-    ImageView mImgActionbarMessage;
-    @BindView(R.id.tv_message)
-    TextView mTvMessage;
-    @BindView(R.id.actionbar_layout)
-    RelativeLayout mActionbarLayout;
+    @BindView(R.id.iv_back)
+    ImageView mIvBack;
+    @BindView(R.id.tv_title)
+    TextView mTvTitle;
+    @BindView(R.id.tv_save)
+    TextView mTvSave;
+    @BindView(R.id.ll_customer_service)
+    LinearLayout mLlCustomerService;
     @BindView(R.id.iv_positive)
     ImageView mIvPositive;
     @BindView(R.id.ll_positive)
@@ -194,7 +182,7 @@ public class VerifiedActivity2 extends BaseActivity<VerifiedPresenter, VerifiedM
 
     @Override
     protected void initView() {
-        mTvActionbarTitle.setText("实名认证");
+        mTvTitle.setText("实名认证");
         spUtils = SPUtils.getInstance("token");
         UserID = spUtils.getString("userName");
         mPresenter.GetUserInfoList(UserID, "1");
@@ -204,7 +192,7 @@ public class VerifiedActivity2 extends BaseActivity<VerifiedPresenter, VerifiedM
     protected void setListener() {
         mIvPositive.setOnClickListener(this);
         mIvNegative.setOnClickListener(this);
-        mLlReturn.setOnClickListener(this);
+        mIvBack.setOnClickListener(this);
         mLlShopAddress.setOnClickListener(this);
         mLlServiceSkill.setOnClickListener(this);
         mSubmitApplicationBt.setOnClickListener(this);
@@ -229,7 +217,7 @@ public class VerifiedActivity2 extends BaseActivity<VerifiedPresenter, VerifiedM
                 Guarantee = "N";
                 break;
 
-            case R.id.ll_return:
+            case R.id.iv_back:
                 finish();
                 break;
             case R.id.iv_positive:
@@ -257,7 +245,7 @@ public class VerifiedActivity2 extends BaseActivity<VerifiedPresenter, VerifiedM
                 startActivityForResult(new Intent(mActivity, MainActivity.class), 100);
                 break;
             case R.id.ll_service_skill:
-                startActivityForResult(new Intent(mActivity, MySkillsActivity.class), 1000);
+                startActivityForResult(new Intent(mActivity, MySkillActivity2.class), 1000);
                 break;
             case R.id.submit_application_bt:
                 if (issubaccount) {//是子账号

@@ -267,6 +267,7 @@ public class ApplicationAccessoriesActivity extends BaseActivity<ApplicationAcce
                 mPresenter.GetFactoryService(productTypeID + "");
                 break;
             case R.id.tv_sure:
+
                 showProgress();
                 gson = new Gson();
                 if (state == 0) {
@@ -535,7 +536,7 @@ public class ApplicationAccessoriesActivity extends BaseActivity<ApplicationAcce
                     if (mPre_order_add_ac_adapter.getData().size() > 0){
                         EventBus.getDefault().post("accessories");
                     }
-                    EventBus.getDefault().post("WorkOrderDetailsActivity");
+                    EventBus.getDefault().post(21);
                     if ("1".equals(service)){
                         finish();
                     }else {

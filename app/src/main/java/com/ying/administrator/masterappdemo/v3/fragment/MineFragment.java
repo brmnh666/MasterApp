@@ -18,15 +18,19 @@ import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.VerifiedActivity2;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
 import com.ying.administrator.masterappdemo.v3.activity.FeedbackActivity;
-import com.ying.administrator.masterappdemo.v3.mvp.Presenter.MinePresenter;
-import com.ying.administrator.masterappdemo.v3.mvp.contract.MineContract;
-import com.ying.administrator.masterappdemo.v3.mvp.model.MineModel;
 import com.ying.administrator.masterappdemo.v3.activity.PersonalInformationActivity;
 import com.ying.administrator.masterappdemo.v3.activity.SettingActivity;
 import com.ying.administrator.masterappdemo.v3.activity.WalletActivity;
+import com.ying.administrator.masterappdemo.v3.mvp.Presenter.MinePresenter;
+import com.ying.administrator.masterappdemo.v3.mvp.contract.MineContract;
+import com.ying.administrator.masterappdemo.v3.mvp.model.MineModel;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -65,6 +69,12 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
     @BindView(R.id.ll_about_us)
     LinearLayout mLlAboutUs;
     Unbinder unbinder;
+    @BindView(R.id.ll_person)
+    LinearLayout mLlPerson;
+    @BindView(R.id.tv_phone)
+    TextView mTvPhone;
+    @BindView(R.id.ll_name)
+    LinearLayout mLlName;
     private String mContentText;
     private String userID;
     private UserInfo.UserInfoDean userInfo;
@@ -111,11 +121,12 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
         mIvAvatar.setOnClickListener(this);
         mLlCustomerService.setOnClickListener(this);
         mLlFeedback.setOnClickListener(this);
+        mLlPerson.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.ll_wallet:
                 startActivity(new Intent(mActivity, WalletActivity.class));
                 break;
@@ -150,6 +161,13 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
             case R.id.ll_feedback:
                 startActivity(new Intent(mActivity, FeedbackActivity.class));
                 break;
+            case R.id.ll_person:
+                if (userInfo.getTrueName() == null) { //如果为空说明未认证
+                    startActivity(new Intent(mActivity, VerifiedActivity2.class));
+                } else {
+                    startActivity(new Intent(mActivity, PersonalInformationActivity.class));
+                }
+                break;
         }
     }
 
@@ -169,7 +187,7 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
 
     @Override
     public void GetUserInfoList(BaseResult<UserInfo> baseResult) {
-        switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
                 userInfo = baseResult.getData().getData().get(0);
                 if (userInfo.getAvator() == null) {//显示默认头像
@@ -183,9 +201,13 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
                 /*真实姓名*/
                 if (userInfo.getTrueName() == null) { //如果为空说明未认证
                     mTvCertified.setText("未认证");
+                    mTvSuggest.setVisibility(View.VISIBLE);
+                    mLlName.setVisibility(View.GONE);
                 } else {
                     mTvCertified.setText(userInfo.getTrueName());
                     mTvSuggest.setVisibility(View.GONE);
+                    mLlName.setVisibility(View.VISIBLE);
+                    mTvPhone.setText(userInfo.getUserID()+"");
                 }
                 break;
         }
@@ -194,5 +216,12 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
     @Override
     public void UploadAvator(BaseResult<Data<String>> baseResult) {
 
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(String name) {
+        if ("GetUserInfoList".equals(name)) {
+            mPresenter.GetUserInfoList(userID, "1");
+        }
     }
 }

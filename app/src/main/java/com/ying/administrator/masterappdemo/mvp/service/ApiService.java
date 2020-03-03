@@ -29,6 +29,7 @@ import com.ying.administrator.masterappdemo.entity.RedPointData;
 import com.ying.administrator.masterappdemo.entity.Service;
 import com.ying.administrator.masterappdemo.entity.Skill;
 import com.ying.administrator.masterappdemo.entity.SubUserInfo;
+import com.ying.administrator.masterappdemo.entity.Track;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WXpayInfo;
 import com.ying.administrator.masterappdemo.entity.WithDrawMoney;
@@ -1125,4 +1126,9 @@ public interface ApiService {
                                                     @Field("UserID") String UserID,
                                                     @Field("limit") String limit,
                                                     @Field("page") String page);
+
+    /*工单跟踪*/
+    @FormUrlEncoded
+    @POST("Order/GetOrderRecordByOrderID")
+    Observable<BaseResult<List<Track>>> GetOrderRecordByOrderID(@Field("OrderID") String OrderID);
 }

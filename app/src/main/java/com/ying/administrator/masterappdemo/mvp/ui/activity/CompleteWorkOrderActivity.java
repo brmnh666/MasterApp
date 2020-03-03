@@ -31,7 +31,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ToastUtils;
@@ -70,30 +69,29 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPresenter, CompleteWorkOrderModel> implements CompleteWorkOrderContract.View, View.OnClickListener {
-    @BindView(R.id.img_actionbar_return)
-    ImageView mImgActionbarReturn;
-    @BindView(R.id.tv_actionbar_return)
-    TextView mTvActionbarReturn;
-    @BindView(R.id.ll_return)
-    LinearLayout mLlReturn;
-    @BindView(R.id.tv_actionbar_title)
-    TextView mTvActionbarTitle;
-    @BindView(R.id.img_actionbar_message)
-    ImageView mImgActionbarMessage;
-    @BindView(R.id.actionbar_layout)
-    RelativeLayout mActionbarLayout;
+
+    @BindView(R.id.iv_back)
+    ImageView mIvBack;
+    @BindView(R.id.tv_title)
+    TextView mTvTitle;
+    @BindView(R.id.tv_save)
+    TextView mTvSave;
+    @BindView(R.id.ll_customer_service)
+    LinearLayout mLlCustomerService;
     @BindView(R.id.tv_work_order_status)
     TextView mTvWorkOrderStatus;
+    @BindView(R.id.tv_number)
+    TextView mTvNumber;
     @BindView(R.id.tv_payment_method)
     TextView mTvPaymentMethod;
     @BindView(R.id.tv_order_time)
     TextView mTvOrderTime;
     @BindView(R.id.tv_work_order_number)
     TextView mTvWorkOrderNumber;
+    @BindView(R.id.iv_copy)
+    ImageView mIvCopy;
     @BindView(R.id.tv_reason_pending_appointment)
     TextView mTvReasonPendingAppointment;
-    @BindView(R.id.tv_number)
-    TextView mTvNumber;
     @BindView(R.id.tv_service)
     TextView mTvService;
     @BindView(R.id.tv_service_goods)
@@ -106,22 +104,30 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
     TextView mTvAddress;
     @BindView(R.id.tv_service_address)
     TextView mTvServiceAddress;
+    @BindView(R.id.tv_manufacturer_phone)
+    TextView mTvManufacturerPhone;
+    @BindView(R.id.tv_call)
+    TextView mTvCall;
+    @BindView(R.id.iv_call)
+    ImageView mIvCall;
     @BindView(R.id.et_single_number)
     EditText mEtSingleNumber;
     @BindView(R.id.et_express_name)
     EditText mEtExpressName;
     @BindView(R.id.ll_scan)
     LinearLayout mLlScan;
+    @BindView(R.id.ll_code)
+    LinearLayout mLlCode;
     @BindView(R.id.ll_view_example)
     LinearLayout mLlViewExample;
-    @BindView(R.id.iv_bar_code)
-    ImageView mIvBarCode;
-    @BindView(R.id.ll_bar_code)
-    LinearLayout mLlBarCode;
     @BindView(R.id.iv_machine)
     ImageView mIvMachine;
     @BindView(R.id.ll_machine)
     LinearLayout mLlMachine;
+    @BindView(R.id.iv_bar_code)
+    ImageView mIvBarCode;
+    @BindView(R.id.ll_bar_code)
+    LinearLayout mLlBarCode;
     @BindView(R.id.iv_fault_location)
     ImageView mIvFaultLocation;
     @BindView(R.id.ll_fault_location)
@@ -144,22 +150,10 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
     ImageView mIvFour;
     @BindView(R.id.ll_service_process)
     LinearLayout mLlServiceProcess;
-    @BindView(R.id.btn_complete_submit)
-    Button mBtnCompleteSubmit;
     @BindView(R.id.et_memo)
     EditText mEtMemo;
-    @BindView(R.id.tv_message)
-    TextView mTvMessage;
-    @BindView(R.id.tv_manufacturer_phone)
-    TextView mTvManufacturerPhone;
-    @BindView(R.id.tv_call)
-    TextView mTvCall;
-    @BindView(R.id.iv_call)
-    ImageView mIvCall;
-    @BindView(R.id.iv_copy)
-    ImageView mIvCopy;
-    @BindView(R.id.ll_code)
-    LinearLayout mLlCode;
+    @BindView(R.id.btn_complete_submit)
+    Button mBtnCompleteSubmit;
     private String orderID;
 
     /*工单详情*/
@@ -194,8 +188,8 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 
     @Override
     protected void initView() {
-        mTvActionbarTitle.setText("完成工单");
-        mImgActionbarMessage.setVisibility(View.INVISIBLE);
+        mTvTitle.setText("完成工单");
+//        mImgActionbarMessage.setVisibility(View.INVISIBLE);
 
         //接收传进来的工单id
         orderID = getIntent().getStringExtra("OrderID");
@@ -208,7 +202,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 
     @Override
     protected void setListener() {
-        mLlReturn.setOnClickListener(this);
+        mIvBack.setOnClickListener(this);
         mLlViewExample.setOnClickListener(this);
         mIvBarCode.setOnClickListener(this);
         mIvMachine.setOnClickListener(this);
@@ -273,9 +267,9 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                     mTvName.setText(data.getUserName());
                     mTvPhone.setText(data.getPhone());
 
-                    if ("1".equals(data.getBarCodeIsNo())){
+                    if ("1".equals(data.getBarCodeIsNo())) {
                         mLlCode.setVisibility(View.VISIBLE);
-                    }else {
+                    } else {
                         mLlCode.setVisibility(View.GONE);
                     }
 
@@ -323,16 +317,15 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 //                    if ("0".equals(data.getAccessorySearchState())){
 //                        mPresenter.UpdateOrderState(orderID, "7");
 //                    }else{
-                    if ("1".equals(data.getBarCodeIsNo())){
-                        mPresenter.AddbarCode(barCode,orderID);
-                    }else {
+                    if ("1".equals(data.getBarCodeIsNo())) {
+                        mPresenter.AddbarCode(barCode, orderID);
+                    } else {
                         if (!"1".equals(data.getIsReturn())) {//不需要返件
                             mPresenter.UpdateOrderState(orderID, "5", "");
                         } else {
                             mPresenter.UpdateOrderState(orderID, "8", "");
                         }
                     }
-
 
 
 //                    }
@@ -364,17 +357,18 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                     CompleteWorkOrderActivity.this.finish();
                     EventBus.getDefault().post("6");
                     EventBus.getDefault().post("8");
+                    EventBus.getDefault().post("5");
 //                    EventBus.getDefault().post("");
                     EventBus.getDefault().post("WorkOrderDetailsActivity");
                     if ("0".equals(data.getAccessorySearchState())) {
-                        EventBus.getDefault().post(4);
+                        EventBus.getDefault().post(5);
                         finish();
                     } else {
                         if (!"1".equals(data.getIsReturn())) {//不需要返件
-                            EventBus.getDefault().post(4);
+                            EventBus.getDefault().post(5);
                             finish();
                         } else {
-                            EventBus.getDefault().post(7);
+                            EventBus.getDefault().post(4);
                             finish();
                         }
                     }
@@ -391,15 +385,15 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 
     @Override
     public void AddbarCode(BaseResult<Data<String>> baseResult) {
-        switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData().isItem1()){
+                if (baseResult.getData().isItem1()) {
                     if (!"1".equals(data.getIsReturn())) {//不需要返件
                         mPresenter.UpdateOrderState(orderID, "5", "");
                     } else {
                         mPresenter.UpdateOrderState(orderID, "8", "");
                     }
-                }else {
+                } else {
                     ToastUtils.showShort(baseResult.getData().getItem2());
                 }
                 break;
@@ -409,7 +403,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ll_return:
+            case R.id.iv_back:
                 CompleteWorkOrderActivity.this.finish();
                 break;
             case R.id.ll_view_example_two:
@@ -486,8 +480,8 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 
                     }*/
                 barCode = mEtSingleNumber.getText().toString();
-                if ("1".equals(data.getBarCodeIsNo())){
-                    if (barCode.isEmpty()){
+                if ("1".equals(data.getBarCodeIsNo())) {
+                    if (barCode.isEmpty()) {
                         ToastUtils.showShort("请填写条形码");
                         return;
                     }

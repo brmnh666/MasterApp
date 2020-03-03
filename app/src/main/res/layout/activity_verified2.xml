@@ -6,7 +6,8 @@
     android:background="#F0F0F0"
     android:orientation="vertical">
 
-    <include layout="@layout/actionbar_receiving_layout" />
+    <include layout="@layout/v3_activity_head"
+        />
 
     <ScrollView
         android:layout_width="match_parent"

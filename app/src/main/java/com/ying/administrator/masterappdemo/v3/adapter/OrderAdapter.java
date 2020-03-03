@@ -14,8 +14,10 @@ import com.ying.administrator.masterappdemo.util.MyUtils;
 import java.util.List;
 
 public class OrderAdapter extends BaseQuickAdapter<WorkOrder.DataBean, BaseViewHolder> {
-    public OrderAdapter(int layoutResId, @Nullable List<WorkOrder.DataBean> data) {
+    private String type;
+    public OrderAdapter(int layoutResId, @Nullable List<WorkOrder.DataBean> data,String type) {
         super(layoutResId, data);
+        this.type=type;
     }
 
     @Override
@@ -23,6 +25,7 @@ public class OrderAdapter extends BaseQuickAdapter<WorkOrder.DataBean, BaseViewH
         helper.addOnClickListener(R.id.tv_orders);
         TextView tv_type = helper.getView(R.id.tv_type);
         TextView tv_orders = helper.getView(R.id.tv_orders);
+        TextView tv_review=helper.getView(R.id.tv_review);
         tv_orders.setVisibility(View.GONE);
         helper.setText(R.id.tv_time, MyUtils.getTimebefore(item.getCreateDate()))
                 .setText(R.id.tv_name, item.getProductType())
@@ -47,6 +50,17 @@ public class OrderAdapter extends BaseQuickAdapter<WorkOrder.DataBean, BaseViewH
             }
             helper.setBackgroundRes(R.id.tv_type, R.drawable.v3_home_bg);
             helper.setTextColor(R.id.tv_type, Color.parseColor("#01B1D2"));
+        }
+
+        if ("shipping".equals(type)){
+            tv_review.setVisibility(View.VISIBLE);
+            if ("0".equals(item.getState())){
+                tv_review.setText("未审核");
+            }else {
+                tv_review.setText("审核通过");
+            }
+        }else {
+            tv_review.setVisibility(View.GONE);
         }
     }
 }

@@ -101,15 +101,27 @@ public class OrderFragment extends BaseLazyFragment<OrderPresenter, OrderModel> 
     protected void initView() {
         SPUtils spUtils = SPUtils.getInstance("token");
         userId = spUtils.getString("userName");
+        mTitles = new String[]{
+                "待处理(0)", "待预约(0)", "待服务(0)", "待寄件(0)"
+                , "待返件(0)", "待结算(0)"
+        };
+        pendingFragment = PendingFragment.newInstance();
+        pendingAppointmentFragment = PendingAppointmentFragment.newInstance();
+        serviceFragment = ServiceFragment.newInstance();
+        shippingFragment = ShippingFragment.newInstance();
+        returnedFragment = ReturnedFragment.newInstance();
+        settlementFragment = SettlementFragment.newInstance();
+        mFragments.add(pendingFragment);
+        mFragments.add(pendingAppointmentFragment);
+        mFragments.add(serviceFragment);
+        mFragments.add(shippingFragment);
+        mFragments.add(returnedFragment);
+        mFragments.add(settlementFragment);
+        mAdapter = new MyPagerAdapter(getChildFragmentManager());
+        mReceivingViewpager.setAdapter(mAdapter);
+        mReceivingViewpager.setOffscreenPageLimit(mFragments.size());
+        mTabReceivingLayout.setViewPager(mReceivingViewpager);
         mPresenter.NavigationBarNumber(userId, "1", "10");
-//        pendingFragment = new PendingFragment();
-//        pendingAppointmentFragment = new PendingAppointmentFragment();
-//        serviceFragment = new ServiceFragment();
-//        shippingFragment = new ShippingFragment();
-//        returnedFragment = new ReturnedFragment();
-//        settlementFragment = new SettlementFragment();
-//
-
     }
 
     @Override
@@ -138,32 +150,7 @@ public class OrderFragment extends BaseLazyFragment<OrderPresenter, OrderModel> 
                         "待处理(" + one + ")", "待预约(" + two + ")", "待服务(" + three + ")", "待寄件(" + four + ")"
                         , "待返件(" + five + ")", "待结算(" + six + ")"
                 };
-                pendingFragment = PendingFragment.newInstance();
-                pendingAppointmentFragment = PendingAppointmentFragment.newInstance();
-                serviceFragment = ServiceFragment.newInstance();
-                shippingFragment = ShippingFragment.newInstance();
-                returnedFragment = ReturnedFragment.newInstance();
-                settlementFragment = SettlementFragment.newInstance();
-                mFragments.add(pendingFragment);
-                mFragments.add(pendingAppointmentFragment);
-                mFragments.add(serviceFragment);
-                mFragments.add(shippingFragment);
-                mFragments.add(returnedFragment);
-                mFragments.add(settlementFragment);
-//        mFragments.add(PendingFragment.newInstance(""));
-//        mFragments.add(PendingAppointmentFragment.newInstance(""));
-//        mFragments.add(ServiceFragment.newInstance(""));
-//        mFragments.add(ShippingFragment.newInstance(""));
-//        mFragments.add(ReturnedFragment.newInstance(""));
-//        mFragments.add(SettlementFragment.newInstance(""));
-//        mAdapter = new MyPagerAdapter(getFragmentManager());
-//        mReceivingViewpager.setAdapter(mAdapter);
-//        mReceivingViewpager.setOffscreenPageLimit(mFragments.size());
-//        mTabReceivingLayout.setViewPager(mReceivingViewpager);
-                mAdapter = new MyPagerAdapter(getFragmentManager());
-                mReceivingViewpager.setAdapter(mAdapter);
-                mReceivingViewpager.setOffscreenPageLimit(mFragments.size());
-                mTabReceivingLayout.setViewPager(mReceivingViewpager);
+                mTabReceivingLayout.notifyDataSetChanged();
                 break;
         }
     }
@@ -212,27 +199,26 @@ public class OrderFragment extends BaseLazyFragment<OrderPresenter, OrderModel> 
     //任意写一个方法，给这个方法一个@Subscribe注解，参数类型可以自定义，但是一定要与你发出的类型相同
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(Integer num) {
+//        mFragments.clear();
         switch (num) {
             case 1:
                 mReceivingViewpager.setCurrentItem(1); //待预约 state 1
+                mPresenter.NavigationBarNumber(userId, "1", "10");
                 break;
             case 2:
                 mReceivingViewpager.setCurrentItem(2); //服务中 state 2
-                break;
-            case 3:
-                mReceivingViewpager.setCurrentItem(3);//待返件 state 5
+                mPresenter.NavigationBarNumber(userId, "1", "10");
                 break;
             case 4:
-                mReceivingViewpager.setCurrentItem(7);//已完成 state 7
+                mReceivingViewpager.setCurrentItem(4);//待返件 state 5
+                mPresenter.NavigationBarNumber(userId, "1", "10");
                 break;
             case 5:
-                mReceivingViewpager.setCurrentItem(3);//配件单 state 3
+                mReceivingViewpager.setCurrentItem(5);//配件单 state 3
+                mPresenter.NavigationBarNumber(userId, "1", "10");
                 break;
-            case 7:
-                mReceivingViewpager.setCurrentItem(4);//待寄件  state 4
-                break;
-            case 8:
-                mReceivingViewpager.setCurrentItem(8);//预约不成功
+            case 20:
+                mPresenter.NavigationBarNumber(userId, "1", "10");
                 break;
 
             case Config.ORDER_READ:

@@ -17,15 +17,21 @@ import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.NavigationBarNumber;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
 import com.ying.administrator.masterappdemo.v3.activity.AppointmentDetailsActivity;
+import com.ying.administrator.masterappdemo.v3.activity.ServingDetailActivity;
 import com.ying.administrator.masterappdemo.v3.adapter.PendingAdapter;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.OrderPresenter;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.OrderContract;
 import com.ying.administrator.masterappdemo.v3.mvp.model.OrderModel;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,6 +91,7 @@ public class PendingAppointmentFragment extends BaseLazyFragment<OrderPresenter,
                 list.clear();
                 page = 1;
                 mPresenter.WorkerGetOrderList(userId, state, page + "", "10");
+                EventBus.getDefault().post(20);
                 refreshlayout.resetNoMoreData();
             }
         });
@@ -123,8 +130,19 @@ public class PendingAppointmentFragment extends BaseLazyFragment<OrderPresenter,
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 if ("1".equals(state)){
-                    Intent intent=new Intent(mActivity, AppointmentDetailsActivity.class);
+                    if (list.get(position).getOrderAccessroyDetail().size()>0){
+                        Intent intent=new Intent(mActivity, ServingDetailActivity.class);
+                        intent.putExtra("id",list.get(position).getOrderID());
+                        startActivity(intent);
+                    }else {
+                        Intent intent=new Intent(mActivity, AppointmentDetailsActivity.class);
+                        intent.putExtra("id",list.get(position).getOrderID());
+                        startActivity(intent);
+                    }
+                }else {
+                    Intent intent=new Intent(mActivity, ServingDetailActivity.class);
                     intent.putExtra("id",list.get(position).getOrderID());
+                    intent.putExtra("type","pedding");
                     startActivity(intent);
                 }
             }
@@ -185,7 +203,11 @@ public class PendingAppointmentFragment extends BaseLazyFragment<OrderPresenter,
         switch (baseResult.getStatusCode()){
             case 200:
                 workOrder = baseResult.getData();
+
                 if (workOrder.getData()!=null){
+                    if (page==1){
+                        list.clear();
+                    }
                     list.addAll(workOrder.getData());
                     pendingAdapter.setNewData(list);
 
@@ -193,6 +215,24 @@ public class PendingAppointmentFragment extends BaseLazyFragment<OrderPresenter,
                     pendingAdapter.setEmptyView(getHomeEmptyView());
                 }
 
+                break;
+        }
+    }
+
+    //任意写一个方法，给这个方法一个@Subscribe注解，参数类型可以自定义，但是一定要与你发出的类型相同
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(Integer num) {
+        switch (num) {
+            case 1:
+                list.clear();
+                page = 1;
+                mPresenter.WorkerGetOrderList(userId, state, page + "", "10");
+                break;
+            case Config.ORDER_READ:
+
+//                mPresenter.WorkerGetOrderRed(userid);
+
+            default:
                 break;
         }
     }

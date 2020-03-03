@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="horizontal">
+
+    <!--左边 时间-->
+    <LinearLayout
+        android:layout_width="60dp"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_marginLeft="10dp">
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="14:29"
+            android:textColor="#858585"
+            android:textSize="13sp"/>
+    </LinearLayout>
+
+    <!--中间 时间轴-->
+    <RelativeLayout
+        android:id="@+id/rl_left"
+        android:layout_width="35dp"
+        android:layout_height="100dp">
+        <ImageView
+            android:id="@+id/iv_line"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:src="#dddddd" />
+        <ImageView
+            android:id="@+id/iv_status"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/blue_bot"
+            android:layout_centerInParent="true" />
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:layout_marginLeft="5dp"
+            android:text="06-01"
+            android:textColor="#858585"
+            android:textSize="15sp" />
+        <!--右边 信息-->
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:autoLink="email|phone|web"
+            android:textSize="13sp"
+            android:text="正在派送途中,请您准备签收(派件人:张小建,电话:18513394441)"
+            android:textColor="#808080"
+            android:layout_marginLeft="5dp"/>
+    </LinearLayout>
+
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@id/tv_time"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@id/rl_left"
+        android:background="#9b9b9b"
+        android:visibility="gone" />
+
+</LinearLayout>

@@ -342,7 +342,7 @@
             android:screenOrientation="portrait"/>
         <!--添加配件-->
         <!--完成工单-->
-        <activity android:name=".mvp.ui.activity.CompleteWorkOrderActivity" android:theme="@style/AppTheme.NoActionBar"  android:launchMode="singleTask"
+        <activity android:name=".mvp.ui.activity.CompleteWorkOrderActivity"  android:theme="@style/AppTheme.NoActionBar1" android:launchMode="singleTask"
             android:screenOrientation="portrait" android:windowSoftInputMode="stateHidden"/>
         <!--添加配件-->
         <activity android:name=".mvp.ui.activity.Order_Add_Accessories_Activity" android:theme="@style/AppTheme.NoActionBar"  android:launchMode="singleTask"
@@ -651,7 +651,7 @@
              />
         <!--新实名认证-->
          <activity android:name=".mvp.ui.activity.VerifiedActivity2"
-             android:theme="@style/AppTheme.NoActionBar"
+             android:theme="@style/AppTheme.NoActionBar1"
               android:launchMode="singleTask"
             android:screenOrientation="portrait"
              />
@@ -906,6 +906,20 @@
 
         <!--配件单详情-->
         <activity android:name=".v3.activity.AccessoriesDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar1"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+
+        <!--物流详情-->
+        <activity android:name=".v3.activity.LogisticsActivity"
+            android:theme="@style/AppTheme.NoActionBar1"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+
+        <!--工单跟踪-->
+        <activity android:name=".v3.activity.TicketTrackingActivity"
             android:theme="@style/AppTheme.NoActionBar1"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"

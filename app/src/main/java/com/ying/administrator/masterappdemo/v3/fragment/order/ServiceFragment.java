@@ -17,6 +17,7 @@ import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.NavigationBarNumber;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
@@ -27,6 +28,10 @@ import com.ying.administrator.masterappdemo.v3.adapter.OrderAdapter;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.OrderPresenter;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.OrderContract;
 import com.ying.administrator.masterappdemo.v3.mvp.model.OrderModel;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,6 +88,7 @@ public class ServiceFragment extends BaseLazyFragment<OrderPresenter, OrderModel
                 list.clear();
                 page=1;
                 mPresenter.WorkerGetOrderList(userId, "2", page + "", "10");
+                EventBus.getDefault().post(20);
                 refreshlayout.resetNoMoreData();
             }
         });
@@ -108,7 +114,7 @@ public class ServiceFragment extends BaseLazyFragment<OrderPresenter, OrderModel
         userId = spUtils.getString("userName");
         mRefreshLayout.autoRefresh(0, 0, 1);
         mPresenter.WorkerGetOrderList(userId, "2", page + "", "10");
-        adapter = new OrderAdapter(R.layout.v3_item_home, list);
+        adapter = new OrderAdapter(R.layout.v3_item_home, list,"service");
         mRvOrder.setLayoutManager(new LinearLayoutManager(mActivity));
         mRvOrder.setAdapter(adapter);
         adapter.setEmptyView(getHomeEmptyView());
@@ -163,5 +169,22 @@ public class ServiceFragment extends BaseLazyFragment<OrderPresenter, OrderModel
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(Integer num) {
+        switch (num) {
+            case 2:
+                list.clear();
+                page = 1;
+                mPresenter.WorkerGetOrderList(userId, "2", page + "", "10");
+                break;
+            case Config.ORDER_READ:
+
+//                mPresenter.WorkerGetOrderRed(userid);
+
+            default:
+                break;
+        }
     }
 }

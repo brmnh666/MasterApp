@@ -2,6 +2,7 @@ package com.ying.administrator.masterappdemo.v3.mvp.Presenter;
 
 import com.ying.administrator.masterappdemo.base.BaseObserver;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.ServingDetailContract;
 
@@ -17,4 +18,35 @@ public class ServingDetailPresenter extends ServingDetailContract.Presenter {
                 });
     }
 
+    @Override
+    public void AddReturnAccessory(String OrderID, String ReturnAccessoryMsg, String PostMoney) {
+        mModel.AddReturnAccessory(OrderID, ReturnAccessoryMsg, PostMoney)
+                .subscribe(new BaseObserver<Data<String>>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<Data<String>> value) {
+                        mView.AddReturnAccessory(value);
+                    }
+                });
+    }
+
+    @Override
+    public void UpdateOrderState(String OrderID, String State,String Reason) {
+        mModel.UpdateOrderState(OrderID,State,Reason).subscribe(new BaseObserver<Data<String>>() {
+            @Override
+            protected void onHandleSuccess(BaseResult<Data<String>> value) {
+                mView.UpdateOrderState(value);
+            }
+        });
+    }
+
+    @Override
+    public void UpdateSendOrderUpdateTime(String OrderID, String UpdateDate, String EndDate) {
+        mModel.UpdateSendOrderUpdateTime(OrderID, UpdateDate, EndDate)
+                .subscribe(new BaseObserver<Data>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<Data> value) {
+                        mView.UpdateSendOrderUpdateTime(value);
+                    }
+                });
+    }
 }

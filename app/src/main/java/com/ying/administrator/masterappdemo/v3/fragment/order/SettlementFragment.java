@@ -21,10 +21,13 @@ import com.ying.administrator.masterappdemo.entity.NavigationBarNumber;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
 import com.ying.administrator.masterappdemo.v3.activity.QuoteDetailsActivity;
+import com.ying.administrator.masterappdemo.v3.activity.ServingDetailActivity;
 import com.ying.administrator.masterappdemo.v3.adapter.OrderAdapter;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.OrderPresenter;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.OrderContract;
 import com.ying.administrator.masterappdemo.v3.mvp.model.OrderModel;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,6 +82,7 @@ public class SettlementFragment extends BaseLazyFragment<OrderPresenter, OrderMo
                 list.clear();
                 page=1;
                 mPresenter.WorkerGetOrderList(userId, "12", page + "", "10");
+                EventBus.getDefault().post(20);
                 refreshlayout.resetNoMoreData();
             }
         });
@@ -102,7 +106,7 @@ public class SettlementFragment extends BaseLazyFragment<OrderPresenter, OrderMo
         SPUtils spUtils = SPUtils.getInstance("token");
         userId = spUtils.getString("userName");
         mPresenter.WorkerGetOrderList(userId, "12", page + "", "10");
-        adapter = new OrderAdapter(R.layout.v3_item_home, list);
+        adapter = new OrderAdapter(R.layout.v3_item_home, list,"settlement");
         mRvOrder.setLayoutManager(new LinearLayoutManager(mActivity));
         mRvOrder.setAdapter(adapter);
         adapter.setEmptyView(getHomeEmptyView());
@@ -114,6 +118,14 @@ public class SettlementFragment extends BaseLazyFragment<OrderPresenter, OrderMo
                         startActivity(new Intent(mActivity, QuoteDetailsActivity.class));
                         break;
                 }
+            }
+        });
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Intent intent=new Intent(mActivity, ServingDetailActivity.class);
+                intent.putExtra("id",list.get(position).getOrderID());
+                startActivity(intent);
             }
         });
     }

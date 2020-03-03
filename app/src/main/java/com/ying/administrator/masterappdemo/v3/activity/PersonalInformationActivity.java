@@ -40,6 +40,7 @@ import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.VerifiedActivity2;
 import com.ying.administrator.masterappdemo.util.Glide4Engine;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.util.imageutil.CompressHelper;
@@ -115,6 +116,7 @@ public class PersonalInformationActivity extends BaseActivity<PersonalInformatio
     protected void setListener() {
         mIvBack.setOnClickListener(this);
         mIvAvatar.setOnClickListener(this);
+        mTvMasterName.setOnClickListener(this);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -129,6 +131,13 @@ public class PersonalInformationActivity extends BaseActivity<PersonalInformatio
                     showPopupWindow(101, 102);
                 } else {
                     requestPermissions(permissions.toArray(new String[permissions.size()]), 10001);
+                }
+                break;
+            case R.id.tv_master_name:
+                if (userInfo.getTrueName() == null) { //如果为空说明未认证
+                    startActivity(new Intent(mActivity,VerifiedActivity2.class));
+                } else {
+                    return;
                 }
                 break;
         }

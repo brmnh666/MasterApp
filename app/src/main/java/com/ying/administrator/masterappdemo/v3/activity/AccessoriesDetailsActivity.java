@@ -1,6 +1,8 @@
 package com.ying.administrator.masterappdemo.v3.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -37,12 +39,6 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
     LinearLayout mLlCustomerService;
     @BindView(R.id.qr_pro_pro)
     SeekBar mQrProPro;
-    @BindView(R.id.tv_numbering)
-    TextView mTvNumbering;
-    @BindView(R.id.tv_creation_time)
-    TextView mTvCreationTime;
-    @BindView(R.id.tv_status)
-    TextView mTvStatus;
     @BindView(R.id.tv_outbound_logistics)
     TextView mTvOutboundLogistics;
     @BindView(R.id.ll_outbound_logistics)
@@ -69,6 +65,7 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
     private ServicesAdapter servicesAdapter;
     private List<String> list=new ArrayList<>();
     private AccessoriesPictureAdapter accessoriesPictureAdapter;
+    private Intent intent;
 
     @Override
     protected int setLayoutId() {
@@ -84,12 +81,19 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
     protected void initView() {
         mTvTitle.setText("配件详情");
         orderId = getIntent().getStringExtra("id");
+        mQrProPro.setClickable(false);
+        mQrProPro.setEnabled(false);
+//        mSeekBar.setSelected(false);
+//        mSeekBar.setFocusable(false);
+
         mPresenter.GetOrderInfo(orderId);
     }
 
     @Override
     protected void setListener() {
         mIvBack.setOnClickListener(this);
+        mLlOutboundLogistics.setOnClickListener(this);
+        mLlReturnLogistics.setOnClickListener(this);
     }
 
     @Override
@@ -105,6 +109,16 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
             case R.id.iv_back:
                 finish();
                 break;
+            case R.id.ll_outbound_logistics:
+                intent = new Intent(mActivity,LogisticsActivity.class);
+                intent.putExtra("number",data.getExpressNo()+"");
+                startActivity(intent);
+                break;
+            case R.id.ll_return_logistics:
+                intent = new Intent(mActivity,LogisticsActivity.class);
+                intent.putExtra("number",data.getReturnAccessoryMsg()+"");
+                startActivity(intent);
+                break;
         }
     }
 
@@ -114,22 +128,22 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
             case 200:
                 if (baseResult.getData() != null) {
                     data = baseResult.getData();
-                    mTvNumbering.setText(data.getOrderID());
-                    mTvCreationTime.setText(data.getCreateDate().replace("T", " "));
-                    if (!"".equals(data.getExpressNo()) || data.getExpressNo() != null) {
-                        mTvStatus.setText("已发件");
+//                    mTvNumbering.setText(data.getOrderID());
+//                    mTvCreationTime.setText(data.getCreateDate().replace("T", " "));
+                    if (data.getExpressNo() != null) {
+//                        mTvStatus.setText("已发件");
                         mQrProPro.setProgress(25);
                     } else if ("8".equals(data.getState())) {
-                        mTvStatus.setText("已签收");
+//                        mTvStatus.setText("已签收");
                         mQrProPro.setProgress(50);
-                    } else if (!"".equals(data.getReturnAccessoryMsg()) || data.getReturnAccessoryMsg() != null) {
-                        mTvStatus.setText("已回寄");
+                    } else if (data.getReturnAccessoryMsg() != null) {
+//                        mTvStatus.setText("已回寄");
                         mQrProPro.setProgress(75);
                     } else if ("7".equals(data.getState())) {
-                        mTvStatus.setText("已完成");
+//                        mTvStatus.setText("已完成");
                         mQrProPro.setProgress(100);
                     } else {
-                        mTvStatus.setText("已审核");
+//                        mTvStatus.setText("已审核");
                         mQrProPro.setProgress(0);
                     }
                     if ("".equals(data.getExpressNo()) || data.getExpressNo() == null) {
@@ -172,7 +186,7 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
                     mRvServices.setAdapter(servicesAdapter);
 
                     accessoriesPictureAdapter = new AccessoriesPictureAdapter(R.layout.v3_item_accessories_picture,list);
-                    mRvAccessoriesPicture.setLayoutManager(new LinearLayoutManager(mActivity));
+                    mRvAccessoriesPicture.setLayoutManager(new GridLayoutManager(mActivity,3));
                     mRvAccessoriesPicture.setAdapter(accessoriesPictureAdapter);
                 }
                 break;

@@ -16,15 +16,21 @@ import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.NavigationBarNumber;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
 import com.ying.administrator.masterappdemo.v3.activity.QuoteDetailsActivity;
+import com.ying.administrator.masterappdemo.v3.activity.ServingDetailActivity;
 import com.ying.administrator.masterappdemo.v3.adapter.OrderAdapter;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.OrderPresenter;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.OrderContract;
 import com.ying.administrator.masterappdemo.v3.mvp.model.OrderModel;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,6 +85,7 @@ public class ReturnedFragment extends BaseLazyFragment<OrderPresenter, OrderMode
                 list.clear();
                 page=1;
                 mPresenter.WorkerGetOrderList(userId, "8", page + "", "10");
+                EventBus.getDefault().post(20);
                 refreshlayout.resetNoMoreData();
             }
         });
@@ -102,18 +109,16 @@ public class ReturnedFragment extends BaseLazyFragment<OrderPresenter, OrderMode
         SPUtils spUtils = SPUtils.getInstance("token");
         userId = spUtils.getString("userName");
         mPresenter.WorkerGetOrderList(userId, "8", page + "", "10");
-        adapter = new OrderAdapter(R.layout.v3_item_home, list);
+        adapter = new OrderAdapter(R.layout.v3_item_home, list,"return");
         mRvOrder.setLayoutManager(new LinearLayoutManager(mActivity));
         mRvOrder.setAdapter(adapter);
         adapter.setEmptyView(getHomeEmptyView());
-        adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                switch (view.getId()) {
-                    case R.id.tv_orders:
-                        startActivity(new Intent(mActivity, QuoteDetailsActivity.class));
-                        break;
-                }
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Intent intent=new Intent(mActivity, ServingDetailActivity.class);
+                intent.putExtra("id",list.get(position).getOrderID());
+                startActivity(intent);
             }
         });
     }
@@ -157,6 +162,23 @@ public class ReturnedFragment extends BaseLazyFragment<OrderPresenter, OrderMode
                     adapter.setEmptyView(getHomeEmptyView());
                 }
 
+                break;
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(Integer num) {
+        switch (num) {
+            case 2:
+                list.clear();
+                page = 1;
+                mPresenter.WorkerGetOrderList(userId, "8", page + "", "10");
+                break;
+            case Config.ORDER_READ:
+
+//                mPresenter.WorkerGetOrderRed(userid);
+
+            default:
                 break;
         }
     }

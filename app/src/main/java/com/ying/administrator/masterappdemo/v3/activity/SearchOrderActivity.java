@@ -105,7 +105,7 @@ public class SearchOrderActivity extends BaseActivity<SearchOrderPresenter, Sear
     public void GetOrderInfoList(BaseResult<WorkOrder> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-                adapter = new OrderAdapter(R.layout.v3_item_home, baseResult.getData().getData());
+                adapter = new OrderAdapter(R.layout.v3_item_home, baseResult.getData().getData(),"search");
                 mRvOrder.setLayoutManager(new LinearLayoutManager(mActivity));
                 mRvOrder.setAdapter(adapter);
                 break;

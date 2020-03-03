@@ -138,6 +138,7 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
         mTvReservation.setOnClickListener(this);
         mLlTelephone.setOnClickListener(this);
         mTvCancel.setOnClickListener(this);
+        mLlCall.setOnClickListener(this);
     }
 
     @Override
@@ -229,6 +230,9 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                 WindowManager.LayoutParams layoutParams=window1.getAttributes();
                 window1.setAttributes(layoutParams);
                 window1.setBackgroundDrawable(new ColorDrawable());
+                break;
+            case R.id.ll_call:
+                call("tel:" + "4006262365");
                 break;
         }
     }
@@ -366,14 +370,6 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                     } else if (result == -2) {
                         Toast.makeText(mActivity, "没有权限", LENGTH_SHORT).show();
                     }
-
-
-
-
-
-
-
-
 
                 }
         }

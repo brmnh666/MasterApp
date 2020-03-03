@@ -2,10 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E8E8E8"
     android:orientation="vertical">
 
-    <include layout="@layout/actionbar_receiving_layout" />
+    <include layout="@layout/v3_activity_head"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -19,7 +18,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dp_10"
+                android:layout_marginTop="6dp"
                 android:background="@color/white"
                 android:orientation="vertical"
                 android:padding="11dp">
@@ -204,8 +203,7 @@
                 </LinearLayout>
             <LinearLayout
                 android:background="@color/white"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginTop="6dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -286,9 +284,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="6dp"
                 android:background="@color/white"
                 android:paddingTop="16dp"
                 android:paddingLeft="12dp"
@@ -338,11 +334,9 @@
                 android:id="@+id/ll_return_information"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginTop="6dp"
                 android:background="@color/white"
-                android:orientation="vertical"
-                android:layout_marginTop="10dp">
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
