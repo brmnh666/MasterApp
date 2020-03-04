@@ -47,7 +47,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="首页"
+                    android:text="接单区"
                     android:textColor="@drawable/v3_tab_text_selector"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -82,7 +82,8 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:layout_marginTop="6dp">
+                android:layout_marginTop="6dp"
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="wrap_content"

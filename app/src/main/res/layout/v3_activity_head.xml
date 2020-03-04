@@ -13,7 +13,7 @@
             android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:padding="10dp"
-            android:src="@mipmap/v3_back" />
+            android:src="@drawable/v3_back" />
 
         <TextView
             android:id="@+id/tv_title"

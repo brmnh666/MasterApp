@@ -68,7 +68,8 @@
                 android:text="去商城"
                 android:textColor="@color/white"
                 android:textSize="16sp"
-                android:layout_marginRight="15dp"/>
+                android:layout_marginRight="15dp"
+                android:visibility="gone"/>
             <Button
                 android:id="@+id/btn_share_one"
                 android:layout_width="120dp"
@@ -76,7 +77,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="18dp"
                 android:layout_marginBottom="30dp"
-                android:background="@drawable/blue_chat_shape"
+                android:background="@drawable/v3_btn_shape"
                 android:text="立即分享"
                 android:textColor="@color/white"
                 android:textSize="16sp" />

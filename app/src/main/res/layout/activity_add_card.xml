@@ -15,7 +15,7 @@
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginLeft="10dp"
-            android:src="@mipmap/v3_back"
+            android:src="@drawable/v3_back"
             android:layout_centerVertical="true"
             />
 
@@ -71,7 +71,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="@color/white"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="1dp"
         >
 
         <TextView
@@ -101,17 +101,13 @@
             android:layout_marginRight="22dp"
             android:src="@mipmap/right_arrow" />
     </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/color_custom_06"
-        />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="@color/white"
-        >
+        android:layout_marginTop="1dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -135,7 +131,7 @@
             android:id="@+id/img_scan_card"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:src="@mipmap/icon_scan_card"
+            android:src="@drawable/v3_scan"
             android:layout_gravity="center"
             android:layout_marginRight="20dp"
             />
@@ -144,7 +140,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="1dp"
         android:background="@color/white"
         android:orientation="horizontal">
 

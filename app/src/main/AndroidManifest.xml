@@ -310,7 +310,7 @@
             android:screenOrientation="portrait"/>
         <!--留言消息-->
         <activity android:name=".mvp.ui.activity.LeaveMessageActivity"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppTheme.NoActionBar1"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
 
@@ -348,7 +348,7 @@
         <activity android:name=".mvp.ui.activity.Order_Add_Accessories_Activity" android:theme="@style/AppTheme.NoActionBar"  android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
         <!--子账号管理-->
-        <activity android:name=".mvp.ui.activity.SubAccountManagementActivity" android:theme="@style/AppTheme.NoActionBar"  android:launchMode="singleTask"
+        <activity android:name=".mvp.ui.activity.SubAccountManagementActivity" android:theme="@style/AppTheme.NoActionBar1"  android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
         <!--智能客服-->
         <activity android:name=".mvp.ui.activity.IntelligentCustomerServiceActivity" android:theme="@style/AppTheme.NoActionBar"
@@ -631,7 +631,7 @@
         <!--银行卡列表-->
 
         <activity android:name=".mvp.ui.activity.CardList_Activity"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppTheme.NoActionBar1"
              android:launchMode="singleTask"
             android:screenOrientation="portrait"
             />
@@ -645,7 +645,7 @@
 
         <!--添加银行卡页面-->
          <activity android:name=".mvp.ui.activity.Add_Card_Activity"
-             android:theme="@style/AppTheme.NoActionBar"
+             android:theme="@style/AppTheme.NoActionBar1"
               android:launchMode="singleTask"
             android:screenOrientation="portrait"
              />
@@ -665,7 +665,7 @@
 
         <!--工单消息-->
         <activity android:name=".mvp.ui.activity.OrderMessageActivity2"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppTheme.NoActionBar1"
             />
         <!--投诉-->
 

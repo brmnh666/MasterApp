@@ -141,6 +141,10 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
     TextView mTvReturn;
     @BindView(R.id.tv_tickets)
     TextView mTvTickets;
+    @BindView(R.id.tv_band)
+    TextView mTvBand;
+    @BindView(R.id.ll_band)
+    LinearLayout mLlBand;
     private String orderId;
     private WorkOrder.DataBean data;
     private Intent intent;
@@ -422,7 +426,17 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                     } else {
                         mTvState.setText(data.getGuaranteeText() + "/" + data.getTypeName());
                     }
-                    mTvType.setText(data.getTypeName());
+
+                    if ("1".equals(data.getPartyNo())) {
+                        mTvType.setText("用户发单/" + data.getTypeName());
+                    }else {
+                        if ("Y".equals(data.getExtra()) && !"0".equals(data.getExtraTime())) {
+                            mTvType.setText(data.getGuaranteeText() + "/" + data.getTypeName() + "/加急");
+                        } else {
+                            mTvType.setText(data.getGuaranteeText() + "/" + data.getTypeName());
+                        }
+                    }
+
                     mTvStatus.setText(data.getStateStr());
                     mTvNumbering.setText(data.getOrderID());
                     if (("Y").equals(data.getGuarantee())) {
@@ -484,7 +498,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                         mTvUpload.setVisibility(View.VISIBLE);
                     }
 
-
+                    mTvBand.setText(data.getBrandName()+"  "+data.getProductType());
                 }
                 break;
         }

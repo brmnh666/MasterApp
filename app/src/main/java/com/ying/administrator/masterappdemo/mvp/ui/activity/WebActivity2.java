@@ -10,7 +10,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ying.administrator.masterappdemo.R;
@@ -21,20 +20,14 @@ import butterknife.ButterKnife;
 
 public class WebActivity2 extends BaseActivity implements View.OnClickListener {
 
-    @BindView(R.id.img_actionbar_return)
-    ImageView mImgActionbarReturn;
-    @BindView(R.id.tv_actionbar_return)
-    TextView mTvActionbarReturn;
-    @BindView(R.id.ll_return)
-    LinearLayout mLlReturn;
-    @BindView(R.id.tv_actionbar_title)
-    TextView mTvActionbarTitle;
-    @BindView(R.id.img_actionbar_message)
-    ImageView mImgActionbarMessage;
-    @BindView(R.id.tv_message)
-    TextView mTvMessage;
-    @BindView(R.id.actionbar_layout)
-    RelativeLayout mActionbarLayout;
+    @BindView(R.id.iv_back)
+    ImageView mIvBack;
+    @BindView(R.id.tv_title)
+    TextView mTvTitle;
+    @BindView(R.id.tv_save)
+    TextView mTvSave;
+    @BindView(R.id.ll_customer_service)
+    LinearLayout mLlCustomerService;
     @BindView(R.id.webview)
     WebView mWebview;
     private String url = "";
@@ -47,9 +40,9 @@ public class WebActivity2 extends BaseActivity implements View.OnClickListener {
     @Override
     protected void initData() {
 //        mTvTitle.setText("文章");
-        mTvActionbarTitle.setVisibility(View.VISIBLE);
+        mTvTitle.setVisibility(View.VISIBLE);
         String title = getIntent().getStringExtra("Title");
-        mTvActionbarTitle.setText(title);
+        mTvTitle.setText(title);
         url = getIntent().getStringExtra("Url");
         mWebview.loadUrl(url);
         WebSettings webSettings = mWebview.getSettings();
@@ -104,7 +97,7 @@ public class WebActivity2 extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void setListener() {
-        mLlReturn.setOnClickListener(this);
+        mIvBack.setOnClickListener(this);
     }
 
     @Override
@@ -117,7 +110,7 @@ public class WebActivity2 extends BaseActivity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ll_return:
+            case R.id.iv_back:
                 finish();
                 break;
             default:

@@ -2,6 +2,9 @@ package com.ying.administrator.masterappdemo.v3.activity;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -104,6 +107,8 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
     LinearLayout mLlTelephone;
     @BindView(R.id.tv_distance)
     TextView mTvDistance;
+    @BindView(R.id.tv_brand)
+    TextView mTvBrand;
     private View under_review;
     private AlertDialog underReviewDialog;
     private long recommendedtime;
@@ -114,6 +119,8 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
     private Button positive;
     private TextView title;
     private AlertDialog cancelDialog;
+    private ClipboardManager myClipboard;
+    private ClipData myClip;
 
     @Override
     protected int setLayoutId() {
@@ -130,6 +137,8 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
         mTvTitle.setText("预约详情");
         orderId = getIntent().getStringExtra("id");
         mPresenter.GetOrderInfo(orderId);
+
+        myClipboard = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
     }
 
     @Override
@@ -139,6 +148,7 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
         mLlTelephone.setOnClickListener(this);
         mTvCancel.setOnClickListener(this);
         mLlCall.setOnClickListener(this);
+        mTvCopy.setOnClickListener(this);
     }
 
     @Override
@@ -163,13 +173,13 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                         @Override
                         public void onClick(View v) {
                             call("tel:" + data.getPhone());
-                            mPresenter.OrderIsCall(orderId,"Y");
+                            mPresenter.OrderIsCall(orderId, "Y");
                             underReviewDialog.dismiss();
                         }
                     });
                     underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review).create();
                     underReviewDialog.show();
-                }else {
+                } else {
                     RxPermissions rxPermissions = new RxPermissions(this);
                     rxPermissions.request(Manifest.permission.WRITE_CALENDAR, Manifest.permission.READ_CALENDAR)
                             .subscribe(new Consumer<Boolean>() {
@@ -192,11 +202,11 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                 break;
             case R.id.ll_telephone:
                 call("tel:" + data.getPhone());
-                mPresenter.OrderIsCall(orderId,"Y");
+                mPresenter.OrderIsCall(orderId, "Y");
                 break;
             case R.id.tv_cancel:
 
-                View Cancelview=LayoutInflater.from(mActivity).inflate(R.layout.dialog_cancel,null);
+                View Cancelview = LayoutInflater.from(mActivity).inflate(R.layout.dialog_cancel, null);
                 et_message = Cancelview.findViewById(R.id.et_message);
                 negtive = Cancelview.findViewById(R.id.negtive);
                 positive = Cancelview.findViewById(R.id.positive);
@@ -212,12 +222,12 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                 positive.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String message= et_message.getText().toString();
-                        if (message==null||"".equals(message)){
+                        String message = et_message.getText().toString();
+                        if (message == null || "".equals(message)) {
                             ToastUtils.showShort("请输入取消工单理由");
-                        }else {
+                        } else {
 //                                    mPresenter.UpdateOrderState(OrderId, "-1",message);
-                            mPresenter.UpdateSendOrderState(orderId,"-1",message);
+                            mPresenter.UpdateSendOrderState(orderId, "-1", message);
                             cancelDialog.dismiss();
                         }
 
@@ -226,13 +236,18 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
 
                 cancelDialog = new AlertDialog.Builder(mActivity).setView(Cancelview).create();
                 cancelDialog.show();
-                Window window1= cancelDialog.getWindow();
-                WindowManager.LayoutParams layoutParams=window1.getAttributes();
+                Window window1 = cancelDialog.getWindow();
+                WindowManager.LayoutParams layoutParams = window1.getAttributes();
                 window1.setAttributes(layoutParams);
                 window1.setBackgroundDrawable(new ColorDrawable());
                 break;
             case R.id.ll_call:
                 call("tel:" + "4006262365");
+                break;
+            case R.id.tv_copy:
+                myClip = ClipData.newPlainText("", data.getOrderID() + "");
+                myClipboard.setPrimaryClip(myClip);
+                ToastUtils.showShort("复制成功");
                 break;
         }
     }
@@ -292,7 +307,15 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                     } else {
                         mTvState.setText(data.getGuaranteeText() + "/" + data.getTypeName());
                     }
-                    mTvType.setText(data.getTypeName());
+                    if ("1".equals(data.getPartyNo())) {
+                        mTvType.setText("用户发单/" + data.getTypeName());
+                    }else {
+                        if ("Y".equals(data.getExtra()) && !"0".equals(data.getExtraTime())) {
+                            mTvType.setText(data.getGuaranteeText() + "/" + data.getTypeName() + "/加急");
+                        } else {
+                            mTvType.setText(data.getGuaranteeText() + "/" + data.getTypeName());
+                        }
+                    }
                     mTvStatus.setText(data.getStateStr());
                     mTvNumbering.setText(data.getOrderID());
                     if (("Y").equals(data.getGuarantee())) {
@@ -308,7 +331,7 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                     mTvName.setText(data.getUserName() + "    " + data.getPhone());
                     mTvAddress.setText(data.getAddress());
                     mTvDistance.setText("线路里程 " + data.getDistance() + "公里");
-
+                    mTvBrand.setText(data.getBrandName()+"  "+data.getProductType());
                 }
                 break;
         }
@@ -316,9 +339,9 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
 
     @Override
     public void OrderIsCall(BaseResult<Data<String>> baseResult) {
-        switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData().isItem1()){
+                if (baseResult.getData().isItem1()) {
                     mPresenter.GetOrderInfo(orderId);
                 }
                 break;
@@ -347,7 +370,7 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
             case 200:
 
                 if (baseResult.getData().isItem1()) {
-                    mPresenter.AddOrderSuccess(orderId,"1","预约成功");
+                    mPresenter.AddOrderSuccess(orderId, "1", "预约成功");
                     if (data.getAddress() == null) {
                         Log.d("=====>", "地址为空");
                     } else {
@@ -364,7 +387,7 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                     // 添加事件
                     int result = CalendarProviderManager.addCalendarEvent(mActivity, calendarEvent);
                     if (result == 0) {
-                        Toast.makeText(mActivity, "已为您添加行程至日历,将提前一小时提醒您！！", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mActivity, "已为您添加行程至日历,将提前一小时提醒您！！", LENGTH_SHORT).show();
                     } else if (result == -1) {
                         Toast.makeText(mActivity, "插入失败", LENGTH_SHORT).show();
                     } else if (result == -2) {

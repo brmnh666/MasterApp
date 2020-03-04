@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.SPUtils;
@@ -35,31 +34,32 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class SubAccountManagementActivity extends BaseActivity<SubAccountPresenter, SubAccountModel> implements View.OnClickListener, SubAccountContract.View {
-    @BindView(R.id.img_actionbar_return)
-    ImageView mImgActionbarReturn;
-    @BindView(R.id.tv_actionbar_return)
-    TextView mTvActionbarReturn;
-    @BindView(R.id.ll_return)
-    LinearLayout mLlReturn;
-    @BindView(R.id.tv_actionbar_title)
-    TextView mTvActionbarTitle;
-    @BindView(R.id.img_actionbar_message)
-    ImageView mImgActionbarMessage;
-    @BindView(R.id.actionbar_layout)
-    RelativeLayout mActionbarLayout;
+
+
+    @BindView(R.id.iv_back)
+    ImageView mIvBack;
+    @BindView(R.id.tv_title)
+    TextView mTvTitle;
+    @BindView(R.id.tv_save)
+    TextView mTvSave;
+    @BindView(R.id.ll_customer_service)
+    LinearLayout mLlCustomerService;
+    @BindView(R.id.img_add_sub_account)
+    ImageView mImgAddSubAccount;
+    @BindView(R.id.tv_add_sub_account)
+    TextView mTvAddSubAccount;
     @BindView(R.id.ll_add_account)
     LinearLayout mLlAddAccount;
     @BindView(R.id.rv_sub_account)
     RecyclerView mRvSubAccount;
-    @BindView(R.id.img_add_sub_account)
-    ImageView mImg_sub_account_qrcode;
-    @BindView(R.id.tv_add_sub_account)
-    TextView mTv_add_sub_account;
     @BindView(R.id.iv_wu)
     ImageView mIvWu;
     @BindView(R.id.smartrefresh)
     SmartRefreshLayout mSmartrefresh;
-
+    @BindView(R.id.tv_home_empty)
+    TextView mTvHomeEmpty;
+    @BindView(R.id.ll_wu)
+    LinearLayout mLlWu;
     private ArrayList<SubAccount> subAccountArrayList;
     SPUtils spUtils = SPUtils.getInstance("token");
     private String userID;//用户id
@@ -128,23 +128,23 @@ public class SubAccountManagementActivity extends BaseActivity<SubAccountPresent
 
     @Override
     public void initView() {
-        mTvActionbarTitle.setText("子账号管理");
-        mImgActionbarMessage.setVisibility(View.INVISIBLE);
+        mTvTitle.setText("子账号管理");
+//        mImgActionbarMessage.setVisibility(View.INVISIBLE);
 
     }
 
     @Override
     protected void setListener() {
-        mLlReturn.setOnClickListener(this);
-        mImg_sub_account_qrcode.setOnClickListener(this);
-        mTv_add_sub_account.setOnClickListener(this);
+        mIvBack.setOnClickListener(this);
+        mImgAddSubAccount.setOnClickListener(this);
+        mTvAddSubAccount.setOnClickListener(this);
 
         mSmartrefresh.setEnableLoadmoreWhenContentNotFull(false);
         mSmartrefresh.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                  mPresenter.GetChildAccountByParentUserID(userID);
-                  mSmartrefresh.finishRefresh();
+                mPresenter.GetChildAccountByParentUserID(userID);
+                mSmartrefresh.finishRefresh();
 
             }
         });
@@ -160,7 +160,7 @@ public class SubAccountManagementActivity extends BaseActivity<SubAccountPresent
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ll_return:
+            case R.id.iv_back:
                 SubAccountManagementActivity.this.finish();
                 break;
             case R.id.img_add_sub_account:
@@ -220,9 +220,9 @@ public class SubAccountManagementActivity extends BaseActivity<SubAccountPresent
             case 200:
 
                 if (baseResult.getData().size() == 0) {
-                    mIvWu.setVisibility(View.VISIBLE);
-                }else {
-                    mIvWu.setVisibility(View.GONE);
+                    mLlWu.setVisibility(View.VISIBLE);
+                } else {
+                    mLlWu.setVisibility(View.GONE);
                     subUserInfolist.clear();
                     subUserInfolist.addAll(baseResult.getData());
                     subAccountAdapter.notifyDataSetChanged();
