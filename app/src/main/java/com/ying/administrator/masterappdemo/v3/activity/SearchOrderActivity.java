@@ -102,12 +102,28 @@ public class SearchOrderActivity extends BaseActivity<SearchOrderPresenter, Sear
     }
 
     @Override
-    public void GetOrderInfoList(BaseResult<WorkOrder> baseResult) {
+    public void GetOrderInfoList(final BaseResult<WorkOrder> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
                 adapter = new OrderAdapter(R.layout.v3_item_home, baseResult.getData().getData(),"search");
                 mRvOrder.setLayoutManager(new LinearLayoutManager(mActivity));
                 mRvOrder.setAdapter(adapter);
+                adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                        if ("2".equals(baseResult.getData().getData().get(position).getState())){
+                            Intent intent=new Intent(mActivity, AppointmentDetailsActivity.class);
+                            intent.putExtra("id",baseResult.getData().getData().get(position).getOrderID());
+                            startActivity(intent);
+                        }else {
+                            Intent intent=new Intent(mActivity, ServingDetailActivity.class);
+                            intent.putExtra("id",baseResult.getData().getData().get(position).getOrderID());
+                            intent.putExtra("type","pedding");
+                            startActivity(intent);
+                        }
+
+                    }
+                });
                 break;
         }
     }

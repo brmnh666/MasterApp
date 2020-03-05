@@ -19,6 +19,7 @@ import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.Article;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
@@ -35,6 +36,8 @@ import com.ying.administrator.masterappdemo.v3.adapter.HomeAdapter;
 import com.ying.administrator.masterappdemo.widget.SwitchView;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -276,4 +279,23 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
                 break;
         }
     }
+
+    //任意写一个方法，给这个方法一个@Subscribe注解，参数类型可以自定义，但是一定要与你发出的类型相同
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(Integer num) {
+        switch (num) {
+            case 10:
+                list.clear();
+                page = 1;
+                mPresenter.WorkerGetOrderList(userId,"0", page + "", "10");
+                break;
+            case Config.ORDER_READ:
+
+//                mPresenter.WorkerGetOrderRed(userid);
+
+            default:
+                break;
+        }
+    }
+
 }

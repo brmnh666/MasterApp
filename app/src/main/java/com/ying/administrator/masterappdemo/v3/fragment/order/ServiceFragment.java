@@ -50,7 +50,7 @@ public class ServiceFragment extends BaseLazyFragment<OrderPresenter, OrderModel
     Unbinder unbinder;
     private String mContentText;
     private String userId;
-    private int page=1;
+    private int page = 1;
     private List<WorkOrder.DataBean> list = new ArrayList<>();
     private OrderAdapter adapter;
     private WorkOrder workOrder;
@@ -86,7 +86,7 @@ public class ServiceFragment extends BaseLazyFragment<OrderPresenter, OrderModel
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 list.clear();
-                page=1;
+                page = 1;
                 mPresenter.WorkerGetOrderList(userId, "2", page + "", "10");
                 EventBus.getDefault().post(20);
                 refreshlayout.resetNoMoreData();
@@ -95,7 +95,7 @@ public class ServiceFragment extends BaseLazyFragment<OrderPresenter, OrderModel
 
 
         //没满屏时禁止上拉
-//        mRefreshLayout.setEnableLoadmoreWhenContentNotFull(false);
+        mRefreshLayout.setEnableLoadmoreWhenContentNotFull(false);
         //上拉加载更多
         mRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
@@ -110,19 +110,20 @@ public class ServiceFragment extends BaseLazyFragment<OrderPresenter, OrderModel
 
     @Override
     protected void initView() {
+        mRefreshLayout.autoRefresh(0, 0, 1);
         SPUtils spUtils = SPUtils.getInstance("token");
         userId = spUtils.getString("userName");
         mRefreshLayout.autoRefresh(0, 0, 1);
         mPresenter.WorkerGetOrderList(userId, "2", page + "", "10");
-        adapter = new OrderAdapter(R.layout.v3_item_home, list,"service");
+        adapter = new OrderAdapter(R.layout.v3_item_home, list, "service");
         mRvOrder.setLayoutManager(new LinearLayoutManager(mActivity));
         mRvOrder.setAdapter(adapter);
         adapter.setEmptyView(getHomeEmptyView());
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Intent intent=new Intent(mActivity, ServingDetailActivity.class);
-                intent.putExtra("id",list.get(position).getOrderID());
+                Intent intent = new Intent(mActivity, ServingDetailActivity.class);
+                intent.putExtra("id", list.get(position).getOrderID());
                 startActivity(intent);
             }
         });
@@ -142,14 +143,14 @@ public class ServiceFragment extends BaseLazyFragment<OrderPresenter, OrderModel
     public void WorkerGetOrderList(BaseResult<WorkOrder> baseResult) {
         mRefreshLayout.finishRefresh();
         mRefreshLayout.finishLoadmore();
-        switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
                 workOrder = baseResult.getData();
-                if (workOrder.getData()!=null){
+                if (workOrder.getData() != null) {
                     list.addAll(workOrder.getData());
                     adapter.setNewData(list);
 
-                }else {
+                } else {
                     adapter.setEmptyView(getHomeEmptyView());
                 }
 
@@ -179,6 +180,11 @@ public class ServiceFragment extends BaseLazyFragment<OrderPresenter, OrderModel
                 page = 1;
                 mPresenter.WorkerGetOrderList(userId, "2", page + "", "10");
                 break;
+            case 3:
+                list.clear();
+                page = 1;
+                mPresenter.WorkerGetOrderList(userId, "2", page + "", "10");
+                break;
             case Config.ORDER_READ:
 
 //                mPresenter.WorkerGetOrderRed(userid);
@@ -186,5 +192,13 @@ public class ServiceFragment extends BaseLazyFragment<OrderPresenter, OrderModel
             default:
                 break;
         }
+    }
+
+    @Override
+    protected void onVisible() {
+        super.onVisible();
+        list.clear();
+        page=1;
+        mPresenter.WorkerGetOrderList(userId, "2", page + "", "10");
     }
 }

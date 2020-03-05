@@ -121,6 +121,8 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
     private AlertDialog cancelDialog;
     private ClipboardManager myClipboard;
     private ClipData myClip;
+    private View puchsh_view;
+    private AlertDialog push_dialog;
 
     @Override
     protected int setLayoutId() {
@@ -158,51 +160,119 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                 finish();
                 break;
             case R.id.tv_reservation:
-                if (data.getIsCall() == null) {
-                    under_review = LayoutInflater.from(mActivity).inflate(R.layout.v3_dialog_reservation, null);
-                    TextView tv_cancel = under_review.findViewById(R.id.tv_cancel);
-                    TextView tv_reservation = under_review.findViewById(R.id.tv_reservation);
-                    tv_cancel.setOnClickListener(new View.OnClickListener() {
+                if ("9".equals(data.getState())) {
+                    puchsh_view = LayoutInflater.from(mActivity).inflate(R.layout.v3_dialog_prompt, null);
+                    TextView title = puchsh_view.findViewById(R.id.title);
+                    TextView message = puchsh_view.findViewById(R.id.message);
+                    Button negtive = puchsh_view.findViewById(R.id.negtive);
+                    title.setText("提示");
+                    message.setText("您的远程费暂未审核通过，请耐心等待");
+                    negtive.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            underReviewDialog.dismiss();
+                            push_dialog.dismiss();
                         }
                     });
-
-                    tv_reservation.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            call("tel:" + data.getPhone());
-                            mPresenter.OrderIsCall(orderId, "Y");
-                            underReviewDialog.dismiss();
-                        }
-                    });
-                    underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review).create();
-                    underReviewDialog.show();
+                    push_dialog = new AlertDialog.Builder(mActivity)
+                            .setView(puchsh_view)
+                            .create();
+                    push_dialog.show();
                 } else {
-                    RxPermissions rxPermissions = new RxPermissions(this);
-                    rxPermissions.request(Manifest.permission.WRITE_CALENDAR, Manifest.permission.READ_CALENDAR)
-                            .subscribe(new Consumer<Boolean>() {
-                                @Override
-                                public void accept(Boolean aBoolean) throws Exception {
-                                    if (aBoolean) {
-                                        // 获取全部权限成功
 
-                                        chooseTime("请选择上门时间");
-                                    } else {
-                                        // 获取全部权限失败
-//                                                Log.d("=====>", "权限获取失败");
-                                        ToastUtils.showShort("权限获取失败");
+                    if (data.getIsCall() == null) {
+                        under_review = LayoutInflater.from(mActivity).inflate(R.layout.v3_dialog_reservation, null);
+                        TextView tv_cancel = under_review.findViewById(R.id.tv_cancel);
+                        TextView tv_reservation = under_review.findViewById(R.id.tv_reservation);
+                        tv_cancel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                underReviewDialog.dismiss();
+                            }
+                        });
+
+                        tv_reservation.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                call("tel:" + data.getPhone());
+                                mPresenter.OrderIsCall(orderId, "Y");
+                                underReviewDialog.dismiss();
+                            }
+                        });
+                        underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review).create();
+                        underReviewDialog.show();
+                    } else {
+                        if (data.getOrderAccessroyDetail().size()>0){
+                            if ("Y".equals(data.getIsCall())){
+                                under_review = LayoutInflater.from(mActivity).inflate(R.layout.v3_dialog_reservation, null);
+                                TextView tv_cancel = under_review.findViewById(R.id.tv_cancel);
+                                TextView tv_reservation = under_review.findViewById(R.id.tv_reservation);
+                                tv_cancel.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        underReviewDialog.dismiss();
                                     }
-                                }
-                            });
-                }
+                                });
+
+                                tv_reservation.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        call("tel:" + data.getPhone());
+                                        mPresenter.OrderIsCall(orderId, "2");
+                                        underReviewDialog.dismiss();
+                                    }
+                                });
+                                underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review).create();
+                                underReviewDialog.show();
+                            }else {
+                                RxPermissions rxPermissions = new RxPermissions(this);
+                                rxPermissions.request(Manifest.permission.WRITE_CALENDAR, Manifest.permission.READ_CALENDAR)
+                                        .subscribe(new Consumer<Boolean>() {
+                                            @Override
+                                            public void accept(Boolean aBoolean) throws Exception {
+                                                if (aBoolean) {
+                                                    // 获取全部权限成功
+
+                                                    chooseTime("请选择上门时间");
+                                                } else {
+                                                    // 获取全部权限失败
+//                                                Log.d("=====>", "权限获取失败");
+                                                    ToastUtils.showShort("权限获取失败");
+                                                }
+                                            }
+                                        });
+                            }
+                        }else {
+                            RxPermissions rxPermissions = new RxPermissions(this);
+                            rxPermissions.request(Manifest.permission.WRITE_CALENDAR, Manifest.permission.READ_CALENDAR)
+                                    .subscribe(new Consumer<Boolean>() {
+                                        @Override
+                                        public void accept(Boolean aBoolean) throws Exception {
+                                            if (aBoolean) {
+                                                // 获取全部权限成功
+
+                                                chooseTime("请选择上门时间");
+                                            } else {
+                                                // 获取全部权限失败
+//                                                Log.d("=====>", "权限获取失败");
+                                                ToastUtils.showShort("权限获取失败");
+                                            }
+                                        }
+                                    });
+                        }
+
+                    }
 //
 
+                }
                 break;
             case R.id.ll_telephone:
                 call("tel:" + data.getPhone());
-                mPresenter.OrderIsCall(orderId, "Y");
+                if (data.getOrderAccessroyDetail().size()>0){
+                    mPresenter.OrderIsCall(orderId, "2");
+                }else {
+                    mPresenter.OrderIsCall(orderId, "Y");
+                }
+
                 break;
             case R.id.tv_cancel:
 
@@ -309,7 +379,7 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                     }
                     if ("1".equals(data.getPartyNo())) {
                         mTvType.setText("用户发单/" + data.getTypeName());
-                    }else {
+                    } else {
                         if ("Y".equals(data.getExtra()) && !"0".equals(data.getExtraTime())) {
                             mTvType.setText(data.getGuaranteeText() + "/" + data.getTypeName() + "/加急");
                         } else {
@@ -331,7 +401,7 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                     mTvName.setText(data.getUserName() + "    " + data.getPhone());
                     mTvAddress.setText(data.getAddress());
                     mTvDistance.setText("线路里程 " + data.getDistance() + "公里");
-                    mTvBrand.setText(data.getBrandName()+"  "+data.getProductType());
+                    mTvBrand.setText(data.getBrandName() + "  " + data.getProductType());
                 }
                 break;
         }

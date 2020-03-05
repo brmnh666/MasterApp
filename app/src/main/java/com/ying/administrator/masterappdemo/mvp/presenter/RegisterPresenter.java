@@ -59,8 +59,8 @@ public class RegisterPresenter extends RegisterContract.Presenter {
     }
 
     @Override
-    public void WxReg(String userName, String code, String openid) {
-        mModel.WxReg(userName, code, openid)
+    public void WxReg(String userName, String code, String openid,String unionid) {
+        mModel.WxReg(userName, code, openid,unionid)
                 .subscribe(new BaseObserver<Data<String>>() {
                     @Override
                     protected void onHandleSuccess(BaseResult<Data<String>> value) {

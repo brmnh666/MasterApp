@@ -17,7 +17,7 @@ public interface RegisterContract {
         Observable<BaseResult<Data<String>>> Login(String userName,String password);
         Observable<BaseResult<String>> ValidateUserName(String userName);
         Observable<BaseResult<Data<String>>> AddAndUpdatePushAccount(String token,String type,String UserID);
-        Observable<BaseResult<Data<String>>> WxReg(String userName, String code,String openid);
+        Observable<BaseResult<Data<String>>> WxReg(String userName, String code,String openid,String unionid);
         Observable<BaseResult<Data<WxRegister>>> WxRegister(String openid,
                                                             String nickname,
                                                             String sex,
@@ -45,7 +45,7 @@ public interface RegisterContract {
         public abstract void Login(String userName,String password);
         public abstract void ValidateUserName(String userName);
         public abstract void AddAndUpdatePushAccount(String token,String type,String UserID);
-        public abstract void WxReg(String userName, String code,String openid);
+        public abstract void WxReg(String userName, String code,String openid,String unionid);
         public abstract void WxRegister(String openid,
                                         String nickname,
                                         String sex,

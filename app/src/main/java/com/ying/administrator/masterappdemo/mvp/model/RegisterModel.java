@@ -48,8 +48,8 @@ public class RegisterModel implements RegisterContract.Model {
     }
 
     @Override
-    public Observable<BaseResult<Data<String>>> WxReg(String userName, String code, String openid) {
-        return ApiRetrofit.getDefault().WxReg(userName,"1",code,"worker",openid)
+    public Observable<BaseResult<Data<String>>> WxReg(String userName, String code, String openid,String unionid) {
+        return ApiRetrofit.getDefault().WxReg(userName,"1",code,"worker",openid,unionid)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

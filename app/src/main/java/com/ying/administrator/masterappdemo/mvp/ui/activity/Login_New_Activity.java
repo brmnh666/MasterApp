@@ -347,7 +347,7 @@ public class Login_New_Activity extends BaseActivity<LoginPresenter, LoginModel>
                 //当且仅当该移动应用已获得该用户的userinfo授权时，才会出现该字段
                 String unionid = result1.getUnionid();
 //                Log.i(TAG, "access_token:----->" + access_token);
-//                Log.i(TAG, "openid:----->" + openid);
+                Log.i(TAG, "openid:----->" + openid);
 //                Log.i(TAG, "unionid:----->" + unionid);
                 getWXUserInfo(access_token, openid, unionid);
             }

@@ -18,6 +18,7 @@ public class NavigationBarNumber implements Serializable {
     private int Count4;
     private int Count3;
     private int Count6;
+    private int Count7;
 
     public int getCount2() {
         return Count2;
@@ -65,5 +66,13 @@ public class NavigationBarNumber implements Serializable {
 
     public void setCount6(int count6) {
         Count6 = count6;
+    }
+
+    public int getCount7() {
+        return Count7;
+    }
+
+    public void setCount7(int count7) {
+        Count7 = count7;
     }
 }

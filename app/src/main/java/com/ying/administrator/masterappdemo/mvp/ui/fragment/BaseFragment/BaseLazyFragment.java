@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 
 
 import com.blankj.utilcode.util.ActivityUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseModel;
 import com.ying.administrator.masterappdemo.base.BasePresenter;
@@ -176,6 +177,7 @@ public abstract class BaseLazyFragment<P extends BasePresenter, M extends BaseMo
      */
     protected void onVisible() {
         onLazyLoad();
+//        ToastUtils.showShort("刷新");
     }
 
     private void onLazyLoad() {

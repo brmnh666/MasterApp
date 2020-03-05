@@ -19,6 +19,7 @@ public interface ServingDetailContract {
         Observable<BaseResult<Data<String>>> UpdateOrderState(String OrderID,String State,String Reason);
         //更新时间
         Observable<BaseResult<Data>> UpdateSendOrderUpdateTime(String OrderID,String UpdateDate,String EndDate);
+        Observable<BaseResult<Data<String>>> ConfirmReceipt(String OrderID);
     }
 
     interface View extends BaseView{
@@ -29,6 +30,7 @@ public interface ServingDetailContract {
         void UpdateOrderState(BaseResult<Data<String>> baseResult);
         //更新时间
         void UpdateSendOrderUpdateTime(BaseResult<Data> baseResult);
+        void ConfirmReceipt(BaseResult<Data<String>> baseResult);
     }
 
     abstract class Presenter extends BasePresenter<View,Model>{
@@ -38,5 +40,6 @@ public interface ServingDetailContract {
         public abstract void UpdateOrderState(String OrderID,String State,String Reason);
         //更新时间
         public abstract void UpdateSendOrderUpdateTime(String OrderID,String UpdateDate,String EndDate);
+        public abstract void ConfirmReceipt(String OrderID);
     }
 }

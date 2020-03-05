@@ -37,4 +37,11 @@ public class ServingDetailModel implements ServingDetailContract.Model {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }
+
+    @Override
+    public Observable<BaseResult<Data<String>>> ConfirmReceipt(String OrderID) {
+        return ApiRetrofit.getDefault().ConfirmReceipt(OrderID)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
 }

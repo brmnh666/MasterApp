@@ -540,7 +540,7 @@ public class ApplicationAccessoriesActivity extends BaseActivity<ApplicationAcce
                     if ("1".equals(service)){
                         finish();
                     }else {
-                        EventBus.getDefault().post(5);
+                        EventBus.getDefault().post(3);
                     }
                     mAcList.clear();
                     fAcList.clear();

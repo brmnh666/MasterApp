@@ -108,8 +108,6 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
     TextView mTvManufacturerPhone;
     @BindView(R.id.tv_call)
     TextView mTvCall;
-    @BindView(R.id.iv_call)
-    ImageView mIvCall;
     @BindView(R.id.et_single_number)
     EditText mEtSingleNumber;
     @BindView(R.id.et_express_name)
@@ -154,6 +152,8 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
     EditText mEtMemo;
     @BindView(R.id.btn_complete_submit)
     Button mBtnCompleteSubmit;
+    @BindView(R.id.ll_telephone)
+    LinearLayout mLlTelephone;
     private String orderID;
 
     /*工单详情*/
@@ -216,7 +216,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
         mBtnCompleteSubmit.setOnClickListener(this);
         mLlViewExampleTwo.setOnClickListener(this);
         mTvCall.setOnClickListener(this);
-        mIvCall.setOnClickListener(this);
+        mLlTelephone.setOnClickListener(this);
         mIvCopy.setOnClickListener(this);
     }
 
@@ -244,7 +244,8 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 
                     if ("1".equals(data.getTypeID())) {//维修
                         mTvService.setText(data.getTypeName() + "/" + data.getGuaranteeText());
-                        mTvService.setBackgroundResource(R.color.color_custom_01);
+                        mTvService.setBackgroundResource(R.drawable.v3_home_bg);
+                        mTvService.setTextColor(Color.parseColor("#01B1D3"));
                         mLlReturnInformation.setVisibility(View.VISIBLE);
                         mLlServiceProcess.setVisibility(View.GONE);
                         mTvReasonPendingAppointment.setText(Html.fromHtml(mActivity.getResources().getString(R.string.malfunction, "故障描述:", data.getMemo())));
@@ -252,14 +253,15 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 
                     } else if ("2".equals(data.getTypeID())) {
                         mTvService.setText(data.getTypeName() + "/" + data.getGuaranteeText());
-                        mTvService.setBackgroundResource(R.color.color_custom_04);
+                        mTvService.setBackgroundResource(R.drawable.v3_home_bg);
                         mLlReturnInformation.setVisibility(View.GONE);
                         mLlServiceProcess.setVisibility(View.VISIBLE);
                         mTvReasonPendingAppointment.setText(Html.fromHtml(mActivity.getResources().getString(R.string.malfunction, "安装备注:", data.getMemo())));
 
                     } else {
                         mTvService.setText(data.getTypeName() + "/" + data.getGuaranteeText());
-                        mTvService.setBackgroundResource(R.color.color_custom_01);
+                        mTvService.setBackgroundResource(R.drawable.v3_home_bg);
+                        mTvService.setTextColor(Color.parseColor("#01B1D3"));
                         mLlReturnInformation.setVisibility(View.VISIBLE);
                         mLlServiceProcess.setVisibility(View.GONE);
                     }
@@ -542,7 +544,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 //                    }
                 }
                 break;
-            case R.id.iv_call:
+            case R.id.ll_telephone:
             case R.id.tv_call:
                 final CommonDialog_Home dialog = new CommonDialog_Home(mActivity);
                 dialog.setMessage("是否拨打电话给厂商")

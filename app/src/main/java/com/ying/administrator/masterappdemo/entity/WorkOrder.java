@@ -226,6 +226,15 @@ public class WorkOrder implements Serializable {
         private String isOnLookMessage;
         private String barCodeIsNo;
         private String partyNo;
+        private String IsExtraTime;
+
+        public String getIsExtraTime() {
+            return IsExtraTime;
+        }
+
+        public void setIsExtraTime(String isExtraTime) {
+            IsExtraTime = isExtraTime;
+        }
 
         public String getPartyNo() {
             return partyNo;
@@ -740,6 +749,9 @@ public class WorkOrder implements Serializable {
                     break;
                 case "9":
                     status="远程费审核";
+                    break;
+                case "11":
+                    status="未到货";
                     break;
             }
             return status;

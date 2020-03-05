@@ -16,6 +16,7 @@ import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.NavigationBarNumber;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
@@ -28,6 +29,8 @@ import com.ying.administrator.masterappdemo.v3.mvp.contract.OrderContract;
 import com.ying.administrator.masterappdemo.v3.mvp.model.OrderModel;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,7 +92,7 @@ public class SettlementFragment extends BaseLazyFragment<OrderPresenter, OrderMo
 
 
         //没满屏时禁止上拉
-//        mRefreshLayout.setEnableLoadmoreWhenContentNotFull(false);
+        mRefreshLayout.setEnableLoadmoreWhenContentNotFull(false);
         //上拉加载更多
         mRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
@@ -103,6 +106,7 @@ public class SettlementFragment extends BaseLazyFragment<OrderPresenter, OrderMo
 
     @Override
     protected void initView() {
+        mRefreshLayout.autoRefresh(0,0,1);
         SPUtils spUtils = SPUtils.getInstance("token");
         userId = spUtils.getString("userName");
         mPresenter.WorkerGetOrderList(userId, "12", page + "", "10");
@@ -171,5 +175,35 @@ public class SettlementFragment extends BaseLazyFragment<OrderPresenter, OrderMo
 
                 break;
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(Integer num) {
+        switch (num) {
+            case 2:
+                list.clear();
+                page = 1;
+                mPresenter.WorkerGetOrderList(userId, "12", page + "", "10");
+                break;
+            case 5:
+                list.clear();
+                page = 1;
+                mPresenter.WorkerGetOrderList(userId, "12", page + "", "10");
+                break;
+            case Config.ORDER_READ:
+
+//                mPresenter.WorkerGetOrderRed(userid);
+
+            default:
+                break;
+        }
+    }
+
+    @Override
+    protected void onVisible() {
+        super.onVisible();
+        list.clear();
+        page=1;
+        mPresenter.WorkerGetOrderList(userId, "12", page + "", "10");
     }
 }

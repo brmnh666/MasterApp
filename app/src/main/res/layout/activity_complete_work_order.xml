@@ -324,11 +324,30 @@
                     android:layout_marginLeft="10dp"
                     android:visibility="gone"/>
 
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@mipmap/call"
-                    android:id="@+id/iv_call"/>
+                <LinearLayout
+                    android:id="@+id/ll_telephone"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/circle_black_shape"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/v3_telephone" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="预约"
+                        android:textColor="#808080"
+                        android:textSize="10sp"
+                        android:visibility="gone" />
+                </LinearLayout>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/ll_return_information"
@@ -717,7 +736,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_margin="10dp"
-                android:background="@drawable/btn_blue"
+                android:background="@drawable/v3_btn_shape"
                 android:text="完   成"
                 android:textColor="@color/white"
                 android:textSize="20sp" />

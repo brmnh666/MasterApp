@@ -21,6 +21,7 @@ import com.ying.administrator.masterappdemo.entity.NavigationBarNumber;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
 import com.ying.administrator.masterappdemo.v3.activity.SearchOrderActivity;
+import com.ying.administrator.masterappdemo.v3.fragment.order.CompletedFragment;
 import com.ying.administrator.masterappdemo.v3.fragment.order.PendingAppointmentFragment;
 import com.ying.administrator.masterappdemo.v3.fragment.order.PendingFragment;
 import com.ying.administrator.masterappdemo.v3.fragment.order.ReturnedFragment;
@@ -69,6 +70,8 @@ public class OrderFragment extends BaseLazyFragment<OrderPresenter, OrderModel> 
     private int four;
     private int five;
     private int six;
+    private CompletedFragment completedFragment;
+    private int senven;
 
     public static OrderFragment newInstance(String param1) {
         OrderFragment fragment = new OrderFragment();
@@ -103,7 +106,7 @@ public class OrderFragment extends BaseLazyFragment<OrderPresenter, OrderModel> 
         userId = spUtils.getString("userName");
         mTitles = new String[]{
                 "待处理(0)", "待预约(0)", "待服务(0)", "待寄件(0)"
-                , "待返件(0)", "待结算(0)"
+                , "待返件(0)", "待结算(0)","已完结(0)"
         };
         pendingFragment = PendingFragment.newInstance();
         pendingAppointmentFragment = PendingAppointmentFragment.newInstance();
@@ -111,12 +114,14 @@ public class OrderFragment extends BaseLazyFragment<OrderPresenter, OrderModel> 
         shippingFragment = ShippingFragment.newInstance();
         returnedFragment = ReturnedFragment.newInstance();
         settlementFragment = SettlementFragment.newInstance();
+        completedFragment = CompletedFragment.newInstance();
         mFragments.add(pendingFragment);
         mFragments.add(pendingAppointmentFragment);
         mFragments.add(serviceFragment);
         mFragments.add(shippingFragment);
         mFragments.add(returnedFragment);
         mFragments.add(settlementFragment);
+        mFragments.add(completedFragment);
         mAdapter = new MyPagerAdapter(getChildFragmentManager());
         mReceivingViewpager.setAdapter(mAdapter);
         mReceivingViewpager.setOffscreenPageLimit(mFragments.size());
@@ -145,10 +150,11 @@ public class OrderFragment extends BaseLazyFragment<OrderPresenter, OrderModel> 
                     four = baseResult.getData().getItem2().getCount4();
                     five = baseResult.getData().getItem2().getCount5();
                     six = baseResult.getData().getItem2().getCount6();
+                    senven = baseResult.getData().getItem2().getCount7();
                 }
                 mTitles = new String[]{
                         "待处理(" + one + ")", "待预约(" + two + ")", "待服务(" + three + ")", "待寄件(" + four + ")"
-                        , "待返件(" + five + ")", "待结算(" + six + ")"
+                        , "待返件(" + five + ")", "待结算(" + six + ")", "已完结(" + senven + ")"
                 };
                 mTabReceivingLayout.notifyDataSetChanged();
                 break;
@@ -207,6 +213,10 @@ public class OrderFragment extends BaseLazyFragment<OrderPresenter, OrderModel> 
                 break;
             case 2:
                 mReceivingViewpager.setCurrentItem(2); //服务中 state 2
+                mPresenter.NavigationBarNumber(userId, "1", "10");
+                break;
+            case 3:
+                mReceivingViewpager.setCurrentItem(3);//待返件 state 5
                 mPresenter.NavigationBarNumber(userId, "1", "10");
                 break;
             case 4:

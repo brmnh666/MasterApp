@@ -87,7 +87,8 @@ public interface ApiService {
                                                @Field("type") String type,
                                                @Field("code") String code,
                                                @Field("roleType") String roleType,
-                                               @Field("openid") String openid
+                                               @Field("openid") String openid,
+                                               @Field("unionid") String unionid
     );
 
 
@@ -1123,7 +1124,7 @@ public interface ApiService {
     @POST("Order/GetOrderInfoList")
     Observable<BaseResult<WorkOrder>> GetOrderInfoList(@Field("Phone") String Phone,
                                                        @Field("OrderID") String OrderID,
-                                                       @Field("UserID") String UserID,
+                                                       @Field("SendUser") String UserID,
                                                        @Field("limit") String limit,
                                                        @Field("page") String page);
 
@@ -1140,4 +1141,10 @@ public interface ApiService {
     @POST("Account/UpdateEmergencyContact")
     Observable<BaseResult<Data<String>>> UpdateEmergencyContact(@Field("UserId") String UserId,
                                                                 @Field("emergencyContact") String emergencyContact);
+
+
+    /*确认收货*/
+    @FormUrlEncoded
+    @POST("Order/ConfirmReceipt")
+    Observable<BaseResult<Data<String>>> ConfirmReceipt(@Field("OrderID") String OrderID);
 }

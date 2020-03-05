@@ -44,6 +44,7 @@ import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.AboutUsActivity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.Login_New_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Opinion_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.SubAccountManagementActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.VerifiedActivity2;
@@ -117,6 +118,8 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
     private AlertDialog dialogShare;
     private ShareAction mShareAction;
     private CustomShareListener mShareListener;
+    private SPUtils spUtils;
+
     public static MineFragment newInstance(String param1) {
         MineFragment fragment = new MineFragment();
         Bundle args = new Bundle();
@@ -196,7 +199,7 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
 
     @Override
     protected void initView() {
-        SPUtils spUtils = SPUtils.getInstance("token");
+        spUtils = SPUtils.getInstance("token");
         userID = spUtils.getString("userName");
         mPresenter.GetUserInfoList(userID, "1");
     }
@@ -337,39 +340,46 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
     public void GetUserInfoList(BaseResult<UserInfo> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-                userInfo = baseResult.getData().getData().get(0);
-                if (userInfo.getAvator() == null) {//显示默认头像
-                    return;
-                } else {
-                    RequestOptions myOptions = new RequestOptions().transform(new GlideCircleWithBorder2(this, 1, Color.parseColor("#DCDCDC")));
-                    Glide.with(mActivity)
-                            .load(Config.HEAD_URL + userInfo.getAvator())
-                            .apply(RequestOptions.bitmapTransform(new CircleCrop()))
-                            .apply(myOptions)
-                            .into(mIvAvatar);
+                if (baseResult.getData().getData().size()>0) {
+                    userInfo = baseResult.getData().getData().get(0);
+                    if (userInfo.getAvator() == null) {//显示默认头像
+                        return;
+                    } else {
+                        RequestOptions myOptions = new RequestOptions().transform(new GlideCircleWithBorder2(this, 1, Color.parseColor("#DCDCDC")));
+                        Glide.with(mActivity)
+                                .load(Config.HEAD_URL + userInfo.getAvator())
+                                .apply(RequestOptions.bitmapTransform(new CircleCrop()))
+                                .apply(myOptions)
+                                .into(mIvAvatar);
+                    }
+                    mTvFinish.setText("完成量 " + userInfo.getServiceTotalOrderNum());
+                    /*真实姓名*/
+                    if (userInfo.getIfAuth() == null || "".equals(userInfo.getIfAuth())) {
+                        mTvCertified.setText("未认证");
+                        mTvSuggest.setVisibility(View.VISIBLE);
+                        mLlName.setVisibility(View.GONE);
+                    } else if ("0".equals(userInfo.getIfAuth())) {
+                        mTvCertified.setText(userInfo.getTrueName());
+                        mTvSuggest.setVisibility(View.VISIBLE);
+                        mTvSuggest.setText("认证中");
+                        mLlName.setVisibility(View.GONE);
+                    } else if ("-1".equals(userInfo.getIfAuth())) {
+                        mTvCertified.setText(userInfo.getTrueName());
+                        mTvSuggest.setVisibility(View.VISIBLE);
+                        mTvSuggest.setText("拒绝，请查看原因");
+                        mLlName.setVisibility(View.GONE);
+                    } else if ("1".equals(userInfo.getIfAuth())) {
+                        mTvCertified.setText(userInfo.getTrueName());
+                        mTvSuggest.setVisibility(View.GONE);
+                        mLlName.setVisibility(View.VISIBLE);
+                        mTvPhone.setText(userInfo.getUserID() + "");
+                    }
+                }else {
+                    spUtils.put("isLogin", false);
+                    startActivity(new Intent(mActivity, Login_New_Activity.class));
+                    mActivity.finish();
                 }
-                mTvFinish.setText("完成量 "+userInfo.getServiceTotalOrderNum());
-                /*真实姓名*/
-                if (userInfo.getIfAuth() == null || "".equals(userInfo.getIfAuth())) {
-                    mTvCertified.setText("未认证");
-                    mTvSuggest.setVisibility(View.VISIBLE);
-                    mLlName.setVisibility(View.GONE);
-                } else if ("0".equals(userInfo.getIfAuth())) {
-                    mTvCertified.setText(userInfo.getTrueName());
-                    mTvSuggest.setVisibility(View.VISIBLE);
-                    mTvSuggest.setText("认证中");
-                    mLlName.setVisibility(View.GONE);
-                } else if ("-1".equals(userInfo.getIfAuth())) {
-                    mTvCertified.setText(userInfo.getTrueName());
-                    mTvSuggest.setVisibility(View.VISIBLE);
-                    mTvSuggest.setText("拒绝，请查看原因");
-                    mLlName.setVisibility(View.GONE);
-                } else if ("1".equals(userInfo.getIfAuth())) {
-                    mTvCertified.setText(userInfo.getTrueName());
-                    mTvSuggest.setVisibility(View.GONE);
-                    mLlName.setVisibility(View.VISIBLE);
-                    mTvPhone.setText(userInfo.getUserID() + "");
-                }
+
                 break;
         }
     }

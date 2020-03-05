@@ -92,7 +92,7 @@ public class ReturnedFragment extends BaseLazyFragment<OrderPresenter, OrderMode
 
 
         //没满屏时禁止上拉
-//        mRefreshLayout.setEnableLoadmoreWhenContentNotFull(false);
+        mRefreshLayout.setEnableLoadmoreWhenContentNotFull(false);
         //上拉加载更多
         mRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
@@ -106,6 +106,7 @@ public class ReturnedFragment extends BaseLazyFragment<OrderPresenter, OrderMode
 
     @Override
     protected void initView() {
+        mRefreshLayout.autoRefresh(0,0,1);
         SPUtils spUtils = SPUtils.getInstance("token");
         userId = spUtils.getString("userName");
         mPresenter.WorkerGetOrderList(userId, "8", page + "", "10");
@@ -174,6 +175,11 @@ public class ReturnedFragment extends BaseLazyFragment<OrderPresenter, OrderMode
                 page = 1;
                 mPresenter.WorkerGetOrderList(userId, "8", page + "", "10");
                 break;
+            case 4:
+                list.clear();
+                page = 1;
+                mPresenter.WorkerGetOrderList(userId, "8", page + "", "10");
+                break;
             case Config.ORDER_READ:
 
 //                mPresenter.WorkerGetOrderRed(userid);
@@ -181,5 +187,14 @@ public class ReturnedFragment extends BaseLazyFragment<OrderPresenter, OrderMode
             default:
                 break;
         }
+    }
+
+
+    @Override
+    protected void onVisible() {
+        super.onVisible();
+        list.clear();
+        page=1;
+        mPresenter.WorkerGetOrderList(userId, "8", page + "", "10");
     }
 }

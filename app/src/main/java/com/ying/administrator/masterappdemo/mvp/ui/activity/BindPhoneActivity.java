@@ -103,7 +103,7 @@ public class BindPhoneActivity extends BaseActivity<RegisterPresenter, RegisterM
                     ToastUtils.showShort("请输入验证码！");
                     return;
                 }
-                mPresenter.WxReg(phone,code,result.getOpenid());
+                mPresenter.WxReg(phone,code,result.getOpenid(),result.getUnionid());
                 break;
         }
     }
@@ -198,7 +198,7 @@ public class BindPhoneActivity extends BaseActivity<RegisterPresenter, RegisterM
                 }else {
 
                 }
-                hideProgress();
+//                hideProgress();
                 break;
         }
     }

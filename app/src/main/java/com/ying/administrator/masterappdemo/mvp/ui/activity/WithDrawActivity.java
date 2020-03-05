@@ -251,7 +251,7 @@ public class WithDrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.img_actionbar_return:
+            case R.id.iv_back:
                 WithDrawActivity.this.finish();
                 break;
             case R.id.wechat_pay_ll:

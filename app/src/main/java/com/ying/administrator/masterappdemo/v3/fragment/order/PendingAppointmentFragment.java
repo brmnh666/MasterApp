@@ -98,7 +98,7 @@ public class PendingAppointmentFragment extends BaseLazyFragment<OrderPresenter,
 
 
         //没满屏时禁止上拉
-//        mRefreshLayout.setEnableLoadmoreWhenContentNotFull(false);
+        mRefreshLayout.setEnableLoadmoreWhenContentNotFull(false);
         //上拉加载更多
         mRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
@@ -114,6 +114,7 @@ public class PendingAppointmentFragment extends BaseLazyFragment<OrderPresenter,
     protected void initView() {
         mTvUrgentlyNeeded.setSelected(true);
         mTvTimedOut.setSelected(false);
+        mRefreshLayout.autoRefresh(0,0,1);
         state = "1";
         SPUtils spUtils = SPUtils.getInstance("token");
         userId = spUtils.getString("userName");
@@ -130,15 +131,15 @@ public class PendingAppointmentFragment extends BaseLazyFragment<OrderPresenter,
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 if ("1".equals(state)){
-                    if (list.get(position).getOrderAccessroyDetail().size()>0){
-                        Intent intent=new Intent(mActivity, ServingDetailActivity.class);
-                        intent.putExtra("id",list.get(position).getOrderID());
-                        startActivity(intent);
-                    }else {
+//                    if (list.get(position).getOrderAccessroyDetail().size()>0){
+//                        Intent intent=new Intent(mActivity, ServingDetailActivity.class);
+//                        intent.putExtra("id",list.get(position).getOrderID());
+//                        startActivity(intent);
+//                    }else {
                         Intent intent=new Intent(mActivity, AppointmentDetailsActivity.class);
                         intent.putExtra("id",list.get(position).getOrderID());
                         startActivity(intent);
-                    }
+//                    }
                 }else {
                     Intent intent=new Intent(mActivity, ServingDetailActivity.class);
                     intent.putExtra("id",list.get(position).getOrderID());
@@ -228,6 +229,19 @@ public class PendingAppointmentFragment extends BaseLazyFragment<OrderPresenter,
                 page = 1;
                 mPresenter.WorkerGetOrderList(userId, state, page + "", "10");
                 break;
+            case 2:
+                list.clear();
+                page = 1;
+                mPresenter.WorkerGetOrderList(userId, state, page + "", "10");
+                break;
+            case 22:
+                mTvUrgentlyNeeded.setSelected(true);
+                mTvTimedOut.setSelected(false);
+                state = "1";
+                list.clear();
+                page = 1;
+                mPresenter.WorkerGetOrderList(userId, state, page + "", "10");
+                break;
             case Config.ORDER_READ:
 
 //                mPresenter.WorkerGetOrderRed(userid);
@@ -235,5 +249,13 @@ public class PendingAppointmentFragment extends BaseLazyFragment<OrderPresenter,
             default:
                 break;
         }
+    }
+
+    @Override
+    protected void onVisible() {
+        super.onVisible();
+        list.clear();
+        page=1;
+        mPresenter.WorkerGetOrderList(userId, state, page + "", "10");
     }
 }

@@ -28,6 +28,8 @@ import com.ying.administrator.masterappdemo.v3.mvp.contract.OrderContract;
 import com.ying.administrator.masterappdemo.v3.mvp.model.OrderModel;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,7 +91,7 @@ public class ShippingFragment extends BaseLazyFragment <OrderPresenter, OrderMod
 
 
         //没满屏时禁止上拉
-//        mRefreshLayout.setEnableLoadmoreWhenContentNotFull(false);
+        mRefreshLayout.setEnableLoadmoreWhenContentNotFull(false);
         //上拉加载更多
         mRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
@@ -103,6 +105,7 @@ public class ShippingFragment extends BaseLazyFragment <OrderPresenter, OrderMod
 
     @Override
     protected void initView() {
+        mRefreshLayout.autoRefresh(0,0,1);
         SPUtils spUtils = SPUtils.getInstance("token");
         userId = spUtils.getString("userName");
         mPresenter.WorkerGetOrderList(userId, "11", page + "", "10");
@@ -162,5 +165,26 @@ public class ShippingFragment extends BaseLazyFragment <OrderPresenter, OrderMod
 
                 break;
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(Integer num) {
+//        mFragments.clear();
+        switch (num) {
+            case 3:
+                list.clear();
+                page=1;
+                mPresenter.WorkerGetOrderList(userId, "11", page + "", "10");
+                break;
+
+        }
+    }
+
+    @Override
+    protected void onVisible() {
+        super.onVisible();
+        list.clear();
+        page=1;
+        mPresenter.WorkerGetOrderList(userId, "11", page + "", "10");
     }
 }
