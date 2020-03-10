@@ -1,9 +1,11 @@
 package com.ying.administrator.masterappdemo.v3.activity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -58,6 +60,8 @@ public class SettingActivity extends BaseActivity<SettingPresenter, SettingModel
     LinearLayout mLlUpdate;
     private SPUtils spUtils;
     private String userID;
+    private View puchsh_view;
+    private AlertDialog push_dialog;
 
     @Override
     protected int setLayoutId() {
@@ -162,7 +166,23 @@ public class SettingActivity extends BaseActivity<SettingPresenter, SettingModel
 //                Beta.checkUpgrade(true,true);
                 UpgradeInfo upgradeInfo=Beta.getUpgradeInfo();
                 if (upgradeInfo==null){
-                    ToastUtils.showShort("暂无更新");
+                    puchsh_view = LayoutInflater.from(mActivity).inflate(R.layout.v3_dialog_prompt, null);
+                    TextView title = puchsh_view.findViewById(R.id.title);
+                    TextView message = puchsh_view.findViewById(R.id.message);
+                    Button negtive = puchsh_view.findViewById(R.id.negtive);
+                    title.setText("提示");
+                    message.setText("您已经是最新版本了");
+                    negtive.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            push_dialog.dismiss();
+                        }
+                    });
+                    push_dialog = new AlertDialog.Builder(mActivity)
+                            .setView(puchsh_view)
+                            .create();
+                    push_dialog.show();
+//                    ToastUtils.showShort("暂无更新");
                 }else {
                     return;
                 }

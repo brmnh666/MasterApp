@@ -134,7 +134,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/v3_btn_shape">
+        android:background="#d0d0d0">
 
         <RelativeLayout
             android:id="@+id/ll_my_package"
@@ -158,7 +158,7 @@
                 android:layout_below="@+id/img_package"
                 android:layout_centerHorizontal="true"
                 android:text="我的配件包"
-                android:textColor="@color/white"
+                android:textColor="#00afd2"
                 android:textSize="9sp" />
 
             <TextView
@@ -187,7 +187,7 @@
             android:text="确认并上传配件照片"
             android:textColor="@color/white"
             android:textSize="16sp"
-            android:background="#0075d5"/>
+            android:background="@drawable/v3_accessories_bg_shape"/>
     </RelativeLayout>
 
 </RelativeLayout>

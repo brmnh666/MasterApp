@@ -35,6 +35,39 @@ public class MessagePresenter extends MessageContract.Presenter {
     }
 
     @Override
+    public void GetTicketMessageList(String UserID, String SubType, String limit, String page) {
+        mModel.GetTicketMessageList(UserID,SubType,limit,page)
+                .subscribe(new BaseObserver<MessageData<List<Message>>>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<MessageData<List<Message>>> value) {
+                        mView.GetTicketMessageList(value);
+                    }
+                });
+    }
+
+    @Override
+    public void GetReviewMessageList(String UserID, String SubType, String limit, String page) {
+        mModel.GetReviewMessageList(UserID,SubType,limit,page)
+                .subscribe(new BaseObserver<MessageData<List<Message>>>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<MessageData<List<Message>>> value) {
+                        mView.GetReviewMessageList(value);
+                    }
+                });
+    }
+
+    @Override
+    public void GetComplaintMessageList(String UserID, String SubType, String limit, String page) {
+        mModel.GetComplaintMessageList(UserID,SubType,limit,page)
+                .subscribe(new BaseObserver<MessageData<List<Message>>>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<MessageData<List<Message>>> value) {
+                        mView.GetComplaintMessageList(value);
+                    }
+                });
+    }
+
+    @Override
     public void GetTransactionMessageList(String UserID, String SubType, String limit, String page) {
         mModel.GetTransactionMessageList(UserID,SubType,limit,page)
                 .subscribe(new BaseObserver<MessageData<List<Message>>>() {

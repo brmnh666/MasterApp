@@ -183,7 +183,7 @@
                 android:layout_height="48dp"
                 android:background="@drawable/v3_btn_shape"
                 android:text="提交申请"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 android:textColor="@color/white"
                 android:layout_gravity="bottom"
                 android:layout_marginBottom="@dimen/dp_10"/>

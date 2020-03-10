@@ -167,27 +167,27 @@ public class ReturnedFragment extends BaseLazyFragment<OrderPresenter, OrderMode
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void Event(Integer num) {
-        switch (num) {
-            case 2:
-                list.clear();
-                page = 1;
-                mPresenter.WorkerGetOrderList(userId, "8", page + "", "10");
-                break;
-            case 4:
-                list.clear();
-                page = 1;
-                mPresenter.WorkerGetOrderList(userId, "8", page + "", "10");
-                break;
-            case Config.ORDER_READ:
-
-//                mPresenter.WorkerGetOrderRed(userid);
-
-            default:
-                break;
-        }
-    }
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void Event(Integer num) {
+//        switch (num) {
+//            case 2:
+//                list.clear();
+//                page = 1;
+//                mPresenter.WorkerGetOrderList(userId, "8", page + "", "10");
+//                break;
+//            case 4:
+//                list.clear();
+//                page = 1;
+//                mPresenter.WorkerGetOrderList(userId, "8", page + "", "10");
+//                break;
+//            case Config.ORDER_READ:
+//
+////                mPresenter.WorkerGetOrderRed(userid);
+//
+//            default:
+//                break;
+//        }
+//    }
 
 
     @Override

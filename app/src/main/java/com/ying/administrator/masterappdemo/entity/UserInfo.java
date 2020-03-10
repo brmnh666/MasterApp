@@ -111,7 +111,7 @@ public class UserInfo implements Serializable {
         private String CityCode;
         private String AreaCode;
         private String Address;
-        private int DepositMoney;
+        private double DepositMoney;
         private int DepositFrozenMoney;
         private String Skills;
         private String IfAuth;
@@ -389,11 +389,11 @@ public class UserInfo implements Serializable {
             this.Address = Address;
         }
 
-        public int getDepositMoney() {
+        public double getDepositMoney() {
             return DepositMoney;
         }
 
-        public void setDepositMoney(int DepositMoney) {
+        public void setDepositMoney(double DepositMoney) {
             this.DepositMoney = DepositMoney;
         }
 

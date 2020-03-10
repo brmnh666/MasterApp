@@ -220,36 +220,36 @@ public class PendingAppointmentFragment extends BaseLazyFragment<OrderPresenter,
         }
     }
 
-    //任意写一个方法，给这个方法一个@Subscribe注解，参数类型可以自定义，但是一定要与你发出的类型相同
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void Event(Integer num) {
-        switch (num) {
-            case 1:
-                list.clear();
-                page = 1;
-                mPresenter.WorkerGetOrderList(userId, state, page + "", "10");
-                break;
-            case 2:
-                list.clear();
-                page = 1;
-                mPresenter.WorkerGetOrderList(userId, state, page + "", "10");
-                break;
-            case 22:
-                mTvUrgentlyNeeded.setSelected(true);
-                mTvTimedOut.setSelected(false);
-                state = "1";
-                list.clear();
-                page = 1;
-                mPresenter.WorkerGetOrderList(userId, state, page + "", "10");
-                break;
-            case Config.ORDER_READ:
-
-//                mPresenter.WorkerGetOrderRed(userid);
-
-            default:
-                break;
-        }
-    }
+//    //任意写一个方法，给这个方法一个@Subscribe注解，参数类型可以自定义，但是一定要与你发出的类型相同
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void Event(Integer num) {
+//        switch (num) {
+//            case 1:
+//                list.clear();
+//                page = 1;
+//                mPresenter.WorkerGetOrderList(userId, state, page + "", "10");
+//                break;
+//            case 2:
+//                list.clear();
+//                page = 1;
+//                mPresenter.WorkerGetOrderList(userId, state, page + "", "10");
+//                break;
+//            case 22:
+//                mTvUrgentlyNeeded.setSelected(true);
+//                mTvTimedOut.setSelected(false);
+//                state = "1";
+//                list.clear();
+//                page = 1;
+//                mPresenter.WorkerGetOrderList(userId, state, page + "", "10");
+//                break;
+//            case Config.ORDER_READ:
+//
+////                mPresenter.WorkerGetOrderRed(userid);
+//
+//            default:
+//                break;
+//        }
+//    }
 
     @Override
     protected void onVisible() {

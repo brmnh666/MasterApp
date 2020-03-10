@@ -52,6 +52,12 @@ public class ArticleActivity extends BaseActivity<ArticlePresenter, ArticleModel
     @Override
     protected void initData() {
 
+
+    }
+
+    @Override
+    protected void initView() {
+
         CategoryID = getIntent().getStringExtra("CategoryID");
         switch (CategoryID) {
             case "7":
@@ -70,12 +76,6 @@ public class ArticleActivity extends BaseActivity<ArticlePresenter, ArticleModel
                 break;
         }
         mPresenter.GetListCategoryContentByCategoryID(CategoryID, "1", "999");
-    }
-
-    @Override
-    protected void initView() {
-
-
     }
 
     @Override

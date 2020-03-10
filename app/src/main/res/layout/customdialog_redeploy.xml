@@ -19,7 +19,7 @@
            android:layout_marginLeft="10dp"
            android:layout_marginRight="10dp"
            android:layout_marginBottom="60dp"
-           android:background="@drawable/dialog_unsuccess_bg"
+           android:background="@color/white"
            android:orientation="vertical">
 
            <TextView
@@ -65,7 +65,7 @@
                    android:layout_marginRight="10dp"
                    android:textColor="@color/white"
                    android:text="转   派"
-                   android:background="@drawable/add_accessory_submit"
+                   android:background="@drawable/v3_btn_shape"
                    />
                <TextView
                    android:gravity="center"
@@ -77,8 +77,8 @@
                    android:layout_marginLeft="10dp"
                    android:layout_marginRight="10dp"
                    android:textColor="@color/white"
-                   android:text="取消转派"
-                   android:background="@drawable/add_redeploy_cancle"
+                   android:text="取    消"
+                   android:background="@drawable/v3_btn_red_shape"
                    />
 
            </LinearLayout>

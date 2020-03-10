@@ -29,7 +29,7 @@
                 android:layout_weight="1"
                 android:paddingLeft="@dimen/dp_10"
                 android:text="空调类"
-                android:textSize="20dp"
+                android:textSize="16sp"
                 android:textColor="#333" />
 
             <TextView

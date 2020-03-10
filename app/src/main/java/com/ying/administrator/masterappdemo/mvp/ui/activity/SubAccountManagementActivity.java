@@ -1,5 +1,6 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,8 +25,12 @@ import com.ying.administrator.masterappdemo.mvp.contract.SubAccountContract;
 import com.ying.administrator.masterappdemo.mvp.model.SubAccountModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.SubAccountPresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.SubAccountAdapter;
+import com.ying.administrator.masterappdemo.v3.activity.SubAccountDetails;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 import com.ying.administrator.masterappdemo.widget.QRCodeDialog;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +65,8 @@ public class SubAccountManagementActivity extends BaseActivity<SubAccountPresent
     TextView mTvHomeEmpty;
     @BindView(R.id.ll_wu)
     LinearLayout mLlWu;
+    @BindView(R.id.ll_sub)
+    LinearLayout mLlSub;
     private ArrayList<SubAccount> subAccountArrayList;
     SPUtils spUtils = SPUtils.getInstance("token");
     private String userID;//用户id
@@ -120,6 +127,16 @@ public class SubAccountManagementActivity extends BaseActivity<SubAccountPresent
                         break;
                 }
 
+            }
+        });
+
+        subAccountAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Intent intent=new Intent(mActivity, SubAccountDetails.class);
+                intent.putExtra("id",subUserInfolist.get(position).getUserID());
+                intent.putExtra("name",subUserInfolist.get(position).getTrueName());
+                startActivity(intent);
             }
         });
 
@@ -221,8 +238,10 @@ public class SubAccountManagementActivity extends BaseActivity<SubAccountPresent
 
                 if (baseResult.getData().size() == 0) {
                     mLlWu.setVisibility(View.VISIBLE);
+                    mLlSub.setVisibility(View.GONE);
                 } else {
                     mLlWu.setVisibility(View.GONE);
+                    mLlSub.setVisibility(View.VISIBLE);
                     subUserInfolist.clear();
                     subUserInfolist.addAll(baseResult.getData());
                     subAccountAdapter.notifyDataSetChanged();
@@ -252,4 +271,6 @@ public class SubAccountManagementActivity extends BaseActivity<SubAccountPresent
                 break;
         }
     }
+
+
 }

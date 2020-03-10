@@ -739,7 +739,7 @@
                 android:background="@drawable/v3_btn_shape"
                 android:text="完   成"
                 android:textColor="@color/white"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
 
         </LinearLayout>
     </ScrollView>

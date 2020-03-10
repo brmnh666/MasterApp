@@ -20,15 +20,9 @@ import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.LeaveMessage;
-import com.ying.administrator.masterappdemo.entity.Message;
-import com.ying.administrator.masterappdemo.entity.MessageData;
 import com.ying.administrator.masterappdemo.mvp.contract.LeaveMeaasgeContract;
-import com.ying.administrator.masterappdemo.mvp.contract.MyMessageContract;
 import com.ying.administrator.masterappdemo.mvp.model.LeaveMeaasgeModel;
-import com.ying.administrator.masterappdemo.mvp.model.MyMessageModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.LeaveMeaasgePreaenter;
-import com.ying.administrator.masterappdemo.mvp.presenter.MyMessagePresenter;
-import com.ying.administrator.masterappdemo.mvp.ui.adapter.MessageAdapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.MessageAdapter2;
 
 import org.greenrobot.eventbus.EventBus;
@@ -42,8 +36,7 @@ import butterknife.ButterKnife;
 /*留言消息*/
 public class LeaveMessageActivity extends BaseActivity<LeaveMeaasgePreaenter, LeaveMeaasgeModel> implements LeaveMeaasgeContract.View, View.OnClickListener {
 
-    @BindView(R.id.img_actionbar_return)
-    ImageView mImgActionbarReturn;
+
     @BindView(R.id.tv_title)
     TextView mTvTitle;
     @BindView(R.id.rv_ordermessage)
@@ -52,6 +45,8 @@ public class LeaveMessageActivity extends BaseActivity<LeaveMeaasgePreaenter, Le
     SmartRefreshLayout mRefreshLayout;
     @BindView(R.id.tv_all_read)
     TextView mTvAllRead;
+    @BindView(R.id.iv_back)
+    ImageView mIvBack;
 
     private MessageAdapter2 messageAdapter;
     private int pageIndex = 1;
@@ -86,7 +81,7 @@ public class LeaveMessageActivity extends BaseActivity<LeaveMeaasgePreaenter, Le
 
         SPUtils spUtils = SPUtils.getInstance("token");
         userId = spUtils.getString("userName");
-        mPresenter.GetNewsLeaveMessage(userId,"10",String.valueOf(pageIndex));
+        mPresenter.GetNewsLeaveMessage(userId, "10", String.valueOf(pageIndex));
     }
 
     @Override
@@ -96,7 +91,7 @@ public class LeaveMessageActivity extends BaseActivity<LeaveMeaasgePreaenter, Le
 
     @Override
     protected void setListener() {
-        mImgActionbarReturn.setOnClickListener(this);
+        mIvBack.setOnClickListener(this);
         mTvAllRead.setOnClickListener(this);
         /*下拉刷新*/
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
@@ -104,7 +99,7 @@ public class LeaveMessageActivity extends BaseActivity<LeaveMeaasgePreaenter, Le
             public void onRefresh(RefreshLayout refreshlayout) {
                 pageIndex = 1;
                 list.clear();
-                mPresenter.GetNewsLeaveMessage(userId,"10",String.valueOf(pageIndex));
+                mPresenter.GetNewsLeaveMessage(userId, "10", String.valueOf(pageIndex));
                 refreshlayout.finishRefresh();
                 refreshlayout.resetNoMoreData();
             }
@@ -115,7 +110,7 @@ public class LeaveMessageActivity extends BaseActivity<LeaveMeaasgePreaenter, Le
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 pageIndex++; //页数加1
-                mPresenter.GetNewsLeaveMessage(userId,"10",String.valueOf(pageIndex));
+                mPresenter.GetNewsLeaveMessage(userId, "10", String.valueOf(pageIndex));
                 refreshlayout.finishLoadmore();
             }
         });
@@ -138,12 +133,10 @@ public class LeaveMessageActivity extends BaseActivity<LeaveMeaasgePreaenter, Le
     }
 
 
-
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.img_actionbar_return:
+            case R.id.iv_back:
                 LeaveMessageActivity.this.finish();
                 break;
             case R.id.tv_all_read:
@@ -154,7 +147,7 @@ public class LeaveMessageActivity extends BaseActivity<LeaveMeaasgePreaenter, Le
 
     @Override
     public void GetNewsLeaveMessage(BaseResult<Data<LeaveMessage>> baseResult) {
-        switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
                 if (pageIndex != 1 && baseResult.getData().getItem2().getData().size() == 0) {
                     mRefreshLayout.finishLoadmoreWithNoMoreData();
@@ -167,7 +160,7 @@ public class LeaveMessageActivity extends BaseActivity<LeaveMeaasgePreaenter, Le
 
     @Override
     public void LeaveMessageWhetherLook(BaseResult<Data> baseResult) {
-        switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
                 if (baseResult.getData().isItem1()) {
                     list.get(pos).setWorkerIslook("2");

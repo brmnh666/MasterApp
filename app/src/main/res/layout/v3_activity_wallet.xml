@@ -56,7 +56,7 @@
                         android:id="@+id/tv_money"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="100.00"
+                        android:text="0.00"
                         android:textColor="@color/white"
                         android:textSize="20sp" />
                 </LinearLayout>
@@ -129,7 +129,7 @@
                     android:id="@+id/tv_cumulative_income"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="￥1000.0"
+                    android:text="￥0.0"
                     android:textSize="16sp"
                     android:textColor="@color/black"
                     android:layout_marginTop="5dp"/>
@@ -157,7 +157,7 @@
                     android:id="@+id/tv_withdrawing"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="￥1000.0"
+                    android:text="￥0.00"
                     android:textSize="16sp"
                     android:textColor="@color/black"
                     android:layout_marginTop="5dp"/>
@@ -191,7 +191,7 @@
                     android:id="@+id/tv_confirmed"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="￥1000.0"
+                    android:text="￥0.0"
                     android:textSize="16sp"
                     android:textColor="@color/black"
                     android:layout_marginTop="5dp"/>
@@ -219,7 +219,7 @@
                     android:id="@+id/tv_warranty"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="￥1000.0"
+                    android:text="￥0.0"
                     android:textSize="16sp"
                     android:textColor="@color/black"
                     android:layout_marginTop="5dp"/>

@@ -5,7 +5,11 @@ import com.ying.administrator.masterappdemo.base.BasePresenter;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.base.BaseView;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.SubUserInfo;
+import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 
@@ -21,6 +25,11 @@ public interface AppointmentDetailsContract {
 
         //预约成功
         Observable<BaseResult<Data>> AddOrderSuccess(String OrderID, String AppointmentState, String AppointmentMessage);
+        Observable<BaseResult<UserInfo>> GetUserInfoList(String UserID, String limit);
+        //获取子账号
+        Observable<BaseResult<List<SubUserInfo.SubUserInfoDean>>> GetChildAccountByParentUserID(String ParentUserID);
+        //主账号派单操作
+        Observable<BaseResult<Data>> ChangeSendOrder(String OrderID,String UserID);
     }
 
     interface View extends BaseView{
@@ -34,7 +43,11 @@ public interface AppointmentDetailsContract {
         //预约成功
 
         void AddOrderSuccess(BaseResult<Data> baseResult);
-
+        void GetUserInfoList(BaseResult<UserInfo> baseResult);
+        //获取子账号
+        void GetChildAccountByParentUserID(BaseResult<List<SubUserInfo.SubUserInfoDean>> baseResult);
+        //主账号派单操作
+        void ChangeSendOrder(BaseResult<Data> baseResult);
     }
 
     abstract class Persenter extends BasePresenter<View,Model>{
@@ -47,5 +60,10 @@ public interface AppointmentDetailsContract {
         public abstract void UpdateSendOrderUpdateTime(String OrderID,String UpdateDate,String EndDate);
         //预约成功
         public abstract void AddOrderSuccess(String OrderID,String AppointmentState,String AppointmentMessage);
+        public abstract void GetUserInfoList(String UserID,String limit);
+        //获取子账号
+        public abstract void GetChildAccountByParentUserID(String ParentUserID);
+        //主账号派单操作
+        public abstract void ChangeSendOrder(String OrderID,String UserID);
     }
 }

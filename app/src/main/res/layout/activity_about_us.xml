@@ -8,11 +8,12 @@
 
     <include layout="@layout/v3_activity_head"/>
     
-    <ImageView
-        android:layout_width="match_parent"
+    <com.ying.administrator.masterappdemo.widget.CircleImageView
+        android:layout_width="85dp"
         android:layout_height="85dp"
-        android:src="@drawable/app"
-        android:layout_marginTop="30dp"/>
+        android:src="@drawable/v3_icon"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center"/>
 
     <TextView
 

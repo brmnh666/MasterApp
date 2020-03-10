@@ -172,27 +172,27 @@ public class ServiceFragment extends BaseLazyFragment<OrderPresenter, OrderModel
         unbinder.unbind();
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void Event(Integer num) {
-        switch (num) {
-            case 2:
-                list.clear();
-                page = 1;
-                mPresenter.WorkerGetOrderList(userId, "2", page + "", "10");
-                break;
-            case 3:
-                list.clear();
-                page = 1;
-                mPresenter.WorkerGetOrderList(userId, "2", page + "", "10");
-                break;
-            case Config.ORDER_READ:
-
-//                mPresenter.WorkerGetOrderRed(userid);
-
-            default:
-                break;
-        }
-    }
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void Event(Integer num) {
+//        switch (num) {
+//            case 2:
+//                list.clear();
+//                page = 1;
+//                mPresenter.WorkerGetOrderList(userId, "2", page + "", "10");
+//                break;
+//            case 3:
+//                list.clear();
+//                page = 1;
+//                mPresenter.WorkerGetOrderList(userId, "2", page + "", "10");
+//                break;
+//            case Config.ORDER_READ:
+//
+////                mPresenter.WorkerGetOrderRed(userid);
+//
+//            default:
+//                break;
+//        }
+//    }
 
     @Override
     protected void onVisible() {

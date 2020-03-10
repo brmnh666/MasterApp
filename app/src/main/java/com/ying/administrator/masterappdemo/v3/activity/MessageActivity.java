@@ -22,6 +22,9 @@ import com.ying.administrator.masterappdemo.v3.mvp.Presenter.MessagePresenter;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.MessageContract;
 import com.ying.administrator.masterappdemo.v3.mvp.model.MessageModel;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.List;
 
 import butterknife.BindView;
@@ -104,14 +107,18 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
 
     @Override
     protected void initView() {
+
         mTvTitle.setText("消息通知");
         mTvSave.setVisibility(View.GONE);
         mTvSave.setText("全部已读");
         spUtils = SPUtils.getInstance("token");
         userId = spUtils.getString("userName");
-        mPresenter.GetOrderMessageList(userId, "0", "99", "1");
+        mPresenter.GetOrderMessageList(userId, "0", "99", "1");//工单消息
         mPresenter.GetTransactionMessageList(userId, "0", "99", "1");
         mPresenter.GetNewsLeaveMessage(userId, "10", "1");
+        mPresenter.GetTicketMessageList(userId, "10", "99", "1");//配件消息
+        mPresenter.GetReviewMessageList(userId, "11", "99", "1");
+        mPresenter.GetComplaintMessageList(userId, "12", "99", "1");
     }
 
     @Override
@@ -121,6 +128,9 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
         mLlOrderMessage.setOnClickListener(this);
         mLlTransactionNotification.setOnClickListener(this);
         mLlMessage.setOnClickListener(this);
+        mLlAccessoriesNews.setOnClickListener(this);
+        mLlReviewNotice.setOnClickListener(this);
+        mLlComplaintMessage.setOnClickListener(this);
     }
 
     @Override
@@ -135,15 +145,35 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
             case R.id.ll_order_message:
                 intent = new Intent(mActivity, OrderMessageActivity2.class);
                 intent.putExtra("type", 2);
+                intent.putExtra("subType", 0);
                 startActivity(intent);
                 break;
             case R.id.ll_transaction_notification:
                 intent = new Intent(mActivity, OrderMessageActivity2.class);
                 intent.putExtra("type", 1);
+                intent.putExtra("subType", 0);
                 startActivity(intent);
                 break;
             case R.id.ll_message:
                 startActivity(new Intent(mActivity, LeaveMessageActivity.class));
+                break;
+            case R.id.ll_accessories_news:
+                intent = new Intent(mActivity, OrderMessageActivity2.class);
+                intent.putExtra("type", 2);
+                intent.putExtra("subType", 10);
+                startActivity(intent);
+                break;
+            case R.id.ll_review_notice:
+                intent = new Intent(mActivity, OrderMessageActivity2.class);
+                intent.putExtra("type", 2);
+                intent.putExtra("subType", 11);
+                startActivity(intent);
+                break;
+            case R.id.ll_complaint_message:
+                intent = new Intent(mActivity, OrderMessageActivity2.class);
+                intent.putExtra("type", 2);
+                intent.putExtra("subType", 12);
+                startActivity(intent);
                 break;
         }
     }
@@ -184,6 +214,97 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
                     mTvOrderMessage.setText(baseResult.getData().getData().get(0).getContent());
                     mTvOrderMessageTime.setText(baseResult.getData().getData().get(0).getNowtime().substring(0,10));
                 }
+                hideProgress();
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void GetTicketMessageList(BaseResult<MessageData<List<Message>>> baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                if (baseResult.getData().getCount() == 0) {
+                    mTvAccessoriesNewsNumber.setVisibility(View.GONE);
+                    mTvAccessoriesNews.setText("暂无新的配件消息");
+                    mTvAccessoriesNewsTime.setVisibility(View.GONE);
+                    return;
+                } else if (baseResult.getData().getCount() >= 99) {
+                    mTvAccessoriesNewsNumber.setVisibility(View.VISIBLE);
+                    mTvAccessoriesNewsNumber.setText("99");
+                    mTvAccessoriesNewsTime.setVisibility(View.VISIBLE);
+                    mTvAccessoriesNews.setText(baseResult.getData().getData().get(0).getContent());
+                    mTvAccessoriesNewsTime.setText(baseResult.getData().getData().get(0).getNowtime().substring(0,10));
+                } else {
+                    mTvAccessoriesNewsNumber.setVisibility(View.VISIBLE);
+                    mTvAccessoriesNewsNumber.setText(baseResult.getData().getCount()+"");
+                    mTvAccessoriesNewsTime.setVisibility(View.VISIBLE);
+                    mTvAccessoriesNews.setText(baseResult.getData().getData().get(0).getContent());
+                    mTvAccessoriesNewsTime.setText(baseResult.getData().getData().get(0).getNowtime().substring(0,10));
+                }
+                hideProgress();
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void GetReviewMessageList(BaseResult<MessageData<List<Message>>> baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                if (baseResult.getData().getCount() == 0) {
+                    mTvReviewNoticeNumber.setVisibility(View.GONE);
+                    mTvReviewNotice.setText("暂无新的审核消息");
+                    mTvReviewNoticeTime.setVisibility(View.GONE);
+                    return;
+                } else if (baseResult.getData().getCount() >= 99) {
+                    mTvReviewNoticeNumber.setVisibility(View.VISIBLE);
+                    mTvReviewNoticeNumber.setText("99");
+                    mTvReviewNoticeTime.setVisibility(View.VISIBLE);
+                    mTvReviewNotice.setText(baseResult.getData().getData().get(0).getContent());
+                    mTvReviewNoticeTime.setText(baseResult.getData().getData().get(0).getNowtime().substring(0,10));
+                } else {
+                    mTvReviewNoticeNumber.setVisibility(View.VISIBLE);
+                    mTvReviewNoticeNumber.setText(baseResult.getData().getCount()+"");
+                    mTvReviewNoticeTime.setVisibility(View.VISIBLE);
+                    mTvReviewNotice.setText(baseResult.getData().getData().get(0).getContent());
+                    mTvReviewNoticeTime.setText(baseResult.getData().getData().get(0).getNowtime().substring(0,10));
+                }
+                hideProgress();
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void GetComplaintMessageList(BaseResult<MessageData<List<Message>>> baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                if (baseResult.getData().getCount() == 0) {
+                    mTvComplaintMessageNumber.setVisibility(View.GONE);
+                    mTvComplaintMessage.setText("暂无新的审核消息");
+                    mTvComplaintMessageTime.setVisibility(View.GONE);
+                    return;
+                } else if (baseResult.getData().getCount() >= 99) {
+                    mTvComplaintMessageNumber.setVisibility(View.VISIBLE);
+                    mTvComplaintMessageNumber.setText("99");
+                    mTvComplaintMessageTime.setVisibility(View.VISIBLE);
+                    mTvComplaintMessage.setText(baseResult.getData().getData().get(0).getContent());
+                    mTvComplaintMessageTime.setText(baseResult.getData().getData().get(0).getNowtime().substring(0,10));
+                } else {
+                    mTvComplaintMessageNumber.setVisibility(View.VISIBLE);
+                    mTvComplaintMessageNumber.setText(baseResult.getData().getCount()+"");
+                    mTvComplaintMessageTime.setVisibility(View.VISIBLE);
+                    mTvComplaintMessage.setText(baseResult.getData().getData().get(0).getContent());
+                    mTvComplaintMessageTime.setText(baseResult.getData().getData().get(0).getNowtime().substring(0,10));
+                }
+                hideProgress();
                 break;
 
             default:
@@ -214,6 +335,7 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
                     mTvTransactionNotificationTime.setText(baseResult.getData().getData().get(0).getNowtime().substring(0,10));
                     mTvTransactionNotificationTime.setVisibility(View.VISIBLE);
                 }
+                hideProgress();
                 break;
             default:
                 break;
@@ -234,7 +356,20 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
                     mTvMessage.setVisibility(View.VISIBLE);
                     mTvMessage.setText(baseResult.getData().getItem2().getNoLeaveMessage()+"");
                 }
+                hideProgress();
                 break;
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(String name) {
+        if ("transaction_num".equals(name)) {
+            mPresenter.GetOrderMessageList(userId, "0", "99", "1");//工单消息
+            mPresenter.GetTransactionMessageList(userId, "0", "99", "1");
+            mPresenter.GetNewsLeaveMessage(userId, "10", "1");
+            mPresenter.GetTicketMessageList(userId, "10", "99", "1");//配件消息
+            mPresenter.GetReviewMessageList(userId, "11", "99", "1");
+            mPresenter.GetComplaintMessageList(userId, "12", "99", "1");
         }
     }
 }

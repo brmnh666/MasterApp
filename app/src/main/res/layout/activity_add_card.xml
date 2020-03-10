@@ -193,7 +193,7 @@
         android:layout_height="wrap_content"
         android:text="确认绑定"
         android:textColor="@color/white"
-        android:textSize="19sp"
+        android:textSize="16sp"
         android:background="@drawable/v3_btn_shape"
         />
 

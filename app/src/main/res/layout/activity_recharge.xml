@@ -332,7 +332,7 @@
                 android:background="@drawable/v3_btn_shape"
                 android:text="去充值"
                 android:textColor="@color/white"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

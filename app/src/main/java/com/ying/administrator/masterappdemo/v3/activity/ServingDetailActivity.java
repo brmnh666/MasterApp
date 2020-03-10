@@ -28,10 +28,10 @@ import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.ComplaintActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.CompleteWorkOrderActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.MessageActivity2;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.ScanActivity;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.VerifiedActivity2;
 import com.ying.administrator.masterappdemo.util.calendarutil.CalendarEvent;
 import com.ying.administrator.masterappdemo.util.calendarutil.CalendarProviderManager;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.ServingDetailPresenter;
@@ -153,6 +153,12 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
     TextView mTvAppointment;
     @BindView(R.id.tv_confirm_receipt)
     TextView mTvConfirmReceipt;
+    @BindView(R.id.ll_not_available)
+    LinearLayout mLlNotAvailable;
+    @BindView(R.id.ll_reservation_time)
+    LinearLayout mLlReservationTime;
+    @BindView(R.id.tv_complaint)
+    TextView mTvComplaint;
     private String orderId;
     private WorkOrder.DataBean data;
     private Intent intent;
@@ -186,25 +192,34 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
     }
 
     @Override
-    protected void initView(){
+    protected void initView() {
         mTvTitle.setText("工单详情");
         Intent intent = getIntent();
         if (null != intent) {
             Bundle bundle = getIntent().getExtras();
-            String title = null;
-            String content = null;
-            if(bundle!=null){
-                title = bundle.getString(JPushInterface.EXTRA_NOTIFICATION_TITLE);
-//                content = bundle.getString(JPushInterface.EXTRA_ALERT);
-                content=bundle.getString(JPushInterface.EXTRA_EXTRA);
-                try {
-                    JSONObject jsonObject = new JSONObject(content);
-                    orderId = jsonObject.getString("OrderId");
-                } catch (JSONException e) {
-                    e.printStackTrace();
+            if (bundle != null) {
+                String title = null;
+                String content = null;
+                if (bundle != null) {
+                    title = bundle.getString(JPushInterface.EXTRA_NOTIFICATION_TITLE);
+                    if (title != null) {
+                        content = bundle.getString(JPushInterface.EXTRA_ALERT);
+                        content = bundle.getString(JPushInterface.EXTRA_EXTRA);
+                        try {
+                            JSONObject jsonObject = new JSONObject(content);
+                            orderId = jsonObject.getString("OrderId");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        orderId = getIntent().getStringExtra("id");
+                    }
                 }
+            } else {
+                orderId = getIntent().getStringExtra("id");
             }
-        }else {
+
+        } else {
             orderId = getIntent().getStringExtra("id");
         }
 
@@ -227,6 +242,8 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
         mTvCopy.setOnClickListener(this);
         mTvTickets.setOnClickListener(this);
         mTvConfirmReceipt.setOnClickListener(this);
+        mLlNotAvailable.setOnClickListener(this);
+        mTvComplaint.setOnClickListener(this);
     }
 
     @Override
@@ -424,6 +441,16 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
 //                underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review).create();
 //                underReviewDialog.show();
                 break;
+            case R.id.ll_not_available:
+                Intent intent = new Intent(mActivity, LogisticsActivity.class);
+                intent.putExtra("number", data.getExpressNo() + "");
+                startActivity(intent);
+                break;
+            case R.id.tv_complaint:
+                intent=new Intent(mActivity, ComplaintActivity.class);
+                intent.putExtra("orderId",orderId);
+                startActivity(intent);
+                break;
         }
     }
 
@@ -503,7 +530,13 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
 
                     }
 //                    mTvAppointment.setText(data.getIsExtraTime().replace("T"," "));
-                    mTvAppointment.setText(data.getSendOrderList().get(0).getServiceDate());
+                    if (data.getSendOrderList().size() == 0) {
+                        mLlReservationTime.setVisibility(View.GONE);
+                    } else {
+                        mLlReservationTime.setVisibility(View.VISIBLE);
+                        mTvAppointment.setText(data.getSendOrderList().get(0).getServiceDate());
+                    }
+
                     mTvBillingTime.setText(data.getCreateDate().replace("T", " "));
                     mTvDescription.setText("描述：" + data.getMemo());
                     mTvName.setText(data.getUserName() + "    " + data.getPhone());
@@ -555,13 +588,13 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                             mTvReservationAgain.setBackgroundResource(R.drawable.v3_gray_shape);
                             mTvReservationAgain.setEnabled(false);
                             mTvConfirmReceipt.setVisibility(View.GONE);
-                        }else if ("11".equals(data.getState())) {
+                        } else if ("11".equals(data.getState())) {
                             mTvUpload.setVisibility(View.GONE);
                             mTvReturn.setVisibility(View.GONE);
                             mTvReservationAgain.setBackgroundResource(R.drawable.v3_blue_white_shape);
                             mTvReservationAgain.setEnabled(true);
                             mTvConfirmReceipt.setVisibility(View.VISIBLE);
-                        }  else {
+                        } else {
                             mTvUpload.setVisibility(View.VISIBLE);
                             mTvReturn.setVisibility(View.GONE);
                             mTvReservationAgain.setBackgroundResource(R.drawable.v3_blue_white_shape);
@@ -584,6 +617,24 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                                 mTvUpload.setText("添加服务内容");
                             }
                         }
+
+                    }
+                }
+
+                if ("安装".equals(data.getTypeName())) {
+                    if ("Y".equals(data.getIsRecevieGoods())) {
+                        mLlNotAvailable.setVisibility(View.GONE);
+                    } else {
+                        mLlNotAvailable.setVisibility(View.VISIBLE);
+//                            mLlNumber.setVisibility(View.VISIBLE);
+//                            mViewSigning.setVisibility(View.VISIBLE);
+//                            mTvSigning.setText("否");
+//                            expressType = 1;
+//                            if ("".equals(data.getExpressNo()) || data.getExpressNo() == null) {
+//                                mTvContent.setText("暂无物流消息");
+//                            } else {
+//                                mPresenter.GetExpressInfo(data.getExpressNo());
+//                            }
 
                     }
                 }
@@ -660,7 +711,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
 
     @Override
     public void ConfirmReceipt(BaseResult<Data<String>> baseResult) {
-        switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
                 ToastUtils.showShort("收货成功");
                 EventBus.getDefault().post(22);

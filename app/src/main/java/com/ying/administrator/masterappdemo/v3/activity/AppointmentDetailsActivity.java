@@ -5,9 +5,14 @@ import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -19,18 +24,24 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.SubUserInfo;
+import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
+import com.ying.administrator.masterappdemo.mvp.ui.adapter.Redeploy_Adapter;
 import com.ying.administrator.masterappdemo.util.calendarutil.CalendarEvent;
 import com.ying.administrator.masterappdemo.util.calendarutil.CalendarProviderManager;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.AppointmentDetailsPresenter;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.AppointmentDetailsContract;
 import com.ying.administrator.masterappdemo.v3.mvp.model.AppointmentDetailsModel;
+import com.ying.administrator.masterappdemo.widget.CustomDialog_Redeploy;
 
 import org.feezu.liuli.timeselector.TimeSelector;
 import org.greenrobot.eventbus.EventBus;
@@ -38,7 +49,9 @@ import org.greenrobot.eventbus.EventBus;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -109,6 +122,10 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
     TextView mTvDistance;
     @BindView(R.id.tv_brand)
     TextView mTvBrand;
+    @BindView(R.id.ll_not_available)
+    LinearLayout mLlNotAvailable;
+    @BindView(R.id.tv_transfer)
+    TextView mTvTransfer;
     private View under_review;
     private AlertDialog underReviewDialog;
     private long recommendedtime;
@@ -123,6 +140,14 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
     private ClipData myClip;
     private View puchsh_view;
     private AlertDialog push_dialog;
+    private SPUtils spUtils;
+    private String userID;
+    private UserInfo.UserInfoDean userInfo = new UserInfo.UserInfoDean(); //获取当前账号详情
+    private ArrayList<SubUserInfo.SubUserInfoDean> subuserlist=new ArrayList<>();//获取子账号列表
+    private CustomDialog_Redeploy customDialog_redeploy;//转派dialog
+    private RecyclerView recyclerView_custom_redeploy;
+    private Redeploy_Adapter redeploy_adapter;
+    private String SubUserID;
 
     @Override
     protected int setLayoutId() {
@@ -139,7 +164,9 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
         mTvTitle.setText("预约详情");
         orderId = getIntent().getStringExtra("id");
         mPresenter.GetOrderInfo(orderId);
-
+        spUtils = SPUtils.getInstance("token");
+        userID = spUtils.getString("userName");
+//        mPresenter.GetUserInfoList(userID, "1");
         myClipboard = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
     }
 
@@ -151,6 +178,8 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
         mTvCancel.setOnClickListener(this);
         mLlCall.setOnClickListener(this);
         mTvCopy.setOnClickListener(this);
+        mLlNotAvailable.setOnClickListener(this);
+        mTvTransfer.setOnClickListener(this);
     }
 
     @Override
@@ -201,8 +230,8 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                         underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review).create();
                         underReviewDialog.show();
                     } else {
-                        if (data.getOrderAccessroyDetail().size()>0){
-                            if ("Y".equals(data.getIsCall())){
+                        if (data.getOrderAccessroyDetail().size() > 0) {
+                            if ("Y".equals(data.getIsCall())) {
                                 under_review = LayoutInflater.from(mActivity).inflate(R.layout.v3_dialog_reservation, null);
                                 TextView tv_cancel = under_review.findViewById(R.id.tv_cancel);
                                 TextView tv_reservation = under_review.findViewById(R.id.tv_reservation);
@@ -223,7 +252,7 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                                 });
                                 underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review).create();
                                 underReviewDialog.show();
-                            }else {
+                            } else {
                                 RxPermissions rxPermissions = new RxPermissions(this);
                                 rxPermissions.request(Manifest.permission.WRITE_CALENDAR, Manifest.permission.READ_CALENDAR)
                                         .subscribe(new Consumer<Boolean>() {
@@ -241,7 +270,7 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                                             }
                                         });
                             }
-                        }else {
+                        } else {
                             RxPermissions rxPermissions = new RxPermissions(this);
                             rxPermissions.request(Manifest.permission.WRITE_CALENDAR, Manifest.permission.READ_CALENDAR)
                                     .subscribe(new Consumer<Boolean>() {
@@ -267,9 +296,9 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                 break;
             case R.id.ll_telephone:
                 call("tel:" + data.getPhone());
-                if (data.getOrderAccessroyDetail().size()>0){
+                if (data.getOrderAccessroyDetail().size() > 0) {
                     mPresenter.OrderIsCall(orderId, "2");
-                }else {
+                } else {
                     mPresenter.OrderIsCall(orderId, "Y");
                 }
 
@@ -318,6 +347,102 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                 myClip = ClipData.newPlainText("", data.getOrderID() + "");
                 myClipboard.setPrimaryClip(myClip);
                 ToastUtils.showShort("复制成功");
+                break;
+            case R.id.ll_not_available:
+                Intent intent = new Intent(mActivity, LogisticsActivity.class);
+                intent.putExtra("number", data.getExpressNo() + "");
+                startActivity(intent);
+                break;
+            case R.id.tv_transfer:
+                customDialog_redeploy = new CustomDialog_Redeploy(mActivity);
+                customDialog_redeploy.getWindow().setBackgroundDrawableResource(R.color.transparent);
+                customDialog_redeploy.show();
+                Window window = customDialog_redeploy.getWindow();
+                WindowManager.LayoutParams wlp = window.getAttributes();
+                Display d = window.getWindowManager().getDefaultDisplay();
+                wlp.height = (d.getHeight());
+                wlp.width = (d.getWidth());
+                wlp.gravity = Gravity.CENTER;
+                window.setAttributes(wlp);
+
+
+                recyclerView_custom_redeploy = customDialog_redeploy.findViewById(R.id.recyclerView_custom_redeploy);
+                recyclerView_custom_redeploy.setLayoutManager(new LinearLayoutManager(mActivity));
+                redeploy_adapter = new Redeploy_Adapter(R.layout.item_redeploy, subuserlist, mActivity);
+                recyclerView_custom_redeploy.setAdapter(redeploy_adapter);
+
+
+
+                /*选择子账号进行转派*/
+                redeploy_adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+                    @Override
+                    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+
+                        switch (view.getId()) {
+                            case R.id.rl_item_redeploy:
+                                // case R.id.img_redeploy_unselect:
+                                // case R.id.img_redeploy_select:
+                                if (((SubUserInfo.SubUserInfoDean) adapter.getData().get(position)).isIscheck() == false) {//当前选中选中
+
+                                    for (int i = 0; i < subuserlist.size(); i++) {
+                                        subuserlist.get(i).setIscheck(false);
+                                    }
+                                    subuserlist.get(position).setIscheck(true); //点击的为选中状态
+                                    SubUserID = subuserlist.get(position).getUserID();
+                                    Log.d("====>", SubUserID);
+                                    redeploy_adapter.notifyDataSetChanged();
+
+                                } else { //点击的为已选中
+
+                                    for (int i = 0; i < subuserlist.size(); i++) {
+                                        subuserlist.get(i).setIscheck(false);
+                                    }
+                                    SubUserID = null;
+                                    redeploy_adapter.notifyDataSetChanged();
+                                }
+
+
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                });
+
+                customDialog_redeploy.setYesOnclickListener("转派订单", new CustomDialog_Redeploy.onYesOnclickListener() {
+                    @Override
+                    public void onYesClick() {
+                        if (SubUserID == null) {
+                            Toast.makeText(mActivity, "您还没选择子账号进行转派", LENGTH_SHORT).show();
+                            //  customDialog_redeploy.dismiss(); //没选择人进行选派
+                        } else {
+                            //转派成功状态恢复原状
+
+                            for (int i = 0; i < subuserlist.size(); i++) {
+                                subuserlist.get(i).setIscheck(false);
+                            }
+                            //转派成功 刷新当前页面
+//                            redeployposition = position;
+                            mPresenter.ChangeSendOrder(orderId, SubUserID);
+                            customDialog_redeploy.dismiss();
+                            // mRefreshLayout.autoRefresh(0,0,1);
+                            SubUserID = null;
+                        }
+
+                    }
+                });
+
+                customDialog_redeploy.setNoOnclickListener("取消转派", new CustomDialog_Redeploy.onNoOnclickListener() {
+                    @Override
+                    public void onNoOnclick() {
+                        //点击了取消所谓状态恢复原状
+                        SubUserID = null;
+                        for (int i = 0; i < subuserlist.size(); i++) {
+                            subuserlist.get(i).setIscheck(false);
+                        }
+                        customDialog_redeploy.dismiss();
+                    }
+                });
                 break;
         }
     }
@@ -386,6 +511,26 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                             mTvType.setText(data.getGuaranteeText() + "/" + data.getTypeName());
                         }
                     }
+
+                    if ("安装".equals(data.getTypeName())) {
+                        if ("Y".equals(data.getIsRecevieGoods())) {
+                            mLlNotAvailable.setVisibility(View.GONE);
+                        } else {
+                            mLlNotAvailable.setVisibility(View.VISIBLE);
+//                            mLlNumber.setVisibility(View.VISIBLE);
+//                            mViewSigning.setVisibility(View.VISIBLE);
+//                            mTvSigning.setText("否");
+//                            expressType = 1;
+//                            if ("".equals(data.getExpressNo()) || data.getExpressNo() == null) {
+//                                mTvContent.setText("暂无物流消息");
+//                            } else {
+//                                mPresenter.GetExpressInfo(data.getExpressNo());
+//                            }
+
+                        }
+                    } else {
+                        mLlNotAvailable.setVisibility(View.GONE);
+                    }
                     mTvStatus.setText(data.getStateStr());
                     mTvNumbering.setText(data.getOrderID());
                     if (("Y").equals(data.getGuarantee())) {
@@ -394,6 +539,12 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                     } else {
                         mTvPayment.setText("客户付款");
 
+                    }
+
+                    if (data.getOrderAccessroyDetail().size()>0){
+                        mTvTransfer.setVisibility(View.GONE);
+                    }else {
+                        mPresenter.GetUserInfoList(userID,"1");
                     }
 
                     mTvBillingTime.setText(data.getCreateDate().replace("T", " "));
@@ -489,5 +640,56 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
 
         }
 
+    }
+
+    @Override
+    public void GetUserInfoList(BaseResult<UserInfo> baseResult) {
+        switch (baseResult.getStatusCode()){
+            case 200:
+                userInfo=baseResult.getData().getData().get(0);
+                if (userInfo.getParentUserID() == null) {//如果没有父账号说明自己是父账号 显示 转派
+                    //helper.setGone(R.id.tv_pending_appointment_redeploy,true);
+                    mPresenter.GetChildAccountByParentUserID(userID);
+
+                } else {
+                    mTvTransfer.setVisibility(View.GONE);
+                }
+
+
+                break;
+        }
+    }
+
+    @Override
+    public void GetChildAccountByParentUserID(BaseResult<List<SubUserInfo.SubUserInfoDean>> baseResult) {
+        switch (baseResult.getStatusCode()){
+            case 200:
+                subuserlist.addAll(baseResult.getData());
+                if (subuserlist.size() != 0) { //有子账号
+                    mTvTransfer.setVisibility(View.VISIBLE);
+                } else {//没有子账号
+                    mTvTransfer.setVisibility(View.GONE);
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void ChangeSendOrder(BaseResult<Data> baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                if (baseResult.getData().isItem1()) {
+                    Toast.makeText(mActivity, "转派成功", LENGTH_SHORT).show();
+//                    pending_appointment_adapter.remove(redeployposition);
+                    finish();
+                } else {
+
+                    Toast.makeText(mActivity, "转派失败", LENGTH_SHORT).show();
+                }
+
+                break;
+            default:
+                break;
+        }
     }
 }

@@ -47,7 +47,7 @@ private Context context;
 
         /*设置姓名*/
         if (item.getTrueName()==null){
-            helper.setText(R.id.tv_subaccount_name,"无名氏");
+            helper.setText(R.id.tv_subaccount_name,"未实名认证");
         }else {
             helper.setText(R.id.tv_subaccount_name,item.getTrueName());
         }

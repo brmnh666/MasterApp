@@ -16,6 +16,7 @@ public interface HomeContract {
         Observable<BaseResult<Article>> GetListCategoryContentByCategoryID(String CategoryID, String page, String limit);
         //接单操作
         Observable<BaseResult<Data>> UpdateSendOrderState(String OrderID,String State,String Reason);
+        Observable<BaseResult<Data<String>>> messgIsOrNo(String UserID, String limit, String page);
     }
 
     interface View extends BaseView{
@@ -23,6 +24,7 @@ public interface HomeContract {
         void GetListCategoryContentByCategoryID(BaseResult<Article> baseResult);
         //接单操作
         void UpdateSendOrderState(BaseResult<Data> baseResult);
+        void messgIsOrNo(BaseResult<Data<String>> baseResult);
     }
 
     abstract class Presenter extends BasePresenter<View,Model>{
@@ -30,5 +32,6 @@ public interface HomeContract {
         public abstract void GetListCategoryContentByCategoryID(String CategoryID,String page, String limit);
         //接单操作
         public abstract void UpdateSendOrderState(String OrderID,String State,String Reason);
+        public abstract void messgIsOrNo(String UserID, String limit, String page);
     }
 }

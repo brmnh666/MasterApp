@@ -8,8 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/white_shape"
-        android:orientation="vertical"
-        android:layout_marginBottom="@dimen/dp_10">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -167,5 +166,8 @@
         </LinearLayout>
 
     </LinearLayout>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="#eee"/>
 </LinearLayout>

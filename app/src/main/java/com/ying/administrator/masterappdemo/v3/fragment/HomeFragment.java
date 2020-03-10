@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,16 +24,15 @@ import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.Article;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_Receiving_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.WebActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
 import com.ying.administrator.masterappdemo.v3.activity.ApplyFeeActivity;
-import com.ying.administrator.masterappdemo.v3.mvp.Presenter.HomePresenter;
-import com.ying.administrator.masterappdemo.v3.mvp.contract.HomeContract;
-import com.ying.administrator.masterappdemo.v3.mvp.model.HomeModel;
 import com.ying.administrator.masterappdemo.v3.activity.MessageActivity;
 import com.ying.administrator.masterappdemo.v3.activity.QuoteDetailsActivity;
 import com.ying.administrator.masterappdemo.v3.adapter.HomeAdapter;
+import com.ying.administrator.masterappdemo.v3.mvp.Presenter.HomePresenter;
+import com.ying.administrator.masterappdemo.v3.mvp.contract.HomeContract;
+import com.ying.administrator.masterappdemo.v3.mvp.model.HomeModel;
 import com.ying.administrator.masterappdemo.widget.SwitchView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -61,6 +61,8 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
     Unbinder unbinder;
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout mRefreshLayout;
+    @BindView(R.id.iv_red)
+    ImageView mIvRed;
     private String mContentText;
     private int i = 0;
     private List<Article.DataBean> datalist = new ArrayList<>();
@@ -132,6 +134,7 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
                 page = 1;
                 mPresenter.WorkerGetOrderList(userId, "0", page + "", "5");
                 mPresenter.GetListCategoryContentByCategoryID("7", "1", "999");
+                mPresenter.messgIsOrNo(userId, "1", "1");
                 refreshlayout.resetNoMoreData();
             }
         });
@@ -157,7 +160,7 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
         userId = spUtils.getString("userName");
         mPresenter.WorkerGetOrderList(userId, "0", page + "", "5");
         mPresenter.GetListCategoryContentByCategoryID("7", "1", "999");
-
+        mPresenter.messgIsOrNo(userId, "1", "1");
     }
 
     @Override
@@ -196,10 +199,10 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
             case 200:
                 workOrder = baseResult.getData();
                 if (workOrder.getData() != null) {
-                    if (workOrder.getData().size()>0){
+                    if (workOrder.getData().size() > 0) {
                         list.addAll(workOrder.getData());
                         adapter.setNewData(list);
-                    }else {
+                    } else {
                         return;
 //                        adapter.setEmptyView(getHomeEmptyView());
                     }
@@ -280,6 +283,19 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
         }
     }
 
+    @Override
+    public void messgIsOrNo(BaseResult<Data<String>> baseResult) {
+        switch (baseResult.getStatusCode()){
+            case 200:
+                if (baseResult.getData().isItem1()){
+                    mIvRed.setVisibility(View.VISIBLE);
+                }else {
+                    mIvRed.setVisibility(View.GONE);
+                }
+                break;
+        }
+    }
+
     //任意写一个方法，给这个方法一个@Subscribe注解，参数类型可以自定义，但是一定要与你发出的类型相同
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(Integer num) {
@@ -287,7 +303,12 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
             case 10:
                 list.clear();
                 page = 1;
-                mPresenter.WorkerGetOrderList(userId,"0", page + "", "10");
+                mPresenter.WorkerGetOrderList(userId, "0", page + "", "10");
+                break;
+            case 0:
+                list.clear();
+                page = 1;
+                mPresenter.WorkerGetOrderList(userId, "0", page + "", "10");
                 break;
             case Config.ORDER_READ:
 
@@ -298,4 +319,10 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(String name) {
+        if ("transaction_num".equals(name)) {
+            mPresenter.messgIsOrNo(userId, "1", "1");
+        }
+    }
 }

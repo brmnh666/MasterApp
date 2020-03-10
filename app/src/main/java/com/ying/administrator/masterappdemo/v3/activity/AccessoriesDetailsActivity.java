@@ -133,18 +133,18 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
                     if (data.getExpressNo() != null) {
 //                        mTvStatus.setText("已发件");
                         mQrProPro.setProgress(25);
-                    } else if ("8".equals(data.getState())) {
+                    }
+                    if ("8".equals(data.getState())) {
 //                        mTvStatus.setText("已签收");
                         mQrProPro.setProgress(50);
-                    } else if (data.getReturnAccessoryMsg() != null) {
+                    }
+                    if (data.getReturnAccessoryMsg() != null) {
 //                        mTvStatus.setText("已回寄");
                         mQrProPro.setProgress(75);
-                    } else if ("7".equals(data.getState())) {
+                    }
+                    if ("7".equals(data.getState())) {
 //                        mTvStatus.setText("已完成");
                         mQrProPro.setProgress(100);
-                    } else {
-//                        mTvStatus.setText("已审核");
-                        mQrProPro.setProgress(0);
                     }
                     if ("".equals(data.getExpressNo()) || data.getExpressNo() == null) {
                         mTvOutboundLogistics.setText("暂无物流消息");

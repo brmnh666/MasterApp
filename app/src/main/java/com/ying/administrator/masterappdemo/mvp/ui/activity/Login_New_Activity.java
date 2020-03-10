@@ -44,6 +44,7 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.jpush.android.api.JPushInterface;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -213,7 +214,7 @@ public class Login_New_Activity extends BaseActivity<LoginPresenter, LoginModel>
                     spUtils.put("userName", userName);
                     spUtils.put("passWord", passWord);
                     spUtils.put("isLogin", true);
-                    mPresenter.AddAndUpdatePushAccount(XGPushConfig.getToken(this), "7", userName);
+                    mPresenter.AddAndUpdatePushAccount(JPushInterface.getRegistrationID(this), "7", userName);
                     startActivity(new Intent(mActivity, MainActivity.class));
                     finish();
                 } else {
@@ -263,7 +264,7 @@ public class Login_New_Activity extends BaseActivity<LoginPresenter, LoginModel>
                     spUtils.put("adminToken", data.getData());
                     spUtils.put("userName", data.getUserID());
                     spUtils.put("isLogin", true);
-                    mPresenter.AddAndUpdatePushAccount(XGPushConfig.getToken(this), "7", data.getUserID());
+                    mPresenter.AddAndUpdatePushAccount(JPushInterface.getRegistrationID(this), "7", data.getUserID());
                     startActivity(new Intent(mActivity, MainActivity.class));
                     finish();
                 } else {

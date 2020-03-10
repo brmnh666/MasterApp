@@ -177,27 +177,27 @@ public class SettlementFragment extends BaseLazyFragment<OrderPresenter, OrderMo
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void Event(Integer num) {
-        switch (num) {
-            case 2:
-                list.clear();
-                page = 1;
-                mPresenter.WorkerGetOrderList(userId, "12", page + "", "10");
-                break;
-            case 5:
-                list.clear();
-                page = 1;
-                mPresenter.WorkerGetOrderList(userId, "12", page + "", "10");
-                break;
-            case Config.ORDER_READ:
-
-//                mPresenter.WorkerGetOrderRed(userid);
-
-            default:
-                break;
-        }
-    }
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void Event(Integer num) {
+//        switch (num) {
+//            case 2:
+//                list.clear();
+//                page = 1;
+//                mPresenter.WorkerGetOrderList(userId, "12", page + "", "10");
+//                break;
+//            case 5:
+//                list.clear();
+//                page = 1;
+//                mPresenter.WorkerGetOrderList(userId, "12", page + "", "10");
+//                break;
+//            case Config.ORDER_READ:
+//
+////                mPresenter.WorkerGetOrderRed(userid);
+//
+//            default:
+//                break;
+//        }
+//    }
 
     @Override
     protected void onVisible() {

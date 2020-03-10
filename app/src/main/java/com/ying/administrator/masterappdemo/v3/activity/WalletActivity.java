@@ -13,6 +13,7 @@ import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.BankCard;
 import com.ying.administrator.masterappdemo.entity.Bill;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.ToBepresent;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.CardList_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.RechargeActivity;
@@ -24,6 +25,9 @@ import com.ying.administrator.masterappdemo.v3.mvp.contract.WalletContract;
 import com.ying.administrator.masterappdemo.v3.mvp.model.WalletModel;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 import com.ying.administrator.masterappdemo.widget.VerifiedDialog;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -73,6 +77,7 @@ public class WalletActivity extends BaseActivity<WalletPresenter, WalletModel> i
         SPUtils spUtils = SPUtils.getInstance("token");
         userId = spUtils.getString("userName");
         mPresenter.GetUserInfoList(userId, "1");
+        mPresenter.ToBepresent(userId,"0","0","0");
     }
 
     @Override
@@ -161,7 +166,7 @@ public class WalletActivity extends BaseActivity<WalletPresenter, WalletModel> i
                     String Unfinished = String.format("%.2f", userInfo.getUnfinishedAmount());
                     mTvConfirmed.setText("￥"+Unfinished );
                     mTvCumulativeIncome.setText("￥"+String.format("%.2f",userInfo.getServiceTotalMoney()));
-                    mTvWarranty.setText("￥"+userInfo.getDepositMoney());
+                    mTvWarranty.setText("￥"+String.format("%.2f",userInfo.getDepositMoney()));
                 }
 
                 break;
@@ -178,5 +183,25 @@ public class WalletActivity extends BaseActivity<WalletPresenter, WalletModel> i
     @Override
     public void GetAccountPayInfoList(BaseResult<List<BankCard>> baseResult) {
 
+    }
+
+    @Override
+    public void ToBepresent(BaseResult<Data<ToBepresent>> baseResult) {
+        switch (baseResult.getStatusCode()){
+            case 200:
+                if (baseResult.getData().isItem1()){
+                    mTvWithdrawing.setText("￥"+String.format("%.2f",baseResult.getData().getItem2().getData()));
+                }
+                break;
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(String name) {
+        switch (name) {
+            case "GetUserInfoList":
+                mPresenter.GetUserInfoList(userId, "1");
+                break;
+        }
     }
 }

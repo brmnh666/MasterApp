@@ -716,6 +716,7 @@ public class VerifiedActivity2 extends BaseActivity<VerifiedPresenter, VerifiedM
                         mLlSelectServiceArea.setVisibility(View.GONE);
                         mLlShopAddress.setVisibility(View.GONE);
                         mLlServiceSkill.setVisibility(View.GONE);
+                        mLlSeriveOrigin.setVisibility(View.GONE);
                         mPresenter.GetUserInfoList(baseResult.getData().getData().get(0).getParentUserID(), "1");
                     }
 

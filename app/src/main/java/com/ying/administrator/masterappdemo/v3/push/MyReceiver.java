@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.ying.administrator.masterappdemo.v3.activity.MainActivity;
 import com.ying.administrator.masterappdemo.v3.activity.ServingDetailActivity;
 
@@ -31,12 +32,14 @@ import cn.jpush.android.helper.Logger;
  */
 public class MyReceiver extends BroadcastReceiver {
 	private static final String TAG = "JIGUANG-Example";
+    private String orderId;
 
-	@Override
+    @Override
 	public void onReceive(Context context, Intent intent) {
 		try {
 			Bundle bundle = intent.getExtras();
 			Logger.d(TAG, "[MyReceiver] onReceive - " + intent.getAction() + ", extras: " + printBundle(bundle));
+
 
 			if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
 				String regId = bundle.getString(JPushInterface.EXTRA_REGISTRATION_ID);
@@ -46,25 +49,43 @@ public class MyReceiver extends BroadcastReceiver {
 			} else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
 				Logger.d(TAG, "[MyReceiver] 接收到推送下来的自定义消息: " + bundle.getString(JPushInterface.EXTRA_MESSAGE));
 //				processCustomMessage(context, bundle);
-				if ("您有新工单".equals(bundle.getString(JPushInterface.EXTRA_TITLE))){
-					openAssetMusics(context,"new_order_voice.mp3");
-					EventBus.getDefault().post("0");
-				}
-
+//				ToastUtils.showShort("---->"+bundle.getString(JPushInterface.EXTRA_MESSAGE));
 			} else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
 				Logger.d(TAG, "[MyReceiver] 接收到推送下来的通知");
 				int notifactionId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
 				Logger.d(TAG, "[MyReceiver] 接收到推送下来的通知的ID: " + notifactionId);
+				String title = bundle.getString(JPushInterface.EXTRA_NOTIFICATION_TITLE);
+				String content = bundle.getString(JPushInterface.EXTRA_ALERT);
+//				EventBus.getDefault().post(new MessageNotify(title,content));
 
+//				if ("您有新工单".equals(title)){
+					openAssetMusics(context,"new_order_voice.mp3");
+					EventBus.getDefault().post(0);
+//				}
 			} else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
 				Logger.d(TAG, "[MyReceiver] 用户点击打开了通知");
+                String content = bundle.getString(JPushInterface.EXTRA_EXTRA);
+                try {
+                    JSONObject jsonObject = new JSONObject(content);
+                    orderId = jsonObject.getString("OrderId");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if (orderId==null||"".equals(orderId)){
+					Intent i = new Intent(context, MainActivity.class);
+					i.putExtras(bundle);
+					//i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
+					context.startActivity(i);
+				}else {
+					//打开自定义的Activity
+					Intent i = new Intent(context, ServingDetailActivity.class);
+					i.putExtras(bundle);
+					//i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
+					context.startActivity(i);
+                }
 
-				//打开自定义的Activity
-				Intent i = new Intent(context, ServingDetailActivity.class);
-				i.putExtras(bundle);
-				//i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
-				context.startActivity(i);
 
 			} else if(JPushInterface.ACTION_CONNECTION_CHANGE.equals(intent.getAction())) {
 				boolean connected = intent.getBooleanExtra(JPushInterface.EXTRA_CONNECTION_CHANGE, false);

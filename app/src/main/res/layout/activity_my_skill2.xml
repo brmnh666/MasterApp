@@ -20,6 +20,6 @@
         android:layout_margin="10dp"
         android:text="确    认"
         android:textColor="@color/color_white"
-        android:textSize="20sp"/>
+        android:textSize="16sp"/>
 
 </LinearLayout>

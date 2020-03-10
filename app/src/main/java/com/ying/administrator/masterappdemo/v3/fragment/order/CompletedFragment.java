@@ -167,18 +167,18 @@ public class CompletedFragment extends BaseLazyFragment<OrderPresenter, OrderMod
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void Event(Integer num) {
-//        mFragments.clear();
-        switch (num) {
-            case 3:
-                list.clear();
-                page=1;
-                mPresenter.WorkerGetOrderList(userId, "6", page + "", "10");
-                break;
-
-        }
-    }
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void Event(Integer num) {
+////        mFragments.clear();
+//        switch (num) {
+//            case 3:
+//                list.clear();
+//                page=1;
+//                mPresenter.WorkerGetOrderList(userId, "6", page + "", "10");
+//                break;
+//
+//        }
+//    }
 
     @Override
     protected void onVisible() {

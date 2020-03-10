@@ -25,6 +25,7 @@ import com.ying.administrator.masterappdemo.mvp.contract.MyMessageContract;
 import com.ying.administrator.masterappdemo.mvp.model.MyMessageModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.MyMessagePresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.MessageAdapter;
+import com.ying.administrator.masterappdemo.v3.activity.ServingDetailActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -37,8 +38,7 @@ import butterknife.ButterKnife;
 /*工单消息*/
 public class OrderMessageActivity2 extends BaseActivity<MyMessagePresenter, MyMessageModel> implements MyMessageContract.View, View.OnClickListener {
 
-    @BindView(R.id.img_actionbar_return)
-    ImageView mImgActionbarReturn;
+
     @BindView(R.id.tv_title)
     TextView mTvTitle;
     @BindView(R.id.rv_ordermessage)
@@ -47,6 +47,8 @@ public class OrderMessageActivity2 extends BaseActivity<MyMessagePresenter, MyMe
     SmartRefreshLayout mRefreshLayout;
     @BindView(R.id.tv_all_read)
     TextView mTvAllRead;
+    @BindView(R.id.iv_back)
+    ImageView mIvBack;
 
     private MessageAdapter messageAdapter;
     private int pageIndex = 1;
@@ -54,8 +56,8 @@ public class OrderMessageActivity2 extends BaseActivity<MyMessagePresenter, MyMe
     private String userId;
     private List<Message> list = new ArrayList<>();//未读
     private int pos;
-    private int type = 1;//1.工单消息  2.交易信息
-
+    private int type = 1;//1.交易信息  2.工单消息
+    private int subType=0;
     @Override
     protected int setLayoutId() {
         return R.layout.activity_ordermessage2;
@@ -79,11 +81,12 @@ public class OrderMessageActivity2 extends BaseActivity<MyMessagePresenter, MyMe
         mRvOrdermessage.setNestedScrollingEnabled(false);
         messageAdapter = new MessageAdapter(R.layout.item_message, list);
         mRvOrdermessage.setAdapter(messageAdapter);
+        messageAdapter.setEmptyView(getMessageEmptyView());
         type = getIntent().getIntExtra("type", 1);
-
+        subType=getIntent().getIntExtra("subType",1);
         SPUtils spUtils = SPUtils.getInstance("token");
         userId = spUtils.getString("userName");
-        mPresenter.GetMessageList(userId, Integer.toString(type), "0", "10", Integer.toString(pageIndex));
+        mPresenter.GetMessageList(userId, Integer.toString(type), Integer.toString(subType), "10", Integer.toString(pageIndex));
     }
 
     @Override
@@ -93,7 +96,7 @@ public class OrderMessageActivity2 extends BaseActivity<MyMessagePresenter, MyMe
 
     @Override
     protected void setListener() {
-        mImgActionbarReturn.setOnClickListener(this);
+        mIvBack.setOnClickListener(this);
         mTvAllRead.setOnClickListener(this);
         /*下拉刷新*/
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
@@ -101,7 +104,7 @@ public class OrderMessageActivity2 extends BaseActivity<MyMessagePresenter, MyMe
             public void onRefresh(RefreshLayout refreshlayout) {
                 pageIndex = 1;
                 list.clear();
-                mPresenter.GetMessageList(userId, Integer.toString(type), "0", "10", Integer.toString(pageIndex));
+                mPresenter.GetMessageList(userId, Integer.toString(type), Integer.toString(subType), "10", Integer.toString(pageIndex));
                 refreshlayout.finishRefresh();
                 refreshlayout.resetNoMoreData();
             }
@@ -112,7 +115,7 @@ public class OrderMessageActivity2 extends BaseActivity<MyMessagePresenter, MyMe
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 pageIndex++; //页数加1
-                mPresenter.GetMessageList(userId, Integer.toString(type), "0", "10", Integer.toString(pageIndex));
+                mPresenter.GetMessageList(userId, Integer.toString(type), Integer.toString(subType), "10", Integer.toString(pageIndex));
                 refreshlayout.finishLoadmore();
             }
         });
@@ -124,8 +127,8 @@ public class OrderMessageActivity2 extends BaseActivity<MyMessagePresenter, MyMe
                     case R.id.ll_order_message:
                         mPresenter.AddOrUpdatemessage(((Message) adapter.getData().get(position)).getMessageID(), "2");
                         if (!"0".equals(((Message) adapter.getData().get(position)).getOrderID())) {
-                            Intent intent = new Intent(mActivity, WorkOrderDetailsActivity2.class);
-                            intent.putExtra("OrderID", ((Message) adapter.getData().get(position)).getOrderID());
+                            Intent intent=new Intent(mActivity, ServingDetailActivity.class);
+                            intent.putExtra("id",list.get(position).getOrderID());
                             startActivity(intent);
                         }
                         break;
@@ -185,7 +188,7 @@ public class OrderMessageActivity2 extends BaseActivity<MyMessagePresenter, MyMe
 
     @Override
     public void AllRead(BaseResult<MessageData<List<Message>>> baseResult) {
-        switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
 //                    if (baseResult.getData().isItem1()) {
                 list.get(pos).setIsLook("2");
@@ -194,7 +197,7 @@ public class OrderMessageActivity2 extends BaseActivity<MyMessagePresenter, MyMe
                 EventBus.getDefault().post("order_num");
                 EventBus.getDefault().post("transaction_num");
 //                    }
-               hideProgress();
+                hideProgress();
                 break;
         }
     }
@@ -202,12 +205,12 @@ public class OrderMessageActivity2 extends BaseActivity<MyMessagePresenter, MyMe
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.img_actionbar_return:
+            case R.id.iv_back:
                 OrderMessageActivity2.this.finish();
                 break;
             case R.id.tv_all_read:
                 showProgress();
-                mPresenter.AllRead(userId,Integer.toString(type),"0");
+                mPresenter.AllRead(userId, Integer.toString(type),Integer.toString(subType) );
                 break;
         }
     }

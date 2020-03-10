@@ -22,6 +22,7 @@ import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.jpush.android.api.JPushInterface;
 
 /*引导页*/
 public class SplashActivity extends BaseActivity<LoginPresenter, LoginModel> implements View.OnClickListener, LoginContract.View {
@@ -81,6 +82,7 @@ public class SplashActivity extends BaseActivity<LoginPresenter, LoginModel> imp
             public void run() {
                 /*调转到主界面界面*/
                 if (userName != null && isLogin) { //存在用户名说明登录过 直接登录到主界面
+                    mPresenter.AddAndUpdatePushAccount(JPushInterface.getRegistrationID(mActivity), "7", userName);
                     Intent intent = new Intent(SplashActivity.this, com.ying.administrator.masterappdemo.v3.activity.MainActivity.class);
                     startActivity(intent);
                     SplashActivity.this.finish();

@@ -28,6 +28,7 @@ import com.ying.administrator.masterappdemo.mvp.presenter.RegisterPresenter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.jpush.android.api.JPushInterface;
 
 public class BindPhoneActivity extends BaseActivity<RegisterPresenter, RegisterModel> implements View.OnClickListener, RegisterContract.View {
     @BindView(R.id.img_register_back)
@@ -192,7 +193,7 @@ public class BindPhoneActivity extends BaseActivity<RegisterPresenter, RegisterM
                     spUtils.put("adminToken", data.getData());
                     spUtils.put("userName", data.getUserID());
                     spUtils.put("isLogin", true);
-                    mPresenter.AddAndUpdatePushAccount(XGPushConfig.getToken(this), "7", data.getUserID());
+                    mPresenter.AddAndUpdatePushAccount(JPushInterface.getRegistrationID(this), "7", data.getUserID());
                     startActivity(new Intent(mActivity, MainActivity.class));
                     finish();
                 }else {

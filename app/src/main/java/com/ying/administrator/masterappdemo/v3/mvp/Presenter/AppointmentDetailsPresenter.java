@@ -3,8 +3,12 @@ package com.ying.administrator.masterappdemo.v3.mvp.Presenter;
 import com.ying.administrator.masterappdemo.base.BaseObserver;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.SubUserInfo;
+import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.AppointmentDetailsContract;
+
+import java.util.List;
 
 public class AppointmentDetailsPresenter extends AppointmentDetailsContract.Persenter {
     @Override
@@ -58,6 +62,40 @@ public class AppointmentDetailsPresenter extends AppointmentDetailsContract.Pers
                     @Override
                     protected void onHandleSuccess(BaseResult<Data> value) {
                         mView.AddOrderSuccess(value);
+                    }
+                });
+    }
+
+    @Override
+    public void GetUserInfoList(String UserID, String limit) {
+        mModel.GetUserInfoList(UserID, limit)
+                .subscribe(new BaseObserver<UserInfo>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<UserInfo> value) {
+                        mView.GetUserInfoList(value);
+                    }
+                });
+    }
+
+    @Override
+    public void GetChildAccountByParentUserID(String ParentUserID) {
+
+        mModel.GetChildAccountByParentUserID(ParentUserID)
+                .subscribe(new BaseObserver<List<SubUserInfo.SubUserInfoDean>>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<List<SubUserInfo.SubUserInfoDean>> value) {
+                        mView.GetChildAccountByParentUserID(value);
+                    }
+                });
+    }
+
+    @Override
+    public void ChangeSendOrder(String OrderID, String UserID) {
+        mModel.ChangeSendOrder(OrderID,UserID)
+                .subscribe(new BaseObserver<Data>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<Data> value) {
+                        mView.ChangeSendOrder(value);
                     }
                 });
     }

@@ -1,10 +1,12 @@
 package com.ying.administrator.masterappdemo.v3.mvp.model;
 
 
+import com.huawei.hms.api.Api;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.BankCard;
 import com.ying.administrator.masterappdemo.entity.Bill;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.ToBepresent;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.mvp.service.ApiRetrofit;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.WalletContract;
@@ -33,6 +35,13 @@ public class WalletModel implements WalletContract.Model {
     @Override
     public Observable<BaseResult<List<BankCard>>> GetAccountPayInfoList(String UserId) {
         return ApiRetrofit.getDefault().GetAccountPayInfoList(UserId)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<BaseResult<Data<ToBepresent>>> ToBepresent(String UserId, String State, String limit, String page) {
+        return ApiRetrofit.getDefault().ToBepresent(UserId, State, limit, page)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

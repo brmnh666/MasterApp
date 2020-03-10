@@ -217,7 +217,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="2020年1月12日"
+                    android:text=""
                     android:textColor="#808080"
                     android:textSize="12sp"
                     android:layout_marginTop="5dp"/>
@@ -289,7 +289,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="2020年1月12日"
+                    android:text=""
                     android:textColor="#808080"
                     android:textSize="12sp"
                     android:layout_marginTop="5dp"/>
@@ -361,7 +361,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="2020年1月12日"
+                    android:text=""
                     android:textColor="#808080"
                     android:textSize="12sp"
                     android:layout_marginTop="5dp"/>
@@ -433,7 +433,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="2020年1月12日"
+                    android:text=""
                     android:textColor="#808080"
                     android:textSize="12sp"
                     android:layout_marginTop="5dp"/>
@@ -505,7 +505,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="2020年1月12日"
+                    android:text=""
                     android:textColor="#808080"
                     android:textSize="12sp"
                     android:layout_marginTop="5dp"/>

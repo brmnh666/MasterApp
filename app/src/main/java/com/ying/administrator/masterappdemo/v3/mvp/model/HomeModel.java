@@ -33,4 +33,11 @@ public class HomeModel implements HomeContract.Model {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }
+
+    @Override
+    public Observable<BaseResult<Data<String>>> messgIsOrNo(String UserID, String limit, String page) {
+        return ApiRetrofit.getDefault().messgIsOrNo(UserID, limit, page)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
 }

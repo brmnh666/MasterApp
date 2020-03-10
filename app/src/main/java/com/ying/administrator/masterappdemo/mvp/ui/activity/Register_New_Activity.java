@@ -26,6 +26,7 @@ import com.ying.administrator.masterappdemo.mvp.presenter.RegisterPresenter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.jpush.android.api.JPushInterface;
 
 public class Register_New_Activity extends BaseActivity<RegisterPresenter, RegisterModel> implements View.OnClickListener, RegisterContract.View {
 
@@ -218,7 +219,7 @@ public class Register_New_Activity extends BaseActivity<RegisterPresenter, Regis
                     spUtils.put("userName", Phone);
                     spUtils.put("passWord", password);
                     spUtils.put("isLogin", true);
-                    mPresenter.AddAndUpdatePushAccount(XGPushConfig.getToken(this), "7", Phone);
+                    mPresenter.AddAndUpdatePushAccount(JPushInterface.getRegistrationID(this), "7", Phone);
                     startActivity(new Intent(mActivity, MainActivity.class));
                     ActivityUtils.finishAllActivities();
                     hideProgress();

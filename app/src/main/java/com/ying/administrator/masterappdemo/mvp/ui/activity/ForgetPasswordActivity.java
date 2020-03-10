@@ -26,6 +26,7 @@ import com.ying.administrator.masterappdemo.mvp.presenter.ForgetPasswordPresente
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.jpush.android.api.JPushInterface;
 
 public class ForgetPasswordActivity extends BaseActivity<ForgetPasswordPresenter, ForgetPasswordModel> implements View.OnClickListener, ForgetPasswordContract.View {
 
@@ -157,7 +158,7 @@ public class ForgetPasswordActivity extends BaseActivity<ForgetPasswordPresenter
                     spUtils.put("userName", phone);
                     spUtils.put("passWord", password);
                     spUtils.put("isLogin", true);
-                    mPresenter.AddAndUpdatePushAccount(XGPushConfig.getToken(this), "7", phone);
+                    mPresenter.AddAndUpdatePushAccount(JPushInterface.getRegistrationID(this), "7", phone);
                     startActivity(new Intent(mActivity, MainActivity.class));
                     ActivityUtils.finishAllActivities();
                 } else {

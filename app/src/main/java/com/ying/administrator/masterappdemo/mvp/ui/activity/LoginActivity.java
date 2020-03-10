@@ -31,6 +31,7 @@ import com.zyao89.view.zloading.Z_TYPE;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.jpush.android.api.JPushInterface;
 
 public class LoginActivity extends BaseActivity<LoginPresenter, LoginModel> implements View.OnClickListener, LoginContract.View {
     //用户名
@@ -161,7 +162,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginModel> impl
                     spUtils.put("userName", userName);
                     spUtils.put("passWord", passWord);
                     spUtils.put("isLogin", true);
-                    mPresenter.AddAndUpdatePushAccount(XGPushConfig.getToken(this),"7",userName);
+                    mPresenter.AddAndUpdatePushAccount(JPushInterface.getRegistrationID(this),"7",userName);
                     startActivity(new Intent(mActivity, MainActivity.class));
                     finish();
                 }else{

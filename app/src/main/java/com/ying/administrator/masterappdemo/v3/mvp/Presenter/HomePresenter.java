@@ -40,4 +40,15 @@ public class HomePresenter extends HomeContract.Presenter {
                     }
                 });
     }
+
+    @Override
+    public void messgIsOrNo(String UserID, String limit, String page) {
+        mModel.messgIsOrNo(UserID, limit, page)
+                .subscribe(new BaseObserver<Data<String>>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<Data<String>> value) {
+                        mView.messgIsOrNo(value);
+                    }
+                });
+    }
 }

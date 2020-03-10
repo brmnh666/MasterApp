@@ -29,6 +29,7 @@ import com.ying.administrator.masterappdemo.entity.RedPointData;
 import com.ying.administrator.masterappdemo.entity.Service;
 import com.ying.administrator.masterappdemo.entity.Skill;
 import com.ying.administrator.masterappdemo.entity.SubUserInfo;
+import com.ying.administrator.masterappdemo.entity.ToBepresent;
 import com.ying.administrator.masterappdemo.entity.Track;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WXpayInfo;
@@ -1147,4 +1148,24 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("Order/ConfirmReceipt")
     Observable<BaseResult<Data<String>>> ConfirmReceipt(@Field("OrderID") String OrderID);
+
+    /**
+     * 查询提现中
+     */
+    @FormUrlEncoded
+    @POST("Account/ToBepresent")
+    Observable<BaseResult<Data<ToBepresent>>> ToBepresent(@Field("UserID") String UserID,
+                                                          @Field("State") String State,
+                                                          @Field("limit") String limit,
+                                                          @Field("page") String page);
+
+    /*是否消息已读*/
+    @FormUrlEncoded
+    @POST("Cms/messgIsOrNo")
+    Observable<BaseResult<Data<String>>> messgIsOrNo(
+            @Field("UserID") String UserID,
+            @Field("limit") String limit,
+            @Field("page") String page
+
+    );
 }

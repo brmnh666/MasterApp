@@ -2,11 +2,19 @@ package com.ying.administrator.masterappdemo.v3.push;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.ying.administrator.masterappdemo.v3.activity.MainActivity;
+import com.ying.administrator.masterappdemo.v3.activity.ServingDetailActivity;
+
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.IOException;
 
 import cn.jpush.android.api.CmdMessage;
 import cn.jpush.android.api.CustomMessage;
@@ -16,7 +24,7 @@ import cn.jpush.android.api.NotificationMessage;
 import cn.jpush.android.service.JPushMessageReceiver;
 
 public class PushMessageReceiver extends JPushMessageReceiver {
-//    private static final String TAG = "PushMessageReceiver";
+    private static final String TAG = "PushMessageReceiver";
 //    @Override
 //    public void onMessage(Context context, CustomMessage customMessage) {
 //        Log.e(TAG,"[onMessage] "+customMessage);
@@ -28,7 +36,7 @@ public class PushMessageReceiver extends JPushMessageReceiver {
 //        Log.e(TAG,"[onNotifyMessageOpened] "+message);
 //        try{
 //            //打开自定义的Activity
-//            Intent i = new Intent(context, TestActivity.class);
+//            Intent i = new Intent(context, ServingDetailActivity.class);
 //            Bundle bundle = new Bundle();
 //            bundle.putString(JPushInterface.EXTRA_NOTIFICATION_TITLE,message.notificationTitle);
 //            bundle.putString(JPushInterface.EXTRA_ALERT,message.notificationContent);
@@ -61,32 +69,40 @@ public class PushMessageReceiver extends JPushMessageReceiver {
 //            Log.e(TAG, "[onMultiActionClicked] 用户点击通知栏按钮未定义");
 //        }
 //    }
-//
-//    @Override
-//    public void onNotifyMessageArrived(Context context, NotificationMessage message) {
-//        Log.e(TAG,"[onNotifyMessageArrived] "+message);
-//    }
-//
-//    @Override
-//    public void onNotifyMessageDismiss(Context context, NotificationMessage message) {
-//        Log.e(TAG,"[onNotifyMessageDismiss] "+message);
-//    }
-//
-//    @Override
-//    public void onRegister(Context context, String registrationId) {
-//        Log.e(TAG,"[onRegister] "+registrationId);
-//    }
-//
-//    @Override
-//    public void onConnected(Context context, boolean isConnected) {
-//        Log.e(TAG,"[onConnected] "+isConnected);
-//    }
-//
-//    @Override
-//    public void onCommandResult(Context context, CmdMessage cmdMessage) {
-//        Log.e(TAG,"[onCommandResult] "+cmdMessage);
-//    }
-//
+
+    @Override
+    public void onNotifyMessageArrived(Context context, NotificationMessage message) {
+        Log.e(TAG, "[onNotifyMessageArrived] " + message);
+//        String title = bundle.getString(JPushInterface.EXTRA_NOTIFICATION_TITLE);
+//        String content = bundle.getString(JPushInterface.EXTRA_ALERT);
+//				EventBus.getDefault().post(new MessageNotify(title,content));
+
+        if ("您有新工单".equals(message.notificationTitle)) {
+            openAssetMusics(context, "new_order_voice.mp3");
+            EventBus.getDefault().post(0);
+        }
+    }
+
+    @Override
+    public void onNotifyMessageDismiss(Context context, NotificationMessage message) {
+        Log.e(TAG, "[onNotifyMessageDismiss] " + message);
+    }
+
+    @Override
+    public void onRegister(Context context, String registrationId) {
+        Log.e(TAG, "[onRegister] " + registrationId);
+    }
+
+    @Override
+    public void onConnected(Context context, boolean isConnected) {
+        Log.e(TAG, "[onConnected] " + isConnected);
+    }
+
+    @Override
+    public void onCommandResult(Context context, CmdMessage cmdMessage) {
+        Log.e(TAG, "[onCommandResult] " + cmdMessage);
+    }
+
 //    @Override
 //    public void onTagOperatorResult(Context context, JPushMessage jPushMessage) {
 //        TagAliasOperatorHelper.getInstance().onTagOperatorResult(context,jPushMessage);
@@ -130,11 +146,27 @@ public class PushMessageReceiver extends JPushMessageReceiver {
 //            LocalBroadcastManager.getInstance(context).sendBroadcast(msgIntent);
 //        }
 //    }
-//
-//    @Override
-//    public void onNotificationSettingsCheck(Context context, boolean isOn, int source) {
-//        super.onNotificationSettingsCheck(context, isOn, source);
-//        Log.e(TAG,"[onNotificationSettingsCheck] isOn:"+isOn+",source:"+source);
-//    }
-    
+
+    @Override
+    public void onNotificationSettingsCheck(Context context, boolean isOn, int source) {
+        super.onNotificationSettingsCheck(context, isOn, source);
+        Log.e(TAG, "[onNotificationSettingsCheck] isOn:" + isOn + ",source:" + source);
+    }
+
+    /**
+     * 打开assets下的音乐mp3文件
+     */
+    private void openAssetMusics(Context context,String filename) {
+
+        try {
+            //播放 assets/a2.mp3 音乐文件
+            AssetFileDescriptor fd = context.getAssets().openFd(filename);
+            MediaPlayer mediaPlayer = new MediaPlayer();
+            mediaPlayer.setDataSource(fd.getFileDescriptor(), fd.getStartOffset(), fd.getLength());
+            mediaPlayer.prepare();
+            mediaPlayer.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

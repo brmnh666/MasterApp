@@ -21,7 +21,7 @@
                 android:layout_centerInParent="true"
                 android:layout_marginTop="80dp"
                 android:layout_marginBottom="50dp"
-                android:src="@drawable/app" />
+                android:src="@drawable/v3_icon" />
         </LinearLayout>
 
 
@@ -123,7 +123,7 @@
             android:gravity="center"
             android:text="登录"
             android:textColor="@color/white"
-            android:textSize="19sp" />
+            android:textSize="16sp" />
 
 
         <RelativeLayout

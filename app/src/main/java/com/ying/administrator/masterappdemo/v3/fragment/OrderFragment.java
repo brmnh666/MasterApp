@@ -240,4 +240,11 @@ public class OrderFragment extends BaseLazyFragment<OrderPresenter, OrderModel> 
         }
     }
 
+    @Override
+    protected void onVisible() {
+        super.onVisible();
+
+        mReceivingViewpager.setCurrentItem(0);
+
+    }
 }

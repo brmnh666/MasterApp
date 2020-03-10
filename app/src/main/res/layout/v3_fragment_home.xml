@@ -28,18 +28,28 @@
                 android:orientation="vertical"
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="5dp">
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/v3_xiaoxi"
-                    android:layout_gravity="center"/>
+                <FrameLayout
+                    android:layout_width="25dp"
+                    android:layout_height="21dp">
+                    <ImageView
+                        android:layout_width="21dp"
+                        android:layout_height="17dp"
+                        android:src="@mipmap/v3_xiaoxi" />
+                    <ImageView
+                        android:id="@+id/iv_red"
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:src="@drawable/red_shape"
+                        android:layout_gravity="right"
+                        android:visibility="gone"/>
+                </FrameLayout>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="消息"
                     android:textSize="12sp"
                     android:textColor="@color/black"
-                    android:layout_marginTop="4dp"
                     android:layout_gravity="center"/>
             </LinearLayout>
         </LinearLayout>
