@@ -43,12 +43,12 @@
                         android:paddingBottom="2dp"
                         android:text="用户发单/维修"
                         android:textColor="@color/black"
-                        android:textSize="8sp" />
+                        android:textSize="8sp"
+                        android:visibility="gone"/>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -254,8 +254,8 @@
                         android:textColor="@color/black"
                         android:textSize="17sp" />
 
-                    <TextView
-                        android:id="@+id/tv_price"
+                    <EditText
+                        android:id="@+id/et_price"
                         android:layout_width="130dp"
                         android:layout_height="38dp"
                         android:background="@drawable/v3_gray_white_shape"

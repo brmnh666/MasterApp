@@ -14,8 +14,10 @@ import com.ying.administrator.masterappdemo.util.MyUtils;
 import java.util.List;
 
 public class PendingAdapter extends BaseQuickAdapter<WorkOrder.DataBean, BaseViewHolder> {
-    public PendingAdapter(int layoutResId, @Nullable List<WorkOrder.DataBean> data) {
+    private String userId;
+    public PendingAdapter(int layoutResId, @Nullable List<WorkOrder.DataBean> data,String userId) {
         super(layoutResId, data);
+        this.userId=userId;
     }
 
     @Override
@@ -47,6 +49,12 @@ public class PendingAdapter extends BaseQuickAdapter<WorkOrder.DataBean, BaseVie
             }
             helper.setBackgroundRes(R.id.tv_type, R.drawable.v3_home_bg);
             helper.setTextColor(R.id.tv_type, Color.parseColor("#01B1D2"));
+        }
+
+        if (userId.equals(item.getSendUser())){
+            helper.setGone(R.id.tv_sub_account_maintenance,false);
+        }else {
+            helper.setVisible(R.id.tv_sub_account_maintenance,true);
         }
     }
 }

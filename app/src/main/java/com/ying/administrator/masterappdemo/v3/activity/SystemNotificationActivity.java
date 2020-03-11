@@ -48,8 +48,14 @@ public class SystemNotificationActivity extends BaseActivity implements View.OnC
 
     @Override
     protected void setListener() {
-        mIvBack.setOnClickListener(this);
-        mLlCustomerService.setOnClickListener(this);
+//        mIvBack.setOnClickListener(this);
+//        mLlCustomerService.setOnClickListener(this);
+        mIvBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         mLlOrderMustRead.setOnClickListener(this);
         mLlPlatformPolicy.setOnClickListener(this);
         mLlNews.setOnClickListener(this);
@@ -57,11 +63,11 @@ public class SystemNotificationActivity extends BaseActivity implements View.OnC
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.iv_back:
-                finish();
-                break;
-        }
+//        switch (v.getId()){
+//            case R.id.iv_back:
+//                finish();
+//                break;
+//        }
 
         intent = new Intent(mActivity, ArticleActivity.class);
         switch(v.getId()){

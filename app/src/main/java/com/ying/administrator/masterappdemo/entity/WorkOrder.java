@@ -227,6 +227,15 @@ public class WorkOrder implements Serializable {
         private String barCodeIsNo;
         private String partyNo;
         private String IsExtraTime;
+        private String picture;
+
+        public String getPicture() {
+            return picture;
+        }
+
+        public void setPicture(String picture) {
+            this.picture = picture;
+        }
 
         public String getIsExtraTime() {
             return IsExtraTime;

@@ -1,21 +1,36 @@
 package com.ying.administrator.masterappdemo.v3.activity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
+import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.AddServiceAreaInfoActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.MyInfoSkillActivity2;
 import com.ying.administrator.masterappdemo.v3.adapter.OrderSettingAdapter;
 import com.ying.administrator.masterappdemo.v3.bean.OrderSettingBean;
+import com.ying.administrator.masterappdemo.v3.mvp.Presenter.OrderSettingPresenter;
+import com.ying.administrator.masterappdemo.v3.mvp.contract.OrderSettingContract;
+import com.ying.administrator.masterappdemo.v3.mvp.model.OrderSettingModel;
 import com.ying.administrator.masterappdemo.v3.weight.AutoLineFeedLayoutManager;
 
 import java.util.ArrayList;
@@ -24,7 +39,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class OrderSettingActivity extends BaseActivity implements View.OnClickListener {
+public class OrderSettingActivity extends BaseActivity<OrderSettingPresenter, OrderSettingModel> implements View.OnClickListener, OrderSettingContract.View {
     @BindView(R.id.iv_back)
     ImageView mIvBack;
     @BindView(R.id.tv_title)
@@ -49,8 +64,16 @@ public class OrderSettingActivity extends BaseActivity implements View.OnClickLi
     LinearLayout mLlServiceArea;
     @BindView(R.id.ll_service_product)
     LinearLayout mLlServiceProduct;
+    @BindView(R.id.tv_team_size)
+    LinearLayout mTvTeamSize;
+    @BindView(R.id.ll_truck)
+    LinearLayout mLlTruck;
     private List<OrderSettingBean> list = new ArrayList<>();
     private OrderSettingAdapter adapter;
+    private AlertDialog cancelDialog;
+    private EditText et_message;
+    private String userID;
+    private UserInfo.UserInfoDean userInfo;
 
     @Override
     protected int setLayoutId() {
@@ -70,6 +93,9 @@ public class OrderSettingActivity extends BaseActivity implements View.OnClickLi
     @Override
     protected void initView() {
         mTvTitle.setText("接单设置");
+        SPUtils spUtils = SPUtils.getInstance("token");
+        userID = spUtils.getString("userName");
+        mPresenter.GetUserInfoList(userID, "1");
     }
 
     @Override
@@ -77,6 +103,8 @@ public class OrderSettingActivity extends BaseActivity implements View.OnClickLi
         mIvBack.setOnClickListener(this);
         mLlServiceArea.setOnClickListener(this);
         mLlServiceProduct.setOnClickListener(this);
+        mTvTeamSize.setOnClickListener(this);
+        mLlTruck.setOnClickListener(this);
     }
 
     @Override
@@ -93,8 +121,53 @@ public class OrderSettingActivity extends BaseActivity implements View.OnClickLi
 //                    ToastUtils.showShort("您暂未实名");
 //                    return;
 //                } else {
-                    startActivity(new Intent(this, MyInfoSkillActivity2.class));
+                startActivity(new Intent(this, MyInfoSkillActivity2.class));
 //                }
+                break;
+            case R.id.tv_team_size:
+                View Cancelview = LayoutInflater.from(mActivity).inflate(R.layout.dialog_cancel, null);
+                et_message = Cancelview.findViewById(R.id.et_message);
+                Button negtive = Cancelview.findViewById(R.id.negtive);
+                Button positive = Cancelview.findViewById(R.id.positive);
+                TextView title = Cancelview.findViewById(R.id.title);
+                title.setText("团队人数");
+                et_message.setHint("请添加或修改团队人数");
+                et_message.setInputType(InputType.TYPE_CLASS_NUMBER);
+                negtive.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        cancelDialog.dismiss();
+                    }
+                });
+
+                positive.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String message = et_message.getText().toString();
+                        if (message == null || "".equals(message)) {
+                            ToastUtils.showShort("请添加或修改团队人数");
+                        } else {
+//                                    mPresenter.UpdateOrderState(OrderId, "-1",message);
+                            mPresenter.updateTeamNumber(userID, message);
+                            cancelDialog.dismiss();
+                        }
+
+                    }
+                });
+
+                cancelDialog = new AlertDialog.Builder(mActivity).setView(Cancelview).create();
+                cancelDialog.show();
+                Window window1 = cancelDialog.getWindow();
+                WindowManager.LayoutParams layoutParams = window1.getAttributes();
+                window1.setAttributes(layoutParams);
+                window1.setBackgroundDrawable(new ColorDrawable());
+                break;
+            case R.id.ll_truck:
+                if (userInfo.getIsOrNoTruck()==null||"N".equals(userInfo.getIsOrNoTruck())){
+                    mPresenter.IsOrNoTruck(userID,"Y");
+                }else {
+                    mPresenter.IsOrNoTruck(userID,"N");
+                }
                 break;
         }
     }
@@ -104,5 +177,48 @@ public class OrderSettingActivity extends BaseActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
+    }
+
+    @Override
+    public void updateTeamNumber(BaseResult<Data<String>> baseObserver) {
+        switch (baseObserver.getStatusCode()) {
+            case 200:
+                ToastUtils.showShort("设置成功");
+                mPresenter.GetUserInfoList(userID, "1");
+                break;
+        }
+    }
+
+    @Override
+    public void IsOrNoTruck(BaseResult<Data<String>> baseResult) {
+        switch (baseResult.getStatusCode()){
+            case 200:
+                ToastUtils.showShort("设置成功");
+                mPresenter.GetUserInfoList(userID,"1");
+                break;
+        }
+    }
+
+    @Override
+    public void GetUserInfoList(BaseResult<UserInfo> baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                userInfo = baseResult.getData().getData().get(0);
+                if ("0".equals(userInfo.getTeamNumber())) {
+                    mTvPerson.setText("请填写团队人数");
+                } else {
+                    mTvPerson.setText(userInfo.getTeamNumber());
+                }
+
+                if (userInfo.getIsOrNoTruck() == null) {
+                    mTvTruck.setText("请填写有无货车");
+                } else if ("Y".equals(userInfo.getIsOrNoTruck())) {
+                    mTvTruck.setText("有");
+                } else {
+                    mTvTruck.setText("无");
+
+                }
+                break;
+        }
     }
 }

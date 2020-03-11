@@ -164,6 +164,7 @@ public class SettingActivity extends BaseActivity<SettingPresenter, SettingModel
             case R.id.ll_update:
 
 //                Beta.checkUpgrade(true,true);
+                showProgress();
                 UpgradeInfo upgradeInfo=Beta.getUpgradeInfo();
                 if (upgradeInfo==null){
                     puchsh_view = LayoutInflater.from(mActivity).inflate(R.layout.v3_dialog_prompt, null);
@@ -182,6 +183,7 @@ public class SettingActivity extends BaseActivity<SettingPresenter, SettingModel
                             .setView(puchsh_view)
                             .create();
                     push_dialog.show();
+                    hideProgress();
 //                    ToastUtils.showShort("暂无更新");
                 }else {
                     return;

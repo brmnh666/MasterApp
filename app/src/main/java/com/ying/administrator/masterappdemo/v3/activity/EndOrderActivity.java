@@ -1,78 +1,58 @@
-package com.ying.administrator.masterappdemo.v3.fragment.order;
+package com.ying.administrator.masterappdemo.v3.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
-import com.blankj.utilcode.util.SPUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.ying.administrator.masterappdemo.R;
+import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
-import com.ying.administrator.masterappdemo.entity.Data;
-import com.ying.administrator.masterappdemo.entity.NavigationBarNumber;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
-import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
-import com.ying.administrator.masterappdemo.v3.activity.QuoteDetailsActivity;
-import com.ying.administrator.masterappdemo.v3.activity.ServingDetailActivity;
 import com.ying.administrator.masterappdemo.v3.adapter.OrderAdapter;
-import com.ying.administrator.masterappdemo.v3.mvp.Presenter.OrderPresenter;
-import com.ying.administrator.masterappdemo.v3.mvp.contract.OrderContract;
-import com.ying.administrator.masterappdemo.v3.mvp.model.OrderModel;
+import com.ying.administrator.masterappdemo.v3.mvp.Presenter.EndOrderPresenter;
+import com.ying.administrator.masterappdemo.v3.mvp.contract.EndOrderContract;
+import com.ying.administrator.masterappdemo.v3.mvp.model.EndOrderModel;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
-//待寄件
-public class ShippingFragment extends BaseLazyFragment <OrderPresenter, OrderModel> implements OrderContract.View {
-    private static final String ARG_SHOW_TEXT = "text";
+public class EndOrderActivity extends BaseActivity<EndOrderPresenter, EndOrderModel> implements View.OnClickListener, EndOrderContract.View {
+    @BindView(R.id.iv_back)
+    ImageView mIvBack;
+    @BindView(R.id.tv_title)
+    TextView mTvTitle;
+    @BindView(R.id.tv_save)
+    TextView mTvSave;
+    @BindView(R.id.ll_customer_service)
+    LinearLayout mLlCustomerService;
     @BindView(R.id.rv_order)
     RecyclerView mRvOrder;
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout mRefreshLayout;
-    Unbinder unbinder;
-    private String mContentText;
-    private String userId;
-    private int page=1;
+    private String id;
+    private int page = 1;
     private List<WorkOrder.DataBean> list = new ArrayList<>();
     private OrderAdapter adapter;
     private WorkOrder workOrder;
-    public ShippingFragment() {
-        // Required empty public constructor
-    }
-
-    public static ShippingFragment newInstance() {
-        ShippingFragment fragment = new ShippingFragment();
-        return fragment;
-    }
-
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mContentText = getArguments().getString(ARG_SHOW_TEXT);
-        }
-    }
 
     @Override
     protected int setLayoutId() {
-        return R.layout.v3_fragment_shipping;
+        return R.layout.v3_activity_end_order;
     }
 
     @Override
@@ -83,7 +63,7 @@ public class ShippingFragment extends BaseLazyFragment <OrderPresenter, OrderMod
             public void onRefresh(RefreshLayout refreshlayout) {
                 list.clear();
                 page=1;
-                mPresenter.WorkerGetOrderList(userId, "11", page + "", "10");
+                mPresenter.WorkerGetOrderList(id, "8", page + "", "10");
                 EventBus.getDefault().post(20);
                 refreshlayout.resetNoMoreData();
             }
@@ -97,7 +77,7 @@ public class ShippingFragment extends BaseLazyFragment <OrderPresenter, OrderMod
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++; //页数加1
-                mPresenter.WorkerGetOrderList(userId, "11", page + "", "10");
+                mPresenter.WorkerGetOrderList(id, "8", page + "", "10");
 
             }
         });
@@ -105,11 +85,11 @@ public class ShippingFragment extends BaseLazyFragment <OrderPresenter, OrderMod
 
     @Override
     protected void initView() {
-        mRefreshLayout.autoRefresh(0,0,1);
-        SPUtils spUtils = SPUtils.getInstance("token");
-        userId = spUtils.getString("userName");
-        mPresenter.WorkerGetOrderList(userId, "11", page + "", "10");
-        adapter = new OrderAdapter(R.layout.v3_item_home, list,"shipping",userId);
+        mTvTitle.setText("完结工单");
+        id = getIntent().getStringExtra("id");
+        mPresenter.WorkerGetOrderList(id, "6", page + "", "10");
+
+        adapter = new OrderAdapter(R.layout.v3_item_home, list, "return",id);
         mRvOrder.setLayoutManager(new LinearLayoutManager(mActivity));
         mRvOrder.setAdapter(adapter);
         adapter.setEmptyView(getHomeEmptyView());
@@ -121,31 +101,27 @@ public class ShippingFragment extends BaseLazyFragment <OrderPresenter, OrderMod
                 startActivity(intent);
             }
         });
-
     }
 
     @Override
     protected void setListener() {
-
+        mIvBack.setOnClickListener(this);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.iv_back:
+                finish();
+                break;
+        }
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
-
-    @Override
-    public void NavigationBarNumber(BaseResult<Data<NavigationBarNumber>> baseResult) {
-
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 
     @Override
@@ -165,26 +141,5 @@ public class ShippingFragment extends BaseLazyFragment <OrderPresenter, OrderMod
 
                 break;
         }
-    }
-
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    public void Event(Integer num) {
-////        mFragments.clear();
-//        switch (num) {
-//            case 3:
-//                list.clear();
-//                page=1;
-//                mPresenter.WorkerGetOrderList(userId, "11", page + "", "10");
-//                break;
-//
-//        }
-//    }
-
-    @Override
-    protected void onVisible() {
-        super.onVisible();
-        list.clear();
-        page=1;
-        mPresenter.WorkerGetOrderList(userId, "11", page + "", "10");
     }
 }

@@ -109,7 +109,9 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
                     case R.id.tv_orders:
                         grabposition = position;
                         if ("1".equals(list.get(position).getPartyNo())) {
-                            startActivity(new Intent(mActivity, QuoteDetailsActivity.class));
+                            Intent intent=new Intent(mActivity,QuoteDetailsActivity.class);
+                            intent.putExtra("id",list.get(position).getOrderID());
+                            startActivity(intent);
                         } else {
                             if ("true".equals(list.get(position).getDistanceTureOrFalse())) {
                                 Intent intent = new Intent(mActivity, ApplyFeeActivity.class);
@@ -262,6 +264,7 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
                     adapter.remove(grabposition);
                     Toast.makeText(getActivity(), "接单成功", LENGTH_SHORT).show();
                     EventBus.getDefault().post(10);
+                    EventBus.getDefault().post(1);
                     EventBus.getDefault().post("工单");
 //                        Intent intent = new Intent(getActivity(), Order_Receiving_Activity.class);
 //                        intent.putExtra("intent", "pending_appointment");

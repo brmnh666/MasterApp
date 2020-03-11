@@ -364,7 +364,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/v3_qianbao"
+                    android:src="@mipmap/v3_yijian"
                     android:layout_gravity="center"/>
                 <TextView
                     android:layout_width="match_parent"
@@ -426,7 +426,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/v3_qianbao"
+                    android:src="@mipmap/v3_guanyuwomen"
                     android:layout_gravity="center"/>
                 <TextView
                     android:layout_width="match_parent"

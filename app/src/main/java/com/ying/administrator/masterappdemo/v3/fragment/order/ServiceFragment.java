@@ -115,7 +115,7 @@ public class ServiceFragment extends BaseLazyFragment<OrderPresenter, OrderModel
         userId = spUtils.getString("userName");
         mRefreshLayout.autoRefresh(0, 0, 1);
         mPresenter.WorkerGetOrderList(userId, "2", page + "", "10");
-        adapter = new OrderAdapter(R.layout.v3_item_home, list, "service");
+        adapter = new OrderAdapter(R.layout.v3_item_home, list, "service",userId);
         mRvOrder.setLayoutManager(new LinearLayoutManager(mActivity));
         mRvOrder.setAdapter(adapter);
         adapter.setEmptyView(getHomeEmptyView());

@@ -110,7 +110,7 @@ public class SettlementFragment extends BaseLazyFragment<OrderPresenter, OrderMo
         SPUtils spUtils = SPUtils.getInstance("token");
         userId = spUtils.getString("userName");
         mPresenter.WorkerGetOrderList(userId, "12", page + "", "10");
-        adapter = new OrderAdapter(R.layout.v3_item_home, list,"settlement");
+        adapter = new OrderAdapter(R.layout.v3_item_home, list,"settlement",userId);
         mRvOrder.setLayoutManager(new LinearLayoutManager(mActivity));
         mRvOrder.setAdapter(adapter);
         adapter.setEmptyView(getHomeEmptyView());

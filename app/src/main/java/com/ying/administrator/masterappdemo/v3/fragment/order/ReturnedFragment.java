@@ -110,7 +110,7 @@ public class ReturnedFragment extends BaseLazyFragment<OrderPresenter, OrderMode
         SPUtils spUtils = SPUtils.getInstance("token");
         userId = spUtils.getString("userName");
         mPresenter.WorkerGetOrderList(userId, "8", page + "", "10");
-        adapter = new OrderAdapter(R.layout.v3_item_home, list,"return");
+        adapter = new OrderAdapter(R.layout.v3_item_home, list,"return",userId);
         mRvOrder.setLayoutManager(new LinearLayoutManager(mActivity));
         mRvOrder.setAdapter(adapter);
         adapter.setEmptyView(getHomeEmptyView());

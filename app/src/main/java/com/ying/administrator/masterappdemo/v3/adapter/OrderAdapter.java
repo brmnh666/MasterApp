@@ -15,9 +15,11 @@ import java.util.List;
 
 public class OrderAdapter extends BaseQuickAdapter<WorkOrder.DataBean, BaseViewHolder> {
     private String type;
-    public OrderAdapter(int layoutResId, @Nullable List<WorkOrder.DataBean> data,String type) {
+    private String userId;
+    public OrderAdapter(int layoutResId, @Nullable List<WorkOrder.DataBean> data,String type,String userId) {
         super(layoutResId, data);
         this.type=type;
+        this.userId=userId;
     }
 
     @Override
@@ -61,6 +63,12 @@ public class OrderAdapter extends BaseQuickAdapter<WorkOrder.DataBean, BaseViewH
             }
         }else {
             tv_review.setVisibility(View.GONE);
+        }
+
+        if (userId.equals(item.getSendUser())){
+            helper.setGone(R.id.tv_sub_account_maintenance,false);
+        }else {
+            helper.setVisible(R.id.tv_sub_account_maintenance,true);
         }
     }
 }

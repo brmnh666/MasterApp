@@ -56,7 +56,8 @@
                 android:layout_marginBottom="15dp"
                 android:gravity="center"
                 android:text="公安部监管信息安全"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:visibility="gone"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"

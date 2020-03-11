@@ -125,7 +125,7 @@ public class PendingFragment extends BaseLazyFragment<OrderPresenter, OrderModel
 //        for (int i = 0; i < 10; i++) {
 //            list.add(new WorkOrder.DataBean());
 //        }
-        pendingAdapter = new PendingAdapter(R.layout.v3_item_home, list);
+        pendingAdapter = new PendingAdapter(R.layout.v3_item_home, list,userId);
         mRvPending.setLayoutManager(new LinearLayoutManager(mActivity));
         mRvPending.setAdapter(pendingAdapter);
         pendingAdapter.setEmptyView(getHomeEmptyView());

@@ -1,5 +1,6 @@
 package com.ying.administrator.masterappdemo.v3.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -55,6 +56,7 @@ public class SubAccountDetails extends BaseActivity implements View.OnClickListe
     @Override
     protected void setListener() {
         mIvBack.setOnClickListener(this);
+        mLlEndOrder.setOnClickListener(this);
     }
 
     @Override
@@ -69,6 +71,11 @@ public class SubAccountDetails extends BaseActivity implements View.OnClickListe
         switch (v.getId()){
             case R.id.iv_back:
                 finish();
+                break;
+            case R.id.ll_end_order:
+                Intent intent=new Intent(mActivity,EndOrderActivity.class);
+                intent.putExtra("id",id);
+                startActivity(intent);
                 break;
         }
     }

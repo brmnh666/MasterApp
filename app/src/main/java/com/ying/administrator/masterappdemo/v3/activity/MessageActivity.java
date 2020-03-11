@@ -113,12 +113,13 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
         mTvSave.setText("全部已读");
         spUtils = SPUtils.getInstance("token");
         userId = spUtils.getString("userName");
-        mPresenter.GetOrderMessageList(userId, "0", "99", "1");//工单消息
-        mPresenter.GetTransactionMessageList(userId, "0", "99", "1");
-        mPresenter.GetNewsLeaveMessage(userId, "10", "1");
-        mPresenter.GetTicketMessageList(userId, "10", "99", "1");//配件消息
-        mPresenter.GetReviewMessageList(userId, "11", "99", "1");
-        mPresenter.GetComplaintMessageList(userId, "12", "99", "1");
+        showProgress();
+        mPresenter.GetOrderMessageList(userId, "0", "1", "1");//工单消息
+        mPresenter.GetTransactionMessageList(userId, "0", "1", "1");
+        mPresenter.GetNewsLeaveMessage(userId, "1", "1");
+        mPresenter.GetTicketMessageList(userId, "10", "1", "1");//配件消息
+        mPresenter.GetReviewMessageList(userId, "11", "1", "1");
+        mPresenter.GetComplaintMessageList(userId, "12", "1", "1");
     }
 
     @Override
@@ -196,6 +197,7 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
     public void GetOrderMessageList(BaseResult<MessageData<List<Message>>> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
+                hideProgress();
                 if (baseResult.getData().getCount() == 0) {
                     mTvOrderMessageNumber.setVisibility(View.GONE);
                     mTvOrderMessage.setText("暂无新的订单消息");
@@ -214,7 +216,7 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
                     mTvOrderMessage.setText(baseResult.getData().getData().get(0).getContent());
                     mTvOrderMessageTime.setText(baseResult.getData().getData().get(0).getNowtime().substring(0,10));
                 }
-                hideProgress();
+
                 break;
 
             default:
@@ -226,6 +228,7 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
     public void GetTicketMessageList(BaseResult<MessageData<List<Message>>> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
+                hideProgress();
                 if (baseResult.getData().getCount() == 0) {
                     mTvAccessoriesNewsNumber.setVisibility(View.GONE);
                     mTvAccessoriesNews.setText("暂无新的配件消息");
@@ -364,12 +367,12 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(String name) {
         if ("transaction_num".equals(name)) {
-            mPresenter.GetOrderMessageList(userId, "0", "99", "1");//工单消息
-            mPresenter.GetTransactionMessageList(userId, "0", "99", "1");
-            mPresenter.GetNewsLeaveMessage(userId, "10", "1");
-            mPresenter.GetTicketMessageList(userId, "10", "99", "1");//配件消息
-            mPresenter.GetReviewMessageList(userId, "11", "99", "1");
-            mPresenter.GetComplaintMessageList(userId, "12", "99", "1");
+            mPresenter.GetOrderMessageList(userId, "0", "1", "1");//工单消息
+            mPresenter.GetTransactionMessageList(userId, "0", "1", "1");
+            mPresenter.GetNewsLeaveMessage(userId, "1", "1");
+            mPresenter.GetTicketMessageList(userId, "10", "1", "1");//配件消息
+            mPresenter.GetReviewMessageList(userId, "11", "1", "1");
+            mPresenter.GetComplaintMessageList(userId, "12", "1", "1");
         }
     }
 }

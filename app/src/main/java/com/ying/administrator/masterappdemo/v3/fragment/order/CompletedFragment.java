@@ -109,7 +109,7 @@ public class CompletedFragment extends BaseLazyFragment<OrderPresenter, OrderMod
         SPUtils spUtils = SPUtils.getInstance("token");
         userId = spUtils.getString("userName");
         mPresenter.WorkerGetOrderList(userId, "6", page + "", "10");
-        adapter = new OrderAdapter(R.layout.v3_item_home, list,"shipping");
+        adapter = new OrderAdapter(R.layout.v3_item_home, list,"shipping",userId);
         mRvOrder.setLayoutManager(new LinearLayoutManager(mActivity));
         mRvOrder.setAdapter(adapter);
         adapter.setEmptyView(getHomeEmptyView());

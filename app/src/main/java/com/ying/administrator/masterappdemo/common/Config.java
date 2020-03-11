@@ -27,6 +27,8 @@ public class Config {
     public static final String RETURN_IMG="https://img.xigyu.com/Pics/OldAccessory/";//返回返件路径
     public static final String Service_IMG="https://img.xigyu.com/Pics/FinishOrder/";//服务过程图片
     public static final String ComPlaint_URL="https://img.xigyu.com/Pics/ComPlaint/";//投诉地址
+    public static final String Leave_quote_URL="https://img.xigyu.com/Pics/WX_indxModelImage/";//报价图片地址
+
 
     public static  final int ORDER_READ=99;
     public static  final int APPLY_REQUEST=12;

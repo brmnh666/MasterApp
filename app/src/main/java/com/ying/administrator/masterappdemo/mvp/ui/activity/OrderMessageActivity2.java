@@ -130,6 +130,8 @@ public class OrderMessageActivity2 extends BaseActivity<MyMessagePresenter, MyMe
                             Intent intent=new Intent(mActivity, ServingDetailActivity.class);
                             intent.putExtra("id",list.get(position).getOrderID());
                             startActivity(intent);
+                        }else {
+                            return;
                         }
                         break;
                 }
@@ -180,7 +182,10 @@ public class OrderMessageActivity2 extends BaseActivity<MyMessagePresenter, MyMe
                     EventBus.getDefault().post("orderempty");
                     EventBus.getDefault().post("order_num");
                     EventBus.getDefault().post("transaction_num");
-                    mRefreshLayout.autoRefresh();
+//                    mRefreshLayout.autoRefresh();
+                    pageIndex = 1;
+                    list.clear();
+                    mPresenter.GetMessageList(userId, Integer.toString(type), Integer.toString(subType), "10", Integer.toString(pageIndex));
                 }
                 break;
         }

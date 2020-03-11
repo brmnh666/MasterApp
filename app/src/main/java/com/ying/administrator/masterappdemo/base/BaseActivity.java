@@ -201,6 +201,11 @@ public abstract class BaseActivity<P extends BasePresenter, M extends BaseModel>
     public View getMessageEmptyView() {
         return  LayoutInflater.from(mActivity).inflate(R.layout.v3_layout_message_empty,null);
     }
+
+    public View getHomeEmptyView() {
+        return  LayoutInflater.from(mActivity).inflate(R.layout.v3_layout_home_empty,null);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();

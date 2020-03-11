@@ -13,6 +13,7 @@ import com.ying.administrator.masterappdemo.entity.City;
 import com.ying.administrator.masterappdemo.entity.ComplaintList;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.Data2;
+import com.ying.administrator.masterappdemo.entity.Data3;
 import com.ying.administrator.masterappdemo.entity.District;
 import com.ying.administrator.masterappdemo.entity.GAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
@@ -32,6 +33,7 @@ import com.ying.administrator.masterappdemo.entity.SubUserInfo;
 import com.ying.administrator.masterappdemo.entity.ToBepresent;
 import com.ying.administrator.masterappdemo.entity.Track;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
+import com.ying.administrator.masterappdemo.entity.WXOfferQuery;
 import com.ying.administrator.masterappdemo.entity.WXpayInfo;
 import com.ying.administrator.masterappdemo.entity.WithDrawMoney;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
@@ -1168,4 +1170,34 @@ public interface ApiService {
             @Field("page") String page
 
     );
+
+    /*团队人数*/
+    @FormUrlEncoded
+    @POST("Account/updateTeamNumber")
+    Observable<BaseResult<Data<String>>> updateTeamNumber(@Field("UserID") String UserID,
+                                                          @Field("teamNumber") String teamNumber);
+
+    /*有无货车*/
+    @FormUrlEncoded
+    @POST("Account/IsOrNoTruck")
+    Observable<BaseResult<Data<String>>> IsOrNoTruck(@Field("UserID") String UserID,
+                                                          @Field("IsOrNoTruck") String IsOrNoTruck);
+
+    /*报价*/
+    @FormUrlEncoded
+    @POST("Order/WX_orderOffer")
+    Observable<BaseResult<Data<String>>> WXOrderOffer(@Field("SenUserId") String SenUserId,
+                                                      @Field("price") String Price,
+                                                      @Field("OrderId") String OrderId,
+                                                      @Field("Reason") String Reason,
+                                                      @Field("OrderofferId") String OrderofferId,
+                                                      @Field("IsUse") String IsUse);
+
+    /*查询是否报价*/
+    @FormUrlEncoded
+    @POST("Order/WX_OfferQuery")
+    Observable<BaseResult<Data3<List<WXOfferQuery>>>> WXOfferQuery(@Field("SenUserId") String SenUserId,
+                                                                   @Field("OrderId") String OrderId,
+                                                                   @Field("limit") String limit,
+                                                                   @Field("page") String page);
 }

@@ -132,6 +132,24 @@ public class UserInfo implements Serializable {
         private Double UnfinishedAmount;
         private double ServiceTotalMoney;
         private String emergencyContact;
+        private String teamNumber;
+        private String IsOrNoTruck;
+
+        public String getTeamNumber() {
+            return teamNumber;
+        }
+
+        public void setTeamNumber(String teamNumber) {
+            this.teamNumber = teamNumber;
+        }
+
+        public String getIsOrNoTruck() {
+            return IsOrNoTruck;
+        }
+
+        public void setIsOrNoTruck(String isOrNoTruck) {
+            IsOrNoTruck = isOrNoTruck;
+        }
 
         public String getEmergencyContact() {
             return emergencyContact;

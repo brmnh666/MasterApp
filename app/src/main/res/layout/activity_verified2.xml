@@ -211,8 +211,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="请选择服务区域"
-                    android:textColor="#5A5A5B"
-                    android:textSize="14sp" />
+                    android:textColor="#666"
+                    android:textSize="16sp" />
 
                 <ImageView
                     android:layout_width="14dp"
@@ -287,12 +287,11 @@
                 android:background="@color/color_white"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="@dimen/dp_10">
+                android:padding="10dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="7dp"
                     android:layout_weight="1"
                     android:text="选择服务起点"
                     android:textColor="#5A5A5B"
@@ -430,14 +429,16 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
                 android:background="@color/color_white"
-                android:orientation="horizontal"
-                android:padding="17dp">
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="我的技能"
                     android:textColor="#5A5A5B"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
                     android:textSize="16dp" />
 
                 <TextView
@@ -449,16 +450,17 @@
                     android:gravity="right"
                     android:hint="请添加你的服务技能"
                     android:singleLine="true"
-                    android:textColor="@color/color_black"
-                    android:textColorHint="#D3D3D3"
-                    android:textSize="14sp" />
+                    android:textColor="#666"
+                    android:textSize="16sp"
+                    android:layout_gravity="center" />
 
 
                 <ImageView
                     android:layout_width="14dp"
                     android:layout_height="20dp"
                     android:layout_gravity="center"
-                    android:src="@mipmap/right_arrow" />
+                    android:src="@mipmap/right_arrow"
+                    android:layout_marginRight="20dp"/>
             </LinearLayout>
 
             <Button

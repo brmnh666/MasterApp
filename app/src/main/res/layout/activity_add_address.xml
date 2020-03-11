@@ -27,7 +27,7 @@
             android:hint="收货人"
             android:textColor="#333"
             android:textColorHint="#808080"
-            android:textSize="14sp"/>
+            android:textSize="16sp"/>
 
         <ImageView
             android:id="@+id/iv_add"
@@ -60,7 +60,7 @@
             android:hint="手机号码"
             android:textColor="#333"
             android:textColorHint="#808080"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:inputType="number"/>
     </LinearLayout>
 
@@ -88,7 +88,7 @@
             android:hint="所在地区"
             android:textColor="#333"
             android:textColorHint="#808080"
-            android:textSize="14sp"/>
+            android:textSize="16sp"/>
 
         <ImageView
             android:layout_width="15dp"
@@ -121,7 +121,7 @@
             android:hint="详细地址：如道路、门牌号、小区、楼栋号、单元室等"
             android:textColor="#333"
             android:textColorHint="#808080"
-            android:textSize="14sp"/>
+            android:textSize="16sp"/>
     </LinearLayout>
 
     <View
@@ -180,7 +180,7 @@
     <Button
         android:id="@+id/submit_application_bt"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="53dp"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="20dp"
         android:layout_marginRight="15dp"
