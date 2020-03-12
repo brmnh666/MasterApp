@@ -36,12 +36,14 @@ public class PendingAdapter extends BaseQuickAdapter<WorkOrder.DataBean, BaseVie
         if ("1".equals(item.getPartyNo())) {
             tv_orders.setText("报价");
             tv_orders.setBackgroundResource(R.drawable.v3_yellow_shape);
+            tv_orders.setTextColor(Color.parseColor("#000000"));
             helper.setText(R.id.tv_type, "用户发单/" + item.getTypeName());
             helper.setBackgroundRes(R.id.tv_type, R.drawable.v3_yellow_shape);
             helper.setTextColor(R.id.tv_type, Color.parseColor("#000000"));
         } else {
             tv_orders.setText("接单");
             tv_orders.setBackgroundResource(R.drawable.v3_orders_shape);
+            tv_orders.setTextColor(Color.parseColor("#ffffff"));
             if ("Y".equals(item.getExtra()) && !"0".equals(item.getExtraTime())) {
                 helper.setText(R.id.tv_type, item.getGuaranteeText() + "/" + item.getTypeName() + "/加急");
             } else {

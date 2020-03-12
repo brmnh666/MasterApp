@@ -21,7 +21,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.SPUtils;
@@ -55,20 +54,15 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 public class VerifiedPhotoActivity extends BaseActivity<VerifiedPresenter, VerifiedModel> implements View.OnClickListener, VerifiedContract.View {
-    @BindView(R.id.img_actionbar_return)
-    ImageView mImgActionbarReturn;
-    @BindView(R.id.tv_actionbar_return)
-    TextView mTvActionbarReturn;
-    @BindView(R.id.ll_return)
-    LinearLayout mLlReturn;
-    @BindView(R.id.tv_actionbar_title)
-    TextView mTvActionbarTitle;
-    @BindView(R.id.img_actionbar_message)
-    ImageView mImgActionbarMessage;
-    @BindView(R.id.tv_message)
-    TextView mTvMessage;
-    @BindView(R.id.actionbar_layout)
-    RelativeLayout mActionbarLayout;
+
+    @BindView(R.id.iv_back)
+    ImageView mIvBack;
+    @BindView(R.id.tv_title)
+    TextView mTvTitle;
+    @BindView(R.id.tv_save)
+    TextView mTvSave;
+    @BindView(R.id.ll_customer_service)
+    LinearLayout mLlCustomerService;
     @BindView(R.id.iv_positive)
     ImageView mIvPositive;
     @BindView(R.id.iv_negative)
@@ -102,14 +96,14 @@ public class VerifiedPhotoActivity extends BaseActivity<VerifiedPresenter, Verif
 
     @Override
     protected void initView() {
-        mTvActionbarTitle.setText("实名认证");
+        mTvTitle.setText("实名认证");
         spUtils = SPUtils.getInstance("token");
         UserID = spUtils.getString("userName");
     }
 
     @Override
     protected void setListener() {
-        mLlReturn.setOnClickListener(this);
+        mIvBack.setOnClickListener(this);
         mIvNegative.setOnClickListener(this);
         mIvPositive.setOnClickListener(this);
         mIvSelfie.setOnClickListener(this);
@@ -120,7 +114,7 @@ public class VerifiedPhotoActivity extends BaseActivity<VerifiedPresenter, Verif
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ll_return:
+            case R.id.iv_back:
                 finish();
                 break;
             case R.id.iv_positive:
@@ -151,10 +145,10 @@ public class VerifiedPhotoActivity extends BaseActivity<VerifiedPresenter, Verif
                 } else if ("".equals(mNegativeCard)) {
                     ToastUtils.showShort("请添加反面身份证照片！");
                     return;
-                } else if ("".equals(mSelfie)) {
-                    ToastUtils.showShort("请添加清晰自拍照！");
-                    return;
-                }else {
+//                } else if ("".equals(mSelfie)) {
+//                    ToastUtils.showShort("请添加清晰自拍照！");
+//                    return;
+                } else {
                     EventBus.getDefault().post("verified");
                     ToastUtils.showShort("完善成功");
                     finish();

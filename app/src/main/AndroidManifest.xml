@@ -670,13 +670,13 @@
         <!--投诉-->
 
         <activity android:name=".mvp.ui.activity.ComplaintActivity"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppTheme.NoActionBar1"
             />
 
         <!--投诉详情-->
 
         <activity android:name=".mvp.ui.activity.ComplaintDetailActivity"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppTheme.NoActionBar1"
             />
         <!--交易信息-->
         <activity android:name=".mvp.ui.activity.TransactionMessageActivity"
@@ -945,7 +945,12 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
 
-
+        <!--提现-->
+        <activity android:name=".v3.activity.WithdrawActivity"
+            android:theme="@style/AppTheme.NoActionBar1"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
 
 
 

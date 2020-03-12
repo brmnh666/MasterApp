@@ -323,7 +323,8 @@
                     android:text="报价需知"
                     android:textColor="@color/black"
                     android:textSize="14sp"
-                    android:gravity="center"/>
+                    android:gravity="center"
+                    android:visibility="gone"/>
                 <TextView
                     android:id="@+id/tv_confirm_offer"
                     android:layout_width="100dp"

@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.SPUtils;
@@ -31,20 +30,15 @@ import butterknife.ButterKnife;
 
 public class ComplaintDetailActivity extends BaseActivity<ComplaintPresenter, ComplaintModel> implements View.OnClickListener, ComplaintContract.View {
 
-    @BindView(R.id.img_actionbar_return)
-    ImageView mImgActionbarReturn;
-    @BindView(R.id.tv_actionbar_return)
-    TextView mTvActionbarReturn;
-    @BindView(R.id.ll_return)
-    LinearLayout mLlReturn;
-    @BindView(R.id.tv_actionbar_title)
-    TextView mTvActionbarTitle;
-    @BindView(R.id.img_actionbar_message)
-    ImageView mImgActionbarMessage;
-    @BindView(R.id.tv_message)
-    TextView mTvMessage;
-    @BindView(R.id.actionbar_layout)
-    RelativeLayout mActionbarLayout;
+
+    @BindView(R.id.iv_back)
+    ImageView mIvBack;
+    @BindView(R.id.tv_title)
+    TextView mTvTitle;
+    @BindView(R.id.tv_save)
+    TextView mTvSave;
+    @BindView(R.id.ll_customer_service)
+    LinearLayout mLlCustomerService;
     @BindView(R.id.rv_complaint_detail)
     RecyclerView mRvComplaintDetail;
     private String orderId;
@@ -79,7 +73,7 @@ public class ComplaintDetailActivity extends BaseActivity<ComplaintPresenter, Co
 
     @Override
     protected void initView() {
-        mTvActionbarTitle.setText("投诉详情");
+        mTvTitle.setText("投诉详情");
         SPUtils spUtils = SPUtils.getInstance("token");
         UserId = spUtils.getString("userName");
         orderId = getIntent().getStringExtra("orderId");
@@ -88,13 +82,13 @@ public class ComplaintDetailActivity extends BaseActivity<ComplaintPresenter, Co
 
     @Override
     protected void setListener() {
-        mLlReturn.setOnClickListener(this);
+        mIvBack.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ll_return:
+            case R.id.iv_back:
                 finish();
                 break;
         }

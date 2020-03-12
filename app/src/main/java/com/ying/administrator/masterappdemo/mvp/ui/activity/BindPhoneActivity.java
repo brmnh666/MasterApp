@@ -25,6 +25,7 @@ import com.ying.administrator.masterappdemo.entity.WxRegister;
 import com.ying.administrator.masterappdemo.mvp.contract.RegisterContract;
 import com.ying.administrator.masterappdemo.mvp.model.RegisterModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.RegisterPresenter;
+import com.ying.administrator.masterappdemo.v3.activity.MainActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

@@ -23,6 +23,7 @@ import com.ying.administrator.masterappdemo.entity.WxRegister;
 import com.ying.administrator.masterappdemo.mvp.contract.LoginContract;
 import com.ying.administrator.masterappdemo.mvp.model.LoginModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.LoginPresenter;
+import com.ying.administrator.masterappdemo.v3.activity.MainActivity;
 import com.zyao89.view.zloading.ZLoadingDialog;
 import com.zyao89.view.zloading.Z_TYPE;
 

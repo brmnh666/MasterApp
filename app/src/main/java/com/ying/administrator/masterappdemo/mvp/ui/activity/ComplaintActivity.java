@@ -24,13 +24,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
-import com.gyf.barlibrary.ImmersionBar;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
@@ -56,20 +54,15 @@ import okhttp3.RequestBody;
 
 public class ComplaintActivity extends BaseActivity<ComplaintPresenter, ComplaintModel> implements View.OnClickListener, ComplaintContract.View {
 
-    @BindView(R.id.img_actionbar_return)
-    ImageView mImgActionbarReturn;
-    @BindView(R.id.tv_actionbar_return)
-    TextView mTvActionbarReturn;
-    @BindView(R.id.ll_return)
-    LinearLayout mLlReturn;
-    @BindView(R.id.tv_actionbar_title)
-    TextView mTvActionbarTitle;
-    @BindView(R.id.img_actionbar_message)
-    ImageView mImgActionbarMessage;
-    @BindView(R.id.tv_message)
-    TextView mTvMessage;
-    @BindView(R.id.actionbar_layout)
-    RelativeLayout mActionbarLayout;
+
+    @BindView(R.id.iv_back)
+    ImageView mIvBack;
+    @BindView(R.id.tv_title)
+    TextView mTvTitle;
+    @BindView(R.id.tv_save)
+    TextView mTvSave;
+    @BindView(R.id.ll_customer_service)
+    LinearLayout mLlCustomerService;
     @BindView(R.id.tv_orderid)
     TextView mTvOrderid;
     @BindView(R.id.iv_copy)
@@ -155,9 +148,9 @@ public class ComplaintActivity extends BaseActivity<ComplaintPresenter, Complain
 
     @Override
     protected void initView() {
-        mTvActionbarTitle.setText("投诉");
-        mTvMessage.setText("投诉详情");
-        mTvMessage.setVisibility(View.VISIBLE);
+        mTvTitle.setText("投诉");
+        mTvSave.setText("投诉详情");
+        mTvSave.setVisibility(View.VISIBLE);
         orderId = getIntent().getStringExtra("orderId");
         mTvOrderid.setText(orderId);
         myClipboard = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
@@ -165,18 +158,18 @@ public class ComplaintActivity extends BaseActivity<ComplaintPresenter, Complain
 
     @Override
     protected void setListener() {
-        mLlReturn.setOnClickListener(this);
+        mIvBack.setOnClickListener(this);
         mIvCopy.setOnClickListener(this);
         mBtnComplaint.setOnClickListener(this);
         mIvPicture.setOnClickListener(this);
-        mTvMessage.setOnClickListener(this);
+        mTvSave.setOnClickListener(this);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ll_return:
+            case R.id.iv_back:
                 finish();
                 break;
             case R.id.iv_copy:
@@ -208,9 +201,9 @@ public class ComplaintActivity extends BaseActivity<ComplaintPresenter, Complain
 
                 }
                 break;
-            case R.id.tv_message:
-                Intent intent=new Intent(mActivity,ComplaintDetailActivity.class);
-                intent.putExtra("orderId",orderId);
+            case R.id.tv_save:
+                Intent intent = new Intent(mActivity, ComplaintDetailActivity.class);
+                intent.putExtra("orderId", orderId);
                 startActivity(intent);
                 break;
         }

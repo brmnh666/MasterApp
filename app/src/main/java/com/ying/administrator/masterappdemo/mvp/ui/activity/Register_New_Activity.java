@@ -23,6 +23,7 @@ import com.ying.administrator.masterappdemo.entity.WxRegister;
 import com.ying.administrator.masterappdemo.mvp.contract.RegisterContract;
 import com.ying.administrator.masterappdemo.mvp.model.RegisterModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.RegisterPresenter;
+import com.ying.administrator.masterappdemo.v3.activity.MainActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -222,7 +223,7 @@ public class Register_New_Activity extends BaseActivity<RegisterPresenter, Regis
                     mPresenter.AddAndUpdatePushAccount(JPushInterface.getRegistrationID(this), "7", Phone);
                     startActivity(new Intent(mActivity, MainActivity.class));
                     ActivityUtils.finishAllActivities();
-                    hideProgress();
+//                    hideProgress();
                 } else {
                 }
                 break;

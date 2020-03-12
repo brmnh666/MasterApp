@@ -225,7 +225,7 @@ public class WorkOrder implements Serializable {
         private String IsLook;
         private String isOnLookMessage;
         private String barCodeIsNo;
-        private String partyNo;
+        private String PartyNo;
         private String IsExtraTime;
         private String picture;
 
@@ -246,11 +246,11 @@ public class WorkOrder implements Serializable {
         }
 
         public String getPartyNo() {
-            return partyNo;
+            return PartyNo;
         }
 
         public void setPartyNo(String partyNo) {
-            this.partyNo = partyNo;
+            this.PartyNo = partyNo;
         }
 
         public String getBarCodeIsNo() {

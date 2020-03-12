@@ -54,6 +54,7 @@ public class CardList_Activity extends BaseActivity<CardPresenter, CardModel> im
     private String userId;
     private MyCardAdapter myCardAdapter;
     private List<BankCard> list=new ArrayList<>();
+    private String endNum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +80,25 @@ public class CardList_Activity extends BaseActivity<CardPresenter, CardModel> im
         mRvCardList.setLayoutManager(new LinearLayoutManager(mActivity));
         myCardAdapter = new MyCardAdapter(R.layout.item_mycard, list, mActivity);
         mRvCardList.setAdapter(myCardAdapter);
+        myCardAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                switch (view.getId()){
+                    case R.id.ll_card:
+                        int length = list.get(position).getPayNo().length();
+                        if (length > 4) {
+                            endNum = list.get(position).getPayNo().substring(length - 4, length);
+                        }
+                        Intent intent = new Intent();
+                        intent.putExtra("bankName", list.get(position).getPayInfoName());
+                        intent.putExtra("bankNo", list.get(position).getPayNo());
+                        intent.putExtra("payName",list.get(position).getPayName());
+                        setResult(2000, intent);
+                        finish();
+                        break;
+                }
+            }
+        });
 //        myCardAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
 //            @Override
 //            public void onItemChildClick(BaseQuickAdapter adapter, View view, final int position) {

@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/actionbar_receiving_layout" />
+    <include layout="@layout/v3_activity_head"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -336,8 +336,8 @@
             <Button
                 android:id="@+id/btn_complaint"
                 android:layout_width="match_parent"
-                android:layout_height="43dp"
-                android:background="@drawable/btn_blue"
+                android:layout_height="52dp"
+                android:background="@drawable/v3_btn_shape"
                 android:layout_margin="20dp"
                 android:text="投诉"
                 android:textSize="16sp"

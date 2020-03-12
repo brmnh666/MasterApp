@@ -3,6 +3,7 @@ package com.ying.administrator.masterappdemo.v3.mvp.model;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Article;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.GetMessagePag;
 import com.ying.administrator.masterappdemo.entity.LeaveMessage;
 import com.ying.administrator.masterappdemo.entity.Message;
 import com.ying.administrator.masterappdemo.entity.MessageData;
@@ -61,6 +62,13 @@ public class MessageModel implements MessageContract.Model {
     @Override
     public Observable<BaseResult<Data<LeaveMessage>>> GetNewsLeaveMessage(String UserID, String limit, String page) {
         return ApiRetrofit.getDefault().GetNewsLeaveMessage(UserID,"1",limit,page)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<BaseResult<Data<GetMessagePag>>> GetmessagePag(String UserID) {
+        return ApiRetrofit.getDefault().GetmessagePag(UserID)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

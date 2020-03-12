@@ -17,6 +17,7 @@ import com.ying.administrator.masterappdemo.entity.Data3;
 import com.ying.administrator.masterappdemo.entity.District;
 import com.ying.administrator.masterappdemo.entity.GAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
+import com.ying.administrator.masterappdemo.entity.GetMessagePag;
 import com.ying.administrator.masterappdemo.entity.IDCard;
 import com.ying.administrator.masterappdemo.entity.LeaveMessage;
 import com.ying.administrator.masterappdemo.entity.Logistics;
@@ -1200,4 +1201,9 @@ public interface ApiService {
                                                                    @Field("OrderId") String OrderId,
                                                                    @Field("limit") String limit,
                                                                    @Field("page") String page);
+
+    /*消息页*/
+    @FormUrlEncoded
+    @POST("Cms/GetmessagePag")
+    Observable<BaseResult<Data<GetMessagePag>>> GetmessagePag(@Field("UserId") String UserId);
 }

@@ -6,6 +6,7 @@ import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.base.BaseView;
 import com.ying.administrator.masterappdemo.entity.Article;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.GetMessagePag;
 import com.ying.administrator.masterappdemo.entity.LeaveMessage;
 import com.ying.administrator.masterappdemo.entity.Message;
 import com.ying.administrator.masterappdemo.entity.MessageData;
@@ -24,6 +25,7 @@ public interface MessageContract {
         Observable<BaseResult<MessageData<List<Message>>>> GetComplaintMessageList(String UserID, String SubType, String limit, String page);
         Observable<BaseResult<MessageData<List<Message>>>> GetTransactionMessageList(String UserID, String SubType, String limit, String page);
         Observable<BaseResult<Data<LeaveMessage>>> GetNewsLeaveMessage(String UserID, String limit, String page);
+        Observable<BaseResult<Data<GetMessagePag>>> GetmessagePag(String UserID);
 
     }
 
@@ -36,6 +38,7 @@ public interface MessageContract {
         void GetComplaintMessageList(BaseResult<MessageData<List<Message>>> baseResult);
         void GetTransactionMessageList(BaseResult<MessageData<List<Message>>> baseResult);
         void GetNewsLeaveMessage(BaseResult<Data<LeaveMessage>> baseResult);
+        void GetmessagePag(BaseResult<Data<GetMessagePag>> baseResult);
 
     }
 
@@ -47,5 +50,6 @@ public interface MessageContract {
         public abstract void GetComplaintMessageList(String UserID,String SubType,String limit,String page);
         public abstract void GetTransactionMessageList(String UserID,String SubType,String limit,String page);
         public abstract void GetNewsLeaveMessage(String UserID, String limit, String page);
+        public abstract void GetmessagePag(String UserID);
     }
 }

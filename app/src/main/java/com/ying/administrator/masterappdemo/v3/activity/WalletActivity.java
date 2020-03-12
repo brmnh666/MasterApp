@@ -140,7 +140,7 @@ public class WalletActivity extends BaseActivity<WalletPresenter, WalletModel> i
 
                 break;
             case R.id.tv_withdraw:
-                startActivity(new Intent(mActivity, WithDrawActivity.class));
+                startActivity(new Intent(mActivity, WithdrawActivity.class));
                 break;
             case R.id.tv_recharge:
                 startActivity(new Intent(mActivity, RechargeActivity.class));

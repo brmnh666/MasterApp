@@ -1,5 +1,8 @@
 package com.ying.administrator.masterappdemo.v3.activity;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -74,7 +77,8 @@ public class QuoteDetailsActivity extends BaseActivity<QuoteDetailsPresenter, Qu
     private QuoteAdapter adapter;
     private String orderId;
     private WorkOrder.DataBean data;
-
+    private ClipboardManager myClipboard;
+    private ClipData myClip;
     @Override
     protected int setLayoutId() {
         return R.layout.v3_activity_quote_details;
@@ -93,12 +97,16 @@ public class QuoteDetailsActivity extends BaseActivity<QuoteDetailsPresenter, Qu
         orderId = getIntent().getStringExtra("id");
 
         mPresenter.GetOrderInfo(orderId);
+        myClipboard = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
     }
 
     @Override
     protected void setListener() {
         mIvBack.setOnClickListener(this);
         mTvConfirmOffer.setOnClickListener(this);
+        mTvCopy.setOnClickListener(this);
+        mLlCall.setOnClickListener(this);
+        mLlCustomerService.setOnClickListener(this);
     }
 
     @Override
@@ -116,6 +124,15 @@ public class QuoteDetailsActivity extends BaseActivity<QuoteDetailsPresenter, Qu
                 } else {
                     mPresenter.WXOrderOffer(data.getSendUser(), price, orderId, reason);
                 }
+                break;
+            case R.id.tv_copy:
+                myClip = ClipData.newPlainText("", data.getOrderID() + "");
+                myClipboard.setPrimaryClip(myClip);
+                ToastUtils.showShort("复制成功");
+                break;
+            case R.id.ll_customer_service:
+            case R.id.ll_call:
+                call("tel:" + "4006262365");
                 break;
         }
     }

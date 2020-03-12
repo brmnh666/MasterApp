@@ -32,6 +32,7 @@ import com.ying.administrator.masterappdemo.entity.WxRegister;
 import com.ying.administrator.masterappdemo.mvp.contract.LoginContract;
 import com.ying.administrator.masterappdemo.mvp.model.LoginModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.LoginPresenter;
+import com.ying.administrator.masterappdemo.v3.activity.MainActivity;
 import com.ying.administrator.masterappdemo.wxapi.WXEntryActivity;
 import com.zyao89.view.zloading.ZLoadingDialog;
 import com.zyao89.view.zloading.Z_TYPE;
@@ -215,7 +216,7 @@ public class Login_New_Activity extends BaseActivity<LoginPresenter, LoginModel>
                     spUtils.put("passWord", passWord);
                     spUtils.put("isLogin", true);
                     mPresenter.AddAndUpdatePushAccount(JPushInterface.getRegistrationID(this), "7", userName);
-                    startActivity(new Intent(mActivity, MainActivity.class));
+                    startActivity(new Intent(mActivity, com.ying.administrator.masterappdemo.v3.activity.MainActivity.class));
                     finish();
                 } else {
                     ToastUtils.showShort(data.getItem2());

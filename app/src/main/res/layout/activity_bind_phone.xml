@@ -173,11 +173,11 @@
         android:gravity="center"
         android:id="@+id/tv_register"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="53dp"
         android:text="绑定"
         android:textColor="@color/white"
         android:textSize="19sp"
-        android:background="@drawable/bg_register"
+        android:background="@drawable/v3_btn_shape"
         />
 
 </LinearLayout>

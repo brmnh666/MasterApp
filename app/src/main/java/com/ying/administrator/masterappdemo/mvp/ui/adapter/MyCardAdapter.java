@@ -30,6 +30,7 @@ public class MyCardAdapter extends BaseQuickAdapter<BankCard, BaseViewHolder> {
     protected void convert(BaseViewHolder helper, BankCard item) {
         helper.addOnLongClickListener(R.id.fl_card);
         helper.addOnLongClickListener(R.id.ll_card);
+        helper.addOnClickListener(R.id.ll_card);
         cardView = helper.getView(R.id.cardview);
         String bankName=item.getPayInfoName();
         if (bankName==null){

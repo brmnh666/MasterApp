@@ -23,6 +23,7 @@ import com.ying.administrator.masterappdemo.mvp.contract.CardContract;
 import com.ying.administrator.masterappdemo.mvp.contract.ForgetPasswordContract;
 import com.ying.administrator.masterappdemo.mvp.model.ForgetPasswordModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.ForgetPasswordPresenter;
+import com.ying.administrator.masterappdemo.v3.activity.MainActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

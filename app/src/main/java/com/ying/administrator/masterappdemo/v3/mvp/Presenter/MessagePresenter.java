@@ -4,6 +4,7 @@ import com.ying.administrator.masterappdemo.base.BaseObserver;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Article;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.GetMessagePag;
 import com.ying.administrator.masterappdemo.entity.LeaveMessage;
 import com.ying.administrator.masterappdemo.entity.Message;
 import com.ying.administrator.masterappdemo.entity.MessageData;
@@ -85,6 +86,17 @@ public class MessagePresenter extends MessageContract.Presenter {
                     @Override
                     protected void onHandleSuccess(BaseResult<Data<LeaveMessage>> value) {
                         mView.GetNewsLeaveMessage(value);
+                    }
+                });
+    }
+
+    @Override
+    public void GetmessagePag(String UserID) {
+        mModel.GetmessagePag(UserID)
+                .subscribe(new BaseObserver<Data<GetMessagePag>>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<Data<GetMessagePag>> value) {
+                        mView.GetmessagePag(value);
                     }
                 });
     }
