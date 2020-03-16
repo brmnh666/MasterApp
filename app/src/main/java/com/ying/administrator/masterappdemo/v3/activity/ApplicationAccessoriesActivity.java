@@ -284,7 +284,14 @@ public class ApplicationAccessoriesActivity extends BaseActivity<ApplicationAcce
     //厂家寄件，师傅自购，用户自购
     public void select_state(List<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> list) {
         if (list.size() > 0 && mPre_order_add_service_adapter.getData().size() == 0) {
-            mPresenter.UpdateOrderAddressByOrderID(orderId, returnAddress);
+            if ("".equals(returnAddress)) {
+                ToastUtils.showShort("请去个人中心填写收货地址");
+                hideProgress();
+                return;
+            } else {
+                mPresenter.UpdateOrderAddressByOrderID(orderId, returnAddress);
+            }
+
         } else if (list.size() == 0 && mPre_order_add_service_adapter.getData().size() > 0) {
             service="1";
             orderServiceStrBean = new FService.OrderServiceStrBean();
@@ -302,7 +309,13 @@ public class ApplicationAccessoriesActivity extends BaseActivity<ApplicationAcce
             body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), s);
             mPresenter.AddOrderAccessoryAndService(body);
         } else if (list.size() > 0 && mPre_order_add_service_adapter.getData().size() > 0) {
-            mPresenter.UpdateOrderAddressByOrderID(orderId, returnAddress);
+            if ("".equals(returnAddress)) {
+                ToastUtils.showShort("请去个人中心填写收货地址");
+                hideProgress();
+                return;
+            } else {
+                mPresenter.UpdateOrderAddressByOrderID(orderId, returnAddress);
+            }
 
         } else {
             intent = new Intent(mActivity, CompleteWorkOrderActivity.class);

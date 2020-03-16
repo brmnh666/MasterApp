@@ -187,7 +187,8 @@
             android:layout_width="9dp"
             android:layout_height="16dp"
             android:src="@mipmap/v3_youjiantou"
-            android:layout_marginLeft="8dp"/>
+            android:layout_marginLeft="8dp"
+            android:layout_gravity="center"/>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/ll_truck"
@@ -222,6 +223,7 @@
             android:layout_width="9dp"
             android:layout_height="16dp"
             android:src="@mipmap/v3_youjiantou"
-            android:layout_marginLeft="8dp"/>
+            android:layout_marginLeft="8dp"
+            android:layout_gravity="center"/>
     </LinearLayout>
 </LinearLayout>

@@ -602,6 +602,8 @@ public class PersonalInformationActivity extends BaseActivity<PersonalInformatio
     public void Event(String name) {
         if ("certification".equals(name)) {
             mPresenter.GetUserInfoList(userID, "1");
+        }else if ("address".equals(name)){
+            mPresenter.GetAccountAddress(userID);
         }
     }
 }

@@ -2,18 +2,22 @@ package com.ying.administrator.masterappdemo.v3.activity;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -26,6 +30,7 @@ import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.AddServiceAreaInfoActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.MyInfoSkillActivity2;
+import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.v3.adapter.OrderSettingAdapter;
 import com.ying.administrator.masterappdemo.v3.bean.OrderSettingBean;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.OrderSettingPresenter;
@@ -74,6 +79,7 @@ public class OrderSettingActivity extends BaseActivity<OrderSettingPresenter, Or
     private EditText et_message;
     private String userID;
     private UserInfo.UserInfoDean userInfo;
+    private PopupWindow mPopupWindow;
 
     @Override
     protected int setLayoutId() {
@@ -163,11 +169,46 @@ public class OrderSettingActivity extends BaseActivity<OrderSettingPresenter, Or
                 window1.setBackgroundDrawable(new ColorDrawable());
                 break;
             case R.id.ll_truck:
-                if (userInfo.getIsOrNoTruck()==null||"N".equals(userInfo.getIsOrNoTruck())){
-                    mPresenter.IsOrNoTruck(userID,"Y");
-                }else {
-                    mPresenter.IsOrNoTruck(userID,"N");
+                View view = LayoutInflater.from(mActivity).inflate(R.layout.v3_dialog_truck, null);
+                Button btn_yes = view.findViewById(R.id.btn_yes);
+                Button btn_no = view.findViewById(R.id.btn_no);
+                Button cancel_btn = view.findViewById(R.id.cancel_btn);
+                btn_yes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mPresenter.IsOrNoTruck(userID,"Y");
+                        mPopupWindow.dismiss();
+                    }
+                });
+                btn_no.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mPresenter.IsOrNoTruck(userID,"N");
+                        mPopupWindow.dismiss();
+                    }
+                });
+                cancel_btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mPopupWindow.dismiss();
+                    }
+                });
+                mPopupWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                mPopupWindow.setAnimationStyle(R.style.popwindow_anim_style);
+                mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+                mPopupWindow.setFocusable(true);
+                mPopupWindow.setOutsideTouchable(true);
+                mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                    @Override
+                    public void onDismiss() {
+                        MyUtils.setWindowAlpa(mActivity, false);
+                    }
+                });
+                if (mPopupWindow != null && !mPopupWindow.isShowing()) {
+                    mPopupWindow.showAtLocation(view, Gravity.BOTTOM, 0, 0);
                 }
+                MyUtils.setWindowAlpa(mActivity, true);
+
                 break;
         }
     }

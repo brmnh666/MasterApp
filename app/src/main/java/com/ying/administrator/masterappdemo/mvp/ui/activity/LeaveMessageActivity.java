@@ -78,7 +78,7 @@ public class LeaveMessageActivity extends BaseActivity<LeaveMeaasgePreaenter, Le
         mRvOrdermessage.setNestedScrollingEnabled(false);
         messageAdapter = new MessageAdapter2(R.layout.item_message, list);
         mRvOrdermessage.setAdapter(messageAdapter);
-
+        messageAdapter.setEmptyView(getMessageEmptyView());
         SPUtils spUtils = SPUtils.getInstance("token");
         userId = spUtils.getString("userName");
         mPresenter.GetNewsLeaveMessage(userId, "10", String.valueOf(pageIndex));
