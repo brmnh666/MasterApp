@@ -74,6 +74,28 @@
                     android:textColor="@drawable/v3_tab_text_selector"
                     android:textSize="12sp" />
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_shop"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_marginTop="6dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="21dp"
+                    android:src="@drawable/v3_tab_shop_selector" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="商城"
+                    android:textColor="@drawable/v3_tab_text_selector"
+                    android:textSize="12sp" />
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/ll_study"

@@ -19,13 +19,10 @@ import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Login_New_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.VerifiedActivity2;
-import com.ying.administrator.masterappdemo.mvp.ui.fragment.BlankFragment;
-import com.ying.administrator.masterappdemo.mvp.ui.fragment.Home_Fragment;
-import com.ying.administrator.masterappdemo.mvp.ui.fragment.Me_Fragment;
-import com.ying.administrator.masterappdemo.mvp.ui.fragment.NewsFragment;
 import com.ying.administrator.masterappdemo.v3.fragment.HomeFragment;
 import com.ying.administrator.masterappdemo.v3.fragment.MineFragment;
 import com.ying.administrator.masterappdemo.v3.fragment.OrderFragment;
+import com.ying.administrator.masterappdemo.v3.fragment.ShopFragment;
 import com.ying.administrator.masterappdemo.v3.fragment.StudyFragment;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.MainPresenter;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.MainContract;
@@ -54,6 +51,8 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
     LinearLayout mLlMine;
     @BindView(R.id.rootview)
     LinearLayout mRootview;
+    @BindView(R.id.ll_shop)
+    LinearLayout mLlShop;
     private List<Fragment> fragmentList;
     private String userID;
     private UserInfo.UserInfoDean userInfo;
@@ -81,6 +80,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
         fragmentList.add(HomeFragment.newInstance(""));
         fragmentList.add(OrderFragment.newInstance(""));
         fragmentList.add(StudyFragment.newInstance(""));
+        fragmentList.add(ShopFragment.newInstance(""));
         fragmentList.add(MineFragment.newInstance(""));
         mViewPager.setAdapter(new MyAdapter(getSupportFragmentManager()));
         mViewPager.setOffscreenPageLimit(fragmentList.size());
@@ -91,10 +91,10 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
 
     @Override
     public void GetUserInfoList(BaseResult<UserInfo> baseResult) {
-        switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
 
-                if (baseResult.getData().getData().size()>0) {
+                if (baseResult.getData().getData().size() > 0) {
                     userInfo = baseResult.getData().getData().get(0);
                     if (userInfo.getIfAuth() == null) {
                         under_review = LayoutInflater.from(mActivity).inflate(R.layout.v3_dialog_real, null);
@@ -145,7 +145,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
                     } else {
                         return;
                     }
-                }else {
+                } else {
                     spUtils.put("isLogin", false);
                     startActivity(new Intent(mActivity, Login_New_Activity.class));
                     finish();
@@ -177,12 +177,13 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
         mLlOrder.setOnClickListener(this);
         mLlStudy.setOnClickListener(this);
         mLlMine.setOnClickListener(this);
+        mLlShop.setOnClickListener(this);
     }
 
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.ll_home:
                 mViewPager.setCurrentItem(0);
                 tabSelected(mLlHome);
@@ -196,8 +197,12 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
                 tabSelected(mLlStudy);
                 break;
             case R.id.ll_mine:
-                mViewPager.setCurrentItem(3);
+                mViewPager.setCurrentItem(4);
                 tabSelected(mLlMine);
+                break;
+            case R.id.ll_shop:
+                mViewPager.setCurrentItem(3);
+                tabSelected(mLlShop);
                 break;
         }
     }
@@ -214,6 +219,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
         mLlOrder.setSelected(false);
         mLlStudy.setSelected(false);
         mLlMine.setSelected(false);
+        mLlShop.setSelected(false);
         linearLayout.setSelected(true);
     }
 
