@@ -16,9 +16,12 @@ import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.common.Config;
+import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.GetMessagePag;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Login_New_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.VerifiedActivity2;
+import com.ying.administrator.masterappdemo.util.DesktopCornerUtil;
 import com.ying.administrator.masterappdemo.v3.fragment.HomeFragment;
 import com.ying.administrator.masterappdemo.v3.fragment.MineFragment;
 import com.ying.administrator.masterappdemo.v3.fragment.OrderFragment;
@@ -60,6 +63,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
     private AlertDialog underReviewDialog;
     private TextView tv_content;
     private SPUtils spUtils;
+    private GetMessagePag data;
 
     @Override
     protected int setLayoutId() {
@@ -76,6 +80,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
         spUtils = SPUtils.getInstance("token");
         userID = spUtils.getString("userName");
         mPresenter.GetUserInfoList(userID, "1");
+        mPresenter.GetmessagePag(userID);
         fragmentList = new ArrayList<>();
         fragmentList.add(HomeFragment.newInstance(""));
         fragmentList.add(OrderFragment.newInstance(""));
@@ -151,6 +156,17 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
                     finish();
                 }
 
+                break;
+        }
+    }
+
+    @Override
+    public void GetmessagePag(BaseResult<Data<GetMessagePag>> baseResult) {
+        switch (baseResult.getStatusCode()){
+            case 200:
+                data = baseResult.getData().getItem2();
+                int num=data.getCount5()+data.getCount2()+data.getCount3()+data.getCount4()+data.getCount6();
+                DesktopCornerUtil.setBadgeNumber(num);
                 break;
         }
     }
@@ -238,6 +254,13 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
 
             default:
                 break;
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(String name) {
+        if ("transaction_num".equals(name)) {
+            mPresenter.GetmessagePag(userID);
         }
     }
 }

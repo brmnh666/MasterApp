@@ -98,5 +98,6 @@
     <string name="gray_white"><Data><![CDATA[<font color="#333333">%1$s</font><font color="#FF0000">%2$s</font><font color="#333333">%3$s</font>]]></Data></string>
     <string name="malfunction"><Data><![CDATA[<font color="#333333">%1$s</font><font color="#6A6A6A">%2$s</font>]]></Data></string>
     <string name="description"><Data><![CDATA[<font color="#ff0006">%1$s</font><font color="#A4A4A4">%2$s</font>]]></Data></string>
+    <string name="android" />
 
 </resources>

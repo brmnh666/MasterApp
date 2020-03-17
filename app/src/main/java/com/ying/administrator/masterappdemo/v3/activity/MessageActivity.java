@@ -1,6 +1,7 @@
 package com.ying.administrator.masterappdemo.v3.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,6 +20,7 @@ import com.ying.administrator.masterappdemo.entity.Message;
 import com.ying.administrator.masterappdemo.entity.MessageData;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.LeaveMessageActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.OrderMessageActivity2;
+import com.ying.administrator.masterappdemo.util.DesktopCornerUtil;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.MessagePresenter;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.MessageContract;
 import com.ying.administrator.masterappdemo.v3.mvp.model.MessageModel;
@@ -96,7 +98,7 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
     private SPUtils spUtils;
     private String userId;
     private GetMessagePag data;
-
+    private  boolean mIsSupportedBade = true;
     @Override
     protected int setLayoutId() {
         return R.layout.v3_activity_mesage;
@@ -465,7 +467,6 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
                         mTvComplaintMessageTime.setText(data.getData6().getNowtime().substring(0,10));
                     }
                 }
-
                 break;
 
             default:

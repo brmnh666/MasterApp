@@ -40,6 +40,7 @@ import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.UpgradeActivity;
 import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.MainActivity;
+import com.ying.administrator.masterappdemo.util.DesktopCornerUtil;
 import com.ying.administrator.masterappdemo.util.UnCeHandler;
 
 import java.io.BufferedReader;
@@ -157,6 +158,7 @@ public class MyApplication extends Application {
                 .loadSkin();
         registToWX();
 
+        DesktopCornerUtil.init("com.ying.administrator.masterappdemo", "com.ying.administrator.masterappdemo.mvp.ui.activity.SplashActivity", this);
     }
 
     private void registToWX() {
