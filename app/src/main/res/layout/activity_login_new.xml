@@ -226,7 +226,6 @@
         android:layout_height="180dp"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
-        android:background="@mipmap/icon_bolang"
         android:visibility="gone" />
 
 </RelativeLayout>

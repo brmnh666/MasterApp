@@ -39,8 +39,7 @@
             android:layout_width="250dp"
             android:layout_height="250dp"
             android:layout_gravity="center"
-            android:layout_marginTop="30dp"
-            android:src="@mipmap/cli_px" />
+            android:layout_marginTop="30dp" />
 
         <TextView
             android:id="@+id/tv_title"

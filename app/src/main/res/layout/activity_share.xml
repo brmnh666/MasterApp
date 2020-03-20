@@ -30,7 +30,6 @@
                         android:id="@+id/iv_code_one"
                         android:layout_width="158dp"
                         android:layout_height="153dp"
-                        android:src="@mipmap/cli_px"
                         android:layout_gravity="center"
                         android:layout_marginTop="6dp"/>
 
@@ -87,7 +86,6 @@
                         android:id="@+id/iv_code_two"
                         android:layout_width="158dp"
                         android:layout_height="153dp"
-                        android:src="@mipmap/cli_px"
                         android:layout_gravity="center"
                         android:layout_marginTop="6dp"/>
 

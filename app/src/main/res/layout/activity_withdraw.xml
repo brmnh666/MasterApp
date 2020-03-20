@@ -291,7 +291,7 @@
                         android:layout_width="17dp"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="5dp"
-                        android:src="@mipmap/wechat_pay" />
+                        android:src="@mipmap/wechat_one" />
 
                     <TextView
                         android:layout_width="wrap_content"

@@ -47,7 +47,6 @@
         <ImageView
             android:layout_width="10dp"
             android:layout_height="@dimen/dp_10"
-            android:src="@mipmap/chat_jiao"
             android:layout_gravity="right"
             android:layout_marginLeft="12dp"
             android:layout_marginRight="13dp"/>

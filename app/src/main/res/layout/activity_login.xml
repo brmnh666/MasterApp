@@ -266,19 +266,18 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_weight="1"
-            android:src="@mipmap/qq_login" />
+           />
 
         <ImageView
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_weight="1"
-            android:src="@mipmap/wechat" />
+            />
 
         <ImageView
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_weight="1"
-            android:src="@mipmap/weibo" />
+            android:layout_weight="1" />
 
     </LinearLayout>
 </LinearLayout>
