@@ -6,6 +6,7 @@ import com.ying.administrator.masterappdemo.entity.AddressList;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
 import com.ying.administrator.masterappdemo.entity.Service;
+import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.ApplicationAccessoriesContract;
 
 import java.util.List;
@@ -66,6 +67,17 @@ public class ApplicationAccessoriesPresenter extends ApplicationAccessoriesContr
                     @Override
                     protected void onHandleSuccess(BaseResult<Data> value) {
                         mView.AddOrderAccessoryAndService(value);
+                    }
+                });
+    }
+
+    @Override
+    public void GetUserInfoList(String UserID, String limit) {
+        mModel.GetUserInfoList(UserID, limit)
+                .subscribe(new BaseObserver<UserInfo>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<UserInfo> value) {
+                        mView.GetUserInfoList(value);
                     }
                 });
     }

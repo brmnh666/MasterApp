@@ -8,6 +8,7 @@ import com.ying.administrator.masterappdemo.entity.AddressList;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
 import com.ying.administrator.masterappdemo.entity.Service;
+import com.ying.administrator.masterappdemo.entity.UserInfo;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ public interface ApplicationAccessoriesContract {
 
         Observable<BaseResult<Data<String>>> UpdateOrderAddressByOrderID(String OrderID, String SendAddress);
         Observable<BaseResult<Data>> AddOrderAccessoryAndService(RequestBody json);
+        Observable<BaseResult<UserInfo>> GetUserInfoList(String UserID, String limit);
     }
 
     interface View extends BaseView{
@@ -33,7 +35,7 @@ public interface ApplicationAccessoriesContract {
 
         void UpdateOrderAddressByOrderID(BaseResult<Data<String>> baseResult);
         void AddOrderAccessoryAndService(BaseResult<Data> baseResult);
-
+        void GetUserInfoList(BaseResult<UserInfo> baseResult);
     }
 
     abstract class Presenter extends BasePresenter<View,Model>{
@@ -45,5 +47,6 @@ public interface ApplicationAccessoriesContract {
 
         public abstract void UpdateOrderAddressByOrderID(String OrderID, String SendAddress);
         public abstract void AddOrderAccessoryAndService(RequestBody json);
+        public abstract void GetUserInfoList(String UserID,String limit);
     }
 }

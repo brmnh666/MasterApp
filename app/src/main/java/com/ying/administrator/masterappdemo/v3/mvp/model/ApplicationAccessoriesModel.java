@@ -6,6 +6,7 @@ import com.ying.administrator.masterappdemo.entity.AddressList;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
 import com.ying.administrator.masterappdemo.entity.Service;
+import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.mvp.service.ApiRetrofit;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.ApplicationAccessoriesContract;
 
@@ -48,6 +49,13 @@ public class ApplicationAccessoriesModel implements ApplicationAccessoriesContra
     @Override
     public Observable<BaseResult<Data>> AddOrderAccessoryAndService(RequestBody json) {
         return ApiRetrofit.getDefault().AddOrderAccessoryAndService(json)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<BaseResult<UserInfo>> GetUserInfoList(String UserID, String limit) {
+        return ApiRetrofit.getDefault().GetUserInfoList(UserID, limit)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

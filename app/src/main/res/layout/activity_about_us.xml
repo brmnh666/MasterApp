@@ -102,7 +102,14 @@
             android:textSize="16sp"/>
     </LinearLayout>
 
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="www.xigyu.com"
+        android:gravity="center"
+        android:textColor="#B1B1B1"
+        android:textSize="10sp"
+        android:layout_marginTop="12dp"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -110,7 +117,7 @@
         android:gravity="center"
         android:textColor="#B1B1B1"
         android:textSize="10sp"
-        android:layout_marginTop="12dp"/>
+        android:layout_marginTop="8dp"/>
 
     <TextView
         android:id="@+id/tv_company_english"

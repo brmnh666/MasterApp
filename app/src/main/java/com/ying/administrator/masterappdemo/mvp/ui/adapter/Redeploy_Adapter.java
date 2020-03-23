@@ -35,7 +35,7 @@ private Context context;
         if (item.getAvator()==null){
          /*默认没有头像*/
           Glide.with(context)
-                    .load(R.mipmap.icon)
+                    .load(R.drawable.avatar)
                     .apply(RequestOptions.bitmapTransform(new CircleCrop()))
                     .into((ImageView) helper.getView(R.id.subaccount_head));
         }else {

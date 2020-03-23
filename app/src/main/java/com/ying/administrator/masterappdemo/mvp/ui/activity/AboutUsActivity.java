@@ -81,6 +81,7 @@ public class AboutUsActivity extends BaseActivity implements View.OnClickListene
         mIvBack.setOnClickListener(this);
         mTvOpinion.setOnClickListener(this);
         mTvUserAgreement.setOnClickListener(this);
+        mTvPhoneNumber.setOnClickListener(this);
     }
 
     @Override
@@ -104,6 +105,9 @@ public class AboutUsActivity extends BaseActivity implements View.OnClickListene
                 intent.putExtra("Url", "http://admin.xigyu.com/Agreement");
                 intent.putExtra("Title", "用户协议");
                 startActivity(intent);
+                break;
+            case R.id.tv_phone_number:
+                call("tel:" + "4006262365");
                 break;
         }
     }

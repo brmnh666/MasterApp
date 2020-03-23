@@ -37,6 +37,7 @@ import com.ying.administrator.masterappdemo.entity.FService;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
 import com.ying.administrator.masterappdemo.entity.SAccessory;
 import com.ying.administrator.masterappdemo.entity.Service;
+import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.CompleteWorkOrderActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.RechargeActivity;
@@ -150,6 +151,7 @@ public class ApplicationAccessoriesActivity extends BaseActivity<ApplicationAcce
     private Map<Integer,String> successpiclist = new HashMap<>();
     private FAccessory.OrderAccessoryStrBean orderAccessoryStrBean;
     private AlertDialog customdialog_home_dialog;
+    private UserInfo.UserInfoDean userInfo;
 
     @Override
     protected int setLayoutId() {
@@ -174,6 +176,7 @@ public class ApplicationAccessoriesActivity extends BaseActivity<ApplicationAcce
         SPUtils spUtils = SPUtils.getInstance("token");
         userID = spUtils.getString("userName");
         mPresenter.GetAccountAddress(userID);
+        mPresenter.GetUserInfoList(userID,"1");
         mPre_order_add_ac_adapter = new Pre_order_Add_Ac_Adapter(R.layout.item_pre_order_add_accessories, fAcList, state + "", state);
         mRecyclerViewAddAccessories.setLayoutManager(new LinearLayoutManager(mActivity));
         mRecyclerViewAddAccessories.setAdapter(mPre_order_add_ac_adapter);
@@ -598,6 +601,22 @@ public class ApplicationAccessoriesActivity extends BaseActivity<ApplicationAcce
                 hideProgress();
                 break;
             default:
+                break;
+        }
+    }
+
+    @Override
+    public void GetUserInfoList(BaseResult<UserInfo> baseResult) {
+        switch (baseResult.getStatusCode()){
+            case 200:
+                if (baseResult.getData()!=null){
+                    userInfo = baseResult.getData().getData().get(0);
+                    if (userInfo==null){
+                        mTvMoney.setVisibility(View.VISIBLE);
+                    }else {
+                        mTvMoney.setVisibility(View.GONE);
+                    }
+                }
                 break;
         }
     }

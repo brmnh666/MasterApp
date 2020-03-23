@@ -30,7 +30,6 @@
                         android:id="@+id/iv_code_one"
                         android:layout_width="158dp"
                         android:layout_height="153dp"
-                        android:src="@mipmap/cli_px"
                         android:layout_gravity="center"
                         android:layout_marginTop="6dp"/>
 
@@ -61,19 +60,16 @@
                         android:id="@+id/iv_qq_one"
                         android:layout_width="43dp"
                         android:layout_height="43dp"
-                        android:src="@mipmap/qq"
                         android:layout_weight="1"/>
                     <ImageView
                         android:id="@+id/iv_weixin_one"
                         android:layout_width="43dp"
                         android:layout_height="43dp"
-                        android:src="@mipmap/weixin"
                         android:layout_weight="1"/>
                     <ImageView
                         android:id="@+id/iv_weibo_one"
                         android:layout_width="43dp"
                         android:layout_height="43dp"
-                        android:src="@mipmap/xinlangweibo"
                         android:layout_weight="1"/>
                 </LinearLayout>
 
@@ -86,8 +82,6 @@
                     <ImageView
                         android:id="@+id/iv_code_two"
                         android:layout_width="158dp"
-                        android:layout_height="153dp"
-                        android:src="@mipmap/cli_px"
                         android:layout_gravity="center"
                         android:layout_marginTop="6dp"/>
 
@@ -120,19 +114,16 @@
                         android:id="@+id/iv_qq_two"
                         android:layout_width="43dp"
                         android:layout_height="43dp"
-                        android:src="@mipmap/qq"
                         android:layout_weight="1"/>
                     <ImageView
                         android:id="@+id/iv_weixin_two"
                         android:layout_width="43dp"
                         android:layout_height="43dp"
-                        android:src="@mipmap/weixin"
                         android:layout_weight="1"/>
                     <ImageView
                         android:id="@+id/iv_weibo_two"
                         android:layout_width="43dp"
                         android:layout_height="43dp"
-                        android:src="@mipmap/xinlangweibo"
                         android:layout_weight="1"/>
                 </LinearLayout>
             </LinearLayout>

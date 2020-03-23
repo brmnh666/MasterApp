@@ -9,7 +9,7 @@
     android:id="@+id/subaccount_head"
     android:layout_width="35dp"
     android:layout_height="35dp"
-    android:src="@mipmap/icon"
+    android:src="@drawable/avatar"
     android:layout_centerVertical="true"
     android:layout_marginLeft="20dp"
     />

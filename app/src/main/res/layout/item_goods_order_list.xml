@@ -15,8 +15,7 @@
         <com.ying.administrator.masterappdemo.widget.MyImageView
             android:id="@+id/iv_goods_picture"
             android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@mipmap/icon"/>
+            android:layout_height="80dp" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
