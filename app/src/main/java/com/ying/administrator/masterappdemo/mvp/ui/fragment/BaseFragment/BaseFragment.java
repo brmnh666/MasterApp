@@ -79,7 +79,9 @@ public abstract class BaseFragment<P extends BasePresenter, M extends BaseModel>
         return  LayoutInflater.from(mActivity).inflate(R.layout.layout_empty,null);
     }
 
-
+    public View getRecordEmptyView() {
+        return  LayoutInflater.from(mActivity).inflate(R.layout.v3_layout_home_empty,null);
+    }
 
 
 

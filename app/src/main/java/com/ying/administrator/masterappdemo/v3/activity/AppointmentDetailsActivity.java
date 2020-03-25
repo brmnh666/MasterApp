@@ -721,7 +721,7 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                             mTvProductName.setText(list.get(i).getBrandName() + "  " + list.get(i).getProductTypeName());
                             if (list.get(i).getImge()==null){
                                 Glide.with(mActivity)
-                                        .load(R.drawable.zanwu)
+                                        .load(R.drawable.v3_zanwu)
                                         .into(mIvPicture);
                             }else {
                                 Glide.with(mActivity)
