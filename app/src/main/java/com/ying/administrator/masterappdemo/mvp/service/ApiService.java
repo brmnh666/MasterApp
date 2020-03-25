@@ -16,6 +16,7 @@ import com.ying.administrator.masterappdemo.entity.Data2;
 import com.ying.administrator.masterappdemo.entity.Data3;
 import com.ying.administrator.masterappdemo.entity.District;
 import com.ying.administrator.masterappdemo.entity.GAccessory;
+import com.ying.administrator.masterappdemo.entity.GetBrandWithCategory;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
 import com.ying.administrator.masterappdemo.entity.GetMessagePag;
 import com.ying.administrator.masterappdemo.entity.IDCard;
@@ -1182,7 +1183,7 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("Account/IsOrNoTruck")
     Observable<BaseResult<Data<String>>> IsOrNoTruck(@Field("UserID") String UserID,
-                                                          @Field("IsOrNoTruck") String IsOrNoTruck);
+                                                     @Field("IsOrNoTruck") String IsOrNoTruck);
 
     /*报价*/
     @FormUrlEncoded
@@ -1206,4 +1207,15 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("Cms/GetmessagePag")
     Observable<BaseResult<Data<GetMessagePag>>> GetmessagePag(@Field("UserId") String UserId);
+
+    /*消息页*/
+    @FormUrlEncoded
+    @POST("FactoryConfig/GetBrandWithCategory2")
+    Observable<BaseResult<Data<List<GetBrandWithCategory>>>> GetBrandWithCategory2(@Field("UserID") String UserID,
+                                                                                   @Field("BrandID") String BrandID,
+                                                                                   @Field("CategoryID") String CategoryID,
+                                                                                   @Field("SubCategoryID") String SubCategoryID,
+                                                                                   @Field("ProductTypeID") String ProductTypeID,
+                                                                                   @Field("page") String page,
+                                                                                   @Field("limit") String limit);
 }

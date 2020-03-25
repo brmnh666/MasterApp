@@ -19,19 +19,26 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.GetBrandWithCategory;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.ComplaintActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.CompleteWorkOrderActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.MessageActivity2;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.ScanActivity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.WebActivity;
 import com.ying.administrator.masterappdemo.util.calendarutil.CalendarEvent;
 import com.ying.administrator.masterappdemo.util.calendarutil.CalendarProviderManager;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.ServingDetailPresenter;
@@ -49,6 +56,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -180,6 +188,9 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
     private ClipData myClip;
     private View under_review;
     private AlertDialog underReviewDialog;
+    private List<GetBrandWithCategory> list;
+    private GetBrandWithCategory content;
+    private Intent intent2;
 
     @Override
     protected int setLayoutId() {
@@ -244,6 +255,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
         mTvConfirmReceipt.setOnClickListener(this);
         mLlNotAvailable.setOnClickListener(this);
         mTvComplaint.setOnClickListener(this);
+        mLlMaintenanceInformation.setOnClickListener(this);
     }
 
     @Override
@@ -284,21 +296,29 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                                 .create();
                         push_dialog.show();
                     } else {
-                        if (data.getOrderAccessroyDetail().size() > 0 || data.getOrderServiceDetail().size() > 0) {
+                        if ("保外".equals(data.getGuaranteeText())) {
                             intent = new Intent(mActivity, CompleteWorkOrderActivity.class);
                             intent.putExtra("OrderID", data.getOrderID());
                             startActivity(intent);
                         } else {
-                            Double money=data.getOrderMoney()-data.getTerraceMoney();
-                            intent = new Intent(mActivity, ApplicationAccessoriesActivity.class);
-                            intent.putExtra("id", orderId);
-                            intent.putExtra("SubCategoryID", data.getProductTypeID());
-                            intent.putExtra("QuaMoney", data.getQuaMoney() + "");
-                            intent.putExtra("OrderMoney", data.getOrderMoney() + "");
-                            intent.putExtra("BeyondMoney", data.getBeyondMoney() + "");
-                            intent.putExtra("BeyondState", data.getBeyondState() + "");
-                            intent.putExtra("TerraceMoney", money + "");
-                            startActivity(intent);
+
+                            if (data.getOrderAccessroyDetail().size() > 0 || data.getOrderServiceDetail().size() > 0) {
+                                intent = new Intent(mActivity, CompleteWorkOrderActivity.class);
+                                intent.putExtra("OrderID", data.getOrderID());
+                                startActivity(intent);
+                            } else {
+                                Double money = data.getOrderMoney() - data.getTerraceMoney();
+                                intent = new Intent(mActivity, ApplicationAccessoriesActivity.class);
+                                intent.putExtra("id", orderId);
+                                intent.putExtra("SubCategoryID", data.getProductTypeID());
+                                intent.putExtra("QuaMoney", data.getQuaMoney() + "");
+                                intent.putExtra("OrderMoney", data.getOrderMoney() + "");
+                                intent.putExtra("BeyondMoney", data.getBeyondMoney() + "");
+                                intent.putExtra("BeyondState", data.getBeyondState() + "");
+                                intent.putExtra("TerraceMoney", money + "");
+                                startActivity(intent);
+                            }
+
                         }
                     }
 
@@ -444,14 +464,20 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
 //                underReviewDialog.show();
                 break;
             case R.id.ll_not_available:
-                Intent intent = new Intent(mActivity, LogisticsActivity.class);
-                intent.putExtra("number", data.getExpressNo() + "");
-                startActivity(intent);
+                intent2 = new Intent(mActivity, LogisticsActivity.class);
+                intent2.putExtra("number", data.getExpressNo() + "");
+                startActivity(intent2);
                 break;
             case R.id.tv_complaint:
-                intent=new Intent(mActivity, ComplaintActivity.class);
-                intent.putExtra("orderId",orderId);
-                startActivity(intent);
+                intent2 = new Intent(mActivity, ComplaintActivity.class);
+                intent2.putExtra("orderId", orderId);
+                startActivity(intent2);
+                break;
+            case R.id.ll_maintenance_information:
+                intent2 = new Intent(mActivity, WebActivity.class);
+                intent2.putExtra("Url", content.getCourseCount());
+                intent2.putExtra("Title", content.getBrandName() + content.getProductTypeName());
+                startActivity(intent2);
                 break;
         }
     }
@@ -506,6 +532,8 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
             case 200:
                 if (baseResult.getData() != null) {
                     data = baseResult.getData();
+                    mPresenter.GetBrandWithCategory2(data.getUserID(), data.getBrandID(), data.getCategoryID(), data.getSubCategoryID(), data.getProductTypeID(), "1", "999");
+//                    mPresenter.GetBrandWithCategory2("17777777777","285","304","1043","1044","1","99");
                     if ("Y".equals(data.getExtra()) && !"0".equals(data.getExtraTime())) {
                         mTvState.setText(data.getGuaranteeText() + "/" + data.getTypeName() + "/加急");
                     } else {
@@ -640,6 +668,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
 
                     }
                 }
+
                 hideProgress();
                 break;
         }
@@ -718,6 +747,37 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                 ToastUtils.showShort("收货成功");
                 EventBus.getDefault().post(22);
                 finish();
+                break;
+        }
+    }
+
+    @Override
+    public void GetBrandWithCategory2(BaseResult<Data<List<GetBrandWithCategory>>> baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                list = baseResult.getData().getItem2();
+                if (list.size() == 0) {
+                    mLlMaintenanceInformation.setVisibility(View.GONE);
+                } else {
+                    mLlMaintenanceInformation.setVisibility(View.VISIBLE);
+                    for (int i = 0; i < list.size(); i++) {
+                        if (list.get(i).getCourseCount() != null) {
+                            mTvProductName.setText(list.get(i).getBrandName() + "  " + list.get(i).getProductTypeName());
+                            if (list.get(i).getImge() == null) {
+                                Glide.with(mActivity)
+                                        .load(R.drawable.zanwu)
+                                        .into(mIvPicture);
+                            } else {
+                                Glide.with(mActivity)
+                                        .load(Config.Leave_product_URL + list.get(i).getImge())
+                                        .into(mIvPicture);
+                            }
+                            content = list.get(i);
+                            break;
+                        }
+                    }
+
+                }
                 break;
         }
     }

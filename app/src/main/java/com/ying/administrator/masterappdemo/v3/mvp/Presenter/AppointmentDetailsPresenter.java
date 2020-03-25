@@ -3,6 +3,7 @@ package com.ying.administrator.masterappdemo.v3.mvp.Presenter;
 import com.ying.administrator.masterappdemo.base.BaseObserver;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.GetBrandWithCategory;
 import com.ying.administrator.masterappdemo.entity.SubUserInfo;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
@@ -96,6 +97,17 @@ public class AppointmentDetailsPresenter extends AppointmentDetailsContract.Pers
                     @Override
                     protected void onHandleSuccess(BaseResult<Data> value) {
                         mView.ChangeSendOrder(value);
+                    }
+                });
+    }
+
+    @Override
+    public void GetBrandWithCategory2(String UserID, String BrandID, String CategoryID, String SubCategoryID, String ProductTypeID, String page, String limit) {
+        mModel.GetBrandWithCategory2(UserID, BrandID, CategoryID, SubCategoryID, ProductTypeID,page,limit)
+                .subscribe(new BaseObserver<Data<List<GetBrandWithCategory>>>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<Data<List<GetBrandWithCategory>>> value) {
+                        mView.GetBrandWithCategory2(value);
                     }
                 });
     }

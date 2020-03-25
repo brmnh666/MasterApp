@@ -26,15 +26,19 @@ import android.widget.Toast;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.GetBrandWithCategory;
 import com.ying.administrator.masterappdemo.entity.SubUserInfo;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.WebActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Redeploy_Adapter;
 import com.ying.administrator.masterappdemo.util.calendarutil.CalendarEvent;
 import com.ying.administrator.masterappdemo.util.calendarutil.CalendarProviderManager;
@@ -148,6 +152,8 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
     private RecyclerView recyclerView_custom_redeploy;
     private Redeploy_Adapter redeploy_adapter;
     private String SubUserID;
+    private List<GetBrandWithCategory> list;
+    private GetBrandWithCategory content;
 
     @Override
     protected int setLayoutId() {
@@ -180,6 +186,7 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
         mTvCopy.setOnClickListener(this);
         mLlNotAvailable.setOnClickListener(this);
         mTvTransfer.setOnClickListener(this);
+        mLlMaintenanceInformation.setOnClickListener(this);
     }
 
     @Override
@@ -444,6 +451,12 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                     }
                 });
                 break;
+            case R.id.ll_maintenance_information:
+                Intent intent2 = new Intent(mActivity, WebActivity.class);
+                intent2.putExtra("Url", content.getCourseCount());
+                intent2.putExtra("Title", content.getBrandName()+content.getProductTypeName());
+                startActivity(intent2);
+                break;
         }
     }
 
@@ -497,6 +510,7 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
             case 200:
                 if (baseResult.getData() != null) {
                     data = baseResult.getData();
+                    mPresenter.GetBrandWithCategory2(data.getUserID(),data.getBrandID(),data.getCategoryID(),data.getSubCategoryID(),data.getProductTypeID(),"1","999");
                     if ("Y".equals(data.getExtra()) && !"0".equals(data.getExtraTime())) {
                         mTvState.setText(data.getGuaranteeText() + "/" + data.getTypeName() + "/加急");
                     } else {
@@ -689,6 +703,37 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
 
                 break;
             default:
+                break;
+        }
+    }
+
+    @Override
+    public void GetBrandWithCategory2(BaseResult<Data<List<GetBrandWithCategory>>> baseResult) {
+        switch (baseResult.getStatusCode()){
+            case 200:
+                list = baseResult.getData().getItem2();
+                if (list.size()==0){
+                    mLlMaintenanceInformation.setVisibility(View.GONE);
+                }else {
+                    mLlMaintenanceInformation.setVisibility(View.VISIBLE);
+                    for (int i = 0; i < list.size(); i++) {
+                        if (list.get(i).getCourseCount()!=null){
+                            mTvProductName.setText(list.get(i).getBrandName() + "  " + list.get(i).getProductTypeName());
+                            if (list.get(i).getImge()==null){
+                                Glide.with(mActivity)
+                                        .load(R.drawable.zanwu)
+                                        .into(mIvPicture);
+                            }else {
+                                Glide.with(mActivity)
+                                        .load(Config.Leave_product_URL + list.get(i).getImge())
+                                        .into(mIvPicture);
+                            }
+                            content = list.get(i);
+                            break;
+                        }
+                }
+
+                }
                 break;
         }
     }

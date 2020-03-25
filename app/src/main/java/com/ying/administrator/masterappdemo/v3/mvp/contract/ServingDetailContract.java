@@ -5,7 +5,10 @@ import com.ying.administrator.masterappdemo.base.BasePresenter;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.base.BaseView;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.GetBrandWithCategory;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 
@@ -20,6 +23,7 @@ public interface ServingDetailContract {
         //更新时间
         Observable<BaseResult<Data>> UpdateSendOrderUpdateTime(String OrderID,String UpdateDate,String EndDate);
         Observable<BaseResult<Data<String>>> ConfirmReceipt(String OrderID);
+        Observable<BaseResult<Data<List<GetBrandWithCategory>>>> GetBrandWithCategory2(String UserID, String BrandID, String CategoryID, String SubCategoryID, String ProductTypeID, String page, String limit);
     }
 
     interface View extends BaseView{
@@ -31,6 +35,7 @@ public interface ServingDetailContract {
         //更新时间
         void UpdateSendOrderUpdateTime(BaseResult<Data> baseResult);
         void ConfirmReceipt(BaseResult<Data<String>> baseResult);
+        void GetBrandWithCategory2(BaseResult<Data<List<GetBrandWithCategory>>> baseResult);
     }
 
     abstract class Presenter extends BasePresenter<View,Model>{
@@ -41,5 +46,6 @@ public interface ServingDetailContract {
         //更新时间
         public abstract void UpdateSendOrderUpdateTime(String OrderID,String UpdateDate,String EndDate);
         public abstract void ConfirmReceipt(String OrderID);
+        public abstract void GetBrandWithCategory2(String UserID, String BrandID, String CategoryID, String SubCategoryID, String ProductTypeID, String page, String limit);
     }
 }

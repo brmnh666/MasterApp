@@ -3,8 +3,11 @@ package com.ying.administrator.masterappdemo.v3.mvp.Presenter;
 import com.ying.administrator.masterappdemo.base.BaseObserver;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.GetBrandWithCategory;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.ServingDetailContract;
+
+import java.util.List;
 
 public class ServingDetailPresenter extends ServingDetailContract.Presenter {
     @Override
@@ -57,6 +60,17 @@ public class ServingDetailPresenter extends ServingDetailContract.Presenter {
                     @Override
                     protected void onHandleSuccess(BaseResult<Data<String>> value) {
                         mView.ConfirmReceipt(value);
+                    }
+                });
+    }
+
+    @Override
+    public void GetBrandWithCategory2(String UserID, String BrandID, String CategoryID, String SubCategoryID, String ProductTypeID, String page, String limit) {
+        mModel.GetBrandWithCategory2(UserID, BrandID, CategoryID, SubCategoryID, ProductTypeID,page,limit)
+                .subscribe(new BaseObserver<Data<List<GetBrandWithCategory>>>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<Data<List<GetBrandWithCategory>>> value) {
+                        mView.GetBrandWithCategory2(value);
                     }
                 });
     }

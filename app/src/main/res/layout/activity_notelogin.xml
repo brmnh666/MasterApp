@@ -146,4 +146,50 @@
             android:textSize="15sp"
             />
     </RelativeLayout>
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp">
+
+        <ImageView
+            android:id="@+id/img_agreement"
+            android:layout_gravity="center_vertical"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:background="@drawable/pay_check_selector"
+            />
+
+        <TextView
+            android:layout_marginLeft="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="我同意并阅读"
+            />
+        <TextView
+            android:id="@+id/tv_agreement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="《服务协议》"
+            android:textColor="#30CEED"
+            />
+        <TextView
+            android:layout_marginLeft="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="和"
+            />
+        <TextView
+            android:id="@+id/tv_privacy_policy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="《隐私政策》"
+            android:textColor="#30CEED"
+            />
+    </LinearLayout>
 </LinearLayout>

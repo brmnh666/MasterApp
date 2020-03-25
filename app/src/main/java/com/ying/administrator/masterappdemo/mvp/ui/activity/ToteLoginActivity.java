@@ -8,6 +8,8 @@ import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,11 +43,24 @@ public class ToteLoginActivity extends BaseActivity<LoginPresenter, LoginModel> 
             TextView mTvUsername;
     @BindView(R.id.tv_login) //登陆
             TextView mTv_login;
+    @BindView(R.id.img_login_username)
+    ImageView mImgLoginUsername;
+    @BindView(R.id.img_login_password)
+    ImageView mImgLoginPassword;
+    @BindView(R.id.rl_input_password)
+    RelativeLayout mRlInputPassword;
+    @BindView(R.id.img_agreement)
+    ImageView mImgAgreement;
+    @BindView(R.id.tv_agreement)
+    TextView mTvAgreement;
+    @BindView(R.id.tv_privacy_policy)
+    TextView mTvPrivacyPolicy;
 
 
     private String Phone;
     private SPUtils spUtils;
     ZLoadingDialog dialog = new ZLoadingDialog(this); //loading
+    private Intent intent;
 
 
     @Override
@@ -65,9 +80,13 @@ public class ToteLoginActivity extends BaseActivity<LoginPresenter, LoginModel> 
 
     @Override
     protected void initView() {
+        mImgAgreement.setSelected(true);
         mTvUsername.setOnClickListener(this);
         mTvYzm.setOnClickListener(this);
         mTv_login.setOnClickListener(this);
+        mImgAgreement.setOnClickListener(this);
+        mTvAgreement.setOnClickListener(this);
+        mTvPrivacyPolicy.setOnClickListener(this);
     }
 
     @Override
@@ -104,6 +123,10 @@ public class ToteLoginActivity extends BaseActivity<LoginPresenter, LoginModel> 
                     ToastUtils.showShort("请输入验证码！");
                     return;
                 }
+                if (!mImgAgreement.isSelected()) {
+                    ToastUtils.showShort("请阅读并同意服务协议与隐私政策");
+                    return;
+                }
                 showLoading();
                 mPresenter.LoginOnMessage(Phone, mEtLoginCode.getText().toString());
 
@@ -113,7 +136,25 @@ public class ToteLoginActivity extends BaseActivity<LoginPresenter, LoginModel> 
                 ToteLoginActivity.this.finish();
 
                 break;
-
+            case R.id.img_agreement:
+                if (mImgAgreement.isSelected()) {
+                    mImgAgreement.setSelected(false);
+                } else {
+                    mImgAgreement.setSelected(true);
+                }
+                break;
+            case R.id.tv_agreement:
+                intent = new Intent(mActivity, WebActivity2.class);
+                intent.putExtra("Url","https://admin.xigyu.com/Message/service");
+                intent.putExtra("Title","服务协议");
+                startActivity(intent);
+                break;
+            case R.id.tv_privacy_policy:
+                intent = new Intent(mActivity, WebActivity2.class);
+                intent.putExtra("Url","https://admin.xigyu.com/Message/yinsi");
+                intent.putExtra("Title","隐私政策");
+                startActivity(intent);
+                break;
 
         }
 

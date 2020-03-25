@@ -5,6 +5,7 @@ import com.ying.administrator.masterappdemo.base.BasePresenter;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.base.BaseView;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.GetBrandWithCategory;
 import com.ying.administrator.masterappdemo.entity.SubUserInfo;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
@@ -30,6 +31,7 @@ public interface AppointmentDetailsContract {
         Observable<BaseResult<List<SubUserInfo.SubUserInfoDean>>> GetChildAccountByParentUserID(String ParentUserID);
         //主账号派单操作
         Observable<BaseResult<Data>> ChangeSendOrder(String OrderID,String UserID);
+        Observable<BaseResult<Data<List<GetBrandWithCategory>>>> GetBrandWithCategory2(String UserID, String BrandID, String CategoryID, String SubCategoryID, String ProductTypeID, String page, String limit);
     }
 
     interface View extends BaseView{
@@ -48,6 +50,7 @@ public interface AppointmentDetailsContract {
         void GetChildAccountByParentUserID(BaseResult<List<SubUserInfo.SubUserInfoDean>> baseResult);
         //主账号派单操作
         void ChangeSendOrder(BaseResult<Data> baseResult);
+        void GetBrandWithCategory2(BaseResult<Data<List<GetBrandWithCategory>>> baseResult);
     }
 
     abstract class Persenter extends BasePresenter<View,Model>{
@@ -65,5 +68,6 @@ public interface AppointmentDetailsContract {
         public abstract void GetChildAccountByParentUserID(String ParentUserID);
         //主账号派单操作
         public abstract void ChangeSendOrder(String OrderID,String UserID);
+        public abstract void GetBrandWithCategory2(String UserID, String BrandID, String CategoryID, String SubCategoryID, String ProductTypeID, String page, String limit);
     }
 }

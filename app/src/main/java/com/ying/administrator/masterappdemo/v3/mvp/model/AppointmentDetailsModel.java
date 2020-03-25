@@ -3,6 +3,7 @@ package com.ying.administrator.masterappdemo.v3.mvp.model;
 import com.huawei.hms.api.Api;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.GetBrandWithCategory;
 import com.ying.administrator.masterappdemo.entity.SubUserInfo;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
@@ -74,4 +75,10 @@ public class AppointmentDetailsModel implements AppointmentDetailsContract.Model
                 .subscribeOn(Schedulers.io());
     }
 
+    @Override
+    public Observable<BaseResult<Data<List<GetBrandWithCategory>>>> GetBrandWithCategory2(String UserID, String BrandID, String CategoryID, String SubCategoryID, String ProductTypeID, String page, String limit) {
+        return ApiRetrofit.getDefault().GetBrandWithCategory2(UserID, BrandID, CategoryID, SubCategoryID, ProductTypeID,page,limit)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
 }

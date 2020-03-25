@@ -16,6 +16,7 @@ import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.ToBepresent;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.CardList_Activity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.DetailRecordActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.RechargeActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.VerifiedActivity2;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Verified_Activity;
@@ -74,6 +75,8 @@ public class WalletActivity extends BaseActivity<WalletPresenter, WalletModel> i
     @Override
     protected void initView() {
         mTvTitle.setText("我的钱包");
+        mTvSave.setVisibility(View.VISIBLE);
+        mTvSave.setText("明细");
         SPUtils spUtils = SPUtils.getInstance("token");
         userId = spUtils.getString("userName");
         mPresenter.GetUserInfoList(userId, "1");
@@ -86,6 +89,7 @@ public class WalletActivity extends BaseActivity<WalletPresenter, WalletModel> i
         mIvSetting.setOnClickListener(this);
         mTvWithdraw.setOnClickListener(this);
         mTvRecharge.setOnClickListener(this);
+        mTvSave.setOnClickListener(this);
     }
 
     @Override
@@ -144,6 +148,11 @@ public class WalletActivity extends BaseActivity<WalletPresenter, WalletModel> i
                 break;
             case R.id.tv_recharge:
                 startActivity(new Intent(mActivity, RechargeActivity.class));
+                break;
+            case R.id.tv_save:
+                Intent intent1 = new Intent(this, DetailRecordActivity.class);
+                intent1.putExtra("openwhich", "1");
+                startActivity(intent1);
                 break;
         }
     }

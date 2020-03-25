@@ -684,6 +684,7 @@
 
 
                 <LinearLayout
+                    android:id="@+id/ll_maintenance_information"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -692,8 +693,7 @@
                     android:paddingLeft="4dp"
                     android:paddingTop="7dp"
                     android:paddingRight="16dp"
-                    android:paddingBottom="9dp"
-                    android:visibility="gone">
+                    android:paddingBottom="9dp">
 
                     <ImageView
                         android:id="@+id/iv_picture"
@@ -732,7 +732,7 @@
                                 android:textSize="12sp" />
 
                             <LinearLayout
-                                android:id="@+id/ll_maintenance_information"
+
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="7dp"

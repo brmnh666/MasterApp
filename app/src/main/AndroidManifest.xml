@@ -687,7 +687,7 @@
         <!--详细的交易记录actvity-->
 
         <activity android:name=".mvp.ui.activity.DetailRecordActivity"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppTheme.NoActionBar1"
             />
          <!--新的注册activity-->
 

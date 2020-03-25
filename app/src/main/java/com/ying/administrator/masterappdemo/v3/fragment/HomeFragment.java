@@ -1,5 +1,6 @@
 package com.ying.administrator.masterappdemo.v3.fragment;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,6 +26,7 @@ import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.Article;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.RechargeActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.WebActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
 import com.ying.administrator.masterappdemo.v3.activity.ApplyFeeActivity;
@@ -38,6 +41,7 @@ import com.ying.administrator.masterappdemo.widget.SwitchView;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +76,8 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
     private int page = 1;
     private WorkOrder workOrder;
     private int grabposition;
+    private View customdialog_home_view;
+    private AlertDialog customdialog_home_dialog;
 
     public static HomeFragment newInstance(String param1) {
         HomeFragment fragment = new HomeFragment();
@@ -104,7 +110,7 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
         adapter.setEmptyView(getHomeEmptyView());
         adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, final int position) {
                 switch (view.getId()) {
                     case R.id.tv_orders:
                         grabposition = position;
@@ -112,7 +118,33 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
 //                            Intent intent=new Intent(mActivity,QuoteDetailsActivity.class);
 //                            intent.putExtra("id",list.get(position).getOrderID());
 //                            startActivity(intent);
-                            mPresenter.UpdateSendOrderState(list.get(position).getOrderID(), "1", "");
+//                            mPresenter.UpdateSendOrderState(list.get(position).getOrderID(), "1", "");
+                            customdialog_home_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_home, null);
+                            customdialog_home_dialog = new AlertDialog.Builder(mActivity)
+                                    .setView(customdialog_home_view)
+                                    .create();
+                            customdialog_home_dialog.show();
+                            TextView title = customdialog_home_view.findViewById(R.id.title);
+                            TextView message = customdialog_home_view.findViewById(R.id.message);
+                            Button negtive = customdialog_home_view.findViewById(R.id.negtive);
+                            Button positive = customdialog_home_view.findViewById(R.id.positive);
+                            title.setText("温馨提示");
+                            message.setText("敬爱的师傅：您接到的是保外服务单，费用由用户支付，平台仅收取10元派单费，工单完结后，请充值。谢谢！");
+                            negtive.setText("取消");
+                            positive.setText("接单");
+                            negtive.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    customdialog_home_dialog.dismiss();
+                                }
+                            });
+                            positive.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    mPresenter.UpdateSendOrderState(list.get(position).getOrderID(), "1", "");
+                                    customdialog_home_dialog.dismiss();
+                                }
+                            });
                         } else {
                             if ("true".equals(list.get(position).getDistanceTureOrFalse())) {
                                 Intent intent = new Intent(mActivity, ApplyFeeActivity.class);

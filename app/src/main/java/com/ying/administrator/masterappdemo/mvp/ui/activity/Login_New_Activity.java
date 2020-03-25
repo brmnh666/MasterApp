@@ -9,18 +9,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.google.gson.Gson;
-import com.huawei.android.hms.agent.common.UIUtils;
-import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
-import com.xiaomi.mipush.sdk.Constants;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.app.MyApplication;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
@@ -33,7 +27,6 @@ import com.ying.administrator.masterappdemo.mvp.contract.LoginContract;
 import com.ying.administrator.masterappdemo.mvp.model.LoginModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.LoginPresenter;
 import com.ying.administrator.masterappdemo.v3.activity.MainActivity;
-import com.ying.administrator.masterappdemo.wxapi.WXEntryActivity;
 import com.zyao89.view.zloading.ZLoadingDialog;
 import com.zyao89.view.zloading.Z_TYPE;
 
@@ -79,6 +72,12 @@ public class Login_New_Activity extends BaseActivity<LoginPresenter, LoginModel>
     RelativeLayout mRlInputPassword;
     @BindView(R.id.iv_weixin)
     ImageView mIvWeixin;
+    @BindView(R.id.img_agreement)
+    ImageView mImgAgreement;
+    @BindView(R.id.tv_agreement)
+    TextView mTvAgreement;
+    @BindView(R.id.tv_privacy_policy)
+    TextView mTvPrivacyPolicy;
 
 
     private boolean isLogin;
@@ -108,7 +107,7 @@ public class Login_New_Activity extends BaseActivity<LoginPresenter, LoginModel>
 
     @Override
     protected void initView() {
-
+        mImgAgreement.setSelected(true);
 
     }
 
@@ -120,6 +119,9 @@ public class Login_New_Activity extends BaseActivity<LoginPresenter, LoginModel>
         mTv_note_login.setOnClickListener(this);
         tv_forgetpassword.setOnClickListener(this);
         mIvWeixin.setOnClickListener(this);
+        mImgAgreement.setOnClickListener(this);
+        mTvAgreement.setOnClickListener(this);
+        mTvPrivacyPolicy.setOnClickListener(this);
     }
 
     @Override
@@ -184,7 +186,12 @@ public class Login_New_Activity extends BaseActivity<LoginPresenter, LoginModel>
                     ToastUtils.showShort("请输入密码！");
                     return;
                 }
+                if (!mImgAgreement.isSelected()) {
+                    cancleLoading();
+                    ToastUtils.showShort("请阅读并同意服务协议与隐私政策");
+                    return;
 
+                }
                 mPresenter.Login(userName, passWord);
 
                 break;
@@ -200,8 +207,25 @@ public class Login_New_Activity extends BaseActivity<LoginPresenter, LoginModel>
                 MyApplication.mWxApi.sendReq(req);
 
                 break;
-
-
+            case R.id.img_agreement:
+                if (mImgAgreement.isSelected()) {
+                    mImgAgreement.setSelected(false);
+                } else {
+                    mImgAgreement.setSelected(true);
+                }
+                break;
+            case R.id.tv_agreement:
+                intent = new Intent(mActivity, WebActivity2.class);
+                intent.putExtra("Url","https://admin.xigyu.com/Message/service");
+                intent.putExtra("Title","服务协议");
+                startActivity(intent);
+                break;
+            case R.id.tv_privacy_policy:
+                intent = new Intent(mActivity, WebActivity2.class);
+                intent.putExtra("Url","https://admin.xigyu.com/Message/yinsi");
+                intent.putExtra("Title","隐私政策");
+                startActivity(intent);
+                break;
         }
     }
 
@@ -216,7 +240,7 @@ public class Login_New_Activity extends BaseActivity<LoginPresenter, LoginModel>
                     spUtils.put("passWord", passWord);
                     spUtils.put("isLogin", true);
                     mPresenter.AddAndUpdatePushAccount(JPushInterface.getRegistrationID(this), "7", userName);
-                    startActivity(new Intent(mActivity, com.ying.administrator.masterappdemo.v3.activity.MainActivity.class));
+                    startActivity(new Intent(mActivity, MainActivity.class));
                     finish();
                 } else {
                     ToastUtils.showShort(data.getItem2());

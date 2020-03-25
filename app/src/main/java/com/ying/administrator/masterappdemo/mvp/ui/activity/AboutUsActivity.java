@@ -98,12 +98,20 @@ public class AboutUsActivity extends BaseActivity implements View.OnClickListene
                 finish();
                 break;
             case R.id.tv_opinion:
-                startActivity(new Intent(mActivity, Opinion_Activity.class));
+//                startActivity(new Intent(mActivity, Opinion_Activity.class));
+                intent = new Intent(mActivity, WebActivity2.class);
+                intent.putExtra("Url","https://admin.xigyu.com/Message/yinsi");
+                intent.putExtra("Title","隐私政策");
+                startActivity(intent);
                 break;
             case R.id.tv_user_Agreement:
+//                intent = new Intent(mActivity, WebActivity2.class);
+//                intent.putExtra("Url", "http://admin.xigyu.com/Agreement");
+//                intent.putExtra("Title", "用户协议");
+//                startActivity(intent);
                 intent = new Intent(mActivity, WebActivity2.class);
-                intent.putExtra("Url", "http://admin.xigyu.com/Agreement");
-                intent.putExtra("Title", "用户协议");
+                intent.putExtra("Url","https://admin.xigyu.com/Message/service");
+                intent.putExtra("Title","服务协议");
                 startActivity(intent);
                 break;
             case R.id.tv_phone_number:
