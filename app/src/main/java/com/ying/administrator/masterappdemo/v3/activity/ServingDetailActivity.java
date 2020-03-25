@@ -289,6 +289,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                             intent.putExtra("OrderID", data.getOrderID());
                             startActivity(intent);
                         } else {
+                            Double money=data.getOrderMoney()-data.getTerraceMoney();
                             intent = new Intent(mActivity, ApplicationAccessoriesActivity.class);
                             intent.putExtra("id", orderId);
                             intent.putExtra("SubCategoryID", data.getProductTypeID());
@@ -296,6 +297,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                             intent.putExtra("OrderMoney", data.getOrderMoney() + "");
                             intent.putExtra("BeyondMoney", data.getBeyondMoney() + "");
                             intent.putExtra("BeyondState", data.getBeyondState() + "");
+                            intent.putExtra("TerraceMoney", money + "");
                             startActivity(intent);
                         }
                     }

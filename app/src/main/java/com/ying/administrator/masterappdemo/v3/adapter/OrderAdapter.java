@@ -44,6 +44,13 @@ public class OrderAdapter extends BaseQuickAdapter<WorkOrder.DataBean, BaseViewH
             helper.setBackgroundRes(R.id.tv_type, R.drawable.v3_yellow_shape);
             helper.setTextColor(R.id.tv_type, Color.parseColor("#000000"));
         } else {
+            if ("0".equals(item.getPartyNo())){
+                helper.setGone(R.id.iv_location,false);
+                helper.setGone(R.id.tv_location,false);
+            }else {
+                helper.setVisible(R.id.iv_location,false);
+                helper.setVisible(R.id.tv_location,false);
+            }
             tv_orders.setText("接单");
             tv_orders.setBackgroundResource(R.drawable.v3_orders_shape);
             tv_orders.setTextColor(Color.parseColor("#ffffff"));

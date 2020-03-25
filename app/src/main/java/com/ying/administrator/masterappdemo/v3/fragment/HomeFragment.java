@@ -108,10 +108,11 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
                 switch (view.getId()) {
                     case R.id.tv_orders:
                         grabposition = position;
-                        if ("1".equals(list.get(position).getPartyNo())) {
-                            Intent intent=new Intent(mActivity,QuoteDetailsActivity.class);
-                            intent.putExtra("id",list.get(position).getOrderID());
-                            startActivity(intent);
+                        if ("0".equals(list.get(position).getPartyNo())) {
+//                            Intent intent=new Intent(mActivity,QuoteDetailsActivity.class);
+//                            intent.putExtra("id",list.get(position).getOrderID());
+//                            startActivity(intent);
+                            mPresenter.UpdateSendOrderState(list.get(position).getOrderID(), "1", "");
                         } else {
                             if ("true".equals(list.get(position).getDistanceTureOrFalse())) {
                                 Intent intent = new Intent(mActivity, ApplyFeeActivity.class);
@@ -199,6 +200,9 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
         mRefreshLayout.finishLoadmore();
         switch (baseResult.getStatusCode()) {
             case 200:
+                if (page==1){
+                    list.clear();
+                }
                 workOrder = baseResult.getData();
                 if (workOrder.getData() != null) {
                     if (workOrder.getData().size() > 0) {

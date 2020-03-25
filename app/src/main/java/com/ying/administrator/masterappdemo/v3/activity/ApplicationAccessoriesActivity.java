@@ -152,6 +152,7 @@ public class ApplicationAccessoriesActivity extends BaseActivity<ApplicationAcce
     private FAccessory.OrderAccessoryStrBean orderAccessoryStrBean;
     private AlertDialog customdialog_home_dialog;
     private UserInfo.UserInfoDean userInfo;
+    private String terraceMoney;
 
     @Override
     protected int setLayoutId() {
@@ -172,7 +173,8 @@ public class ApplicationAccessoriesActivity extends BaseActivity<ApplicationAcce
         quaMoney = getIntent().getStringExtra("QuaMoney");
         beyondMoney = getIntent().getStringExtra("BeyondMoney");
         beyondState = getIntent().getStringExtra("BeyondState");
-        mTvMoney.setText("服务金额：¥"+orderMoney);
+        terraceMoney = getIntent().getStringExtra("TerraceMoney");
+        mTvMoney.setText("服务金额：¥"+terraceMoney);
         SPUtils spUtils = SPUtils.getInstance("token");
         userID = spUtils.getString("userName");
         mPresenter.GetAccountAddress(userID);
@@ -611,7 +613,7 @@ public class ApplicationAccessoriesActivity extends BaseActivity<ApplicationAcce
             case 200:
                 if (baseResult.getData()!=null){
                     userInfo = baseResult.getData().getData().get(0);
-                    if (userInfo==null){
+                    if (userInfo.getParentUserID()==null){
                         mTvMoney.setVisibility(View.VISIBLE);
                     }else {
                         mTvMoney.setVisibility(View.GONE);

@@ -18,7 +18,7 @@
             android:layout_centerInParent="true"
             android:layout_marginTop="80dp"
             android:layout_marginBottom="50dp"
-            android:src="@drawable/app" />
+            android:src="@drawable/v3_icon" />
     </LinearLayout>
 
 
@@ -122,11 +122,11 @@
         android:gravity="center"
         android:id="@+id/tv_login"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="53dp"
         android:text="验证码登陆"
         android:textColor="@color/white"
         android:textSize="18sp"
-        android:background="@drawable/bg_register"
+        android:background="@drawable/v3_btn_shape"
         />
 
 
@@ -142,7 +142,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="20dp"
             android:layout_marginTop="20dp"
-            android:textColor="@color/color_custom_01"
+            android:textColor="#30CEED"
             android:textSize="15sp"
             />
     </RelativeLayout>
