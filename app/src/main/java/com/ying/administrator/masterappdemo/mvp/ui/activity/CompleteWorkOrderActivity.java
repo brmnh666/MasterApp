@@ -300,7 +300,11 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 //                    }else{
 //                        mPresenter.UpdateOrderState(orderID, "5");
 //                    }
-                    mPresenter.UpdateOrderState(orderID, "5", "");
+                    if ("0".equals(data.getPartyNo())){
+                        mPresenter.UpdateOrderState(orderID, "7", "");
+                    }else {
+                        mPresenter.UpdateOrderState(orderID, "5", "");
+                    }
                 } else {
                     cancleLoading();
                 }
@@ -322,11 +326,16 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                     if ("1".equals(data.getBarCodeIsNo())) {
                         mPresenter.AddbarCode(barCode, orderID);
                     } else {
-                        if (!"1".equals(data.getIsReturn())) {//不需要返件
-                            mPresenter.UpdateOrderState(orderID, "5", "");
+                        if ("0".equals(data.getPartyNo())) {
+                            mPresenter.UpdateOrderState(orderID, "7", "");
                         } else {
-                            mPresenter.UpdateOrderState(orderID, "8", "");
+                            if (!"1".equals(data.getIsReturn())) {//不需要返件
+                                mPresenter.UpdateOrderState(orderID, "5", "");
+                            } else {
+                                mPresenter.UpdateOrderState(orderID, "8", "");
+                            }
                         }
+
                     }
 
 
@@ -366,12 +375,17 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                         EventBus.getDefault().post(5);
                         finish();
                     } else {
-                        if (!"1".equals(data.getIsReturn())) {//不需要返件
-                            EventBus.getDefault().post(5);
+                        if ("0".equals(data.getPartyNo())){
+                            EventBus.getDefault().post(6);
                             finish();
-                        } else {
-                            EventBus.getDefault().post(4);
-                            finish();
+                        }else {
+                            if (!"1".equals(data.getIsReturn())) {//不需要返件
+                                EventBus.getDefault().post(5);
+                                finish();
+                            } else {
+                                EventBus.getDefault().post(4);
+                                finish();
+                            }
                         }
                     }
                 }
@@ -390,10 +404,14 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
         switch (baseResult.getStatusCode()) {
             case 200:
                 if (baseResult.getData().isItem1()) {
-                    if (!"1".equals(data.getIsReturn())) {//不需要返件
-                        mPresenter.UpdateOrderState(orderID, "5", "");
+                    if ("0".equals(data.getPartyNo())) {
+                        mPresenter.UpdateOrderState(orderID, "7", "");
                     } else {
-                        mPresenter.UpdateOrderState(orderID, "8", "");
+                        if (!"1".equals(data.getIsReturn())) {//不需要返件
+                            mPresenter.UpdateOrderState(orderID, "5", "");
+                        } else {
+                            mPresenter.UpdateOrderState(orderID, "8", "");
+                        }
                     }
                 } else {
                     ToastUtils.showShort(baseResult.getData().getItem2());
@@ -521,10 +539,14 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                             return;
                         }
                         if (return_img_map.size() == 0) {
-                            if (!"1".equals(data.getIsReturn())) {//不需要返件
-                                mPresenter.UpdateOrderState(orderID, "5", "");
-                            } else {
-                                mPresenter.UpdateOrderState(orderID, "8", "");
+                            if ("0".equals(data.getPartyNo())){
+                                mPresenter.UpdateOrderState(orderID, "7", "");
+                            }else {
+                                if (!"1".equals(data.getIsReturn())) {//不需要返件
+                                    mPresenter.UpdateOrderState(orderID, "5", "");
+                                } else {
+                                    mPresenter.UpdateOrderState(orderID, "8", "");
+                                }
                             }
                         } else {
                             String EndRemark = mEtMemo.getText().toString();

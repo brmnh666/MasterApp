@@ -24,6 +24,7 @@ import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.Article;
+import com.ying.administrator.masterappdemo.entity.CodeMoney;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.RechargeActivity;
@@ -78,6 +79,7 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
     private int grabposition;
     private View customdialog_home_view;
     private AlertDialog customdialog_home_dialog;
+    private CodeMoney codeList;
 
     public static HomeFragment newInstance(String param1) {
         HomeFragment fragment = new HomeFragment();
@@ -114,7 +116,7 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
                 switch (view.getId()) {
                     case R.id.tv_orders:
                         grabposition = position;
-                        if ("0".equals(list.get(position).getPartyNo())) {
+                        if ("保外".equals(list.get(position).getGuaranteeText())) {
 //                            Intent intent=new Intent(mActivity,QuoteDetailsActivity.class);
 //                            intent.putExtra("id",list.get(position).getOrderID());
 //                            startActivity(intent);
@@ -129,7 +131,7 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
                             Button negtive = customdialog_home_view.findViewById(R.id.negtive);
                             Button positive = customdialog_home_view.findViewById(R.id.positive);
                             title.setText("温馨提示");
-                            message.setText("敬爱的师傅：您接到的是保外服务单，费用由用户支付，平台仅收取10元派单费，工单完结后，请充值。谢谢！");
+                            message.setText("敬爱的师傅：您接到的是保外服务单，费用由用户支付，平台仅收取"+codeList.getCodeValue()+"元派单费，工单完结后，请充值。谢谢！");
                             negtive.setText("取消");
                             positive.setText("接单");
                             negtive.setOnClickListener(new View.OnClickListener() {
@@ -196,6 +198,7 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
         mPresenter.WorkerGetOrderList(userId, "0", page + "", "5");
         mPresenter.GetListCategoryContentByCategoryID("7", "1", "999");
         mPresenter.messgIsOrNo(userId, "1", "1");
+        mPresenter.GetCodeList("ProtectionCost","1","1");
     }
 
     @Override
@@ -331,6 +334,15 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
                 }else {
                     mIvRed.setVisibility(View.GONE);
                 }
+                break;
+        }
+    }
+
+    @Override
+    public void GetCodeList(BaseResult<List<CodeMoney>> baseResult) {
+        switch (baseResult.getStatusCode()){
+            case 200:
+                codeList = baseResult.getData().get(0);
                 break;
         }
     }

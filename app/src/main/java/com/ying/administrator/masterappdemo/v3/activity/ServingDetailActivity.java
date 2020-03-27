@@ -759,9 +759,10 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                 if (list.size() == 0) {
                     mLlMaintenanceInformation.setVisibility(View.GONE);
                 } else {
-                    mLlMaintenanceInformation.setVisibility(View.VISIBLE);
+//                    mLlMaintenanceInformation.setVisibility(View.VISIBLE);
                     for (int i = 0; i < list.size(); i++) {
                         if (list.get(i).getCourseCount() != null) {
+                            mLlMaintenanceInformation.setVisibility(View.VISIBLE);
                             mTvProductName.setText(list.get(i).getBrandName() + "  " + list.get(i).getProductTypeName());
                             if (list.get(i).getImge() == null) {
                                 Glide.with(mActivity)
@@ -774,6 +775,8 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                             }
                             content = list.get(i);
                             break;
+                        }else {
+                            mLlMaintenanceInformation.setVisibility(View.GONE);
                         }
                     }
 

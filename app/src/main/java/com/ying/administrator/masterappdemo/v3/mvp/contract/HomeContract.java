@@ -5,8 +5,11 @@ import com.ying.administrator.masterappdemo.base.BasePresenter;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.base.BaseView;
 import com.ying.administrator.masterappdemo.entity.Article;
+import com.ying.administrator.masterappdemo.entity.CodeMoney;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 
@@ -17,6 +20,7 @@ public interface HomeContract {
         //接单操作
         Observable<BaseResult<Data>> UpdateSendOrderState(String OrderID,String State,String Reason);
         Observable<BaseResult<Data<String>>> messgIsOrNo(String UserID, String limit, String page);
+        Observable<BaseResult<List<CodeMoney>>> GetCodeList(String Code, String limit, String page);
     }
 
     interface View extends BaseView{
@@ -25,6 +29,7 @@ public interface HomeContract {
         //接单操作
         void UpdateSendOrderState(BaseResult<Data> baseResult);
         void messgIsOrNo(BaseResult<Data<String>> baseResult);
+        void GetCodeList(BaseResult<List<CodeMoney>> baseResult);
     }
 
     abstract class Presenter extends BasePresenter<View,Model>{
@@ -33,5 +38,6 @@ public interface HomeContract {
         //接单操作
         public abstract void UpdateSendOrderState(String OrderID,String State,String Reason);
         public abstract void messgIsOrNo(String UserID, String limit, String page);
+        public abstract void GetCodeList(String Code, String limit, String page);
     }
 }

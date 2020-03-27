@@ -3,9 +3,12 @@ package com.ying.administrator.masterappdemo.v3.mvp.Presenter;
 import com.ying.administrator.masterappdemo.base.BaseObserver;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Article;
+import com.ying.administrator.masterappdemo.entity.CodeMoney;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.HomeContract;
+
+import java.util.List;
 
 public class HomePresenter extends HomeContract.Presenter {
     @Override
@@ -48,6 +51,17 @@ public class HomePresenter extends HomeContract.Presenter {
                     @Override
                     protected void onHandleSuccess(BaseResult<Data<String>> value) {
                         mView.messgIsOrNo(value);
+                    }
+                });
+    }
+
+    @Override
+    public void GetCodeList(String Code, String limit, String page) {
+        mModel.GetCodeList(Code, limit, page)
+                .subscribe(new BaseObserver<List<CodeMoney>>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<List<CodeMoney>> value) {
+                        mView.GetCodeList(value);
                     }
                 });
     }

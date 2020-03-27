@@ -10,6 +10,7 @@ import com.ying.administrator.masterappdemo.entity.BankCard;
 import com.ying.administrator.masterappdemo.entity.Bill;
 import com.ying.administrator.masterappdemo.entity.CategoryData;
 import com.ying.administrator.masterappdemo.entity.City;
+import com.ying.administrator.masterappdemo.entity.CodeMoney;
 import com.ying.administrator.masterappdemo.entity.ComplaintList;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.Data2;
@@ -1218,4 +1219,11 @@ public interface ApiService {
                                                                                    @Field("ProductTypeID") String ProductTypeID,
                                                                                    @Field("page") String page,
                                                                                    @Field("limit") String limit);
+
+    /*保外单收取多少费用*/
+    @FormUrlEncoded
+    @POST("SysCode/GetCodeList")
+    Observable<BaseResult<List<CodeMoney>>> GetCodeList(@Field("Code") String Code,
+                                                        @Field("page") String page,
+                                                        @Field("limit") String limit);
 }

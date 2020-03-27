@@ -227,6 +227,10 @@ public class OrderFragment extends BaseLazyFragment<OrderPresenter, OrderModel> 
                 mReceivingViewpager.setCurrentItem(5);//配件单 state 3
                 mPresenter.NavigationBarNumber(userId, "1", "10");
                 break;
+            case 6:
+                mReceivingViewpager.setCurrentItem(6);//配件单 state 3
+                mPresenter.NavigationBarNumber(userId, "1", "10");
+                break;
             case 20:
                 mPresenter.NavigationBarNumber(userId, "1", "10");
                 break;

@@ -715,9 +715,10 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                 if (list.size()==0){
                     mLlMaintenanceInformation.setVisibility(View.GONE);
                 }else {
-                    mLlMaintenanceInformation.setVisibility(View.VISIBLE);
+
                     for (int i = 0; i < list.size(); i++) {
                         if (list.get(i).getCourseCount()!=null){
+                            mLlMaintenanceInformation.setVisibility(View.VISIBLE);
                             mTvProductName.setText(list.get(i).getBrandName() + "  " + list.get(i).getProductTypeName());
                             if (list.get(i).getImge()==null){
                                 Glide.with(mActivity)
@@ -730,6 +731,8 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                             }
                             content = list.get(i);
                             break;
+                        }else {
+                            mLlMaintenanceInformation.setVisibility(View.GONE);
                         }
                 }
 

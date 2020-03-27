@@ -3,10 +3,13 @@ package com.ying.administrator.masterappdemo.v3.mvp.model;
 import com.huawei.hms.api.Api;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Article;
+import com.ying.administrator.masterappdemo.entity.CodeMoney;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.service.ApiRetrofit;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.HomeContract;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -37,6 +40,13 @@ public class HomeModel implements HomeContract.Model {
     @Override
     public Observable<BaseResult<Data<String>>> messgIsOrNo(String UserID, String limit, String page) {
         return ApiRetrofit.getDefault().messgIsOrNo(UserID, limit, page)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<BaseResult<List<CodeMoney>>> GetCodeList(String Code, String limit, String page) {
+        return ApiRetrofit.getDefault().GetCodeList(Code, limit, page)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }
