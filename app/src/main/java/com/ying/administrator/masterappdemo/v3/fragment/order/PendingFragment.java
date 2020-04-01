@@ -96,6 +96,7 @@ public class PendingFragment extends BaseLazyFragment<OrderPresenter, OrderModel
                 mPresenter.WorkerGetOrderList(userId, state, page + "", "10");
                 refreshlayout.resetNoMoreData();
                 EventBus.getDefault().post(20);
+                mRefreshLayout.finishRefresh();
             }
         });
 
@@ -108,7 +109,7 @@ public class PendingFragment extends BaseLazyFragment<OrderPresenter, OrderModel
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++; //页数加1
                 mPresenter.WorkerGetOrderList(userId, state, page + "", "10");
-
+                mRefreshLayout.finishLoadmore();
             }
         });
     }

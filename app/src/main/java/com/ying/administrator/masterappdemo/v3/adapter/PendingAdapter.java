@@ -23,7 +23,7 @@ public class PendingAdapter extends BaseQuickAdapter<WorkOrder.DataBean, BaseVie
     @Override
     protected void convert(BaseViewHolder helper, WorkOrder.DataBean item) {
         helper.addOnClickListener(R.id.tv_orders);
-        TextView tv_type = helper.getView(R.id.tv_type);
+        TextView tv_sub_account_maintenance = helper.getView(R.id.tv_sub_account_maintenance);
         TextView tv_orders = helper.getView(R.id.tv_orders);
         tv_orders.setVisibility(View.GONE);
         helper.setText(R.id.tv_time, MyUtils.getTimebefore(item.getCreateDate()))
@@ -61,9 +61,11 @@ public class PendingAdapter extends BaseQuickAdapter<WorkOrder.DataBean, BaseVie
         }
 
         if (userId.equals(item.getSendUser())){
-            helper.setGone(R.id.tv_sub_account_maintenance,false);
+            tv_sub_account_maintenance.setVisibility(View.GONE);
+//            helper.setGone(R.id.tv_sub_account_maintenance,false);
         }else {
-            helper.setVisible(R.id.tv_sub_account_maintenance,true);
+            tv_sub_account_maintenance.setVisibility(View.VISIBLE);
+//            helper.setVisible(R.id.tv_sub_account_maintenance,true);
         }
     }
 }

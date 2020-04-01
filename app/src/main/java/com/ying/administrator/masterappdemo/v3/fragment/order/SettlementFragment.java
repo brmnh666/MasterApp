@@ -87,6 +87,8 @@ public class SettlementFragment extends BaseLazyFragment<OrderPresenter, OrderMo
                 mPresenter.WorkerGetOrderList(userId, "12", page + "", "10");
                 EventBus.getDefault().post(20);
                 refreshlayout.resetNoMoreData();
+                mRefreshLayout.finishRefresh();
+                mRefreshLayout.finishLoadmore();
             }
         });
 
@@ -99,7 +101,8 @@ public class SettlementFragment extends BaseLazyFragment<OrderPresenter, OrderMo
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++; //页数加1
                 mPresenter.WorkerGetOrderList(userId, "12", page + "", "10");
-
+                mRefreshLayout.finishRefresh();
+                mRefreshLayout.finishLoadmore();
             }
         });
     }

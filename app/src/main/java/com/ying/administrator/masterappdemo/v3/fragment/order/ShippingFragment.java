@@ -86,6 +86,8 @@ public class ShippingFragment extends BaseLazyFragment <OrderPresenter, OrderMod
                 mPresenter.WorkerGetOrderList(userId, "11", page + "", "10");
                 EventBus.getDefault().post(20);
                 refreshlayout.resetNoMoreData();
+                mRefreshLayout.finishRefresh();
+                mRefreshLayout.finishLoadmore();
             }
         });
 
@@ -98,7 +100,8 @@ public class ShippingFragment extends BaseLazyFragment <OrderPresenter, OrderMod
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++; //页数加1
                 mPresenter.WorkerGetOrderList(userId, "11", page + "", "10");
-
+                mRefreshLayout.finishRefresh();
+                mRefreshLayout.finishLoadmore();
             }
         });
     }

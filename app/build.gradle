@@ -9,8 +9,8 @@ android {
         applicationId "com.ying.administrator.masterappdemo"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 63
-        versionName "3.0.1"
+        versionCode 64
+        versionName "3.0.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         applicationId "com.ying.administrator.masterappdemo"

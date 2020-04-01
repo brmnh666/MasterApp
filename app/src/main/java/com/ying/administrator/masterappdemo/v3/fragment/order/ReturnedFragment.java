@@ -87,6 +87,7 @@ public class ReturnedFragment extends BaseLazyFragment<OrderPresenter, OrderMode
                 mPresenter.WorkerGetOrderList(userId, "8", page + "", "10");
                 EventBus.getDefault().post(20);
                 refreshlayout.resetNoMoreData();
+                mRefreshLayout.finishRefresh();
             }
         });
 
@@ -99,7 +100,7 @@ public class ReturnedFragment extends BaseLazyFragment<OrderPresenter, OrderMode
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++; //页数加1
                 mPresenter.WorkerGetOrderList(userId, "8", page + "", "10");
-
+                mRefreshLayout.finishLoadmore();
             }
         });
     }

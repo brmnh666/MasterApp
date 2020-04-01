@@ -723,6 +723,9 @@ public class WorkOrder implements Serializable {
         public String getStateStr() {
             String status="";
             switch (State){
+                case "-4":
+                    status="关闭工单";
+                    break;
                 case "-2":
                     status="申请废除工单";
                     break;

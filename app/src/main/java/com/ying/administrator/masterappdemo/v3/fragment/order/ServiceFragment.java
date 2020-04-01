@@ -90,6 +90,8 @@ public class ServiceFragment extends BaseLazyFragment<OrderPresenter, OrderModel
                 mPresenter.WorkerGetOrderList(userId, "2", page + "", "10");
                 EventBus.getDefault().post(20);
                 refreshlayout.resetNoMoreData();
+                mRefreshLayout.finishRefresh();
+                mRefreshLayout.finishLoadmore();
             }
         });
 
@@ -102,7 +104,8 @@ public class ServiceFragment extends BaseLazyFragment<OrderPresenter, OrderModel
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++; //页数加1
                 mPresenter.WorkerGetOrderList(userId, "2", page + "", "10");
-
+                mRefreshLayout.finishRefresh();
+                mRefreshLayout.finishLoadmore();
             }
         });
 

@@ -606,7 +606,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                         }
                     }
 
-                    if ("5".equals(data.getState()) || "6".equals(data.getState()) || "7".equals(data.getState())) {
+                    if ("5".equals(data.getState()) || "6".equals(data.getState()) || "7".equals(data.getState())||"-4".equals(data.getState())||"-1".equals(data.getState())) {
                         mTvUpload.setVisibility(View.INVISIBLE);
                         mTvReservationAgain.setBackgroundResource(R.drawable.v3_gray_shape);
                         mTvReservationAgain.setEnabled(false);
