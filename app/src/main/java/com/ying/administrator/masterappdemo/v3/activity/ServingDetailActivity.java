@@ -14,16 +14,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.CircleCrop;
-import com.bumptech.glide.request.RequestOptions;
+import com.ethanhua.skeleton.Skeleton;
+import com.ethanhua.skeleton.SkeletonScreen;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -167,6 +167,8 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
     LinearLayout mLlReservationTime;
     @BindView(R.id.tv_complaint)
     TextView mTvComplaint;
+    @BindView(R.id.RootView)
+    FrameLayout mRootView;
     private String orderId;
     private WorkOrder.DataBean data;
     private Intent intent;
@@ -191,7 +193,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
     private List<GetBrandWithCategory> list;
     private GetBrandWithCategory content;
     private Intent intent2;
-
+    private SkeletonScreen skeletonScreen;
     @Override
     protected int setLayoutId() {
         return R.layout.v3_activity_serving_detail;
@@ -204,6 +206,12 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
 
     @Override
     protected void initView() {
+        skeletonScreen = Skeleton.bind(mRootView)
+                .load(R.layout.v3_activity_serving_detail_skeleton)
+                .duration(2000)
+                .color(R.color.shimmer_color)
+                .angle(10)
+                .show();
         mTvTitle.setText("工单详情");
         Intent intent = getIntent();
         if (null != intent) {
@@ -235,7 +243,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
         }
 
         type = getIntent().getStringExtra("type");
-        showProgress();
+//        showProgress();
         mPresenter.GetOrderInfo(orderId);
         myClipboard = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
     }
@@ -486,7 +494,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
+//        ButterKnife.bind(this);
     }
 
     /**
@@ -606,7 +614,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                         }
                     }
 
-                    if ("5".equals(data.getState()) || "6".equals(data.getState()) || "7".equals(data.getState())||"-4".equals(data.getState())||"-1".equals(data.getState())) {
+                    if ("5".equals(data.getState()) || "6".equals(data.getState()) || "7".equals(data.getState()) || "-4".equals(data.getState()) || "-1".equals(data.getState())) {
                         mTvUpload.setVisibility(View.INVISIBLE);
                         mTvReservationAgain.setBackgroundResource(R.drawable.v3_gray_shape);
                         mTvReservationAgain.setEnabled(false);
@@ -669,7 +677,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                     }
                 }
 
-                hideProgress();
+//                hideProgress();
                 break;
         }
     }
@@ -688,7 +696,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                 } else {
                     ToastUtils.showShort(data.getItem2());
                 }
-                hideProgress();
+//                hideProgress();
                 break;
         }
     }
@@ -755,32 +763,37 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
     public void GetBrandWithCategory2(BaseResult<Data<List<GetBrandWithCategory>>> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-                list = baseResult.getData().getItem2();
-                if (list.size() == 0) {
-                    mLlMaintenanceInformation.setVisibility(View.GONE);
-                } else {
+                try{
+                    list = baseResult.getData().getItem2();
+                    if (list.size() == 0) {
+                        mLlMaintenanceInformation.setVisibility(View.GONE);
+                    } else {
 //                    mLlMaintenanceInformation.setVisibility(View.VISIBLE);
-                    for (int i = 0; i < list.size(); i++) {
-                        if (list.get(i).getCourseCount() != null) {
-                            mLlMaintenanceInformation.setVisibility(View.VISIBLE);
-                            mTvProductName.setText(list.get(i).getBrandName() + "  " + list.get(i).getProductTypeName());
-                            if (list.get(i).getImge() == null) {
-                                Glide.with(mActivity)
-                                        .load(R.drawable.v3_zanwu)
-                                        .into(mIvPicture);
+                        for (int i = 0; i < list.size(); i++) {
+                            if (list.get(i).getCourseCount() != null) {
+                                mLlMaintenanceInformation.setVisibility(View.VISIBLE);
+                                mTvProductName.setText(list.get(i).getBrandName() + "  " + list.get(i).getProductTypeName());
+                                if (list.get(i).getImge() == null) {
+                                    Glide.with(mActivity)
+                                            .load(R.drawable.v3_zanwu)
+                                            .into(mIvPicture);
+                                } else {
+                                    Glide.with(mActivity)
+                                            .load(Config.Leave_product_URL + list.get(i).getImge())
+                                            .into(mIvPicture);
+                                }
+                                content = list.get(i);
+                                break;
                             } else {
-                                Glide.with(mActivity)
-                                        .load(Config.Leave_product_URL + list.get(i).getImge())
-                                        .into(mIvPicture);
+                                mLlMaintenanceInformation.setVisibility(View.GONE);
                             }
-                            content = list.get(i);
-                            break;
-                        }else {
-                            mLlMaintenanceInformation.setVisibility(View.GONE);
                         }
-                    }
 
+                    }
+                }catch (Exception ex){
+                    return;
                 }
+                skeletonScreen.hide();
                 break;
         }
     }

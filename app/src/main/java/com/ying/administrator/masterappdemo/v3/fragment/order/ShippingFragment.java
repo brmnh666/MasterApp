@@ -165,7 +165,7 @@ public class ShippingFragment extends BaseLazyFragment <OrderPresenter, OrderMod
                 }else {
                     adapter.setEmptyView(getHomeEmptyView());
                 }
-
+                hideProgress();
                 break;
         }
     }
@@ -186,6 +186,7 @@ public class ShippingFragment extends BaseLazyFragment <OrderPresenter, OrderMod
     @Override
     protected void onVisible() {
         super.onVisible();
+        showProgress();
         list.clear();
         page=1;
         mPresenter.WorkerGetOrderList(userId, "11", page + "", "10");

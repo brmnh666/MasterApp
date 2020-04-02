@@ -163,7 +163,7 @@ public class ReturnedFragment extends BaseLazyFragment<OrderPresenter, OrderMode
                 }else {
                     adapter.setEmptyView(getHomeEmptyView());
                 }
-
+                hideProgress();
                 break;
         }
     }
@@ -194,6 +194,7 @@ public class ReturnedFragment extends BaseLazyFragment<OrderPresenter, OrderMode
     @Override
     protected void onVisible() {
         super.onVisible();
+        showProgress();
         list.clear();
         page=1;
         mPresenter.WorkerGetOrderList(userId, "8", page + "", "10");

@@ -2,7 +2,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/RootView">
 
     <include layout="@layout/v3_activity_head" />
 
@@ -146,7 +147,7 @@
                             android:id="@+id/tv_type"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="上门维修"
+                            android:text=""
                             android:textColor="@color/black"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -168,7 +169,7 @@
                             android:id="@+id/tv_status"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="待报价"
+                            android:text=""
                             android:textColor="#FF9000"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -190,7 +191,7 @@
                             android:id="@+id/tv_numbering"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="2000002323"
+                            android:text=""
                             android:textColor="@color/black"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -212,7 +213,7 @@
                             android:id="@+id/tv_payment"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="用户付费"
+                            android:text=""
                             android:textColor="@color/black"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -234,7 +235,7 @@
                             android:id="@+id/tv_billing_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="2020年1月14日  10:23分"
+                            android:text=""
                             android:textColor="@color/black"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -257,7 +258,7 @@
                             android:id="@+id/tv_appointment"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="2020年1月14日  10:23分"
+                            android:text=""
                             android:textColor="@color/black"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -298,7 +299,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
-                    android:text="描述：新机器正常进水光响不洗涤"
+                    android:text="描述："
                     android:textColor="@color/black"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -333,7 +334,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
-                        android:text="否"
+                        android:text=""
 
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -355,7 +356,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="寄送至："
+                            android:text="返件至："
                             android:textColor="@color/black"
                             android:textSize="17sp" />
 
@@ -364,7 +365,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="浙江省宁波市江北区企协大厦"
+                            android:text=""
 
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -388,7 +389,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
-                            android:text="厂商到付"
+                            android:text=""
 
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -464,7 +465,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="14dp"
-                            android:text="蛋炒饭    18067138219"
+                            android:text=""
                             android:textColor="@color/black"
                             android:textSize="14sp" />
 
@@ -473,7 +474,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:text="宁波市 江北区 同济路169号1901室"
+                            android:text=""
                             android:textColor="@color/black"
                             android:textSize="14sp" />
 
@@ -717,7 +718,7 @@
                             android:id="@+id/tv_product_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="小夫鹅 全自动洗衣机"
+                            android:text=""
                             android:textColor="@color/black"
                             android:textSize="14sp"
                             android:textStyle="bold" />

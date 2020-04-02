@@ -1,7 +1,10 @@
 package com.ying.administrator.masterappdemo.v3.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +14,11 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.vondear.rxui.view.dialog.RxDialogScaleView;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
@@ -66,6 +74,7 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
     private List<String> list=new ArrayList<>();
     private AccessoriesPictureAdapter accessoriesPictureAdapter;
     private Intent intent;
+    private SimpleTarget<Bitmap> simpleTarget;
 
     @Override
     protected int setLayoutId() {
@@ -188,8 +197,35 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
                     accessoriesPictureAdapter = new AccessoriesPictureAdapter(R.layout.v3_item_accessories_picture,list);
                     mRvAccessoriesPicture.setLayoutManager(new GridLayoutManager(mActivity,3));
                     mRvAccessoriesPicture.setAdapter(accessoriesPictureAdapter);
+                    accessoriesPictureAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+                        @Override
+                        public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                            switch (view.getId()){
+                                case R.id.iv_picture:
+                                    scaleview("https://img.xigyu.com/Pics/Accessory/" +  list.get(position));
+                                    break;
+                            }
+                        }
+                    });
                 }
                 break;
         }
+    }
+
+    public void scaleview(String url) {
+        simpleTarget = new SimpleTarget<Bitmap>() {
+            @Override
+            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<?
+                    super Bitmap> transition) {
+                RxDialogScaleView rxDialogScaleView = new RxDialogScaleView(mActivity);
+                rxDialogScaleView.setImage(resource);
+                rxDialogScaleView.show();
+            }
+        };
+
+        Glide.with(mActivity)
+                .asBitmap()
+                .load(url)
+                .into(simpleTarget);
     }
 }

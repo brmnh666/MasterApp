@@ -156,7 +156,7 @@ public class ServiceFragment extends BaseLazyFragment<OrderPresenter, OrderModel
                 } else {
                     adapter.setEmptyView(getHomeEmptyView());
                 }
-
+                hideProgress();
                 break;
         }
     }
@@ -200,6 +200,7 @@ public class ServiceFragment extends BaseLazyFragment<OrderPresenter, OrderModel
     @Override
     protected void onVisible() {
         super.onVisible();
+        showProgress();
         list.clear();
         page=1;
         mPresenter.WorkerGetOrderList(userId, "2", page + "", "10");

@@ -175,7 +175,7 @@ public class SettlementFragment extends BaseLazyFragment<OrderPresenter, OrderMo
                 }else {
                     adapter.setEmptyView(getHomeEmptyView());
                 }
-
+                hideProgress();
                 break;
         }
     }
@@ -205,6 +205,7 @@ public class SettlementFragment extends BaseLazyFragment<OrderPresenter, OrderMo
     @Override
     protected void onVisible() {
         super.onVisible();
+        showProgress();
         list.clear();
         page=1;
         mPresenter.WorkerGetOrderList(userId, "12", page + "", "10");

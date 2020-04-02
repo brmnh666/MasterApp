@@ -1,223 +1,260 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <include layout="@layout/v3_activity_head"/>
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/v3_activity_head" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:layout_marginTop="1dp"
                 android:background="@color/white"
-                android:paddingTop="14dp"
-                android:paddingBottom="17dp"
+                android:orientation="horizontal"
                 android:paddingLeft="14dp"
+                android:paddingTop="14dp"
                 android:paddingRight="29dp"
-                android:layout_marginTop="1dp">
+                android:paddingBottom="17dp">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_gravity="center"
+                    android:layout_weight="1"
                     android:text="头像"
                     android:textColor="@color/black"
-                    android:textSize="16sp"/>
-                
-                <ImageView
-                    android:id="@+id/iv_avatar"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/avatar"/>
+                    android:textSize="16sp" />
+
+                <FrameLayout
+                    android:layout_width="41dp"
+                    android:layout_height="41dp">
+
+                    <ImageView
+                        android:id="@+id/iv_avatar"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/avatar" />
+
+                    <TextView
+                        android:layout_width="40dp"
+                        android:layout_height="15dp"
+                        android:layout_gravity="bottom|center"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:text="编辑"
+                        android:textSize="8sp" />
+
+                    <com.ying.administrator.masterappdemo.widget.CircleImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/v3_gray_circle_shape" />
+                </FrameLayout>
+
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/v3_youjiantou"
                     android:layout_gravity="center"
                     android:layout_marginLeft="22dp"
-                    android:visibility="gone"/>
+                    android:src="@mipmap/v3_youjiantou"
+                    android:visibility="gone" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:layout_marginTop="7dp"
                 android:background="@color/white"
-                android:paddingTop="22dp"
-                android:paddingBottom="22dp"
+                android:orientation="horizontal"
                 android:paddingLeft="14dp"
+                android:paddingTop="22dp"
                 android:paddingRight="29dp"
-                android:layout_marginTop="7dp">
+                android:paddingBottom="22dp">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_gravity="center"
+                    android:layout_weight="1"
                     android:text="师傅姓名"
                     android:textColor="@color/black"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/tv_master_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="未认证"
-                    android:textSize="16sp"
-                    android:textColor="#808080"/>
+                    android:textColor="#808080"
+                    android:textSize="16sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/v3_youjiantou"
                     android:layout_gravity="center"
                     android:layout_marginLeft="12dp"
-                    android:visibility="gone"/>
+                    android:src="@mipmap/v3_youjiantou"
+                    android:visibility="gone" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:layout_marginTop="1dp"
                 android:background="@color/white"
-                android:paddingTop="22dp"
-                android:paddingBottom="22dp"
+                android:orientation="horizontal"
                 android:paddingLeft="14dp"
+                android:paddingTop="22dp"
                 android:paddingRight="29dp"
-                android:layout_marginTop="1dp">
+                android:paddingBottom="22dp">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_gravity="center"
+                    android:layout_weight="1"
                     android:text="手机号码"
                     android:textColor="@color/black"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/tv_phone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="180****8219"
-                    android:textSize="16sp"
-                    android:textColor="#808080"/>
+                    android:textColor="#808080"
+                    android:textSize="16sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/v3_youjiantou"
                     android:layout_gravity="center"
                     android:layout_marginLeft="12dp"
-                    android:visibility="gone"/>
+                    android:src="@mipmap/v3_youjiantou"
+                    android:visibility="gone" />
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/ll_emergency_telephone_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:layout_marginTop="1dp"
                 android:background="@color/white"
-                android:paddingTop="22dp"
-                android:paddingBottom="22dp"
+                android:orientation="horizontal"
                 android:paddingLeft="14dp"
+                android:paddingTop="22dp"
                 android:paddingRight="29dp"
-                android:layout_marginTop="1dp">
+                android:paddingBottom="22dp">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_gravity="center"
+                    android:layout_weight="1"
                     android:text="紧急联系电话"
                     android:textColor="@color/black"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/tv_emergency_telephone_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="180****8219"
-                    android:textSize="16sp"
-                    android:textColor="#808080"/>
+                    android:textColor="#808080"
+                    android:textSize="16sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/v3_youjiantou"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="12dp"/>
+                    android:layout_marginLeft="12dp"
+                    android:src="@mipmap/v3_youjiantou" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@color/white"
-                android:paddingTop="22dp"
-                android:paddingBottom="22dp"
-                android:paddingLeft="14dp"
-                android:paddingRight="29dp"
                 android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:paddingLeft="14dp"
+                android:paddingTop="22dp"
+                android:paddingRight="29dp"
+                android:paddingBottom="22dp"
                 android:visibility="gone">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_gravity="center"
+                    android:layout_weight="1"
                     android:text="居住地址"
                     android:textColor="@color/black"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/tv_residential_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="浙江省  宁波市  江北区"
-                    android:textSize="16sp"
-                    android:textColor="#808080"/>
+                    android:textColor="#808080"
+                    android:textSize="16sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/v3_youjiantou"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="12dp"/>
+                    android:layout_marginLeft="12dp"
+                    android:src="@mipmap/v3_youjiantou" />
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/ll_shipping_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:layout_marginTop="1dp"
                 android:background="@color/white"
-                android:paddingTop="22dp"
-                android:paddingBottom="22dp"
+                android:orientation="horizontal"
                 android:paddingLeft="14dp"
+                android:paddingTop="22dp"
                 android:paddingRight="29dp"
-                android:layout_marginTop="1dp">
+                android:paddingBottom="22dp">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_gravity="center"
+                    android:layout_weight="1"
                     android:text="收件地址"
                     android:textColor="@color/black"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/tv_shipping_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="浙江省  宁波市  江北区"
-                    android:textSize="16sp"
                     android:textColor="#808080"
-                    android:visibility="gone"/>
+                    android:textSize="16sp"
+                    android:visibility="gone" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/v3_youjiantou"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="12dp"/>
+                    android:layout_marginLeft="12dp"
+                    android:src="@mipmap/v3_youjiantou" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

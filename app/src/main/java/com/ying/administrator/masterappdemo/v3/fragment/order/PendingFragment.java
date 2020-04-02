@@ -223,7 +223,7 @@ public class PendingFragment extends BaseLazyFragment<OrderPresenter, OrderModel
                 }else {
                     pendingAdapter.setEmptyView(getHomeEmptyView());
                 }
-
+                hideProgress();
                 break;
         }
     }
@@ -231,6 +231,7 @@ public class PendingFragment extends BaseLazyFragment<OrderPresenter, OrderModel
     @Override
     protected void onVisible() {
         super.onVisible();
+        showProgress();
         if (mPresenter==null){
             return;
         }

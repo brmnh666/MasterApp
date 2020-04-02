@@ -19,6 +19,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -28,6 +29,8 @@ import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.ethanhua.skeleton.Skeleton;
+import com.ethanhua.skeleton.SkeletonScreen;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
@@ -130,6 +133,8 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
     LinearLayout mLlNotAvailable;
     @BindView(R.id.tv_transfer)
     TextView mTvTransfer;
+    @BindView(R.id.RootView)
+    FrameLayout mRootView;
     private View under_review;
     private AlertDialog underReviewDialog;
     private long recommendedtime;
@@ -147,14 +152,14 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
     private SPUtils spUtils;
     private String userID;
     private UserInfo.UserInfoDean userInfo = new UserInfo.UserInfoDean(); //获取当前账号详情
-    private ArrayList<SubUserInfo.SubUserInfoDean> subuserlist=new ArrayList<>();//获取子账号列表
+    private ArrayList<SubUserInfo.SubUserInfoDean> subuserlist = new ArrayList<>();//获取子账号列表
     private CustomDialog_Redeploy customDialog_redeploy;//转派dialog
     private RecyclerView recyclerView_custom_redeploy;
     private Redeploy_Adapter redeploy_adapter;
     private String SubUserID;
     private List<GetBrandWithCategory> list;
     private GetBrandWithCategory content;
-
+    private SkeletonScreen skeletonScreen;
     @Override
     protected int setLayoutId() {
         return R.layout.v3_activity_appointment_details;
@@ -167,6 +172,12 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
 
     @Override
     protected void initView() {
+        skeletonScreen = Skeleton.bind(mRootView)
+                .load(R.layout.v3_activity_serving_detail_skeleton)
+                .duration(2000)
+                .color(R.color.shimmer_color)
+                .angle(10)
+                .show();
         mTvTitle.setText("预约详情");
         orderId = getIntent().getStringExtra("id");
         mPresenter.GetOrderInfo(orderId);
@@ -454,7 +465,7 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
             case R.id.ll_maintenance_information:
                 Intent intent2 = new Intent(mActivity, WebActivity.class);
                 intent2.putExtra("Url", content.getCourseCount());
-                intent2.putExtra("Title", content.getBrandName()+content.getProductTypeName());
+                intent2.putExtra("Title", content.getBrandName() + content.getProductTypeName());
                 startActivity(intent2);
                 break;
         }
@@ -464,7 +475,7 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
+//        ButterKnife.bind(this);
     }
 
     /**
@@ -510,7 +521,7 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
             case 200:
                 if (baseResult.getData() != null) {
                     data = baseResult.getData();
-                    mPresenter.GetBrandWithCategory2(data.getUserID(),data.getBrandID(),data.getCategoryID(),data.getSubCategoryID(),data.getProductTypeID(),"1","999");
+                    mPresenter.GetBrandWithCategory2(data.getUserID(), data.getBrandID(), data.getCategoryID(), data.getSubCategoryID(), data.getProductTypeID(), "1", "999");
                     if ("Y".equals(data.getExtra()) && !"0".equals(data.getExtraTime())) {
                         mTvState.setText(data.getGuaranteeText() + "/" + data.getTypeName() + "/加急");
                     } else {
@@ -555,10 +566,10 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
 
                     }
 
-                    if (data.getOrderAccessroyDetail().size()>0){
+                    if (data.getOrderAccessroyDetail().size() > 0) {
                         mTvTransfer.setVisibility(View.GONE);
-                    }else {
-                        mPresenter.GetUserInfoList(userID,"1");
+                    } else {
+                        mPresenter.GetUserInfoList(userID, "1");
                     }
 
                     mTvBillingTime.setText(data.getCreateDate().replace("T", " "));
@@ -568,6 +579,7 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                     mTvDistance.setText("线路里程 " + data.getDistance() + "公里");
                     mTvBrand.setText(data.getBrandName() + "  " + data.getProductType());
                 }
+
                 break;
         }
     }
@@ -658,9 +670,9 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
 
     @Override
     public void GetUserInfoList(BaseResult<UserInfo> baseResult) {
-        switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
-                userInfo=baseResult.getData().getData().get(0);
+                userInfo = baseResult.getData().getData().get(0);
                 if (userInfo.getParentUserID() == null) {//如果没有父账号说明自己是父账号 显示 转派
                     //helper.setGone(R.id.tv_pending_appointment_redeploy,true);
                     mPresenter.GetChildAccountByParentUserID(userID);
@@ -676,7 +688,7 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
 
     @Override
     public void GetChildAccountByParentUserID(BaseResult<List<SubUserInfo.SubUserInfoDean>> baseResult) {
-        switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
                 subuserlist.addAll(baseResult.getData());
                 if (subuserlist.size() != 0) { //有子账号
@@ -709,34 +721,35 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
 
     @Override
     public void GetBrandWithCategory2(BaseResult<Data<List<GetBrandWithCategory>>> baseResult) {
-        switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
                 list = baseResult.getData().getItem2();
-                if (list.size()==0){
+                if (list.size() == 0) {
                     mLlMaintenanceInformation.setVisibility(View.GONE);
-                }else {
+                } else {
 
                     for (int i = 0; i < list.size(); i++) {
-                        if (list.get(i).getCourseCount()!=null){
+                        if (list.get(i).getCourseCount() != null) {
                             mLlMaintenanceInformation.setVisibility(View.VISIBLE);
                             mTvProductName.setText(list.get(i).getBrandName() + "  " + list.get(i).getProductTypeName());
-                            if (list.get(i).getImge()==null){
+                            if (list.get(i).getImge() == null) {
                                 Glide.with(mActivity)
                                         .load(R.drawable.v3_zanwu)
                                         .into(mIvPicture);
-                            }else {
+                            } else {
                                 Glide.with(mActivity)
                                         .load(Config.Leave_product_URL + list.get(i).getImge())
                                         .into(mIvPicture);
                             }
                             content = list.get(i);
                             break;
-                        }else {
+                        } else {
                             mLlMaintenanceInformation.setVisibility(View.GONE);
                         }
-                }
+                    }
 
                 }
+                skeletonScreen.hide();
                 break;
         }
     }

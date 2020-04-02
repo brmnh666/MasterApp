@@ -216,7 +216,7 @@ public class PendingAppointmentFragment extends BaseLazyFragment<OrderPresenter,
                 }else {
                     pendingAdapter.setEmptyView(getHomeEmptyView());
                 }
-
+                hideProgress();
                 break;
         }
     }
@@ -255,6 +255,7 @@ public class PendingAppointmentFragment extends BaseLazyFragment<OrderPresenter,
     @Override
     protected void onVisible() {
         super.onVisible();
+        showProgress();
         list.clear();
         page=1;
         mPresenter.WorkerGetOrderList(userId, state, page + "", "10");

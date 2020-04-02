@@ -1,10 +1,19 @@
 package com.amap.searchdemo;
 
+import android.Manifest;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Point;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -55,8 +64,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements LocationSource,
-        AMapLocationListener, GeocodeSearch.OnGeocodeSearchListener, PoiSearch.OnPoiSearchListener { // Inputtips.InputtipsListener
-
+        AMapLocationListener, GeocodeSearch.OnGeocodeSearchListener, PoiSearch.OnPoiSearchListener {
+    private static final String TAG = "MainActivity"; // Inputtips.InputtipsListener
+    private int GPS_REQUEST_CODE = 1;
 
     private LinearLayout ll_return;
     private ImageView iv_confirm;
@@ -102,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
     private double Longitude;
     private double Dimension;
     private TextView tv_confirm;
+    private ArrayList<String> permissions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,13 +152,26 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
             }
         });
         tv_confirm.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
-                if (searchResultAdapter!=null){
-                    PoiItem poiItem=((PoiItem)(searchResultAdapter.getItem(searchResultAdapter.getSelectedPosition())));
-                    searchLatlonPoint=poiItem.getLatLonPoint();
-                    geoAddress();
+                if (requestLocationPermissions()) {
+//                    if (searchResultAdapter!=null){
+//                        PoiItem poiItem=((PoiItem)(searchResultAdapter.getItem(searchResultAdapter.getSelectedPosition())));
+////                    Log.e(TAG,"location---->"+poiItem);
+////                    if (poiItem!=null){
+//                        searchLatlonPoint=poiItem.getLatLonPoint();
+//                        geoAddress();
+////                    }else {
+////                        Toast.makeText(MainActivity.this, "请重新选择地址", Toast.LENGTH_SHORT).show();
+////                    }
+//
+//                    }
+                    openGPSSEtting();
+                } else {
+                    requestPermissions(permissions.toArray(new String[permissions.size()]), 20002);
                 }
+
             }
         });
 
@@ -632,4 +656,82 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
+    //请求定位权限
+    private boolean requestLocationPermissions() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            permissions = new ArrayList<>();
+            if (this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
+            }
+            if (permissions.size() == 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean checkGpsIsOpen() {
+        boolean isOpen;
+        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        isOpen = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        return isOpen;
+    }
+
+    private void openGPSSEtting() {
+        if (checkGpsIsOpen()){
+//            Toast.makeText(this, "true", Toast.LENGTH_SHORT).show();
+            if (searchResultAdapter!=null){
+                if (searchResultAdapter.getCount()>0){
+                    PoiItem poiItem=((PoiItem)(searchResultAdapter.getItem(searchResultAdapter.getSelectedPosition())));
+                    searchLatlonPoint=poiItem.getLatLonPoint();
+                    geoAddress();
+                }else {
+                    Toast.makeText(this, "请重新选择地址", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        }else {
+            new AlertDialog.Builder(this).setTitle("定位权限")
+                    .setMessage("是否打开定位权限？")
+                    //  取消选项
+                    .setNegativeButton("cancel",new DialogInterface.OnClickListener(){
+
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Toast.makeText(MainActivity.this, "close", Toast.LENGTH_SHORT).show();
+                            // 关闭dialog
+                            dialogInterface.dismiss();
+                        }
+                    })
+                    //  确认选项
+                    .setPositiveButton("setting", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            //跳转到手机原生设置页面
+                            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            startActivityForResult(intent,GPS_REQUEST_CODE);
+                        }
+                    })
+                    .setCancelable(false)
+                    .show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode ==GPS_REQUEST_CODE){
+            openGPSSEtting();
+        }
+
+        if (requestCode==20002){
+            if (searchResultAdapter!=null){
+                PoiItem poiItem=((PoiItem)(searchResultAdapter.getItem(searchResultAdapter.getSelectedPosition())));
+                searchLatlonPoint=poiItem.getLatLonPoint();
+                geoAddress();
+            }
+        }
+    }
 }
