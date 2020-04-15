@@ -196,8 +196,11 @@ public class OrderMessageActivity2 extends BaseActivity<MyMessagePresenter, MyMe
         switch (baseResult.getStatusCode()) {
             case 200:
 //                    if (baseResult.getData().isItem1()) {
-                list.get(pos).setIsLook("2");
-                messageAdapter.setNewData(list);
+//                list.get(pos).setIsLook("2");
+//                messageAdapter.setNewData(list);
+                pageIndex = 1;
+                list.clear();
+                mPresenter.GetMessageList(userId, Integer.toString(type), Integer.toString(subType), "10", Integer.toString(pageIndex));
                 EventBus.getDefault().post("orderempty");
                 EventBus.getDefault().post("order_num");
                 EventBus.getDefault().post("transaction_num");

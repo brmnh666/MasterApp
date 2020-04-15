@@ -326,7 +326,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                     if ("1".equals(data.getBarCodeIsNo())) {
                         mPresenter.AddbarCode(barCode, orderID);
                     } else {
-                        if ("0".equals(data.getPartyNo())) {
+                        if ("N".equals(data.getGuarantee())) {
                             mPresenter.UpdateOrderState(orderID, "7", "");
                         } else {
                             if (!"1".equals(data.getIsReturn())) {//不需要返件
@@ -404,7 +404,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
         switch (baseResult.getStatusCode()) {
             case 200:
                 if (baseResult.getData().isItem1()) {
-                    if ("0".equals(data.getPartyNo())) {
+                    if ("N".equals(data.getGuarantee())) {
                         mPresenter.UpdateOrderState(orderID, "7", "");
                     } else {
                         if (!"1".equals(data.getIsReturn())) {//不需要返件

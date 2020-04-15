@@ -10,6 +10,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 
 import com.blankj.utilcode.util.ToastUtils;
+import com.ying.administrator.masterappdemo.v3.activity.AppointmentDetailsActivity;
 import com.ying.administrator.masterappdemo.v3.activity.MainActivity;
 import com.ying.administrator.masterappdemo.v3.activity.ServingDetailActivity;
 
@@ -34,7 +35,7 @@ public class MyReceiver extends BroadcastReceiver {
 	private static final String TAG = "JIGUANG-Example";
     private String orderId;
 
-    @Override
+	@Override
 	public void onReceive(Context context, Intent intent) {
 		try {
 			Bundle bundle = intent.getExtras();
@@ -65,25 +66,36 @@ public class MyReceiver extends BroadcastReceiver {
 			} else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
 				Logger.d(TAG, "[MyReceiver] 用户点击打开了通知");
                 String content = bundle.getString(JPushInterface.EXTRA_EXTRA);
+				String title = bundle.getString(JPushInterface.EXTRA_NOTIFICATION_TITLE);
                 try {
                     JSONObject jsonObject = new JSONObject(content);
                     orderId = jsonObject.getString("OrderId");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                if (orderId==null||"".equals(orderId)){
+                if (orderId==null||"".equals(orderId)||"null".equals(orderId)){
 					Intent i = new Intent(context, MainActivity.class);
 					i.putExtras(bundle);
 					//i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
 					context.startActivity(i);
 				}else {
-					//打开自定义的Activity
-					Intent i = new Intent(context, ServingDetailActivity.class);
-					i.putExtras(bundle);
-					//i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-					i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
-					context.startActivity(i);
+                	if ("您的远程费申请已通过".equals(title)){
+						//打开自定义的Activity
+						Intent i = new Intent(context, AppointmentDetailsActivity.class);
+						i.putExtras(bundle);
+						//i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+						i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
+						context.startActivity(i);
+					}else {
+						//打开自定义的Activity
+						Intent i = new Intent(context, ServingDetailActivity.class);
+						i.putExtras(bundle);
+						//i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+						i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
+						context.startActivity(i);
+					}
+
                 }
 
 

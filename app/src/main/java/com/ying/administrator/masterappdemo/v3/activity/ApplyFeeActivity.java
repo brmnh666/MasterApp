@@ -2,6 +2,7 @@ package com.ying.administrator.masterappdemo.v3.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -253,6 +255,12 @@ public class ApplyFeeActivity extends BaseActivity<AllWorkOrdersPresenter, AllWo
      * 弹出Popupwindow
      */
     public void showPopupWindow(final int code1, final int code2) {
+        InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm.isActive() && this.getCurrentFocus() != null) {
+            if (this.getCurrentFocus().getWindowToken() != null) {
+                imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
         popupWindow_view = LayoutInflater.from(mActivity).inflate(R.layout.camera_layout, null);
         Button camera_btn = popupWindow_view.findViewById(R.id.camera_btn);
         Button photo_btn = popupWindow_view.findViewById(R.id.photo_btn);

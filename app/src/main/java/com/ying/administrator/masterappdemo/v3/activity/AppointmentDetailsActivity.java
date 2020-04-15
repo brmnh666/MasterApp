@@ -52,6 +52,8 @@ import com.ying.administrator.masterappdemo.widget.CustomDialog_Redeploy;
 
 import org.feezu.liuli.timeselector.TimeSelector;
 import org.greenrobot.eventbus.EventBus;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -61,7 +63,7 @@ import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
+import cn.jpush.android.api.JPushInterface;
 import io.reactivex.functions.Consumer;
 
 import static android.widget.Toast.LENGTH_SHORT;
@@ -135,6 +137,8 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
     TextView mTvTransfer;
     @BindView(R.id.RootView)
     FrameLayout mRootView;
+    @BindView(R.id.ll_apply_for_remote_fee)
+    LinearLayout mLlApplyForRemoteFee;
     private View under_review;
     private AlertDialog underReviewDialog;
     private long recommendedtime;
@@ -160,6 +164,7 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
     private List<GetBrandWithCategory> list;
     private GetBrandWithCategory content;
     private SkeletonScreen skeletonScreen;
+
     @Override
     protected int setLayoutId() {
         return R.layout.v3_activity_appointment_details;
@@ -179,7 +184,35 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                 .angle(10)
                 .show();
         mTvTitle.setText("预约详情");
-        orderId = getIntent().getStringExtra("id");
+//        orderId = getIntent().getStringExtra("id");
+        Intent intent = getIntent();
+        if (null != intent) {
+            Bundle bundle = getIntent().getExtras();
+            if (bundle != null) {
+                String title = null;
+                String content = null;
+                if (bundle != null) {
+                    title = bundle.getString(JPushInterface.EXTRA_NOTIFICATION_TITLE);
+                    if (title != null) {
+                        content = bundle.getString(JPushInterface.EXTRA_ALERT);
+                        content = bundle.getString(JPushInterface.EXTRA_EXTRA);
+                        try {
+                            JSONObject jsonObject = new JSONObject(content);
+                            orderId = jsonObject.getString("OrderId");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        orderId = getIntent().getStringExtra("id");
+                    }
+                }
+            } else {
+                orderId = getIntent().getStringExtra("id");
+            }
+
+        } else {
+            orderId = getIntent().getStringExtra("id");
+        }
         mPresenter.GetOrderInfo(orderId);
         spUtils = SPUtils.getInstance("token");
         userID = spUtils.getString("userName");
@@ -578,6 +611,17 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                     mTvAddress.setText(data.getAddress());
                     mTvDistance.setText("线路里程 " + data.getDistance() + "公里");
                     mTvBrand.setText(data.getBrandName() + "  " + data.getProductType());
+
+                    if ("9".equals(data.getState())) {
+                        mLlReservation.setVisibility(View.GONE);
+                    } else {
+                        mLlReservation.setVisibility(View.VISIBLE);
+                    }
+                    if ("true".equals(data.getDistanceTureOrFalse())){
+                        mLlApplyForRemoteFee.setVisibility(View.VISIBLE);
+                    }else {
+                        mLlApplyForRemoteFee.setVisibility(View.GONE);
+                    }
                 }
 
                 break;

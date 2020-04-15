@@ -148,14 +148,14 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
                                 }
                             });
                         } else {
-                            if ("true".equals(list.get(position).getDistanceTureOrFalse())) {
-                                Intent intent = new Intent(mActivity, ApplyFeeActivity.class);
-                                intent.putExtra("position", position);
-                                intent.putExtra("orderId", list.get(position).getOrderID());
-                                startActivity(intent);
-                            } else {
+//                            if ("true".equals(list.get(position).getDistanceTureOrFalse())) {
+//                                Intent intent = new Intent(mActivity, ApplyFeeActivity.class);
+//                                intent.putExtra("position", position);
+//                                intent.putExtra("orderId", list.get(position).getOrderID());
+//                                startActivity(intent);
+//                            } else {
                                 mPresenter.UpdateSendOrderState(list.get(position).getOrderID(), "1", "");
-                            }
+//                            }
 
                         }
 

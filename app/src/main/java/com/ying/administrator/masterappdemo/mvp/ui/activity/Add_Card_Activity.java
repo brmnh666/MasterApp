@@ -104,6 +104,7 @@ public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> im
     private String phone;
     private List<BankCard> list=new ArrayList<>();//已经绑定的银行卡
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -269,6 +270,13 @@ public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> im
                     hideProgress();
                     return;
                 }
+
+                if (name.length()<2){
+                    ToastUtils.showShort("请输入正确的姓名");
+                    hideProgress();
+                    return;
+                }
+
                 if (num.isEmpty()){
                     ToastUtils.showShort("请输入银行卡号");
                     hideProgress();

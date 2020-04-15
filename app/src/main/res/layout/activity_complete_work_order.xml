@@ -42,7 +42,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="待完成工单"
-                        android:textColor="#FF7979"
+                        android:textColor="#FF9000"
                         android:textSize="14sp" />
 
                     <TextView
