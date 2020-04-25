@@ -171,7 +171,6 @@
                     android:digits="0123456789xyzXYZ"
                     android:gravity="right"
                     android:hint="请输入身份证号"
-                    android:inputType="number"
                     android:maxLength="18"
                     android:padding="@dimen/dp_10"
                     android:textColor="@color/color_black"

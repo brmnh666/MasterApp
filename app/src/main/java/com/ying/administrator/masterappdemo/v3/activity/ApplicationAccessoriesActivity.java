@@ -369,12 +369,15 @@ public class ApplicationAccessoriesActivity extends BaseActivity<ApplicationAcce
                         mfAccessory.setNeedPlatformAuth("N");
                         if (state == 0) {//厂家自购
                             fAcList.add(mfAccessory);
+                            mPre_order_add_ac_adapter.setNewData(fAcList);
                         } else if (state == 1) {
                             mfAccessory.setPrice(list.get(i).getAccessoryPrice());//原价
                             mfAccessory.setDiscountPrice(list.get(i).getAccessoryPrice());//原价
                             mAcList.add(mfAccessory);
+                            mPre_order_add_ac_adapter.setNewData(mAcList);
                         } else {
                             sAcList.add(mfAccessory);
+                            mPre_order_add_ac_adapter.setNewData(sAcList);
                         }
                     }
                     mPre_order_add_ac_adapter.notifyDataSetChanged();
@@ -407,7 +410,7 @@ public class ApplicationAccessoriesActivity extends BaseActivity<ApplicationAcce
         if (list.size() > 0) {
             System.out.println(Collections.max(list));
             sizeId = Collections.max(list);
-            if (state == 2) {
+            if (state == 1) {
                 mPresenter.GetFactoryAccessoryMoney(orderId, productTypeID, String.valueOf(Collections.max(list)), Double.toString(price));
             } else {
                 mPresenter.GetFactoryAccessoryMoney(orderId, productTypeID, String.valueOf(Collections.max(list)), "0");

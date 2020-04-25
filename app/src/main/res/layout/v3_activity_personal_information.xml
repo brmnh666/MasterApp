@@ -132,7 +132,7 @@
                     android:id="@+id/tv_phone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="180****8219"
+                    android:text=""
                     android:textColor="#808080"
                     android:textSize="16sp" />
 
@@ -170,7 +170,7 @@
                     android:id="@+id/tv_emergency_telephone_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="180****8219"
+                    android:text=""
                     android:textColor="#808080"
                     android:textSize="16sp" />
 

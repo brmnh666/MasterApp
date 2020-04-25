@@ -12,8 +12,8 @@ import java.util.List;
 
 public class HomePresenter extends HomeContract.Presenter {
     @Override
-    public void WorkerGetOrderList(String UserID, String State, String page, String limit) {
-        mModel.WorkerGetOrderList(UserID, State, page, limit)
+    public void WorkerGetOrderList(String UserID, String State, String page, String limit,int page2) {
+        mModel.WorkerGetOrderList(UserID, State, page, limit,page2)
                 .subscribe(new BaseObserver<WorkOrder>() {
                     @Override
                     protected void onHandleSuccess(BaseResult<WorkOrder> value) {

@@ -53,10 +53,10 @@ private Context context;
         }
         /*设置手机号*/
 
-        if (item.getPhone()==null){
+        if (item.getUserID()==null){
             helper.setText(R.id.tv_subaccount_phone,"");
         }else {
-            helper.setText(R.id.tv_subaccount_phone,item.getPhone());
+            helper.setText(R.id.tv_subaccount_phone,item.getUserID());
         }
 
         if (item.isIscheck()==false){//未选中

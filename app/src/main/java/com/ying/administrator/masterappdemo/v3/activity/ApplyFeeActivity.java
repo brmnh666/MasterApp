@@ -41,7 +41,6 @@ import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.AllWorkOrdersContract;
 import com.ying.administrator.masterappdemo.mvp.model.AllWorkOrdersModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.AllWorkOrdersPresenter;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_Receiving_Activity;
 import com.ying.administrator.masterappdemo.util.Glide4Engine;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.util.SingleClick;
@@ -77,12 +76,13 @@ public class ApplyFeeActivity extends BaseActivity<AllWorkOrdersPresenter, AllWo
     LinearLayout mLlCustomerService;
     @BindView(R.id.iv_map1)
     ImageView mIvMap1;
-    @BindView(R.id.et_order_beyond_km)
-    EditText mEtOrderBeyondKm;
+
     @BindView(R.id.btn_cancel)
     Button mBtnCancel;
     @BindView(R.id.btn_submit_beyond)
     Button mBtnSubmitBeyond;
+    @BindView(R.id.et_order_beyond_km)
+    EditText mEtOrderBeyondKm;
     private View popupWindow_view;
     private String FilePath;
     private ArrayList<Object> permissions;
@@ -96,6 +96,7 @@ public class ApplyFeeActivity extends BaseActivity<AllWorkOrdersPresenter, AllWo
     private String orderId;
     private String Distance;
     private String BeyondMoney;
+//    private String beyond;
 
     @Override
     protected int setLayoutId() {
@@ -112,6 +113,8 @@ public class ApplyFeeActivity extends BaseActivity<AllWorkOrdersPresenter, AllWo
         mTvTitle.setText("远程费申请");
         position = getIntent().getStringExtra("position");
         orderId = getIntent().getStringExtra("orderId");
+//        beyond = getIntent().getStringExtra("beyond");
+//        mEtOrderBeyondKm.setText(beyond);
     }
 
     @Override
@@ -234,6 +237,7 @@ public class ApplyFeeActivity extends BaseActivity<AllWorkOrdersPresenter, AllWo
                     ToastUtils.showShort("提交成功");
                     EventBus.getDefault().post(10);
                     EventBus.getDefault().post(1);
+                    EventBus.getDefault().post("deyond");
                     finish();
 //                    EventBus.getDefault().post("pending_appointment");
                 } else {

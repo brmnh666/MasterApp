@@ -154,6 +154,14 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
     Button mBtnCompleteSubmit;
     @BindView(R.id.ll_telephone)
     LinearLayout mLlTelephone;
+    @BindView(R.id.et_single_number1)
+    EditText mEtSingleNumber1;
+    @BindView(R.id.et_express_name1)
+    EditText mEtExpressName1;
+    @BindView(R.id.ll_scan1)
+    LinearLayout mLlScan1;
+    @BindView(R.id.ll_code1)
+    LinearLayout mLlCode1;
     private String orderID;
 
     /*工单详情*/
@@ -209,6 +217,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
         mIvFaultLocation.setOnClickListener(this);
         mIvNewAndOldAccessories.setOnClickListener(this);
         mLlScan.setOnClickListener(this);
+        mLlScan1.setOnClickListener(this);
         mIvOne.setOnClickListener(this);
         mIvTwo.setOnClickListener(this);
         mIvThree.setOnClickListener(this);
@@ -271,8 +280,10 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 
                     if ("1".equals(data.getBarCodeIsNo())) {
                         mLlCode.setVisibility(View.VISIBLE);
+                        mLlCode1.setVisibility(View.VISIBLE);
                     } else {
                         mLlCode.setVisibility(View.GONE);
+                        mLlCode1.setVisibility(View.GONE);
                     }
 
                     break;
@@ -300,9 +311,9 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 //                    }else{
 //                        mPresenter.UpdateOrderState(orderID, "5");
 //                    }
-                    if ("0".equals(data.getPartyNo())){
+                    if ("0".equals(data.getPartyNo())) {
                         mPresenter.UpdateOrderState(orderID, "7", "");
-                    }else {
+                    } else {
                         mPresenter.UpdateOrderState(orderID, "5", "");
                     }
                 } else {
@@ -375,10 +386,10 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                         EventBus.getDefault().post(5);
                         finish();
                     } else {
-                        if ("0".equals(data.getPartyNo())){
+                        if ("0".equals(data.getPartyNo())) {
                             EventBus.getDefault().post(6);
                             finish();
-                        }else {
+                        } else {
                             if (!"1".equals(data.getIsReturn())) {//不需要返件
                                 EventBus.getDefault().post(5);
                                 finish();
@@ -470,8 +481,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
             case R.id.iv_four:
                 showPopupWindow(801, 808);
                 break;
-
-
+            case R.id.ll_scan1:
             case R.id.ll_scan:
                 IntentIntegrator integrator = new IntentIntegrator(CompleteWorkOrderActivity.this);
                 // 设置要扫描的条码类型，ONE_D_CODE_TYPES：一维码，QR_CODE_TYPES-二维码
@@ -499,15 +509,16 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                      }
 
                     }*/
-                barCode = mEtSingleNumber.getText().toString();
-                if ("1".equals(data.getBarCodeIsNo())) {
-                    if (barCode.isEmpty()) {
-                        ToastUtils.showShort("请填写条形码");
-                        return;
-                    }
-                }
+
 
                 if ("2".equals(data.getTypeID())) {//安装
+                    barCode = mEtSingleNumber1.getText().toString();
+                    if ("1".equals(data.getBarCodeIsNo())) {
+                        if (barCode.isEmpty()) {
+                            ToastUtils.showShort("请填写条形码");
+                            return;
+                        }
+                    }
                     if (service_img_map.get(0) == null || service_img_map.get(1) == null) {
                         MyUtils.showToast(mActivity, "请上传安装前照片以及安装后一张照片");
 //                            mPresenter.UpdateOrderState(orderID, "5", "");
@@ -517,6 +528,13 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                     }
 
                 } else {//维修
+                    barCode = mEtSingleNumber.getText().toString();
+                    if ("1".equals(data.getBarCodeIsNo())) {
+                        if (barCode.isEmpty()) {
+                            ToastUtils.showShort("请填写条形码");
+                            return;
+                        }
+                    }
                     if (data.getOrderAccessroyDetail().size() == 0) {
                         //没配件
                         if (return_img_map.get(0) == null) {
@@ -539,9 +557,9 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                             return;
                         }
                         if (return_img_map.size() == 0) {
-                            if ("0".equals(data.getPartyNo())){
+                            if ("0".equals(data.getPartyNo())) {
                                 mPresenter.UpdateOrderState(orderID, "7", "");
-                            }else {
+                            } else {
                                 if (!"1".equals(data.getIsReturn())) {//不需要返件
                                     mPresenter.UpdateOrderState(orderID, "5", "");
                                 } else {
@@ -723,6 +741,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                 return;
             } else {
                 mEtSingleNumber.setText(result);
+                mEtSingleNumber1.setText(result);
             }
 
         }

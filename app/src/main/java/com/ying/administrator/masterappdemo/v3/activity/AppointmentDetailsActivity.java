@@ -52,6 +52,8 @@ import com.ying.administrator.masterappdemo.widget.CustomDialog_Redeploy;
 
 import org.feezu.liuli.timeselector.TimeSelector;
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -231,6 +233,7 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
         mLlNotAvailable.setOnClickListener(this);
         mTvTransfer.setOnClickListener(this);
         mLlMaintenanceInformation.setOnClickListener(this);
+        mLlApplyForRemoteFee.setOnClickListener(this);
     }
 
     @Override
@@ -501,6 +504,13 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                 intent2.putExtra("Title", content.getBrandName() + content.getProductTypeName());
                 startActivity(intent2);
                 break;
+            case R.id.ll_apply_for_remote_fee:
+                Intent intent1 = new Intent(mActivity, ApplyFeeActivity.class);
+                intent1.putExtra("beyond", data.getDistance());
+//                intent1.putExtra("position", position);
+                intent1.putExtra("orderId", data.getOrderID());
+                startActivity(intent1);
+                break;
         }
     }
 
@@ -617,11 +627,16 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                     } else {
                         mLlReservation.setVisibility(View.VISIBLE);
                     }
-                    if ("true".equals(data.getDistanceTureOrFalse())){
-                        mLlApplyForRemoteFee.setVisibility(View.VISIBLE);
+                    if (data.getOrderAccessroyDetail().size()==0){
+                        if (Double.parseDouble(data.getDistance()) > 0 && !"999".equals(data.getDistance())) {
+                            mLlApplyForRemoteFee.setVisibility(View.VISIBLE);
+                        } else {
+                            mLlApplyForRemoteFee.setVisibility(View.GONE);
+                        }
                     }else {
                         mLlApplyForRemoteFee.setVisibility(View.GONE);
                     }
+
                 }
 
                 break;
@@ -795,6 +810,13 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                 }
                 skeletonScreen.hide();
                 break;
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(String name) {
+        if ("deyond".equals(name)) {
+            mPresenter.GetOrderInfo(orderId);
         }
     }
 }

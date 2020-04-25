@@ -1108,6 +1108,14 @@ public interface ApiService {
                                                             @Field("page") String page,
                                                             @Field("limit") String limit);
 
+    @FormUrlEncoded
+    @POST("Order/NewWorkerGetOrderList")
+    Observable<BaseResult<WorkOrder>> NewWorkerGetOrderList2(@Field("UserID") String UserID,
+                                                            @Field("State") String State,
+                                                            @Field("page") String page,
+                                                            @Field("limit") String limit,
+                                                             @Field("_page") int page2);
+
     /**
      * 各工单数量
      * var Count1 = 0;//待处理数量

@@ -17,8 +17,8 @@ import io.reactivex.schedulers.Schedulers;
 
 public class HomeModel implements HomeContract.Model {
     @Override
-    public Observable<BaseResult<WorkOrder>> WorkerGetOrderList(String UserID, String State, String page, String limit) {
-        return ApiRetrofit.getDefault().NewWorkerGetOrderList(UserID, State, page, limit)
+    public Observable<BaseResult<WorkOrder>> WorkerGetOrderList(String UserID, String State, String page, String limit,int page2) {
+        return ApiRetrofit.getDefault().NewWorkerGetOrderList2(UserID, State, page, limit,page2)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

@@ -131,7 +131,7 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
                             Button negtive = customdialog_home_view.findViewById(R.id.negtive);
                             Button positive = customdialog_home_view.findViewById(R.id.positive);
                             title.setText("温馨提示");
-                            message.setText("敬爱的师傅：您接到的是保外服务单，费用由用户支付，平台仅收取"+codeList.getCodeValue()+"元派单费，工单完结后，请充值。谢谢！");
+                            message.setText("敬爱的师傅：您接到的是保外服务单，费用由用户支付，平台仅收取" + codeList.getCodeValue() + "元派单费，工单完结后，请充值。谢谢！");
                             negtive.setText("取消");
                             positive.setText("接单");
                             negtive.setOnClickListener(new View.OnClickListener() {
@@ -154,7 +154,7 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
 //                                intent.putExtra("orderId", list.get(position).getOrderID());
 //                                startActivity(intent);
 //                            } else {
-                                mPresenter.UpdateSendOrderState(list.get(position).getOrderID(), "1", "");
+                            mPresenter.UpdateSendOrderState(list.get(position).getOrderID(), "1", "");
 //                            }
 
                         }
@@ -169,7 +169,11 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
             public void onRefresh(RefreshLayout refreshlayout) {
                 list.clear();
                 page = 1;
-                mPresenter.WorkerGetOrderList(userId, "0", page + "", "5");
+                // 通过Math的random()函数返回一个double类型随机数，范围[0.0, 1.0)
+                final double d = Math.random();
+                // 通过d获取一个[0, 100)之间的整数
+                final int i = (int) (d * 100);
+                mPresenter.WorkerGetOrderList(userId, "0", page + "", "5",i);
                 mPresenter.GetListCategoryContentByCategoryID("7", "1", "999");
                 mPresenter.messgIsOrNo(userId, "1", "1");
                 refreshlayout.resetNoMoreData();
@@ -184,7 +188,11 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++; //页数加1
-                mPresenter.WorkerGetOrderList(userId, "0", page + "", "5");
+                // 通过Math的random()函数返回一个double类型随机数，范围[0.0, 1.0)
+                final double d = Math.random();
+                // 通过d获取一个[0, 100)之间的整数
+                final int i = (int) (d * 100);
+                mPresenter.WorkerGetOrderList(userId, "0", page + "", "5",i);
                 refreshlayout.finishLoadmore();
             }
         });
@@ -193,12 +201,16 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
 
     @Override
     protected void initView() {
+        // 通过Math的random()函数返回一个double类型随机数，范围[0.0, 1.0)
+        final double d = Math.random();
+        // 通过d获取一个[0, 100)之间的整数
+        final int i = (int) (d * 100);
         SPUtils spUtils = SPUtils.getInstance("token");
         userId = spUtils.getString("userName");
-        mPresenter.WorkerGetOrderList(userId, "0", page + "", "5");
+        mPresenter.WorkerGetOrderList(userId, "0", page + "", "5",i);
         mPresenter.GetListCategoryContentByCategoryID("7", "1", "999");
         mPresenter.messgIsOrNo(userId, "1", "1");
-        mPresenter.GetCodeList("ProtectionCost","1","1");
+        mPresenter.GetCodeList("ProtectionCost", "1", "1");
     }
 
     @Override
@@ -235,7 +247,7 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
         mRefreshLayout.finishLoadmore();
         switch (baseResult.getStatusCode()) {
             case 200:
-                if (page==1){
+                if (page == 1) {
                     list.clear();
                 }
                 workOrder = baseResult.getData();
@@ -300,7 +312,7 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
                 if (data.isItem1()) {//接单成功
 
 //                    if (userInfo.getParentUserID() == null || "".equals(userInfo.getParentUserID())) {
-                    adapter.remove(grabposition);
+//                    adapter.remove(grabposition);
                     Toast.makeText(getActivity(), "接单成功", LENGTH_SHORT).show();
                     EventBus.getDefault().post(10);
                     EventBus.getDefault().post(1);
@@ -327,11 +339,11 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
 
     @Override
     public void messgIsOrNo(BaseResult<Data<String>> baseResult) {
-        switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData().isItem1()){
+                if (baseResult.getData().isItem1()) {
                     mIvRed.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     mIvRed.setVisibility(View.GONE);
                 }
                 break;
@@ -340,7 +352,7 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
 
     @Override
     public void GetCodeList(BaseResult<List<CodeMoney>> baseResult) {
-        switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
                 codeList = baseResult.getData().get(0);
                 break;
@@ -354,12 +366,20 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
             case 10:
                 list.clear();
                 page = 1;
-                mPresenter.WorkerGetOrderList(userId, "0", page + "", "10");
+                // 通过Math的random()函数返回一个double类型随机数，范围[0.0, 1.0)
+                final double d = Math.random();
+                // 通过d获取一个[0, 100)之间的整数
+                final int i = (int) (d * 100);
+                mPresenter.WorkerGetOrderList(userId, "0", page + "", "10",i);
                 break;
             case 0:
                 list.clear();
                 page = 1;
-                mPresenter.WorkerGetOrderList(userId, "0", page + "", "10");
+                // 通过Math的random()函数返回一个double类型随机数，范围[0.0, 1.0)
+                final double d1 = Math.random();
+                // 通过d获取一个[0, 100)之间的整数
+                final int i1 = (int) (d1 * 100);
+                mPresenter.WorkerGetOrderList(userId, "0", page + "", "10",i1);
                 break;
             case Config.ORDER_READ:
 

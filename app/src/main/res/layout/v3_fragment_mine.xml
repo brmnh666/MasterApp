@@ -85,7 +85,7 @@
                                 android:id="@+id/tv_phone"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="慈溪正海科技"
+                                android:text=""
                                 android:textColor="#808080"
                                 android:textSize="13sp"
                                 android:layout_gravity="center"/>

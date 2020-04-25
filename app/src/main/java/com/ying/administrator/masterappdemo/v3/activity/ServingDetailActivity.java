@@ -645,15 +645,23 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
 
                     if ("安装".equals(data.getTypeName())) {
                         mTvUpload.setText("提交完结信息");
+                        mTvUpload.setBackgroundResource(R.drawable.v3_copy_bg_shape);
                     } else {
                         if ("0".equals(data.getState())) {
-                            mTvUpload.setText("提交完结信息");
+//                            mTvUpload.setText("提交完结信息");
+                            if ("pedding".equals(type)) {
+                                mTvUpload.setText("配件未到货");
+                            } else {
+                                mTvUpload.setText("配件审核中");
+                            }
+                            mTvUpload.setBackgroundResource(R.drawable.v3_copy_bg_shape2);
                         } else {
                             if (data.getOrderAccessroyDetail().size() > 0 || data.getOrderServiceDetail().size() > 0) {
                                 mTvUpload.setText("提交完结信息");
                             } else {
                                 mTvUpload.setText("添加服务内容");
                             }
+                            mTvUpload.setBackgroundResource(R.drawable.v3_copy_bg_shape);
                         }
 
                     }
@@ -676,7 +684,6 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
 
                     }
                 }
-
 //                hideProgress();
                 break;
         }
