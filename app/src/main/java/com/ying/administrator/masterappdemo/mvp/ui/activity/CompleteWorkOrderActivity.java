@@ -183,6 +183,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
     private Uri uri;
     private ClipboardManager myClipboard;
     private String barCode;
+    private ClipData myClip;
 
     @Override
     protected int setLayoutId() {
@@ -605,8 +606,15 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                 }).show();
                 break;
             case R.id.iv_copy:
-                String id = data.getOrderID();
-                ClipData myClip = ClipData.newPlainText("", id);
+                myClip = ClipData.newPlainText("", "下单厂家："+data.getInvoiceName() + "\n"
+                        +"工单号："+data.getOrderID() + "\n"
+                        +"下单时间："+data.getCreateDate() + "\n"
+                        +"用户信息："+data.getUserName()+" "+data.getPhone() + "\n"
+                        +"用户地址："+data.getAddress() + "\n"
+                        +"产品信息："+data.getProductType() + "\n"
+                        +"售后类型："+data.getGuaranteeText() + "\n"
+                        +"服务类型："+data.getTypeName() + "\n"
+                );
                 myClipboard.setPrimaryClip(myClip);
                 ToastUtils.showShort("复制成功");
                 break;

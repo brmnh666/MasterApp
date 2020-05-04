@@ -398,7 +398,15 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                 call("tel:" + "4006262365");
                 break;
             case R.id.tv_copy:
-                myClip = ClipData.newPlainText("", data.getOrderID() + "");
+                myClip = ClipData.newPlainText("", "下单厂家："+data.getInvoiceName() + "\n"
+                        +"工单号："+data.getOrderID() + "\n"
+                        +"下单时间："+data.getCreateDate() + "\n"
+                        +"用户信息："+data.getUserName()+" "+data.getPhone() + "\n"
+                        +"用户地址："+data.getAddress() + "\n"
+                        +"产品信息："+data.getProductType() + "\n"
+                        +"售后类型："+data.getGuaranteeText() + "\n"
+                        +"服务类型："+data.getTypeName() + "\n"
+                );
                 myClipboard.setPrimaryClip(myClip);
                 ToastUtils.showShort("复制成功");
                 break;

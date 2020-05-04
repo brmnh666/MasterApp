@@ -544,6 +544,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
     private Double factorymoney;//申请配件服务传给工厂的钱
     private Integer sizeId;//申请配件服务传给工厂的值
     private String service="0";
+    private ClipData myClip;
 
 
     @Override
@@ -1292,8 +1293,15 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                 }
                 break;
             case R.id.iv_copy:
-                String id = data.getOrderID();
-                ClipData myClip = ClipData.newPlainText("", id);
+                myClip = ClipData.newPlainText("", "下单厂家："+data.getInvoiceName() + "\n"
+                        +"工单号："+data.getOrderID() + "\n"
+                        +"下单时间："+data.getCreateDate() + "\n"
+                        +"用户信息："+data.getUserName()+" "+data.getPhone() + "\n"
+                        +"用户地址："+data.getAddress() + "\n"
+                        +"产品信息："+data.getProductType() + "\n"
+                        +"售后类型："+data.getGuaranteeText() + "\n"
+                        +"服务类型："+data.getTypeName() + "\n"
+                );
                 myClipboard.setPrimaryClip(myClip);
                 ToastUtils.showShort("复制成功");
             case R.id.tv_modify:
