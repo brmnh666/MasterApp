@@ -6,6 +6,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +16,7 @@ import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -22,6 +24,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +46,7 @@ import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.WebActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Redeploy_Adapter;
+import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.util.calendarutil.CalendarEvent;
 import com.ying.administrator.masterappdemo.util.calendarutil.CalendarProviderManager;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.AppointmentDetailsPresenter;
@@ -166,6 +170,9 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
     private List<GetBrandWithCategory> list;
     private GetBrandWithCategory content;
     private SkeletonScreen skeletonScreen;
+    private View callPhoneView;
+    private PopupWindow mPopupWindow;
+    private String technologyPhone;
 
     @Override
     protected int setLayoutId() {
@@ -395,7 +402,52 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                 window1.setBackgroundDrawable(new ColorDrawable());
                 break;
             case R.id.ll_call:
-                call("tel:" + "4006262365");
+//                call("tel:" + "4006262365");
+                callPhoneView = LayoutInflater.from(mActivity).inflate(R.layout.dialog_call,null);
+                LinearLayout ll_customer_service=callPhoneView.findViewById(R.id.ll_customer_service);
+                LinearLayout ll_technology=callPhoneView.findViewById(R.id.ll_technology);
+                TextView tv_cancel=callPhoneView.findViewById(R.id.tv_cancel);
+                tv_cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mPopupWindow.dismiss();
+                    }
+                });
+                ll_customer_service.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        call("tel:" + "4006262365");
+                        mPopupWindow.dismiss();
+                    }
+                });
+
+                ll_technology.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (technologyPhone==null){
+                            ToastUtils.showShort("暂无技术电话");
+                        }else {
+                            call("tel:"+technologyPhone);
+                        }
+                        mPopupWindow.dismiss();
+                    }
+                });
+
+                mPopupWindow = new PopupWindow(callPhoneView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                mPopupWindow.setAnimationStyle(R.style.popwindow_anim_style);
+                mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+                mPopupWindow.setFocusable(true);
+                mPopupWindow.setOutsideTouchable(true);
+                mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                    @Override
+                    public void onDismiss() {
+                        MyUtils.setWindowAlpa(mActivity, false);
+                    }
+                });
+                if (mPopupWindow != null && !mPopupWindow.isShowing()) {
+                    mPopupWindow.showAtLocation(callPhoneView, Gravity.BOTTOM, 0, 0);
+                }
+                MyUtils.setWindowAlpa(mActivity, true);
                 break;
             case R.id.tv_copy:
                 myClip = ClipData.newPlainText("", "下单厂家："+data.getInvoiceName() + "\n"
@@ -572,6 +624,7 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
             case 200:
                 if (baseResult.getData() != null) {
                     data = baseResult.getData();
+                    technologyPhone = data.getArtisanPhone();
                     mPresenter.GetBrandWithCategory2(data.getUserID(), data.getBrandID(), data.getCategoryID(), data.getSubCategoryID(), data.getProductTypeID(), "1", "999");
                     if ("Y".equals(data.getExtra()) && !"0".equals(data.getExtraTime())) {
                         mTvState.setText(data.getGuaranteeText() + "/" + data.getTypeName() + "/加急");

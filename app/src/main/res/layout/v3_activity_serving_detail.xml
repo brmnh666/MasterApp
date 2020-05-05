@@ -808,7 +808,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="联系客服"
+                    android:text="拨打电话"
                     android:textColor="@color/black"
                     android:textSize="10sp" />
             </LinearLayout>

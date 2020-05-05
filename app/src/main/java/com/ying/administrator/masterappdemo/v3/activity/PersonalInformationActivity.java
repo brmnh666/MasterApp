@@ -159,19 +159,28 @@ public class PersonalInformationActivity extends BaseActivity<PersonalInformatio
                 }
                 break;
             case R.id.tv_master_name:
-                if (userInfo.getTrueName() == null) { //如果为空说明未认证
-                    startActivity(new Intent(mActivity, VerifiedActivity2.class));
-                } else {
+                try {
+                    if (userInfo.getTrueName() == null) { //如果为空说明未认证
+                        startActivity(new Intent(mActivity, VerifiedActivity2.class));
+                    } else {
+                        return;
+                    }
+                }catch (Exception e){
                     return;
                 }
+
                 break;
             case R.id.ll_shipping_address:
-                if (addressList.size() == 0) {
-                    startActivity(new Intent(mActivity, AddAddressActivity.class));
-                } else {
-                    Intent intent = new Intent(mActivity, AddAddressActivity.class);
-                    intent.putExtra("address", addressList.get(0));
-                    startActivity(intent);
+                try {
+                    if (addressList.size() == 0) {
+                        startActivity(new Intent(mActivity, AddAddressActivity.class));
+                    } else {
+                        Intent intent = new Intent(mActivity, AddAddressActivity.class);
+                        intent.putExtra("address", addressList.get(0));
+                        startActivity(intent);
+                    }
+                }catch (Exception e){
+                    return;
                 }
                 break;
             case R.id.ll_emergency_telephone_number:

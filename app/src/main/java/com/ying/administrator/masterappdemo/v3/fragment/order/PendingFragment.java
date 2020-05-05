@@ -208,8 +208,12 @@ public class PendingFragment extends BaseLazyFragment<OrderPresenter, OrderModel
 
     @Override
     public void WorkerGetOrderList(BaseResult<WorkOrder> baseResult) {
-        mRefreshLayout.finishRefresh();
-        mRefreshLayout.finishLoadmore();
+        try {
+            mRefreshLayout.finishRefresh();
+            mRefreshLayout.finishLoadmore();
+        }catch (Exception e){
+            return;
+        }
         switch (baseResult.getStatusCode()){
             case 200:
                 if (page==1){

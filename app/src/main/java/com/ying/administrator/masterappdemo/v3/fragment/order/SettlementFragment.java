@@ -130,9 +130,13 @@ public class SettlementFragment extends BaseLazyFragment<OrderPresenter, OrderMo
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Intent intent=new Intent(mActivity, ServingDetailActivity.class);
-                intent.putExtra("id",list.get(position).getOrderID());
-                startActivity(intent);
+                if (list.get(position).getOrderID()==null){
+                    return;
+                }else {
+                    Intent intent=new Intent(mActivity, ServingDetailActivity.class);
+                    intent.putExtra("id",list.get(position).getOrderID());
+                    startActivity(intent);
+                }
             }
         });
     }

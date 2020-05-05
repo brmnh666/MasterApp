@@ -228,6 +228,15 @@ public class WorkOrder implements Serializable {
         private String PartyNo;
         private String IsExtraTime;
         private String picture;
+        private String ArtisanPhone;
+
+        public String getArtisanPhone() {
+            return ArtisanPhone;
+        }
+
+        public void setArtisanPhone(String artisanPhone) {
+            ArtisanPhone = artisanPhone;
+        }
         private String InvoiceName;
 
         public String getInvoiceName() {

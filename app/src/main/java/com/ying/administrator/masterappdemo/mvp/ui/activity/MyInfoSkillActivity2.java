@@ -95,45 +95,48 @@ public class MyInfoSkillActivity2 extends BaseActivity<AddSkillsPresenter, AddSk
             case R.id.btn_skill:
                 skills = "";
                 NodeIds = "";
-                for (int i = 0; i < circuitAdapter.getGroup().size(); i++) {
-                    if (circuitAdapter.getGroup().get(i).isSelected()) {
-                        skills += circuitAdapter.getGroup().get(i).getCategory().getFCategoryName() + "/";
-                        NodeIds += circuitAdapter.getGroup().get(i).getCategory().getFCategoryID() + ",";
-                    }
-                    for (int j = 0; j < circuitAdapter.getGroup().get(i).getCategoryArrayList().size(); j++) {
-                        if (circuitAdapter.getGroup().get(i).getCategoryArrayList().get(j).isSelected()) {
-                            skills += circuitAdapter.getGroup().get(i).getCategoryArrayList().get(j).getFCategoryName() + "/";
-                            NodeIds += circuitAdapter.getGroup().get(i).getCategoryArrayList().get(j).getFCategoryID() + ",";
+                try {
+                    for (int i = 0; i < circuitAdapter.getGroup().size(); i++) {
+                        if (circuitAdapter.getGroup().get(i).isSelected()) {
+                            skills += circuitAdapter.getGroup().get(i).getCategory().getFCategoryName() + "/";
+                            NodeIds += circuitAdapter.getGroup().get(i).getCategory().getFCategoryID() + ",";
+                        }
+                        for (int j = 0; j < circuitAdapter.getGroup().get(i).getCategoryArrayList().size(); j++) {
+                            if (circuitAdapter.getGroup().get(i).getCategoryArrayList().get(j).isSelected()) {
+                                skills += circuitAdapter.getGroup().get(i).getCategoryArrayList().get(j).getFCategoryName() + "/";
+                                NodeIds += circuitAdapter.getGroup().get(i).getCategoryArrayList().get(j).getFCategoryID() + ",";
+                            }
                         }
                     }
-                }
-                if (skills.contains("/")) {
-                    skills = skills.substring(0, skills.lastIndexOf("/"));
-                }
-                if (NodeIds.contains(",")) {
-                    NodeIds = NodeIds.substring(0, NodeIds.lastIndexOf(","));
-                }
-                if ("".equals(skills)) {
-                    ToastUtils.setBgColor(Color.BLACK);
-                    ToastUtils.setMsgColor(Color.WHITE);
-                    ToastUtils.setGravity(Gravity.CENTER, 0, 0);
-                    ToastUtils.showShort("未选择技能");
+                    if (skills.contains("/")) {
+                        skills = skills.substring(0, skills.lastIndexOf("/"));
+                    }
+                    if (NodeIds.contains(",")) {
+                        NodeIds = NodeIds.substring(0, NodeIds.lastIndexOf(","));
+                    }
+                    if ("".equals(skills)) {
+                        ToastUtils.setBgColor(Color.BLACK);
+                        ToastUtils.setMsgColor(Color.WHITE);
+                        ToastUtils.setGravity(Gravity.CENTER, 0, 0);
+                        ToastUtils.showShort("未选择技能");
+                        return;
+                    }
+                    System.out.println(skills);
+                    System.out.println(NodeIds);
+                    new AlertDialog.Builder(mActivity).setMessage("替换之前的技能？\n\n已选技能：" + skills)
+                            .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    mPresenter.UpdateAccountSkillData(userID, NodeIds);
+                                    dialogInterface.dismiss();
+                                }
+                            })
+                            .setNegativeButton("取消", null)
+                            .create()
+                            .show();
+                }catch (Exception e){
                     return;
                 }
-                System.out.println(skills);
-                System.out.println(NodeIds);
-                new AlertDialog.Builder(mActivity).setMessage("替换之前的技能？\n\n已选技能：" + skills)
-                        .setPositiveButton("确认", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                mPresenter.UpdateAccountSkillData(userID, NodeIds);
-                                dialogInterface.dismiss();
-                            }
-                        })
-                        .setNegativeButton("取消", null)
-                        .create()
-                        .show();
-
                 break;
         }
     }

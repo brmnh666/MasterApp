@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
@@ -256,11 +257,16 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
                 startActivity(new Intent(mActivity, Opinion_Activity.class));
                 break;
             case R.id.ll_person:
-                if (userInfo.getTrueName() == null) { //如果为空说明未认证
-                    startActivity(new Intent(mActivity, VerifiedActivity2.class));
-                } else {
-                    startActivity(new Intent(mActivity, PersonalInformationActivity.class));
+                try {
+                    if (userInfo.getTrueName() == null) { //如果为空说明未认证
+                        startActivity(new Intent(mActivity, VerifiedActivity2.class));
+                    } else {
+                        startActivity(new Intent(mActivity, PersonalInformationActivity.class));
+                    }
+                } catch (Exception e) {
+                    return;
                 }
+
                 break;
             case R.id.ll_about_us:
                 startActivity(new Intent(mActivity, AboutUsActivity.class));
@@ -340,7 +346,7 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
     public void GetUserInfoList(BaseResult<UserInfo> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData().getData().size()>0) {
+                if (baseResult.getData().getData().size() > 0) {
                     userInfo = baseResult.getData().getData().get(0);
                     if (userInfo.getAvator() == null) {//显示默认头像
                         return;
@@ -374,17 +380,27 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
                         mLlName.setVisibility(View.VISIBLE);
                         mTvPhone.setText(userInfo.getUserID() + "");
                     }
-                }else {
-                    spUtils.put("isLogin", false);
+
+                    if (userInfo.getParentUserID() == null) {
+                        mLlSubAccount.setVisibility(View.VISIBLE);
+                    } else {
+                        mLlSubAccount.setVisibility(View.GONE);
+                    }
+                } else {
                     startActivity(new Intent(mActivity, Login_New_Activity.class));
+                    spUtils.put("isLogin", false);
                     mActivity.finish();
                 }
-
-                if (userInfo.getParentUserID()==null){
-                    mLlSubAccount.setVisibility(View.VISIBLE);
-                }else {
-                    mLlSubAccount.setVisibility(View.GONE);
-                }
+                break;
+            case 406:
+                ActivityUtils.finishAllActivities();
+                startActivity(new Intent(mActivity, Login_New_Activity.class));
+                mActivity.finish();
+                break;
+            default:
+                ActivityUtils.finishAllActivities();
+                startActivity(new Intent(mActivity, Login_New_Activity.class));
+                mActivity.finish();
                 break;
         }
     }
