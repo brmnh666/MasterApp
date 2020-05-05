@@ -202,6 +202,7 @@ public class ServiceFragment extends BaseLazyFragment<OrderPresenter, OrderModel
         super.onVisible();
         showProgress();
         list.clear();
+        adapter.notifyDataSetChanged();
         page=1;
         mPresenter.WorkerGetOrderList(userId, "2", page + "", "10");
     }

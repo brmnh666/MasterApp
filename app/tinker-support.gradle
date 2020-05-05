@@ -1,11 +1,43 @@
 apply plugin: 'com.tencent.bugly.tinker-support'
 
+//获取版本名
+def verName() {
+    def versionPropsFile = file("../version.properties")
+    if (versionPropsFile.canRead()) {
+        Properties versionProps = new Properties()
+        versionProps.load(new FileInputStream(versionPropsFile))
+
+        return versionProps['VERSION_NAME']
+    } else {
+        throw new GradleException("Could not read gradle.properties")
+    }
+}
+
+//获取版本号
+def verCode() {
+    def versionPropsFile = file("../version.properties")
+    if (versionPropsFile.canRead()) {
+        Properties versionProps = new Properties()
+        versionProps.load(new FileInputStream(versionPropsFile))
+
+        def int verCode = versionProps['VERSION_CODE'].toInteger()
+        return verCode;
+    } else {
+        throw new GradleException("Could not read gradle.properties")
+    }
+}
+
+//获取构建时间
+def buildTime() {
+    return new Date().format("MMdd-HH-mm-ss", TimeZone.getTimeZone("GMT+8"))
+}
+
 def bakPath = file("${buildDir}/bakApk/")
 
 /**
  * 此处填写每次构建生成的基准包目录
  */
-def baseApkDir = "app-0424-14-34-47"
+def baseApkDir = "app-0505-13-57-44"
 
 /**
  * 对于插件各参数的详细解析请参考
@@ -34,7 +66,8 @@ tinkerSupport {
     baseApkResourceMapping = "${bakPath}/${baseApkDir}/app-release-R.txt"
 
     // 构建基准包和补丁包都要指定不同的tinkerId，并且必须保证唯一性
-    tinkerId = "base-3.0.3"
+//    tinkerId = "base-3.0.0"
+    tinkerId = "${verName()}-${verCode()}-${buildTime()}"
 
     // 构建多渠道补丁时使用
     // buildAllFlavorsDir = "${bakPath}/${baseApkDir}"

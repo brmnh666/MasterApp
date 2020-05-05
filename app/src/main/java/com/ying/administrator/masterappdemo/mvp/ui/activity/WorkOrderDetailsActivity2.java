@@ -1300,7 +1300,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                         +"用户地址："+data.getAddress() + "\n"
                         +"产品信息："+data.getProductType() + "\n"
                         +"售后类型："+data.getGuaranteeText() + "\n"
-                        +"服务类型："+data.getTypeName() + "\n"
+                        +"服务类型："+data.getTypeName()
                 );
                 myClipboard.setPrimaryClip(myClip);
                 ToastUtils.showShort("复制成功");

@@ -257,6 +257,7 @@ public class PendingAppointmentFragment extends BaseLazyFragment<OrderPresenter,
         super.onVisible();
         showProgress();
         list.clear();
+        pendingAdapter.notifyDataSetChanged();
         page=1;
         mPresenter.WorkerGetOrderList(userId, state, page + "", "10");
     }

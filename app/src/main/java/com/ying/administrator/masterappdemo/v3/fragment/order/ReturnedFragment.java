@@ -196,6 +196,7 @@ public class ReturnedFragment extends BaseLazyFragment<OrderPresenter, OrderMode
         super.onVisible();
         showProgress();
         list.clear();
+        adapter.notifyDataSetChanged();
         page=1;
         mPresenter.WorkerGetOrderList(userId, "8", page + "", "10");
     }

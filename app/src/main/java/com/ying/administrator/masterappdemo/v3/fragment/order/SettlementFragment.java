@@ -211,6 +211,7 @@ public class SettlementFragment extends BaseLazyFragment<OrderPresenter, OrderMo
         super.onVisible();
         showProgress();
         list.clear();
+        adapter.notifyDataSetChanged();
         page=1;
         mPresenter.WorkerGetOrderList(userId, "12", page + "", "10");
     }

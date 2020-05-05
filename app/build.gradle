@@ -3,14 +3,42 @@ apply plugin: 'com.android.application'
 apply from: 'tinker-support.gradle'
 // 注意：主App中请确保添加aspectjx
 apply plugin: 'android-aspectjx'
+
+//获取版本名
+def verName() {
+    def versionPropsFile = file("../version.properties")
+    if (versionPropsFile.canRead()) {
+        Properties versionProps = new Properties()
+        versionProps.load(new FileInputStream(versionPropsFile))
+
+        return versionProps['VERSION_NAME']
+    } else {
+        throw new GradleException("Could not read gradle.properties")
+    }
+}
+
+//获取版本号
+def verCode() {
+    def versionPropsFile = file("../version.properties")
+    if (versionPropsFile.canRead()) {
+        Properties versionProps = new Properties()
+        versionProps.load(new FileInputStream(versionPropsFile))
+
+        def int verCode = versionProps['VERSION_CODE'].toInteger()
+        return verCode;
+    } else {
+        throw new GradleException("Could not read gradle.properties")
+    }
+}
+
 android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.ying.administrator.masterappdemo"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 65
-        versionName "3.0.3"
+        versionCode verCode()
+        versionName verName()
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         applicationId "com.ying.administrator.masterappdemo"

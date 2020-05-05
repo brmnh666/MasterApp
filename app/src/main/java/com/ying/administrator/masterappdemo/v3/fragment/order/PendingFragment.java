@@ -240,6 +240,7 @@ public class PendingFragment extends BaseLazyFragment<OrderPresenter, OrderModel
             return;
         }
         list.clear();
+        pendingAdapter.notifyDataSetChanged();
         page=1;
         mPresenter.WorkerGetOrderList(userId, state, page + "", "10");
     }
