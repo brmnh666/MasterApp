@@ -164,7 +164,7 @@ public class SettingActivity extends BaseActivity<SettingPresenter, SettingModel
             case R.id.ll_update:
 
 //                Beta.checkUpgrade(true,true);
-                showProgress();
+//                showProgress();
                 UpgradeInfo upgradeInfo=Beta.getUpgradeInfo();
                 if (upgradeInfo==null){
                     puchsh_view = LayoutInflater.from(mActivity).inflate(R.layout.v3_dialog_prompt, null);

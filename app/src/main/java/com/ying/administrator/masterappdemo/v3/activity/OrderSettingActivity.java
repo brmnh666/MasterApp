@@ -28,6 +28,7 @@ import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.AddServiceAreaActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.AddServiceAreaInfoActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.MyInfoSkillActivity2;
 import com.ying.administrator.masterappdemo.util.MyUtils;

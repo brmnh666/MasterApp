@@ -1,6 +1,9 @@
 package com.ying.administrator.masterappdemo.v3.fragment;
 
 import android.app.AlertDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -80,7 +84,8 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
     private View customdialog_home_view;
     private AlertDialog customdialog_home_dialog;
     private CodeMoney codeList;
-
+    private ClipboardManager myClipboard;
+    private ClipData myClip;
     public static HomeFragment newInstance(String param1) {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
@@ -160,6 +165,19 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
                         }
 
                         break;
+                    case R.id.iv_copy:
+                        myClip = ClipData.newPlainText("", "下单厂家："+list.get(position).getInvoiceName() + "\n"
+                                +"工单号："+list.get(position).getOrderID() + "\n"
+                                +"下单时间："+list.get(position).getCreateDate() + "\n"
+                                +"用户信息："+list.get(position).getUserName()+" "+list.get(position).getPhone() + "\n"
+                                +"用户地址："+list.get(position).getAddress() + "\n"
+                                +"产品信息："+list.get(position).getProductType() + "\n"
+                                +"售后类型："+list.get(position).getGuaranteeText() + "\n"
+                                +"服务类型："+list.get(position).getTypeName()
+                        );
+                        myClipboard.setPrimaryClip(myClip);
+                        ToastUtils.showShort("复制成功");
+                        break;
                 }
             }
         });
@@ -211,6 +229,7 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
         mPresenter.GetListCategoryContentByCategoryID("7", "1", "999");
         mPresenter.messgIsOrNo(userId, "1", "1");
         mPresenter.GetCodeList("ProtectionCost", "1", "1");
+        myClipboard = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
     }
 
     @Override
@@ -389,6 +408,7 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
                 break;
         }
     }
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(String name) {

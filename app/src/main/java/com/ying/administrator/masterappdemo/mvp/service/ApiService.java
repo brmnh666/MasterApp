@@ -26,6 +26,7 @@ import com.ying.administrator.masterappdemo.entity.Logistics;
 import com.ying.administrator.masterappdemo.entity.Message;
 import com.ying.administrator.masterappdemo.entity.MessageData;
 import com.ying.administrator.masterappdemo.entity.NavigationBarNumber;
+import com.ying.administrator.masterappdemo.entity.NavigationBarNumberSon;
 import com.ying.administrator.masterappdemo.entity.Province;
 import com.ying.administrator.masterappdemo.entity.QuestBean;
 import com.ying.administrator.masterappdemo.entity.QuestResult;
@@ -1131,6 +1132,20 @@ public interface ApiService {
                                                                           @Field("page") String page,
                                                                           @Field("limit") String limit);
 
+    /**
+     * 各工单数量
+     * var Count1 = 0;//急需处理
+     * var Count2 = 0;//明日需上门
+     * var Count3 = 0;//已超时
+     * var Count4 = 0;//未到货
+     * var Count5 = 0;//待预约
+     */
+    @FormUrlEncoded
+    @POST("Order/NavigationBarNumberSon")
+    Observable<BaseResult<Data<NavigationBarNumberSon>>> NavigationBarNumberSon(@Field("UserID") String UserID,
+                                                                                @Field("page") String page,
+                                                                                @Field("limit") String limit);
+
     /*
      *搜索
      * */
@@ -1234,4 +1249,8 @@ public interface ApiService {
     Observable<BaseResult<List<CodeMoney>>> GetCodeList(@Field("Code") String Code,
                                                         @Field("page") String page,
                                                         @Field("limit") String limit);
+
+    /*获取联系人 */
+    @POST("Account/AndroidTelephone")
+    Observable<BaseResult<Data<String>>> AndroidTelephone(@Body RequestBody json);
 }

@@ -26,6 +26,8 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -43,7 +45,9 @@ import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.IsCardNo;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
+import com.ying.administrator.masterappdemo.entity.UserInfo2;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.AboutUsActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Login_New_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Opinion_Activity;
@@ -65,11 +69,27 @@ import com.ying.administrator.masterappdemo.widget.GlideCircleWithBorder2;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import io.reactivex.functions.Consumer;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
+import static com.moor.imkf.IMChatManager.userId;
 
 public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> implements View.OnClickListener, MineContract.View {
     private static final String ARG_SHOW_TEXT = "text";
@@ -114,12 +134,14 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
     SmartRefreshLayout mRefreshLayout;
     private String mContentText;
     private String userID;
-    private UserInfo.UserInfoDean userInfo;
+    //    private UserInfo.UserInfoDean userInfo;
+    private UserInfo2.DataBeanX.DataBean userInfo;
     private View dialog_share;
     private AlertDialog dialogShare;
     private ShareAction mShareAction;
     private CustomShareListener mShareListener;
     private SPUtils spUtils;
+    private String token;
 
     public static MineFragment newInstance(String param1) {
         MineFragment fragment = new MineFragment();
@@ -192,17 +214,28 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                mPresenter.GetUserInfoList(userID, "1");//根据 手机号码获取用户详细信息
+                accountInfo();
+//                mPresenter.GetUserInfoList(userID, "1");//根据 手机号码获取用户详细信息
                 refreshlayout.finishRefresh(1000);
             }
         });
+
+        if (userInfo != null) {
+            getInfo();
+        } else {
+            return;
+        }
+
     }
 
     @Override
     protected void initView() {
         spUtils = SPUtils.getInstance("token");
         userID = spUtils.getString("userName");
-        mPresenter.GetUserInfoList(userID, "1");
+        token = spUtils.getString("adminToken");
+//        mPresenter.GetUserInfoList(userID, "1");
+        accountInfo();
+
     }
 
     @Override
@@ -346,53 +379,53 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
     public void GetUserInfoList(BaseResult<UserInfo> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData().getData().size() > 0) {
-                    userInfo = baseResult.getData().getData().get(0);
-                    if (userInfo.getAvator() == null) {//显示默认头像
-                        return;
-                    } else {
-                        RequestOptions myOptions = new RequestOptions().transform(new GlideCircleWithBorder2(this, 1, Color.parseColor("#DCDCDC")));
-                        Glide.with(mActivity)
-                                .load(Config.HEAD_URL + userInfo.getAvator())
-                                .apply(RequestOptions.bitmapTransform(new CircleCrop()))
-                                .apply(myOptions)
-                                .into(mIvAvatar);
-                    }
-                    mTvFinish.setText("完成量 " + userInfo.getServiceTotalOrderNum());
-                    /*真实姓名*/
-                    if (userInfo.getIfAuth() == null || "".equals(userInfo.getIfAuth())) {
-                        mTvCertified.setText("未认证");
-                        mTvSuggest.setVisibility(View.VISIBLE);
-                        mLlName.setVisibility(View.GONE);
-                    } else if ("0".equals(userInfo.getIfAuth())) {
-                        mTvCertified.setText(userInfo.getTrueName());
-                        mTvSuggest.setVisibility(View.VISIBLE);
-                        mTvSuggest.setText("认证中");
-                        mLlName.setVisibility(View.GONE);
-                    } else if ("-1".equals(userInfo.getIfAuth())) {
-                        mTvCertified.setText(userInfo.getTrueName());
-                        mTvSuggest.setVisibility(View.VISIBLE);
-                        mTvSuggest.setText("拒绝，请查看原因");
-                        mLlName.setVisibility(View.GONE);
-                    } else if ("1".equals(userInfo.getIfAuth())) {
-                        mTvCertified.setText(userInfo.getTrueName());
-                        mTvSuggest.setVisibility(View.GONE);
-                        mLlName.setVisibility(View.VISIBLE);
-                        mTvPhone.setText(userInfo.getUserID() + "");
-                    }
-
-                    if (userInfo.getParentUserID() == null) {
-                        mLlSubAccount.setVisibility(View.VISIBLE);
-                    } else {
-                        mLlSubAccount.setVisibility(View.GONE);
-                    }
-                } else {
-                    startActivity(new Intent(mActivity, Login_New_Activity.class));
-                    spUtils.put("isLogin", false);
-                    mActivity.finish();
-                }
+//                if (baseResult.getData().getData().size() > 0) {
+//                    userInfo = baseResult.getData().getData().get(0);
+//                    if (userInfo.getAvator() == null) {//显示默认头像
+//                        return;
+//                    } else {
+//                        RequestOptions myOptions = new RequestOptions().transform(new GlideCircleWithBorder2(this, 1, Color.parseColor("#DCDCDC")));
+//                        Glide.with(mActivity)
+//                                .load(Config.HEAD_URL + userInfo.getAvator())
+//                                .apply(RequestOptions.bitmapTransform(new CircleCrop()))
+//                                .apply(myOptions)
+//                                .into(mIvAvatar);
+//                    }
+//                    mTvFinish.setText("完成量 " + userInfo.getServiceTotalOrderNum());
+//                    /*真实姓名*/
+//                    if (userInfo.getIfAuth() == null || "".equals(userInfo.getIfAuth())) {
+//                        mTvCertified.setText("未认证");
+//                        mTvSuggest.setVisibility(View.VISIBLE);
+//                        mLlName.setVisibility(View.GONE);
+//                    } else if ("0".equals(userInfo.getIfAuth())) {
+//                        mTvCertified.setText(userInfo.getTrueName());
+//                        mTvSuggest.setVisibility(View.VISIBLE);
+//                        mTvSuggest.setText("认证中");
+//                        mLlName.setVisibility(View.GONE);
+//                    } else if ("-1".equals(userInfo.getIfAuth())) {
+//                        mTvCertified.setText(userInfo.getTrueName());
+//                        mTvSuggest.setVisibility(View.VISIBLE);
+//                        mTvSuggest.setText("拒绝，请查看原因");
+//                        mLlName.setVisibility(View.GONE);
+//                    } else if ("1".equals(userInfo.getIfAuth())) {
+//                        mTvCertified.setText(userInfo.getTrueName());
+//                        mTvSuggest.setVisibility(View.GONE);
+//                        mLlName.setVisibility(View.VISIBLE);
+//                        mTvPhone.setText(userInfo.getUserID() + "");
+//                    }
+//
+//                    if (userInfo.getParentUserID() == null) {
+//                        mLlSubAccount.setVisibility(View.VISIBLE);
+//                    } else {
+//                        mLlSubAccount.setVisibility(View.GONE);
+//                    }
+//                } else {
+//                    startActivity(new Intent(mActivity, Login_New_Activity.class));
+//                    spUtils.put("isLogin", false);
+//                    mActivity.finish();
+//                }
                 break;
-            case 406:
+            case 400:
                 ActivityUtils.finishAllActivities();
                 startActivity(new Intent(mActivity, Login_New_Activity.class));
                 mActivity.finish();
@@ -413,9 +446,11 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(String name) {
         if ("GetUserInfoList".equals(name)) {
-            mPresenter.GetUserInfoList(userID, "1");
+//            mPresenter.GetUserInfoList(userID, "1");
+            accountInfo();
         } else if ("certification".equals(name)) {
-            mPresenter.GetUserInfoList(userID, "1");
+//            mPresenter.GetUserInfoList(userID, "1");
+            accountInfo();
         }
     }
 
@@ -481,4 +516,164 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
 //            Toast.makeText(mContext, platform + " 分享取消了", Toast.LENGTH_SHORT).show();
         }
     }
+
+    public void accountInfo() {
+
+        FormBody formboby = new FormBody.Builder()
+                .add("UserID", userID)
+                .add("limit", "1")
+                .build();
+        //接口
+        String path = Config.BASE_URL+"Account/GetUserInfoList";
+
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .connectTimeout(5, TimeUnit.MINUTES)
+                .readTimeout(5, TimeUnit.MINUTES)
+                .build();
+        final Request request = new Request.Builder()
+                .url(path)
+                .addHeader("userName", userID)
+                .addHeader("adminToken",token)
+                .post(formboby)
+                .build();
+        Call call = okHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                ActivityUtils.finishAllActivities();
+                startActivity(new Intent(mActivity, Login_New_Activity.class));
+                mActivity.finish();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String str = response.body().string();
+//                System.out.println(str);
+//                ToastUtils.showShort(str);
+                try {
+                    JSONObject jsonObject = new JSONObject(str);
+                    if (jsonObject.getInt("StatusCode") == 200) {
+                        Gson gson = new Gson();
+                        UserInfo2 result = gson.fromJson(str.replaceAll(" ", ""), UserInfo2.class);
+                        if (result.getData().getData().size() > 0) {
+                            userInfo = result.getData().getData().get(0);
+                        } else {
+                            startActivity(new Intent(mActivity, Login_New_Activity.class));
+                            spUtils.put("isLogin", false);
+                            mActivity.finish();
+                        }
+                    } else {
+                        startActivity(new Intent(mActivity, Login_New_Activity.class));
+                        spUtils.put("isLogin", false);
+                        mActivity.finish();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+//                Gson gson=new Gson();
+//                UserInfo2 result=gson.fromJson(str.replaceAll(" ",""),UserInfo2.class);
+//                switch (result.getStatusCode()){
+//                    case 200:
+//                        if (result.getData().getData().size() > 0) {
+//                            userInfo = result.getData().getData().get(0);
+////                            if (userInfo.getAvator() == null) {//显示默认头像
+////                                return;
+////                            } else {
+//////                                RequestOptions myOptions = new RequestOptions().transform(new GlideCircleWithBorder2(this, 1, Color.parseColor("#DCDCDC")));
+//////                                Glide.with(mActivity)
+//////                                        .load(Config.HEAD_URL + userInfo.getAvator())
+//////                                        .apply(RequestOptions.bitmapTransform(new CircleCrop()))
+////////                                        .apply(myOptions)
+//////                                        .into(mIvAvatar);
+////                            }
+////                            mTvFinish.setText("完成量 " + userInfo.getServiceTotalOrderNum());
+////                            /*真实姓名*/
+////                            if (userInfo.getIfAuth() == null || "".equals(userInfo.getIfAuth())) {
+////                                mTvCertified.setText("未认证");
+////                                mTvSuggest.setVisibility(View.VISIBLE);
+////                                mLlName.setVisibility(View.GONE);
+////                            } else if ("0".equals(userInfo.getIfAuth())) {
+////                                mTvCertified.setText(userInfo.getTrueName());
+////                                mTvSuggest.setVisibility(View.VISIBLE);
+////                                mTvSuggest.setText("认证中");
+////                                mLlName.setVisibility(View.GONE);
+////                            } else if ("-1".equals(userInfo.getIfAuth())) {
+////                                mTvCertified.setText(userInfo.getTrueName());
+////                                mTvSuggest.setVisibility(View.VISIBLE);
+////                                mTvSuggest.setText("拒绝，请查看原因");
+////                                mLlName.setVisibility(View.GONE);
+////                            } else if ("1".equals(userInfo.getIfAuth())) {
+////                                mTvCertified.setText(userInfo.getTrueName());
+////                                mTvSuggest.setVisibility(View.GONE);
+////                                mLlName.setVisibility(View.VISIBLE);
+////                                mTvPhone.setText(userInfo.getUserID() + "");
+////                            }
+////
+////                            if (userInfo.getParentUserID() == null) {
+////                                mLlSubAccount.setVisibility(View.VISIBLE);
+////                            } else {
+////                                mLlSubAccount.setVisibility(View.GONE);
+////                            }
+//                        } else {
+//                            startActivity(new Intent(mActivity, Login_New_Activity.class));
+//                            spUtils.put("isLogin", false);
+//                            mActivity.finish();
+//                        }
+//                        break;
+//                    case 400:
+//                        startActivity(new Intent(mActivity, Login_New_Activity.class));
+//                        spUtils.put("isLogin", false);
+//                        mActivity.finish();
+//                        break;
+//                        default:
+//                            startActivity(new Intent(mActivity, Login_New_Activity.class));
+//                            spUtils.put("isLogin", false);
+//                            mActivity.finish();
+//                            break;
+//                }
+            }
+        });
+    }
+
+    private void getInfo() {
+        if (userInfo.getAvator() == null) {//显示默认头像
+            return;
+        } else {
+            RequestOptions myOptions = new RequestOptions().transform(new GlideCircleWithBorder2(this, 1, Color.parseColor("#DCDCDC")));
+            Glide.with(mActivity)
+                    .load(Config.HEAD_URL + userInfo.getAvator())
+                    .apply(RequestOptions.bitmapTransform(new CircleCrop()))
+                    .apply(myOptions)
+                    .into(mIvAvatar);
+        }
+        mTvFinish.setText("完成量 " + userInfo.getServiceTotalOrderNum());
+        /*真实姓名*/
+        if (userInfo.getIfAuth() == null || "".equals(userInfo.getIfAuth())) {
+            mTvCertified.setText("未认证");
+            mTvSuggest.setVisibility(View.VISIBLE);
+            mLlName.setVisibility(View.GONE);
+        } else if ("0".equals(userInfo.getIfAuth())) {
+            mTvCertified.setText(userInfo.getTrueName());
+            mTvSuggest.setVisibility(View.VISIBLE);
+            mTvSuggest.setText("认证中");
+            mLlName.setVisibility(View.GONE);
+        } else if ("-1".equals(userInfo.getIfAuth())) {
+            mTvCertified.setText(userInfo.getTrueName());
+            mTvSuggest.setVisibility(View.VISIBLE);
+            mTvSuggest.setText("拒绝，请查看原因");
+            mLlName.setVisibility(View.GONE);
+        } else if ("1".equals(userInfo.getIfAuth())) {
+            mTvCertified.setText(userInfo.getTrueName());
+            mTvSuggest.setVisibility(View.GONE);
+            mLlName.setVisibility(View.VISIBLE);
+            mTvPhone.setText(userInfo.getUserID() + "");
+        }
+
+        if (userInfo.getParentUserID() == null) {
+            mLlSubAccount.setVisibility(View.VISIBLE);
+        } else {
+            mLlSubAccount.setVisibility(View.GONE);
+        }
+    }
+
 }

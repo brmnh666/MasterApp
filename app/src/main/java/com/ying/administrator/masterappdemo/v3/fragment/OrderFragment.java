@@ -18,6 +18,7 @@ import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.NavigationBarNumber;
+import com.ying.administrator.masterappdemo.entity.NavigationBarNumberSon;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
 import com.ying.administrator.masterappdemo.v3.activity.SearchOrderActivity;
@@ -159,6 +160,11 @@ public class OrderFragment extends BaseLazyFragment<OrderPresenter, OrderModel> 
                 mTabReceivingLayout.notifyDataSetChanged();
                 break;
         }
+    }
+
+    @Override
+    public void NavigationBarNumberSon(BaseResult<Data<NavigationBarNumberSon>> baseResult) {
+
     }
 
     @Override

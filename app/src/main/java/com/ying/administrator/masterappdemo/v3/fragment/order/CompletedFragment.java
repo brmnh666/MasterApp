@@ -1,5 +1,8 @@
 package com.ying.administrator.masterappdemo.v3.fragment.order;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,6 +23,7 @@ import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.NavigationBarNumber;
+import com.ying.administrator.masterappdemo.entity.NavigationBarNumberSon;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
 import com.ying.administrator.masterappdemo.v3.activity.ServingDetailActivity;
@@ -52,6 +56,8 @@ public class CompletedFragment extends BaseLazyFragment<OrderPresenter, OrderMod
     private List<WorkOrder.DataBean> list = new ArrayList<>();
     private OrderAdapter adapter;
     private WorkOrder workOrder;
+    private ClipboardManager myClipboard;
+    private ClipData myClip;
     public CompletedFragment() {
         // Required empty public constructor
     }
@@ -109,6 +115,7 @@ public class CompletedFragment extends BaseLazyFragment<OrderPresenter, OrderMod
         mRefreshLayout.autoRefresh(0,0,1);
         SPUtils spUtils = SPUtils.getInstance("token");
         userId = spUtils.getString("userName");
+        myClipboard = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
         mPresenter.WorkerGetOrderList(userId, "6", page + "", "10");
         adapter = new OrderAdapter(R.layout.v3_item_home, list,"shipping",userId);
         mRvOrder.setLayoutManager(new LinearLayoutManager(mActivity));
@@ -120,6 +127,26 @@ public class CompletedFragment extends BaseLazyFragment<OrderPresenter, OrderMod
                 Intent intent=new Intent(mActivity, ServingDetailActivity.class);
                 intent.putExtra("id",list.get(position).getOrderID());
                 startActivity(intent);
+            }
+        });
+        adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                switch (view.getId()){
+                    case R.id.iv_copy:
+                        myClip = ClipData.newPlainText("", "下单厂家："+list.get(position).getInvoiceName() + "\n"
+                                +"工单号："+list.get(position).getOrderID() + "\n"
+                                +"下单时间："+list.get(position).getCreateDate() + "\n"
+                                +"用户信息："+list.get(position).getUserName()+" "+list.get(position).getPhone() + "\n"
+                                +"用户地址："+list.get(position).getAddress() + "\n"
+                                +"产品信息："+list.get(position).getProductType() + "\n"
+                                +"售后类型："+list.get(position).getGuaranteeText() + "\n"
+                                +"服务类型："+list.get(position).getTypeName()
+                        );
+                        myClipboard.setPrimaryClip(myClip);
+                        ToastUtils.showShort("复制成功");
+                        break;
+                }
             }
         });
 
@@ -146,6 +173,11 @@ public class CompletedFragment extends BaseLazyFragment<OrderPresenter, OrderMod
 
     @Override
     public void NavigationBarNumber(BaseResult<Data<NavigationBarNumber>> baseResult) {
+
+    }
+
+    @Override
+    public void NavigationBarNumberSon(BaseResult<Data<NavigationBarNumberSon>> baseResult) {
 
     }
 

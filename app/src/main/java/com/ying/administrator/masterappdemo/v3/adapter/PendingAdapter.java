@@ -22,7 +22,8 @@ public class PendingAdapter extends BaseQuickAdapter<WorkOrder.DataBean, BaseVie
 
     @Override
     protected void convert(BaseViewHolder helper, WorkOrder.DataBean item) {
-        helper.addOnClickListener(R.id.tv_orders);
+        helper.addOnClickListener(R.id.tv_orders)
+                .addOnClickListener(R.id.iv_copy);
         TextView tv_sub_account_maintenance = helper.getView(R.id.tv_sub_account_maintenance);
         TextView tv_orders = helper.getView(R.id.tv_orders);
         tv_orders.setVisibility(View.GONE);
@@ -30,7 +31,8 @@ public class PendingAdapter extends BaseQuickAdapter<WorkOrder.DataBean, BaseVie
                 .setText(R.id.tv_name, item.getProductType())
                 .setText(R.id.tv_location, "距离:" + item.getDistance() + "Km")
                 .setText(R.id.tv_malfunction, "故障:" + item.getMemo())
-                .setText(R.id.tv_address, "地址:" + item.getAddress());
+                .setText(R.id.tv_address, "地址:" + item.getAddress())
+                .setText(R.id.tv_order,"工单号:"+item.getOrderID());
 
 
         if ("1".equals(item.getPartyNo())) {

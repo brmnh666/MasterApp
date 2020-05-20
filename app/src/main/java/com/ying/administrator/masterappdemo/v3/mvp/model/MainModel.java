@@ -11,6 +11,7 @@ import com.ying.administrator.masterappdemo.v3.mvp.contract.MainContract;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.RequestBody;
 
 public class MainModel implements MainContract.Model {
     @Override
@@ -23,6 +24,13 @@ public class MainModel implements MainContract.Model {
     @Override
     public Observable<BaseResult<Data<GetMessagePag>>> GetmessagePag(String UserID) {
         return ApiRetrofit.getDefault().GetmessagePag(UserID)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<BaseResult<Data<String>>> AndroidTelephone(RequestBody json) {
+        return ApiRetrofit.getDefault().AndroidTelephone(json)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

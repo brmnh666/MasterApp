@@ -7,6 +7,8 @@ import com.ying.administrator.masterappdemo.entity.GetMessagePag;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.MainContract;
 
+import okhttp3.RequestBody;
+
 public class MainPresenter extends MainContract.Presenter {
     @Override
     public void GetUserInfoList(String UserID, String limit) {
@@ -26,6 +28,17 @@ public class MainPresenter extends MainContract.Presenter {
                     @Override
                     protected void onHandleSuccess(BaseResult<Data<GetMessagePag>> value) {
                         mView.GetmessagePag(value);
+                    }
+                });
+    }
+
+    @Override
+    public void AndroidTelephone(RequestBody json) {
+        mModel.AndroidTelephone(json)
+                .subscribe(new BaseObserver<Data<String>>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<Data<String>> value) {
+                        mView.AndroidTelephone(value);
                     }
                 });
     }

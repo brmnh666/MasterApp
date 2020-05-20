@@ -28,6 +28,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.util.Util;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.LoginActivity;
+import com.ying.administrator.masterappdemo.util.StatusBarUtil;
 import com.ying.administrator.masterappdemo.util.TUtil;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 import com.zyao89.view.zloading.ZLoadingDialog;
@@ -102,6 +103,10 @@ public abstract class BaseActivity<P extends BasePresenter, M extends BaseModel>
         //设置监听
         setListener();
 
+//        StatusBarUtil.setTranslucentStatus((Activity) mActivity);
+//        StatusBarUtil.setStatusBarColor(this, Color.parseColor("#ffffff"));
+//        StatusBarUtil.setImmersiveStatusBar(this, false);
+//        StatusBarUtil.setStatusBarFontIconDark(this, StatusBarUtil.TYPE_M);
     }
 
     protected P obtainPresenter() {

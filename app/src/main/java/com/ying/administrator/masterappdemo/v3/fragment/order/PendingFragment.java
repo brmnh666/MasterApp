@@ -1,5 +1,8 @@
 package com.ying.administrator.masterappdemo.v3.fragment.order;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -19,6 +23,7 @@ import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.NavigationBarNumber;
+import com.ying.administrator.masterappdemo.entity.NavigationBarNumberSon;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
 import com.ying.administrator.masterappdemo.v3.activity.AppointmentDetailsActivity;
@@ -62,7 +67,8 @@ public class PendingFragment extends BaseLazyFragment<OrderPresenter, OrderModel
     private String userId = spUtils.getString("userName");
     private int page = 1;
     private WorkOrder workOrder;
-
+    private ClipboardManager myClipboard;
+    private ClipData myClip;
     public PendingFragment() {
         // Required empty public constructor
     }
@@ -93,7 +99,8 @@ public class PendingFragment extends BaseLazyFragment<OrderPresenter, OrderModel
             public void onRefresh(RefreshLayout refreshlayout) {
                 list.clear();
                 page = 1;
-                mPresenter.WorkerGetOrderList(userId, state, page + "", "10");
+//                mPresenter.WorkerGetOrderList(userId, state, page + "", "10");
+                mPresenter.NavigationBarNumberSon(userId,"1","999");
                 refreshlayout.resetNoMoreData();
                 EventBus.getDefault().post(20);
                 mRefreshLayout.finishRefresh();
@@ -123,10 +130,13 @@ public class PendingFragment extends BaseLazyFragment<OrderPresenter, OrderModel
         mRefreshLayout.autoRefresh(0,0,1);
 //        SPUtils spUtils = SPUtils.getInstance("token");
 //        userId = spUtils.getString("userName");
-        mPresenter.WorkerGetOrderList(userId, state, page + "", "10");
+        mPresenter.NavigationBarNumberSon(userId,"1","999");
+
 //        for (int i = 0; i < 10; i++) {
 //            list.add(new WorkOrder.DataBean());
 //        }
+
+        myClipboard = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
         pendingAdapter = new PendingAdapter(R.layout.v3_item_home, list,userId);
         mRvPending.setLayoutManager(new LinearLayoutManager(mActivity));
         mRvPending.setAdapter(pendingAdapter);
@@ -142,6 +152,27 @@ public class PendingFragment extends BaseLazyFragment<OrderPresenter, OrderModel
                     Intent intent=new Intent(mActivity, ServingDetailActivity.class);
                     intent.putExtra("id",list.get(position).getOrderID());
                     startActivity(intent);
+                }
+            }
+        });
+
+        pendingAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                switch (view.getId()){
+                    case R.id.iv_copy:
+                        myClip = ClipData.newPlainText("", "下单厂家："+list.get(position).getInvoiceName() + "\n"
+                                +"工单号："+list.get(position).getOrderID() + "\n"
+                                +"下单时间："+list.get(position).getCreateDate() + "\n"
+                                +"用户信息："+list.get(position).getUserName()+" "+list.get(position).getPhone() + "\n"
+                                +"用户地址："+list.get(position).getAddress() + "\n"
+                                +"产品信息："+list.get(position).getProductType() + "\n"
+                                +"售后类型："+list.get(position).getGuaranteeText() + "\n"
+                                +"服务类型："+list.get(position).getTypeName()
+                        );
+                        myClipboard.setPrimaryClip(myClip);
+                        ToastUtils.showShort("复制成功");
+                        break;
                 }
             }
         });
@@ -207,6 +238,14 @@ public class PendingFragment extends BaseLazyFragment<OrderPresenter, OrderModel
     }
 
     @Override
+    public void NavigationBarNumberSon(BaseResult<Data<NavigationBarNumberSon>> baseResult) {
+        mTvUrgentlyNeeded.setText("急需处理("+baseResult.getData().getItem2().getCount1()+")");
+        mTvComeTomorrow.setText("明日需上门("+baseResult.getData().getItem2().getCount2()+")");
+        mTvTimedOut.setText("已超时("+baseResult.getData().getItem2().getCount3()+")");
+        mPresenter.WorkerGetOrderList(userId, state, page + "", "10");
+    }
+
+    @Override
     public void WorkerGetOrderList(BaseResult<WorkOrder> baseResult) {
         try {
             mRefreshLayout.finishRefresh();
@@ -242,6 +281,7 @@ public class PendingFragment extends BaseLazyFragment<OrderPresenter, OrderModel
         list.clear();
         pendingAdapter.notifyDataSetChanged();
         page=1;
-        mPresenter.WorkerGetOrderList(userId, state, page + "", "10");
+//        mPresenter.WorkerGetOrderList(userId, state, page + "", "10");
+        mPresenter.NavigationBarNumberSon(userId,"1","999");
     }
 }
