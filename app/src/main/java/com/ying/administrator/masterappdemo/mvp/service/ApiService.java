@@ -437,7 +437,7 @@ public interface ApiService {
     /*
      * 添加配件跟服务
      * */
-    @POST("Order/AddOrderAccessoryAndService")
+    @POST("OrderNew/AddOrderAccessoryAndService")
     Observable<BaseResult<Data>> AddOrderAccessoryAndService(@Body RequestBody json);
 
 
@@ -1016,7 +1016,7 @@ public interface ApiService {
      * 根据配件服务sizeID计算钱
      */
     @FormUrlEncoded
-    @POST("FactoryConfig/GetFactoryAccessoryMoney")
+    @POST("OrderNew/GetFactoryAccessoryMoney")
     Observable<BaseResult<Data<String>>> GetFactoryAccessoryMoney(@Field("OrderID") String OrderID,
                                                                   @Field("FCategoryID") String FCategoryID,
                                                                   @Field("SizeID") String SizeID,

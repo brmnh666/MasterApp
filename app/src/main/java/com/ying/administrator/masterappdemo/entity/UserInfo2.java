@@ -197,7 +197,7 @@ public class UserInfo2 implements Serializable {
             private Object Skills;
             private String IfAuth;
             private String AuthMessage;
-            private Object ParentUserID;
+            private String ParentUserID;
             private String TrueName;
             private String IDCard;
             private String Sex;
@@ -561,11 +561,11 @@ public class UserInfo2 implements Serializable {
                 this.AuthMessage = AuthMessage;
             }
 
-            public Object getParentUserID() {
+            public String getParentUserID() {
                 return ParentUserID;
             }
 
-            public void setParentUserID(Object ParentUserID) {
+            public void setParentUserID(String ParentUserID) {
                 this.ParentUserID = ParentUserID;
             }
 

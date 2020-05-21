@@ -671,8 +671,10 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
 
         if (userInfo.getParentUserID() == null) {
             mLlSubAccount.setVisibility(View.VISIBLE);
+            mLlWallet.setVisibility(View.VISIBLE);
         } else {
             mLlSubAccount.setVisibility(View.GONE);
+            mLlWallet.setVisibility(View.GONE );
         }
     }
 
