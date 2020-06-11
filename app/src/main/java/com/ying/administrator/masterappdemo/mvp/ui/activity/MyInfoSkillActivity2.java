@@ -100,12 +100,13 @@ public class MyInfoSkillActivity2 extends BaseActivity<AddSkillsPresenter, AddSk
                         if (circuitAdapter.getGroup().get(i).isSelected()) {
                             skills += circuitAdapter.getGroup().get(i).getCategory().getFCategoryName() + "/";
                             NodeIds += circuitAdapter.getGroup().get(i).getCategory().getFCategoryID() + ",";
-                        }
-                        for (int j = 0; j < circuitAdapter.getGroup().get(i).getCategoryArrayList().size(); j++) {
-                            if (circuitAdapter.getGroup().get(i).getCategoryArrayList().get(j).isSelected()) {
-                                skills += circuitAdapter.getGroup().get(i).getCategoryArrayList().get(j).getFCategoryName() + "/";
-                                NodeIds += circuitAdapter.getGroup().get(i).getCategoryArrayList().get(j).getFCategoryID() + ",";
-                            }
+                        }else{
+                            for (int j = 0; j < circuitAdapter.getGroup().get(i).getCategoryArrayList().size(); j++) {
+                                if (circuitAdapter.getGroup().get(i).getCategoryArrayList().get(j).isSelected()) {
+                                    skills += circuitAdapter.getGroup().get(i).getCategoryArrayList().get(j).getFCategoryName() + "/";
+                                    NodeIds += circuitAdapter.getGroup().get(i).getCategoryArrayList().get(j).getFCategoryID() + ",";
+                                }
+                            }  
                         }
                     }
                     if (skills.contains("/")) {
@@ -255,6 +256,9 @@ public class MyInfoSkillActivity2 extends BaseActivity<AddSkillsPresenter, AddSk
                         for (int j = 0; j < mySkillsList.size(); j++) {
                             if (mSkillList.get(i).getCategoryID().equals(mySkillsList.get(j).getCategory().getId())) {
                                 mySkillsList.get(j).setSelected(true);
+                                for (int k = 0; k < mySkillsList.get(j).getCategoryArrayList().size(); k++) {
+                                    mySkillsList.get(j).getCategoryArrayList().get(k).setSelected(true);
+                                }
                             }
                             for (int k = 0; k < mySkillsList.get(j).getCategoryArrayList().size(); k++) {
                                 if (mSkillList.get(i).getCategoryID().equals(mySkillsList.get(j).getCategoryArrayList().get(k).getId())) {

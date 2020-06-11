@@ -29,9 +29,6 @@ import com.ying.administrator.masterappdemo.v3.activity.SubAccountDetails;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 import com.ying.administrator.masterappdemo.widget.QRCodeDialog;
 
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -183,7 +180,7 @@ public class SubAccountManagementActivity extends BaseActivity<SubAccountPresent
             case R.id.img_add_sub_account:
             case R.id.tv_add_sub_account:
 
-                if (userInfoDean.getParentUserID() == null) {
+                if (userInfoDean.getParentUserID() == null || "".equals(userInfoDean.getParentUserID())) {
                     qrCodeDialog = new QRCodeDialog(mActivity, userID);
                     qrCodeDialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
                     qrCodeDialog.show();

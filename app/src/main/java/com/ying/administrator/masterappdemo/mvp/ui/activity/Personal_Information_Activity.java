@@ -342,7 +342,7 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
                     img_female_select.setVisibility(View.VISIBLE);
 
                 }
-                if (baseResult.getData().getData().get(0).getParentUserID() != null) {
+                if (userInfo.getParentUserID() != null || !"".equals(userInfo.getParentUserID())) {
                     ll_select_service_area.setVisibility(View.GONE);
                 }
 

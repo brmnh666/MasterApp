@@ -27,7 +27,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -45,7 +44,6 @@ import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.Data;
-import com.ying.administrator.masterappdemo.entity.IsCardNo;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.UserInfo2;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.AboutUsActivity;
@@ -54,9 +52,7 @@ import com.ying.administrator.masterappdemo.mvp.ui.activity.Opinion_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.SubAccountManagementActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.VerifiedActivity2;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
-import com.ying.administrator.masterappdemo.mvp.ui.fragment.Home_Fragment;
 import com.ying.administrator.masterappdemo.util.ZXingUtils;
-import com.ying.administrator.masterappdemo.v3.activity.FeedbackActivity;
 import com.ying.administrator.masterappdemo.v3.activity.PersonalInformationActivity;
 import com.ying.administrator.masterappdemo.v3.activity.SettingActivity;
 import com.ying.administrator.masterappdemo.v3.activity.WalletActivity;
@@ -64,7 +60,6 @@ import com.ying.administrator.masterappdemo.v3.mvp.Presenter.MinePresenter;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.MineContract;
 import com.ying.administrator.masterappdemo.v3.mvp.model.MineModel;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
-import com.ying.administrator.masterappdemo.widget.GlideCircleWithBorder;
 import com.ying.administrator.masterappdemo.widget.GlideCircleWithBorder2;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -73,7 +68,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -83,13 +77,9 @@ import io.reactivex.functions.Consumer;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
-
-import static com.moor.imkf.IMChatManager.userId;
 
 public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> implements View.OnClickListener, MineContract.View {
     private static final String ARG_SHOW_TEXT = "text";
@@ -669,7 +659,7 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
             mTvPhone.setText(userInfo.getUserID() + "");
         }
 
-        if (userInfo.getParentUserID() == null) {
+        if (userInfo.getParentUserID() == null|| "".equals(userInfo.getParentUserID())) {
             mLlSubAccount.setVisibility(View.VISIBLE);
             mLlWallet.setVisibility(View.VISIBLE);
         } else {

@@ -2,15 +2,11 @@ package com.ying.administrator.masterappdemo.mvp.ui.adapter;
 
 import android.graphics.Color;
 import android.support.annotation.Nullable;
-import android.util.Log;
-import android.view.View;
 
-import com.blankj.utilcode.constant.TimeConstants;
 import com.blankj.utilcode.util.TimeUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.ying.administrator.masterappdemo.R;
-import com.ying.administrator.masterappdemo.entity.Pending_Appointment_Entity;
 import com.ying.administrator.masterappdemo.entity.SubUserInfo;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
@@ -75,7 +71,7 @@ public class Pending_Appointment_Adapter extends BaseQuickAdapter<WorkOrder.Data
         }
 
 
-        if (userInfo.getParentUserID() == null) {//如果没有父账号说明自己是父账号 显示 转派
+        if (userInfo.getParentUserID() == null || "".equals(userInfo.getParentUserID())) {//如果没有父账号说明自己是父账号 显示 转派
             //helper.setGone(R.id.tv_pending_appointment_redeploy,true);
 
 

@@ -17,12 +17,35 @@ public class City implements Serializable {
      * Version : 0
      */
 
+    private boolean isSelect=false;
+    private String selectStr="";//选中了哪些区字符串
     private String Id;
     private String code;
     private String name;
     private String parentcode;
     private String IsUse;
     private String Version;
+
+    public String getSelectStr() {
+        return selectStr;
+    }
+
+    public void setSelectStr(String selectStr) {
+        this.selectStr = selectStr;
+    }
+
+    public boolean isSelect() {
+        return isSelect;
+    }
+
+    public void setSelect(boolean select) {
+        isSelect = select;
+        if (isSelect){
+            selectStr="全部区域";
+        }else{
+            selectStr="";
+        }
+    }
 
     private List<Area> counties = new ArrayList<Area>();
 
@@ -32,6 +55,23 @@ public class City implements Serializable {
 
     public void setCounties(List<Area> counties) {
         this.counties = counties;
+        selectStr="";
+        int count=0;
+        for (int i = 0; i < counties.size(); i++) {
+            if (counties.get(i).isSelect()){
+                selectStr+=counties.get(i).getName()+"|";
+                count++;
+            }
+        }
+        if (count==counties.size()){
+            isSelect=true;
+            selectStr="全部区域";
+        }else{
+            isSelect=false;
+            if (selectStr.length()>0){
+                selectStr=selectStr.substring(0,selectStr.lastIndexOf("|"));
+            }
+        }
     }
     public String getId() {
         return Id;

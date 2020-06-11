@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -38,13 +37,11 @@ import com.ying.administrator.masterappdemo.entity.GetFactoryData;
 import com.ying.administrator.masterappdemo.entity.SAccessory;
 import com.ying.administrator.masterappdemo.entity.Service;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
-import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.CompleteWorkOrderActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.RechargeActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Add_Service_Adapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Pre_order_Add_Ac_Adapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Pre_order_Add_Service_Adapter;
-import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.util.imageutil.ImageCompress;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.ApplicationAccessoriesPresenter;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.ApplicationAccessoriesContract;
@@ -115,6 +112,16 @@ public class ApplicationAccessoriesActivity extends BaseActivity<ApplicationAcce
     TextView mTvSure;
     @BindView(R.id.tv_money)
     TextView mTvMoney;
+    @BindView(R.id.iv_me_addr)
+    ImageView mIvMeAddr;
+    @BindView(R.id.ll_me_addr)
+    LinearLayout mLlMeAddr;
+    @BindView(R.id.iv_user_addr)
+    ImageView mIvUserAddr;
+    @BindView(R.id.ll_user_addr)
+    LinearLayout mLlUserAddr;
+    @BindView(R.id.ll_addr)
+    LinearLayout mLlAddr;
     private String orderId;
     private int state = -1;
     private String productTypeID;
@@ -145,14 +152,18 @@ public class ApplicationAccessoriesActivity extends BaseActivity<ApplicationAcce
     private RequestBody body;
     private Intent intent;
     private String userID;
-    private String AddressBack;
-    private String returnAddress;
+    private String addr_me;
+    private String addr_user;
     private ArrayList<String> accImglist = new ArrayList<>();
-    private Map<Integer,String> successpiclist = new HashMap<>();
+    private Map<Integer, String> successpiclist = new HashMap<>();
     private FAccessory.OrderAccessoryStrBean orderAccessoryStrBean;
     private AlertDialog customdialog_home_dialog;
     private UserInfo.UserInfoDean userInfo;
     private String terraceMoney;
+    private String name;
+    private String phone;
+    private String addr;
+    private List<AddressList> addressList=new ArrayList<>();
 
     @Override
     protected int setLayoutId() {
@@ -166,6 +177,7 @@ public class ApplicationAccessoriesActivity extends BaseActivity<ApplicationAcce
 
     @Override
     protected void initView() {
+        mLlAddr.setVisibility(View.GONE);
         mTvTitle.setText("配件与服务");
         orderId = getIntent().getStringExtra("id");
         productTypeID = getIntent().getStringExtra("SubCategoryID");
@@ -174,11 +186,17 @@ public class ApplicationAccessoriesActivity extends BaseActivity<ApplicationAcce
         beyondMoney = getIntent().getStringExtra("BeyondMoney");
         beyondState = getIntent().getStringExtra("BeyondState");
         terraceMoney = getIntent().getStringExtra("TerraceMoney");
-        mTvMoney.setText("服务金额：¥"+terraceMoney);
+
+        name = getIntent().getStringExtra("name");
+        phone = getIntent().getStringExtra("phone");
+        addr = getIntent().getStringExtra("addr");
+        addr_user =addr+"("+name+" 收)"+phone;
+
+        mTvMoney.setText("服务金额：¥" + terraceMoney);
         SPUtils spUtils = SPUtils.getInstance("token");
         userID = spUtils.getString("userName");
         mPresenter.GetAccountAddress(userID);
-        mPresenter.GetUserInfoList(userID,"1");
+        mPresenter.GetUserInfoList(userID, "1");
         mPre_order_add_ac_adapter = new Pre_order_Add_Ac_Adapter(R.layout.item_pre_order_add_accessories, fAcList, state + "", state);
         mRecyclerViewAddAccessories.setLayoutManager(new LinearLayoutManager(mActivity));
         mRecyclerViewAddAccessories.setAdapter(mPre_order_add_ac_adapter);
@@ -238,6 +256,8 @@ public class ApplicationAccessoriesActivity extends BaseActivity<ApplicationAcce
         mTvOrderDetailsAddAccessories.setOnClickListener(this);
         mTvOrderDetailAddService.setOnClickListener(this);
         mTvSure.setOnClickListener(this);
+        mLlMeAddr.setOnClickListener(this);
+        mLlUserAddr.setOnClickListener(this);
     }
 
     @Override
@@ -246,15 +266,29 @@ public class ApplicationAccessoriesActivity extends BaseActivity<ApplicationAcce
             case R.id.iv_back:
                 finish();
                 break;
+            case R.id.ll_me_addr:
+                mIvMeAddr.setSelected(true);
+                mIvUserAddr.setSelected(false);
+                break;
+            case R.id.ll_user_addr:
+                mIvMeAddr.setSelected(false);
+                mIvUserAddr.setSelected(true);
+                break;
             case R.id.ll_manufacturers:
                 state = 0;
                 mIvManufacturers.setSelected(true);
                 mIvSelfbuying.setSelected(false);
+                mLlAddr.setVisibility(View.VISIBLE);
+                mPre_order_add_ac_adapter.setNewData(fAcList);
+                getMoney(mPre_order_add_ac_adapter.getData(), fList_service);
                 break;
             case R.id.ll_selfbuying:
                 state = 1;
                 mIvManufacturers.setSelected(false);
                 mIvSelfbuying.setSelected(true);
+                mLlAddr.setVisibility(View.GONE);
+                mPre_order_add_ac_adapter.setNewData(mAcList);
+                getMoney(mPre_order_add_ac_adapter.getData(), fList_service);
                 break;
             case R.id.tv_order_details_add_accessories:
                 if (state == -1) {
@@ -289,21 +323,27 @@ public class ApplicationAccessoriesActivity extends BaseActivity<ApplicationAcce
     //厂家寄件，师傅自购，用户自购
     public void select_state(List<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> list) {
         if (list.size() > 0 && mPre_order_add_service_adapter.getData().size() == 0) {
-            if (state == 0){
-                if ("".equals(returnAddress)) {
-                    ToastUtils.showShort("请去个人中心填写收货地址");
+            if (state == 0) {
+                if (mIvMeAddr.isSelected()){
+                    if ("".equals(addr_me)) {
+                        ToastUtils.showShort("请去个人中心填写收货地址");
+                        hideProgress();
+                        return;
+                    } else {
+                        mPresenter.UpdateOrderAddressByOrderID(orderId, addr_me);
+                    }
+                }else if (mIvUserAddr.isSelected()){
+                    mPresenter.UpdateOrderAddressByOrderID(orderId, addr_user);
+                }else{
+                    ToastUtils.showShort("请选择寄往自己家还是用户家");
                     hideProgress();
-                    return;
-                } else {
-                    mPresenter.UpdateOrderAddressByOrderID(orderId, returnAddress);
                 }
-
-            }else {
-                uploadImg(mAcList);
+            } else {
+                uploadImg(list);
             }
 
         } else if (list.size() == 0 && mPre_order_add_service_adapter.getData().size() > 0) {
-            service="1";
+            service = "1";
             orderServiceStrBean = new FService.OrderServiceStrBean();
             orderServiceStrBean.setOrderService(mPre_order_add_service_adapter.getData());
             String s2 = gson.toJson(orderServiceStrBean);
@@ -320,15 +360,22 @@ public class ApplicationAccessoriesActivity extends BaseActivity<ApplicationAcce
             mPresenter.AddOrderAccessoryAndService(body);
         } else if (list.size() > 0 && mPre_order_add_service_adapter.getData().size() > 0) {
             if (state == 0) {
-                if ("".equals(returnAddress)) {
-                    ToastUtils.showShort("请去个人中心填写收货地址");
+                if (mIvMeAddr.isSelected()){
+                    if ("".equals(addr_me)) {
+                        ToastUtils.showShort("请去个人中心填写收货地址");
+                        hideProgress();
+                        return;
+                    } else {
+                        mPresenter.UpdateOrderAddressByOrderID(orderId, addr_me);
+                    }
+                }else if (mIvUserAddr.isSelected()){
+                    mPresenter.UpdateOrderAddressByOrderID(orderId, addr_user);
+                }else{
+                    ToastUtils.showShort("请选择寄往自己家还是用户家");
                     hideProgress();
-                    return;
-                } else {
-                    mPresenter.UpdateOrderAddressByOrderID(orderId, returnAddress);
                 }
-            }else {
-                uploadImg(mAcList);
+            } else {
+                uploadImg(list);
             }
 
         } else {
@@ -467,13 +514,13 @@ public class ApplicationAccessoriesActivity extends BaseActivity<ApplicationAcce
 ////                        ToastUtils.showShort(str);
 //                    } else {
                     String str = "";
-                    if ("-1".equals(beyondState)) {
-                        str = "服务金额：¥" + (money3);
-                        factorymoney = money3;
-                    } else {
-                        str = "服务金额：¥" + (money3 + beyond);
-                        factorymoney = money3 + beyond;
-                    }
+//                    if ("-1".equals(beyondState)) {
+                    str = "服务金额：¥" + (money3);
+                    factorymoney = money3;
+//                    } else {
+//                        str = "服务金额：¥" + (money3 + beyond);
+//                        factorymoney = money3 + beyond;
+//                    }
                     mTvMoney.setText(str);
 //                    mTvServiceAmount.setText(str);
 //                    mTvTotalPrice.setText(str);
@@ -512,20 +559,14 @@ public class ApplicationAccessoriesActivity extends BaseActivity<ApplicationAcce
     public void GetAccountAddress(BaseResult<List<AddressList>> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-                List<AddressList> addressList = baseResult.getData();
-                if (addressList.size() != 0) {
-                    for (int i = 0; i < addressList.size(); i++) {
-                        if ("1".equals(addressList.get(i).getIsDefault())) {
-                            AddressBack = addressList.get(0).getProvince() + addressList.get(0).getCity() + addressList.get(0).getArea() + addressList.get(0).getDistrict() + addressList.get(i).getAddress() + "(" + addressList.get(i).getUserName() + "收)" + addressList.get(i).getPhone();
-                            returnAddress = AddressBack;
-                        } else {
-                            AddressBack = addressList.get(0).getProvince() + addressList.get(0).getCity() + addressList.get(0).getArea() + addressList.get(0).getDistrict() + addressList.get(0).getAddress() + "(" + addressList.get(0).getUserName() + "收)" + addressList.get(0).getPhone();
-                            returnAddress = AddressBack;
-                        }
-                    }
+                if (baseResult.getData()==null){
+                    return;
+                }
+                addressList = baseResult.getData();
+                if (addressList.size() > 0) {
+                    addr_me = addressList.get(0).getAddrStr() + "(" + addressList.get(0).getUserName() + " 收)" + addressList.get(0).getPhone();
                 } else {
-                    AddressBack = "";
-                    returnAddress = "";
+                    addr_me = "";
                 }
                 break;
             default:
@@ -563,13 +604,13 @@ public class ApplicationAccessoriesActivity extends BaseActivity<ApplicationAcce
             case 200:
                 if (baseResult.getData().isItem1()) {
                     ToastUtils.showShort("提交成功");
-                    if (mPre_order_add_ac_adapter.getData().size() > 0){
+                    if (mPre_order_add_ac_adapter.getData().size() > 0) {
                         EventBus.getDefault().post("accessories");
                     }
                     EventBus.getDefault().post(21);
-                    if ("1".equals(service)){
+                    if ("1".equals(service)) {
                         finish();
-                    }else {
+                    } else {
                         EventBus.getDefault().post(3);
                     }
                     mAcList.clear();
@@ -621,13 +662,13 @@ public class ApplicationAccessoriesActivity extends BaseActivity<ApplicationAcce
 
     @Override
     public void GetUserInfoList(BaseResult<UserInfo> baseResult) {
-        switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData()!=null){
+                if (baseResult.getData() != null) {
                     userInfo = baseResult.getData().getData().get(0);
-                    if (userInfo.getParentUserID()==null){
+                    if (userInfo.getParentUserID() == null || "".equals(userInfo.getParentUserID())) {
                         mTvMoney.setVisibility(View.VISIBLE);
-                    }else {
+                    } else {
                         mTvMoney.setVisibility(View.GONE);
                     }
                 }
@@ -719,18 +760,18 @@ public class ApplicationAccessoriesActivity extends BaseActivity<ApplicationAcce
         accImglist.clear();
         successpiclist.clear();
         for (int i = 0; i < accesslist.size(); i++) {
-            accImglist.add(ImageCompress.compressImage(accesslist.get(i).getPhoto1(), Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy/" + System.currentTimeMillis() + ".jpg",80));
-            if (i==accesslist.size()-1){
-                accImglist.add(ImageCompress.compressImage(accesslist.get(i).getPhoto2(),Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy/" + System.currentTimeMillis() + ".jpg",80));
+            accImglist.add(ImageCompress.compressImage(accesslist.get(i).getPhoto1(), Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy/" + System.currentTimeMillis() + ".jpg", 80));
+            if (i == accesslist.size() - 1) {
+                accImglist.add(ImageCompress.compressImage(accesslist.get(i).getPhoto2(), Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy/" + System.currentTimeMillis() + ".jpg", 80));
             }
         }
         for (int i = 0; i < accImglist.size(); i++) {
-            File file=new File(accImglist.get(i));
+            File file = new File(accImglist.get(i));
             MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
             builder.addFormDataPart("img", file.getName(), RequestBody.create(MediaType.parse("img/png"), file));
             MultipartBody requestBody = builder.build();
             //接口
-            String path = Config.BASE_URL+"Upload/ApplyAccessoryphotoUpload";
+            String path = Config.BASE_URL + "Upload/ApplyAccessoryphotoUpload";
             OkHttpClient okHttpClient = new OkHttpClient.Builder()
                     .connectTimeout(5, TimeUnit.MINUTES)
                     .readTimeout(5, TimeUnit.MINUTES)
@@ -752,18 +793,18 @@ public class ApplicationAccessoriesActivity extends BaseActivity<ApplicationAcce
                 public void onResponse(Call call, Response response) throws IOException {
                     String str = response.body().string();
                     System.out.println(str);
-                    Gson gson=new Gson();
-                    AccPicResult result=gson.fromJson(str.replaceAll(" ",""), AccPicResult.class);
-                    if (result.getStatusCode()==200){
-                        successpiclist.put(finalI,result.getData().getItem1());
-                        if(successpiclist.size()==accImglist.size()){
-                            for (int i = 0; i <accesslist.size() ; i++) {
+                    Gson gson = new Gson();
+                    AccPicResult result = gson.fromJson(str.replaceAll(" ", ""), AccPicResult.class);
+                    if (result.getStatusCode() == 200) {
+                        successpiclist.put(finalI, result.getData().getItem1());
+                        if (successpiclist.size() == accImglist.size()) {
+                            for (int i = 0; i < accesslist.size(); i++) {
                                 accesslist.get(i).setPhoto1(successpiclist.get(i));
-                                accesslist.get(i).setPhoto2(successpiclist.get(successpiclist.size()-1));
+                                accesslist.get(i).setPhoto2(successpiclist.get(successpiclist.size() - 1));
                             }
                             select_state2(accesslist);
                         }
-                    }else{
+                    } else {
                         hideProgress();
                         ToastUtils.showShort("配件图片上传失败，请稍后重试");
                     }

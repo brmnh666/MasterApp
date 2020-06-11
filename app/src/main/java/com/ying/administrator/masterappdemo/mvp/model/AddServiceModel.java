@@ -1,11 +1,11 @@
 package com.ying.administrator.masterappdemo.mvp.model;
 
 import com.ying.administrator.masterappdemo.base.BaseResult;
-import com.ying.administrator.masterappdemo.entity.Address;
 import com.ying.administrator.masterappdemo.entity.Area;
 import com.ying.administrator.masterappdemo.entity.City;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.District;
+import com.ying.administrator.masterappdemo.entity.MyServiceArea;
 import com.ying.administrator.masterappdemo.entity.Province;
 import com.ying.administrator.masterappdemo.mvp.contract.AddServiceContract;
 import com.ying.administrator.masterappdemo.mvp.service.ApiRetrofit;
@@ -49,8 +49,8 @@ public class AddServiceModel implements AddServiceContract.Model {
     }
 
     @Override
-    public Observable<BaseResult<List<Address>>> GetServiceRangeByUserID(String UserID) {
-        return  ApiRetrofit.getDefault().GetServiceRangeByUserID(UserID)
+    public Observable<BaseResult<MyServiceArea>> GetServiceRangeByUserID(String UserID) {
+        return  ApiRetrofit.getDefault().GetServiceRangeByUserID(UserID,"999","1")
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

@@ -2,7 +2,6 @@ package com.ying.administrator.masterappdemo.v3.activity;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
@@ -12,19 +11,18 @@ import android.widget.TextView;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
-import com.ying.administrator.masterappdemo.entity.Address;
 import com.ying.administrator.masterappdemo.entity.Area;
 import com.ying.administrator.masterappdemo.entity.Area2;
 import com.ying.administrator.masterappdemo.entity.City;
 import com.ying.administrator.masterappdemo.entity.City2;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.District;
+import com.ying.administrator.masterappdemo.entity.MyServiceArea;
 import com.ying.administrator.masterappdemo.entity.Province;
 import com.ying.administrator.masterappdemo.entity.Province2;
 import com.ying.administrator.masterappdemo.mvp.contract.AddServiceContract;
 import com.ying.administrator.masterappdemo.mvp.model.AddServiceModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.AddServicePresenter;
-import com.ying.administrator.masterappdemo.mvp.ui.adapter.ProvinceAdapter;
 import com.ying.administrator.masterappdemo.v3.adapter.ExpandListViewAdapter;
 
 import java.util.ArrayList;
@@ -185,7 +183,7 @@ public class AddServiceAreaActivity extends BaseActivity<AddServicePresenter, Ad
     }
 
     @Override
-    public void GetServiceRangeByUserID(BaseResult<List<Address>> baseResult) {
+    public void GetServiceRangeByUserID(BaseResult<MyServiceArea> baseResult) {
 
     }
 

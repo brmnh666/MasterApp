@@ -28,8 +28,7 @@ import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.AddServiceAreaActivity;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.AddServiceAreaInfoActivity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.AddServiceAreaInfoActivity2;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.MyInfoSkillActivity2;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.v3.adapter.OrderSettingAdapter;
@@ -121,7 +120,7 @@ public class OrderSettingActivity extends BaseActivity<OrderSettingPresenter, Or
                 finish();
                 break;
             case R.id.ll_service_area:
-                startActivity(new Intent(mActivity, AddServiceAreaInfoActivity.class));
+                startActivity(new Intent(mActivity, AddServiceAreaInfoActivity2.class));
                 break;
             case R.id.ll_service_product:
 //                if (userInfo.getIfAuth() == null) {//未实名认证

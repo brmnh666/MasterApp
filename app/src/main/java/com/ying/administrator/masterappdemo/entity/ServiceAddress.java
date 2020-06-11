@@ -10,6 +10,14 @@ public class ServiceAddress implements Serializable {
     private District district;
     private String name;
     private String codestr;
+    private String provinceName;
+    private String cityName;
+    private String areaName;
+    private String districtName;
+    private String provinceCode;
+    private String cityCode;
+    private String areaCode;
+    private String districtCode;
 
 
     public ServiceAddress(Province province, City city, Area area, District district) {
@@ -17,16 +25,36 @@ public class ServiceAddress implements Serializable {
         this.city = city;
         this.area = area;
         this.district = district;
-        if (district==null){
-            this.name=province.getName()+city.getName()+area.getName();
-            this.codestr=province.getCode()+"-"+city.getCode()+"-"+area.getCode();
-        }else if (area==null){
-            this.name=province.getName()+city.getName()+district.getName();
-            this.codestr=province.getCode()+"-"+city.getCode()+"-"+district.getCode();
-        } else{
-            this.name=province.getName()+city.getName()+area.getName()+district.getName();
-            this.codestr=province.getCode()+"-"+city.getCode()+"-"+area.getCode()+"-"+district.getCode();
+        if(province==null){
+            provinceName="";
+            provinceCode="";
+        }else{
+            provinceName=province.getName();
+            provinceCode=province.getCode();
         }
+        if(city==null){
+            cityName="";
+            cityCode="";
+        }else{
+            cityName=city.getName();
+            cityCode=city.getCode();
+        }
+        if(area==null){
+            areaName="";
+            areaCode="";
+        }else{
+            areaName=area.getName();
+            areaCode=area.getCode();
+        }
+        if(district==null){
+            districtName="";
+            districtCode="";
+        }else{
+            districtName=district.getName();
+            districtCode=district.getCode();
+        }
+        this.name=provinceName+cityName+areaName+districtName;
+        this.codestr=provinceCode+"-"+cityCode+"-"+areaCode+"-"+districtCode;
     }
 
     public String getCodestr() {

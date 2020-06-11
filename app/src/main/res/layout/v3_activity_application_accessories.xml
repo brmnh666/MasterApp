@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-           >
+            >
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -140,7 +140,59 @@
                         android:layout_height="150dp"
                         android:nestedScrollingEnabled="false" />
                 </RelativeLayout>
+                <LinearLayout
+                    android:id="@+id/ll_addr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
+                    <LinearLayout
+                        android:id="@+id/ll_me_addr"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dp_10">
+
+                        <ImageView
+                            android:id="@+id/iv_me_addr"
+                            android:layout_width="19dp"
+                            android:layout_height="19dp"
+                            android:src="@drawable/pay_check_selector" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:text="寄往自己家"
+                            android:textColor="#6A6A6A"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_user_addr"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dp_10">
+
+                        <ImageView
+                            android:id="@+id/iv_user_addr"
+                            android:layout_width="19dp"
+                            android:layout_height="19dp"
+                            android:layout_marginLeft="10dp"
+                            android:src="@drawable/pay_check_selector" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="寄往用户家"
+                            android:textColor="#6A6A6A"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -324,4 +376,4 @@
         </LinearLayout>
 
     </LinearLayout>
-    </FrameLayout>
+</FrameLayout>

@@ -13,13 +13,35 @@ public class Area implements Serializable {
      * IsUse : string
      * Version : 0
      */
-
+    private boolean isSelect=false;
+    private String selectStr="";//选中了哪些街道字符串
     private String Id;
     private String code;
     private String name;
     private String parentcode;
     private String IsUse;
     private String Version;
+
+    public boolean isSelect() {
+        return isSelect;
+    }
+
+    public void setSelect(boolean select) {
+        isSelect = select;
+        if (isSelect){
+            selectStr="全部区域";
+        }else{
+            selectStr="";
+        }
+    }
+
+    public String getSelectStr() {
+        return selectStr;
+    }
+
+    public void setSelectStr(String selectStr) {
+        this.selectStr = selectStr;
+    }
 
     public String getId() {
         return Id;

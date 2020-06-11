@@ -793,7 +793,7 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
         switch (baseResult.getStatusCode()) {
             case 200:
                 userInfo = baseResult.getData().getData().get(0);
-                if (userInfo.getParentUserID() == null) {//如果没有父账号说明自己是父账号 显示 转派
+                if (userInfo.getParentUserID() == null || "".equals(userInfo.getParentUserID())) {//如果没有父账号说明自己是父账号 显示 转派
                     //helper.setGone(R.id.tv_pending_appointment_redeploy,true);
                     mPresenter.GetChildAccountByParentUserID(userID);
 

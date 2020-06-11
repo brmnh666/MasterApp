@@ -3,15 +3,14 @@ package com.ying.administrator.masterappdemo.mvp.presenter;
 
 import com.ying.administrator.masterappdemo.base.BaseObserver;
 import com.ying.administrator.masterappdemo.base.BaseResult;
-import com.ying.administrator.masterappdemo.entity.Address;
 import com.ying.administrator.masterappdemo.entity.Area;
 import com.ying.administrator.masterappdemo.entity.City;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.District;
+import com.ying.administrator.masterappdemo.entity.MyServiceArea;
 import com.ying.administrator.masterappdemo.entity.Province;
 import com.ying.administrator.masterappdemo.mvp.contract.AddServiceContract;
 
-import java.util.Date;
 import java.util.List;
 
 public class AddServicePresenter extends AddServiceContract.Presenter {
@@ -64,9 +63,9 @@ public class AddServicePresenter extends AddServiceContract.Presenter {
     @Override
     public void GetServiceRangeByUserID(String UserID) {
         mModel.GetServiceRangeByUserID(UserID)
-                .subscribe(new BaseObserver<List<Address>>() {
+                .subscribe(new BaseObserver<MyServiceArea>() {
                     @Override
-                    protected void onHandleSuccess(BaseResult<List<Address>> value) {
+                    protected void onHandleSuccess(BaseResult<MyServiceArea> value) {
                         mView.GetServiceRangeByUserID(value);
                     }
                 });

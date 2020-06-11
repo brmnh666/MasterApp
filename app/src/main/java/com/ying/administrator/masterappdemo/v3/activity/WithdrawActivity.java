@@ -3,8 +3,6 @@ package com.ying.administrator.masterappdemo.v3.activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,7 +16,6 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
@@ -30,14 +27,14 @@ import com.ying.administrator.masterappdemo.mvp.contract.WithDrawContract;
 import com.ying.administrator.masterappdemo.mvp.model.WithDrawModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.WithDrawPresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.CardList_Activity;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.SettingPayPasswordActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.VerifiedPhotoActivity;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.WithDrawActivity;
-import com.ying.administrator.masterappdemo.mvp.ui.adapter.PopwidowBankAdapter;
+import com.ying.administrator.masterappdemo.util.SingleClick;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 import com.ying.administrator.masterappdemo.widget.TradeTextWatcher;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -152,7 +149,7 @@ public class WithdrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
         mLlHide.setOnClickListener(mClickListener);
         mBtnPricePoint.setOnClickListener(mClickListener);
         mBtnPriceDel.setOnClickListener(mClickListener);
-        mBtnPriceShoukuan.setOnClickListener(mClickListener);
+        mBtnPriceShoukuan.setOnClickListener(this);
 
 
         mEtWithdrawalAmount.setOnClickListener(this);
@@ -198,41 +195,6 @@ public class WithdrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
                 }
                 mEtWithdrawalAmount.setTextSize(30);
                 mEtWithdrawalAmount.setTextColor(Color.BLACK);
-            } else if (id == R.id.btn_price_shoukuan) {//收款
-//                Toast.makeText(mActivity, "点击了确定", Toast.LENGTH_SHORT).show();
-                money= mEtWithdrawalAmount.getText().toString();
-                if (ifTrue == true) {
-                    if (bankNo==null||"".equals(bankNo)){
-                        ToastUtils.showShort("请选择银行卡");
-                    } else if (money==null||"".equals(money)) {
-                        ToastUtils.showShort("请输入提现金额");
-                    }else if (Double.parseDouble(money)>Double.parseDouble(withDrawMoney.getKtx())){
-                        ToastUtils.showShort("超出可提现金额");
-                    } else {
-                        mPresenter.WithDraw(money, bankNo, userId, payName);
-                    }
-                }else {
-                    final CommonDialog_Home dialog = new CommonDialog_Home(mActivity);
-                    dialog.setMessage("您实名认证不完善，不能提现，是否去完善并提现")
-                            //.setImageResId(R.mipmap.ic_launcher)
-                            .setTitle("提示")
-                            .setNegtive("否")
-                            .setPositive("是")
-                            .setSingle(false).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
-                        @Override
-                        public void onPositiveClick() {//添加银行卡
-                            dialog.dismiss();
-                            startActivity(new Intent(mActivity, VerifiedPhotoActivity.class));
-                        }
-
-                        @Override
-                        public void onNegtiveClick() {//取消
-                            dialog.dismiss();
-                            // Toast.makeText(MainActivity.this,"ssss",Toast.LENGTH_SHORT).show();
-                        }
-                    }).show();
-                }
-
             } else if (id == R.id.btn_price_del) {//清除
                 if (mEtWithdrawalAmount.getText().length() > 0) {
                     String strTmp = mEtWithdrawalAmount.getText().toString();
@@ -246,10 +208,9 @@ public class WithdrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
             } else if (id == R.id.ll_hide) {
                 mRlKeyboard.setVisibility(View.GONE);
             }
-
         }
     };
-
+    @SingleClick
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -259,6 +220,7 @@ public class WithdrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
             case R.id.et_withdrawal_amount:
                 break;
             case R.id.btn_confirm_withdrawal:
+            case R.id.btn_price_shoukuan:
                 money= mEtWithdrawalAmount.getText().toString();
                 if (ifTrue == true) {
                     if (bankNo==null||"".equals(bankNo)){
@@ -691,4 +653,15 @@ public class WithdrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
                 }
         }
     }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(String message) {
+        if ("verified".equals(message)) {
+            mPresenter.GetIDCardImg(userId);
+        }
+        if (!"GetAccountPayInfoList".equals(message)) {
+            return;
+        }
+        mPresenter.GetAccountPayInfoList(userId);
+    }
 }
+

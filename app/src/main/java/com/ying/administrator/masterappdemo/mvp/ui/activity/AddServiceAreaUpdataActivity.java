@@ -19,11 +19,11 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
-import com.ying.administrator.masterappdemo.entity.Address;
 import com.ying.administrator.masterappdemo.entity.Area;
 import com.ying.administrator.masterappdemo.entity.City;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.District;
+import com.ying.administrator.masterappdemo.entity.MyServiceArea;
 import com.ying.administrator.masterappdemo.entity.Province;
 import com.ying.administrator.masterappdemo.entity.ServiceAddress;
 import com.ying.administrator.masterappdemo.mvp.contract.AddServiceContract;
@@ -122,7 +122,7 @@ public class AddServiceAreaUpdataActivity extends BaseActivity<AddServicePresent
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 switch (view.getId()){
-                    case R.id.iv_delete:
+                    case R.id.ll_delete:
                         serviceAddressList.remove(position);
                         serviceAddressAdapter.notifyDataSetChanged();
                         break;
@@ -184,37 +184,38 @@ public class AddServiceAreaUpdataActivity extends BaseActivity<AddServicePresent
                     ToastUtils.showShort("请选择省！");
                     return;
                 }
-                if (mCity == null) {
-                    ToastUtils.showShort("请选择市！");
-                    return;
-                }
-                if (mArea == null) {
-                    ToastUtils.showShort("请选择区！");
-                    return;
-                }
-                if (mDistrict == null) {
-                    mPresenter.GetDistrict(mArea.getCode(),1);
-                }else{
-                    if (serviceAddressList.size()>0){
-                        for (int i = 0; i < serviceAddressList.size(); i++) {
-                            if (mDistrict.getCode().equals(serviceAddressList.get(i).getDistrict().getCode())){
-                                serviceAddressList.remove(i);
-                            }
+//                if (mCity == null) {
+//                    ToastUtils.showShort("请选择市！");
+//                    return;
+//                }
+//                if (mArea == null) {
+//                    ToastUtils.showShort("请选择区！");
+//                    return;
+//                }
+//                if (mDistrict == null) {
+//                    mPresenter.GetDistrict(mArea.getCode(), 1);
+//                } else {
+                ServiceAddress addr=new ServiceAddress(mProvince, mCity, mArea, mDistrict);
+                if (serviceAddressList.size() > 0) {
+                    for (int i = 0; i < serviceAddressList.size(); i++) {
+                        if (addr.getCodestr().equals(serviceAddressList.get(i).getCodestr())) {
+                            serviceAddressList.remove(i);
                         }
-                        serviceAddressList.add(new ServiceAddress(mProvince,mCity,mArea,mDistrict));
-                    }else{
-                        serviceAddressList.add(new ServiceAddress(mProvince,mCity,mArea,mDistrict));
                     }
-                    serviceAddressAdapter.notifyDataSetChanged();
-                    mProvince=null;
-                    mCity=null;
-                    mArea=null;
-                    mDistrict=null;
-                    mTvProvince.setText("省");
-                    mTvCity.setText("市");
-                    mTvArea.setText("区");
-                    mTvDistrict.setText("街道");
+                    serviceAddressList.add(0,addr);
+                } else {
+                    serviceAddressList.add(0,addr);
                 }
+                serviceAddressAdapter.notifyDataSetChanged();
+                mProvince = null;
+                mCity = null;
+                mArea = null;
+                mDistrict = null;
+                mTvProvince.setText("省");
+                mTvCity.setText("市");
+                mTvArea.setText("区");
+                mTvDistrict.setText("街道");
+//                }
                 break;
             case R.id.btn_save:
                 for (int i = 0; i < serviceAddressList.size(); i++) {
@@ -349,7 +350,7 @@ public class AddServiceAreaUpdataActivity extends BaseActivity<AddServicePresent
     }
 
     @Override
-    public void GetServiceRangeByUserID(BaseResult<List<Address>> baseResult) {
+    public void GetServiceRangeByUserID(BaseResult<MyServiceArea> baseResult) {
 
     }
 

@@ -60,7 +60,6 @@ import com.ying.administrator.masterappdemo.mvp.ui.activity.Opinion_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Order_Receiving_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Personal_Information_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.RechargeActivity;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.SettingActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.SettingActivity2;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.StudyActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.SubAccountManagementActivity;
@@ -342,7 +341,7 @@ public class Me_Fragment extends BaseLazyFragment<MainPresenter, MainModel> impl
                     mImgCertification.setVisibility(View.VISIBLE);
                 }
 
-                if (userInfo.getParentUserID() != null) {
+                if (userInfo.getParentUserID() != null || !"".equals(userInfo.getParentUserID())) {
 
                     mLlSubAccountManagement.setVisibility(View.GONE);
                     mLlSubsidiaryAccount.setVisibility(View.GONE);

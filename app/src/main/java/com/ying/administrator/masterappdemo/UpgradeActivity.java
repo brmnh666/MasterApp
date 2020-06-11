@@ -8,7 +8,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ToastUtils;
@@ -174,5 +173,9 @@ public class UpgradeActivity  extends Activity {
 
     public <T extends View> T getView(int id) {
         return (T) findViewById(id);
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 }

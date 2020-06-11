@@ -64,7 +64,6 @@ import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import cn.jpush.android.api.JPushInterface;
 import io.reactivex.functions.Consumer;
 
@@ -327,6 +326,10 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                                 Double money = data.getOrderMoney() - data.getTerraceMoney();
                                 intent = new Intent(mActivity, ApplicationAccessoriesActivity.class);
                                 intent.putExtra("id", orderId);
+                                intent.putExtra("name", data.getUserName());
+                                intent.putExtra("phone", data.getPhone());
+                                intent.putExtra("addr", data.getAddress());
+
                                 intent.putExtra("SubCategoryID", data.getProductTypeID());
                                 intent.putExtra("QuaMoney", data.getQuaMoney() + "");
                                 intent.putExtra("OrderMoney", data.getOrderMoney() + "");

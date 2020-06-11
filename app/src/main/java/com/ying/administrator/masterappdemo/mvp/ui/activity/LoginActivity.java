@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.tencent.android.tpush.XGPushConfig;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
@@ -25,7 +24,6 @@ import com.ying.administrator.masterappdemo.mvp.contract.LoginContract;
 import com.ying.administrator.masterappdemo.mvp.model.LoginModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.LoginPresenter;
 import com.ying.administrator.masterappdemo.util.MyUtils;
-import com.ying.administrator.masterappdemo.widget.ClearEditText;
 import com.zyao89.view.zloading.ZLoadingDialog;
 import com.zyao89.view.zloading.Z_TYPE;
 
@@ -126,7 +124,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginModel> impl
                     ToastUtils.showShort("请输入手机号！");
                     return;
                 }
-                 if (!RegexUtils.isMobileExact(userName)){
+                 if (!RegexUtils.isMobileSimple(userName)){
                      ToastUtils.showShort("手机号格式不正确！");
                      return;
                  }

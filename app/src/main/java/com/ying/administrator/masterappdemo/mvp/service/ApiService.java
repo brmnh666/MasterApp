@@ -2,7 +2,6 @@ package com.ying.administrator.masterappdemo.mvp.service;
 
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Accessory;
-import com.ying.administrator.masterappdemo.entity.Address;
 import com.ying.administrator.masterappdemo.entity.AddressList;
 import com.ying.administrator.masterappdemo.entity.Area;
 import com.ying.administrator.masterappdemo.entity.Article;
@@ -25,6 +24,7 @@ import com.ying.administrator.masterappdemo.entity.LeaveMessage;
 import com.ying.administrator.masterappdemo.entity.Logistics;
 import com.ying.administrator.masterappdemo.entity.Message;
 import com.ying.administrator.masterappdemo.entity.MessageData;
+import com.ying.administrator.masterappdemo.entity.MyServiceArea;
 import com.ying.administrator.masterappdemo.entity.NavigationBarNumber;
 import com.ying.administrator.masterappdemo.entity.NavigationBarNumberSon;
 import com.ying.administrator.masterappdemo.entity.Province;
@@ -437,7 +437,7 @@ public interface ApiService {
     /*
      * 添加配件跟服务
      * */
-    @POST("OrderNew/AddOrderAccessoryAndService")
+    @POST("Order/AddOrderAccessoryAndService")
     Observable<BaseResult<Data>> AddOrderAccessoryAndService(@Body RequestBody json);
 
 
@@ -725,7 +725,8 @@ public interface ApiService {
     /*获取服务区域*/
     @FormUrlEncoded
     @POST("Account/GetServiceRangeByUserID")
-    Observable<BaseResult<List<Address>>> GetServiceRangeByUserID(@Field("UserID") String UserID);
+    Observable<BaseResult<MyServiceArea>> GetServiceRangeByUserID(@Field("UserID") String UserID, @Field("limit") String limit,
+                                                      @Field("page") String page);
 
 
     /*根据银行卡号获取银行名 判断后台是否支持该银行的提现*/
@@ -1016,7 +1017,7 @@ public interface ApiService {
      * 根据配件服务sizeID计算钱
      */
     @FormUrlEncoded
-    @POST("OrderNew/GetFactoryAccessoryMoney")
+    @POST("FactoryConfig/GetFactoryAccessoryMoney")
     Observable<BaseResult<Data<String>>> GetFactoryAccessoryMoney(@Field("OrderID") String OrderID,
                                                                   @Field("FCategoryID") String FCategoryID,
                                                                   @Field("SizeID") String SizeID,

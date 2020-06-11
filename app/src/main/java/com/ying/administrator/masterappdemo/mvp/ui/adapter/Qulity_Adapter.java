@@ -1,6 +1,5 @@
 package com.ying.administrator.masterappdemo.mvp.ui.adapter;
 
-import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
 
@@ -65,7 +64,7 @@ public class Qulity_Adapter extends BaseQuickAdapter<WorkOrder.DataBean, BaseVie
         baseViewHolder.addOnClickListener(R.id.tv_pending_appointment_redeploy);//转派
         baseViewHolder.addOnClickListener(R.id.tv_cancel_order);//取消工单
         baseViewHolder.addOnClickListener(R.id.rl_qulity);
-        if (userInfo.getParentUserID()==null){//如果没有父账号说明自己是父账号 显示 转派
+        if (userInfo.getParentUserID()==null || "".equals(userInfo.getParentUserID())){//如果没有父账号说明自己是父账号 显示 转派
             //helper.setGone(R.id.tv_pending_appointment_redeploy,true);
 
 

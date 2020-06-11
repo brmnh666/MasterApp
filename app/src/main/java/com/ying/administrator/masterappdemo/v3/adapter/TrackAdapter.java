@@ -3,7 +3,6 @@ package com.ying.administrator.masterappdemo.v3.adapter;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.entity.Track;
@@ -21,20 +20,19 @@ public class TrackAdapter extends BaseQuickAdapter<Track, LayoutParamsViewHolder
 
     @Override
     protected void convert(LayoutParamsViewHolder helper, Track item) {
-        String type = item.getUserID().substring(0, item.getUserID().indexOf(":"));
-        String name = item.getUserID().substring(item.getUserID().lastIndexOf(":") + 1);
-        if ("工厂".equals(type)) {
-            helper.setText(R.id.tv_time, name);
-        } else if ("师傅".equals(type)) {
-            helper.setText(R.id.tv_time, name);
-        } else {
-//            if (name.isEmpty()){
-            helper.setText(R.id.tv_time, type);
-//            }else {
-//                helper.setText(R.id.tv_time,name);
-//            }
+        if(item.getUserID().contains(":")){
+            String type = item.getUserID().substring(0, item.getUserID().indexOf(":"));
+            String name = item.getUserID().substring(item.getUserID().lastIndexOf(":") + 1);
+            if ("工厂".equals(type)) {
+                helper.setText(R.id.tv_time, name);
+            } else if ("师傅".equals(type)) {
+                helper.setText(R.id.tv_time, name);
+            } else {
+                helper.setText(R.id.tv_time, type);
+            }
+        }else{
+            helper.setText(R.id.tv_time, item.getUserID());
         }
-
         StringBuilder stringBuilder = new StringBuilder(item.getCreateDate());
         String time = "" + stringBuilder.replace(10, 11, " "); //去掉T
         helper.setText(R.id.tv_date, time)

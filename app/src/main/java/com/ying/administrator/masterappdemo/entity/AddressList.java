@@ -32,6 +32,20 @@ public class AddressList implements Serializable {
     private String UserName;
     private String Phone;
     private String Version;
+    private String addrStr;
+
+    public String getAddrStr() {
+        Province=(Province==null?"":Province);
+        City=(City==null?"":City);
+        Area=(Area==null?"":Area);
+        District=(District==null?"":District);
+        addrStr=Province+City+Area+District+Address;
+        return addrStr;
+    }
+
+    public void setAddrStr(String addrStr) {
+        this.addrStr = addrStr;
+    }
 
     public String getId() {
         return Id;
@@ -58,7 +72,7 @@ public class AddressList implements Serializable {
     }
 
     public String getProvince() {
-        return Province;
+        return Province==null?"":Province;
     }
 
     public void setProvince(String Province) {
@@ -66,7 +80,7 @@ public class AddressList implements Serializable {
     }
 
     public String getCity() {
-        return City;
+        return City==null?"":City;
     }
 
     public void setCity(String City) {
@@ -74,7 +88,7 @@ public class AddressList implements Serializable {
     }
 
     public String getArea() {
-        return Area;
+        return Area==null?"":Area;
     }
 
     public void setArea(String Area) {
