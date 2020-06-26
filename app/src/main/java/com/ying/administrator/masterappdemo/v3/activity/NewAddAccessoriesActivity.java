@@ -223,15 +223,28 @@ public class NewAddAccessoriesActivity extends BaseActivity<NewAddAccessoriesPre
                 switch (view.getId()) {
                     case R.id.img_add:
 //                        addPic(view, position,select_state);
-
-                        num++;//背包内数量+1
-                        if (map_collect.get(position) == null) {
-                            map_collect.put(position, ((Accessory) adapter.getData().get(position)));
-                        } else {
-                            int count = map_collect.get(position).getCount();
-                            count++;
-                            map_collect.get(position).setCount(count);
+                        boolean hasSame=false;
+                        if (map_collect.size()>0){
+                            for (int i = 0; i < map_collect.size(); i++) {
+                                if (map_collect.get(i).getAccessoryName().equals(((Accessory) adapter.getData().get(position)).getAccessoryName())){
+                                    hasSame=true;
+                                    map_collect.get(i).setCount(map_collect.get(i).getCount()+1);
+                                }
+                            }
+                            if (!hasSame){
+                                map_collect.put(map_collect.size(),((Accessory) adapter.getData().get(position)));
+                            }
+                        }else{
+                            map_collect.put(0,((Accessory) adapter.getData().get(position)));
                         }
+
+//                        if (map_collect.get(position) == null) {
+//                            map_collect.put(position, ((Accessory) adapter.getData().get(position)));
+//                        } else {
+//                            int count = map_collect.get(position).getCount();
+//                            count++;
+//                            map_collect.get(position).setCount(count);
+//                        }
 
                         list_collect.clear();
                         //将map对象转为list
@@ -240,6 +253,10 @@ public class NewAddAccessoriesActivity extends BaseActivity<NewAddAccessoriesPre
                         while (iterator.hasNext()) {
                             Accessory value = (Accessory) iterator.next();
                             list_collect.add(value);
+                        }
+                        num=0;
+                        for (int i = 0; i < list_collect.size(); i++) {
+                            num+=list_collect.get(i).getCount();
                         }
 
                         startLocation = new int[2];// 一个整型数组，用来存储按钮的在屏幕的X、Y坐标
@@ -714,23 +731,91 @@ public class NewAddAccessoriesActivity extends BaseActivity<NewAddAccessoriesPre
             case R.id.tv_choose:
                 View under_review = LayoutInflater.from(mActivity).inflate(R.layout.dialog_add_accessories, null);
                 final EditText et_accessories_name = under_review.findViewById(R.id.et_accessories_name);
-                Button btn_add1 = under_review.findViewById(R.id.btn_add);
+                final EditText et_accessories_count = under_review.findViewById(R.id.et_accessories_count);
+                et_accessories_count.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        String text = s.toString();
+                        int len = s.toString().length();
+                        if (len > 1 && text.startsWith("0")) {
+                            s.replace(0,1,"");
+                        }
+                    }
+                });
+                final Button btn_add1 = under_review.findViewById(R.id.btn_add);
                 btn_add1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-//                        tv_accessory_name.setText(et_accessories_name.getText());
-                        num++;//背包内数量+1
+                        String name=et_accessories_name.getText().toString();
+                        String count=et_accessories_count.getText().toString();
+                        if (name.isEmpty()){
+                            MyUtils.showToast("请输入配件名称");
+                            return;
+                        }
+                        if (count.isEmpty()||"0".equals(count)){
+                            MyUtils.showToast("请输入配件数量");
+                            return;
+                        }
+                        for (int i = 0; i < list_search.size(); i++) {
+                            if (list_search.get(i).getAccessoryName().equals(name)){
+                                MyUtils.showToast("列表已有配件，请从配件列表添加");
+                                return;
+                            }
+                        }
                         Accessory accessory = new Accessory();
+                        accessory.setSizeID("1");
                         accessory.setFAccessoryID("0");
-                        accessory.setAccessoryName(et_accessories_name.getText().toString());
+                        accessory.setAccessoryName(name);
                         accessory.setFCategoryID(list_accessory.get(0).getFCategoryID());
-                        accessory.setCount(1);
-                        list_add.add(accessory);
-                        Intent intent = new Intent();
-                        intent.putExtra("list_collect", (Serializable) list_add);
-                        setResult(Config.APPLY_RESULT, intent);
-                        NewAddAccessoriesActivity.this.finish();
+                        accessory.setCount(Integer.parseInt(count));
+                        if (map_collect.size()>0){
+                            for (int i = 0; i < map_collect.size(); i++) {
+                                if (accessory.getAccessoryName().equals(map_collect.get(i).getAccessoryName())){
+                                    map_collect.remove(i);
+                                }
+                            }
+                            map_collect.put(map_collect.size(),accessory);
+                        }else{
+                            map_collect.put(0,accessory);
+                        }
+
+                        list_collect.clear();
+                        //将map对象转为list
+                        Collection<Accessory> collection = map_collect.values();
+                        Iterator<Accessory> iterator = collection.iterator();
+                        while (iterator.hasNext()) {
+                            Accessory value = (Accessory) iterator.next();
+                            list_collect.add(value);
+                        }
+                        num=0;
+                        for (int i = 0; i < list_collect.size(); i++) {
+                            num+=list_collect.get(i).getCount();//背包内数量
+                        }
+
+                        startLocation = new int[2];// 一个整型数组，用来存储按钮的在屏幕的X、Y坐标
+                        btn_add1.getLocationInWindow(startLocation);// 这是获取购买按钮的在屏幕的X、Y坐标（这也是动画开始的坐标）
+                        ball = new ImageView(NewAddAccessoriesActivity.this);// buyImg是动画的图片，我的是一个小球（R.drawable.sign）
+                        getBallImageResource(ball);
+
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                handler.sendEmptyMessage(0);
+                            }
+                        }).start();
+
                         underReviewDialog.dismiss();
+                        hideSoftKeyBoard();
                     }
                 });
                 underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review)

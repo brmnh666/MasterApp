@@ -76,7 +76,6 @@ import com.ying.administrator.masterappdemo.entity.FService;
 import com.ying.administrator.masterappdemo.entity.GAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
 import com.ying.administrator.masterappdemo.entity.Logistics;
-import com.ying.administrator.masterappdemo.entity.PicResult;
 import com.ying.administrator.masterappdemo.entity.SAccessory;
 import com.ying.administrator.masterappdemo.entity.SService;
 import com.ying.administrator.masterappdemo.entity.Service;
@@ -1771,30 +1770,10 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
         switch (baseResult.getStatusCode()) {
             case 200:
                 if (baseResult.getData().isItem1()) {
-                    Double money1 = Double.parseDouble(data.getQuaMoney());
-                    Double beyond = Double.parseDouble(data.getBeyondMoney());
                     Double money3 = Double.parseDouble(baseResult.getData().getItem2());
-//                    if ("3".equals(data.getTypeID())) {
-//                        String str = "";
-//                        if ("-1".equals(data.getBeyondState())) {
-//                            str = "服务金额：¥" + (money1);
-//                            factorymoney = money1;
-//                        } else {
-//                            str = "服务金额：¥" + (money1 + beyond);
-//                            factorymoney = money1 + beyond;
-//                        }
-//                        mTvServiceAmount.setText(str);
-//                        mTvTotalPrice.setText(str);
-////                        ToastUtils.showShort(str);
-//                    } else {
                     String str = "";
-                    if ("-1".equals(data.getBeyondState())) {
-                        str = "服务金额：¥" + (money3);
-                        factorymoney = money3;
-                    } else {
-                        str = "服务金额：¥" + (money3 + beyond);
-                        factorymoney = money3 + beyond;
-                    }
+                    str = "服务金额：¥" + (money3);
+                    factorymoney = money3;
                     mTvServiceAmount.setText(str);
                     mTvTotalPrice.setText(str);
 //                        ToastUtils.showShort(str);
@@ -1832,7 +1811,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                     if ("3".equals(data.getTypeID())) {
                         mTvServiceAmount.setText("服务金额：¥" + data.getQuaMoney() + "");
                         mTvTotalPrice.setText("服务金额：¥" + data.getQuaMoney() + "");
-                        factorymoney = Double.parseDouble(data.getQuaMoney());
+                        factorymoney = data.getQuaMoney();
                     } else {
 //                    if (data.getAccessoryMoney() != null && !"0.00".equals(data.getAccessoryMoney())) {
 //                        if ("1".equals(data.getBeyondState())) {
@@ -1986,7 +1965,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
 
                     } else {
 //                        mTvRange.setText(String.format("%.2f", distance - Service_range) + "km");
-                        mTvRange.setText(data.getBeyondMoney());
+                        mTvRange.setText(data.getBeyondMoney()+"");
                         if (data.getOrderBeyondImg() == null) {
                             return;
                         }
@@ -2262,10 +2241,10 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
                                 data.getOrderAccessroyDetail().remove(i);
                             }
                         }
-                        if (data.getNewMoney() != null) {
-                            String newMoney = data.getNewMoney().trim();
-                            money1 = newMoney.split("[|]+");
-                        }
+//                        if (data.getNewMoney() != null) {
+//                            String newMoney = data.getNewMoney().trim();
+//                            money1 = newMoney.split("[|]+");
+//                        }
 
 //                    Log.d(TAG,"7777"+money1[0]);
 
@@ -3886,15 +3865,7 @@ public class WorkOrderDetailsActivity2 extends BaseActivity<PendingOrderPresente
             }
 
         } else {
-            Double money1 = Double.parseDouble(data.getQuaMoney());
             Double money2 = Double.parseDouble(data.getOrderMoney() + "");
-//            if ("3".equals(data.getTypeID())) {
-//                String str = "服务金额：¥" + (money1);
-//                mTvServiceAmount.setText(str);
-//                mTvTotalPrice.setText(str);
-////                ToastUtils.showShort(str);
-//                factorymoney = money1;
-//            } else {
             String str = "服务金额：¥" + (money2);
             mTvServiceAmount.setText(str);
             mTvTotalPrice.setText(str);

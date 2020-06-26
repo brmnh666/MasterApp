@@ -1250,10 +1250,10 @@ public class WorkOrderDetailsActivity extends BaseActivity<PendingOrderPresenter
                     }
                 }
 
-                if (data.getNewMoney()!=null){
-                    String newMoney=data.getNewMoney().trim();
-                    money1 = newMoney.split("[|]+");
-                }
+//                if (data.getNewMoney()!=null){
+//                    String newMoney=data.getNewMoney();
+//                    money1 = newMoney.split("[|]+");
+//                }
 
                 if (data.getOrderAccessroyDetail().size() != 0) {
 

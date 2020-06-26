@@ -7,8 +7,11 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
@@ -24,6 +27,19 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
+import com.amap.api.maps.MapView;
+import com.amap.api.maps.model.Circle;
+import com.amap.api.maps.model.CircleOptions;
+import com.amap.api.maps.model.LatLng;
+import com.amap.api.services.geocoder.GeocodeQuery;
+import com.amap.api.services.geocoder.GeocodeResult;
+import com.amap.api.services.geocoder.GeocodeSearch;
+import com.amap.api.services.geocoder.RegeocodeResult;
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.ethanhua.skeleton.Skeleton;
@@ -35,6 +51,7 @@ import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.common.Config;
+import com.ying.administrator.masterappdemo.entity.AddOrderSignInRecrodResult;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.GetBrandWithCategory;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
@@ -60,6 +77,7 @@ import org.json.JSONObject;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -70,7 +88,10 @@ import io.reactivex.functions.Consumer;
 import static android.widget.Toast.LENGTH_SHORT;
 import static com.ying.administrator.masterappdemo.util.MyUtils.showToast;
 
-public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, ServingDetailModel> implements View.OnClickListener, ServingDetailContract.View {
+/**
+ * 工单详情
+ */
+public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, ServingDetailModel> implements View.OnClickListener, ServingDetailContract.View, GeocodeSearch.OnGeocodeSearchListener {
     @BindView(R.id.iv_back)
     ImageView mIvBack;
     @BindView(R.id.tv_title)
@@ -201,6 +222,13 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
     private View callPhoneView;
     private String technologyPhone;
     private PopupWindow mPopupWindow;
+    private AMapLocationClient mLocationClient;
+    private AMapLocationClientOption mLocationOption;
+    private GeocodeSearch geocoderSearch;
+    private LatLng la;
+    private ArrayList<String> permissions;
+    private int size;
+    private String userId;
 
     @Override
     protected int setLayoutId() {
@@ -209,7 +237,8 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
 
     @Override
     protected void initData() {
-
+        SPUtils spUtils = SPUtils.getInstance("token");
+        userId = spUtils.getString("userName");
     }
 
     @Override
@@ -272,11 +301,19 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
         mLlNotAvailable.setOnClickListener(this);
         mTvComplaint.setOnClickListener(this);
         mLlMaintenanceInformation.setOnClickListener(this);
+        mTvSave.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.tv_save://手动签到
+                signType="2";
+                if (data==null){
+                    return;
+                }
+                addressChangeLat(data.getAddress());
+                break;
             case R.id.iv_back:
                 finish();
                 break;
@@ -289,7 +326,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                     intent.putExtra("OrderID", data.getOrderID());
                     startActivity(intent);
                 } else {
-                    if ("0".equals(data.getState())) {
+                    if ("0".equals(data.getState())||"31".equals(data.getState())) {//0系统配件待审核 31自定义配件待审核
                         puchsh_view = LayoutInflater.from(mActivity).inflate(R.layout.v3_dialog_prompt, null);
                         TextView title = puchsh_view.findViewById(R.id.title);
                         TextView message = puchsh_view.findViewById(R.id.message);
@@ -323,7 +360,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                                 intent.putExtra("OrderID", data.getOrderID());
                                 startActivity(intent);
                             } else {
-                                Double money = data.getOrderMoney() - data.getTerraceMoney();
+                                Double money = data.getMasterPrice() + data.getAgainMoney()+ data.getOtherMoney()+ data.getBeyondMoney()+ data.getInitMoney()+ data.getPostMoney();
                                 intent = new Intent(mActivity, ApplicationAccessoriesActivity.class);
                                 intent.putExtra("id", orderId);
                                 intent.putExtra("name", data.getUserName());
@@ -331,11 +368,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                                 intent.putExtra("addr", data.getAddress());
 
                                 intent.putExtra("SubCategoryID", data.getProductTypeID());
-                                intent.putExtra("QuaMoney", data.getQuaMoney() + "");
-                                intent.putExtra("OrderMoney", data.getOrderMoney() + "");
-                                intent.putExtra("BeyondMoney", data.getBeyondMoney() + "");
-                                intent.putExtra("BeyondState", data.getBeyondState() + "");
-                                intent.putExtra("TerraceMoney", money + "");
+                                intent.putExtra("total", money);
                                 startActivity(intent);
                             }
 
@@ -599,12 +632,144 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
         timeSelector.show();
     }
 
+    private String signType="1"; //1.自动签到 2.手动签到
+    //声明定位回调监听器
+    public AMapLocationListener mLocationListener = new AMapLocationListener() {
+        @Override
+        public void onLocationChanged(AMapLocation aMapLocation) {
+            //定位结果回调
+            if (aMapLocation != null) {
+                if (aMapLocation.getErrorCode() == 0) {
+//可在其中解析amapLocation获取相应内容。
+                    CircleOptions option = new CircleOptions();
+                    option.center(new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude()));
+                    option.radius(5000);
+                    MapView mapView=new MapView(mActivity);
+                    Circle circle=mapView.getMap().addCircle(option);
+                    if(circle.contains(la)){
+                        mPresenter.AddOrderSignInRecrod(userId, signType,orderId);
+                    }else{
+                        if ("2".equals(signType)){
+                            MyUtils.showToast("请到用户家附近签到");
+                        }
+                    }
+                } else {
+                    //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
+                    Log.e("AmapError", "location Error, ErrCode:"
+                            + aMapLocation.getErrorCode() + ", errInfo:"
+                            + aMapLocation.getErrorInfo());
+                }
+                mLocationClient.stopLocation();
+            }
+        }
+    };
+    public void Location() {
+        //初始化定位
+        mLocationClient = new AMapLocationClient(mActivity);
+        //设置定位回调监听
+        mLocationClient.setLocationListener(mLocationListener);
+        //初始化AMapLocationClientOption对象
+        mLocationOption = new AMapLocationClientOption();
+/**
+ * 设置定位场景，目前支持三种场景（签到、出行、运动，默认无场景）
+ */
+        /*mLocationOption.setLocationPurpose(AMapLocationClientOption.AMapLocationPurpose.SignIn);
+        if (null != mLocationClient) {
+            mLocationClient.setLocationOption(mLocationOption);
+            //设置场景模式后最好调用一次stop，再调用start以保证场景模式生效
+            mLocationClient.stopLocation();
+            mLocationClient.startLocation();
+        }*/
+        //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+
+        //给定位客户端对象设置定位参数
+        mLocationClient.setLocationOption(mLocationOption);
+        //启动定位
+        mLocationClient.startLocation();
+    }
+    //地理编码（地址转坐标）
+    private void addressChangeLat(String addr){
+        geocoderSearch = new GeocodeSearch(this);
+        geocoderSearch.setOnGeocodeSearchListener(this);
+        // name表示地址，第二个参数表示查询城市，中文或者中文全拼，citycode、adcode
+        GeocodeQuery query = new GeocodeQuery(addr, "0086");
+        geocoderSearch.getFromLocationNameAsyn(query);
+    }
+//获得结果
+
+    @Override
+    public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
+        if(i==1000){
+            double latitude=geocodeResult.getGeocodeAddressList().get(0).getLatLonPoint().getLatitude();
+            double longitude=geocodeResult.getGeocodeAddressList().get(0).getLatLonPoint().getLongitude();
+            la =new LatLng(latitude,longitude);
+            if (requestLocationPermissions()) {
+                Location();
+            } else {
+                requestPermissions(permissions.toArray(new String[permissions.size()]), 20002);
+            }
+        }
+
+    }
+    //请求定位权限
+    private boolean requestLocationPermissions() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            permissions = new ArrayList<>();
+            if (mActivity.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
+            }
+            if (permissions.size() == 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+    //申请相关权限:返回监听
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        size = 0;
+        for (int i = 0; i < grantResults.length; i++) {
+            if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                size++;
+            }
+        }
+        switch (requestCode) {
+            case 20002:
+                if (size == grantResults.length) {//允许
+                    Location();
+                } else {//拒绝
+                    MyUtils.showToast(mActivity, "相关权限未开启");
+                }
+                break;
+            default:
+                break;
+
+        }
+    }
     @Override
     public void GetOrderInfo(BaseResult<WorkOrder.DataBean> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
                 if (baseResult.getData() != null) {
                     data = baseResult.getData();
+                    if ("0".equals(data.getIsSignIn())){//未签到
+                        mTvSave.setVisibility(View.VISIBLE);
+                        mTvSave.setText("签到");
+                        signType="1";
+                        addressChangeLat(data.getAddress());
+                    }else{
+                        mTvSave.setVisibility(View.GONE);
+                    }
                     technologyPhone = data.getArtisanPhone();
                     mPresenter.GetBrandWithCategory2(data.getUserID(), data.getBrandID(), data.getCategoryID(), data.getSubCategoryID(), data.getProductTypeID(), "1", "999");
 //                    mPresenter.GetBrandWithCategory2("17777777777","285","304","1043","1044","1","99");
@@ -713,7 +878,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                         mTvUpload.setText("提交完结信息");
                         mTvUpload.setBackgroundResource(R.drawable.v3_copy_bg_shape);
                     } else {
-                        if ("0".equals(data.getState())) {
+                        if ("0".equals(data.getState())||"31".equals(data.getState())) {//0系统配件待审核 31自定义配件待审核
 //                            mTvUpload.setText("提交完结信息");
                             if ("pedding".equals(type)) {
                                 mTvUpload.setText("配件未到货");
@@ -867,6 +1032,24 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                     return;
                 }
                 skeletonScreen.hide();
+                break;
+        }
+    }
+
+    @Override
+    public void AddOrderSignInRecrod(AddOrderSignInRecrodResult baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                if (baseResult.getData().isResult()){
+                    if ("2".equals(signType)){
+                        MyUtils.showToast("签到成功");
+                    }
+                    mPresenter.GetOrderInfo(orderId);
+                }else{
+                    if ("2".equals(signType)){
+                        MyUtils.showToast("签到失败"+baseResult.getData().getMsg());
+                    }
+                }
                 break;
         }
     }

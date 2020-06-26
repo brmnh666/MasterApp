@@ -2,7 +2,10 @@ package com.ying.administrator.masterappdemo;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -18,6 +21,7 @@ import com.ying.administrator.masterappdemo.widget.MyProgress;
 import com.ying.administrator.masterappdemo.widget.SaleProgressView;
 
 public class UpgradeActivity  extends Activity {
+    private static final String TAG = "UpgradeActivity";
     //    private TextView tv;
     private TextView title;
     private TextView version;
@@ -30,6 +34,8 @@ public class UpgradeActivity  extends Activity {
     private SaleProgressView spv;
     private int fileSize;
     private MyProgress progress;
+    private GestureDetector mDetector;
+    private double FLIP_DISTANCE=50;//滑动距离
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +131,73 @@ public class UpgradeActivity  extends Activity {
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
         lp.gravity = Gravity.CENTER;//设置对话框置顶显示
         win.setAttributes(lp);
+
+        mDetector = new GestureDetector(this, new GestureDetector.OnGestureListener() {
+
+            @Override
+            public boolean onSingleTapUp(MotionEvent e) {
+                // TODO Auto-generated method stub
+                return false;
+            }
+
+            @Override
+            public void onShowPress(MotionEvent e) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                // TODO Auto-generated method stub
+                return false;
+            }
+
+            @Override
+            public void onLongPress(MotionEvent e) {
+                // TODO Auto-generated method stub
+
+            }
+
+            /**
+             *
+             * e1 The first down motion event that started the fling. e2 The
+             * move motion event that triggered the current onFling.
+             */
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                if (e1.getX() - e2.getX() > FLIP_DISTANCE) {
+                    Log.i("MYTAG", "向左滑...");
+                    return true;
+                }
+                if (e2.getX() - e1.getX() > FLIP_DISTANCE) {
+                    Log.i("MYTAG", "向右滑...");
+                    return true;
+                }
+                if (e1.getY() - e2.getY() > FLIP_DISTANCE) {
+                    Log.i("MYTAG", "向上滑...");
+                    return true;
+                }
+                if (e2.getY() - e1.getY() > FLIP_DISTANCE) {
+                    Log.i("MYTAG", "向下滑...");
+                    return true;
+                }
+
+                Log.d("TAG", e2.getX() + " " + e2.getY());
+
+                return false;
+            }
+
+            @Override
+            public boolean onDown(MotionEvent e) {
+                // TODO Auto-generated method stub
+                return false;
+            }
+        });
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return mDetector.onTouchEvent(event);
     }
 
     @Override
@@ -177,5 +250,6 @@ public class UpgradeActivity  extends Activity {
 
     @Override
     public void onBackPressed() {
+        Log.i(TAG, "onBackPressed: ");
     }
 }

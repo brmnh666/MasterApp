@@ -240,7 +240,7 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
         //初始化AMapLocationClientOption对象
         mLocationOption = new AMapLocationClientOption();
 /**
- * 设置定位场景，目前支持三种场景（签到、出行、运动，默认无场景）
+ * 设置定位场景，目前支持三种场景（签到、出行、运动，默认无场景） 
  */
         /*mLocationOption.setLocationPurpose(AMapLocationClientOption.AMapLocationPurpose.SignIn);
         if (null != mLocationClient) {

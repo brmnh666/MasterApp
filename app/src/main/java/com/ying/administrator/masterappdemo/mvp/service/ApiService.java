@@ -2,6 +2,7 @@ package com.ying.administrator.masterappdemo.mvp.service;
 
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Accessory;
+import com.ying.administrator.masterappdemo.entity.AddOrderSignInRecrodResult;
 import com.ying.administrator.masterappdemo.entity.AddressList;
 import com.ying.administrator.masterappdemo.entity.Area;
 import com.ying.administrator.masterappdemo.entity.Article;
@@ -437,15 +438,15 @@ public interface ApiService {
     /*
      * 添加配件跟服务
      * */
-    @POST("Order/AddOrderAccessoryAndService")
+    @POST("Order/AddOrderAccessoryAndServiceBak")
     Observable<BaseResult<Data>> AddOrderAccessoryAndService(@Body RequestBody json);
 
 
-    /*预接单页面提交上门时间 */
+
     @POST("Order/AddOrUpdateAccessoryServiceReturn")
     Observable<BaseResult<Data<String>>> AddOrUpdateAccessoryServiceReturn(@Body RequestBody json);
 
-
+    /*预接单页面提交上门时间 */
     @FormUrlEncoded
     @POST("Order/UpdateSendOrderUpdateTime")
     Observable<BaseResult<Data>> UpdateSendOrderUpdateTime(@Field("OrderID") String OrderID,
@@ -1178,6 +1179,14 @@ public interface ApiService {
     @POST("Order/ConfirmReceipt")
     Observable<BaseResult<Data<String>>> ConfirmReceipt(@Field("OrderID") String OrderID);
 
+    /**
+     * 签到
+     */
+    @FormUrlEncoded
+    @POST("Order/AddOrderSignInRecrod")
+    Observable<AddOrderSignInRecrodResult> AddOrderSignInRecrod(@Field("userId") String userId,
+                                                                @Field("signInType") String signInType,
+                                                                @Field("orderId") String orderId);
     /**
      * 查询提现中
      */

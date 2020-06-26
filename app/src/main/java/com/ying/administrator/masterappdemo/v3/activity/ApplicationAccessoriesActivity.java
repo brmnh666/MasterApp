@@ -133,11 +133,7 @@ public class ApplicationAccessoriesActivity extends BaseActivity<ApplicationAcce
     private Pre_order_Add_Ac_Adapter mPre_order_add_ac_adapter;
     private List<Service> mList_service = new ArrayList<>(); //获取传来的服务列表
     private Integer sizeId;
-    private String orderMoney;
-    private String quaMoney;
-    private String beyondMoney;
     private Double factorymoney;
-    private String beyondState;
     private Add_Service_Adapter mAdd_service_adapter;
     private View add_service_view;
     private AlertDialog add_service_dialog;
@@ -159,7 +155,7 @@ public class ApplicationAccessoriesActivity extends BaseActivity<ApplicationAcce
     private FAccessory.OrderAccessoryStrBean orderAccessoryStrBean;
     private AlertDialog customdialog_home_dialog;
     private UserInfo.UserInfoDean userInfo;
-    private String terraceMoney;
+    private Double totalMoney;
     private String name;
     private String phone;
     private String addr;
@@ -181,18 +177,14 @@ public class ApplicationAccessoriesActivity extends BaseActivity<ApplicationAcce
         mTvTitle.setText("配件与服务");
         orderId = getIntent().getStringExtra("id");
         productTypeID = getIntent().getStringExtra("SubCategoryID");
-        orderMoney = getIntent().getStringExtra("OrderMoney");
-        quaMoney = getIntent().getStringExtra("QuaMoney");
-        beyondMoney = getIntent().getStringExtra("BeyondMoney");
-        beyondState = getIntent().getStringExtra("BeyondState");
-        terraceMoney = getIntent().getStringExtra("TerraceMoney");
+        totalMoney = getIntent().getDoubleExtra("total",0);
 
         name = getIntent().getStringExtra("name");
         phone = getIntent().getStringExtra("phone");
         addr = getIntent().getStringExtra("addr");
         addr_user =addr+"("+name+" 收)"+phone;
 
-        mTvMoney.setText("服务金额：¥" + terraceMoney);
+        mTvMoney.setText("服务金额：¥" + totalMoney);
         SPUtils spUtils = SPUtils.getInstance("token");
         userID = spUtils.getString("userName");
         mPresenter.GetAccountAddress(userID);
@@ -422,7 +414,11 @@ public class ApplicationAccessoriesActivity extends BaseActivity<ApplicationAcce
                         mfAccessory.setState("0");
                         mfAccessory.setIsPay("N");
                         mfAccessory.setExpressNo("");
-                        mfAccessory.setNeedPlatformAuth("N");
+                        if ("0".equals(list.get(i).getFAccessoryID())){//0说明是自定义配件需要平台审核
+                            mfAccessory.setNeedPlatformAuth("Y");
+                        }else{
+                            mfAccessory.setNeedPlatformAuth("N");
+                        }
                         if (state == 0) {//厂家自购
                             fAcList.add(mfAccessory);
                             mPre_order_add_ac_adapter.setNewData(fAcList);
@@ -473,22 +469,9 @@ public class ApplicationAccessoriesActivity extends BaseActivity<ApplicationAcce
             }
 
         } else {
-            Double money1 = Double.parseDouble(quaMoney);
-            Double money2 = Double.parseDouble(orderMoney + "");
-//            if ("3".equals(data.getTypeID())) {
-//                String str = "服务金额：¥" + (money1);
-//                mTvServiceAmount.setText(str);
-//                mTvTotalPrice.setText(str);
-////                ToastUtils.showShort(str);
-//                factorymoney = money1;
-//            } else {
-            String str = "服务金额：¥" + (money2);
+            String str = "服务金额：¥" +totalMoney;
             mTvMoney.setText(str);
-//            mTvServiceAmount.setText(str);
-//            mTvTotalPrice.setText(str);
-//                ToastUtils.showShort(str);
-            factorymoney = money2;
-//            }
+            factorymoney = totalMoney;
         }
     }
 
@@ -497,36 +480,11 @@ public class ApplicationAccessoriesActivity extends BaseActivity<ApplicationAcce
         switch (baseResult.getStatusCode()) {
             case 200:
                 if (baseResult.getData().isItem1()) {
-                    Double money1 = Double.parseDouble(quaMoney);
-                    Double beyond = Double.parseDouble(beyondMoney);
-                    Double money3 = Double.parseDouble(baseResult.getData().getItem2());
-//                    if ("3".equals(data.getTypeID())) {
-//                        String str = "";
-//                        if ("-1".equals(data.getBeyondState())) {
-//                            str = "服务金额：¥" + (money1);
-//                            factorymoney = money1;
-//                        } else {
-//                            str = "服务金额：¥" + (money1 + beyond);
-//                            factorymoney = money1 + beyond;
-//                        }
-//                        mTvServiceAmount.setText(str);
-//                        mTvTotalPrice.setText(str);
-////                        ToastUtils.showShort(str);
-//                    } else {
+                    Double money = Double.parseDouble(baseResult.getData().getItem2());
                     String str = "";
-//                    if ("-1".equals(beyondState)) {
-                    str = "服务金额：¥" + (money3);
-                    factorymoney = money3;
-//                    } else {
-//                        str = "服务金额：¥" + (money3 + beyond);
-//                        factorymoney = money3 + beyond;
-//                    }
+                    str = "服务金额：¥" + (money);
+                    factorymoney = money;
                     mTvMoney.setText(str);
-//                    mTvServiceAmount.setText(str);
-//                    mTvTotalPrice.setText(str);
-//                        ToastUtils.showShort(str);
-//                    }
-
                 }
                 break;
         }

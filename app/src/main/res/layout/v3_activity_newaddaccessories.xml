@@ -122,12 +122,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:text="没有我想要的配件"
-            android:textColor="@color/black"
+            android:paddingTop="@dimen/dp_10"
+            android:paddingBottom="@dimen/dp_10"
+            android:text="没有想要的配件?点我"
+            android:textColor="@color/red"
             android:textSize="18sp"
-            android:visibility="gone" />
+            android:visibility="visible" />
     </LinearLayout>
 
     <RelativeLayout

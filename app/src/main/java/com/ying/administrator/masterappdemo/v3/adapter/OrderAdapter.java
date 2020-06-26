@@ -67,7 +67,7 @@ public class OrderAdapter extends BaseQuickAdapter<WorkOrder.DataBean, BaseViewH
 
         if ("shipping".equals(type)){
             tv_review.setVisibility(View.VISIBLE);
-            if ("0".equals(item.getState())){
+            if ("0".equals(item.getState())||"31".equals(item.getState())){//0系统配件待审核 31自定义配件待审核
                 tv_review.setText("待审核");
             }else {
                 tv_review.setText("审核通过");

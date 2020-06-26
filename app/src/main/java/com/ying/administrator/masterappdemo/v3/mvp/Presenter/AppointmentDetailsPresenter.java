@@ -1,7 +1,9 @@
 package com.ying.administrator.masterappdemo.v3.mvp.Presenter;
 
 import com.ying.administrator.masterappdemo.base.BaseObserver;
+import com.ying.administrator.masterappdemo.base.BaseObserver2;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.AddOrderSignInRecrodResult;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.GetBrandWithCategory;
 import com.ying.administrator.masterappdemo.entity.SubUserInfo;
@@ -108,6 +110,17 @@ public class AppointmentDetailsPresenter extends AppointmentDetailsContract.Pers
                     @Override
                     protected void onHandleSuccess(BaseResult<Data<List<GetBrandWithCategory>>> value) {
                         mView.GetBrandWithCategory2(value);
+                    }
+                });
+    }
+
+    @Override
+    public void AddOrderSignInRecrod(String userId, String signInType, String orderId) {
+        mModel.AddOrderSignInRecrod(userId, signInType, orderId)
+                .subscribe(new BaseObserver2<AddOrderSignInRecrodResult>() {
+                    @Override
+                    protected void onHandleSuccess(AddOrderSignInRecrodResult value) {
+                        mView.AddOrderSignInRecrod(value);
                     }
                 });
     }

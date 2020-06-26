@@ -240,7 +240,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="旧件照"
+                    android:text="配件照片"
                     android:textColor="@color/black"
                     android:textSize="17dp" />
                 <android.support.v7.widget.RecyclerView

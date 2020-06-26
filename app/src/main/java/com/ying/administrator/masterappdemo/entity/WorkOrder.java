@@ -123,6 +123,7 @@ public class WorkOrder implements Serializable {
          * page : 0
          * limit : 0
          * Version : 0
+         * IsSignIn : 0
          */
 
         private String Id;
@@ -166,8 +167,8 @@ public class WorkOrder implements Serializable {
         private String LoginUser;
         private String IsPay;
         private Double OrderMoney;
-        private String InitMoney;
-        private String BeyondMoney;
+        private Double InitMoney;
+        private Double BeyondMoney;
         private String BeyondID;
         private String BeyondState;
         private String BeyondDistance;
@@ -178,12 +179,12 @@ public class WorkOrder implements Serializable {
         private String AccessoryState;
         private String AccessorySendState;
         private String AccessorySearchState;
-        private String AccessoryMoney;
+        private Double AccessoryMoney;
         private String Service;
-        private String ServiceMoney;
+        private Double ServiceMoney;
         private String ReturnAccessory;
         private String ReturnAccessoryMsg;
-        private String PostMoney;
+        private Double PostMoney;
         private String ApplyCancel;
         private String UpdateTime;
         private String OrderPayStr;
@@ -214,13 +215,17 @@ public class WorkOrder implements Serializable {
         private String page;
         private String limit;
         private String Version;
-        private String NewMoney;
-        private String QuaMoney;
+        private String IsSignIn;
+        private Double NewMoney;
+        private Double QuaMoney;
         private List<LeavemessageListBean> LeavemessageList;
         private List<LeavemessageimgListBean> LeavemessageimgList;
         private String AccessoryAndServiceApplyState;
         private String DistanceTureOrFalse;
         private Double terraceMoney;
+        private Double AgainMoney;
+        private Double OtherMoney;
+        private Double MasterPrice;
         private String IsCall;
         private String IsLook;
         private String isOnLookMessage;
@@ -229,6 +234,94 @@ public class WorkOrder implements Serializable {
         private String IsExtraTime;
         private String picture;
         private String ArtisanPhone;
+
+        public Double getInitMoney() {
+            return InitMoney;
+        }
+
+        public Double getBeyondMoney() {
+            return BeyondMoney;
+        }
+
+        public Double getAccessoryMoney() {
+            return AccessoryMoney;
+        }
+
+        public Double getServiceMoney() {
+            return ServiceMoney;
+        }
+
+        public Double getPostMoney() {
+            return PostMoney;
+        }
+
+        public Double getNewMoney() {
+            return NewMoney;
+        }
+
+        public Double getQuaMoney() {
+            return QuaMoney;
+        }
+
+        public void setInitMoney(Double initMoney) {
+            InitMoney = initMoney;
+        }
+
+        public void setBeyondMoney(Double beyondMoney) {
+            BeyondMoney = beyondMoney;
+        }
+
+        public void setAccessoryMoney(Double accessoryMoney) {
+            AccessoryMoney = accessoryMoney;
+        }
+
+        public void setServiceMoney(Double serviceMoney) {
+            ServiceMoney = serviceMoney;
+        }
+
+        public void setPostMoney(Double postMoney) {
+            PostMoney = postMoney;
+        }
+
+        public void setNewMoney(Double newMoney) {
+            NewMoney = newMoney;
+        }
+
+        public void setQuaMoney(Double quaMoney) {
+            QuaMoney = quaMoney;
+        }
+
+        public Double getAgainMoney() {
+            return AgainMoney;
+        }
+
+        public void setAgainMoney(Double againMoney) {
+            AgainMoney = againMoney;
+        }
+
+        public Double getOtherMoney() {
+            return OtherMoney;
+        }
+
+        public void setOtherMoney(Double otherMoney) {
+            OtherMoney = otherMoney;
+        }
+
+        public Double getMasterPrice() {
+            return MasterPrice;
+        }
+
+        public void setMasterPrice(Double masterPrice) {
+            MasterPrice = masterPrice;
+        }
+
+        public String getIsSignIn() {
+            return IsSignIn;
+        }
+
+        public void setIsSignIn(String isSignIn) {
+            IsSignIn = isSignIn;
+        }
 
         public String getArtisanPhone() {
             return ArtisanPhone;
@@ -359,29 +452,6 @@ public class WorkOrder implements Serializable {
             IsLate = isLate;
         }
 
-        public String getQuaMoney() {
-            return QuaMoney;
-        }
-
-        public void setQuaMoney(String quaMoney) {
-            QuaMoney = quaMoney;
-        }
-
-        public String getNewMoney() {
-            return NewMoney;
-        }
-
-        public void setNewMoney(String newMoney) {
-            NewMoney = newMoney;
-        }
-
-        public String getPostMoney() {
-            return PostMoney;
-        }
-
-        public void setPostMoney(String postMoney) {
-            PostMoney = postMoney;
-        }
 
         public String getIsReturn() {
             return IsReturn;
@@ -738,6 +808,30 @@ public class WorkOrder implements Serializable {
         public String getState() {
             return State;
         }
+
+        /**
+         * 状态，
+         * 关闭工单=-4
+         * 申请质保 = -3,
+         * 申请废除工单 =-2,
+         * 废除工单 = -1,
+         * 待审核 = 0,
+         * 已审核派单中 = 1,
+         * 已接单待联系客户 = 2,
+         * 已联系客户待服务 = 3,
+         * 服务中 = 4,
+         * 服务完成待支付 = 5,
+         * 已评价待确认 = 6,
+         * 已完成 = 7,
+         * 待返件 = 8,
+         * 未确认 = 9，
+         * 再次完结=10，
+         * 未到货=11，
+         * 已结单待处理=20，
+         * 财务审核中=30，
+         * 自定义配件审核中=31，
+         */
+
         public String getStateStr() {
             String status="";
             switch (State){
@@ -780,8 +874,20 @@ public class WorkOrder implements Serializable {
                 case "9":
                     status="远程费审核中";
                     break;
+                case "10":
+                    status="再次完结";
+                    break;
                 case "11":
                     status="未到货";
+                    break;
+                case "20":
+                    status="已接单待处理";
+                    break;
+                case "30":
+                    status="财务审核中";
+                    break;
+                case "31":
+                    status="自定义配件审核中";
                     break;
             }
             return status;
@@ -870,22 +976,6 @@ public class WorkOrder implements Serializable {
             this.OrderMoney = OrderMoney;
         }
 
-        public String getInitMoney() {
-            return InitMoney;
-        }
-
-        public void setInitMoney(String InitMoney) {
-            this.InitMoney = InitMoney;
-        }
-
-        public String getBeyondMoney() {
-            return BeyondMoney;
-        }
-
-        public void setBeyondMoney(String BeyondMoney) {
-            this.BeyondMoney = BeyondMoney;
-        }
-
         public String getBeyondID() {
             return BeyondID;
         }
@@ -968,15 +1058,6 @@ public class WorkOrder implements Serializable {
         public void setAccessorySendState(String AccessorySendState) {
             this.AccessorySendState = AccessorySendState;
         }
-
-        public String getAccessoryMoney() {
-            return AccessoryMoney;
-        }
-
-        public void setAccessoryMoney(String AccessoryMoney) {
-            this.AccessoryMoney = AccessoryMoney;
-        }
-
         public String getService() {
             return Service;
         }
@@ -985,13 +1066,6 @@ public class WorkOrder implements Serializable {
             this.Service = Service;
         }
 
-        public String getServiceMoney() {
-            return ServiceMoney;
-        }
-
-        public void setServiceMoney(String ServiceMoney) {
-            this.ServiceMoney = ServiceMoney;
-        }
 
         public String getReturnAccessory() {
             return ReturnAccessory;

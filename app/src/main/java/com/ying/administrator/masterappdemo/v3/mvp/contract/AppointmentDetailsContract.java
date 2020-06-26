@@ -4,6 +4,7 @@ import com.ying.administrator.masterappdemo.base.BaseModel;
 import com.ying.administrator.masterappdemo.base.BasePresenter;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.base.BaseView;
+import com.ying.administrator.masterappdemo.entity.AddOrderSignInRecrodResult;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.GetBrandWithCategory;
 import com.ying.administrator.masterappdemo.entity.SubUserInfo;
@@ -32,6 +33,7 @@ public interface AppointmentDetailsContract {
         //主账号派单操作
         Observable<BaseResult<Data>> ChangeSendOrder(String OrderID,String UserID);
         Observable<BaseResult<Data<List<GetBrandWithCategory>>>> GetBrandWithCategory2(String UserID, String BrandID, String CategoryID, String SubCategoryID, String ProductTypeID, String page, String limit);
+        Observable<AddOrderSignInRecrodResult> AddOrderSignInRecrod(String userId, String signInType,String orderId);
     }
 
     interface View extends BaseView{
@@ -51,6 +53,7 @@ public interface AppointmentDetailsContract {
         //主账号派单操作
         void ChangeSendOrder(BaseResult<Data> baseResult);
         void GetBrandWithCategory2(BaseResult<Data<List<GetBrandWithCategory>>> baseResult);
+        void AddOrderSignInRecrod(AddOrderSignInRecrodResult baseResult);
     }
 
     abstract class Persenter extends BasePresenter<View,Model>{
@@ -69,5 +72,6 @@ public interface AppointmentDetailsContract {
         //主账号派单操作
         public abstract void ChangeSendOrder(String OrderID,String UserID);
         public abstract void GetBrandWithCategory2(String UserID, String BrandID, String CategoryID, String SubCategoryID, String ProductTypeID, String page, String limit);
+        public abstract void AddOrderSignInRecrod(String userId,String signInType,String orderId);
     }
 }

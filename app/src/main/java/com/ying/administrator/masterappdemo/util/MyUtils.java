@@ -4,18 +4,16 @@ import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ClipboardManager;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -24,6 +22,7 @@ import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -31,6 +30,8 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.GridView;
 import android.widget.ListAdapter;
+
+import com.blankj.utilcode.util.ToastUtils;
 
 import java.io.IOException;
 import java.net.URL;
@@ -342,7 +343,12 @@ public class MyUtils {
             }
         }).create().show();
     }
-
+    public static void showToast(String text) {
+        ToastUtils.setBgColor(Color.BLACK);
+        ToastUtils.setMsgColor(Color.WHITE);
+        ToastUtils.setGravity(Gravity.CENTER,0,0);
+        ToastUtils.showShort(text);
+    }
     public static String md5(String string) {
         if (TextUtils.isEmpty(string)) {
             return "";
