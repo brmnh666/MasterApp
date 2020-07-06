@@ -1,6 +1,5 @@
 package com.ying.administrator.masterappdemo.v3.activity;
 
-import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -111,14 +110,17 @@ public class SearchOrderActivity extends BaseActivity<SearchOrderPresenter, Sear
                 adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                        if ("2".equals(baseResult.getData().getData().get(position).getState())){
+                        String state=baseResult.getData().getData().get(position).getState();
+                        if ("1".equals(state)||"2".equals(state)||"9".equals(state)){
                             Intent intent=new Intent(mActivity, AppointmentDetailsActivity.class);
                             intent.putExtra("id",baseResult.getData().getData().get(position).getOrderID());
                             startActivity(intent);
                         }else {
                             Intent intent=new Intent(mActivity, ServingDetailActivity.class);
                             intent.putExtra("id",baseResult.getData().getData().get(position).getOrderID());
-                            intent.putExtra("type","pedding");
+                            if ("11".equals(state)){//未到货
+                                intent.putExtra("type","pedding");
+                            }
                             startActivity(intent);
                         }
 

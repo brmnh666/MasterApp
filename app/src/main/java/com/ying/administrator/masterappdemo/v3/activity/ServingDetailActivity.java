@@ -643,7 +643,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
 //可在其中解析amapLocation获取相应内容。
                     CircleOptions option = new CircleOptions();
                     option.center(new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude()));
-                    option.radius(5000);
+                    option.radius(500);
                     MapView mapView=new MapView(mActivity);
                     Circle circle=mapView.getMap().addCircle(option);
                     if(circle.contains(la)){
