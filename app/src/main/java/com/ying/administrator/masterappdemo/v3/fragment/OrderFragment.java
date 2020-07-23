@@ -106,7 +106,7 @@ public class OrderFragment extends BaseLazyFragment<OrderPresenter, OrderModel> 
         SPUtils spUtils = SPUtils.getInstance("token");
         userId = spUtils.getString("userName");
         mTitles = new String[]{
-                "待处理(0)", "待预约(0)", "待服务(0)", "待寄件(0)"
+                "待处理(0)", "待预约(0)", "待服务(0)", "待审核(0)"
                 , "待返件(0)", "待结算(0)","已完结(0)"
         };
         pendingFragment = PendingFragment.newInstance();
@@ -154,7 +154,7 @@ public class OrderFragment extends BaseLazyFragment<OrderPresenter, OrderModel> 
                     senven = baseResult.getData().getItem2().getCount7();
                 }
                 mTitles = new String[]{
-                        "待处理(" + one + ")", "待预约(" + two + ")", "待服务(" + three + ")", "待寄件(" + four + ")"
+                        "待处理(" + one + ")", "待预约(" + two + ")", "待服务(" + three + ")", "待审核(" + four + ")"
                         , "待返件(" + five + ")", "待结算(" + six + ")", "已完结(" + senven + ")"
                 };
                 mTabReceivingLayout.notifyDataSetChanged();

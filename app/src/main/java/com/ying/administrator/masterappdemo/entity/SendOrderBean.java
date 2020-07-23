@@ -4,7 +4,6 @@ import com.blankj.utilcode.util.TimeUtils;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class SendOrderBean implements Serializable {
 
@@ -131,7 +130,7 @@ public class SendOrderBean implements Serializable {
     }
 
     public String getServiceDate() {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return ServiceDate==null?"":format.format(TimeUtils.string2Date(ServiceDate.replace("T"," ")));
     }
 

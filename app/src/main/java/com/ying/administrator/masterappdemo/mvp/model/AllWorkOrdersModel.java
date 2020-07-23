@@ -3,7 +3,6 @@ package com.ying.administrator.masterappdemo.mvp.model;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Article;
 import com.ying.administrator.masterappdemo.entity.Data;
-import com.ying.administrator.masterappdemo.entity.Data2;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.AllWorkOrdersContract;
@@ -89,8 +88,8 @@ public class AllWorkOrdersModel implements AllWorkOrdersContract.Model {
 
 
     @Override
-    public Observable<BaseResult<Data<String>>> ApplyBeyondMoney(String OrderID, String BeyondMoney, String BeyondDistance) {
-        return ApiRetrofit.getDefault().ApplyBeyondMoney(OrderID,BeyondMoney,BeyondDistance)
+    public Observable<BaseResult<Data<String>>> ApplyBeyondMoney(String OrderID, String BeyondMoney, String BeyondDistance,String Bak) {
+        return ApiRetrofit.getDefault().ApplyBeyondMoney(OrderID,BeyondMoney,BeyondDistance,Bak)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
 

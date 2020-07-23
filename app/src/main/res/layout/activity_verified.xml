@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F0F0F0"
@@ -132,6 +131,8 @@
                             android:gravity="right"
                             android:hint="请输入真实姓名否则无法提现"
                             android:maxLength="10"
+                            android:maxLines="1"
+                            android:inputType="text"
                             android:padding="@dimen/dp_10"
                             android:textColor="@color/color_black"
                             android:textColorHint="#D3D3D3"

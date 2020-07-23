@@ -56,8 +56,8 @@ public class GAccessory implements Serializable {
     private int OrderID;
     private String CreateTime;
     private String Relation;
-    private int Price;
-    private int DiscountPrice;
+    private Double Price;
+    private Double DiscountPrice;
     private String IsUse;
     private String ExpressNo;
     private String State;
@@ -157,19 +157,19 @@ public class GAccessory implements Serializable {
         this.Relation = Relation;
     }
 
-    public int getPrice() {
+    public Double getPrice() {
         return Price;
     }
 
-    public void setPrice(int Price) {
+    public void setPrice(Double Price) {
         this.Price = Price;
     }
 
-    public int getDiscountPrice() {
+    public Double getDiscountPrice() {
         return DiscountPrice;
     }
 
-    public void setDiscountPrice(int DiscountPrice) {
+    public void setDiscountPrice(Double DiscountPrice) {
         this.DiscountPrice = DiscountPrice;
     }
 

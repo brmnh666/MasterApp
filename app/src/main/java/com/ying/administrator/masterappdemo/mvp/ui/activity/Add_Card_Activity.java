@@ -22,10 +22,8 @@ import com.baidu.ocr.sdk.model.AccessToken;
 import com.baidu.ocr.sdk.model.BankCardParams;
 import com.baidu.ocr.sdk.model.BankCardResult;
 import com.baidu.ocr.ui.camera.CameraActivity;
-import com.blankj.utilcode.util.PhoneUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.blankj.utilcode.util.Utils;
 import com.google.gson.Gson;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
@@ -38,10 +36,8 @@ import com.ying.administrator.masterappdemo.mvp.contract.CardContract;
 import com.ying.administrator.masterappdemo.mvp.model.CardModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.CardPresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.ChooseBankAdapter;
-import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.util.SingleClick;
 import com.ying.administrator.masterappdemo.util.imageutil.FileUtil;
-import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 import com.ying.administrator.masterappdemo.widget.CustomDialog_ChooseBank;
 
 import org.greenrobot.eventbus.EventBus;
@@ -56,7 +52,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -73,7 +68,7 @@ public class Add_Card_Activity extends BaseActivity<CardPresenter, CardModel> im
     //    @BindView(R.id.tv_add_card_name)
 //    TextView mTvAddCardName;
     @BindView(R.id.tv_add_card_bankname)
-    TextView mTvAddCardBankname;
+    EditText mTvAddCardBankname;
     @BindView(R.id.et_add_card_phone)
     EditText met_add_card_phone;
     /*    @BindView(R.id.et_add_card_verification_code)

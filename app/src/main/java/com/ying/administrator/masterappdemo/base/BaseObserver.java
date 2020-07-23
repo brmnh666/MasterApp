@@ -1,16 +1,10 @@
 package com.ying.administrator.masterappdemo.base;
 
-import android.content.Intent;
 import android.util.Log;
 
 import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.google.gson.JsonSyntaxException;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.LoginActivity;
-import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
-
-import org.greenrobot.eventbus.EventBus;
-import org.json.JSONObject;
 
 import java.io.IOException;
 

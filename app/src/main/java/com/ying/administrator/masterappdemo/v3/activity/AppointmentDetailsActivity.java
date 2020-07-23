@@ -601,6 +601,8 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                 intent1.putExtra("beyond", data.getDistance());
 //                intent1.putExtra("position", position);
                 intent1.putExtra("orderId", data.getOrderID());
+                intent1.putExtra("address_my", userInfo.getAddress());//师傅店铺地址
+                intent1.putExtra("address", data.getAddress());//用户地址
                 startActivity(intent1);
                 break;
         }
@@ -633,15 +635,6 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                     e.printStackTrace();
                 }
                 mPresenter.UpdateSendOrderUpdateTime(orderId, time, time);
-
-
-//               Intent intent=new Intent(mActivity, WorkOrderDetailsActivity2.class);
-//                intent.putExtra("OrderID",OrderId);
-//                intent.putExtra("time",time);
-//                startActivity(intent);
-//                successposition=position;
-
-
             }
         }, format1, "2022-1-1 24:00");
 
@@ -668,7 +661,7 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                         mPresenter.AddOrderSignInRecrod(userID, signType,orderId);
                     }else{
                         if ("2".equals(signType)){
-                            MyUtils.showToast("请到用户家附近签到");
+                            MyUtils.showToast(mActivity,"请到用户家附近签到");
                         }
                     }
                 } else {
@@ -1044,12 +1037,12 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
             case 200:
                 if (baseResult.getData().isResult()){
                     if ("2".equals(signType)){
-                        MyUtils.showToast("签到成功");
+                        MyUtils.showToast(mActivity,"签到成功");
                     }
                     mPresenter.GetOrderInfo(orderId);
                 }else{
                     if ("2".equals(signType)){
-                        MyUtils.showToast("签到失败"+baseResult.getData().getMsg());
+                        MyUtils.showToast(mActivity,"签到失败"+baseResult.getData().getMsg());
                     }
                 }
                 break;

@@ -336,7 +336,7 @@
                         android:layout_marginRight="10dp"
                         android:text=""
 
-                        android:textSize="16sp" />
+                        android:textSize="17sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -364,10 +364,7 @@
                             android:id="@+id/tv_addressback"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text=""
-
-                            android:textSize="14sp" />
+                            android:textSize="17sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -391,7 +388,7 @@
                             android:layout_marginRight="10dp"
                             android:text=""
 
-                            android:textSize="14sp" />
+                            android:textSize="17sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -417,7 +414,7 @@
                             android:layout_marginRight="10dp"
                             android:text=""
                             android:textColor="@color/red"
-                            android:textSize="16sp" />
+                            android:textSize="17sp" />
                     </LinearLayout>
 
                 </LinearLayout>

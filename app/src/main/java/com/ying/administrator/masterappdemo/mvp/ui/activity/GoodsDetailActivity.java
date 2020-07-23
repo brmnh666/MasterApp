@@ -21,7 +21,6 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.ethanhua.skeleton.SkeletonScreen;
-import com.gyf.barlibrary.ImmersionBar;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
@@ -31,9 +30,7 @@ import com.ying.administrator.masterappdemo.widget.GlideImageLoader;
 import com.ying.administrator.masterappdemo.widget.IdeaScrollView;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
-import com.youth.banner.listener.OnBannerListener;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -502,7 +499,7 @@ public class GoodsDetailActivity extends BaseActivity implements View.OnClickLis
 //
 //                intent1.putExtra("goodsName", result.getProduct().getProductName());
 //                intent1.putExtra("goodsPricture", result.getProduct().getImagePath().get(0));
-//                intent1.putExtra("goodsPrice", "￥" + result.getProduct().getMinSalePrice());
+//                intent1.putExtra("goodsPrice", "¥" + result.getProduct().getMinSalePrice());
 //                intent1.putExtra("goodsURL", "" + result.getProduct().getProductId());
 //                if (isLogin) {
 //                    intent1.putExtra("userName", userInfo.getNickName());

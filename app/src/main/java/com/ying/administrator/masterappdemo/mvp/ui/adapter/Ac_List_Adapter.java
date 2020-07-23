@@ -19,7 +19,7 @@ public class Ac_List_Adapter extends BaseQuickAdapter<Accessory, BaseViewHolder>
 
     @Override
     protected void convert(BaseViewHolder helper, final Accessory item) {
-        helper.setText(R.id.tv_accessory_name,item.getAccessoryName());
+        helper.setText(R.id.tv_accessory_name,item.getCj_or_zg()==0?item.getAccessoryName()+"  x"+item.getCount():item.getAccessoryName()+"  x"+item.getCount()+"    ¥"+item.getAccessoryPrice());
     }
 
 }

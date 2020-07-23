@@ -22,22 +22,14 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
-import com.blankj.utilcode.util.ActivityUtils;
-import com.blankj.utilcode.util.Utils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.util.Util;
 import com.ying.administrator.masterappdemo.R;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.LoginActivity;
-import com.ying.administrator.masterappdemo.util.StatusBarUtil;
 import com.ying.administrator.masterappdemo.util.TUtil;
-import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 import com.zyao89.view.zloading.ZLoadingDialog;
 import com.zyao89.view.zloading.Z_TYPE;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-import org.json.JSONException;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;

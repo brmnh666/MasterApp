@@ -25,7 +25,6 @@ import com.ying.administrator.masterappdemo.entity.NavigationBarNumber;
 import com.ying.administrator.masterappdemo.entity.NavigationBarNumberSon;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
-import com.ying.administrator.masterappdemo.v3.activity.QuoteDetailsActivity;
 import com.ying.administrator.masterappdemo.v3.activity.ServingDetailActivity;
 import com.ying.administrator.masterappdemo.v3.adapter.OrderAdapter;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.OrderPresenter;
@@ -33,8 +32,6 @@ import com.ying.administrator.masterappdemo.v3.mvp.contract.OrderContract;
 import com.ying.administrator.masterappdemo.v3.mvp.model.OrderModel;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +40,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-//待寄件
+//待审核
 public class ShippingFragment extends BaseLazyFragment <OrderPresenter, OrderModel> implements OrderContract.View {
     private static final String ARG_SHOW_TEXT = "text";
     @BindView(R.id.rv_order)

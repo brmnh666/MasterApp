@@ -8,11 +8,8 @@
         android:id="@+id/ll_post_money"
         android:layout_width="match_parent"
         android:layout_height="43dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/gray_shape"
+        android:layout_margin="20dp"
+        android:background="@drawable/edit_shape"
         android:orientation="horizontal"
         android:gravity="center">
 
@@ -35,10 +32,8 @@
         android:layout_width="match_parent"
         android:layout_height="43dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/gray_shape"
+        android:background="@drawable/edit_shape"
         android:orientation="horizontal"
         android:gravity="center">
 
@@ -60,9 +55,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/white_round_shape"
         android:orientation="horizontal"
         android:paddingLeft="12dp"
@@ -118,21 +113,15 @@
         </LinearLayout>
 
     </LinearLayout>
-    <LinearLayout
+    <Button
+        android:id="@+id/btn_add"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:gravity="bottom"
-        android:orientation="vertical">
-        <Button
-            android:id="@+id/btn_add"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_margin="10dp"
-            android:background="@drawable/blue_shape"
-            android:gravity="center"
-            android:text="添加"
-            android:textColor="@color/white"
-            android:textSize="20sp" />
-    </LinearLayout>
+        android:layout_height="50dp"
+        android:layout_margin="20dp"
+        android:background="@drawable/v3_btn_shape"
+        android:gravity="center"
+        android:text="添加"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
 
 </LinearLayout>

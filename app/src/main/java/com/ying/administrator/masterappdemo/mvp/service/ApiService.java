@@ -43,6 +43,7 @@ import com.ying.administrator.masterappdemo.entity.WXpayInfo;
 import com.ying.administrator.masterappdemo.entity.WithDrawMoney;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.entity.WxRegister;
+import com.ying.administrator.masterappdemo.v3.bean.ApplicationResult;
 
 import org.json.JSONArray;
 
@@ -206,11 +207,12 @@ public interface ApiService {
 */
 
 
-    /*
-     *
+    /**
      * 获取工单详情
-     * 通过OrderID获取工单详情
-     * */
+     * @param OrderID  工单ID
+     * @param MessageType  / 留言判断哪个端,1工厂2师傅端3平台
+     * @return
+     */
     @FormUrlEncoded
     @POST("Order/GetOrderInfo")
     Observable<BaseResult<WorkOrder.DataBean>> GetOrderInfo(@Field("OrderID") String OrderID,
@@ -324,9 +326,11 @@ public interface ApiService {
     /*申请远程费距离*/
     @FormUrlEncoded
     @POST("Order/ApplyBeyondMoney")
+// FIXME: 2020-07-15 新增备注Bak
     Observable<BaseResult<Data<String>>> ApplyBeyondMoney(@Field("OrderID") String OrderID,
                                                           @Field("BeyondMoney") String BeyondMoney,
-                                                          @Field("BeyondDistance") String BeyondDistance);
+                                                          @Field("BeyondDistance") String BeyondDistance,
+                                                          @Field("Bak") String Bak);
 
 
     /*获取返件图片*/
@@ -1092,11 +1096,11 @@ public interface ApiService {
      * 新版首页今日待处理
      * state=0
      * 待服务 state=2
-     * 待寄件 state=11
+     * 待审核 state=11
      * 待返件  state=8
      * 待结算  state=12
      * <p>
-     * "11"://待寄件
+     * "11"://待审核
      * "12"://待结算
      * "13"://急需处理
      * "14"://明日需处理
@@ -1124,7 +1128,7 @@ public interface ApiService {
      * var Count1 = 0;//待处理数量
      * var Count2 = 0;//待预约数量
      * var Count3 = 0;//待服务数量
-     * var Count4 = 0;//待寄件数量
+     * var Count4 = 0;//待审核数量
      * var Count5 = 0;//待返件数量
      * var Count6 = 0;//待结算数量
      */
@@ -1263,4 +1267,12 @@ public interface ApiService {
     /*获取联系人 */
     @POST("Account/AndroidTelephone")
     Observable<BaseResult<Data<String>>> AndroidTelephone(@Body RequestBody json);
+
+    /**
+     * 新版申请配件
+     * @param json
+     * @return
+     */
+    @POST("master/AppOrderAccessory/Application")
+    Observable<ApplicationResult> Application(@Body RequestBody json);
 }

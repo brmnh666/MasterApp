@@ -1,6 +1,5 @@
 package com.ying.administrator.masterappdemo.entity;
 
-import java.io.File;
 import java.io.Serializable;
 
 public class Accessory implements Serializable {
@@ -37,13 +36,31 @@ public class Accessory implements Serializable {
     private String IsUse;
     private String ParentName;
     private String SizeID;
-    private int count=1;
+    private int cj_or_zg=0; //0cj  1zg
+    private int count=0;
     private int ParentID;
     private int page;
     private int limit;
     private int Version;
     private String Img1;//配件照片
     private String Img2;//整机照片
+    private String NeedPlatformAuth="N";//是否需要平台审核默认N
+
+    public String getNeedPlatformAuth() {
+        return NeedPlatformAuth;
+    }
+
+    public void setNeedPlatformAuth(String needPlatformAuth) {
+        NeedPlatformAuth = needPlatformAuth;
+    }
+
+    public int getCj_or_zg() {
+        return cj_or_zg;
+    }
+
+    public void setCj_or_zg(int cj_or_zg) {
+        this.cj_or_zg = cj_or_zg;
+    }
 
     public String getImg1() {
         return Img1;

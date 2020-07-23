@@ -6,7 +6,7 @@
 
     <include layout="@layout/v3_activity_head" />
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -192,6 +192,7 @@
                 android:paddingBottom="10dp">
 
                 <TextView
+                    android:id="@+id/tv_acc_state"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="配件清单"
@@ -249,5 +250,5 @@
                     android:id="@+id/rv_accessories_picture"></android.support.v7.widget.RecyclerView>
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 </LinearLayout>

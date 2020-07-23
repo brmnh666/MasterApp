@@ -19,8 +19,6 @@ import com.ying.administrator.masterappdemo.mvp.ui.activity.CardList_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.DetailRecordActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.RechargeActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.VerifiedActivity2;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.Verified_Activity;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.WithDrawActivity;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.WalletPresenter;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.WalletContract;
 import com.ying.administrator.masterappdemo.v3.mvp.model.WalletModel;
@@ -173,9 +171,9 @@ public class WalletActivity extends BaseActivity<WalletPresenter, WalletModel> i
                     String CanWithdraw = String.format("%.2f", userInfo.getTotalMoney() - userInfo.getFrozenMoney());
                     mTvMoney.setText(CanWithdraw);
                     String Unfinished = String.format("%.2f", userInfo.getUnfinishedAmount());
-                    mTvConfirmed.setText("￥"+Unfinished );
-                    mTvCumulativeIncome.setText("￥"+String.format("%.2f",userInfo.getServiceTotalMoney()));
-                    mTvWarranty.setText("￥"+String.format("%.2f",userInfo.getDepositMoney()));
+                    mTvConfirmed.setText("¥"+Unfinished );
+                    mTvCumulativeIncome.setText("¥"+String.format("%.2f",userInfo.getServiceTotalMoney()));
+                    mTvWarranty.setText("¥"+String.format("%.2f",userInfo.getDepositMoney()));
                 }
 
                 break;
@@ -199,7 +197,7 @@ public class WalletActivity extends BaseActivity<WalletPresenter, WalletModel> i
         switch (baseResult.getStatusCode()){
             case 200:
                 if (baseResult.getData().isItem1()){
-                    mTvWithdrawing.setText("￥"+String.format("%.2f",baseResult.getData().getItem2().getData()));
+                    mTvWithdrawing.setText("¥"+String.format("%.2f",baseResult.getData().getItem2().getData()));
                 }
                 break;
         }

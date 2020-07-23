@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 import com.blankj.utilcode.util.ActivityUtils;
 import com.ying.administrator.masterappdemo.app.MyApplication;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.MainActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.SplashActivity;
 
 /**

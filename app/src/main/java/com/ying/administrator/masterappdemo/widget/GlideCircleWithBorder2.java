@@ -9,7 +9,6 @@ import android.graphics.Paint;
 
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
-import com.ying.administrator.masterappdemo.mvp.ui.fragment.Me_Fragment;
 import com.ying.administrator.masterappdemo.v3.fragment.MineFragment;
 
 import java.security.MessageDigest;

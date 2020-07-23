@@ -208,6 +208,7 @@ public class WorkOrder implements Serializable {
         private List<ReturnaccessoryImg> ReturnaccessoryImg;//返件图片
         private List<OrderBeyondImg> OrderBeyondImg;//远程费图片
         private List<OrderImg> OrderImg;//返回服务图片
+        private List<String> AccessoryImgUrls;//返回配件图片
         private List<SendOrderBean> SendOrderList;
         private String Distance;//返回距离
         private String ProductTypeID;
@@ -234,6 +235,23 @@ public class WorkOrder implements Serializable {
         private String IsExtraTime;
         private String picture;
         private String ArtisanPhone;
+        private boolean IsApplicationAccessory;
+
+        public List<String> getAccessoryImgUrls() {
+            return AccessoryImgUrls;
+        }
+
+        public void setAccessoryImgUrls(List<String> accessoryImgUrls) {
+            AccessoryImgUrls = accessoryImgUrls;
+        }
+
+        public boolean isApplicationAccessory() {
+            return IsApplicationAccessory;
+        }
+
+        public void setApplicationAccessory(boolean applicationAccessory) {
+            IsApplicationAccessory = applicationAccessory;
+        }
 
         public Double getInitMoney() {
             return InitMoney;

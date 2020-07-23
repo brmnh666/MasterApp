@@ -67,11 +67,13 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
     LinearLayout mLlServices;
     @BindView(R.id.ll_accessories_picture)
     LinearLayout mLlAccessoriesPicture;
+    @BindView(R.id.tv_acc_state)
+    TextView mTvAccState;
     private String orderId;
     private WorkOrder.DataBean data;
     private AccessoriesAdapter accessoriesAdapter;
     private ServicesAdapter servicesAdapter;
-    private List<String> list=new ArrayList<>();
+    private List<String> list = new ArrayList<>();
     private AccessoriesPictureAdapter accessoriesPictureAdapter;
     private Intent intent;
     private SimpleTarget<Bitmap> simpleTarget;
@@ -119,13 +121,13 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
                 finish();
                 break;
             case R.id.ll_outbound_logistics:
-                intent = new Intent(mActivity,LogisticsActivity.class);
-                intent.putExtra("number",data.getExpressNo()+"");
+                intent = new Intent(mActivity, LogisticsActivity.class);
+                intent.putExtra("number", data.getExpressNo() + "");
                 startActivity(intent);
                 break;
             case R.id.ll_return_logistics:
-                intent = new Intent(mActivity,LogisticsActivity.class);
-                intent.putExtra("number",data.getReturnAccessoryMsg()+"");
+                intent = new Intent(mActivity, LogisticsActivity.class);
+                intent.putExtra("number", data.getReturnAccessoryMsg() + "");
                 startActivity(intent);
                 break;
         }
@@ -166,16 +168,22 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
                     } else {
                         mTvReturnLogistics.setText(data.getReturnAccessoryMsg());
                     }
+                    if ("0".equals(data.getAccessoryState())) {
+                        mTvAccState.setText("配件清单（厂家寄件）");
+                    } else {
+                        mTvAccState.setText("配件清单（师傅自购件）");
+                    }
 
                     if (data.getOrderAccessroyDetail().size() > 0) {
                         mLlAccessories.setVisibility(View.VISIBLE);
                         mLlAccessoriesPicture.setVisibility(View.VISIBLE);
-                        for (int i = 0; i < data.getOrderAccessroyDetail().size(); i++) {
-                            if (i==0){
-                                list.add(data.getOrderAccessroyDetail().get(i).getPhoto1());
-                            }
-                            list.add(data.getOrderAccessroyDetail().get(i).getPhoto2());
-                        }
+                        // FIXME: 2020-07-22 配件图片不跟配件关联
+//                        for (int i = 0; i < data.getOrderAccessroyDetail().size(); i++) {
+//                            if (i==0){
+//                                list.add(data.getOrderAccessroyDetail().get(i).getPhoto1());
+//                            }
+//                            list.add(data.getOrderAccessroyDetail().get(i).getPhoto2());
+//                        }
                     } else {
                         mLlAccessories.setVisibility(View.GONE);
                         mLlAccessoriesPicture.setVisibility(View.GONE);
@@ -194,15 +202,15 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
                     mRvServices.setLayoutManager(new LinearLayoutManager(mActivity));
                     mRvServices.setAdapter(servicesAdapter);
 
-                    accessoriesPictureAdapter = new AccessoriesPictureAdapter(R.layout.v3_item_accessories_picture,list);
-                    mRvAccessoriesPicture.setLayoutManager(new GridLayoutManager(mActivity,3));
+                    accessoriesPictureAdapter = new AccessoriesPictureAdapter(R.layout.v3_item_accessories_picture, data.getAccessoryImgUrls());
+                    mRvAccessoriesPicture.setLayoutManager(new GridLayoutManager(mActivity, 3));
                     mRvAccessoriesPicture.setAdapter(accessoriesPictureAdapter);
                     accessoriesPictureAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
                         @Override
                         public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                            switch (view.getId()){
+                            switch (view.getId()) {
                                 case R.id.iv_picture:
-                                    scaleview("https://img.xigyu.com/Pics/Accessory/" +  list.get(position));
+                                    scaleview(data.getAccessoryImgUrls().get(position));
                                     break;
                             }
                         }

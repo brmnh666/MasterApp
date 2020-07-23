@@ -31,12 +31,10 @@ import com.ying.administrator.masterappdemo.entity.Article;
 import com.ying.administrator.masterappdemo.entity.CodeMoney;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.RechargeActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.WebActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
-import com.ying.administrator.masterappdemo.v3.activity.ApplyFeeActivity;
+import com.ying.administrator.masterappdemo.util.SingleClick;
 import com.ying.administrator.masterappdemo.v3.activity.MessageActivity;
-import com.ying.administrator.masterappdemo.v3.activity.QuoteDetailsActivity;
 import com.ying.administrator.masterappdemo.v3.adapter.HomeAdapter;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.HomePresenter;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.HomeContract;
@@ -46,7 +44,6 @@ import com.ying.administrator.masterappdemo.widget.SwitchView;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,6 +113,7 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
         mRvNewOrder.setAdapter(adapter);
         adapter.setEmptyView(getHomeEmptyView());
         adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @SingleClick
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, final int position) {
                 switch (view.getId()) {
@@ -146,8 +144,10 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
                                 }
                             });
                             positive.setOnClickListener(new View.OnClickListener() {
+                                @SingleClick
                                 @Override
                                 public void onClick(View v) {
+                                    showProgress();
                                     mPresenter.UpdateSendOrderState(list.get(position).getOrderID(), "1", "");
                                     customdialog_home_dialog.dismiss();
                                 }
@@ -159,6 +159,8 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
 //                                intent.putExtra("orderId", list.get(position).getOrderID());
 //                                startActivity(intent);
 //                            } else {
+                            // FIXME: 2020-07-15 重复同意接单问题
+                            showProgress();
                             mPresenter.UpdateSendOrderState(list.get(position).getOrderID(), "1", "");
 //                            }
 
@@ -348,7 +350,7 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
                 } else {
                     Toast.makeText(getActivity(), (CharSequence) data.getItem2(), LENGTH_SHORT).show();
                 }
-
+                hideProgress();
                 break;
 
             default:

@@ -61,6 +61,7 @@ import com.ying.administrator.masterappdemo.mvp.ui.activity.MessageActivity2;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.ScanActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.WebActivity;
 import com.ying.administrator.masterappdemo.util.MyUtils;
+import com.ying.administrator.masterappdemo.util.SingleClick;
 import com.ying.administrator.masterappdemo.util.calendarutil.CalendarEvent;
 import com.ying.administrator.masterappdemo.util.calendarutil.CalendarProviderManager;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.ServingDetailPresenter;
@@ -229,6 +230,8 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
     private ArrayList<String> permissions;
     private int size;
     private String userId;
+    private View popupWindow_view;
+    private String FilePath;
 
     @Override
     protected int setLayoutId() {
@@ -303,7 +306,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
         mLlMaintenanceInformation.setOnClickListener(this);
         mTvSave.setOnClickListener(this);
     }
-
+    @SingleClick
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -354,22 +357,13 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                             intent.putExtra("OrderID", data.getOrderID());
                             startActivity(intent);
                         } else {
-
-                            if (data.getOrderAccessroyDetail().size() > 0 || data.getOrderServiceDetail().size() > 0) {
+                            // FIXME: 2020-07-22 isApplicationAccessory判断是否可以申请配件
+                            if (!data.isApplicationAccessory()) {
                                 intent = new Intent(mActivity, CompleteWorkOrderActivity.class);
                                 intent.putExtra("OrderID", data.getOrderID());
                                 startActivity(intent);
                             } else {
-                                Double money = data.getMasterPrice() + data.getAgainMoney()+ data.getOtherMoney()+ data.getBeyondMoney()+ data.getInitMoney()+ data.getPostMoney();
-                                intent = new Intent(mActivity, ApplicationAccessoriesActivity.class);
-                                intent.putExtra("id", orderId);
-                                intent.putExtra("name", data.getUserName());
-                                intent.putExtra("phone", data.getPhone());
-                                intent.putExtra("addr", data.getAddress());
-
-                                intent.putExtra("SubCategoryID", data.getProductTypeID());
-                                intent.putExtra("total", money);
-                                startActivity(intent);
+                                showPopupWindow();
                             }
 
                         }
@@ -588,6 +582,73 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
         }
     }
 
+    /**
+     * 弹出Popupwindow,选择厂家寄件还是自购件
+     */
+    public void showPopupWindow() {
+        popupWindow_view = LayoutInflater.from(mActivity).inflate(R.layout.cj_or_zg_layout, null);
+        Button btn_cj = popupWindow_view.findViewById(R.id.btn_cj);
+        Button btn_zg = popupWindow_view.findViewById(R.id.btn_zg);
+        Button btn_complete = popupWindow_view.findViewById(R.id.btn_complete);
+        Button btn_cancel = popupWindow_view.findViewById(R.id.btn_cancel);
+
+        btn_cj.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onClick(View view) {
+                intent = new Intent(mActivity, ApplyAccActivity.class);
+                intent.putExtra("OrderID", data.getOrderID());
+                intent.putExtra("SubCategoryID", data.getProductTypeID());
+                intent.putExtra("cj_or_zg", "厂寄");
+                startActivity(intent);
+                mPopupWindow.dismiss();
+            }
+        });
+        btn_zg.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onClick(View view) {
+                intent = new Intent(mActivity, ApplyAccActivity.class);
+                intent.putExtra("OrderID", data.getOrderID());
+                intent.putExtra("SubCategoryID", data.getProductTypeID());
+                intent.putExtra("cj_or_zg", "自购");
+                startActivity(intent);
+                mPopupWindow.dismiss();
+            }
+        });
+        //直接完结工单
+        btn_complete.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onClick(View view) {
+                intent = new Intent(mActivity, CompleteWorkOrderActivity.class);
+                intent.putExtra("OrderID", data.getOrderID());
+                startActivity(intent);
+                mPopupWindow.dismiss();
+            }
+        });
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPopupWindow.dismiss();
+            }
+        });
+        mPopupWindow = new PopupWindow(popupWindow_view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        mPopupWindow.setAnimationStyle(R.style.popwindow_anim_style);
+        mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+        mPopupWindow.setFocusable(true);
+        mPopupWindow.setOutsideTouchable(true);
+        mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                MyUtils.setWindowAlpa(mActivity, false);
+            }
+        });
+        if (mPopupWindow != null && !mPopupWindow.isShowing()) {
+            mPopupWindow.showAtLocation(popupWindow_view, Gravity.BOTTOM, 0, 0);
+        }
+        MyUtils.setWindowAlpa(mActivity, true);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -615,15 +676,6 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                     e.printStackTrace();
                 }
                 mPresenter.UpdateSendOrderUpdateTime(orderId, time, time);
-
-
-//               Intent intent=new Intent(mActivity, WorkOrderDetailsActivity2.class);
-//                intent.putExtra("OrderID",OrderId);
-//                intent.putExtra("time",time);
-//                startActivity(intent);
-//                successposition=position;
-
-
             }
         }, format1, "2022-1-1 24:00");
 
@@ -650,7 +702,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                         mPresenter.AddOrderSignInRecrod(userId, signType,orderId);
                     }else{
                         if ("2".equals(signType)){
-                            MyUtils.showToast("请到用户家附近签到");
+                            MyUtils.showToast(mActivity,"请到用户家附近签到");
                         }
                     }
                 } else {
@@ -845,26 +897,31 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                         }
                     }
 
-                    if ("5".equals(data.getState()) || "6".equals(data.getState()) || "7".equals(data.getState()) || "-4".equals(data.getState()) || "-1".equals(data.getState())) {
+                    if ("5".equals(data.getState()) || "10".equals(data.getState()) || "7".equals(data.getState()) || "-4".equals(data.getState()) || "-1".equals(data.getState())) {
                         mTvUpload.setVisibility(View.INVISIBLE);
                         mTvReservationAgain.setBackgroundResource(R.drawable.v3_gray_shape);
                         mTvReservationAgain.setEnabled(false);
                         mTvConfirmReceipt.setVisibility(View.GONE);
                     } else {
-                        if ("8".equals(data.getState())) {
+                        if ("8".equals(data.getState())) {//待返件
                             mTvUpload.setVisibility(View.GONE);
                             mTvReturn.setVisibility(View.VISIBLE);
                             mTvReservationAgain.setBackgroundResource(R.drawable.v3_gray_shape);
                             mTvReservationAgain.setEnabled(false);
                             mTvConfirmReceipt.setVisibility(View.GONE);
-                        } else if ("11".equals(data.getState())) {
+                        } else if ("11".equals(data.getState())) {//未到货
                             mTvUpload.setVisibility(View.GONE);
                             mTvReturn.setVisibility(View.GONE);
                             mTvReservationAgain.setBackgroundResource(R.drawable.v3_blue_white_shape);
                             mTvReservationAgain.setEnabled(true);
                             mTvConfirmReceipt.setVisibility(View.VISIBLE);
                         } else {
-                            mTvUpload.setVisibility(View.VISIBLE);
+                            // FIXME: 2020-07-15 有完结图片隐藏提交完结按钮
+                            if (data.getReturnaccessoryImg().size()>0||(!data.isApplicationAccessory()&&"0".equals(data.getState())&&"31".equals(data.getState()))){
+                                mTvUpload.setVisibility(View.GONE);
+                            }else{
+                                mTvUpload.setVisibility(View.VISIBLE);
+                            }
                             mTvReturn.setVisibility(View.GONE);
                             mTvReservationAgain.setBackgroundResource(R.drawable.v3_blue_white_shape);
                             mTvReservationAgain.setEnabled(true);
@@ -887,7 +944,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                             }
                             mTvUpload.setBackgroundResource(R.drawable.v3_copy_bg_shape2);
                         } else {
-                            if (data.getOrderAccessroyDetail().size() > 0 || data.getOrderServiceDetail().size() > 0) {
+                            if (!data.isApplicationAccessory()) {
                                 mTvUpload.setText("提交完结信息");
                             } else {
                                 mTvUpload.setText("添加服务内容");
@@ -1042,12 +1099,12 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
             case 200:
                 if (baseResult.getData().isResult()){
                     if ("2".equals(signType)){
-                        MyUtils.showToast("签到成功");
+                        MyUtils.showToast(mActivity,"签到成功");
                     }
                     mPresenter.GetOrderInfo(orderId);
                 }else{
                     if ("2".equals(signType)){
-                        MyUtils.showToast("签到失败"+baseResult.getData().getMsg());
+                        MyUtils.showToast(mActivity,"签到失败"+baseResult.getData().getMsg());
                     }
                 }
                 break;

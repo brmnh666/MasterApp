@@ -1,6 +1,5 @@
 package com.ying.administrator.masterappdemo.app;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
@@ -11,8 +10,6 @@ import android.support.multidex.MultiDex;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.blankj.utilcode.util.SPUtils;
-import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
 import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -39,9 +36,8 @@ import com.umeng.socialize.PlatformConfig;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.UpgradeActivity;
 import com.ying.administrator.masterappdemo.common.Config;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.MainActivity;
 import com.ying.administrator.masterappdemo.util.DesktopCornerUtil;
-import com.ying.administrator.masterappdemo.util.UnCeHandler;
+import com.ying.administrator.masterappdemo.v3.activity.MainActivity;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

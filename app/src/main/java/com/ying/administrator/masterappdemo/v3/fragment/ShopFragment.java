@@ -20,7 +20,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.entity.ProductList;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.GoodsDetailActivity;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.GoodsDetailActivity2;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.MallAdapter;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
 

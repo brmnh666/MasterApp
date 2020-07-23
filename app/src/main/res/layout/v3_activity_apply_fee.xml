@@ -2,47 +2,53 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="#f2f2f2"
     android:orientation="vertical">
 
     <include layout="@layout/v3_activity_head"/>
-
-        <ImageView
-            android:id="@+id/iv_map1"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:src="@drawable/paizhao"
-            android:layout_gravity="center"
-            android:layout_marginTop="80dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="上传照片"
-        android:layout_marginTop="10dp"
-        android:textSize="16sp"/>
-
     <LinearLayout
+        android:id="@+id/ll_tomap"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal"
-        android:background="@drawable/ed_order_detail"
+        android:background="@color/white"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:padding="10dp">
-        <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/dingwei"
-            android:layout_gravity="center"/>
+        android:layout_marginRight="10dp">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="10dp"
             android:layout_gravity="center"
-            android:text="申请远程费"
+            android:text="地图"
+            android:textSize="16sp"
+            android:textColor="#333"/>
+
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/right"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:background="@color/white"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="center"
+            android:text="超出公里数"
             android:textSize="16sp"
             android:textColor="#333"/>
 
@@ -50,9 +56,9 @@
         <EditText
             android:id="@+id/et_order_beyond_km"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="50dp"
             android:layout_marginLeft="10dp"
-            android:background="@drawable/gray_free_shape"
+            android:background="@null"
             android:gravity="center"
             android:hint="输入超出公里数"
             android:inputType="numberDecimal"
@@ -64,14 +70,67 @@
             android:textSize="14sp" />
     </LinearLayout>
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1" />
+        android:layout_height="150dp"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:text="距离图片"
+            android:textSize="16sp"
+            android:textColor="#333"/>
+        <ImageView
+            android:id="@+id/iv_map1"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/add_picture"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"/>
+
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:text="备注"
+            android:textSize="16sp"
+            android:textColor="#333"/>
+        <EditText
+            android:id="@+id/et_bak"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:paddingLeft="@dimen/dp_10"
+            android:background="@null"
+            android:hint="请输入备注"
+            android:gravity="top"
+            android:layout_marginTop="10dp"/>
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_50"
         android:orientation="horizontal">
         <Button
             android:id="@+id/btn_cancel"

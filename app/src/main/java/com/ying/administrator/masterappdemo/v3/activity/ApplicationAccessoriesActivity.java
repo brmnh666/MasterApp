@@ -112,16 +112,6 @@ public class ApplicationAccessoriesActivity extends BaseActivity<ApplicationAcce
     TextView mTvSure;
     @BindView(R.id.tv_money)
     TextView mTvMoney;
-    @BindView(R.id.iv_me_addr)
-    ImageView mIvMeAddr;
-    @BindView(R.id.ll_me_addr)
-    LinearLayout mLlMeAddr;
-    @BindView(R.id.iv_user_addr)
-    ImageView mIvUserAddr;
-    @BindView(R.id.ll_user_addr)
-    LinearLayout mLlUserAddr;
-    @BindView(R.id.ll_addr)
-    LinearLayout mLlAddr;
     private String orderId;
     private int state = -1;
     private String productTypeID;
@@ -173,8 +163,7 @@ public class ApplicationAccessoriesActivity extends BaseActivity<ApplicationAcce
 
     @Override
     protected void initView() {
-        mLlAddr.setVisibility(View.GONE);
-        mTvTitle.setText("配件与服务");
+        mTvTitle.setText("申请配件");
         orderId = getIntent().getStringExtra("id");
         productTypeID = getIntent().getStringExtra("SubCategoryID");
         totalMoney = getIntent().getDoubleExtra("total",0);
@@ -248,8 +237,6 @@ public class ApplicationAccessoriesActivity extends BaseActivity<ApplicationAcce
         mTvOrderDetailsAddAccessories.setOnClickListener(this);
         mTvOrderDetailAddService.setOnClickListener(this);
         mTvSure.setOnClickListener(this);
-        mLlMeAddr.setOnClickListener(this);
-        mLlUserAddr.setOnClickListener(this);
     }
 
     @Override
@@ -258,19 +245,10 @@ public class ApplicationAccessoriesActivity extends BaseActivity<ApplicationAcce
             case R.id.iv_back:
                 finish();
                 break;
-            case R.id.ll_me_addr:
-                mIvMeAddr.setSelected(true);
-                mIvUserAddr.setSelected(false);
-                break;
-            case R.id.ll_user_addr:
-                mIvMeAddr.setSelected(false);
-                mIvUserAddr.setSelected(true);
-                break;
             case R.id.ll_manufacturers:
                 state = 0;
                 mIvManufacturers.setSelected(true);
                 mIvSelfbuying.setSelected(false);
-                mLlAddr.setVisibility(View.VISIBLE);
                 mPre_order_add_ac_adapter.setNewData(fAcList);
                 getMoney(mPre_order_add_ac_adapter.getData(), fList_service);
                 break;
@@ -278,7 +256,6 @@ public class ApplicationAccessoriesActivity extends BaseActivity<ApplicationAcce
                 state = 1;
                 mIvManufacturers.setSelected(false);
                 mIvSelfbuying.setSelected(true);
-                mLlAddr.setVisibility(View.GONE);
                 mPre_order_add_ac_adapter.setNewData(mAcList);
                 getMoney(mPre_order_add_ac_adapter.getData(), fList_service);
                 break;
@@ -315,25 +292,7 @@ public class ApplicationAccessoriesActivity extends BaseActivity<ApplicationAcce
     //厂家寄件，师傅自购，用户自购
     public void select_state(List<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> list) {
         if (list.size() > 0 && mPre_order_add_service_adapter.getData().size() == 0) {
-            if (state == 0) {
-                if (mIvMeAddr.isSelected()){
-                    if ("".equals(addr_me)) {
-                        ToastUtils.showShort("请去个人中心填写收货地址");
-                        hideProgress();
-                        return;
-                    } else {
-                        mPresenter.UpdateOrderAddressByOrderID(orderId, addr_me);
-                    }
-                }else if (mIvUserAddr.isSelected()){
-                    mPresenter.UpdateOrderAddressByOrderID(orderId, addr_user);
-                }else{
-                    ToastUtils.showShort("请选择寄往自己家还是用户家");
-                    hideProgress();
-                }
-            } else {
-                uploadImg(list);
-            }
-
+            uploadImg(list);
         } else if (list.size() == 0 && mPre_order_add_service_adapter.getData().size() > 0) {
             service = "1";
             orderServiceStrBean = new FService.OrderServiceStrBean();
@@ -351,25 +310,8 @@ public class ApplicationAccessoriesActivity extends BaseActivity<ApplicationAcce
             body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), s);
             mPresenter.AddOrderAccessoryAndService(body);
         } else if (list.size() > 0 && mPre_order_add_service_adapter.getData().size() > 0) {
-            if (state == 0) {
-                if (mIvMeAddr.isSelected()){
-                    if ("".equals(addr_me)) {
-                        ToastUtils.showShort("请去个人中心填写收货地址");
-                        hideProgress();
-                        return;
-                    } else {
-                        mPresenter.UpdateOrderAddressByOrderID(orderId, addr_me);
-                    }
-                }else if (mIvUserAddr.isSelected()){
-                    mPresenter.UpdateOrderAddressByOrderID(orderId, addr_user);
-                }else{
-                    ToastUtils.showShort("请选择寄往自己家还是用户家");
-                    hideProgress();
-                }
-            } else {
-                uploadImg(list);
-            }
-
+            // FIXME: 2020-07-18 师傅端去掉上传寄件地址，由工厂端审核填写
+            uploadImg(list);
         } else {
             intent = new Intent(mActivity, CompleteWorkOrderActivity.class);
             intent.putExtra("OrderID", orderId);
@@ -515,45 +457,12 @@ public class ApplicationAccessoriesActivity extends BaseActivity<ApplicationAcce
 
     @Override
     public void GetAccountAddress(BaseResult<List<AddressList>> baseResult) {
-        switch (baseResult.getStatusCode()) {
-            case 200:
-                if (baseResult.getData()==null){
-                    return;
-                }
-                addressList = baseResult.getData();
-                if (addressList.size() > 0) {
-                    addr_me = addressList.get(0).getAddrStr() + "(" + addressList.get(0).getUserName() + " 收)" + addressList.get(0).getPhone();
-                } else {
-                    addr_me = "";
-                }
-                break;
-            default:
-                ToastUtils.showShort("获取失败");
-                break;
-        }
+
     }
 
     @Override
     public void UpdateOrderAddressByOrderID(BaseResult<Data<String>> baseResult) {
-        switch (baseResult.getStatusCode()) {
-            case 200:
-                if (baseResult.getData().isItem1()) {
-                    gson = new Gson();
-                    if (state == 0) {
-//                        select_state2(fAcList);
-                        uploadImg(fAcList);
-                    } else if (state == 1) {
-//                        select_state2(mAcList);
-                        uploadImg(mAcList);
-                    } else {
-//                        select_state2(sAcList);
-                        uploadImg(sAcList);
-                    }
-                } else {
-                    ToastUtils.showShort("添加寄件地址失败");
-                }
-                break;
-        }
+
     }
 
     @Override

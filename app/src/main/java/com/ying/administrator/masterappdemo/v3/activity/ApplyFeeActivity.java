@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -83,6 +84,10 @@ public class ApplyFeeActivity extends BaseActivity<AllWorkOrdersPresenter, AllWo
     Button mBtnSubmitBeyond;
     @BindView(R.id.et_order_beyond_km)
     EditText mEtOrderBeyondKm;
+    @BindView(R.id.ll_tomap)
+    LinearLayout mLlTomap;
+    @BindView(R.id.et_bak)
+    EditText mEtBak;
     private View popupWindow_view;
     private String FilePath;
     private ArrayList<Object> permissions;
@@ -96,7 +101,14 @@ public class ApplyFeeActivity extends BaseActivity<AllWorkOrdersPresenter, AllWo
     private String orderId;
     private String Distance;
     private String BeyondMoney;
-//    private String beyond;
+    private View img_cancle;
+    private View ll_choose_baidumap;
+    private View ll_choose_gaodemap;
+    private String address;
+    private String address_my;
+    private String beyond;
+    private String Bak;
+    //    private String beyond;
 
     @Override
     protected int setLayoutId() {
@@ -113,8 +125,10 @@ public class ApplyFeeActivity extends BaseActivity<AllWorkOrdersPresenter, AllWo
         mTvTitle.setText("远程费申请");
         position = getIntent().getStringExtra("position");
         orderId = getIntent().getStringExtra("orderId");
-//        beyond = getIntent().getStringExtra("beyond");
-//        mEtOrderBeyondKm.setText(beyond);
+        address = getIntent().getStringExtra("address");
+        address_my = getIntent().getStringExtra("address_my");
+        beyond = getIntent().getStringExtra("beyond");
+        mEtOrderBeyondKm.setText(beyond);
     }
 
     @Override
@@ -123,12 +137,19 @@ public class ApplyFeeActivity extends BaseActivity<AllWorkOrdersPresenter, AllWo
         mBtnCancel.setOnClickListener(this);
         mBtnSubmitBeyond.setOnClickListener(this);
         mIvMap1.setOnClickListener(this);
+        mLlTomap.setOnClickListener(this);
     }
 
     @SingleClick
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.ll_tomap:
+                if (address_my == null) {
+                    address_my = "我的位置";
+                }
+                goToGaodeMap();
+                break;
             case R.id.iv_back:
                 finish();
                 break;
@@ -140,23 +161,23 @@ public class ApplyFeeActivity extends BaseActivity<AllWorkOrdersPresenter, AllWo
                 mPresenter.UpdateSendOrderState(orderId, "1", "");
                 break;
             case R.id.btn_submit_beyond:
-                showProgress();
+                Bak =mEtBak.getText().toString();
                 if (files_map_remote.size() == 0) {
                     ToastUtils.showShort("请添加远程图片!");
-                    hideProgress();
                     return;
                 }
                 Distance = mEtOrderBeyondKm.getText().toString();
                 if (Distance.isEmpty()) {
                     ToastUtils.showShort("请输入超出公里数！");
-                    hideProgress();
                     return;
-                } else if (Double.parseDouble(Distance) <= 0.0) {
-                    ToastUtils.showShort("请输入大于0的远程费");
-                } else {
-                    BeyondMoney = Double.parseDouble(Distance) + "";
-                    Distance = BeyondMoney;
                 }
+                if (Double.parseDouble(Distance) <= 0.0) {
+                    ToastUtils.showShort("公里数不能小于0");
+                    return;
+                }
+                BeyondMoney = Double.parseDouble(Distance) + "";
+                Distance = BeyondMoney;
+                showProgress();
                 OrderByondImgPicUpload(files_map_remote);
                 break;
         }
@@ -218,7 +239,7 @@ public class ApplyFeeActivity extends BaseActivity<AllWorkOrdersPresenter, AllWo
         switch (baseResult.getStatusCode()) {
             case 200:
                 if (baseResult.getData().isItem1()) {
-                    mPresenter.ApplyBeyondMoney(orderId, BeyondMoney, Distance);
+                    mPresenter.ApplyBeyondMoney(orderId, BeyondMoney, Distance, Bak);
                 } else {
                     ToastUtils.showShort("远程费图片上传失败");
                 }
@@ -434,5 +455,113 @@ public class ApplyFeeActivity extends BaseActivity<AllWorkOrdersPresenter, AllWo
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
+    }
+
+    /**
+     * 弹出Popupwindow
+     */
+    public void showPopupWindow(final String location) {
+        /*选择地图*/
+        popupWindow_view = LayoutInflater.from(mActivity).inflate(R.layout.popwindow_choosemap, null);
+        mPopupWindow = new PopupWindow(popupWindow_view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        img_cancle = popupWindow_view.findViewById(R.id.img_cancle);
+        ll_choose_baidumap = popupWindow_view.findViewById(R.id.ll_choose_baidumap);
+        ll_choose_gaodemap = popupWindow_view.findViewById(R.id.ll_choose_gaodemap);
+
+
+        mPopupWindow.setAnimationStyle(R.style.popwindow_anim_style);
+        mPopupWindow.setBackgroundDrawable(new BitmapDrawable(getResources()));
+        mPopupWindow.setFocusable(true);
+        mPopupWindow.setOutsideTouchable(true);
+        mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                MyUtils.setWindowAlpa(mActivity, false);
+            }
+        });
+        if (mPopupWindow != null && !mPopupWindow.isShowing()) {
+            mPopupWindow.showAtLocation(popupWindow_view, Gravity.BOTTOM, 0, 0);
+        }
+        MyUtils.setWindowAlpa(mActivity, true);
+
+        img_cancle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPopupWindow.dismiss();
+            }
+        });
+
+
+        ll_choose_baidumap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToBaiduMap(location);
+                mPopupWindow.dismiss();
+            }
+        });
+        ll_choose_gaodemap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToGaodeMap();
+                mPopupWindow.dismiss();
+            }
+        });
+
+
+    }
+
+
+    /**
+     * 检测程序是否安装  百度地图高德地图
+     *
+     * @param packageName
+     * @return
+     */
+    private boolean isInstalled(String packageName) {
+        PackageManager manager = mActivity.getPackageManager();
+        //获取所有已安装程序的包信息
+        List<PackageInfo> installedPackages = manager.getInstalledPackages(0);
+        if (installedPackages != null) {
+            for (PackageInfo info : installedPackages) {
+                if (info.packageName.equals(packageName))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 跳转百度地图
+     */
+    private void goToBaiduMap(String location) {
+        if (!isInstalled("com.baidu.BaiduMap")) {
+            Toast.makeText(mActivity, "请先安装百度地图客户端", LENGTH_SHORT).show();
+            return;
+        }
+        Intent intent = new Intent();
+        intent.setData(Uri.parse("baidumap://map/navi?query=" + location + "&src=" + getPackageName()));
+        startActivity(intent); // 启动调用
+    }
+
+
+    /**
+     * 跳转高德地图
+     */
+    private void goToGaodeMap() {
+        if (!isInstalled("com.autonavi.minimap")) {
+
+            Toast.makeText(mActivity, "请先安装高德地图客户端", LENGTH_SHORT).show();
+            return;
+        }
+        //  LatLng endPoint = BD2GCJ(new LatLng(mLat, mLng));//坐标转换
+     /*   StringBuffer stringBuffer = new StringBuffer("androidamap://navi?sourceApplication=").append("amap");
+        stringBuffer.append("&lat=").append(endPoint.latitude)
+                .append("&lon=").append(endPoint.longitude).append("&keywords=" + mAddressStr)
+                .append("&dev=").append(0)
+                .append("&style=").append(2);*/
+        String uri = "amapuri://route/plan/?sname=" + address_my + "&dname=" + address + "&dev=0&t=0";
+        Intent intent = new Intent("android.intent.action.VIEW", Uri.parse(uri));
+        intent.setPackage("com.autonavi.minimap");
+        startActivity(intent);
     }
 }
