@@ -208,6 +208,7 @@ public class WalletActivity extends BaseActivity<WalletPresenter, WalletModel> i
         switch (name) {
             case "GetUserInfoList":
                 mPresenter.GetUserInfoList(userId, "1");
+                mPresenter.ToBepresent(userId,"0","0","0");
                 break;
         }
     }

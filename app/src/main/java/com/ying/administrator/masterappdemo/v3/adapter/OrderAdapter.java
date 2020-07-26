@@ -65,19 +65,17 @@ public class OrderAdapter extends BaseQuickAdapter<WorkOrder.DataBean, BaseViewH
             helper.setTextColor(R.id.tv_type, Color.parseColor("#01B1D2"));
         }
         // FIXME: 2020-07-22 有配件时展示配件审核状态
-        if (item.getOrderAccessroyDetail().size()>0){
-            tv_review.setVisibility(View.VISIBLE);
-            if ("0".equals(item.getAccessoryAndServiceApplyState())){
-                tv_review.setText("待审核");
-                tv_review.setTextColor(Color.parseColor("#01B1D3"));
-            }else if ("1".equals(item.getAccessoryAndServiceApplyState())){
-                tv_review.setText("审核通过");
-                tv_review.setTextColor(Color.BLACK);
-            }else{
-                tv_review.setText("审核拒绝");
-                tv_review.setTextColor(Color.RED);
-            }
-        }else {
+        tv_review.setVisibility(View.VISIBLE);
+        if ("0".equals(item.getAccessoryAndServiceApplyState())){
+            tv_review.setText("待审核");
+            tv_review.setTextColor(Color.parseColor("#01B1D3"));
+        }else if ("1".equals(item.getAccessoryAndServiceApplyState())){
+            tv_review.setText("审核通过");
+            tv_review.setTextColor(Color.BLACK);
+        }else if("-1".equals(item.getAccessoryAndServiceApplyState())){
+            tv_review.setText("审核拒绝");
+            tv_review.setTextColor(Color.RED);
+        }else{
             tv_review.setVisibility(View.GONE);
         }
 
