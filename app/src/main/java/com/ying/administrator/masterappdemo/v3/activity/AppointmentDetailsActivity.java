@@ -45,7 +45,6 @@ import com.amap.api.services.geocoder.GeocodeSearch;
 import com.amap.api.services.geocoder.RegeocodeResult;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ethanhua.skeleton.Skeleton;
 import com.ethanhua.skeleton.SkeletonScreen;
@@ -53,18 +52,17 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
-import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.AddOrderSignInRecrodResult;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.GetBrandWithCategory;
 import com.ying.administrator.masterappdemo.entity.SubUserInfo;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.WebActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Redeploy_Adapter;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.util.calendarutil.CalendarEvent;
 import com.ying.administrator.masterappdemo.util.calendarutil.CalendarProviderManager;
+import com.ying.administrator.masterappdemo.v3.adapter.ProdAdapter;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.AppointmentDetailsPresenter;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.AppointmentDetailsContract;
 import com.ying.administrator.masterappdemo.v3.mvp.model.AppointmentDetailsModel;
@@ -89,10 +87,12 @@ import cn.jpush.android.api.JPushInterface;
 import io.reactivex.functions.Consumer;
 
 import static android.widget.Toast.LENGTH_SHORT;
+
 /**
  * 工单详情
  */
-public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsPresenter, AppointmentDetailsModel> implements View.OnClickListener, AppointmentDetailsContract.View,GeocodeSearch.OnGeocodeSearchListener {
+public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsPresenter, AppointmentDetailsModel> implements View.OnClickListener, AppointmentDetailsContract.View, GeocodeSearch.OnGeocodeSearchListener {
+
     @BindView(R.id.iv_back)
     ImageView mIvBack;
     @BindView(R.id.tv_title)
@@ -115,54 +115,38 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
     TextView mTvBillingTime;
     @BindView(R.id.tv_copy)
     TextView mTvCopy;
-    @BindView(R.id.tv_description)
-    TextView mTvDescription;
     @BindView(R.id.tv_name)
     TextView mTvName;
     @BindView(R.id.tv_address)
     TextView mTvAddress;
+    @BindView(R.id.ll_telephone)
+    LinearLayout mLlTelephone;
+    @BindView(R.id.tv_distance)
+    TextView mTvDistance;
     @BindView(R.id.tv_change_address)
     TextView mTvChangeAddress;
     @BindView(R.id.ll_change_address)
     LinearLayout mLlChangeAddress;
-    @BindView(R.id.tv_platform_price)
-    TextView mTvPlatformPrice;
-    @BindView(R.id.ll_platform_price)
-    LinearLayout mLlPlatformPrice;
-    @BindView(R.id.iv_picture)
-    ImageView mIvPicture;
-    @BindView(R.id.tv_product_name)
-    TextView mTvProductName;
-    @BindView(R.id.tv_specifications)
-    TextView mTvSpecifications;
-    @BindView(R.id.tv_maintenance_information)
-    TextView mTvMaintenanceInformation;
-    @BindView(R.id.ll_maintenance_information)
-    LinearLayout mLlMaintenanceInformation;
+    @BindView(R.id.ll_not_available)
+    LinearLayout mLlNotAvailable;
+    @BindView(R.id.rv_prods)
+    RecyclerView mRvProds;
+    @BindView(R.id.ll_apply_for_remote_fee)
+    LinearLayout mLlApplyForRemoteFee;
     @BindView(R.id.ll_call)
     LinearLayout mLlCall;
     @BindView(R.id.tv_success)
     TextView mTvSuccess;
     @BindView(R.id.tv_cancel)
     TextView mTvCancel;
-    @BindView(R.id.ll_reservation)
-    LinearLayout mLlReservation;
-    @BindView(R.id.tv_reservation)
-    TextView mTvReservation;
-    @BindView(R.id.ll_telephone)
-    LinearLayout mLlTelephone;
-    @BindView(R.id.tv_distance)
-    TextView mTvDistance;
-    @BindView(R.id.tv_brand)
-    TextView mTvBrand;
-    @BindView(R.id.ll_not_available)
-    LinearLayout mLlNotAvailable;
     @BindView(R.id.tv_transfer)
     TextView mTvTransfer;
+    @BindView(R.id.tv_reservation)
+    TextView mTvReservation;
+    @BindView(R.id.ll_reservation)
+    LinearLayout mLlReservation;
     @BindView(R.id.RootView)
     FrameLayout mRootView;
-    @BindView(R.id.ll_apply_for_remote_fee)
-    LinearLayout mLlApplyForRemoteFee;
     private View under_review;
     private AlertDialog underReviewDialog;
     private long recommendedtime;
@@ -197,6 +181,8 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
     private LatLng la;
     private ArrayList<String> permissions;
     private int size;
+    private List<WorkOrder.OrderProductModelsBean> prodList;
+    private ProdAdapter prodAdapter;
 
     @Override
     protected int setLayoutId() {
@@ -246,6 +232,11 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
         } else {
             orderId = getIntent().getStringExtra("id");
         }
+
+        prodAdapter = new ProdAdapter(R.layout.prod_item, prodList);
+        mRvProds.setLayoutManager(new LinearLayoutManager(mActivity));
+        mRvProds.setAdapter(prodAdapter);
+
         mPresenter.GetOrderInfo(orderId);
         spUtils = SPUtils.getInstance("token");
         userID = spUtils.getString("userName");
@@ -263,7 +254,6 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
         mTvCopy.setOnClickListener(this);
         mLlNotAvailable.setOnClickListener(this);
         mTvTransfer.setOnClickListener(this);
-        mLlMaintenanceInformation.setOnClickListener(this);
         mLlApplyForRemoteFee.setOnClickListener(this);
         mTvSave.setOnClickListener(this);
     }
@@ -275,8 +265,8 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                 finish();
                 break;
             case R.id.tv_save:
-                signType="2";
-                if (data==null){
+                signType = "2";
+                if (data == null) {
                     return;
                 }
                 addressChangeLat(data.getAddress());
@@ -435,10 +425,10 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                 break;
             case R.id.ll_call:
 //                call("tel:" + "4006262365");
-                callPhoneView = LayoutInflater.from(mActivity).inflate(R.layout.dialog_call,null);
-                LinearLayout ll_customer_service=callPhoneView.findViewById(R.id.ll_customer_service);
-                LinearLayout ll_technology=callPhoneView.findViewById(R.id.ll_technology);
-                TextView tv_cancel=callPhoneView.findViewById(R.id.tv_cancel);
+                callPhoneView = LayoutInflater.from(mActivity).inflate(R.layout.dialog_call, null);
+                LinearLayout ll_customer_service = callPhoneView.findViewById(R.id.ll_customer_service);
+                LinearLayout ll_technology = callPhoneView.findViewById(R.id.ll_technology);
+                TextView tv_cancel = callPhoneView.findViewById(R.id.tv_cancel);
                 tv_cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -456,10 +446,10 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                 ll_technology.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (technologyPhone==null){
+                        if (technologyPhone == null) {
                             ToastUtils.showShort("暂无技术电话");
-                        }else {
-                            call("tel:"+technologyPhone);
+                        } else {
+                            call("tel:" + technologyPhone);
                         }
                         mPopupWindow.dismiss();
                     }
@@ -482,14 +472,14 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                 MyUtils.setWindowAlpa(mActivity, true);
                 break;
             case R.id.tv_copy:
-                myClip = ClipData.newPlainText("", "下单厂家："+data.getInvoiceName() + "\n"
-                        +"工单号："+data.getOrderID() + "\n"
-                        +"下单时间："+data.getCreateDate() + "\n"
-                        +"用户信息："+data.getUserName()+" "+data.getPhone() + "\n"
-                        +"用户地址："+data.getAddress() + "\n"
-                        +"产品信息："+data.getProductType() + "\n"
-                        +"售后类型："+data.getGuaranteeText() + "\n"
-                        +"服务类型："+data.getTypeName()
+                myClip = ClipData.newPlainText("", "下单厂家：" + data.getInvoiceName() + "\n"
+                        + "工单号：" + data.getOrderID() + "\n"
+                        + "下单时间：" + data.getCreateDate() + "\n"
+                        + "用户信息：" + data.getUserName() + " " + data.getPhone() + "\n"
+                        + "用户地址：" + data.getAddress() + "\n"
+                        + "产品信息：" + data.getProductType() + "\n"
+                        + "售后类型：" + data.getGuaranteeText() + "\n"
+                        + "服务类型：" + data.getTypeName()
                 );
                 myClipboard.setPrimaryClip(myClip);
                 ToastUtils.showShort("复制成功");
@@ -590,12 +580,6 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                     }
                 });
                 break;
-            case R.id.ll_maintenance_information:
-                Intent intent2 = new Intent(mActivity, WebActivity.class);
-                intent2.putExtra("Url", content.getCourseCount());
-                intent2.putExtra("Title", content.getBrandName() + content.getProductTypeName());
-                startActivity(intent2);
-                break;
             case R.id.ll_apply_for_remote_fee:
                 Intent intent1 = new Intent(mActivity, ApplyFeeActivity.class);
                 intent1.putExtra("beyond", data.getDistance());
@@ -643,7 +627,7 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
         timeSelector.show();
     }
 
-    private String signType="1"; //1.自动签到  2.手动签到
+    private String signType = "1"; //1.自动签到  2.手动签到
     //声明定位回调监听器
     public AMapLocationListener mLocationListener = new AMapLocationListener() {
         @Override
@@ -655,13 +639,13 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                     CircleOptions option = new CircleOptions();
                     option.center(new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude()));
                     option.radius(500);
-                    MapView mapView=new MapView(mActivity);
-                    Circle circle=mapView.getMap().addCircle(option);
-                    if(circle.contains(la)){
-                        mPresenter.AddOrderSignInRecrod(userID, signType,orderId);
-                    }else{
-                        if ("2".equals(signType)){
-                            MyUtils.showToast(mActivity,"请到用户家附近签到");
+                    MapView mapView = new MapView(mActivity);
+                    Circle circle = mapView.getMap().addCircle(option);
+                    if (circle.contains(la)) {
+                        mPresenter.AddOrderSignInRecrod(userID, signType, orderId);
+                    } else {
+                        if ("2".equals(signType)) {
+                            MyUtils.showToast(mActivity, "请到用户家附近签到");
                         }
                     }
                 } else {
@@ -674,6 +658,7 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
             }
         }
     };
+
     public void Location() {
         //初始化定位
         mLocationClient = new AMapLocationClient(mActivity);
@@ -699,8 +684,9 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
         //启动定位
         mLocationClient.startLocation();
     }
+
     //地理编码（地址转坐标）
-    private void addressChangeLat(String addr){
+    private void addressChangeLat(String addr) {
         geocoderSearch = new GeocodeSearch(this);
         geocoderSearch.setOnGeocodeSearchListener(this);
         // name表示地址，第二个参数表示查询城市，中文或者中文全拼，citycode、adcode
@@ -717,10 +703,10 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
-        if(i==1000){
-            double latitude=geocodeResult.getGeocodeAddressList().get(0).getLatLonPoint().getLatitude();
-            double longitude=geocodeResult.getGeocodeAddressList().get(0).getLatLonPoint().getLongitude();
-            la =new LatLng(latitude,longitude);
+        if (i == 1000) {
+            double latitude = geocodeResult.getGeocodeAddressList().get(0).getLatLonPoint().getLatitude();
+            double longitude = geocodeResult.getGeocodeAddressList().get(0).getLatLonPoint().getLongitude();
+            la = new LatLng(latitude, longitude);
             if (requestLocationPermissions()) {
                 Location();
             } else {
@@ -729,6 +715,7 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
         }
 
     }
+
     //请求定位权限
     private boolean requestLocationPermissions() {
         if (Build.VERSION.SDK_INT >= 23) {
@@ -744,6 +731,7 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
         }
         return true;
     }
+
     //申请相关权限:返回监听
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -767,22 +755,26 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
 
         }
     }
+
     @Override
     public void GetOrderInfo(BaseResult<WorkOrder.DataBean> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
                 if (baseResult.getData() != null) {
                     data = baseResult.getData();
-                    if ("0".equals(data.getIsSignIn())){//未签到
+                    if (data.getOrderProductModels()!=null){
+                        prodList =data.getOrderProductModels();
+                        prodAdapter.setNewData(prodList);
+                    }
+                    if ("0".equals(data.getIsSignIn())) {//未签到
                         mTvSave.setVisibility(View.VISIBLE);
                         mTvSave.setText("签到");
-                        signType="1";
+                        signType = "1";
                         addressChangeLat(data.getAddress());
-                    }else{
+                    } else {
                         mTvSave.setVisibility(View.GONE);
                     }
                     technologyPhone = data.getArtisanPhone();
-                    mPresenter.GetBrandWithCategory2(data.getUserID(), data.getBrandID(), data.getCategoryID(), data.getSubCategoryID(), data.getProductTypeID(), "1", "999");
                     if ("Y".equals(data.getExtra()) && !"0".equals(data.getExtraTime())) {
                         mTvState.setText(data.getGuaranteeText() + "/" + data.getTypeName() + "/加急");
                     } else {
@@ -834,29 +826,27 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                     }
 
                     mTvBillingTime.setText(data.getCreateDate().replace("T", " "));
-                    mTvDescription.setText("描述：" + data.getMemo());
                     mTvName.setText(data.getUserName() + "    " + data.getPhone());
                     mTvAddress.setText(data.getAddress());
                     mTvDistance.setText("线路里程 " + data.getDistance() + "公里");
-                    mTvBrand.setText(data.getBrandName() + "  " + data.getProductType());
 
                     if ("9".equals(data.getState())) {
                         mLlReservation.setVisibility(View.GONE);
                     } else {
                         mLlReservation.setVisibility(View.VISIBLE);
                     }
-                    if (data.getOrderAccessroyDetail().size()==0){
+                    if (data.getOrderAccessroyDetail().size() == 0) {
                         if (Double.parseDouble(data.getDistance()) > 0 && !"999".equals(data.getDistance())) {
                             mLlApplyForRemoteFee.setVisibility(View.VISIBLE);
                         } else {
                             mLlApplyForRemoteFee.setVisibility(View.GONE);
                         }
-                    }else {
+                    } else {
                         mLlApplyForRemoteFee.setVisibility(View.GONE);
                     }
 
                 }
-
+                skeletonScreen.hide();
                 break;
         }
     }
@@ -918,6 +908,8 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                         Toast.makeText(mActivity, "没有权限", LENGTH_SHORT).show();
                     }
 
+                } else {
+                    MyUtils.showToast(mActivity, (String) baseResult.getData().getItem2());
                 }
         }
     }
@@ -998,51 +990,20 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
 
     @Override
     public void GetBrandWithCategory2(BaseResult<Data<List<GetBrandWithCategory>>> baseResult) {
-        switch (baseResult.getStatusCode()) {
-            case 200:
-                list = baseResult.getData().getItem2();
-                if (list.size() == 0) {
-                    mLlMaintenanceInformation.setVisibility(View.GONE);
-                } else {
-
-                    for (int i = 0; i < list.size(); i++) {
-                        if (list.get(i).getCourseCount() != null) {
-                            mLlMaintenanceInformation.setVisibility(View.VISIBLE);
-                            mTvProductName.setText(list.get(i).getBrandName() + "  " + list.get(i).getProductTypeName());
-                            if (list.get(i).getImge() == null) {
-                                Glide.with(mActivity)
-                                        .load(R.drawable.v3_zanwu)
-                                        .into(mIvPicture);
-                            } else {
-                                Glide.with(mActivity)
-                                        .load(Config.Leave_product_URL + list.get(i).getImge())
-                                        .into(mIvPicture);
-                            }
-                            content = list.get(i);
-                            break;
-                        } else {
-                            mLlMaintenanceInformation.setVisibility(View.GONE);
-                        }
-                    }
-
-                }
-                skeletonScreen.hide();
-                break;
-        }
     }
 
     @Override
     public void AddOrderSignInRecrod(AddOrderSignInRecrodResult baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData().isResult()){
-                    if ("2".equals(signType)){
-                        MyUtils.showToast(mActivity,"签到成功");
+                if (baseResult.getData().isResult()) {
+                    if ("2".equals(signType)) {
+                        MyUtils.showToast(mActivity, "签到成功");
                     }
                     mPresenter.GetOrderInfo(orderId);
-                }else{
-                    if ("2".equals(signType)){
-                        MyUtils.showToast(mActivity,"签到失败"+baseResult.getData().getMsg());
+                } else {
+                    if ("2".equals(signType)) {
+                        MyUtils.showToast(mActivity, "签到失败" + baseResult.getData().getMsg());
                     }
                 }
                 break;

@@ -16,6 +16,9 @@ import java.util.List;
 public class OrderAdapter extends BaseQuickAdapter<WorkOrder.DataBean, BaseViewHolder> {
     private String type;
     private String userId;
+    private List<WorkOrder.OrderProductModelsBean> models;
+    private WorkOrder.OrderProductModelsBean model;
+
     public OrderAdapter(int layoutResId, @Nullable List<WorkOrder.DataBean> data,String type,String userId) {
         super(layoutResId, data);
         this.type=type;
@@ -24,6 +27,17 @@ public class OrderAdapter extends BaseQuickAdapter<WorkOrder.DataBean, BaseViewH
 
     @Override
     protected void convert(BaseViewHolder helper, WorkOrder.DataBean item) {
+        models =item.getOrderProductModels();
+        String name="";
+        if (models!=null){
+            for (int i = 0; i < models.size(); i++) {
+                model =models.get(i);
+                name+=model.getSubCategoryName()+"   x"+model.getNum()+"、";
+            }
+        }
+        if (name.contains("、")){
+            name=name.substring(0,name.lastIndexOf("、"));
+        }
         helper.addOnClickListener(R.id.tv_orders)
                 .addOnClickListener(R.id.iv_copy);
         TextView tv_type = helper.getView(R.id.tv_type);
@@ -31,7 +45,7 @@ public class OrderAdapter extends BaseQuickAdapter<WorkOrder.DataBean, BaseViewH
         TextView tv_review=helper.getView(R.id.tv_review);
         tv_orders.setVisibility(View.GONE);
         helper.setText(R.id.tv_time, MyUtils.getTimebefore(item.getCreateDate()))
-                .setText(R.id.tv_name, item.getProductType())
+                .setText(R.id.tv_name, name)
                 .setText(R.id.tv_location, "距离:" + item.getDistance() + "Km")
                 .setText(R.id.tv_malfunction, "故障:" + item.getMemo())
                 .setText(R.id.tv_address, "地址:" + item.getAddress())

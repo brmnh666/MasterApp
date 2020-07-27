@@ -12,6 +12,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
@@ -41,7 +43,6 @@ import com.amap.api.services.geocoder.GeocodeSearch;
 import com.amap.api.services.geocoder.RegeocodeResult;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.bumptech.glide.Glide;
 import com.ethanhua.skeleton.Skeleton;
 import com.ethanhua.skeleton.SkeletonScreen;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -50,7 +51,6 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
-import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.AddOrderSignInRecrodResult;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.GetBrandWithCategory;
@@ -59,11 +59,11 @@ import com.ying.administrator.masterappdemo.mvp.ui.activity.ComplaintActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.CompleteWorkOrderActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.MessageActivity2;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.ScanActivity;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.WebActivity;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.util.SingleClick;
 import com.ying.administrator.masterappdemo.util.calendarutil.CalendarEvent;
 import com.ying.administrator.masterappdemo.util.calendarutil.CalendarProviderManager;
+import com.ying.administrator.masterappdemo.v3.adapter.ProdAdapter;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.ServingDetailPresenter;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.ServingDetailContract;
 import com.ying.administrator.masterappdemo.v3.mvp.model.ServingDetailModel;
@@ -93,6 +93,7 @@ import static com.ying.administrator.masterappdemo.util.MyUtils.showToast;
  * 工单详情
  */
 public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, ServingDetailModel> implements View.OnClickListener, ServingDetailContract.View, GeocodeSearch.OnGeocodeSearchListener {
+
     @BindView(R.id.iv_back)
     ImageView mIvBack;
     @BindView(R.id.tv_title)
@@ -105,6 +106,10 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
     TextView mTvTicketTracking;
     @BindView(R.id.tv_reservation_again)
     TextView mTvReservationAgain;
+    @BindView(R.id.tv_tickets)
+    TextView mTvTickets;
+    @BindView(R.id.tv_complaint)
+    TextView mTvComplaint;
     @BindView(R.id.tv_add_record)
     TextView mTvAddRecord;
     @BindView(R.id.tv_sign_in)
@@ -121,46 +126,12 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
     TextView mTvPayment;
     @BindView(R.id.tv_billing_time)
     TextView mTvBillingTime;
+    @BindView(R.id.tv_appointment)
+    TextView mTvAppointment;
+    @BindView(R.id.ll_reservation_time)
+    LinearLayout mLlReservationTime;
     @BindView(R.id.tv_copy)
     TextView mTvCopy;
-    @BindView(R.id.tv_description)
-    TextView mTvDescription;
-    @BindView(R.id.tv_name)
-    TextView mTvName;
-    @BindView(R.id.tv_address)
-    TextView mTvAddress;
-    @BindView(R.id.ll_telephone)
-    LinearLayout mLlTelephone;
-    @BindView(R.id.tv_change_address)
-    TextView mTvChangeAddress;
-    @BindView(R.id.ll_change_address)
-    LinearLayout mLlChangeAddress;
-    @BindView(R.id.tv_platform_price)
-    TextView mTvPlatformPrice;
-    @BindView(R.id.ll_platform_price)
-    LinearLayout mLlPlatformPrice;
-    @BindView(R.id.iv_picture)
-    ImageView mIvPicture;
-    @BindView(R.id.tv_product_name)
-    TextView mTvProductName;
-    @BindView(R.id.tv_specifications)
-    TextView mTvSpecifications;
-    @BindView(R.id.tv_maintenance_information)
-    TextView mTvMaintenanceInformation;
-    @BindView(R.id.ll_maintenance_information)
-    LinearLayout mLlMaintenanceInformation;
-    @BindView(R.id.ll_call)
-    LinearLayout mLlCall;
-    @BindView(R.id.tv_success)
-    TextView mTvSuccess;
-    @BindView(R.id.ll_reservation)
-    LinearLayout mLlReservation;
-    @BindView(R.id.tv_upload)
-    TextView mTvUpload;
-    @BindView(R.id.tv_distance)
-    TextView mTvDistance;
-    @BindView(R.id.ll_accessories_details)
-    LinearLayout mLlAccessoriesDetails;
     @BindView(R.id.tv_yn)
     TextView mTvYn;
     @BindView(R.id.tv_addressback)
@@ -175,24 +146,36 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
     LinearLayout mLlAddressInfo;
     @BindView(R.id.ll_old_accessory)
     LinearLayout mLlOldAccessory;
-    @BindView(R.id.tv_return)
-    TextView mTvReturn;
-    @BindView(R.id.tv_tickets)
-    TextView mTvTickets;
-    @BindView(R.id.tv_band)
-    TextView mTvBand;
-    @BindView(R.id.ll_band)
-    LinearLayout mLlBand;
-    @BindView(R.id.tv_appointment)
-    TextView mTvAppointment;
-    @BindView(R.id.tv_confirm_receipt)
-    TextView mTvConfirmReceipt;
+    @BindView(R.id.tv_name)
+    TextView mTvName;
+    @BindView(R.id.tv_address)
+    TextView mTvAddress;
+    @BindView(R.id.ll_telephone)
+    LinearLayout mLlTelephone;
+    @BindView(R.id.tv_distance)
+    TextView mTvDistance;
+    @BindView(R.id.tv_change_address)
+    TextView mTvChangeAddress;
+    @BindView(R.id.ll_change_address)
+    LinearLayout mLlChangeAddress;
     @BindView(R.id.ll_not_available)
     LinearLayout mLlNotAvailable;
-    @BindView(R.id.ll_reservation_time)
-    LinearLayout mLlReservationTime;
-    @BindView(R.id.tv_complaint)
-    TextView mTvComplaint;
+    @BindView(R.id.ll_accessories_details)
+    LinearLayout mLlAccessoriesDetails;
+    @BindView(R.id.rv_prods)
+    RecyclerView mRvProds;
+    @BindView(R.id.ll_call)
+    LinearLayout mLlCall;
+    @BindView(R.id.tv_success)
+    TextView mTvSuccess;
+    @BindView(R.id.ll_reservation)
+    LinearLayout mLlReservation;
+    @BindView(R.id.tv_upload)
+    TextView mTvUpload;
+    @BindView(R.id.tv_return)
+    TextView mTvReturn;
+    @BindView(R.id.tv_confirm_receipt)
+    TextView mTvConfirmReceipt;
     @BindView(R.id.RootView)
     FrameLayout mRootView;
     private String orderId;
@@ -232,6 +215,8 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
     private String userId;
     private View popupWindow_view;
     private String FilePath;
+    private List<WorkOrder.OrderProductModelsBean> prodList=new ArrayList<>();
+    private ProdAdapter prodAdapter;
 
     @Override
     protected int setLayoutId() {
@@ -284,8 +269,14 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
 
         type = getIntent().getStringExtra("type");
 //        showProgress();
+
+        prodAdapter = new ProdAdapter(R.layout.prod_item, prodList);
+        mRvProds.setLayoutManager(new LinearLayoutManager(mActivity));
+        mRvProds.setAdapter(prodAdapter);
+
         mPresenter.GetOrderInfo(orderId);
         myClipboard = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
+
     }
 
     @Override
@@ -303,16 +294,16 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
         mTvConfirmReceipt.setOnClickListener(this);
         mLlNotAvailable.setOnClickListener(this);
         mTvComplaint.setOnClickListener(this);
-        mLlMaintenanceInformation.setOnClickListener(this);
         mTvSave.setOnClickListener(this);
     }
+
     @SingleClick
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_save://手动签到
-                signType="2";
-                if (data==null){
+                signType = "2";
+                if (data == null) {
                     return;
                 }
                 addressChangeLat(data.getAddress());
@@ -329,7 +320,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                     intent.putExtra("OrderID", data.getOrderID());
                     startActivity(intent);
                 } else {
-                    if ("0".equals(data.getState())||"31".equals(data.getState())) {//0系统配件待审核 31自定义配件待审核
+                    if ("0".equals(data.getState()) || "31".equals(data.getState())) {//0系统配件待审核 31自定义配件待审核
                         puchsh_view = LayoutInflater.from(mActivity).inflate(R.layout.v3_dialog_prompt, null);
                         TextView title = puchsh_view.findViewById(R.id.title);
                         TextView message = puchsh_view.findViewById(R.id.message);
@@ -378,10 +369,10 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                 break;
             case R.id.ll_call:
 //                call("tel:" + "4006262365");
-                callPhoneView = LayoutInflater.from(mActivity).inflate(R.layout.dialog_call,null);
-                LinearLayout ll_customer_service=callPhoneView.findViewById(R.id.ll_customer_service);
-                LinearLayout ll_technology=callPhoneView.findViewById(R.id.ll_technology);
-                TextView tv_cancel=callPhoneView.findViewById(R.id.tv_cancel);
+                callPhoneView = LayoutInflater.from(mActivity).inflate(R.layout.dialog_call, null);
+                LinearLayout ll_customer_service = callPhoneView.findViewById(R.id.ll_customer_service);
+                LinearLayout ll_technology = callPhoneView.findViewById(R.id.ll_technology);
+                TextView tv_cancel = callPhoneView.findViewById(R.id.tv_cancel);
                 tv_cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -399,10 +390,10 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                 ll_technology.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (technologyPhone==null){
+                        if (technologyPhone == null) {
                             ToastUtils.showShort("暂无技术电话");
-                        }else {
-                            call("tel:"+technologyPhone);
+                        } else {
+                            call("tel:" + technologyPhone);
                         }
                         mPopupWindow.dismiss();
                     }
@@ -521,14 +512,14 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                         });
                 break;
             case R.id.tv_copy:
-                myClip = ClipData.newPlainText("", "下单厂家："+data.getInvoiceName() + "\n"
-                        +"工单号："+data.getOrderID() + "\n"
-                        +"下单时间："+data.getCreateDate() + "\n"
-                        +"用户信息："+data.getUserName()+" "+data.getPhone() + "\n"
-                        +"用户地址："+data.getAddress() + "\n"
-                        +"产品信息："+data.getProductType() + "\n"
-                        +"售后类型："+data.getGuaranteeText() + "\n"
-                        +"服务类型："+data.getTypeName()
+                myClip = ClipData.newPlainText("", "下单厂家：" + data.getInvoiceName() + "\n"
+                        + "工单号：" + data.getOrderID() + "\n"
+                        + "下单时间：" + data.getCreateDate() + "\n"
+                        + "用户信息：" + data.getUserName() + " " + data.getPhone() + "\n"
+                        + "用户地址：" + data.getAddress() + "\n"
+                        + "产品信息：" + data.getProductType() + "\n"
+                        + "售后类型：" + data.getGuaranteeText() + "\n"
+                        + "服务类型：" + data.getTypeName()
                 );
                 myClipboard.setPrimaryClip(myClip);
                 ToastUtils.showShort("复制成功");
@@ -573,12 +564,12 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                 intent2.putExtra("orderId", orderId);
                 startActivity(intent2);
                 break;
-            case R.id.ll_maintenance_information:
-                intent2 = new Intent(mActivity, WebActivity.class);
-                intent2.putExtra("Url", content.getCourseCount());
-                intent2.putExtra("Title", content.getBrandName() + content.getProductTypeName());
-                startActivity(intent2);
-                break;
+//            case R.id.ll_maintenance_information:
+//                intent2 = new Intent(mActivity, WebActivity.class);
+//                intent2.putExtra("Url", content.getCourseCount());
+//                intent2.putExtra("Title", content.getBrandName() + content.getProductTypeName());
+//                startActivity(intent2);
+//                break;
         }
     }
 
@@ -649,6 +640,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
         }
         MyUtils.setWindowAlpa(mActivity, true);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -684,7 +676,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
         timeSelector.show();
     }
 
-    private String signType="1"; //1.自动签到 2.手动签到
+    private String signType = "1"; //1.自动签到 2.手动签到
     //声明定位回调监听器
     public AMapLocationListener mLocationListener = new AMapLocationListener() {
         @Override
@@ -696,13 +688,13 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                     CircleOptions option = new CircleOptions();
                     option.center(new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude()));
                     option.radius(500);
-                    MapView mapView=new MapView(mActivity);
-                    Circle circle=mapView.getMap().addCircle(option);
-                    if(circle.contains(la)){
-                        mPresenter.AddOrderSignInRecrod(userId, signType,orderId);
-                    }else{
-                        if ("2".equals(signType)){
-                            MyUtils.showToast(mActivity,"请到用户家附近签到");
+                    MapView mapView = new MapView(mActivity);
+                    Circle circle = mapView.getMap().addCircle(option);
+                    if (circle.contains(la)) {
+                        mPresenter.AddOrderSignInRecrod(userId, signType, orderId);
+                    } else {
+                        if ("2".equals(signType)) {
+                            showToast(mActivity, "请到用户家附近签到");
                         }
                     }
                 } else {
@@ -715,6 +707,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
             }
         }
     };
+
     public void Location() {
         //初始化定位
         mLocationClient = new AMapLocationClient(mActivity);
@@ -740,8 +733,9 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
         //启动定位
         mLocationClient.startLocation();
     }
+
     //地理编码（地址转坐标）
-    private void addressChangeLat(String addr){
+    private void addressChangeLat(String addr) {
         geocoderSearch = new GeocodeSearch(this);
         geocoderSearch.setOnGeocodeSearchListener(this);
         // name表示地址，第二个参数表示查询城市，中文或者中文全拼，citycode、adcode
@@ -758,10 +752,10 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
-        if(i==1000){
-            double latitude=geocodeResult.getGeocodeAddressList().get(0).getLatLonPoint().getLatitude();
-            double longitude=geocodeResult.getGeocodeAddressList().get(0).getLatLonPoint().getLongitude();
-            la =new LatLng(latitude,longitude);
+        if (i == 1000) {
+            double latitude = geocodeResult.getGeocodeAddressList().get(0).getLatLonPoint().getLatitude();
+            double longitude = geocodeResult.getGeocodeAddressList().get(0).getLatLonPoint().getLongitude();
+            la = new LatLng(latitude, longitude);
             if (requestLocationPermissions()) {
                 Location();
             } else {
@@ -770,6 +764,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
         }
 
     }
+
     //请求定位权限
     private boolean requestLocationPermissions() {
         if (Build.VERSION.SDK_INT >= 23) {
@@ -785,6 +780,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
         }
         return true;
     }
+
     //申请相关权限:返回监听
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -800,7 +796,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                 if (size == grantResults.length) {//允许
                     Location();
                 } else {//拒绝
-                    MyUtils.showToast(mActivity, "相关权限未开启");
+                    showToast(mActivity, "相关权限未开启");
                 }
                 break;
             default:
@@ -808,23 +804,26 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
 
         }
     }
+
     @Override
     public void GetOrderInfo(BaseResult<WorkOrder.DataBean> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
                 if (baseResult.getData() != null) {
                     data = baseResult.getData();
-                    if ("0".equals(data.getIsSignIn())){//未签到
+                    if (data.getOrderProductModels()!=null){
+                        prodList=data.getOrderProductModels();
+                        prodAdapter.setNewData(prodList);
+                    }
+                    if ("0".equals(data.getIsSignIn())) {//未签到
                         mTvSave.setVisibility(View.VISIBLE);
                         mTvSave.setText("签到");
-                        signType="1";
+                        signType = "1";
                         addressChangeLat(data.getAddress());
-                    }else{
+                    } else {
                         mTvSave.setVisibility(View.GONE);
                     }
                     technologyPhone = data.getArtisanPhone();
-                    mPresenter.GetBrandWithCategory2(data.getUserID(), data.getBrandID(), data.getCategoryID(), data.getSubCategoryID(), data.getProductTypeID(), "1", "999");
-//                    mPresenter.GetBrandWithCategory2("17777777777","285","304","1043","1044","1","99");
                     if ("Y".equals(data.getExtra()) && !"0".equals(data.getExtraTime())) {
                         mTvState.setText(data.getGuaranteeText() + "/" + data.getTypeName() + "/加急");
                     } else {
@@ -859,7 +858,6 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                     }
 
                     mTvBillingTime.setText(data.getCreateDate().replace("T", " "));
-                    mTvDescription.setText("描述：" + data.getMemo());
                     mTvName.setText(data.getUserName() + "    " + data.getPhone());
                     mTvAddress.setText(data.getAddress());
                     mTvDistance.setText("线路里程 " + data.getDistance() + "公里");
@@ -917,9 +915,9 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                             mTvConfirmReceipt.setVisibility(View.VISIBLE);
                         } else {
                             // FIXME: 2020-07-15 有完结图片隐藏提交完结按钮
-                            if (data.getReturnaccessoryImg().size()>0||(!data.isApplicationAccessory()&&"0".equals(data.getState())&&"31".equals(data.getState()))){
+                            if (data.getReturnaccessoryImg().size() > 0 || (!data.isApplicationAccessory() && "0".equals(data.getState()) && "31".equals(data.getState()))) {
                                 mTvUpload.setVisibility(View.GONE);
-                            }else{
+                            } else {
                                 mTvUpload.setVisibility(View.VISIBLE);
                             }
                             mTvReturn.setVisibility(View.GONE);
@@ -929,13 +927,11 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                         }
                     }
 
-                    mTvBand.setText(data.getBrandName() + "  " + data.getProductType());
-
                     if ("安装".equals(data.getTypeName())) {
                         mTvUpload.setText("提交完结信息");
                         mTvUpload.setBackgroundResource(R.drawable.v3_copy_bg_shape);
                     } else {
-                        if ("0".equals(data.getState())||"31".equals(data.getState())) {//0系统配件待审核 31自定义配件待审核
+                        if ("0".equals(data.getState()) || "31".equals(data.getState())) {//0系统配件待审核 31自定义配件待审核
 //                            mTvUpload.setText("提交完结信息");
                             if ("pedding".equals(type)) {
                                 mTvUpload.setText("配件未到货");
@@ -972,7 +968,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
 
                     }
                 }
-//                hideProgress();
+                skeletonScreen.hide();
                 break;
         }
     }
@@ -1039,6 +1035,8 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                         Toast.makeText(mActivity, "没有权限", LENGTH_SHORT).show();
                     }
 
+                } else {
+                    showToast(mActivity, (String) baseResult.getData().getItem2());
                 }
         }
     }
@@ -1056,55 +1054,20 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
 
     @Override
     public void GetBrandWithCategory2(BaseResult<Data<List<GetBrandWithCategory>>> baseResult) {
-        switch (baseResult.getStatusCode()) {
-            case 200:
-                try{
-                    list = baseResult.getData().getItem2();
-                    if (list.size() == 0) {
-                        mLlMaintenanceInformation.setVisibility(View.GONE);
-                    } else {
-//                    mLlMaintenanceInformation.setVisibility(View.VISIBLE);
-                        for (int i = 0; i < list.size(); i++) {
-                            if (list.get(i).getCourseCount() != null) {
-                                mLlMaintenanceInformation.setVisibility(View.VISIBLE);
-                                mTvProductName.setText(list.get(i).getBrandName() + "  " + list.get(i).getProductTypeName());
-                                if (list.get(i).getImge() == null) {
-                                    Glide.with(mActivity)
-                                            .load(R.drawable.v3_zanwu)
-                                            .into(mIvPicture);
-                                } else {
-                                    Glide.with(mActivity)
-                                            .load(Config.Leave_product_URL + list.get(i).getImge())
-                                            .into(mIvPicture);
-                                }
-                                content = list.get(i);
-                                break;
-                            } else {
-                                mLlMaintenanceInformation.setVisibility(View.GONE);
-                            }
-                        }
-
-                    }
-                }catch (Exception ex){
-                    return;
-                }
-                skeletonScreen.hide();
-                break;
-        }
     }
 
     @Override
     public void AddOrderSignInRecrod(AddOrderSignInRecrodResult baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData().isResult()){
-                    if ("2".equals(signType)){
-                        MyUtils.showToast(mActivity,"签到成功");
+                if (baseResult.getData().isResult()) {
+                    if ("2".equals(signType)) {
+                        showToast(mActivity, "签到成功");
                     }
                     mPresenter.GetOrderInfo(orderId);
-                }else{
-                    if ("2".equals(signType)){
-                        MyUtils.showToast(mActivity,"签到失败"+baseResult.getData().getMsg());
+                } else {
+                    if ("2".equals(signType)) {
+                        showToast(mActivity, "签到失败" + baseResult.getData().getMsg());
                     }
                 }
                 break;

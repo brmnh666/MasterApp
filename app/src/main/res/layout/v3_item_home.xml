@@ -138,6 +138,7 @@
                 android:textSize="14sp"/>
         </RelativeLayout>
         <TextView
+            android:visibility="gone"
             android:id="@+id/tv_malfunction"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
