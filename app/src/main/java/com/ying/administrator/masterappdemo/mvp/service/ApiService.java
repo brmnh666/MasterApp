@@ -1273,6 +1273,6 @@ public interface ApiService {
      * @param json
      * @return
      */
-    @POST("master/AppOrderAccessory/Application")
+    @POST("OrderRevision/AddAccessory")
     Observable<ApplicationResult> Application(@Body RequestBody json);
 }

@@ -75,6 +75,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -587,8 +588,17 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View view) {
-                intent = new Intent(mActivity, ApplyAccActivity.class);
+                if (data.getOrderProductModels()==null){
+                    intent = new Intent(mActivity, ApplyAccActivity.class);
+                }else{
+                    if (data.getOrderProductModels().size()==1){//只有一个产品
+                        intent = new Intent(mActivity, ApplyAccActivity.class);
+                    }else{
+                        intent = new Intent(mActivity, ApplyAcc_ProdsActivity.class);
+                    }
+                }
                 intent.putExtra("OrderID", data.getOrderID());
+                intent.putExtra("list_prod", (Serializable) data.getOrderProductModels());
                 intent.putExtra("SubCategoryID", data.getProductTypeID());
                 intent.putExtra("cj_or_zg", "厂寄");
                 startActivity(intent);
@@ -599,8 +609,17 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View view) {
-                intent = new Intent(mActivity, ApplyAccActivity.class);
+                if (data.getOrderProductModels()==null){
+                    intent = new Intent(mActivity, ApplyAccActivity.class);
+                }else{
+                    if (data.getOrderProductModels().size()==1){//只有一个产品
+                        intent = new Intent(mActivity, ApplyAccActivity.class);
+                    }else{
+                        intent = new Intent(mActivity, ApplyAcc_ProdsActivity.class);
+                    }
+                }
                 intent.putExtra("OrderID", data.getOrderID());
+                intent.putExtra("list_prod", (Serializable) data.getOrderProductModels());
                 intent.putExtra("SubCategoryID", data.getProductTypeID());
                 intent.putExtra("cj_or_zg", "自购");
                 startActivity(intent);

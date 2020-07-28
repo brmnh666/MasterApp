@@ -2,11 +2,12 @@ package com.ying.administrator.masterappdemo.v3.bean;
 
 public class ApplicationResult {
 
+
     /**
      * StatusCode : 200
      * Info : 请求(或处理)成功
      * Count : 0
-     * Data : {"code":0,"msg":"success","count":0,"data":null,"errcode":null}
+     * Data : {"status":false,"msg":"参数错误"}
      */
 
     private int StatusCode;
@@ -48,25 +49,19 @@ public class ApplicationResult {
 
     public static class DataBean {
         /**
-         * code : 0
-         * msg : success
-         * count : 0
-         * data : null
-         * errcode : null
+         * status : false
+         * msg : 参数错误
          */
 
-        private int code;
+        private boolean status;
         private String msg;
-        private int count;
-        private Object data;
-        private Object errcode;
 
-        public int getCode() {
-            return code;
+        public boolean isStatus() {
+            return status;
         }
 
-        public void setCode(int code) {
-            this.code = code;
+        public void setStatus(boolean status) {
+            this.status = status;
         }
 
         public String getMsg() {
@@ -75,30 +70,6 @@ public class ApplicationResult {
 
         public void setMsg(String msg) {
             this.msg = msg;
-        }
-
-        public int getCount() {
-            return count;
-        }
-
-        public void setCount(int count) {
-            this.count = count;
-        }
-
-        public Object getData() {
-            return data;
-        }
-
-        public void setData(Object data) {
-            this.data = data;
-        }
-
-        public Object getErrcode() {
-            return errcode;
-        }
-
-        public void setErrcode(Object errcode) {
-            this.errcode = errcode;
         }
     }
 }

@@ -106,6 +106,8 @@ public class ApplyAccActivity extends BaseActivity<ApplyAccPresenter, ApplyAccMo
     private SPUtils spUtils;
     private String UserID;
     private String sendAddr;
+    private String prodName;
+    private String prodID;
 
     @Override
     protected int setLayoutId() {
@@ -126,16 +128,19 @@ public class ApplyAccActivity extends BaseActivity<ApplyAccPresenter, ApplyAccMo
         mRvAcc.setAdapter(ac_list_adapter);
 
         cj_or_zg = getIntent().getStringExtra("cj_or_zg");
+        prodName = getIntent().getStringExtra("prodName");
+        prodID = getIntent().getStringExtra("prodID");
         if ("厂寄".equals(cj_or_zg)) {
-            mTvTitle.setText("厂家寄件申请");
+            mTvTitle.setText("厂家寄件申请("+prodName+")");
             mLlAddr.setVisibility(View.VISIBLE);
             mPresenter.GetAccountAddress(UserID);
         } else {
-            mTvTitle.setText("师傅自购件申请");
+            mTvTitle.setText("师傅自购件申请("+prodName+")");
             mLlAddr.setVisibility(View.GONE);
         }
         OrderID = getIntent().getStringExtra("OrderID");
         SubCategoryID = getIntent().getStringExtra("SubCategoryID");
+
         piclist.add("add");
         picAdapter = new PicAdapter(R.layout.item_picture, piclist);
         mRvIcons.setLayoutManager(new GridLayoutManager(mActivity, 5));
@@ -186,7 +191,7 @@ public class ApplyAccActivity extends BaseActivity<ApplyAccPresenter, ApplyAccMo
     public void Application(ApplicationResult baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData().getCode() == 0) {
+                if (baseResult.getData().isStatus()) {
                     ToastUtils.showShort("提交成功");
                     EventBus.getDefault().post(3);//去选项卡待审核
                     EventBus.getDefault().post(21);
@@ -328,22 +333,18 @@ public class ApplyAccActivity extends BaseActivity<ApplyAccPresenter, ApplyAccMo
                             for (int i = 0; i < list_accessory.size(); i++) {
                                 Accessory accessory = list_accessory.get(i);
                                 ApplicationRequest.FAccessorysBean acc = new ApplicationRequest.FAccessorysBean();
-                                acc.setDiscountPrice(Double.toString(accessory.getAccessoryPrice()));
                                 acc.setFAccessoryID(accessory.getFAccessoryID());
                                 acc.setFAccessoryName(accessory.getAccessoryName());
-                                acc.setFCategoryID(Integer.toString(accessory.getFCategoryID()));
-                                acc.setNeedPlatformAuth(accessory.getNeedPlatformAuth());
                                 acc.setPrice(Double.toString(accessory.getAccessoryPrice()));
                                 acc.setQuantity(Integer.toString(accessory.getCount()));
-                                acc.setSizeID(accessory.getSizeID());
                                 FAccessorys.add(acc);
                             }
                             ApplicationRequest data = new ApplicationRequest();
                             data.setAccessoryState("厂寄".equals(cj_or_zg) ? 0 : 1);
-                            data.setFAccessorys(FAccessorys);
+                            data.setAccessorys(FAccessorys);
                             data.setImgUrls(successpiclist);
-                            data.setLeaveMessage(msg);
-                            data.setOrderId(OrderID);
+                            data.setOrderID(OrderID);
+                            data.setOrderProdID(prodID);
                             String s = gson.toJson(data);
                             Log.d("申请配件", s);
                             RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), s);

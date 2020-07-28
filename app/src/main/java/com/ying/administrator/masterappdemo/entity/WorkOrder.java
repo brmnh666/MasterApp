@@ -1455,7 +1455,7 @@ public class WorkOrder implements Serializable {
         }
     }
 
-    public static class OrderProductModelsBean{
+    public static class OrderProductModelsBean implements Serializable{
         /**
          * Id : 7
          * OrderProdcutID : 7

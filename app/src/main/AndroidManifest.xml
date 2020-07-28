@@ -210,6 +210,12 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
         <!--申请配件-->
+        <activity android:name=".v3.activity.ApplyAcc_ProdsActivity"
+            android:theme="@style/AppTheme.NoActionBar1"
+            android:windowSoftInputMode="stateHidden|adjustPan"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+        <!--申请配件-->
         <activity android:name=".v3.activity.AccListActivity"
             android:theme="@style/AppTheme.NoActionBar1"
             android:windowSoftInputMode="stateAlwaysHidden"
