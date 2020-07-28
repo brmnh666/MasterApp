@@ -34,6 +34,34 @@
             android:layout_marginLeft="12dp"
             android:src="@mipmap/v3_youjiantou" />
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_alipay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:paddingLeft="14dp"
+        android:paddingTop="22dp"
+        android:paddingRight="29dp"
+        android:paddingBottom="22dp">
+
+        <TextView
+            android:id="@+id/tv_alipay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="支付宝(未绑定)"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="12dp" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ll_modify_login_password"
