@@ -14,7 +14,7 @@ public class ApplicationRequest {
 
     private String OrderID;
     private String OrderProdID;
-    private String LeaveMessage;
+    private String Bak;
     private int AccessoryState;
     private List<FAccessorysBean> Accessorys;
     private List<String> ImgUrls;
@@ -35,12 +35,12 @@ public class ApplicationRequest {
         OrderProdID = orderProdID;
     }
 
-    public String getLeaveMessage() {
-        return LeaveMessage;
+    public String getBak() {
+        return Bak;
     }
 
-    public void setLeaveMessage(String LeaveMessage) {
-        this.LeaveMessage = LeaveMessage;
+    public void setBak(String bak) {
+        Bak = bak;
     }
 
     public int getAccessoryState() {

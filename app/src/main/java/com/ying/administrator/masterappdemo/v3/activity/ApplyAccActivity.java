@@ -193,7 +193,6 @@ public class ApplyAccActivity extends BaseActivity<ApplyAccPresenter, ApplyAccMo
             case 200:
                 if (baseResult.getData().isStatus()) {
                     ToastUtils.showShort("提交成功");
-                    EventBus.getDefault().post(3);//去选项卡待审核
                     EventBus.getDefault().post(21);
                     finish();
                 } else {
@@ -345,6 +344,7 @@ public class ApplyAccActivity extends BaseActivity<ApplyAccPresenter, ApplyAccMo
                             data.setImgUrls(successpiclist);
                             data.setOrderID(OrderID);
                             data.setOrderProdID(prodID);
+                            data.setBak(msg);
                             String s = gson.toJson(data);
                             Log.d("申请配件", s);
                             RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), s);

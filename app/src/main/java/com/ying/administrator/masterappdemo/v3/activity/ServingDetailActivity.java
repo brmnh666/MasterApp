@@ -43,6 +43,7 @@ import com.amap.api.services.geocoder.GeocodeSearch;
 import com.amap.api.services.geocoder.RegeocodeResult;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ethanhua.skeleton.Skeleton;
 import com.ethanhua.skeleton.SkeletonScreen;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -274,6 +275,14 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
         prodAdapter = new ProdAdapter(R.layout.prod_item, prodList);
         mRvProds.setLayoutManager(new LinearLayoutManager(mActivity));
         mRvProds.setAdapter(prodAdapter);
+        prodAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Intent intent1 = new Intent(mActivity, AccessoriesDetailsActivity.class);
+                intent1.putExtra("prodModel", prodList.get(position));
+                startActivity(intent1);
+            }
+        });
 
         mPresenter.GetOrderInfo(orderId);
         myClipboard = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
@@ -1095,13 +1104,9 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(Integer name) {
-//        if ("WorkOrderDetailsActivity".equals(name)) {
-//            mLlAccessoriesDetails.setVisibility(View.VISIBLE);
-//        }
         switch (name) {
             case 21:
-                mLlAccessoriesDetails.setVisibility(View.VISIBLE);
-                finish();
+                mPresenter.GetOrderInfo(orderId);
                 break;
             case 5:
             case 4:

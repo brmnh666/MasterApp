@@ -128,7 +128,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
                         android:layout_weight="1"
-                        android:text="用户付费"
+                        android:text=""
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 
@@ -166,7 +166,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
                         android:layout_weight="1"
-                        android:text="用户付费"
+                        android:text=""
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 
@@ -191,40 +191,33 @@
                 android:paddingRight="13dp"
                 android:paddingBottom="10dp">
 
-                <TextView
-                    android:id="@+id/tv_acc_state"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="配件清单"
-                    android:textColor="@color/black"
-                    android:textSize="17dp" />
-                <android.support.v7.widget.RecyclerView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/rv_accessories"></android.support.v7.widget.RecyclerView>
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/ll_services"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:background="@color/white"
-                android:orientation="vertical"
-                android:paddingLeft="13dp"
-                android:paddingTop="15dp"
-                android:paddingRight="13dp"
-                android:paddingBottom="10dp">
+                    android:background="@color/white"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="服务清单"
-                    android:textColor="@color/black"
-                    android:textSize="17dp" />
+                    <TextView
+                        android:id="@+id/tv_acc_state"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="配件清单"
+                        android:textColor="@color/black"
+                        android:textSize="17dp" />
+                    <Button
+                        android:id="@+id/btn_add"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="添加配件"
+                        android:textColor="@color/black"
+                        android:textSize="17dp" />
+                </LinearLayout>
                 <android.support.v7.widget.RecyclerView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/rv_services"></android.support.v7.widget.RecyclerView>
+                    android:id="@+id/rv_accessories"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/ll_accessories_picture"

@@ -80,7 +80,7 @@ public class ApplyAcc_ProdsActivity extends BaseActivity<ApplyAccPresenter, Appl
                 intent = new Intent(mActivity, ApplyAccActivity.class);
                 intent.putExtra("OrderID", list_prod.get(position).getOrderID()+"");
                 intent.putExtra("prodID", list_prod.get(position).getOrderProdcutID()+"");
-                intent.putExtra("prodName", list_prod.get(position).getSubCategoryName()+"");
+                intent.putExtra("prodName", list_prod.get(position).getSubCategoryName()+"(编号："+list_prod.get(position).getOrderProdcutID()+")");
                 intent.putExtra("SubCategoryID", list_prod.get(position).getProductTypeID()+"");
                 intent.putExtra("cj_or_zg", cj_or_zg);
                 startActivity(intent);

@@ -2,15 +2,22 @@ package com.ying.administrator.masterappdemo.v3.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -23,12 +30,18 @@ import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
-import com.ying.administrator.masterappdemo.v3.adapter.AccessoriesAdapter;
+import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.v3.adapter.AccessoriesPictureAdapter;
-import com.ying.administrator.masterappdemo.v3.adapter.ServicesAdapter;
+import com.ying.administrator.masterappdemo.v3.adapter.V4_AccessoriesAdapter;
+import com.ying.administrator.masterappdemo.v3.bean.DeleteAccessoryResult;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.AccessoriesDetailsPresenter;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.AccessoriesDetailsContract;
 import com.ying.administrator.masterappdemo.v3.mvp.model.AccessoriesDetailsModel;
+import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,22 +74,20 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
     RecyclerView mRvAccessoriesPicture;
     @BindView(R.id.ll_accessories)
     LinearLayout mLlAccessories;
-    @BindView(R.id.rv_services)
-    RecyclerView mRvServices;
-    @BindView(R.id.ll_services)
-    LinearLayout mLlServices;
     @BindView(R.id.ll_accessories_picture)
     LinearLayout mLlAccessoriesPicture;
     @BindView(R.id.tv_acc_state)
     TextView mTvAccState;
-    private String orderId;
-    private WorkOrder.DataBean data;
-    private AccessoriesAdapter accessoriesAdapter;
-    private ServicesAdapter servicesAdapter;
+    @BindView(R.id.btn_add)
+    Button mBtnAdd;
+    private WorkOrder.OrderProductModelsBean data;
     private List<String> list = new ArrayList<>();
     private AccessoriesPictureAdapter accessoriesPictureAdapter;
     private Intent intent;
     private SimpleTarget<Bitmap> simpleTarget;
+    private V4_AccessoriesAdapter accessoriesAdapter;
+    private View popupWindow_view;
+    private PopupWindow mPopupWindow;
 
     @Override
     protected int setLayoutId() {
@@ -90,14 +101,37 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
 
     @Override
     protected void initView() {
-        mTvTitle.setText("配件详情");
-        orderId = getIntent().getStringExtra("id");
+        data = (WorkOrder.OrderProductModelsBean) getIntent().getSerializableExtra("prodModel");
+        mTvTitle.setText(data.getSubCategoryName()+"(编号："+data.getOrderProdcutID()+")");
+        accessoriesAdapter = new V4_AccessoriesAdapter(R.layout.v3_item_accessories, data.getAccessoryData());
+        mRvAccessories.setLayoutManager(new LinearLayoutManager(mActivity));
+        mRvAccessories.setAdapter(accessoriesAdapter);
+        accessoriesAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, final int position) {
+                switch (view.getId()){
+                    case R.id.ll_delete:
+                        final CommonDialog_Home dialog = new CommonDialog_Home(mActivity);
+                        dialog.setMessage("是否确认删除"+data.getAccessoryData().get(position).getFAccessoryName())
+                                .setTitle("提示")
+                                .setSingle(false).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
+                            @Override
+                            public void onPositiveClick() {
+                                mPresenter.DeleteAccessory(data.getAccessoryData().get(position).getAccessoryID()+"");
+                                dialog.dismiss();
+                            }
+
+                            @Override
+                            public void onNegtiveClick() {//取消
+                                dialog.dismiss();
+                            }
+                        }).show();
+                        break;
+                }
+            }
+        });
         mQrProPro.setClickable(false);
         mQrProPro.setEnabled(false);
-//        mSeekBar.setSelected(false);
-//        mSeekBar.setFocusable(false);
-
-        mPresenter.GetOrderInfo(orderId);
     }
 
     @Override
@@ -105,6 +139,7 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
         mIvBack.setOnClickListener(this);
         mLlOutboundLogistics.setOnClickListener(this);
         mLlReturnLogistics.setOnClickListener(this);
+        mBtnAdd.setOnClickListener(this);
     }
 
     @Override
@@ -120,101 +155,108 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
             case R.id.iv_back:
                 finish();
                 break;
+            case R.id.btn_add:
+                showPopupWindow();
+                break;
             case R.id.ll_outbound_logistics:
                 intent = new Intent(mActivity, LogisticsActivity.class);
-                intent.putExtra("number", data.getExpressNo() + "");
+//                intent.putExtra("number", data.getExpressNo() + "");
                 startActivity(intent);
                 break;
             case R.id.ll_return_logistics:
                 intent = new Intent(mActivity, LogisticsActivity.class);
-                intent.putExtra("number", data.getReturnAccessoryMsg() + "");
+//                intent.putExtra("number", data.getReturnAccessoryMsg() + "");
                 startActivity(intent);
+                break;
+        }
+    }
+    /**
+     * 弹出Popupwindow,选择厂家寄件还是自购件
+     */
+    public void showPopupWindow() {
+        popupWindow_view = LayoutInflater.from(mActivity).inflate(R.layout.cj_or_zg_layout, null);
+        Button btn_cj = popupWindow_view.findViewById(R.id.btn_cj);
+        Button btn_zg = popupWindow_view.findViewById(R.id.btn_zg);
+        Button btn_complete = popupWindow_view.findViewById(R.id.btn_complete);
+        Button btn_cancel = popupWindow_view.findViewById(R.id.btn_cancel);
+
+        btn_cj.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onClick(View view) {
+                intent = new Intent(mActivity, ApplyAccActivity.class);
+                intent.putExtra("OrderID", data.getOrderID()+"");
+                intent.putExtra("prodID", data.getOrderProdcutID()+"");
+                intent.putExtra("list_prod", data);
+                intent.putExtra("prodName", data.getSubCategoryName()+"(编号："+data.getOrderProdcutID()+")");
+                intent.putExtra("SubCategoryID", data.getProductTypeID()+"");
+                intent.putExtra("cj_or_zg", "厂寄");
+                startActivity(intent);
+                mPopupWindow.dismiss();
+            }
+        });
+        btn_zg.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onClick(View view) {
+                intent = new Intent(mActivity, ApplyAccActivity.class);
+                intent.putExtra("OrderID", data.getOrderID()+"");
+                intent.putExtra("prodID", data.getOrderProdcutID()+"");
+                intent.putExtra("list_prod", data);
+                intent.putExtra("prodName", data.getSubCategoryName()+"(编号："+data.getOrderProdcutID()+")");
+                intent.putExtra("SubCategoryID", data.getProductTypeID()+"");
+                intent.putExtra("cj_or_zg", "自购");
+                startActivity(intent);
+                mPopupWindow.dismiss();
+            }
+        });
+        //直接完结工单
+        btn_complete.setVisibility(View.GONE);
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPopupWindow.dismiss();
+            }
+        });
+        mPopupWindow = new PopupWindow(popupWindow_view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        mPopupWindow.setAnimationStyle(R.style.popwindow_anim_style);
+        mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+        mPopupWindow.setFocusable(true);
+        mPopupWindow.setOutsideTouchable(true);
+        mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                MyUtils.setWindowAlpa(mActivity, false);
+            }
+        });
+        if (mPopupWindow != null && !mPopupWindow.isShowing()) {
+            mPopupWindow.showAtLocation(popupWindow_view, Gravity.BOTTOM, 0, 0);
+        }
+        MyUtils.setWindowAlpa(mActivity, true);
+    }
+    @Override
+    public void GetOrderInfo(BaseResult<WorkOrder.DataBean> baseResult) {
+        switch (baseResult.getStatusCode()){
+            case 200:
+                for (int i = 0; i < baseResult.getData().getOrderProductModels().size(); i++) {
+                    if (baseResult.getData().getOrderProductModels().get(i).getOrderProdcutID()==data.getOrderProdcutID()) {
+                        data = baseResult.getData().getOrderProductModels().get(i);
+                        accessoriesAdapter.setNewData(data.getAccessoryData());
+                    }
+                }
                 break;
         }
     }
 
     @Override
-    public void GetOrderInfo(BaseResult<WorkOrder.DataBean> baseResult) {
-        switch (baseResult.getStatusCode()) {
+    public void DeleteAccessory(DeleteAccessoryResult baseResult) {
+        switch (baseResult.getStatusCode()){
             case 200:
-                if (baseResult.getData() != null) {
-                    data = baseResult.getData();
-//                    mTvNumbering.setText(data.getOrderID());
-//                    mTvCreationTime.setText(data.getCreateDate().replace("T", " "));
-                    if (data.getExpressNo() != null) {
-//                        mTvStatus.setText("已发件");
-                        mQrProPro.setProgress(25);
-                    }
-                    if ("8".equals(data.getState())) {
-//                        mTvStatus.setText("已签收");
-                        mQrProPro.setProgress(50);
-                    }
-                    if (data.getReturnAccessoryMsg() != null) {
-//                        mTvStatus.setText("已回寄");
-                        mQrProPro.setProgress(75);
-                    }
-                    if ("7".equals(data.getState())) {
-//                        mTvStatus.setText("已完成");
-                        mQrProPro.setProgress(100);
-                    }
-                    if ("".equals(data.getExpressNo()) || data.getExpressNo() == null) {
-                        mTvOutboundLogistics.setText("暂无物流消息");
-                    } else {
-                        mTvOutboundLogistics.setText(data.getExpressNo());
-                    }
-
-                    if ("".equals(data.getReturnAccessoryMsg()) || data.getReturnAccessoryMsg() == null) {
-                        mTvReturnLogistics.setText("暂无物流消息");
-                    } else {
-                        mTvReturnLogistics.setText(data.getReturnAccessoryMsg());
-                    }
-                    if ("0".equals(data.getAccessoryState())) {
-                        mTvAccState.setText("配件清单（厂家寄件）");
-                    } else {
-                        mTvAccState.setText("配件清单（师傅自购件）");
-                    }
-
-                    if (data.getOrderAccessroyDetail().size() > 0) {
-                        mLlAccessories.setVisibility(View.VISIBLE);
-                        mLlAccessoriesPicture.setVisibility(View.VISIBLE);
-                        // FIXME: 2020-07-22 配件图片不跟配件关联
-//                        for (int i = 0; i < data.getOrderAccessroyDetail().size(); i++) {
-//                            if (i==0){
-//                                list.add(data.getOrderAccessroyDetail().get(i).getPhoto1());
-//                            }
-//                            list.add(data.getOrderAccessroyDetail().get(i).getPhoto2());
-//                        }
-                    } else {
-                        mLlAccessories.setVisibility(View.GONE);
-                        mLlAccessoriesPicture.setVisibility(View.GONE);
-                    }
-
-                    if (data.getOrderServiceDetail().size() > 0) {
-                        mLlServices.setVisibility(View.VISIBLE);
-                    } else {
-                        mLlServices.setVisibility(View.GONE);
-                    }
-                    accessoriesAdapter = new AccessoriesAdapter(R.layout.v3_item_accessories, data.getOrderAccessroyDetail());
-                    mRvAccessories.setLayoutManager(new LinearLayoutManager(mActivity));
-                    mRvAccessories.setAdapter(accessoriesAdapter);
-
-                    servicesAdapter = new ServicesAdapter(R.layout.v3_item_accessories, data.getOrderServiceDetail());
-                    mRvServices.setLayoutManager(new LinearLayoutManager(mActivity));
-                    mRvServices.setAdapter(servicesAdapter);
-
-                    accessoriesPictureAdapter = new AccessoriesPictureAdapter(R.layout.v3_item_accessories_picture, data.getAccessoryImgUrls());
-                    mRvAccessoriesPicture.setLayoutManager(new GridLayoutManager(mActivity, 3));
-                    mRvAccessoriesPicture.setAdapter(accessoriesPictureAdapter);
-                    accessoriesPictureAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-                        @Override
-                        public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                            switch (view.getId()) {
-                                case R.id.iv_picture:
-                                    scaleview(data.getAccessoryImgUrls().get(position));
-                                    break;
-                            }
-                        }
-                    });
+                if (baseResult.getData().isStatus()){
+                    MyUtils.showToast(mActivity,"删除成功");
+                    EventBus.getDefault().post(21);
+                }else{
+                    MyUtils.showToast(mActivity,baseResult.getData().getMsg());
                 }
                 break;
         }
@@ -235,5 +277,13 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
                 .asBitmap()
                 .load(url)
                 .into(simpleTarget);
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(Integer name) {
+        switch (name) {
+            case 21:
+                mPresenter.GetOrderInfo(data.getOrderID()+"");
+                break;
+        }
     }
 }

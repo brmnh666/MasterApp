@@ -44,6 +44,7 @@ import com.ying.administrator.masterappdemo.entity.WithDrawMoney;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.entity.WxRegister;
 import com.ying.administrator.masterappdemo.v3.bean.ApplicationResult;
+import com.ying.administrator.masterappdemo.v3.bean.DeleteAccessoryResult;
 
 import org.json.JSONArray;
 
@@ -1275,4 +1276,12 @@ public interface ApiService {
      */
     @POST("OrderRevision/AddAccessory")
     Observable<ApplicationResult> Application(@Body RequestBody json);
+    /**
+     * 新版删除配件
+     * @param AccessoryIDs 配件ID 多个，分割
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("OrderRevision/DeleteAccessory")
+    Observable<DeleteAccessoryResult> DeleteAccessory(@Field("AccessoryIDs") String AccessoryIDs);
 }
