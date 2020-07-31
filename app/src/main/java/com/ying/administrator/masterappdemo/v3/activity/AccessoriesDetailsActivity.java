@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -29,7 +30,9 @@ import com.vondear.rxui.view.dialog.RxDialogScaleView;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
+import com.ying.administrator.masterappdemo.entity.accessoryDataBean;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.v3.adapter.AccessoriesPictureAdapter;
 import com.ying.administrator.masterappdemo.v3.adapter.V4_AccessoriesAdapter;
@@ -80,7 +83,6 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
     TextView mTvAccState;
     @BindView(R.id.btn_add)
     Button mBtnAdd;
-    private WorkOrder.OrderProductModelsBean data;
     private List<String> list = new ArrayList<>();
     private AccessoriesPictureAdapter accessoriesPictureAdapter;
     private Intent intent;
@@ -88,6 +90,7 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
     private V4_AccessoriesAdapter accessoriesAdapter;
     private View popupWindow_view;
     private PopupWindow mPopupWindow;
+    private accessoryDataBean data;
 
     @Override
     protected int setLayoutId() {
@@ -101,9 +104,9 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
 
     @Override
     protected void initView() {
-        data = (WorkOrder.OrderProductModelsBean) getIntent().getSerializableExtra("prodModel");
-        mTvTitle.setText(data.getSubCategoryName()+"(编号："+data.getOrderProdcutID()+")");
-        accessoriesAdapter = new V4_AccessoriesAdapter(R.layout.v3_item_accessories, data.getAccessoryData());
+        data = (accessoryDataBean) getIntent().getSerializableExtra("acc_data");
+        mTvTitle.setText("配件单详情（"+data.getAccessoryNo()+"）");
+        accessoriesAdapter = new V4_AccessoriesAdapter(R.layout.v3_item_accessories, data.getAccessoryDetailModels());
         mRvAccessories.setLayoutManager(new LinearLayoutManager(mActivity));
         mRvAccessories.setAdapter(accessoriesAdapter);
         accessoriesAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
@@ -112,12 +115,12 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
                 switch (view.getId()){
                     case R.id.ll_delete:
                         final CommonDialog_Home dialog = new CommonDialog_Home(mActivity);
-                        dialog.setMessage("是否确认删除"+data.getAccessoryData().get(position).getFAccessoryName())
+                        dialog.setMessage("是否确认删除"+ data.getAccessoryDetailModels().get(position).getFAccessoryName())
                                 .setTitle("提示")
                                 .setSingle(false).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
                             @Override
                             public void onPositiveClick() {
-                                mPresenter.DeleteAccessory(data.getAccessoryData().get(position).getAccessoryID()+"");
+                                mPresenter.DeleteAccessory(data.getAccessoryDetailModels().get(position).getAccessoryID()+"");
                                 dialog.dismiss();
                             }
 
@@ -130,6 +133,13 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
                 }
             }
         });
+        list.clear();
+        for (int i = 0; i < data.getOrderAttachments().size(); i++) {
+            list.add(Config.Accessory_URL +data.getOrderAttachments().get(i).getUrl());
+        }
+        accessoriesPictureAdapter=new AccessoriesPictureAdapter(R.layout.v3_item_accessories_picture,list);
+        mRvAccessoriesPicture.setLayoutManager(new GridLayoutManager(mActivity,5));
+        mRvAccessoriesPicture.setAdapter(accessoriesPictureAdapter);
         mQrProPro.setClickable(false);
         mQrProPro.setEnabled(false);
     }
@@ -186,10 +196,10 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
             public void onClick(View view) {
                 intent = new Intent(mActivity, ApplyAccActivity.class);
                 intent.putExtra("OrderID", data.getOrderID()+"");
-                intent.putExtra("prodID", data.getOrderProdcutID()+"");
+//                intent.putExtra("prodID", data.getOrderProdcutID()+"");
                 intent.putExtra("list_prod", data);
-                intent.putExtra("prodName", data.getSubCategoryName()+"(编号："+data.getOrderProdcutID()+")");
-                intent.putExtra("SubCategoryID", data.getProductTypeID()+"");
+//                intent.putExtra("prodName", data.getSubCategoryName()+"(编号："+ data.getOrderProdcutID()+")");
+//                intent.putExtra("SubCategoryID", data.getProductTypeID()+"");
                 intent.putExtra("cj_or_zg", "厂寄");
                 startActivity(intent);
                 mPopupWindow.dismiss();
@@ -201,10 +211,10 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
             public void onClick(View view) {
                 intent = new Intent(mActivity, ApplyAccActivity.class);
                 intent.putExtra("OrderID", data.getOrderID()+"");
-                intent.putExtra("prodID", data.getOrderProdcutID()+"");
+//                intent.putExtra("prodID", data.getOrderProdcutID()+"");
                 intent.putExtra("list_prod", data);
-                intent.putExtra("prodName", data.getSubCategoryName()+"(编号："+data.getOrderProdcutID()+")");
-                intent.putExtra("SubCategoryID", data.getProductTypeID()+"");
+//                intent.putExtra("prodName", data.getSubCategoryName()+"(编号："+ data.getOrderProdcutID()+")");
+//                intent.putExtra("SubCategoryID", data.getProductTypeID()+"");
                 intent.putExtra("cj_or_zg", "自购");
                 startActivity(intent);
                 mPopupWindow.dismiss();
@@ -238,12 +248,12 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
     public void GetOrderInfo(BaseResult<WorkOrder.DataBean> baseResult) {
         switch (baseResult.getStatusCode()){
             case 200:
-                for (int i = 0; i < baseResult.getData().getOrderProductModels().size(); i++) {
-                    if (baseResult.getData().getOrderProductModels().get(i).getOrderProdcutID()==data.getOrderProdcutID()) {
-                        data = baseResult.getData().getOrderProductModels().get(i);
-                        accessoriesAdapter.setNewData(data.getAccessoryData());
-                    }
-                }
+//                for (int i = 0; i < baseResult.getData().getOrderProductModels().size(); i++) {
+//                    if (baseResult.getData().getOrderProductModels().get(i).getOrderProdcutID()== data.getOrderProdcutID()) {
+//                        data = baseResult.getData().getOrderProductModels().get(i);
+//                        accessoriesAdapter.setNewData(data.getAccessoryData());
+//                    }
+//                }
                 break;
         }
     }

@@ -104,23 +104,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="配件进度"
+                android:text="配件单列表"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 android:textStyle="bold" />
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:src="@mipmap/v3_youjiantou"/>
         </LinearLayout>
-        <TextView
-            android:id="@+id/tv_acc"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_acc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_10"
-            android:text="压缩机"
-            android:textColor="@color/black"
-            android:textSize="14sp"/>
+            android:layout_marginTop="@dimen/dp_10"/>
     </LinearLayout>
 </LinearLayout>

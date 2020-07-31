@@ -31,6 +31,7 @@ public class Config {
     public static final String Service_IMG="https://img.xigyu.com/Pics/FinishOrder/";//服务过程图片
     public static final String ComPlaint_URL="https://img.xigyu.com/Pics/ComPlaint/";//投诉地址
     public static final String Leave_quote_URL="https://img.xigyu.com/Pics/OrderImgUrl/";//报价图片地址
+    public static final String Accessory_URL="https://img.xigyu.com/Pics/Accessory/";//配件照片
 
 
     public static  final int ORDER_READ=99;

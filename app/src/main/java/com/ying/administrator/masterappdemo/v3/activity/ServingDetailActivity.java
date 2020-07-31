@@ -43,7 +43,6 @@ import com.amap.api.services.geocoder.GeocodeSearch;
 import com.amap.api.services.geocoder.RegeocodeResult;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ethanhua.skeleton.Skeleton;
 import com.ethanhua.skeleton.SkeletonScreen;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -52,6 +51,7 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.AccessoriesNoEvent;
 import com.ying.administrator.masterappdemo.entity.AddOrderSignInRecrodResult;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.GetBrandWithCategory;
@@ -162,8 +162,6 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
     LinearLayout mLlChangeAddress;
     @BindView(R.id.ll_not_available)
     LinearLayout mLlNotAvailable;
-    @BindView(R.id.ll_accessories_details)
-    LinearLayout mLlAccessoriesDetails;
     @BindView(R.id.rv_prods)
     RecyclerView mRvProds;
     @BindView(R.id.ll_call)
@@ -275,15 +273,6 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
         prodAdapter = new ProdAdapter(R.layout.prod_item, prodList);
         mRvProds.setLayoutManager(new LinearLayoutManager(mActivity));
         mRvProds.setAdapter(prodAdapter);
-        prodAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Intent intent1 = new Intent(mActivity, AccessoriesDetailsActivity.class);
-                intent1.putExtra("prodModel", prodList.get(position));
-                startActivity(intent1);
-            }
-        });
-
         mPresenter.GetOrderInfo(orderId);
         myClipboard = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
 
@@ -294,7 +283,6 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
         mIvBack.setOnClickListener(this);
         mTvUpload.setOnClickListener(this);
         mLlTelephone.setOnClickListener(this);
-        mLlAccessoriesDetails.setOnClickListener(this);
         mLlCall.setOnClickListener(this);
         mTvReturn.setOnClickListener(this);
         mTvTicketTracking.setOnClickListener(this);
@@ -599,16 +587,22 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
             public void onClick(View view) {
                 if (data.getOrderProductModels()==null){
                     intent = new Intent(mActivity, ApplyAccActivity.class);
+                    intent.putExtra("prodID", "");
+                    intent.putExtra("prodName", data.getSubCategoryName());
+                    intent.putExtra("SubCategoryID", data.getProductTypeID());
+
                 }else{
                     if (data.getOrderProductModels().size()==1){//只有一个产品
                         intent = new Intent(mActivity, ApplyAccActivity.class);
                     }else{
                         intent = new Intent(mActivity, ApplyAcc_ProdsActivity.class);
                     }
+                    intent.putExtra("prodID", data.getOrderProductModels().get(0).getOrderProdcutID()+"");
+                    intent.putExtra("prodName", data.getOrderProductModels().get(0).getSubCategoryName()+"(编号："+data.getOrderProductModels().get(0).getOrderProdcutID()+")");
+                    intent.putExtra("SubCategoryID", data.getOrderProductModels().get(0).getProductTypeID()+"");
                 }
                 intent.putExtra("OrderID", data.getOrderID());
                 intent.putExtra("list_prod", (Serializable) data.getOrderProductModels());
-                intent.putExtra("SubCategoryID", data.getProductTypeID());
                 intent.putExtra("cj_or_zg", "厂寄");
                 startActivity(intent);
                 mPopupWindow.dismiss();
@@ -620,16 +614,22 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
             public void onClick(View view) {
                 if (data.getOrderProductModels()==null){
                     intent = new Intent(mActivity, ApplyAccActivity.class);
+                    intent.putExtra("prodID", "");
+                    intent.putExtra("prodName", data.getSubCategoryName());
+                    intent.putExtra("SubCategoryID", data.getProductTypeID());
+
                 }else{
                     if (data.getOrderProductModels().size()==1){//只有一个产品
                         intent = new Intent(mActivity, ApplyAccActivity.class);
                     }else{
                         intent = new Intent(mActivity, ApplyAcc_ProdsActivity.class);
                     }
+                    intent.putExtra("prodID", data.getOrderProductModels().get(0).getOrderProdcutID()+"");
+                    intent.putExtra("prodName", data.getOrderProductModels().get(0).getSubCategoryName()+"(编号："+data.getOrderProductModels().get(0).getOrderProdcutID()+")");
+                    intent.putExtra("SubCategoryID", data.getOrderProductModels().get(0).getProductTypeID()+"");
                 }
                 intent.putExtra("OrderID", data.getOrderID());
                 intent.putExtra("list_prod", (Serializable) data.getOrderProductModels());
-                intent.putExtra("SubCategoryID", data.getProductTypeID());
                 intent.putExtra("cj_or_zg", "自购");
                 startActivity(intent);
                 mPopupWindow.dismiss();
@@ -832,7 +832,12 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
 
         }
     }
-
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(AccessoriesNoEvent event) {
+        Intent intent1 = new Intent(mActivity, AccessoriesDetailsActivity.class);
+        intent1.putExtra("acc_data", event.getAdapter().getData().get(event.getPosition()));
+        startActivity(intent1);
+    }
     @Override
     public void GetOrderInfo(BaseResult<WorkOrder.DataBean> baseResult) {
         switch (baseResult.getStatusCode()) {
@@ -889,12 +894,6 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                     mTvName.setText(data.getUserName() + "    " + data.getPhone());
                     mTvAddress.setText(data.getAddress());
                     mTvDistance.setText("线路里程 " + data.getDistance() + "公里");
-                    if (data.getOrderServiceDetail().size() > 0 || data.getOrderAccessroyDetail().size() > 0) {
-                        mLlAccessoriesDetails.setVisibility(View.VISIBLE);
-                    } else {
-                        mLlAccessoriesDetails.setVisibility(View.GONE);
-                    }
-
 
                     if ("2".equals(data.getTypeID())) {
                         mLlOldAccessory.setVisibility(View.GONE);

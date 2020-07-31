@@ -46,7 +46,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="已审核"
+                        android:text="待审核"
                         android:textColor="#808080"
                         android:textSize="14sp" />
 
@@ -55,7 +55,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="已发件"
+                        android:text="待收件"
                         android:textColor="#808080"
                         android:textSize="14sp" />
 
@@ -64,16 +64,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="已签收"
-                        android:textColor="#808080"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="已回寄"
+                        android:text="待返件"
                         android:textColor="#808080"
                         android:textSize="14sp" />
 
@@ -212,7 +203,8 @@
                         android:gravity="center"
                         android:text="添加配件"
                         android:textColor="@color/black"
-                        android:textSize="17dp" />
+                        android:textSize="17dp"
+                        android:visibility="gone"/>
                 </LinearLayout>
                 <android.support.v7.widget.RecyclerView
                     android:layout_width="match_parent"
