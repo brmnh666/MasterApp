@@ -15,10 +15,8 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.ToastUtils;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
-import com.ying.administrator.masterappdemo.base.BaseResult;
-import com.ying.administrator.masterappdemo.entity.Data;
-import com.ying.administrator.masterappdemo.entity.Logistics;
 import com.ying.administrator.masterappdemo.v3.adapter.LogisticsAdapter;
+import com.ying.administrator.masterappdemo.v3.bean.GetExpressInfoResult;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.LogisticsPresenter;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.LogisticsContract;
 import com.ying.administrator.masterappdemo.v3.mvp.model.LogisticsModel;
@@ -49,7 +47,7 @@ public class LogisticsActivity extends BaseActivity<LogisticsPresenter, Logistic
     @BindView(R.id.sv_logistics)
     ScrollView mSvLogistics;
     private String number;
-    private List<Logistics.ExpressDetailListBean.DataBean> list = new ArrayList<>();
+    private List<GetExpressInfoResult.DataBeanX.DataBean.ListBean> list = new ArrayList<>();
     private LogisticsAdapter adapter;
     private ClipboardManager myClipboard;
     private ClipData myClip;
@@ -103,11 +101,11 @@ public class LogisticsActivity extends BaseActivity<LogisticsPresenter, Logistic
     }
 
     @Override
-    public void GetExpressInfo(BaseResult<Data<Logistics>> baseResult) {
+    public void GetExpressInfo(GetExpressInfoResult baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData().getItem2().getExpressDetailList() != null) {
-                    list.addAll(baseResult.getData().getItem2().getExpressDetailList().getData());
+                if (baseResult.getData().getData().getList() != null) {
+                    list.addAll(baseResult.getData().getData().getList());
                     adapter.setNewData(list);
                 }
 

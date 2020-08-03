@@ -7,11 +7,11 @@ import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.Data2;
 import com.ying.administrator.masterappdemo.entity.GAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
-import com.ying.administrator.masterappdemo.entity.Logistics;
 import com.ying.administrator.masterappdemo.entity.Service;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.PendingOrderContract;
 import com.ying.administrator.masterappdemo.mvp.service.ApiRetrofit;
+import com.ying.administrator.masterappdemo.v3.bean.GetExpressInfoResult;
 
 import java.util.List;
 
@@ -122,8 +122,8 @@ public class PendingOrderModel implements PendingOrderContract.Model {
 
 
     @Override
-    public Observable<BaseResult<Data<String>>> ApplyBeyondMoney(String OrderID, String BeyondMoney, String BeyondDistance,String Bak) {
-        return ApiRetrofit.getDefault().ApplyBeyondMoney(OrderID,BeyondMoney,BeyondDistance,Bak)
+    public Observable<BaseResult<Data<String>>> ApplyBeyondMoney(String OrderID, String BeyondMoney, String BeyondDistance,String Bak,String OrderByondImgUrl) {
+        return ApiRetrofit.getDefault().ApplyBeyondMoney(OrderID,BeyondMoney,BeyondDistance,Bak,OrderByondImgUrl)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
 
@@ -155,7 +155,7 @@ public class PendingOrderModel implements PendingOrderContract.Model {
     }
 
     @Override
-    public Observable<BaseResult<Data<Logistics>>> GetExpressInfo(String ExpressNo) {
+    public Observable<GetExpressInfoResult> GetExpressInfo(String ExpressNo) {
         return ApiRetrofit.getDefault().GetExpressInfo(ExpressNo)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());

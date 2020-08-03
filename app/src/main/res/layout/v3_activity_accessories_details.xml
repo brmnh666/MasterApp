@@ -16,6 +16,7 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/ll_one"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
@@ -23,7 +24,7 @@
                 android:orientation="vertical">
 
                 <SeekBar
-                    android:id="@+id/qr_pro_pro"
+                    android:id="@+id/bar_two"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
@@ -42,6 +43,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tv_dsh2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -49,17 +51,94 @@
                         android:text="待审核"
                         android:textColor="#808080"
                         android:textSize="14sp" />
-
                     <TextView
+                        android:id="@+id/tv_dfj2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="待收件"
+                        android:text="待发件"
+                        android:textColor="#808080"
+                        android:textSize="14sp" />
+                    <TextView
+                        android:id="@+id/tv_dqh2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="待签收"
                         android:textColor="#808080"
                         android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/tv_dwc2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="待完成"
+                        android:textColor="#808080"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_two"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <SeekBar
+                    android:id="@+id/bar_one"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="15dp"
+                    android:max="100"
+                    android:maxHeight="3dp"
+                    android:progressDrawable="@drawable/v3_qr_pro"
+                    android:thumb="@drawable/v3_seekbar" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_dsh"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="待审核"
+                        android:textColor="#808080"
+                        android:textSize="14sp" />
+                    <TextView
+                        android:id="@+id/tv_dfj"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="待发件"
+                        android:textColor="#808080"
+                        android:textSize="14sp" />
+                    <TextView
+                        android:id="@+id/tv_dqh"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="待签收"
+                        android:textColor="#808080"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tv_return"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -69,17 +148,20 @@
                         android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/tv_dwc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="已完成"
+                        android:text="待完成"
                         android:textColor="#808080"
                         android:textSize="14sp" />
                 </LinearLayout>
+
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_logistics"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
@@ -103,8 +185,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:orientation="horizontal"
-                    android:paddingTop="7dp"
-                    android:paddingBottom="7dp">
+                    android:paddingTop="@dimen/dp_10"
+                    android:paddingBottom="@dimen/dp_10">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -130,19 +212,14 @@
                         android:layout_marginLeft="8dp"
                         android:src="@mipmap/v3_youjiantou" />
                 </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#eee" />
-
                 <LinearLayout
                     android:id="@+id/ll_return_logistics"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingTop="7dp"
-                    android:paddingBottom="7dp">
+                    android:paddingTop="@dimen/dp_10"
+                    android:paddingBottom="@dimen/dp_10"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -234,6 +311,22 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/rv_accessories_picture"></android.support.v7.widget.RecyclerView>
             </LinearLayout>
+            <Button
+                android:id="@+id/btn_ConfirmReceipt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="确认签收"
+                android:textColor="@color/white"
+                android:layout_margin="@dimen/dp_10"
+                android:background="@drawable/v3_btn_shape"/>
+            <Button
+                android:id="@+id/btn_ConfirmReturn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="开始返件"
+                android:textColor="@color/white"
+                android:layout_margin="@dimen/dp_10"
+                android:background="@drawable/v3_btn_shape"/>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </LinearLayout>

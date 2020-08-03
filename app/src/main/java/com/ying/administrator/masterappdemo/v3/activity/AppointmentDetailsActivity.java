@@ -835,15 +835,16 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                     } else {
                         mLlReservation.setVisibility(View.VISIBLE);
                     }
-                    if (data.getOrderAccessroyDetail().size() == 0) {
-                        if (Double.parseDouble(data.getDistance()) > 0 && !"999".equals(data.getDistance())) {
-                            mLlApplyForRemoteFee.setVisibility(View.VISIBLE);
-                        } else {
-                            mLlApplyForRemoteFee.setVisibility(View.GONE);
-                        }
-                    } else {
-                        mLlApplyForRemoteFee.setVisibility(View.GONE);
-                    }
+                    // FIXME: 2020-08-03 远程费随时可申请
+//                    if (data.getOrderAccessroyDetail().size() == 0) {
+//                        if (Double.parseDouble(data.getDistance()) > 0 && !"999".equals(data.getDistance())) {
+//                            mLlApplyForRemoteFee.setVisibility(View.VISIBLE);
+//                        } else {
+//                            mLlApplyForRemoteFee.setVisibility(View.GONE);
+//                        }
+//                    } else {
+//                        mLlApplyForRemoteFee.setVisibility(View.GONE);
+//                    }
 
                 }
                 skeletonScreen.hide();

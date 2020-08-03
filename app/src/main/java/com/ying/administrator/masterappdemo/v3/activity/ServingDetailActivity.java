@@ -172,10 +172,6 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
     LinearLayout mLlReservation;
     @BindView(R.id.tv_upload)
     TextView mTvUpload;
-    @BindView(R.id.tv_return)
-    TextView mTvReturn;
-    @BindView(R.id.tv_confirm_receipt)
-    TextView mTvConfirmReceipt;
     @BindView(R.id.RootView)
     FrameLayout mRootView;
     private String orderId;
@@ -284,12 +280,10 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
         mTvUpload.setOnClickListener(this);
         mLlTelephone.setOnClickListener(this);
         mLlCall.setOnClickListener(this);
-        mTvReturn.setOnClickListener(this);
         mTvTicketTracking.setOnClickListener(this);
         mTvReservationAgain.setOnClickListener(this);
         mTvCopy.setOnClickListener(this);
         mTvTickets.setOnClickListener(this);
-        mTvConfirmReceipt.setOnClickListener(this);
         mLlNotAvailable.setOnClickListener(this);
         mTvComplaint.setOnClickListener(this);
         mTvSave.setOnClickListener(this);
@@ -413,7 +407,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                 }
                 MyUtils.setWindowAlpa(mActivity, true);
                 break;
-            case R.id.tv_return:
+            case R.id.tv_return://开始返件
                 puchsh_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_add_expressno, null);
                 btn_negtive = puchsh_view.findViewById(R.id.negtive);
                 btn_positive = puchsh_view.findViewById(R.id.positive);
@@ -526,31 +520,6 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                 intent = new Intent(mActivity, MessageActivity2.class);
                 intent.putExtra("orderId", data.getOrderID());
                 startActivity(intent);
-                break;
-            case R.id.tv_confirm_receipt:
-                mPresenter.ConfirmReceipt(orderId);
-//                under_review = LayoutInflater.from(mActivity).inflate(R.layout.v3_dialog_real, null);
-//                TextView tv_cancel = under_review.findViewById(R.id.tv_cancel);
-//                TextView tv_reservation = under_review.findViewById(R.id.tv_reservation);
-//                TextView tv_content = under_review.findViewById(R.id.tv_content);
-//                tv_reservation.setText("去预约");
-//                tv_content.setText("是否直接预约");
-//                tv_cancel.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        underReviewDialog.dismiss();
-//                    }
-//                });
-//
-//                tv_reservation.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-////                        startActivity(new Intent(mActivity, VerifiedActivity2.class));
-//                        underReviewDialog.dismiss();
-//                    }
-//                });
-//                underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review).create();
-//                underReviewDialog.show();
                 break;
             case R.id.ll_not_available:
                 intent2 = new Intent(mActivity, LogisticsActivity.class);
@@ -899,7 +868,8 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                         mLlOldAccessory.setVisibility(View.GONE);
                     } else {
                         if ("1".equals(data.getAccessoryAndServiceApplyState()) || "2".equals(data.getAccessoryAndServiceApplyState()) || "".equals(data.getAccessoryAndServiceApplyState())) {
-                            mLlOldAccessory.setVisibility(View.VISIBLE);
+                            // FIXME: 2020-08-01 是否返件显示与配件单关联
+                            mLlOldAccessory.setVisibility(View.GONE);
                             if (data.getOrderAccessroyDetail().size() > 0) {
                                 if ("1".equals(data.getIsReturn())) {
                                     mTvYn.setText("是");
@@ -926,20 +896,15 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                         mTvUpload.setVisibility(View.INVISIBLE);
                         mTvReservationAgain.setBackgroundResource(R.drawable.v3_gray_shape);
                         mTvReservationAgain.setEnabled(false);
-                        mTvConfirmReceipt.setVisibility(View.GONE);
                     } else {
                         if ("8".equals(data.getState())) {//待返件
                             mTvUpload.setVisibility(View.GONE);
-                            mTvReturn.setVisibility(View.VISIBLE);
                             mTvReservationAgain.setBackgroundResource(R.drawable.v3_gray_shape);
                             mTvReservationAgain.setEnabled(false);
-                            mTvConfirmReceipt.setVisibility(View.GONE);
                         } else if ("11".equals(data.getState())) {//未到货
                             mTvUpload.setVisibility(View.GONE);
-                            mTvReturn.setVisibility(View.GONE);
                             mTvReservationAgain.setBackgroundResource(R.drawable.v3_blue_white_shape);
                             mTvReservationAgain.setEnabled(true);
-                            mTvConfirmReceipt.setVisibility(View.VISIBLE);
                         } else {
                             // FIXME: 2020-07-15 有完结图片隐藏提交完结按钮
                             if (data.getReturnaccessoryImg().size() > 0 || (!data.isApplicationAccessory() && "0".equals(data.getState()) && "31".equals(data.getState()))) {
@@ -947,10 +912,8 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                             } else {
                                 mTvUpload.setVisibility(View.VISIBLE);
                             }
-                            mTvReturn.setVisibility(View.GONE);
                             mTvReservationAgain.setBackgroundResource(R.drawable.v3_blue_white_shape);
                             mTvReservationAgain.setEnabled(true);
-                            mTvConfirmReceipt.setVisibility(View.GONE);
                         }
                     }
 
@@ -1065,17 +1028,6 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                 } else {
                     showToast(mActivity, (String) baseResult.getData().getItem2());
                 }
-        }
-    }
-
-    @Override
-    public void ConfirmReceipt(BaseResult<Data<String>> baseResult) {
-        switch (baseResult.getStatusCode()) {
-            case 200:
-                ToastUtils.showShort("收货成功");
-                EventBus.getDefault().post(22);
-                finish();
-                break;
         }
     }
 

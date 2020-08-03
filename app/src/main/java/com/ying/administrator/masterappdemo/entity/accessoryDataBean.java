@@ -83,8 +83,8 @@ public class accessoryDataBean implements Serializable {
     private String NeedPlatformAuth;
     private Object CheckRemarks;
     private String Bak;
-    private Object IsReturn;
-    private Object PostPayType;
+    private String IsReturn;
+    private String PostPayType;
     private Object RecipientType;
     private Object OldReturnRequest;
     private Object AddressBack;
@@ -97,9 +97,27 @@ public class accessoryDataBean implements Serializable {
     private int ReceiptState;
     private Object ImgUrls;
     private String AccessoryNo;
+    private String ReturnExpressNo;
+    private String PostMoney;
     private int Version;
     private List<OrderAttachmentsBean> OrderAttachments;
     private List<AccessoryDetailModelsBean> AccessoryDetailModels;
+
+    public String getReturnExpressNo() {
+        return ReturnExpressNo;
+    }
+
+    public void setReturnExpressNo(String returnExpressNo) {
+        ReturnExpressNo = returnExpressNo;
+    }
+
+    public String getPostMoney() {
+        return PostMoney;
+    }
+
+    public void setPostMoney(String postMoney) {
+        PostMoney = postMoney;
+    }
 
     public int getId() {
         return Id;
@@ -333,19 +351,19 @@ public class accessoryDataBean implements Serializable {
         this.Bak = Bak;
     }
 
-    public Object getIsReturn() {
+    public String getIsReturn() {
         return IsReturn;
     }
 
-    public void setIsReturn(Object IsReturn) {
+    public void setIsReturn(String IsReturn) {
         this.IsReturn = IsReturn;
     }
 
-    public Object getPostPayType() {
+    public String getPostPayType() {
         return PostPayType;
     }
 
-    public void setPostPayType(Object PostPayType) {
+    public void setPostPayType(String PostPayType) {
         this.PostPayType = PostPayType;
     }
 

@@ -244,4 +244,8 @@
         <!--<item name="android:calendarViewShown">true</item>-->
     </style>
 
+    <declare-styleable name="MyImageView">
+        <attr name="ratio" format="float"/>
+    </declare-styleable>
+
 </resources>

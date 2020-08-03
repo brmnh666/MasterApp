@@ -22,7 +22,6 @@ import com.ying.administrator.masterappdemo.entity.GetFactoryData;
 import com.ying.administrator.masterappdemo.entity.GetMessagePag;
 import com.ying.administrator.masterappdemo.entity.IDCard;
 import com.ying.administrator.masterappdemo.entity.LeaveMessage;
-import com.ying.administrator.masterappdemo.entity.Logistics;
 import com.ying.administrator.masterappdemo.entity.Message;
 import com.ying.administrator.masterappdemo.entity.MessageData;
 import com.ying.administrator.masterappdemo.entity.MyServiceArea;
@@ -44,7 +43,10 @@ import com.ying.administrator.masterappdemo.entity.WithDrawMoney;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.entity.WxRegister;
 import com.ying.administrator.masterappdemo.v3.bean.ApplicationResult;
+import com.ying.administrator.masterappdemo.v3.bean.ConfirmReceiptResult;
+import com.ying.administrator.masterappdemo.v3.bean.ConfirmReturnResult;
 import com.ying.administrator.masterappdemo.v3.bean.DeleteAccessoryResult;
+import com.ying.administrator.masterappdemo.v3.bean.GetExpressInfoResult;
 
 import org.json.JSONArray;
 
@@ -256,7 +258,7 @@ public interface ApiService {
      * */
     @FormUrlEncoded
     @POST("Mall/GetExpressInfo")
-    Observable<BaseResult<Data<Logistics>>> GetExpressInfo(@Field("ExpressNo") String ExpressNo);
+    Observable<GetExpressInfoResult> GetExpressInfo(@Field("ExpressNo") String ExpressNo);
 
 
     /*  *//*获取派单列表*//*
@@ -331,7 +333,8 @@ public interface ApiService {
     Observable<BaseResult<Data<String>>> ApplyBeyondMoney(@Field("OrderID") String OrderID,
                                                           @Field("BeyondMoney") String BeyondMoney,
                                                           @Field("BeyondDistance") String BeyondDistance,
-                                                          @Field("Bak") String Bak);
+                                                          @Field("Bak") String Bak,
+                                                          @Field("OrderByondImgUrl") String OrderByondImgUrl);
 
 
     /*获取返件图片*/
@@ -1179,10 +1182,26 @@ public interface ApiService {
                                                                 @Field("emergencyContact") String emergencyContact);
 
 
-    /*确认收货*/
+    /**
+     * 确认收货
+     * @param AccessoryId
+     * @return
+     */
     @FormUrlEncoded
-    @POST("Order/ConfirmReceipt")
-    Observable<BaseResult<Data<String>>> ConfirmReceipt(@Field("OrderID") String OrderID);
+    @POST("Master/AppOrder/ConfirmReceipt")
+    Observable<ConfirmReceiptResult> ConfirmReceipt(@Field("AccessoryId") String AccessoryId);
+
+
+    /**
+     * 开始返件
+     * @param AccessoryId
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("Master/AppOrder/ConfirmReturn")
+    Observable<ConfirmReturnResult> ConfirmReturn(@Field("AccessoryId") String AccessoryId,
+                                                  @Field("ReturnExpressNo") String ReturnExpressNo,
+                                                  @Field("PostMoney") String PostMoney);
 
     /**
      * 签到

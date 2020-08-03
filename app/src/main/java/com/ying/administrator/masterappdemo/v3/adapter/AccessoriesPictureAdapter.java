@@ -17,7 +17,6 @@ public class AccessoriesPictureAdapter extends BaseQuickAdapter<String, BaseView
 
     @Override
     protected void convert(BaseViewHolder helper, String item) {
-        helper.addOnClickListener(R.id.iv_picture);
         ImageView iv_picture=helper.getView(R.id.iv_picture);
         Glide.with(mContext)
                 .load(item)

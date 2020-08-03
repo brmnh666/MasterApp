@@ -34,8 +34,9 @@ public class ProdAdapter extends BaseQuickAdapter<WorkOrder.OrderProductModelsBe
 
     @Override
     protected void convert(BaseViewHolder helper, WorkOrder.OrderProductModelsBean item) {
-        String name=item.getSubCategoryName()+"（编号："+item.getOrderProdcutID()+")";
+        String name=item.getBrandName()+"("+item.getSubCategoryName()+")"+item.getProdModelName()+"（编号："+item.getOrderProdcutID()+")";
         helper.setText(R.id.tv_product_name,name);
+        helper.setText(R.id.tv_specifications,"服务要求："+item.getMemo());
         if(item.getAccessoryData()!=null){
             if (item.getAccessoryData().size()>0){
                 helper.setGone(R.id.ll_acc,true);

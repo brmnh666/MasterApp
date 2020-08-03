@@ -10,9 +10,9 @@ import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.Data2;
 import com.ying.administrator.masterappdemo.entity.GAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
-import com.ying.administrator.masterappdemo.entity.Logistics;
 import com.ying.administrator.masterappdemo.entity.Service;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
+import com.ying.administrator.masterappdemo.v3.bean.GetExpressInfoResult;
 
 import java.util.List;
 
@@ -61,7 +61,7 @@ public interface PendingOrderContract {
         Observable<BaseResult<Data2>> ApplyAccessoryphotoUpload(RequestBody json);
 
         //申请远程费
-        Observable<BaseResult<Data<String>>> ApplyBeyondMoney(String OrderID,String BeyondMoney,String BeyondDistance,String Bak);
+        Observable<BaseResult<Data<String>>> ApplyBeyondMoney(String OrderID,String BeyondMoney,String BeyondDistance,String Bak,String OrderByondImgUrl);
 
         Observable<BaseResult<Data<String>>> PressFactoryAccount(String OrderID,String Content);
         //提交快递信息
@@ -72,7 +72,7 @@ public interface PendingOrderContract {
         Observable<BaseResult<Data<String>>> ConfirmtoFreezeByOrderID(String OrderID,String type,String AccessoryId);
 
         //物流信息
-        Observable<BaseResult<Data<Logistics>>> GetExpressInfo( String ExpressNo);
+        Observable<GetExpressInfoResult> GetExpressInfo(String ExpressNo);
 
         Observable<BaseResult<List<AddressList>>> GetAccountAddress(String UserId);
 
@@ -128,7 +128,7 @@ public interface PendingOrderContract {
         void UpdateOrderState(BaseResult<Data<String>> baseResult);
         void ConfirmtoFreezeByOrderID(BaseResult<Data<String>> baseResult);
 
-        void GetExpressInfo(BaseResult<Data<Logistics>> baseResult);
+        void GetExpressInfo(GetExpressInfoResult baseResult);
         void GetAccountAddress(BaseResult<List<AddressList>> baseResult);
 
         void UpdateOrderAddressByOrderID(BaseResult<Data<String>> baseResult);
@@ -167,7 +167,7 @@ public interface PendingOrderContract {
         public abstract void ApplyAccessoryphotoUpload(RequestBody json);
 
         //申请远程费
-        public abstract void ApplyBeyondMoney(String OrderID,String BeyondMoney,String BeyondDistance,String Bak);
+        public abstract void ApplyBeyondMoney(String OrderID,String BeyondMoney,String BeyondDistance,String Bak,String OrderByondImgUrl);
         public abstract void PressFactoryAccount(String OrderID,String Content);
         public abstract void AddReturnAccessory(String OrderID,String ReturnAccessoryMsg,String PostMoney);
 

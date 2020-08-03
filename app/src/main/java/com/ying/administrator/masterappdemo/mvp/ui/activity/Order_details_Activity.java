@@ -54,7 +54,6 @@ import com.ying.administrator.masterappdemo.entity.FAccessory;
 import com.ying.administrator.masterappdemo.entity.FService;
 import com.ying.administrator.masterappdemo.entity.GAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
-import com.ying.administrator.masterappdemo.entity.Logistics;
 import com.ying.administrator.masterappdemo.entity.SService;
 import com.ying.administrator.masterappdemo.entity.STotalAS;
 import com.ying.administrator.masterappdemo.entity.Service;
@@ -69,6 +68,7 @@ import com.ying.administrator.masterappdemo.mvp.ui.adapter.Pre_order_Add_Ac_Adap
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Pre_order_Add_Service_Adapter;
 import com.ying.administrator.masterappdemo.util.Glide4Engine;
 import com.ying.administrator.masterappdemo.util.MyUtils;
+import com.ying.administrator.masterappdemo.v3.bean.GetExpressInfoResult;
 import com.ying.administrator.masterappdemo.widget.HideSoftInputDialog;
 import com.ying.administrator.masterappdemo.widget.ViewExampleDialog;
 import com.zhihu.matisse.Matisse;
@@ -1183,7 +1183,7 @@ public class Order_details_Activity extends BaseActivity<PendingOrderPresenter, 
     }
 
     @Override
-    public void GetExpressInfo(BaseResult<Data<Logistics>> baseResult) {
+    public void GetExpressInfo(GetExpressInfoResult baseResult) {
 
     }
 

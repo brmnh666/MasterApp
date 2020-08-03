@@ -3,24 +3,23 @@ package com.ying.administrator.masterappdemo.v3.adapter;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ying.administrator.masterappdemo.R;
-import com.ying.administrator.masterappdemo.entity.Logistics;
 import com.ying.administrator.masterappdemo.util.DensityUtil;
+import com.ying.administrator.masterappdemo.v3.bean.GetExpressInfoResult;
 import com.ying.administrator.masterappdemo.viewholder.LayoutParamsViewHolder;
 
 import java.util.List;
 
 import io.reactivex.annotations.Nullable;
 
-public class LogisticsAdapter extends BaseQuickAdapter<Logistics.ExpressDetailListBean.DataBean, LayoutParamsViewHolder> {
-    public LogisticsAdapter(int layoutResId, @Nullable List<Logistics.ExpressDetailListBean.DataBean> data) {
+public class LogisticsAdapter extends BaseQuickAdapter<GetExpressInfoResult.DataBeanX.DataBean.ListBean, LayoutParamsViewHolder> {
+    public LogisticsAdapter(int layoutResId, @Nullable List<GetExpressInfoResult.DataBeanX.DataBean.ListBean> data) {
         super(layoutResId, data);
     }
 
     @Override
-    protected void convert(LayoutParamsViewHolder helper, Logistics.ExpressDetailListBean.DataBean item) {
+    protected void convert(LayoutParamsViewHolder helper, GetExpressInfoResult.DataBeanX.DataBean.ListBean item) {
         StringBuilder stringBuilder = new StringBuilder(item.getTime());
         String time = "" + stringBuilder.replace(10, 11, " "); //去掉T
         helper.setText(R.id.tv_status,item.getContent())

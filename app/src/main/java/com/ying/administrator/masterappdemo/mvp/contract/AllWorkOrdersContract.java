@@ -41,7 +41,7 @@ public interface AllWorkOrdersContract {
         //上传远程费图片
         Observable<BaseResult<Data<String>>> OrderByondImgPicUpload(RequestBody json);
         //申请远程费
-        Observable<BaseResult<Data<String>>> ApplyBeyondMoney(String OrderID,String BeyondMoney,String BeyondDistance,String Bak);
+        Observable<BaseResult<Data<String>>> ApplyBeyondMoney(String OrderID,String BeyondMoney,String BeyondDistance,String Bak,String OrderByondImgUrl);
 
         Observable<BaseResult<Article>> GetListCategoryContentByCategoryID(String CategoryID, String page, String limit);
     }
@@ -101,7 +101,7 @@ public interface AllWorkOrdersContract {
         //上传远程费图片
         public abstract void OrderByondImgPicUpload(RequestBody json);
         //申请远程费
-        public abstract void ApplyBeyondMoney(String OrderID,String BeyondMoney,String BeyondDistance,String Bak);
+        public abstract void ApplyBeyondMoney(String OrderID,String BeyondMoney,String BeyondDistance,String Bak,String OrderByondImgUrl);
 
         public abstract void GetListCategoryContentByCategoryID(String CategoryID,String page, String limit);
     }

@@ -239,7 +239,7 @@ public class ApplyFeeActivity extends BaseActivity<AllWorkOrdersPresenter, AllWo
         switch (baseResult.getStatusCode()) {
             case 200:
                 if (baseResult.getData().isItem1()) {
-                    mPresenter.ApplyBeyondMoney(orderId, BeyondMoney, Distance, Bak);
+                    mPresenter.ApplyBeyondMoney(orderId, BeyondMoney, Distance, Bak,baseResult.getData().getItem2());
                 } else {
                     ToastUtils.showShort("远程费图片上传失败");
                 }

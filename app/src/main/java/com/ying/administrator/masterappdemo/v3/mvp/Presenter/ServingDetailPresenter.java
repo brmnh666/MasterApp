@@ -55,16 +55,7 @@ public class ServingDetailPresenter extends ServingDetailContract.Presenter {
                 });
     }
 
-    @Override
-    public void ConfirmReceipt(String OrderID) {
-        mModel.ConfirmReceipt(OrderID)
-                .subscribe(new BaseObserver<Data<String>>() {
-                    @Override
-                    protected void onHandleSuccess(BaseResult<Data<String>> value) {
-                        mView.ConfirmReceipt(value);
-                    }
-                });
-    }
+
 
     @Override
     public void AddOrderSignInRecrod(String userId, String signInType, String orderId) {

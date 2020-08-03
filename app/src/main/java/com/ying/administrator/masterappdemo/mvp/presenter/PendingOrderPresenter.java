@@ -1,6 +1,7 @@
 package com.ying.administrator.masterappdemo.mvp.presenter;
 
 import com.ying.administrator.masterappdemo.base.BaseObserver;
+import com.ying.administrator.masterappdemo.base.BaseObserver2;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Accessory;
 import com.ying.administrator.masterappdemo.entity.AddressList;
@@ -8,10 +9,10 @@ import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.Data2;
 import com.ying.administrator.masterappdemo.entity.GAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
-import com.ying.administrator.masterappdemo.entity.Logistics;
 import com.ying.administrator.masterappdemo.entity.Service;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.PendingOrderContract;
+import com.ying.administrator.masterappdemo.v3.bean.GetExpressInfoResult;
 
 import java.util.List;
 
@@ -162,8 +163,8 @@ public class PendingOrderPresenter extends PendingOrderContract.Presenter {
     }
 
     @Override
-    public void ApplyBeyondMoney(String OrderID, String BeyondMoney, String BeyondDistance,String Bak) {
-        mModel.ApplyBeyondMoney(OrderID,BeyondMoney,BeyondDistance,Bak).subscribe(new BaseObserver<Data<String>>() {
+    public void ApplyBeyondMoney(String OrderID, String BeyondMoney, String BeyondDistance,String Bak,String OrderByondImgUrl) {
+        mModel.ApplyBeyondMoney(OrderID,BeyondMoney,BeyondDistance,Bak,OrderByondImgUrl).subscribe(new BaseObserver<Data<String>>() {
             @Override
             protected void onHandleSuccess(BaseResult<Data<String>> value) {
                 mView.ApplyBeyondMoney(value);
@@ -211,9 +212,9 @@ public class PendingOrderPresenter extends PendingOrderContract.Presenter {
     @Override
     public void GetExpressInfo(String ExpressNo) {
         mModel.GetExpressInfo(ExpressNo)
-                .subscribe(new BaseObserver<Data<Logistics>>() {
+                .subscribe(new BaseObserver2<GetExpressInfoResult>() {
                     @Override
-                    protected void onHandleSuccess(BaseResult<Data<Logistics>> value) {
+                    protected void onHandleSuccess(GetExpressInfoResult value) {
                         mView.GetExpressInfo(value);
                     }
                 });

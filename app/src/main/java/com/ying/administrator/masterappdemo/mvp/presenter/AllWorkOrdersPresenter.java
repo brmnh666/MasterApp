@@ -123,8 +123,8 @@ public class AllWorkOrdersPresenter extends AllWorkOrdersContract.Presenter {
     }
 
     @Override
-    public void ApplyBeyondMoney(String OrderID, String BeyondMoney, String BeyondDistance,String Bak) {
-        mModel.ApplyBeyondMoney(OrderID,BeyondMoney,BeyondDistance,Bak).subscribe(new BaseObserver<Data<String>>() {
+    public void ApplyBeyondMoney(String OrderID, String BeyondMoney, String BeyondDistance,String Bak,String OrderByondImgUrl) {
+        mModel.ApplyBeyondMoney(OrderID,BeyondMoney,BeyondDistance,Bak,OrderByondImgUrl).subscribe(new BaseObserver<Data<String>>() {
             @Override
             protected void onHandleSuccess(BaseResult<Data<String>> value) {
                 mView.ApplyBeyondMoney(value);

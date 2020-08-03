@@ -16,6 +16,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 * 常量配置
 * */
 public class Config {
+    public static final String Img_URL="https://img.xigyu.com/Pics/d208e5b9f7684d2990f69a9f2a42076f.jpeg";//base
 //    public static final String BASE_URL = "http://192.168.101.11:8810/api/";//服务端地址
 //    public static final String BASE_URL = "http://42.51.69.35:8080/api/";//MARK:工厂师傅测试服
     public static final String BASE_URL = "http://192.168.1.203:8810/api/";//MARK:工厂师傅测试服2
@@ -23,22 +24,21 @@ public class Config {
 //    public static final String BASE_URL = "http://fapi.xigyu.com/api/";//测试服
 //    public static final String BASE_URL = "http://47.96.126.145:8090/api/";//测试服
 //    public static final String BASE_URL = "http://admin.xigyu.com/api/";//服务端地址
-    public static final String HEAD_URL="https://img.xigyu.com/Pics/Avator/";//头像地址
-    public static final String Leave_Message_URL="https://img.xigyu.com/Pics/LeaveMessageImg/";//留言地址
-    public static final String Leave_product_URL="https://img.xigyu.com/Pics/productImg/";//产品地址
-    public static final String SUB_ACCOUNT_QRCODE="http://admin.xigyu.com/api/VerifyCode/GetQrCodeToReg?ParentUserID=";//二维码
-    public static final String RETURN_IMG="https://img.xigyu.com/Pics/OldAccessory/";//返回返件路径
-    public static final String Service_IMG="https://img.xigyu.com/Pics/FinishOrder/";//服务过程图片
-    public static final String ComPlaint_URL="https://img.xigyu.com/Pics/ComPlaint/";//投诉地址
-    public static final String Leave_quote_URL="https://img.xigyu.com/Pics/OrderImgUrl/";//报价图片地址
-    public static final String Accessory_URL="https://img.xigyu.com/Pics/Accessory/";//配件照片
+    public static final String HEAD_URL=Img_URL+"Avator/";//头像地址
+    public static final String Leave_Message_URL=Img_URL+"LeaveMessageImg/";//留言地址
+    public static final String Leave_product_URL=Img_URL+"productImg/";//产品地址
 
+    public static final String RETURN_IMG=Img_URL+"OldAccessory/";//返回返件路径
+    public static final String Service_IMG=Img_URL+"FinishOrder/";//服务过程图片
+    public static final String ComPlaint_URL=Img_URL+"ComPlaint/";//投诉地址
+    public static final String Leave_quote_URL=Img_URL+"OrderImgUrl/";//报价图片地址
+    public static final String Accessory_URL=Img_URL+"Accessory/";//配件照片
+
+    public static final String SUB_ACCOUNT_QRCODE="http://admin.xigyu.com/api/VerifyCode/GetQrCodeToReg?ParentUserID=";//二维码
 
     public static  final int ORDER_READ=99;
     public static  final int APPLY_REQUEST=12;
     public static  final int APPLY_RESULT=13;
-
-
 
     public static boolean IS_DEBUG = true;
     public static String TOKEN = null;

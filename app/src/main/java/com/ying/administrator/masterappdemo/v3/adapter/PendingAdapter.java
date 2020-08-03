@@ -30,7 +30,7 @@ public class PendingAdapter extends BaseQuickAdapter<WorkOrder.DataBean, BaseVie
         if (models!=null){
             for (int i = 0; i < models.size(); i++) {
                 model =models.get(i);
-                name+=model.getSubCategoryName()+"   x"+model.getNum()+"、";
+                name+=model.getBrandName()+"("+model.getSubCategoryName()+")"+model.getProdModelName()+"、";
             }
         }
         if (name.contains("、")){

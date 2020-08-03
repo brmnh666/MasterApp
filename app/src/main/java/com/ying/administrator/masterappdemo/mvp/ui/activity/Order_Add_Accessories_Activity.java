@@ -57,7 +57,6 @@ import com.ying.administrator.masterappdemo.entity.FService;
 import com.ying.administrator.masterappdemo.entity.GAccessory;
 import com.ying.administrator.masterappdemo.entity.GService;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
-import com.ying.administrator.masterappdemo.entity.Logistics;
 import com.ying.administrator.masterappdemo.entity.SAccessory;
 import com.ying.administrator.masterappdemo.entity.SService;
 import com.ying.administrator.masterappdemo.entity.STotalAS;
@@ -75,6 +74,7 @@ import com.ying.administrator.masterappdemo.util.Glide4Engine;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.util.SingleClick;
 import com.ying.administrator.masterappdemo.util.imageutil.CompressHelper;
+import com.ying.administrator.masterappdemo.v3.bean.GetExpressInfoResult;
 import com.ying.administrator.masterappdemo.widget.ClearEditText;
 import com.ying.administrator.masterappdemo.widget.HideSoftInputDialog;
 import com.zhihu.matisse.Matisse;
@@ -745,7 +745,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                     money = Double.parseDouble(mEtOrderBeyondKm.getText().toString());
                     distance = Double.parseDouble(mEtOrderBeyondKm.getText().toString());
                 }
-                mPresenter.ApplyBeyondMoney(orderID, money + "", distance + "","");
+                mPresenter.ApplyBeyondMoney(orderID, money + "", distance + "","","");
                 break;
             default:
                 break;
@@ -1395,7 +1395,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
     }
 
     @Override
-    public void GetExpressInfo(BaseResult<Data<Logistics>> baseResult) {
+    public void GetExpressInfo(GetExpressInfoResult baseResult) {
 
     }
 

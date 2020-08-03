@@ -23,7 +23,6 @@ public interface ServingDetailContract {
         Observable<BaseResult<Data<String>>> UpdateOrderState(String OrderID,String State,String Reason);
         //更新时间
         Observable<BaseResult<Data>> UpdateSendOrderUpdateTime(String OrderID,String UpdateDate,String EndDate);
-        Observable<BaseResult<Data<String>>> ConfirmReceipt(String OrderID);
         Observable<BaseResult<Data<List<GetBrandWithCategory>>>> GetBrandWithCategory2(String UserID, String BrandID, String CategoryID, String SubCategoryID, String ProductTypeID, String page, String limit);
         Observable<AddOrderSignInRecrodResult> AddOrderSignInRecrod(String userId, String signInType, String orderId);
     }
@@ -36,7 +35,6 @@ public interface ServingDetailContract {
         void UpdateOrderState(BaseResult<Data<String>> baseResult);
         //更新时间
         void UpdateSendOrderUpdateTime(BaseResult<Data> baseResult);
-        void ConfirmReceipt(BaseResult<Data<String>> baseResult);
         void GetBrandWithCategory2(BaseResult<Data<List<GetBrandWithCategory>>> baseResult);
         void AddOrderSignInRecrod(AddOrderSignInRecrodResult baseResult);
     }
@@ -48,7 +46,6 @@ public interface ServingDetailContract {
         public abstract void UpdateOrderState(String OrderID,String State,String Reason);
         //更新时间
         public abstract void UpdateSendOrderUpdateTime(String OrderID,String UpdateDate,String EndDate);
-        public abstract void ConfirmReceipt(String OrderID);
         public abstract void AddOrderSignInRecrod(String userId, String signInType, String orderId);
         public abstract void GetBrandWithCategory2(String UserID, String BrandID, String CategoryID, String SubCategoryID, String ProductTypeID, String page, String limit);
     }
