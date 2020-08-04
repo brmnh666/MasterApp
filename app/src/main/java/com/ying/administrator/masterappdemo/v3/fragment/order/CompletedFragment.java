@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,8 +32,6 @@ import com.ying.administrator.masterappdemo.v3.mvp.contract.OrderContract;
 import com.ying.administrator.masterappdemo.v3.mvp.model.OrderModel;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -187,6 +184,9 @@ public class CompletedFragment extends BaseLazyFragment<OrderPresenter, OrderMod
         mRefreshLayout.finishLoadmore();
         switch (baseResult.getStatusCode()){
             case 200:
+                if (page!=1&&baseResult.getData().getData().size()==0){
+                    mRefreshLayout.finishLoadmoreWithNoMoreData();
+                }
                 workOrder = baseResult.getData();
                 if (workOrder.getData()!=null){
                     list.addAll(workOrder.getData());

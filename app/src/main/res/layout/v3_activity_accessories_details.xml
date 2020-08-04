@@ -312,6 +312,14 @@
                     android:id="@+id/rv_accessories_picture"></android.support.v7.widget.RecyclerView>
             </LinearLayout>
             <Button
+                android:id="@+id/btn_cancel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="取消"
+                android:textColor="@color/white"
+                android:layout_margin="@dimen/dp_10"
+                android:background="@drawable/v3_btn_shape"/>
+            <Button
                 android:id="@+id/btn_ConfirmReceipt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -187,6 +187,7 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
+                refreshlayout.resetNoMoreData();
                 list.clear();
                 page = 1;
                 // 通过Math的random()函数返回一个double类型随机数，范围[0.0, 1.0)
@@ -268,6 +269,9 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
         mRefreshLayout.finishLoadmore();
         switch (baseResult.getStatusCode()) {
             case 200:
+                if (page!=1&&baseResult.getData().getData().size()==0){
+                    mRefreshLayout.finishLoadmoreWithNoMoreData();
+                }
                 if (page == 1) {
                     list.clear();
                 }

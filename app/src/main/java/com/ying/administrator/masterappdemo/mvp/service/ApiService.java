@@ -47,6 +47,7 @@ import com.ying.administrator.masterappdemo.v3.bean.ConfirmReceiptResult;
 import com.ying.administrator.masterappdemo.v3.bean.ConfirmReturnResult;
 import com.ying.administrator.masterappdemo.v3.bean.DeleteAccessoryResult;
 import com.ying.administrator.masterappdemo.v3.bean.GetExpressInfoResult;
+import com.ying.administrator.masterappdemo.v3.bean.UpdateAccessoryResult;
 
 import org.json.JSONArray;
 
@@ -1303,4 +1304,11 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("OrderRevision/DeleteAccessory")
     Observable<DeleteAccessoryResult> DeleteAccessory(@Field("AccessoryIDs") String AccessoryIDs);
+    /**
+     * 新版更改配件
+     * @param json
+     * @return
+     */
+    @POST("OrderRevision/UpdateAccessory")
+    Observable<UpdateAccessoryResult> UpdateAccessory(@Body RequestBody json);
 }

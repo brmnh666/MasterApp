@@ -8,14 +8,17 @@ import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.v3.bean.ConfirmReceiptResult;
 import com.ying.administrator.masterappdemo.v3.bean.ConfirmReturnResult;
 import com.ying.administrator.masterappdemo.v3.bean.DeleteAccessoryResult;
+import com.ying.administrator.masterappdemo.v3.bean.UpdateAccessoryResult;
 
 import io.reactivex.Observable;
+import okhttp3.RequestBody;
 
 public interface AccessoriesDetailsContract {
     interface Model extends BaseModel{
         //根据工单号获取工单详情
         Observable<BaseResult<WorkOrder.DataBean>> GetOrderInfo(String OrderID);
         Observable<DeleteAccessoryResult> DeleteAccessory(String AccessoryIDs);
+        Observable<UpdateAccessoryResult> UpdateAccessory(RequestBody json);
 
         Observable<ConfirmReceiptResult> ConfirmReceipt(String AccessoryID);
         Observable<ConfirmReturnResult> ConfirmReturn(String AccessoryID,String ReturnExpressNo,String PostMoney);
@@ -25,6 +28,7 @@ public interface AccessoriesDetailsContract {
         //根据工单号获取工单详情
         void GetOrderInfo(BaseResult<WorkOrder.DataBean> baseResult);
         void DeleteAccessory(DeleteAccessoryResult baseResult);
+        void UpdateAccessory(UpdateAccessoryResult baseResult);
 
         void ConfirmReceipt(ConfirmReceiptResult baseResult);
         void ConfirmReturn(ConfirmReturnResult baseResult);
@@ -34,6 +38,7 @@ public interface AccessoriesDetailsContract {
         //根据工单号获取工单详情
         public abstract void GetOrderInfo(String OrderID);
         public abstract void DeleteAccessory(String AccessoryIDs);
+        public abstract void UpdateAccessory(RequestBody json);
 
         public abstract void ConfirmReceipt(String AccessoryID);
         public abstract void ConfirmReturn(String AccessoryID,String ReturnExpressNo,String PostMoney);

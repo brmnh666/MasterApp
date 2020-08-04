@@ -4,6 +4,7 @@ import com.ying.administrator.masterappdemo.base.BaseObserver;
 import com.ying.administrator.masterappdemo.base.BaseObserver2;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.AddressList;
+import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.v3.bean.ApplicationResult;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.ApplyAccContract;
 
@@ -30,6 +31,16 @@ public class ApplyAccPresenter extends ApplyAccContract.Presenter {
                     @Override
                     protected void onHandleSuccess(BaseResult<List<AddressList>> value) {
                         mView.GetAccountAddress(value);
+                    }
+                });
+    }
+    @Override
+    public void GetOrderInfo(String OrderID) {
+        mModel.GetOrderInfo(OrderID)
+                .subscribe(new BaseObserver<WorkOrder.DataBean>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<WorkOrder.DataBean> value) {
+                        mView.GetOrderInfo(value);
                     }
                 });
     }

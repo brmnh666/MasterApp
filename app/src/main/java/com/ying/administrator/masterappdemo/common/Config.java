@@ -16,7 +16,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 * 常量配置
 * */
 public class Config {
-    public static final String Img_URL="https://img.xigyu.com/Pics/d208e5b9f7684d2990f69a9f2a42076f.jpeg";//base
+    public static final String Img_URL="https://img.xigyu.com/Pics/";//base
 //    public static final String BASE_URL = "http://192.168.101.11:8810/api/";//服务端地址
 //    public static final String BASE_URL = "http://42.51.69.35:8080/api/";//MARK:工厂师傅测试服
     public static final String BASE_URL = "http://192.168.1.203:8810/api/";//MARK:工厂师傅测试服2

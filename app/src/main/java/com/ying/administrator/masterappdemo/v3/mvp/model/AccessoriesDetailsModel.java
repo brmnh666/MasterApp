@@ -6,11 +6,13 @@ import com.ying.administrator.masterappdemo.mvp.service.ApiRetrofit;
 import com.ying.administrator.masterappdemo.v3.bean.ConfirmReceiptResult;
 import com.ying.administrator.masterappdemo.v3.bean.ConfirmReturnResult;
 import com.ying.administrator.masterappdemo.v3.bean.DeleteAccessoryResult;
+import com.ying.administrator.masterappdemo.v3.bean.UpdateAccessoryResult;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.AccessoriesDetailsContract;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.RequestBody;
 
 public class AccessoriesDetailsModel implements AccessoriesDetailsContract.Model {
     @Override
@@ -23,6 +25,13 @@ public class AccessoriesDetailsModel implements AccessoriesDetailsContract.Model
     @Override
     public Observable<DeleteAccessoryResult> DeleteAccessory(String AccessoryIDs) {
         return ApiRetrofit.getDefault().DeleteAccessory(AccessoryIDs)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<UpdateAccessoryResult> UpdateAccessory(RequestBody json) {
+        return ApiRetrofit.getDefault().UpdateAccessory(json)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

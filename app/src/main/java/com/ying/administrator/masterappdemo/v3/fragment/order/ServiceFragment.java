@@ -14,20 +14,17 @@ import android.view.ViewGroup;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.moor.imkf.ormlite.stmt.query.In;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseResult;
-import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.NavigationBarNumber;
 import com.ying.administrator.masterappdemo.entity.NavigationBarNumberSon;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
-import com.ying.administrator.masterappdemo.v3.activity.QuoteDetailsActivity;
 import com.ying.administrator.masterappdemo.v3.activity.ServingDetailActivity;
 import com.ying.administrator.masterappdemo.v3.adapter.OrderAdapter;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.OrderPresenter;
@@ -35,8 +32,6 @@ import com.ying.administrator.masterappdemo.v3.mvp.contract.OrderContract;
 import com.ying.administrator.masterappdemo.v3.mvp.model.OrderModel;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -181,6 +176,9 @@ public class ServiceFragment extends BaseLazyFragment<OrderPresenter, OrderModel
         mRefreshLayout.finishLoadmore();
         switch (baseResult.getStatusCode()) {
             case 200:
+                if (page!=1&&baseResult.getData().getData().size()==0){
+                    mRefreshLayout.finishLoadmoreWithNoMoreData();
+                }
                 workOrder = baseResult.getData();
                 if (workOrder.getData() != null) {
                     list.addAll(workOrder.getData());

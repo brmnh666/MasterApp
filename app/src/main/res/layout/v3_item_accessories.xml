@@ -37,6 +37,12 @@
                 android:layout_height="wrap_content"
                 android:src="@mipmap/delete"/>
         </LinearLayout>
+        <Button
+            android:id="@+id/btn_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="更换"
+            android:visibility="gone"/>
     </LinearLayout>
 
     <View

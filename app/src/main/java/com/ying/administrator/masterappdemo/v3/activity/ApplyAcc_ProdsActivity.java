@@ -9,21 +9,20 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.SPUtils;
-import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.AddressList;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
-import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.v3.adapter.ProdAdapter;
 import com.ying.administrator.masterappdemo.v3.bean.ApplicationResult;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.ApplyAccPresenter;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.ApplyAccContract;
 import com.ying.administrator.masterappdemo.v3.mvp.model.ApplyAccModel;
 
-import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,6 +86,7 @@ public class ApplyAcc_ProdsActivity extends BaseActivity<ApplyAccPresenter, Appl
             }
         });
         cj_or_zg = getIntent().getStringExtra("cj_or_zg");
+        OrderID = getIntent().getStringExtra("OrderID");
         if ("厂寄".equals(cj_or_zg)) {
             mTvTitle.setText("厂家寄件申请");
             mPresenter.GetAccountAddress(UserID);
@@ -103,24 +103,17 @@ public class ApplyAcc_ProdsActivity extends BaseActivity<ApplyAccPresenter, Appl
 
     @Override
     public void Application(ApplicationResult baseResult) {
+
+    }
+    @Override
+    public void GetOrderInfo(BaseResult<WorkOrder.DataBean> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData().isStatus()) {
-                    ToastUtils.showShort("提交成功");
-                    EventBus.getDefault().post(3);//去选项卡待审核
-                    EventBus.getDefault().post(21);
-                    finish();
-                } else {
-                    MyUtils.showToast(mActivity, baseResult.getData().getMsg());
-                }
-                hideProgress();
-                break;
-            default:
-                hideProgress();
+                list_prod=baseResult.getData().getOrderProductModels();
+                prodAdapter.setNewData(list_prod);
                 break;
         }
     }
-
     @Override
     protected void setListener() {
         mIvBack.setOnClickListener(this);
@@ -132,8 +125,13 @@ public class ApplyAcc_ProdsActivity extends BaseActivity<ApplyAccPresenter, Appl
             case R.id.iv_back:
                 finish();
                 break;
-            case R.id.btn_submit:
-
+        }
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(Integer name) {
+        switch (name) {
+            case 21:
+                mPresenter.GetOrderInfo(OrderID);
                 break;
         }
     }

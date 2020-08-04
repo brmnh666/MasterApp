@@ -255,6 +255,9 @@ public class PendingFragment extends BaseLazyFragment<OrderPresenter, OrderModel
         }
         switch (baseResult.getStatusCode()){
             case 200:
+                if (page!=1&&baseResult.getData().getData().size()==0){
+                    mRefreshLayout.finishLoadmoreWithNoMoreData();
+                }
                 if (page==1){
                     list.clear();
                 }

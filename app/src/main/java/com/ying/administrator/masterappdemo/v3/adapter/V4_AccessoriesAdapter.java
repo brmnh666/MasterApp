@@ -22,5 +22,6 @@ public class V4_AccessoriesAdapter extends BaseQuickAdapter<accessoryDataBean.Ac
         helper.setText(R.id.tv_name,item.getFAccessoryName())
                 .setText(R.id.tv_number,"0".equals(accState)?"x"+item.getQuantity():"x"+item.getQuantity()+"（¥"+item.getPrice()+"）");
         helper.addOnClickListener(R.id.ll_delete);
+        helper.addOnClickListener(R.id.btn_edit);
     }
 }

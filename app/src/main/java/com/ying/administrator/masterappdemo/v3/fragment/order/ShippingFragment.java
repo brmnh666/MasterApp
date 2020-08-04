@@ -186,6 +186,9 @@ public class ShippingFragment extends BaseLazyFragment <OrderPresenter, OrderMod
         mRefreshLayout.finishLoadmore();
         switch (baseResult.getStatusCode()){
             case 200:
+                if (page!=1&&baseResult.getData().getData().size()==0){
+                    mRefreshLayout.finishLoadmoreWithNoMoreData();
+                }
                 workOrder = baseResult.getData();
                 if (workOrder.getData()!=null){
                     list.addAll(workOrder.getData());

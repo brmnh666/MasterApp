@@ -33,6 +33,7 @@ import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.AccPicResult;
 import com.ying.administrator.masterappdemo.entity.Accessory;
 import com.ying.administrator.masterappdemo.entity.AddressList;
+import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.AddAddressActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Ac_List_Adapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.PicAdapter;
@@ -204,6 +205,11 @@ public class ApplyAccActivity extends BaseActivity<ApplyAccPresenter, ApplyAccMo
                 hideProgress();
                 break;
         }
+    }
+
+    @Override
+    public void GetOrderInfo(BaseResult<WorkOrder.DataBean> baseResult) {
+
     }
 
     private void loadAdpater(ArrayList<String> paths) {

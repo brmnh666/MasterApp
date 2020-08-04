@@ -43,6 +43,7 @@ import com.ying.administrator.masterappdemo.v3.adapter.V4_AccessoriesAdapter;
 import com.ying.administrator.masterappdemo.v3.bean.ConfirmReceiptResult;
 import com.ying.administrator.masterappdemo.v3.bean.ConfirmReturnResult;
 import com.ying.administrator.masterappdemo.v3.bean.DeleteAccessoryResult;
+import com.ying.administrator.masterappdemo.v3.bean.UpdateAccessoryResult;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.AccessoriesDetailsPresenter;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.AccessoriesDetailsContract;
 import com.ying.administrator.masterappdemo.v3.mvp.model.AccessoriesDetailsModel;
@@ -122,6 +123,8 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
     Button mBtnConfirmReceipt;
     @BindView(R.id.btn_ConfirmReturn)
     Button mBtnConfirmReturn;
+    @BindView(R.id.btn_cancel)
+    Button mBtnCancel;
     private List<String> list = new ArrayList<>();
     private AccessoriesPictureAdapter accessoriesPictureAdapter;
     private Intent intent;
@@ -157,7 +160,7 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
     protected void initView() {
         data = (accessoryDataBean) getIntent().getSerializableExtra("acc_data");
         mTvTitle.setText("配件单详情（" + data.getAccessoryNo() + "）");
-        accessoriesAdapter = new V4_AccessoriesAdapter(R.layout.v3_item_accessories, data.getAccessoryDetailModels(),data.getAccessoryState());
+        accessoriesAdapter = new V4_AccessoriesAdapter(R.layout.v3_item_accessories, data.getAccessoryDetailModels(), data.getAccessoryState());
         mRvAccessories.setLayoutManager(new LinearLayoutManager(mActivity));
         mRvAccessories.setAdapter(accessoriesAdapter);
         accessoriesAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
@@ -180,6 +183,9 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
                                 dialog.dismiss();
                             }
                         }).show();
+                        break;
+                    case R.id.btn_edit:
+
                         break;
                 }
             }
@@ -213,7 +219,8 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
 
         refreshData();
     }
-    private void refreshData(){
+
+    private void refreshData() {
         if ("-2".equals(data.getState()) || "-1".equals(data.getState())) {//配件单拒绝或者被终止
             mLlOne.setVisibility(View.GONE);
             mLlTwo.setVisibility(View.GONE);
@@ -300,16 +307,21 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
         }
         if ("1".equals(data.getState()) || "2".equals(data.getState())) {//已发件配件待签收
             mBtnConfirmReceipt.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             mBtnConfirmReceipt.setVisibility(View.GONE);
         }
         if ("3".equals(data.getState())) {//待返旧件
             mBtnConfirmReturn.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             mBtnConfirmReturn.setVisibility(View.GONE);
         }
-        mTvOutboundLogistics.setText("快递单号（"+data.getExpressNo()+"）");
-        mTvReturnLogistics.setText("快递单号（"+data.getReturnExpressNo()+"）");
+        if ("0".equals(data.getState())){
+            mBtnCancel.setVisibility(View.VISIBLE);
+        }else{
+            mBtnCancel.setVisibility(View.GONE);
+        }
+        mTvOutboundLogistics.setText("快递单号（" + data.getExpressNo() + "）");
+        mTvReturnLogistics.setText("快递单号（" + data.getReturnExpressNo() + "）");
     }
 
     @Override
@@ -320,6 +332,7 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
         mBtnAdd.setOnClickListener(this);
         mBtnConfirmReceipt.setOnClickListener(this);
         mBtnConfirmReturn.setOnClickListener(this);
+        mBtnCancel.setOnClickListener(this);
     }
 
     @Override
@@ -349,14 +362,32 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
                 startActivity(intent);
                 break;
             case R.id.btn_ConfirmReceipt://确认签收
-                mPresenter.ConfirmReceipt(data.getAccessoryID()+"");
+                mPresenter.ConfirmReceipt(data.getAccessoryID() + "");
                 break;
             case R.id.btn_ConfirmReturn://确认返件
                 confirmReturn();
                 break;
+            case R.id.btn_cancel://取消
+                final CommonDialog_Home dialog = new CommonDialog_Home(mActivity);
+                dialog.setMessage("是否确认取消该配件单申请？")
+                        .setTitle("提示")
+                        .setSingle(false).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
+                    @Override
+                    public void onPositiveClick() {
+                        mPresenter.DeleteAccessory(data.getAccessoryID() + "");
+                        dialog.dismiss();
+                    }
+
+                    @Override
+                    public void onNegtiveClick() {//取消
+                        dialog.dismiss();
+                    }
+                }).show();
+                break;
         }
     }
-    private void confirmReturn(){
+
+    private void confirmReturn() {
         puchsh_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_add_expressno, null);
         btn_negtive = puchsh_view.findViewById(R.id.negtive);
         btn_positive = puchsh_view.findViewById(R.id.positive);
@@ -414,11 +445,11 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
                         hideProgress();
                         return;
                     } else {
-                        mPresenter.ConfirmReturn(data.getAccessoryID()+"", expressno, post_money);
+                        mPresenter.ConfirmReturn(data.getAccessoryID() + "", expressno, post_money);
                     }
                 } else {
                     post_money = "0";
-                    mPresenter.ConfirmReturn(data.getAccessoryID()+"", expressno, post_money);
+                    mPresenter.ConfirmReturn(data.getAccessoryID() + "", expressno, post_money);
                 }
 
 
@@ -497,7 +528,7 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
             case 200:
                 for (int i = 0; i < baseResult.getData().getOrderProductModels().size(); i++) {
                     for (int j = 0; j < baseResult.getData().getOrderProductModels().get(i).getAccessoryData().size(); j++) {
-                        if (baseResult.getData().getOrderProductModels().get(i).getAccessoryData().get(j).getAccessoryID()== data.getAccessoryID()) {
+                        if (baseResult.getData().getOrderProductModels().get(i).getAccessoryData().get(j).getAccessoryID() == data.getAccessoryID()) {
                             data = baseResult.getData().getOrderProductModels().get(i).getAccessoryData().get(j);
                             accessoriesAdapter.setNewData(data.getAccessoryDetailModels());
                             refreshData();
@@ -509,14 +540,29 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
     }
 
     @Override
+    public void UpdateAccessory(UpdateAccessoryResult baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                if (baseResult.getData().isStatus()) {
+                    showToast(mActivity, "更换成功");
+                    EventBus.getDefault().post(21);
+                } else {
+                    showToast(mActivity, baseResult.getData().getMsg());
+                }
+                break;
+        }
+    }
+
+    @Override
     public void DeleteAccessory(DeleteAccessoryResult baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
                 if (baseResult.getData().isStatus()) {
-                    MyUtils.showToast(mActivity, "删除成功");
+                    showToast(mActivity, "取消成功");
                     EventBus.getDefault().post(21);
+                    finish();
                 } else {
-                    MyUtils.showToast(mActivity, baseResult.getData().getMsg());
+                    showToast(mActivity, baseResult.getData().getMsg());
                 }
                 break;
         }
@@ -526,11 +572,11 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
     public void ConfirmReceipt(ConfirmReceiptResult baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData().getCode()==0) {
-                    MyUtils.showToast(mActivity, "操作成功");
+                if (baseResult.getData().getCode() == 0) {
+                    showToast(mActivity, "操作成功");
                     EventBus.getDefault().post(21);
                 } else {
-                    MyUtils.showToast(mActivity, baseResult.getData().getMsg());
+                    showToast(mActivity, baseResult.getData().getMsg());
                 }
                 break;
         }
@@ -540,11 +586,11 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
     public void ConfirmReturn(ConfirmReturnResult baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData().getCode()==0) {
-                    MyUtils.showToast(mActivity, "操作成功");
+                if (baseResult.getData().getCode() == 0) {
+                    showToast(mActivity, "操作成功");
                     EventBus.getDefault().post(21);
                 } else {
-                    MyUtils.showToast(mActivity, baseResult.getData().getMsg());
+                    showToast(mActivity, baseResult.getData().getMsg());
                 }
                 hideProgress();
                 push_dialog.dismiss();

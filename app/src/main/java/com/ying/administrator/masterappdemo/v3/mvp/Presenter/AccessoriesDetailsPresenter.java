@@ -7,7 +7,10 @@ import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.v3.bean.ConfirmReceiptResult;
 import com.ying.administrator.masterappdemo.v3.bean.ConfirmReturnResult;
 import com.ying.administrator.masterappdemo.v3.bean.DeleteAccessoryResult;
+import com.ying.administrator.masterappdemo.v3.bean.UpdateAccessoryResult;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.AccessoriesDetailsContract;
+
+import okhttp3.RequestBody;
 
 public class AccessoriesDetailsPresenter extends AccessoriesDetailsContract.Presenter {
     @Override
@@ -28,6 +31,17 @@ public class AccessoriesDetailsPresenter extends AccessoriesDetailsContract.Pres
                     @Override
                     protected void onHandleSuccess(DeleteAccessoryResult value) {
                         mView.DeleteAccessory(value);
+                    }
+                });
+    }
+
+    @Override
+    public void UpdateAccessory(RequestBody json) {
+        mModel.UpdateAccessory(json)
+                .subscribe(new BaseObserver2<UpdateAccessoryResult>() {
+                    @Override
+                    protected void onHandleSuccess(UpdateAccessoryResult value) {
+                        mView.UpdateAccessory(value);
                     }
                 });
     }
