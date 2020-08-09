@@ -6,6 +6,7 @@ import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.AddOrderSignInRecrodResult;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.GetBrandWithCategory;
+import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.ServingDetailContract;
 
@@ -75,6 +76,16 @@ public class ServingDetailPresenter extends ServingDetailContract.Presenter {
                     @Override
                     protected void onHandleSuccess(BaseResult<Data<List<GetBrandWithCategory>>> value) {
                         mView.GetBrandWithCategory2(value);
+                    }
+                });
+    }
+    @Override
+    public void GetUserInfoList(String UserID, String limit) {
+        mModel.GetUserInfoList(UserID, limit)
+                .subscribe(new BaseObserver<UserInfo>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<UserInfo> value) {
+                        mView.GetUserInfoList(value);
                     }
                 });
     }

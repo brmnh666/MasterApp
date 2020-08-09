@@ -129,6 +129,7 @@ public class MessageActivity2 extends BaseActivity<MessagePresenter, MessageMode
         leaveMessageAdapter = new LeaveMessageAdapter(R.layout.leave_message_item, list);
         mMessageRv.setLayoutManager(new LinearLayoutManager(mActivity));
         mMessageRv.setAdapter(leaveMessageAdapter);
+        leaveMessageAdapter.setEmptyView(getMessageEmptyView());
         leaveMessageAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {

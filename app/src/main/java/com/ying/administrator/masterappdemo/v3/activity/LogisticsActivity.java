@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.ToastUtils;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
+import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.v3.adapter.LogisticsAdapter;
 import com.ying.administrator.masterappdemo.v3.bean.GetExpressInfoResult;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.LogisticsPresenter;
@@ -104,11 +105,14 @@ public class LogisticsActivity extends BaseActivity<LogisticsPresenter, Logistic
     public void GetExpressInfo(GetExpressInfoResult baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-                if (baseResult.getData().getData().getList() != null) {
-                    list.addAll(baseResult.getData().getData().getList());
-                    adapter.setNewData(list);
+                if (baseResult.getData().getCode()==0){
+                    if (baseResult.getData().getData().getList() != null) {
+                        list.addAll(baseResult.getData().getData().getList());
+                        adapter.setNewData(list);
+                    }
+                }else{
+                    MyUtils.showToast(mActivity,baseResult.getData().getMsg());
                 }
-
                 break;
         }
     }

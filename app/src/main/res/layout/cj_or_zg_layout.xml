@@ -13,17 +13,6 @@
         android:orientation="vertical"
         android:layout_marginBottom="10dp"
         android:background="@drawable/popwindow_shape">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:textColor="@color/color_custom_01"
-            android:gravity="center"
-            android:text="申请配件类型"
-            android:textSize="18sp"/>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/color_custom_06"/>
         <Button
             android:id="@+id/btn_cj"
             android:layout_width="match_parent"
@@ -32,10 +21,6 @@
             android:textColor="@color/color_black"
             android:text="厂家寄件申请"
             android:textSize="16sp"/>
-        <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/color_custom_06"/>
         <Button
             android:id="@+id/btn_zg"
             android:layout_width="match_parent"
@@ -44,17 +29,21 @@
             android:textColor="@color/color_black"
             android:text="师傅自购件申请"
             android:textSize="16sp"/>
-        <View
+        <Button
+            android:id="@+id/btn_beyond"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/color_custom_06"/>
+            android:layout_height="50dp"
+            android:background="@null"
+            android:textColor="@color/color_black"
+            android:text="远程费申请"
+            android:textSize="16sp"/>
         <Button
             android:id="@+id/btn_complete"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@null"
             android:textColor="@color/color_black"
-            android:text="直接完结"
+            android:text="提交完结信息"
             android:textSize="16sp"/>
     </LinearLayout>
     <Button

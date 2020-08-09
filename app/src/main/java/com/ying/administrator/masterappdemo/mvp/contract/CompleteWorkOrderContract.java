@@ -6,6 +6,7 @@ import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.base.BaseView;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
+import com.ying.administrator.masterappdemo.v3.bean.EndResult;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
@@ -31,6 +32,8 @@ public interface CompleteWorkOrderContract {
         //提交快递信息
         Observable<BaseResult<Data<String>>> AddReturnAccessory(String OrderID,String ReturnAccessoryMsg,String PostMoney);
         Observable<BaseResult<Data<String>>> AddbarCode(String barCode,String OrderID);
+        //新版完结
+        Observable<EndResult> End(RequestBody json);
     }
 
     interface View extends BaseView{
@@ -55,6 +58,7 @@ public interface CompleteWorkOrderContract {
         //提交快递信息
         void AddReturnAccessory(BaseResult<Data<String>> baseResult);
         void AddbarCode(BaseResult<Data<String>> baseResult);
+        void End(EndResult baseResult);
 
     }
    abstract class Presenter extends BasePresenter<View,Model> {
@@ -75,5 +79,6 @@ public interface CompleteWorkOrderContract {
        //提交快递信息
        public abstract void AddReturnAccessory(String OrderID,String ReturnAccessoryMsg,String PostMoney);
        public abstract void AddbarCode(String barCode,String OrderID);
+       public abstract void End(RequestBody json);
    }
 }

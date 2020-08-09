@@ -4,6 +4,7 @@ import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.AddOrderSignInRecrodResult;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.GetBrandWithCategory;
+import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.service.ApiRetrofit;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.ServingDetailContract;
@@ -53,6 +54,12 @@ public class ServingDetailModel implements ServingDetailContract.Model {
     @Override
     public Observable<AddOrderSignInRecrodResult> AddOrderSignInRecrod(String userId, String signInType, String orderId) {
         return ApiRetrofit.getDefault().AddOrderSignInRecrod(userId,signInType,orderId)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+    @Override
+    public Observable<BaseResult<UserInfo>> GetUserInfoList(String UserID, String limit) {
+        return ApiRetrofit.getDefault().GetUserInfoList(UserID, limit)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

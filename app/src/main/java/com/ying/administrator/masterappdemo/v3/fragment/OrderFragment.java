@@ -218,11 +218,11 @@ public class OrderFragment extends BaseLazyFragment<OrderPresenter, OrderModel> 
                 mPresenter.NavigationBarNumber(userId, "1", "10");
                 break;
             case 2:
-                mReceivingViewpager.setCurrentItem(2); //服务中 state 2
+                mReceivingViewpager.setCurrentItem(2); //待服务 state 2
                 mPresenter.NavigationBarNumber(userId, "1", "10");
                 break;
             case 3:
-                mReceivingViewpager.setCurrentItem(3);//待返件 state 5
+                mReceivingViewpager.setCurrentItem(3);//待审核 state 5
                 mPresenter.NavigationBarNumber(userId, "1", "10");
                 break;
             case 4:
@@ -230,11 +230,11 @@ public class OrderFragment extends BaseLazyFragment<OrderPresenter, OrderModel> 
                 mPresenter.NavigationBarNumber(userId, "1", "10");
                 break;
             case 5:
-                mReceivingViewpager.setCurrentItem(5);//配件单 state 3
+                mReceivingViewpager.setCurrentItem(5);//待结算 state 3
                 mPresenter.NavigationBarNumber(userId, "1", "10");
                 break;
             case 6:
-                mReceivingViewpager.setCurrentItem(6);//配件单 state 3
+                mReceivingViewpager.setCurrentItem(6);//已完结 state 3
                 mPresenter.NavigationBarNumber(userId, "1", "10");
                 break;
             case 20:

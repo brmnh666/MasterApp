@@ -310,7 +310,7 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
         } else {
             mBtnConfirmReceipt.setVisibility(View.GONE);
         }
-        if ("3".equals(data.getState())) {//待返旧件
+        if ("3".equals(data.getState()) || "4".equals(data.getState())) {//待返旧件
             mBtnConfirmReturn.setVisibility(View.VISIBLE);
         } else {
             mBtnConfirmReturn.setVisibility(View.GONE);

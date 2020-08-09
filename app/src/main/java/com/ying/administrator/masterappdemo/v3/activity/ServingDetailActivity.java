@@ -1,8 +1,6 @@
 package com.ying.administrator.masterappdemo.v3.activity;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -14,14 +12,12 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -45,8 +41,6 @@ import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.ethanhua.skeleton.Skeleton;
 import com.ethanhua.skeleton.SkeletonScreen;
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
@@ -55,11 +49,11 @@ import com.ying.administrator.masterappdemo.entity.AccessoriesNoEvent;
 import com.ying.administrator.masterappdemo.entity.AddOrderSignInRecrodResult;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.GetBrandWithCategory;
+import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.ComplaintActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.CompleteWorkOrderActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.MessageActivity2;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.ScanActivity;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.util.SingleClick;
 import com.ying.administrator.masterappdemo.util.calendarutil.CalendarEvent;
@@ -174,30 +168,13 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
     TextView mTvUpload;
     @BindView(R.id.RootView)
     FrameLayout mRootView;
+
     private String orderId;
     private WorkOrder.DataBean data;
     private Intent intent;
-    private View puchsh_view;
-    private AlertDialog push_dialog;
-    private Button btn_negtive;
-    private Button btn_positive;
-    private TextView tv_title;
-    private EditText et_expressno;
-    private EditText et_post_money;
-    private LinearLayout ll_post_money;
-    private LinearLayout ll_scan;
-    private TextView tv_remind;
-    private String expressno;
-    private String post_money;
-    private String type;
     private long recommendedtime;
     private ClipboardManager myClipboard;
     private ClipData myClip;
-    private View under_review;
-    private AlertDialog underReviewDialog;
-    private List<GetBrandWithCategory> list;
-    private GetBrandWithCategory content;
-    private Intent intent2;
     private SkeletonScreen skeletonScreen;
     private View callPhoneView;
     private String technologyPhone;
@@ -210,9 +187,9 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
     private int size;
     private String userId;
     private View popupWindow_view;
-    private String FilePath;
     private List<WorkOrder.OrderProductModelsBean> prodList=new ArrayList<>();
     private ProdAdapter prodAdapter;
+    private UserInfo.UserInfoDean userInfo;
 
     @Override
     protected int setLayoutId() {
@@ -263,13 +240,11 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
             orderId = getIntent().getStringExtra("id");
         }
 
-        type = getIntent().getStringExtra("type");
-//        showProgress();
-
         prodAdapter = new ProdAdapter(R.layout.prod_item, prodList);
         mRvProds.setLayoutManager(new LinearLayoutManager(mActivity));
         mRvProds.setAdapter(prodAdapter);
         mPresenter.GetOrderInfo(orderId);
+        mPresenter.GetUserInfoList(userId, "1");
         myClipboard = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
 
     }
@@ -298,61 +273,18 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                 if (data == null) {
                     return;
                 }
+                showProgress();
                 addressChangeLat(data.getAddress());
                 break;
             case R.id.iv_back:
+                EventBus.getDefault().post(20);//刷新选项卡数量全局搜case 20:
                 finish();
                 break;
             case R.id.ll_telephone:
                 call("tel:" + data.getPhone());
                 break;
             case R.id.tv_upload:
-                if ("安装".equals(data.getTypeName())) {
-                    intent = new Intent(mActivity, CompleteWorkOrderActivity.class);
-                    intent.putExtra("OrderID", data.getOrderID());
-                    startActivity(intent);
-                } else {
-                    if ("0".equals(data.getState()) || "31".equals(data.getState())) {//0系统配件待审核 31自定义配件待审核
-                        puchsh_view = LayoutInflater.from(mActivity).inflate(R.layout.v3_dialog_prompt, null);
-                        TextView title = puchsh_view.findViewById(R.id.title);
-                        TextView message = puchsh_view.findViewById(R.id.message);
-                        Button negtive = puchsh_view.findViewById(R.id.negtive);
-                        title.setText("提示");
-                        if ("pedding".equals(type)) {
-                            message.setText("您的配件暂未到货，请耐心等待");
-                        } else {
-                            message.setText("您的配件暂未审核通过，请耐心等待");
-                        }
-
-                        negtive.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                push_dialog.dismiss();
-                            }
-                        });
-                        push_dialog = new AlertDialog.Builder(mActivity)
-                                .setView(puchsh_view)
-                                .create();
-                        push_dialog.show();
-                    } else {
-                        if ("保外".equals(data.getGuaranteeText())) {
-                            intent = new Intent(mActivity, CompleteWorkOrderActivity.class);
-                            intent.putExtra("OrderID", data.getOrderID());
-                            startActivity(intent);
-                        } else {
-                            // FIXME: 2020-07-22 isApplicationAccessory判断是否可以申请配件
-                            if (!data.isApplicationAccessory()) {
-                                intent = new Intent(mActivity, CompleteWorkOrderActivity.class);
-                                intent.putExtra("OrderID", data.getOrderID());
-                                startActivity(intent);
-                            } else {
-                                showPopupWindow();
-                            }
-
-                        }
-                    }
-
-                }
+                showPopupWindow();
                 break;
             case R.id.ll_accessories_details:
                 Intent intent1 = new Intent(mActivity, AccessoriesDetailsActivity.class);
@@ -407,79 +339,6 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                 }
                 MyUtils.setWindowAlpa(mActivity, true);
                 break;
-            case R.id.tv_return://开始返件
-                puchsh_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_add_expressno, null);
-                btn_negtive = puchsh_view.findViewById(R.id.negtive);
-                btn_positive = puchsh_view.findViewById(R.id.positive);
-                tv_title = puchsh_view.findViewById(R.id.title);
-                et_expressno = puchsh_view.findViewById(R.id.et_expressno);
-                et_post_money = puchsh_view.findViewById(R.id.et_post_money);
-                ll_post_money = puchsh_view.findViewById(R.id.ll_post_money);
-                ll_scan = puchsh_view.findViewById(R.id.ll_scan);
-                tv_remind = puchsh_view.findViewById(R.id.tv_remind);
-//                SpannableStringBuilder builder = new SpannableStringBuilder(tv_remind.getText().toString());
-//                ForegroundColorSpan redSpan = new ForegroundColorSpan(Color.RED);
-//                builder.setSpan(redSpan, 27, 38, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                tv_remind.setText(Html.fromHtml(mActivity.getResources().getString(R.string.gray_white, "为避免产生不必要的纠纷，请在返件的快递单中填写所完成的", "工单号、用户姓名及电话号码", "，并在下面的输入框中填写正确的快递单号")));
-                push_dialog = new AlertDialog.Builder(mActivity)
-                        .setView(puchsh_view)
-                        .create();
-                push_dialog.show();
-                tv_title.setText("填写快递单号");
-                if ("2".equals(data.getPostPayType())) {
-                    ll_post_money.setVisibility(View.VISIBLE);
-                } else {
-                    ll_post_money.setVisibility(View.GONE);
-                }
-                btn_negtive.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        push_dialog.dismiss();
-                    }
-                });
-                ll_scan.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        IntentIntegrator integrator = new IntentIntegrator(ServingDetailActivity.this);
-                        // 设置要扫描的条码类型，ONE_D_CODE_TYPES：一维码，QR_CODE_TYPES-二维码
-                        integrator.setDesiredBarcodeFormats(IntentIntegrator.ONE_D_CODE_TYPES);
-                        integrator.setCaptureActivity(ScanActivity.class); //设置打开摄像头的Activity
-                        integrator.setPrompt("请扫描快递码"); //底部的提示文字，设为""可以置空
-                        integrator.setCameraId(0); //前置或者后置摄像头
-                        integrator.setBeepEnabled(true); //扫描成功的「哔哔」声，默认开启
-                        integrator.setBarcodeImageEnabled(true);
-                        integrator.initiateScan();
-                    }
-                });
-                btn_positive.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        showProgress();
-                        expressno = et_expressno.getText().toString().trim();
-                        post_money = et_post_money.getText().toString();
-                        if ("".equals(expressno)) {
-                            showToast(mActivity, "请填写快递单号");
-                            hideProgress();
-                            return;
-                        }
-                        if ("2".equals(data.getPostPayType())) {
-                            if ("".equals(post_money)) {
-                                showToast(mActivity, "请填写邮费");
-                                hideProgress();
-                                return;
-                            } else {
-                                mPresenter.AddReturnAccessory(orderId, expressno, post_money);
-                            }
-                        } else {
-                            post_money = "0";
-                            mPresenter.AddReturnAccessory(orderId, expressno, post_money);
-                        }
-
-
-                    }
-                });
-
-                break;
             case R.id.tv_ticket_tracking:
                 intent = new Intent(mActivity, TicketTrackingActivity.class);
                 intent.putExtra("id", orderId);
@@ -522,21 +381,15 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                 startActivity(intent);
                 break;
             case R.id.ll_not_available:
-                intent2 = new Intent(mActivity, LogisticsActivity.class);
-                intent2.putExtra("number", data.getExpressNo() + "");
-                startActivity(intent2);
+                intent = new Intent(mActivity, LogisticsActivity.class);
+                intent.putExtra("number", data.getExpressNo() + "");
+                startActivity(intent);
                 break;
             case R.id.tv_complaint:
-                intent2 = new Intent(mActivity, ComplaintActivity.class);
-                intent2.putExtra("orderId", orderId);
-                startActivity(intent2);
+                intent = new Intent(mActivity, ComplaintActivity.class);
+                intent.putExtra("orderId", orderId);
+                startActivity(intent);
                 break;
-//            case R.id.ll_maintenance_information:
-//                intent2 = new Intent(mActivity, WebActivity.class);
-//                intent2.putExtra("Url", content.getCourseCount());
-//                intent2.putExtra("Title", content.getBrandName() + content.getProductTypeName());
-//                startActivity(intent2);
-//                break;
         }
     }
 
@@ -547,8 +400,22 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
         popupWindow_view = LayoutInflater.from(mActivity).inflate(R.layout.cj_or_zg_layout, null);
         Button btn_cj = popupWindow_view.findViewById(R.id.btn_cj);
         Button btn_zg = popupWindow_view.findViewById(R.id.btn_zg);
+        Button btn_beyond = popupWindow_view.findViewById(R.id.btn_beyond);
         Button btn_complete = popupWindow_view.findViewById(R.id.btn_complete);
         Button btn_cancel = popupWindow_view.findViewById(R.id.btn_cancel);
+
+        if ("安装".equals(data.getTypeName())||"保外".equals(data.getGuaranteeText())) {
+            btn_cj.setVisibility(View.GONE);
+            btn_zg.setVisibility(View.GONE);
+        } else {
+            if (!data.isApplicationAccessory()) {
+                btn_cj.setVisibility(View.GONE);
+                btn_zg.setVisibility(View.GONE);
+            } else {
+                btn_cj.setVisibility(View.VISIBLE);
+                btn_zg.setVisibility(View.VISIBLE);
+            }
+        }
 
         btn_cj.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
@@ -565,6 +432,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                         intent = new Intent(mActivity, ApplyAccActivity.class);
                     }else{
                         intent = new Intent(mActivity, ApplyAcc_ProdsActivity.class);
+                        intent.putExtra("data", data);
                     }
                     intent.putExtra("prodID", data.getOrderProductModels().get(0).getOrderProdcutID()+"");
                     intent.putExtra("prodName", data.getOrderProductModels().get(0).getSubCategoryName()+"(编号："+data.getOrderProductModels().get(0).getOrderProdcutID()+")");
@@ -592,6 +460,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                         intent = new Intent(mActivity, ApplyAccActivity.class);
                     }else{
                         intent = new Intent(mActivity, ApplyAcc_ProdsActivity.class);
+                        intent.putExtra("data",data);
                     }
                     intent.putExtra("prodID", data.getOrderProductModels().get(0).getOrderProdcutID()+"");
                     intent.putExtra("prodName", data.getOrderProductModels().get(0).getSubCategoryName()+"(编号："+data.getOrderProductModels().get(0).getOrderProdcutID()+")");
@@ -604,14 +473,24 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                 mPopupWindow.dismiss();
             }
         });
+        btn_beyond.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                intent = new Intent(mActivity, ApplyFeeActivity.class);
+                intent.putExtra("beyond", data.getDistance());
+                intent.putExtra("orderId", data.getOrderID());
+                intent.putExtra("address_my", userInfo.getAddress());//师傅店铺地址
+                intent.putExtra("address", data.getAddress());//用户地址
+                startActivity(intent);
+                mPopupWindow.dismiss();
+            }
+        });
         //直接完结工单
         btn_complete.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View view) {
-                intent = new Intent(mActivity, CompleteWorkOrderActivity.class);
-                intent.putExtra("OrderID", data.getOrderID());
-                startActivity(intent);
+                commonmethod();
                 mPopupWindow.dismiss();
             }
         });
@@ -636,6 +515,23 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
             mPopupWindow.showAtLocation(popupWindow_view, Gravity.BOTTOM, 0, 0);
         }
         MyUtils.setWindowAlpa(mActivity, true);
+    }
+    //单个产品直接完结页面，多个产品跳转到产品列表选择产品完结
+    private void commonmethod(){
+        if (data.getOrderProductModels().size()>1){
+            intent = new Intent(mActivity, ApplyAcc_ProdsActivity.class);
+            intent.putExtra("complete", true);
+            intent.putExtra("list_prod", (Serializable) data.getOrderProductModels());
+            intent.putExtra("data", data);
+        }else{
+            intent = new Intent(mActivity, CompleteWorkOrderActivity.class);
+            intent.putExtra("prodID", data.getOrderProductModels().get(0).getOrderProdcutID()+"");
+            intent.putExtra("TypeID", data.getTypeID());
+            intent.putExtra("BarCodeIsNo", data.getBarCodeIsNo());
+            intent.putExtra("data", data.getOrderProductModels().get(0));
+        }
+        intent.putExtra("OrderID", data.getOrderID());
+        startActivity(intent);
     }
 
     @Override
@@ -743,23 +639,34 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
 
     @Override
     public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
-
+        if ("2".equals(signType)) {
+            showToast(mActivity, "签到失败");
+        }
+        hideProgress();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
         if (i == 1000) {
-            double latitude = geocodeResult.getGeocodeAddressList().get(0).getLatLonPoint().getLatitude();
-            double longitude = geocodeResult.getGeocodeAddressList().get(0).getLatLonPoint().getLongitude();
-            la = new LatLng(latitude, longitude);
-            if (requestLocationPermissions()) {
-                Location();
-            } else {
-                requestPermissions(permissions.toArray(new String[permissions.size()]), 20002);
+            try {
+                double latitude = geocodeResult.getGeocodeAddressList().get(0).getLatLonPoint().getLatitude();
+                double longitude = geocodeResult.getGeocodeAddressList().get(0).getLatLonPoint().getLongitude();
+                la = new LatLng(latitude, longitude);
+                if (requestLocationPermissions()) {
+                    Location();
+                } else {
+                    requestPermissions(permissions.toArray(new String[permissions.size()]), 20002);
+                }
+            } catch (Exception e) {
+                hideProgress();
+                if ("2".equals(signType)) {
+                    showToast(mActivity, "签到失败");
+                }
+                e.printStackTrace();
             }
         }
-
+        hideProgress();
     }
 
     //请求定位权限
@@ -807,6 +714,16 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
         intent1.putExtra("acc_data", event.getAdapter().getData().get(event.getPosition()));
         startActivity(intent1);
     }
+
+    @Override
+    public void GetUserInfoList(BaseResult<UserInfo> baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                userInfo = baseResult.getData().getData().get(0);
+                break;
+        }
+    }
+
     @Override
     public void GetOrderInfo(BaseResult<WorkOrder.DataBean> baseResult) {
         switch (baseResult.getStatusCode()) {
@@ -849,9 +766,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
 
                     } else {
                         mTvPayment.setText("客户付款");
-
                     }
-//                    mTvAppointment.setText(data.getIsExtraTime().replace("T"," "));
                     if (data.getSendOrderList().size() == 0) {
                         mLlReservationTime.setVisibility(View.GONE);
                     } else {
@@ -864,98 +779,19 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                     mTvAddress.setText(data.getAddress());
                     mTvDistance.setText("线路里程 " + data.getDistance() + "公里");
 
-                    if ("2".equals(data.getTypeID())) {
-                        mLlOldAccessory.setVisibility(View.GONE);
-                    } else {
-                        if ("1".equals(data.getAccessoryAndServiceApplyState()) || "2".equals(data.getAccessoryAndServiceApplyState()) || "".equals(data.getAccessoryAndServiceApplyState())) {
-                            // FIXME: 2020-08-01 是否返件显示与配件单关联
-                            mLlOldAccessory.setVisibility(View.GONE);
-                            if (data.getOrderAccessroyDetail().size() > 0) {
-                                if ("1".equals(data.getIsReturn())) {
-                                    mTvYn.setText("是");
-                                    mLlAddressInfo.setVisibility(View.VISIBLE);
-                                    mTvAddressback.setText(data.getAddressBack());
-                                    if ("1".equals(data.getPostPayType())) {
-                                        mTvPostpaytype.setText("厂商到付");
-                                    } else {
-                                        mTvPostpaytype.setText("维修商现付");
-                                    }
-                                } else {
-                                    mTvYn.setText("否");
-                                    mLlAddressInfo.setVisibility(View.GONE);
-                                }
-                            } else {
-                                mLlOldAccessory.setVisibility(View.GONE);
-                            }
-                        } else {
-                            mLlOldAccessory.setVisibility(View.GONE);
-                        }
+
+                    if ("4".equals(data.getState())){//服务中
+                        mTvUpload.setVisibility(View.VISIBLE);
+                    }else{
+                        mTvUpload.setVisibility(View.GONE);
                     }
 
-                    if ("5".equals(data.getState()) || "10".equals(data.getState()) || "7".equals(data.getState()) || "-4".equals(data.getState()) || "-1".equals(data.getState())) {
-                        mTvUpload.setVisibility(View.INVISIBLE);
-                        mTvReservationAgain.setBackgroundResource(R.drawable.v3_gray_shape);
-                        mTvReservationAgain.setEnabled(false);
-                    } else {
-                        if ("8".equals(data.getState())) {//待返件
-                            mTvUpload.setVisibility(View.GONE);
-                            mTvReservationAgain.setBackgroundResource(R.drawable.v3_gray_shape);
-                            mTvReservationAgain.setEnabled(false);
-                        } else if ("11".equals(data.getState())) {//未到货
-                            mTvUpload.setVisibility(View.GONE);
-                            mTvReservationAgain.setBackgroundResource(R.drawable.v3_blue_white_shape);
-                            mTvReservationAgain.setEnabled(true);
-                        } else {
-                            // FIXME: 2020-07-15 有完结图片隐藏提交完结按钮
-                            if (data.getReturnaccessoryImg().size() > 0 || (!data.isApplicationAccessory() && "0".equals(data.getState()) && "31".equals(data.getState()))) {
-                                mTvUpload.setVisibility(View.GONE);
-                            } else {
-                                mTvUpload.setVisibility(View.VISIBLE);
-                            }
-                            mTvReservationAgain.setBackgroundResource(R.drawable.v3_blue_white_shape);
-                            mTvReservationAgain.setEnabled(true);
-                        }
-                    }
-
-                    if ("安装".equals(data.getTypeName())) {
-                        mTvUpload.setText("提交完结信息");
-                        mTvUpload.setBackgroundResource(R.drawable.v3_copy_bg_shape);
-                    } else {
-                        if ("0".equals(data.getState()) || "31".equals(data.getState())) {//0系统配件待审核 31自定义配件待审核
-//                            mTvUpload.setText("提交完结信息");
-                            if ("pedding".equals(type)) {
-                                mTvUpload.setText("配件未到货");
-                            } else {
-                                mTvUpload.setText("配件审核中");
-                            }
-                            mTvUpload.setBackgroundResource(R.drawable.v3_copy_bg_shape2);
-                        } else {
-                            if (!data.isApplicationAccessory()) {
-                                mTvUpload.setText("提交完结信息");
-                            } else {
-                                mTvUpload.setText("添加服务内容");
-                            }
-                            mTvUpload.setBackgroundResource(R.drawable.v3_copy_bg_shape);
-                        }
-
-                    }
                 }
-
                 if ("安装".equals(data.getTypeName())) {
                     if ("Y".equals(data.getIsRecevieGoods())) {
                         mLlNotAvailable.setVisibility(View.GONE);
                     } else {
                         mLlNotAvailable.setVisibility(View.VISIBLE);
-//                            mLlNumber.setVisibility(View.VISIBLE);
-//                            mViewSigning.setVisibility(View.VISIBLE);
-//                            mTvSigning.setText("否");
-//                            expressType = 1;
-//                            if ("".equals(data.getExpressNo()) || data.getExpressNo() == null) {
-//                                mTvContent.setText("暂无物流消息");
-//                            } else {
-//                                mPresenter.GetExpressInfo(data.getExpressNo());
-//                            }
-
                     }
                 }
                 skeletonScreen.hide();
@@ -965,35 +801,12 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
 
     @Override
     public void AddReturnAccessory(BaseResult<Data<String>> baseResult) {
-        switch (baseResult.getStatusCode()) {
-            case 200:
-                Data<String> data = baseResult.getData();
-                if (data.isItem1()) {
-                    push_dialog.dismiss();
-                    ToastUtils.showShort("提交成功");
-                    mPresenter.UpdateOrderState(orderId, "5", "");
-                    EventBus.getDefault().post(5);
-                    finish();
-                } else {
-                    ToastUtils.showShort(data.getItem2());
-                }
-//                hideProgress();
-                break;
-        }
+
     }
 
     @Override
     public void UpdateOrderState(BaseResult<Data<String>> baseResult) {
-        switch (baseResult.getStatusCode()) {
-            case 200:
-                if (baseResult.getData().isItem1()) {
-                    finish();
-                    EventBus.getDefault().post("WorkOrderDetailsActivity");
-                    EventBus.getDefault().post(5);
-                }
-                break;
 
-        }
     }
 
     @Override
@@ -1018,6 +831,8 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                     // 添加事件
                     int result = CalendarProviderManager.addCalendarEvent(mActivity, calendarEvent);
                     if (result == 0) {
+                        EventBus.getDefault().post(20);//刷新选项卡数量全局搜case 20:
+                        mPresenter.GetOrderInfo(orderId);
                         Toast.makeText(mActivity, "已为您添加行程至日历,将提前一小时提醒您！！", LENGTH_SHORT).show();
                     } else if (result == -1) {
                         Toast.makeText(mActivity, "插入失败", LENGTH_SHORT).show();
@@ -1059,28 +874,12 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
             case 21:
                 mPresenter.GetOrderInfo(orderId);
                 break;
-            case 5:
-            case 4:
-                finish();
-                break;
         }
     }
 
-
-    //返回图片处理
-    @SuppressLint("NewApi")
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if (scanResult != null) {
-            String result = scanResult.getContents();
-            if (result == null) {
-                return;
-            } else {
-                et_expressno.setText(result);
-            }
-
-        }
+    public void onBackPressed() {
+        super.onBackPressed();
+        EventBus.getDefault().post(20);//刷新选项卡数量全局搜case 20:
     }
 }

@@ -7,6 +7,7 @@ import com.ying.administrator.masterappdemo.base.BaseView;
 import com.ying.administrator.masterappdemo.entity.AddOrderSignInRecrodResult;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.GetBrandWithCategory;
+import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public interface ServingDetailContract {
         Observable<BaseResult<Data>> UpdateSendOrderUpdateTime(String OrderID,String UpdateDate,String EndDate);
         Observable<BaseResult<Data<List<GetBrandWithCategory>>>> GetBrandWithCategory2(String UserID, String BrandID, String CategoryID, String SubCategoryID, String ProductTypeID, String page, String limit);
         Observable<AddOrderSignInRecrodResult> AddOrderSignInRecrod(String userId, String signInType, String orderId);
+        Observable<BaseResult<UserInfo>> GetUserInfoList(String UserID, String limit);
     }
 
     interface View extends BaseView{
@@ -37,6 +39,7 @@ public interface ServingDetailContract {
         void UpdateSendOrderUpdateTime(BaseResult<Data> baseResult);
         void GetBrandWithCategory2(BaseResult<Data<List<GetBrandWithCategory>>> baseResult);
         void AddOrderSignInRecrod(AddOrderSignInRecrodResult baseResult);
+        void GetUserInfoList(BaseResult<UserInfo> baseResult);
     }
 
     abstract class Presenter extends BasePresenter<View,Model>{
@@ -48,5 +51,6 @@ public interface ServingDetailContract {
         public abstract void UpdateSendOrderUpdateTime(String OrderID,String UpdateDate,String EndDate);
         public abstract void AddOrderSignInRecrod(String userId, String signInType, String orderId);
         public abstract void GetBrandWithCategory2(String UserID, String BrandID, String CategoryID, String SubCategoryID, String ProductTypeID, String page, String limit);
+        public abstract void GetUserInfoList(String UserID, String limit);
     }
 }

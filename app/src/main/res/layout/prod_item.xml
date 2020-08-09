@@ -6,7 +6,10 @@
     android:background="@drawable/v3_gray_shape"
     android:orientation="vertical"
     android:padding="@dimen/dp_10">
-    <LinearLayout
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/v3_gray_shape"
@@ -15,15 +18,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <TextView
-                android:id="@+id/tv_product_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -31,26 +25,27 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/tv_specifications"
+
+                    android:id="@+id/tv_product_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="产品规格：通用"
-                    android:textColor="#808080"
-                    android:textSize="12sp" />
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold"/>
 
                 <LinearLayout
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="7dp"
                     android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/tv_maintenance_information"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="维修资料"
+                        android:text="资料"
                         android:textColor="@color/black"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -62,8 +57,45 @@
                         android:src="@mipmap/v3_youjiantou" />
                 </LinearLayout>
             </LinearLayout>
+            <TextView
+                android:id="@+id/tv_cate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="类别"
+                android:textColor="#808080"
+                android:textSize="12sp"/>
+            <TextView
+                android:id="@+id/tv_brand"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="品牌"
+                android:textColor="#808080"
+                android:textSize="12sp"/>
+            <TextView
+                android:id="@+id/tv_product_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="型号"
+                android:textColor="#808080"
+                android:textSize="12sp"/>
+            <TextView
+                android:id="@+id/tv_memo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="服务要求"
+                android:textColor="#808080"
+                android:textSize="12sp"/>
         </LinearLayout>
     </LinearLayout>
+        <ImageView
+            android:id="@+id/iv_complete"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="right"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/yiwancheng"/>
+    </FrameLayout>
     <LinearLayout
         android:id="@+id/ll_acc"
         android:layout_width="match_parent"
@@ -88,7 +120,65 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_acc"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_complete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        android:orientation="vertical"
+        android:visibility="visible">
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_10"/>
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="完结信息"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tv_bak"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="备注:--"
+                android:textColor="@color/black"
+                android:textSize="12sp"/>
+            <TextView
+                android:id="@+id/tv_barcode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="条形码:--"
+                android:textColor="@color/black"
+                android:textSize="12sp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="完结图片"
+                android:textColor="@color/black"
+                android:textSize="12sp"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

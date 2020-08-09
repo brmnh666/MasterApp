@@ -15,6 +15,8 @@ import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.AddressList;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.CompleteWorkOrderActivity;
+import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.v3.adapter.ProdAdapter;
 import com.ying.administrator.masterappdemo.v3.bean.ApplicationResult;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.ApplyAccPresenter;
@@ -54,6 +56,8 @@ public class ApplyAcc_ProdsActivity extends BaseActivity<ApplyAccPresenter, Appl
     private ProdAdapter prodAdapter;
     private String OrderID;
     private Intent intent;
+    private boolean complete;//如果完结工单为true
+    private WorkOrder.DataBean data;
 
     @Override
     protected int setLayoutId() {
@@ -69,14 +73,33 @@ public class ApplyAcc_ProdsActivity extends BaseActivity<ApplyAccPresenter, Appl
     protected void initView() {
         spUtils = SPUtils.getInstance("token");
         UserID = spUtils.getString("userName");
+        complete = getIntent().getBooleanExtra("complete",false);
         list_prod= (List<WorkOrder.OrderProductModelsBean>) getIntent().getSerializableExtra("list_prod");
+
+        data = (WorkOrder.DataBean) getIntent().getSerializableExtra("data");
+
         mRvProds.setLayoutManager(new LinearLayoutManager(mActivity));
         prodAdapter = new ProdAdapter(R.layout.prod_item, list_prod);
         mRvProds.setAdapter(prodAdapter);
         prodAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                intent = new Intent(mActivity, ApplyAccActivity.class);
+                if (complete){
+                    if (list_prod.get(position).getProductState()==5){
+                        MyUtils.showToast(mActivity,"该产品已提交完结信息");
+                        return;
+                    }
+                    intent = new Intent(mActivity, CompleteWorkOrderActivity.class);
+                    intent.putExtra("TypeID", data.getTypeID());
+                    intent.putExtra("BarCodeIsNo", data.getBarCodeIsNo());
+                    intent.putExtra("data", list_prod.get(position));
+                }else{
+                    if (list_prod.get(position).getProductState()==5){
+                        MyUtils.showToast(mActivity,"该产品已提交完结信息,不能再申请配件");
+                        return;
+                    }
+                    intent = new Intent(mActivity, ApplyAccActivity.class);
+                }
                 intent.putExtra("OrderID", list_prod.get(position).getOrderID()+"");
                 intent.putExtra("prodID", list_prod.get(position).getOrderProdcutID()+"");
                 intent.putExtra("prodName", list_prod.get(position).getSubCategoryName()+"(编号："+list_prod.get(position).getOrderProdcutID()+")");
@@ -85,13 +108,16 @@ public class ApplyAcc_ProdsActivity extends BaseActivity<ApplyAccPresenter, Appl
                 startActivity(intent);
             }
         });
-        cj_or_zg = getIntent().getStringExtra("cj_or_zg");
-        OrderID = getIntent().getStringExtra("OrderID");
-        if ("厂寄".equals(cj_or_zg)) {
-            mTvTitle.setText("厂家寄件申请");
-            mPresenter.GetAccountAddress(UserID);
-        } else {
-            mTvTitle.setText("师傅自购件申请");
+        if (complete){
+            mTvTitle.setText("请选择产品提交完结信息");
+        }else{
+            cj_or_zg = getIntent().getStringExtra("cj_or_zg");
+            if ("厂寄".equals(cj_or_zg)) {
+                mTvTitle.setText("厂家寄件申请");
+                mPresenter.GetAccountAddress(UserID);
+            } else {
+                mTvTitle.setText("师傅自购件申请");
+            }
         }
         OrderID = getIntent().getStringExtra("OrderID");
     }

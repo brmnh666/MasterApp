@@ -1,10 +1,12 @@
 package com.ying.administrator.masterappdemo.mvp.presenter;
 
 import com.ying.administrator.masterappdemo.base.BaseObserver;
+import com.ying.administrator.masterappdemo.base.BaseObserver2;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.CompleteWorkOrderContract;
+import com.ying.administrator.masterappdemo.v3.bean.EndResult;
 
 import okhttp3.RequestBody;
 
@@ -91,6 +93,17 @@ public class CompleteWorkOrderPresenter extends CompleteWorkOrderContract.Presen
                     @Override
                     protected void onHandleSuccess(BaseResult<Data<String>> value) {
                         mView.AddbarCode(value);
+                    }
+                });
+    }
+
+    @Override
+    public void End(RequestBody json) {
+        mModel.End(json)
+                .subscribe(new BaseObserver2<EndResult>() {
+                    @Override
+                    protected void onHandleSuccess(EndResult value) {
+                        mView.End(value);
                     }
                 });
     }

@@ -131,8 +131,6 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
     LinearLayout mLlNotAvailable;
     @BindView(R.id.rv_prods)
     RecyclerView mRvProds;
-    @BindView(R.id.ll_apply_for_remote_fee)
-    LinearLayout mLlApplyForRemoteFee;
     @BindView(R.id.ll_call)
     LinearLayout mLlCall;
     @BindView(R.id.tv_success)
@@ -196,6 +194,8 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
 
     @Override
     protected void initView() {
+        // FIXME: 2020-08-07 预约页面不需要签到
+        mTvSave.setVisibility(View.GONE);
         skeletonScreen = Skeleton.bind(mRootView)
                 .load(R.layout.v3_activity_serving_detail_skeleton)
                 .duration(2000)
@@ -254,8 +254,6 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
         mTvCopy.setOnClickListener(this);
         mLlNotAvailable.setOnClickListener(this);
         mTvTransfer.setOnClickListener(this);
-        mLlApplyForRemoteFee.setOnClickListener(this);
-        mTvSave.setOnClickListener(this);
     }
 
     @Override
@@ -263,13 +261,6 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
         switch (v.getId()) {
             case R.id.iv_back:
                 finish();
-                break;
-            case R.id.tv_save:
-                signType = "2";
-                if (data == null) {
-                    return;
-                }
-                addressChangeLat(data.getAddress());
                 break;
             case R.id.tv_reservation:
                 if ("9".equals(data.getState())) {
@@ -580,15 +571,6 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                     }
                 });
                 break;
-            case R.id.ll_apply_for_remote_fee:
-                Intent intent1 = new Intent(mActivity, ApplyFeeActivity.class);
-                intent1.putExtra("beyond", data.getDistance());
-//                intent1.putExtra("position", position);
-                intent1.putExtra("orderId", data.getOrderID());
-                intent1.putExtra("address_my", userInfo.getAddress());//师傅店铺地址
-                intent1.putExtra("address", data.getAddress());//用户地址
-                startActivity(intent1);
-                break;
         }
     }
 
@@ -766,14 +748,6 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                         prodList =data.getOrderProductModels();
                         prodAdapter.setNewData(prodList);
                     }
-                    if ("0".equals(data.getIsSignIn())) {//未签到
-                        mTvSave.setVisibility(View.VISIBLE);
-                        mTvSave.setText("签到");
-                        signType = "1";
-                        addressChangeLat(data.getAddress());
-                    } else {
-                        mTvSave.setVisibility(View.GONE);
-                    }
                     technologyPhone = data.getArtisanPhone();
                     if ("Y".equals(data.getExtra()) && !"0".equals(data.getExtraTime())) {
                         mTvState.setText(data.getGuaranteeText() + "/" + data.getTypeName() + "/加急");
@@ -835,16 +809,6 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                     } else {
                         mLlReservation.setVisibility(View.VISIBLE);
                     }
-                    // FIXME: 2020-08-03 远程费随时可申请
-//                    if (data.getOrderAccessroyDetail().size() == 0) {
-//                        if (Double.parseDouble(data.getDistance()) > 0 && !"999".equals(data.getDistance())) {
-//                            mLlApplyForRemoteFee.setVisibility(View.VISIBLE);
-//                        } else {
-//                            mLlApplyForRemoteFee.setVisibility(View.GONE);
-//                        }
-//                    } else {
-//                        mLlApplyForRemoteFee.setVisibility(View.GONE);
-//                    }
 
                 }
                 skeletonScreen.hide();

@@ -1,6 +1,8 @@
 package com.ying.administrator.masterappdemo.v3.adapter;
 
+import android.app.Activity;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -13,12 +15,17 @@ import com.ying.administrator.masterappdemo.entity.WorkOrder;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import me.iwf.photopicker.PhotoPreview;
 
 public class ProdAdapter extends BaseQuickAdapter<WorkOrder.OrderProductModelsBean, BaseViewHolder> {
 
 
     private OnItemClickListener listener;
+    private AccessoriesPictureAdapter accessoriesPictureAdapter;
+    private List<String> list;
 
     public OnItemClickListener getListener() {
         return listener;
@@ -33,10 +40,47 @@ public class ProdAdapter extends BaseQuickAdapter<WorkOrder.OrderProductModelsBe
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, WorkOrder.OrderProductModelsBean item) {
-        String name=item.getBrandName()+"("+item.getSubCategoryName()+")"+item.getProdModelName()+"（编号："+item.getOrderProdcutID()+")";
+    protected void convert(BaseViewHolder helper, final WorkOrder.OrderProductModelsBean item) {
+        String name=item.getProductType()+"（编号："+item.getOrderProdcutID()+")";
         helper.setText(R.id.tv_product_name,name);
-        helper.setText(R.id.tv_specifications,"服务要求："+item.getMemo());
+        helper.setText(R.id.tv_cate,"类别："+item.getSubCategoryName());
+        helper.setText(R.id.tv_brand,"品牌："+item.getBrandName());
+        helper.setText(R.id.tv_product_type,"型号："+item.getProdModelName());
+        helper.setText(R.id.tv_memo,"服务要求："+item.getMemo());
+        if (item.getProductState()==5){
+            helper.setGone(R.id.iv_complete,true);
+            helper.setGone(R.id.ll_complete,true);
+            helper.setText(R.id.tv_bak,"备注："+item.getEndRemark());
+            helper.setText(R.id.tv_barcode,"条形码："+item.getBarCode());
+            if (item.getEndRemark().isEmpty()){
+                helper.setGone(R.id.tv_bak,false);
+            }else{
+                helper.setGone(R.id.tv_bak,true);
+            }
+            if (item.getBarCode().isEmpty()){
+                helper.setGone(R.id.tv_barcode,false);
+            }else{
+                helper.setGone(R.id.tv_barcode,true);
+            }
+            list=item.getEndImgUrls();
+            RecyclerView rv=helper.getView(R.id.rv_icon);
+            accessoriesPictureAdapter = new AccessoriesPictureAdapter(R.layout.v3_item_accessories_picture, list);
+            rv.setLayoutManager(new GridLayoutManager(mContext, 5));
+            rv.setAdapter(accessoriesPictureAdapter);
+            accessoriesPictureAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                    PhotoPreview.builder()
+                            .setPhotos((ArrayList<String>) list)
+                            .setShowDeleteButton(false)
+                            .setCurrentItem(position)
+                            .start((Activity) mContext);
+                }
+            });
+        }else{
+            helper.setGone(R.id.ll_complete,false);
+            helper.setGone(R.id.iv_complete,false);
+        }
         if(item.getAccessoryData()!=null){
             if (item.getAccessoryData().size()>0){
                 helper.setGone(R.id.ll_acc,true);

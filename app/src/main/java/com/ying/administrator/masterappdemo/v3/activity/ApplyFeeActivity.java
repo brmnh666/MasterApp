@@ -15,6 +15,9 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.FileProvider;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -108,6 +111,7 @@ public class ApplyFeeActivity extends BaseActivity<AllWorkOrdersPresenter, AllWo
     private String address_my;
     private String beyond;
     private String Bak;
+    private String str_b;
     //    private String beyond;
 
     @Override
@@ -128,7 +132,58 @@ public class ApplyFeeActivity extends BaseActivity<AllWorkOrdersPresenter, AllWo
         address = getIntent().getStringExtra("address");
         address_my = getIntent().getStringExtra("address_my");
         beyond = getIntent().getStringExtra("beyond");
-        mEtOrderBeyondKm.setText(beyond);
+        mEtOrderBeyondKm.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                str_b = s.toString();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String trim = s.toString().trim();
+                if (!TextUtils.isEmpty(trim)) {
+                    if (trim.contains(".")) {
+                        String[] split = trim.split("\\.");
+                        if (split.length > 1) {
+                            String s1 = split[1];
+                            if (!TextUtils.isEmpty(s1)) {
+                                if (s1.length() == 2) {
+                                    mEtOrderBeyondKm.setText(str_b);
+                                    try {
+                                        String trim1 = mEtOrderBeyondKm.getText().toString().trim();
+                                        mEtOrderBeyondKm.setSelection(trim1.length());
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                    return;
+                                }
+                            }
+                        }
+                    }
+
+
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String text = s.toString().trim();
+                String value;
+                int len = text.length();
+                if (len > 1 && text.startsWith("0")) {
+                    value = s.replace(0, 1, "").toString();
+                }else if(text.startsWith(".")){
+                    value = s.replace(0, 1, "0").toString();
+                }else if (text.endsWith(".")){
+                    value=s.replace(len-1, len, "").toString();
+                }else if(len==0){
+                    value="0";
+                }else{
+                    value=text;
+                }
+                BeyondMoney=Distance=value;
+            }
+        });
     }
 
     @Override
@@ -162,21 +217,21 @@ public class ApplyFeeActivity extends BaseActivity<AllWorkOrdersPresenter, AllWo
                 break;
             case R.id.btn_submit_beyond:
                 Bak =mEtBak.getText().toString();
-                if (files_map_remote.size() == 0) {
-                    ToastUtils.showShort("请添加远程图片!");
-                    return;
-                }
                 Distance = mEtOrderBeyondKm.getText().toString();
                 if (Distance.isEmpty()) {
                     ToastUtils.showShort("请输入超出公里数！");
                     return;
                 }
-                if (Double.parseDouble(Distance) <= 0.0) {
-                    ToastUtils.showShort("公里数不能小于0");
+                if (Double.parseDouble(Distance) == 0) {
+                    ToastUtils.showShort("公里数不能等于0");
                     return;
                 }
                 BeyondMoney = Double.parseDouble(Distance) + "";
                 Distance = BeyondMoney;
+                if (files_map_remote.size() == 0) {
+                    ToastUtils.showShort("请添加远程图片!");
+                    return;
+                }
                 showProgress();
                 OrderByondImgPicUpload(files_map_remote);
                 break;
@@ -256,13 +311,10 @@ public class ApplyFeeActivity extends BaseActivity<AllWorkOrdersPresenter, AllWo
             case 200:
                 if (baseResult.getData().isItem1()) {
                     ToastUtils.showShort("提交成功");
-                    EventBus.getDefault().post(10);
-                    EventBus.getDefault().post(1);
-                    EventBus.getDefault().post("deyond");
+                    EventBus.getDefault().post(21);//ServingDetailActivity刷新工单信息
                     finish();
-//                    EventBus.getDefault().post("pending_appointment");
                 } else {
-
+                    MyUtils.showToast(mActivity,baseResult.getData().getItem2());
                 }
                 break;
             default:

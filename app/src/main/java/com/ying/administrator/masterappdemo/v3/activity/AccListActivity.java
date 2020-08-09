@@ -144,7 +144,7 @@ public class AccListActivity extends BaseActivity<NewAddAccessoriesPresenter, Ne
                             return;
                         }
                         Accessory accessory = new Accessory();
-                        accessory.setFAccessoryID("0");
+                        accessory.setFAccessoryID("");
                         accessory.setAccessoryName(name);
                         accessory.setNeedPlatformAuth("Y");
                         if ("厂寄".equals(cj_or_zg)){

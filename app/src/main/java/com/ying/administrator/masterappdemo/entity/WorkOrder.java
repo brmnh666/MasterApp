@@ -2,6 +2,7 @@ package com.ying.administrator.masterappdemo.entity;
 
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class WorkOrder implements Serializable {
@@ -50,7 +51,7 @@ public class WorkOrder implements Serializable {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable{
 
         /**
          * Id : 0
@@ -145,6 +146,7 @@ public class WorkOrder implements Serializable {
         private String AreaCode;
         private String DistrictCode;
         private String Address;
+        private String FullAddress;
         private String Longitude;
         private String Dimension;
         private String UserID;
@@ -749,6 +751,14 @@ public class WorkOrder implements Serializable {
             this.Address = Address;
         }
 
+        public String getFullAddress() {
+            return FullAddress;
+        }
+
+        public void setFullAddress(String fullAddress) {
+            FullAddress = fullAddress;
+        }
+
         public String getLongitude() {
             return Longitude;
         }
@@ -886,7 +896,7 @@ public class WorkOrder implements Serializable {
                     status="服务中";
                     break;
                 case "5":
-                    status="服务完成";
+                    status="服务完成待结算";
                     break;
                 case "6":
                     status="待评价";
@@ -1527,15 +1537,51 @@ public class WorkOrder implements Serializable {
         private double terraceMoney;
         private double MWSettlementMoney;
         private int BrandID;
+        private int ProductState;//5师傅提交完结信息
         private String BrandName;
         private int SizeID;
         private double FrozenMoney;
         private String IsUse;
+        private String EndRemark;
+        private String BarCode;
         private int Num;
         private int Version;
+        private List<String> EndImgUrls;
         private List<?> accessorys;
         private List<accessoryDataBean> accessoryData;
 
+
+        public List<String> getEndImgUrls() {
+            return EndImgUrls==null?new ArrayList<String>() :EndImgUrls;
+        }
+
+        public void setEndImgUrls(List<String> endImgUrls) {
+            EndImgUrls = endImgUrls;
+        }
+
+        public String getEndRemark() {
+            return EndRemark;
+        }
+
+        public void setEndRemark(String endRemark) {
+            EndRemark = endRemark;
+        }
+
+        public String getBarCode() {
+            return BarCode;
+        }
+
+        public void setBarCode(String barCode) {
+            BarCode = barCode;
+        }
+
+        public int getProductState() {
+            return ProductState;
+        }
+
+        public void setProductState(int productState) {
+            ProductState = productState;
+        }
 
         public int getNum() {
             return Num;

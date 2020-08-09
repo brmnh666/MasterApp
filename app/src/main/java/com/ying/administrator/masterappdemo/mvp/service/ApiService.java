@@ -46,6 +46,7 @@ import com.ying.administrator.masterappdemo.v3.bean.ApplicationResult;
 import com.ying.administrator.masterappdemo.v3.bean.ConfirmReceiptResult;
 import com.ying.administrator.masterappdemo.v3.bean.ConfirmReturnResult;
 import com.ying.administrator.masterappdemo.v3.bean.DeleteAccessoryResult;
+import com.ying.administrator.masterappdemo.v3.bean.EndResult;
 import com.ying.administrator.masterappdemo.v3.bean.GetExpressInfoResult;
 import com.ying.administrator.masterappdemo.v3.bean.UpdateAccessoryResult;
 
@@ -1311,4 +1312,11 @@ public interface ApiService {
      */
     @POST("OrderRevision/UpdateAccessory")
     Observable<UpdateAccessoryResult> UpdateAccessory(@Body RequestBody json);
+    /**
+     * 新版完结工单
+     * @param json
+     * @return
+     */
+    @POST("Master/AppOrder/End")
+    Observable<EndResult> End(@Body RequestBody json);
 }
