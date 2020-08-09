@@ -105,42 +105,44 @@ public class Wait_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,BaseViewHo
 //        baseViewHolder.addOnClickListener(R.id.tv_reminder);//催件
         baseViewHolder.addOnClickListener(R.id.tv_see_detail);//查看详情
 //        baseViewHolder.addOnClickListener(R.id.tv_telephone_reminder);//电话催件
-
-        if("".equals(item.getAccessoryApplyState())){
-            baseViewHolder.setText(R.id.tv_review,"");
-            baseViewHolder.getView(R.id.tv_review).setVisibility(View.GONE);
-        } else if ("0".equals(item.getAccessoryApplyState())) {
-            baseViewHolder.setText(R.id.tv_review,"配件审核中");
-        } else if ("1".equals(item.getAccessoryApplyState())) {
-            baseViewHolder.setText(R.id.tv_review,"配件审核通过");
-        } else {
-            baseViewHolder.setText(R.id.tv_review,"配件被拒");
-        }
-        if("".equals(item.getServiceApplyState())){
-            baseViewHolder.setText(R.id.tv_review2,"");
-            baseViewHolder.getView(R.id.tv_review2).setVisibility(View.GONE);
-        } else if ("0".equals(item.getServiceApplyState())) {
-            baseViewHolder.setText(R.id.tv_review2,"服务审核中");
-        } else if ("1".equals(item.getServiceApplyState())) {
-            baseViewHolder.setText(R.id.tv_review2,"服务审核通过");
-        } else {
-            baseViewHolder.setText(R.id.tv_review2,"服务被拒");
-        }
-
-        if (item.getBeyondState()==null){
-            baseViewHolder.setText(R.id.tv_review3,"");
-            baseViewHolder.getView(R.id.tv_review3).setVisibility(View.GONE);
-        }else if ("0".equals(item.getBeyondState())) {
-            baseViewHolder.setText(R.id.tv_review3,"远程费审核中");
-        } else if ("1".equals(item.getBeyondState())) {
-            baseViewHolder.setText(R.id.tv_review3,"远程费通过");
-
-        }else if ("2".equals(item.getBeyondState())) {
-            baseViewHolder.setText(R.id.tv_review3,"远程费通过");
-
-        } else {
-            baseViewHolder.setText(R.id.tv_review3,"远程费被拒");
-        }
+        baseViewHolder.getView(R.id.tv_review).setVisibility(View.GONE);
+        baseViewHolder.getView(R.id.tv_review2).setVisibility(View.GONE);
+        baseViewHolder.getView(R.id.tv_review3).setVisibility(View.GONE);
+//        if("".equals(item.getAccessoryApplyState())){
+//            baseViewHolder.setText(R.id.tv_review,"");
+//            baseViewHolder.getView(R.id.tv_review).setVisibility(View.GONE);
+//        } else if ("0".equals(item.getAccessoryApplyState())) {
+//            baseViewHolder.setText(R.id.tv_review,"配件审核中");
+//        } else if ("1".equals(item.getAccessoryApplyState())) {
+//            baseViewHolder.setText(R.id.tv_review,"配件审核通过");
+//        } else {
+//            baseViewHolder.setText(R.id.tv_review,"配件被拒");
+//        }
+//        if("".equals(item.getServiceApplyState())){
+//            baseViewHolder.setText(R.id.tv_review2,"");
+//            baseViewHolder.getView(R.id.tv_review2).setVisibility(View.GONE);
+//        } else if ("0".equals(item.getServiceApplyState())) {
+//            baseViewHolder.setText(R.id.tv_review2,"服务审核中");
+//        } else if ("1".equals(item.getServiceApplyState())) {
+//            baseViewHolder.setText(R.id.tv_review2,"服务审核通过");
+//        } else {
+//            baseViewHolder.setText(R.id.tv_review2,"服务被拒");
+//        }
+//
+//        if (item.getBeyondState()==null){
+//            baseViewHolder.setText(R.id.tv_review3,"");
+//            baseViewHolder.getView(R.id.tv_review3).setVisibility(View.GONE);
+//        }else if ("0".equals(item.getBeyondState())) {
+//            baseViewHolder.setText(R.id.tv_review3,"远程费审核中");
+//        } else if ("1".equals(item.getBeyondState())) {
+//            baseViewHolder.setText(R.id.tv_review3,"远程费通过");
+//
+//        }else if ("2".equals(item.getBeyondState())) {
+//            baseViewHolder.setText(R.id.tv_review3,"远程费通过");
+//
+//        } else {
+//            baseViewHolder.setText(R.id.tv_review3,"远程费被拒");
+//        }
 
         if ("1".equals(item.getIsLook())){
             baseViewHolder.setTextColor(R.id.tv_reason_returnedparts,Color.BLACK);

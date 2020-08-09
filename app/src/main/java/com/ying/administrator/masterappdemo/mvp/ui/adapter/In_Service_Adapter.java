@@ -7,7 +7,6 @@ import android.view.View;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.ying.administrator.masterappdemo.R;
-import com.ying.administrator.masterappdemo.entity.GrabSheet_Entity;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 
 import java.util.List;
@@ -44,18 +43,19 @@ public class In_Service_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,Base
         }
         helper.setText(R.id.tv_address_in_service,"地址:"+item.getAddress()); //地址
         helper.setText(R.id.tv_in_service_job_number,"工单号:"+item.getOrderID());
-        if (item.getBeyondState()==null){
-            helper.setText(R.id.tv_review,"");
-            helper.getView(R.id.tv_review).setVisibility(View.INVISIBLE);
-        }else if ("0".equals(item.getBeyondState())) {
-            helper.setText(R.id.tv_review,"远程费审核中");
-        } else if ("1".equals(item.getBeyondState())) {
-            helper.setText(R.id.tv_review,"远程费通过");
-        }  else if ("2".equals(item.getBeyondState())) {
-            helper.setText(R.id.tv_review,"远程费通过");
-        } else {
-            helper.setText(R.id.tv_review,"远程费被拒");
-        }
+        helper.getView(R.id.tv_review).setVisibility(View.GONE);
+//        if (item.getBeyondState()==null){
+//            helper.setText(R.id.tv_review,"");
+//            helper.getView(R.id.tv_review).setVisibility(View.INVISIBLE);
+//        }else if ("0".equals(item.getBeyondState())) {
+//            helper.setText(R.id.tv_review,"远程费审核中");
+//        } else if ("1".equals(item.getBeyondState())) {
+//            helper.setText(R.id.tv_review,"远程费通过");
+//        }  else if ("2".equals(item.getBeyondState())) {
+//            helper.setText(R.id.tv_review,"远程费通过");
+//        } else {
+//            helper.setText(R.id.tv_review,"远程费被拒");
+//        }
         if ("1".equals(item.getIsLook())){
             helper.setTextColor(R.id.tv_reason_in_service,Color.BLACK);
         }else{

@@ -204,6 +204,7 @@ public class WorkOrder implements Serializable {
 
         private String MallID;
 
+        private List<GAccessory> OrderRemoteFeeDetail; //远程费信息
         private List<GAccessory> OrderAccessroyDetail; //所选配件详情
         private List<GService> OrderServiceDetail;  //所选配件详情
         private List<ReturnaccessoryImg> ReturnaccessoryImg;//返件图片
@@ -238,6 +239,14 @@ public class WorkOrder implements Serializable {
         private String picture;
         private String ArtisanPhone;
         private boolean IsApplicationAccessory;
+
+        public List<GAccessory> getOrderRemoteFeeDetail() {
+            return OrderRemoteFeeDetail;
+        }
+
+        public void setOrderRemoteFeeDetail(List<GAccessory> orderRemoteFeeDetail) {
+            OrderRemoteFeeDetail = orderRemoteFeeDetail;
+        }
 
         public List<OrderProductModelsBean> getOrderProductModels() {
             return OrderProductModels;
@@ -1539,6 +1548,7 @@ public class WorkOrder implements Serializable {
         private int BrandID;
         private int ProductState;//5师傅提交完结信息
         private String BrandName;
+        private String Explains;
         private int SizeID;
         private double FrozenMoney;
         private String IsUse;
@@ -1550,6 +1560,14 @@ public class WorkOrder implements Serializable {
         private List<?> accessorys;
         private List<accessoryDataBean> accessoryData;
 
+
+        public String getExplains() {
+            return Explains==null?"":Explains;
+        }
+
+        public void setExplains(String explains) {
+            Explains = explains;
+        }
 
         public List<String> getEndImgUrls() {
             return EndImgUrls==null?new ArrayList<String>() :EndImgUrls;
@@ -1672,7 +1690,7 @@ public class WorkOrder implements Serializable {
         }
 
         public String getProdModelName() {
-            return ProdModelName;
+            return ProdModelName==null?"":ProdModelName;
         }
 
         public void setProdModelName(String ProdModelName) {

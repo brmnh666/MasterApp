@@ -104,7 +104,7 @@ public class accessoryDataBean implements Serializable {
     private List<AccessoryDetailModelsBean> AccessoryDetailModels;
 
     public String getReturnExpressNo() {
-        return ReturnExpressNo;
+        return ReturnExpressNo==null?"暂无物流信息":ReturnExpressNo;
     }
 
     public void setReturnExpressNo(String returnExpressNo) {
@@ -256,7 +256,7 @@ public class accessoryDataBean implements Serializable {
     }
 
     public String getExpressNo() {
-        return ExpressNo;
+        return ExpressNo==null?"暂无物流信息":ExpressNo;
     }
 
     public void setExpressNo(String ExpressNo) {

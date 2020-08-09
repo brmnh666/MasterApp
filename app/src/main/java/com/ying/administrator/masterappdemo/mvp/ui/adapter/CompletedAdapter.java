@@ -41,13 +41,14 @@ public class CompletedAdapter extends BaseQuickAdapter<WorkOrder.DataBean, BaseV
         baseViewHolder.setText(R.id.tv_loaction_complete,"距离："+item.getDistance()+"km");//距离
         baseViewHolder.setText(R.id.tv_num,"数量："+item.getNum()+"台");//数量
         baseViewHolder.setText(R.id.tv_address_complete,"地址:"+item.getAddress());//地址
-        if ("5".equals(item.getState())){
-            baseViewHolder.setText(R.id.tv_review,"已完成待确认");
-            baseViewHolder.getView(R.id.tv_review).setVisibility(View.VISIBLE);
-        }else {
-            baseViewHolder.setText(R.id.tv_review,"结算完成");
-            baseViewHolder.getView(R.id.tv_review).setVisibility(View.VISIBLE);
-        }
+        baseViewHolder.getView(R.id.tv_review).setVisibility(View.GONE);
+//        if ("5".equals(item.getState())){
+//            baseViewHolder.setText(R.id.tv_review,"已完成待确认");
+//            baseViewHolder.getView(R.id.tv_review).setVisibility(View.VISIBLE);
+//        }else {
+//            baseViewHolder.setText(R.id.tv_review,"结算完成");
+//            baseViewHolder.getView(R.id.tv_review).setVisibility(View.VISIBLE);
+//        }
         if ("1".equals(item.getIsLook())){
             baseViewHolder.setTextColor(R.id.tv_reason_complete,Color.BLACK);
         }else{

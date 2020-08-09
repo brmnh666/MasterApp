@@ -121,18 +121,19 @@ public class Return_Sheet_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,Ba
         baseViewHolder.addOnClickListener(R.id.tv_apply_for_an_extension);//申请延期
 //        baseViewHolder.addOnClickListener(R.id.tv_telephone_reminder);//电话催件
         baseViewHolder.addOnClickListener(R.id.tv_complaint);
-        if("".equals(item.getAccessoryAndServiceApplyState())){
-            baseViewHolder.setText(R.id.tv_review,"");
-            baseViewHolder.getView(R.id.tv_review).setVisibility(View.GONE);
-        } else if ("0".equals(item.getAccessoryAndServiceApplyState())) {
-            baseViewHolder.setText(R.id.tv_review,"审核中");
-        } else if ("1".equals(item.getAccessoryAndServiceApplyState())) {
-            baseViewHolder.setText(R.id.tv_review,"审核通过");
-        } else if ("2".equals(item.getAccessoryAndServiceApplyState())) {
-            baseViewHolder.setText(R.id.tv_review,"厂家寄件");
-        } else {
-            baseViewHolder.setText(R.id.tv_review,"被拒");
-        }
+        baseViewHolder.getView(R.id.tv_review).setVisibility(View.GONE);
+//        if("".equals(item.getAccessoryAndServiceApplyState())){
+//            baseViewHolder.setText(R.id.tv_review,"");
+//            baseViewHolder.getView(R.id.tv_review).setVisibility(View.GONE);
+//        } else if ("0".equals(item.getAccessoryAndServiceApplyState())) {
+//            baseViewHolder.setText(R.id.tv_review,"审核中");
+//        } else if ("1".equals(item.getAccessoryAndServiceApplyState())) {
+//            baseViewHolder.setText(R.id.tv_review,"审核通过");
+//        } else if ("2".equals(item.getAccessoryAndServiceApplyState())) {
+//            baseViewHolder.setText(R.id.tv_review,"厂家寄件");
+//        } else {
+//            baseViewHolder.setText(R.id.tv_review,"被拒");
+//        }
 //        if("".equals(item.getServiceApplyState())){
 //            baseViewHolder.setText(R.id.tv_review2,"");
 //        } else if ("0".equals(item.getServiceApplyState())) {
@@ -142,21 +143,21 @@ public class Return_Sheet_Adapter extends BaseQuickAdapter<WorkOrder.DataBean,Ba
 //        } else {
 //            baseViewHolder.setText(R.id.tv_review2,"服务被拒");
 //        }
-
-        if (item.getBeyondState()==null){
-            baseViewHolder.setText(R.id.tv_review3,"");
-            baseViewHolder.getView(R.id.tv_review3).setVisibility(View.INVISIBLE);
-        }else if ("0".equals(item.getBeyondState())) {
-            baseViewHolder.setText(R.id.tv_review3,"远程费审核中");
-        } else if ("1".equals(item.getBeyondState())) {
-            baseViewHolder.setText(R.id.tv_review3,"远程费通过");
-
-        }  else if ("2".equals(item.getBeyondState())) {
-            baseViewHolder.setText(R.id.tv_review3,"远程费通过");
-
-        } else {
-            baseViewHolder.setText(R.id.tv_review3,"远程费被拒");
-        }
+        baseViewHolder.getView(R.id.tv_review3).setVisibility(View.GONE);
+//        if (item.getBeyondState()==null){
+//            baseViewHolder.setText(R.id.tv_review3,"");
+//            baseViewHolder.getView(R.id.tv_review3).setVisibility(View.INVISIBLE);
+//        }else if ("0".equals(item.getBeyondState())) {
+//            baseViewHolder.setText(R.id.tv_review3,"远程费审核中");
+//        } else if ("1".equals(item.getBeyondState())) {
+//            baseViewHolder.setText(R.id.tv_review3,"远程费通过");
+//
+//        }  else if ("2".equals(item.getBeyondState())) {
+//            baseViewHolder.setText(R.id.tv_review3,"远程费通过");
+//
+//        } else {
+//            baseViewHolder.setText(R.id.tv_review3,"远程费被拒");
+//        }
 
         if ("1".equals(item.getIsLook())){
             baseViewHolder.setTextColor(R.id.tv_reason_returnedparts,Color.BLACK);

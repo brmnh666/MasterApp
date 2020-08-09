@@ -6,7 +6,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -16,7 +15,6 @@ import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.PhotoViewActivity;
 import com.ying.administrator.masterappdemo.util.DensityUtil;
 import com.ying.administrator.masterappdemo.viewholder.LayoutParamsViewHolder;
-import com.ying.administrator.masterappdemo.widget.GlideUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,7 +40,7 @@ public class LeaveMessageAdapter extends BaseQuickAdapter<WorkOrder.Leavemessage
                 .setText(R.id.tv_time,item.getUserName());
         rv_img =helper.getView(R.id.rv_img);
         ArrayList<String> imglist=new ArrayList<>();
-        if(item.getPhoto()==null){
+        if(item.getPhoto()==null||"".equals(item.getPhoto())){
             rv_img.setVisibility(View.GONE);
         }else{
             rv_img.setVisibility(View.VISIBLE);

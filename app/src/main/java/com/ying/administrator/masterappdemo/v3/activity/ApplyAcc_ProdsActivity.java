@@ -16,6 +16,7 @@ import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.AddressList;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.CompleteWorkOrderActivity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.WebActivity;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.v3.adapter.ProdAdapter;
 import com.ying.administrator.masterappdemo.v3.bean.ApplicationResult;
@@ -106,6 +107,19 @@ public class ApplyAcc_ProdsActivity extends BaseActivity<ApplyAccPresenter, Appl
                 intent.putExtra("SubCategoryID", list_prod.get(position).getProductTypeID()+"");
                 intent.putExtra("cj_or_zg", cj_or_zg);
                 startActivity(intent);
+            }
+        });
+        prodAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                switch (view.getId()){
+                    case R.id.ll_course:
+                        intent = new Intent(mActivity, WebActivity.class);
+                        intent.putExtra("Url", list_prod.get(position).getExplains());
+                        intent.putExtra("Title", "产品资料");
+                        startActivity(intent);
+                        break;
+                }
             }
         });
         if (complete){

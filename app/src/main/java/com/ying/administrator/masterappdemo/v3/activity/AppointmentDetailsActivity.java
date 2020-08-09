@@ -48,16 +48,22 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ethanhua.skeleton.Skeleton;
 import com.ethanhua.skeleton.SkeletonScreen;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.entity.AccessoriesNoEvent;
 import com.ying.administrator.masterappdemo.entity.AddOrderSignInRecrodResult;
 import com.ying.administrator.masterappdemo.entity.Data;
+import com.ying.administrator.masterappdemo.entity.GAccessory;
 import com.ying.administrator.masterappdemo.entity.GetBrandWithCategory;
 import com.ying.administrator.masterappdemo.entity.SubUserInfo;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.WebActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Redeploy_Adapter;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.util.calendarutil.CalendarEvent;
@@ -131,6 +137,8 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
     LinearLayout mLlNotAvailable;
     @BindView(R.id.rv_prods)
     RecyclerView mRvProds;
+    @BindView(R.id.ll_apply_for_remote_fee)
+    LinearLayout mLlApplyForRemoteFee;
     @BindView(R.id.ll_call)
     LinearLayout mLlCall;
     @BindView(R.id.tv_success)
@@ -145,6 +153,10 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
     LinearLayout mLlReservation;
     @BindView(R.id.RootView)
     FrameLayout mRootView;
+    @BindView(R.id.tv_money)
+    TextView mTvMoney;
+    @BindView(R.id.refreshLayout)
+    SmartRefreshLayout mRefreshLayout;
     private View under_review;
     private AlertDialog underReviewDialog;
     private long recommendedtime;
@@ -181,6 +193,8 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
     private int size;
     private List<WorkOrder.OrderProductModelsBean> prodList;
     private ProdAdapter prodAdapter;
+    private GAccessory remote;
+    private Intent intent;
 
     @Override
     protected int setLayoutId() {
@@ -204,7 +218,7 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                 .show();
         mTvTitle.setText("预约详情");
 //        orderId = getIntent().getStringExtra("id");
-        Intent intent = getIntent();
+        intent = getIntent();
         if (null != intent) {
             Bundle bundle = getIntent().getExtras();
             if (bundle != null) {
@@ -236,12 +250,31 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
         prodAdapter = new ProdAdapter(R.layout.prod_item, prodList);
         mRvProds.setLayoutManager(new LinearLayoutManager(mActivity));
         mRvProds.setAdapter(prodAdapter);
+        prodAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                switch (view.getId()) {
+                    case R.id.ll_course:
+                        intent = new Intent(mActivity, WebActivity.class);
+                        intent.putExtra("Url", prodList.get(position).getExplains());
+                        intent.putExtra("Title", "产品资料");
+                        startActivity(intent);
+                        break;
+                }
+            }
+        });
 
         mPresenter.GetOrderInfo(orderId);
         spUtils = SPUtils.getInstance("token");
         userID = spUtils.getString("userName");
 //        mPresenter.GetUserInfoList(userID, "1");
         myClipboard = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
+        mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                mPresenter.GetOrderInfo(orderId);
+            }
+        });
     }
 
     @Override
@@ -254,96 +287,61 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
         mTvCopy.setOnClickListener(this);
         mLlNotAvailable.setOnClickListener(this);
         mTvTransfer.setOnClickListener(this);
+        mLlApplyForRemoteFee.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_back:
+                EventBus.getDefault().post(20);//刷新选项卡数量全局搜case 20:
                 finish();
                 break;
             case R.id.tv_reservation:
-                if ("9".equals(data.getState())) {
-                    puchsh_view = LayoutInflater.from(mActivity).inflate(R.layout.v3_dialog_prompt, null);
-                    TextView title = puchsh_view.findViewById(R.id.title);
-                    TextView message = puchsh_view.findViewById(R.id.message);
-                    Button negtive = puchsh_view.findViewById(R.id.negtive);
-                    title.setText("提示");
-                    message.setText("您的远程费暂未审核通过，请耐心等待");
-                    negtive.setOnClickListener(new View.OnClickListener() {
+                if (data.getIsCall() == null) {
+                    under_review = LayoutInflater.from(mActivity).inflate(R.layout.v3_dialog_reservation, null);
+                    TextView tv_cancel = under_review.findViewById(R.id.tv_cancel);
+                    TextView tv_reservation = under_review.findViewById(R.id.tv_reservation);
+                    tv_cancel.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            push_dialog.dismiss();
+                            underReviewDialog.dismiss();
                         }
                     });
-                    push_dialog = new AlertDialog.Builder(mActivity)
-                            .setView(puchsh_view)
-                            .create();
-                    push_dialog.show();
+
+                    tv_reservation.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            call("tel:" + data.getPhone());
+                            mPresenter.OrderIsCall(orderId, "Y");
+                            underReviewDialog.dismiss();
+                        }
+                    });
+                    underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review).create();
+                    underReviewDialog.show();
                 } else {
+                    if (data.getOrderAccessroyDetail().size() > 0) {
+                        if ("Y".equals(data.getIsCall())) {
+                            under_review = LayoutInflater.from(mActivity).inflate(R.layout.v3_dialog_reservation, null);
+                            TextView tv_cancel = under_review.findViewById(R.id.tv_cancel);
+                            TextView tv_reservation = under_review.findViewById(R.id.tv_reservation);
+                            tv_cancel.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    underReviewDialog.dismiss();
+                                }
+                            });
 
-                    if (data.getIsCall() == null) {
-                        under_review = LayoutInflater.from(mActivity).inflate(R.layout.v3_dialog_reservation, null);
-                        TextView tv_cancel = under_review.findViewById(R.id.tv_cancel);
-                        TextView tv_reservation = under_review.findViewById(R.id.tv_reservation);
-                        tv_cancel.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                underReviewDialog.dismiss();
-                            }
-                        });
-
-                        tv_reservation.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                call("tel:" + data.getPhone());
-                                mPresenter.OrderIsCall(orderId, "Y");
-                                underReviewDialog.dismiss();
-                            }
-                        });
-                        underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review).create();
-                        underReviewDialog.show();
-                    } else {
-                        if (data.getOrderAccessroyDetail().size() > 0) {
-                            if ("Y".equals(data.getIsCall())) {
-                                under_review = LayoutInflater.from(mActivity).inflate(R.layout.v3_dialog_reservation, null);
-                                TextView tv_cancel = under_review.findViewById(R.id.tv_cancel);
-                                TextView tv_reservation = under_review.findViewById(R.id.tv_reservation);
-                                tv_cancel.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        underReviewDialog.dismiss();
-                                    }
-                                });
-
-                                tv_reservation.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        call("tel:" + data.getPhone());
-                                        mPresenter.OrderIsCall(orderId, "2");
-                                        underReviewDialog.dismiss();
-                                    }
-                                });
-                                underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review).create();
-                                underReviewDialog.show();
-                            } else {
-                                RxPermissions rxPermissions = new RxPermissions(this);
-                                rxPermissions.request(Manifest.permission.WRITE_CALENDAR, Manifest.permission.READ_CALENDAR)
-                                        .subscribe(new Consumer<Boolean>() {
-                                            @Override
-                                            public void accept(Boolean aBoolean) throws Exception {
-                                                if (aBoolean) {
-                                                    // 获取全部权限成功
-
-                                                    chooseTime("请选择上门时间");
-                                                } else {
-                                                    // 获取全部权限失败
-//                                                Log.d("=====>", "权限获取失败");
-                                                    ToastUtils.showShort("权限获取失败");
-                                                }
-                                            }
-                                        });
-                            }
+                            tv_reservation.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    call("tel:" + data.getPhone());
+                                    mPresenter.OrderIsCall(orderId, "2");
+                                    underReviewDialog.dismiss();
+                                }
+                            });
+                            underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review).create();
+                            underReviewDialog.show();
                         } else {
                             RxPermissions rxPermissions = new RxPermissions(this);
                             rxPermissions.request(Manifest.permission.WRITE_CALENDAR, Manifest.permission.READ_CALENDAR)
@@ -362,9 +360,25 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                                         }
                                     });
                         }
+                    } else {
+                        RxPermissions rxPermissions = new RxPermissions(this);
+                        rxPermissions.request(Manifest.permission.WRITE_CALENDAR, Manifest.permission.READ_CALENDAR)
+                                .subscribe(new Consumer<Boolean>() {
+                                    @Override
+                                    public void accept(Boolean aBoolean) throws Exception {
+                                        if (aBoolean) {
+                                            // 获取全部权限成功
 
+                                            chooseTime("请选择上门时间");
+                                        } else {
+                                            // 获取全部权限失败
+//                                                Log.d("=====>", "权限获取失败");
+                                            ToastUtils.showShort("权限获取失败");
+                                        }
+                                    }
+                                });
                     }
-//
+
 
                 }
                 break;
@@ -571,6 +585,27 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                     }
                 });
                 break;
+            case R.id.ll_apply_for_remote_fee:
+                // FIXME: 2020-08-03 远程费
+                if (data.getOrderRemoteFeeDetail().size() > 0) {
+                    remote = data.getOrderRemoteFeeDetail().get(0);
+                    if ("0".equals(remote.getState())) {
+                        MyUtils.showToast(mActivity, "远程费审核中，请耐心等待。");
+                        return;
+                    }
+                    if ("8".equals(remote.getState())) {
+                        MyUtils.showToast(mActivity, "远程费已通过");
+                        return;
+                    }
+                }
+                Intent intent1 = new Intent(mActivity, ApplyFeeActivity.class);
+                intent1.putExtra("beyond", data.getDistance());
+//                intent1.putExtra("position", position);
+                intent1.putExtra("orderId", data.getOrderID());
+                intent1.putExtra("address_my", userInfo.getAddress());//师傅店铺地址
+                intent1.putExtra("address", data.getAddress());//用户地址
+                startActivity(intent1);
+                break;
         }
     }
 
@@ -744,8 +779,8 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
             case 200:
                 if (baseResult.getData() != null) {
                     data = baseResult.getData();
-                    if (data.getOrderProductModels()!=null){
-                        prodList =data.getOrderProductModels();
+                    if (data.getOrderProductModels() != null) {
+                        prodList = data.getOrderProductModels();
                         prodAdapter.setNewData(prodList);
                     }
                     technologyPhone = data.getArtisanPhone();
@@ -763,22 +798,11 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                             mTvType.setText(data.getGuaranteeText() + "/" + data.getTypeName());
                         }
                     }
-
                     if ("安装".equals(data.getTypeName())) {
                         if ("Y".equals(data.getIsRecevieGoods())) {
                             mLlNotAvailable.setVisibility(View.GONE);
                         } else {
                             mLlNotAvailable.setVisibility(View.VISIBLE);
-//                            mLlNumber.setVisibility(View.VISIBLE);
-//                            mViewSigning.setVisibility(View.VISIBLE);
-//                            mTvSigning.setText("否");
-//                            expressType = 1;
-//                            if ("".equals(data.getExpressNo()) || data.getExpressNo() == null) {
-//                                mTvContent.setText("暂无物流消息");
-//                            } else {
-//                                mPresenter.GetExpressInfo(data.getExpressNo());
-//                            }
-
                         }
                     } else {
                         mLlNotAvailable.setVisibility(View.GONE);
@@ -787,29 +811,30 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                     mTvNumbering.setText(data.getOrderID());
                     if (("Y").equals(data.getGuarantee())) {
                         mTvPayment.setText("平台代付");
-
                     } else {
                         mTvPayment.setText("客户付款");
 
                     }
-
                     if (data.getOrderAccessroyDetail().size() > 0) {
                         mTvTransfer.setVisibility(View.GONE);
                     } else {
                         mPresenter.GetUserInfoList(userID, "1");
                     }
-
                     mTvBillingTime.setText(data.getCreateDate().replace("T", " "));
                     mTvName.setText(data.getUserName() + "    " + data.getPhone());
                     mTvAddress.setText(data.getAddress());
                     mTvDistance.setText("线路里程 " + data.getDistance() + "公里");
-
-                    if ("9".equals(data.getState())) {
-                        mLlReservation.setVisibility(View.GONE);
-                    } else {
-                        mLlReservation.setVisibility(View.VISIBLE);
+                    // FIXME: 2020-08-03 远程费
+                    if (data.getOrderRemoteFeeDetail().size() > 0) {
+                        remote = data.getOrderRemoteFeeDetail().get(0);
+                        if ("0".equals(remote.getState())) {
+                            mTvMoney.setText(remote.getPrice() + "（待审核）");
+                        } else if ("8".equals(remote.getState())) {
+                            mTvMoney.setText(remote.getPrice() + "（已通过）");
+                        } else if ("-1".equals(remote.getState())) {
+                            mTvMoney.setText(remote.getPrice() + "（已拒绝）");
+                        }
                     }
-
                 }
                 skeletonScreen.hide();
                 break;
@@ -976,9 +1001,22 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void Event(String name) {
-        if ("deyond".equals(name)) {
+    public void Event(AccessoriesNoEvent event) {
+        Intent intent1 = new Intent(mActivity, AccessoriesDetailsActivity.class);
+        intent1.putExtra("acc_data", event.getAdapter().getData().get(event.getPosition()));
+        startActivity(intent1);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(Integer name) {
+        if (name == 21) {
             mPresenter.GetOrderInfo(orderId);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        EventBus.getDefault().post(20);//刷新选项卡数量全局搜case 20:
     }
 }

@@ -39,8 +39,12 @@ import com.amap.api.services.geocoder.GeocodeSearch;
 import com.amap.api.services.geocoder.RegeocodeResult;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ethanhua.skeleton.Skeleton;
 import com.ethanhua.skeleton.SkeletonScreen;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
@@ -54,6 +58,7 @@ import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.ComplaintActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.CompleteWorkOrderActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.MessageActivity2;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.WebActivity;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.util.SingleClick;
 import com.ying.administrator.masterappdemo.util.calendarutil.CalendarEvent;
@@ -168,6 +173,8 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
     TextView mTvUpload;
     @BindView(R.id.RootView)
     FrameLayout mRootView;
+    @BindView(R.id.refreshLayout)
+    SmartRefreshLayout mRefreshLayout;
 
     private String orderId;
     private WorkOrder.DataBean data;
@@ -187,7 +194,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
     private int size;
     private String userId;
     private View popupWindow_view;
-    private List<WorkOrder.OrderProductModelsBean> prodList=new ArrayList<>();
+    private List<WorkOrder.OrderProductModelsBean> prodList = new ArrayList<>();
     private ProdAdapter prodAdapter;
     private UserInfo.UserInfoDean userInfo;
 
@@ -200,6 +207,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
     protected void initData() {
         SPUtils spUtils = SPUtils.getInstance("token");
         userId = spUtils.getString("userName");
+
     }
 
     @Override
@@ -211,7 +219,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                 .angle(10)
                 .show();
         mTvTitle.setText("工单详情");
-        Intent intent = getIntent();
+        intent = getIntent();
         if (null != intent) {
             Bundle bundle = getIntent().getExtras();
             if (bundle != null) {
@@ -243,10 +251,28 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
         prodAdapter = new ProdAdapter(R.layout.prod_item, prodList);
         mRvProds.setLayoutManager(new LinearLayoutManager(mActivity));
         mRvProds.setAdapter(prodAdapter);
+        prodAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                switch (view.getId()) {
+                    case R.id.ll_course:
+                        intent = new Intent(mActivity, WebActivity.class);
+                        intent.putExtra("Url", prodList.get(position).getExplains());
+                        intent.putExtra("Title", "产品资料");
+                        startActivity(intent);
+                        break;
+                }
+            }
+        });
         mPresenter.GetOrderInfo(orderId);
         mPresenter.GetUserInfoList(userId, "1");
         myClipboard = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
-
+        mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                mPresenter.GetOrderInfo(orderId);
+            }
+        });
     }
 
     @Override
@@ -284,7 +310,17 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                 call("tel:" + data.getPhone());
                 break;
             case R.id.tv_upload:
-                showPopupWindow();
+                if ("安装".equals(data.getTypeName()) || "保外".equals(data.getGuaranteeText())) {
+                    commonmethod();
+                } else {
+                    // FIXME: 2020-07-22 isApplicationAccessory判断是否可以申请配件
+                    if (!data.isApplicationAccessory()) {
+                        commonmethod();
+                    } else {
+                        showPopupWindow();
+                    }
+
+                }
                 break;
             case R.id.ll_accessories_details:
                 Intent intent1 = new Intent(mActivity, AccessoriesDetailsActivity.class);
@@ -403,40 +439,41 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
         Button btn_beyond = popupWindow_view.findViewById(R.id.btn_beyond);
         Button btn_complete = popupWindow_view.findViewById(R.id.btn_complete);
         Button btn_cancel = popupWindow_view.findViewById(R.id.btn_cancel);
+        btn_beyond.setVisibility(View.GONE);
 
-        if ("安装".equals(data.getTypeName())||"保外".equals(data.getGuaranteeText())) {
-            btn_cj.setVisibility(View.GONE);
-            btn_zg.setVisibility(View.GONE);
-        } else {
-            if (!data.isApplicationAccessory()) {
-                btn_cj.setVisibility(View.GONE);
-                btn_zg.setVisibility(View.GONE);
-            } else {
-                btn_cj.setVisibility(View.VISIBLE);
-                btn_zg.setVisibility(View.VISIBLE);
-            }
-        }
+//        if ("安装".equals(data.getTypeName())||"保外".equals(data.getGuaranteeText())) {
+//            btn_cj.setVisibility(View.GONE);
+//            btn_zg.setVisibility(View.GONE);
+//        } else {
+//            if (!data.isApplicationAccessory()) {
+//                btn_cj.setVisibility(View.GONE);
+//                btn_zg.setVisibility(View.GONE);
+//            } else {
+//                btn_cj.setVisibility(View.VISIBLE);
+//                btn_zg.setVisibility(View.VISIBLE);
+//            }
+//        }
 
         btn_cj.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View view) {
-                if (data.getOrderProductModels()==null){
+                if (data.getOrderProductModels() == null) {
                     intent = new Intent(mActivity, ApplyAccActivity.class);
                     intent.putExtra("prodID", "");
                     intent.putExtra("prodName", data.getSubCategoryName());
                     intent.putExtra("SubCategoryID", data.getProductTypeID());
 
-                }else{
-                    if (data.getOrderProductModels().size()==1){//只有一个产品
+                } else {
+                    if (data.getOrderProductModels().size() == 1) {//只有一个产品
                         intent = new Intent(mActivity, ApplyAccActivity.class);
-                    }else{
+                    } else {
                         intent = new Intent(mActivity, ApplyAcc_ProdsActivity.class);
                         intent.putExtra("data", data);
                     }
-                    intent.putExtra("prodID", data.getOrderProductModels().get(0).getOrderProdcutID()+"");
-                    intent.putExtra("prodName", data.getOrderProductModels().get(0).getSubCategoryName()+"(编号："+data.getOrderProductModels().get(0).getOrderProdcutID()+")");
-                    intent.putExtra("SubCategoryID", data.getOrderProductModels().get(0).getProductTypeID()+"");
+                    intent.putExtra("prodID", data.getOrderProductModels().get(0).getOrderProdcutID() + "");
+                    intent.putExtra("prodName", data.getOrderProductModels().get(0).getSubCategoryName() + "(编号：" + data.getOrderProductModels().get(0).getOrderProdcutID() + ")");
+                    intent.putExtra("SubCategoryID", data.getOrderProductModels().get(0).getProductTypeID() + "");
                 }
                 intent.putExtra("OrderID", data.getOrderID());
                 intent.putExtra("list_prod", (Serializable) data.getOrderProductModels());
@@ -449,22 +486,22 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View view) {
-                if (data.getOrderProductModels()==null){
+                if (data.getOrderProductModels() == null) {
                     intent = new Intent(mActivity, ApplyAccActivity.class);
                     intent.putExtra("prodID", "");
                     intent.putExtra("prodName", data.getSubCategoryName());
                     intent.putExtra("SubCategoryID", data.getProductTypeID());
 
-                }else{
-                    if (data.getOrderProductModels().size()==1){//只有一个产品
+                } else {
+                    if (data.getOrderProductModels().size() == 1) {//只有一个产品
                         intent = new Intent(mActivity, ApplyAccActivity.class);
-                    }else{
+                    } else {
                         intent = new Intent(mActivity, ApplyAcc_ProdsActivity.class);
-                        intent.putExtra("data",data);
+                        intent.putExtra("data", data);
                     }
-                    intent.putExtra("prodID", data.getOrderProductModels().get(0).getOrderProdcutID()+"");
-                    intent.putExtra("prodName", data.getOrderProductModels().get(0).getSubCategoryName()+"(编号："+data.getOrderProductModels().get(0).getOrderProdcutID()+")");
-                    intent.putExtra("SubCategoryID", data.getOrderProductModels().get(0).getProductTypeID()+"");
+                    intent.putExtra("prodID", data.getOrderProductModels().get(0).getOrderProdcutID() + "");
+                    intent.putExtra("prodName", data.getOrderProductModels().get(0).getSubCategoryName() + "(编号：" + data.getOrderProductModels().get(0).getOrderProdcutID() + ")");
+                    intent.putExtra("SubCategoryID", data.getOrderProductModels().get(0).getProductTypeID() + "");
                 }
                 intent.putExtra("OrderID", data.getOrderID());
                 intent.putExtra("list_prod", (Serializable) data.getOrderProductModels());
@@ -473,18 +510,18 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                 mPopupWindow.dismiss();
             }
         });
-        btn_beyond.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                intent = new Intent(mActivity, ApplyFeeActivity.class);
-                intent.putExtra("beyond", data.getDistance());
-                intent.putExtra("orderId", data.getOrderID());
-                intent.putExtra("address_my", userInfo.getAddress());//师傅店铺地址
-                intent.putExtra("address", data.getAddress());//用户地址
-                startActivity(intent);
-                mPopupWindow.dismiss();
-            }
-        });
+//        btn_beyond.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                intent = new Intent(mActivity, ApplyFeeActivity.class);
+//                intent.putExtra("beyond", data.getDistance());
+//                intent.putExtra("orderId", data.getOrderID());
+//                intent.putExtra("address_my", userInfo.getAddress());//师傅店铺地址
+//                intent.putExtra("address", data.getAddress());//用户地址
+//                startActivity(intent);
+//                mPopupWindow.dismiss();
+//            }
+//        });
         //直接完结工单
         btn_complete.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
@@ -516,16 +553,17 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
         }
         MyUtils.setWindowAlpa(mActivity, true);
     }
+
     //单个产品直接完结页面，多个产品跳转到产品列表选择产品完结
-    private void commonmethod(){
-        if (data.getOrderProductModels().size()>1){
+    private void commonmethod() {
+        if (data.getOrderProductModels().size() > 1) {
             intent = new Intent(mActivity, ApplyAcc_ProdsActivity.class);
             intent.putExtra("complete", true);
             intent.putExtra("list_prod", (Serializable) data.getOrderProductModels());
             intent.putExtra("data", data);
-        }else{
+        } else {
             intent = new Intent(mActivity, CompleteWorkOrderActivity.class);
-            intent.putExtra("prodID", data.getOrderProductModels().get(0).getOrderProdcutID()+"");
+            intent.putExtra("prodID", data.getOrderProductModels().get(0).getOrderProdcutID() + "");
             intent.putExtra("TypeID", data.getTypeID());
             intent.putExtra("BarCodeIsNo", data.getBarCodeIsNo());
             intent.putExtra("data", data.getOrderProductModels().get(0));
@@ -708,6 +746,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
 
         }
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(AccessoriesNoEvent event) {
         Intent intent1 = new Intent(mActivity, AccessoriesDetailsActivity.class);
@@ -730,8 +769,8 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
             case 200:
                 if (baseResult.getData() != null) {
                     data = baseResult.getData();
-                    if (data.getOrderProductModels()!=null){
-                        prodList=data.getOrderProductModels();
+                    if (data.getOrderProductModels() != null) {
+                        prodList = data.getOrderProductModels();
                         prodAdapter.setNewData(prodList);
                     }
                     if ("0".equals(data.getIsSignIn())) {//未签到
@@ -780,9 +819,18 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                     mTvDistance.setText("线路里程 " + data.getDistance() + "公里");
 
 
-                    if ("4".equals(data.getState())){//服务中
+                    if ("4".equals(data.getState())) {//服务中
                         mTvUpload.setVisibility(View.VISIBLE);
-                    }else{
+                        if ("安装".equals(data.getTypeName()) || "保外".equals(data.getGuaranteeText())) {
+                            mTvUpload.setText("提交完结信息");
+                        } else {
+                            if (!data.isApplicationAccessory()) {
+                                mTvUpload.setText("提交完结信息");
+                            } else {
+                                mTvUpload.setText("操作");
+                            }
+                        }
+                    } else {
                         mTvUpload.setVisibility(View.GONE);
                     }
 
