@@ -1233,7 +1233,7 @@ public class WorkOrder implements Serializable {
         }
     }
 
-    public static class LeavemessageListBean {
+    public static class LeavemessageListBean implements Serializable{
         /**
          * Id : 3
          * LeaveMessageId : 3
@@ -1367,7 +1367,7 @@ public class WorkOrder implements Serializable {
         }
     }
 
-    public static class LeavemessageimgListBean {
+    public static class LeavemessageimgListBean implements Serializable{
 
         /**
          * Id : 2
