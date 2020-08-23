@@ -64,6 +64,9 @@ import com.ying.administrator.masterappdemo.util.SingleClick;
 import com.ying.administrator.masterappdemo.util.calendarutil.CalendarEvent;
 import com.ying.administrator.masterappdemo.util.calendarutil.CalendarProviderManager;
 import com.ying.administrator.masterappdemo.v3.adapter.ProdAdapter;
+import com.ying.administrator.masterappdemo.v3.adapter.ProductTollAdapter;
+import com.ying.administrator.masterappdemo.v3.bean.GetOrderMoneyDetailResult;
+import com.ying.administrator.masterappdemo.v3.bean.ProductTollResult;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.ServingDetailPresenter;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.ServingDetailContract;
 import com.ying.administrator.masterappdemo.v3.mvp.model.ServingDetailModel;
@@ -175,6 +178,12 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
     FrameLayout mRootView;
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout mRefreshLayout;
+    @BindView(R.id.tv_price_standard)
+    TextView mTvPriceStandard;
+    @BindView(R.id.tv_total)
+    TextView mTvTotal;
+    @BindView(R.id.ll_total)
+    LinearLayout mLlTotal;
 
     private String orderId;
     private WorkOrder.DataBean data;
@@ -288,12 +297,26 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
         mLlNotAvailable.setOnClickListener(this);
         mTvComplaint.setOnClickListener(this);
         mTvSave.setOnClickListener(this);
+        mTvPriceStandard.setOnClickListener(this);
+        mLlTotal.setOnClickListener(this);
     }
 
     @SingleClick
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.ll_total://费用明细
+                if ("5".equals(data.getState())||"7".equals(data.getState())){
+                    intent=new Intent(mActivity,FeeDetailActivity.class);
+                    intent.putExtra("orderid",orderId);
+                    startActivity(intent);
+                }else{
+                   MyUtils.showToast(mActivity,"工单尚未完工，费用未生成");
+                }
+                break;
+            case R.id.tv_price_standard://价格标准
+                mPresenter.ProductToll(orderId,userId);
+                break;
             case R.id.tv_save://手动签到
                 signType = "2";
                 if (data == null) {
@@ -478,6 +501,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                 intent.putExtra("OrderID", data.getOrderID());
                 intent.putExtra("list_prod", (Serializable) data.getOrderProductModels());
                 intent.putExtra("cj_or_zg", "厂寄");
+                intent.putExtra("order", data);
                 startActivity(intent);
                 mPopupWindow.dismiss();
             }
@@ -506,6 +530,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                 intent.putExtra("OrderID", data.getOrderID());
                 intent.putExtra("list_prod", (Serializable) data.getOrderProductModels());
                 intent.putExtra("cj_or_zg", "自购");
+                intent.putExtra("order", data);
                 startActivity(intent);
                 mPopupWindow.dismiss();
             }
@@ -537,6 +562,32 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                 mPopupWindow.dismiss();
             }
         });
+        mPopupWindow = new PopupWindow(popupWindow_view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        mPopupWindow.setAnimationStyle(R.style.popwindow_anim_style);
+        mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+        mPopupWindow.setFocusable(true);
+        mPopupWindow.setOutsideTouchable(true);
+        mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                MyUtils.setWindowAlpa(mActivity, false);
+            }
+        });
+        if (mPopupWindow != null && !mPopupWindow.isShowing()) {
+            mPopupWindow.showAtLocation(popupWindow_view, Gravity.BOTTOM, 0, 0);
+        }
+        MyUtils.setWindowAlpa(mActivity, true);
+    }
+
+    /**
+     * 价格标准弹框
+     */
+    public void showPopupWindowOfPriceStandard(List<ProductTollResult.DataBeanX.DataBean> list) {
+        popupWindow_view = LayoutInflater.from(mActivity).inflate(R.layout.price_dialog, null);
+        RecyclerView rv_list = popupWindow_view.findViewById(R.id.rv_list);
+        rv_list.setLayoutManager(new LinearLayoutManager(mActivity));
+        ProductTollAdapter adapter=new ProductTollAdapter(R.layout.price_item,list);
+        rv_list.setAdapter(adapter);
         mPopupWindow = new PopupWindow(popupWindow_view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setAnimationStyle(R.style.popwindow_anim_style);
         mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
@@ -842,6 +893,11 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                         mLlNotAvailable.setVisibility(View.VISIBLE);
                     }
                 }
+                if ("5".equals(data.getState())||"7".equals(data.getState())){
+                    mPresenter.GetOrderMoneyDetail(orderId);
+                }else{
+                    mTvTotal.setText("¥--");
+                }
                 skeletonScreen.hide();
                 break;
         }
@@ -911,6 +967,32 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                     if ("2".equals(signType)) {
                         showToast(mActivity, "签到失败" + baseResult.getData().getMsg());
                     }
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void ProductToll(ProductTollResult baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                if (baseResult.getData().getCode()==0) {
+                    showPopupWindowOfPriceStandard(baseResult.getData().getData());
+                } else {
+                    showToast(mActivity, baseResult.getData().getMsg());
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void GetOrderMoneyDetail(GetOrderMoneyDetailResult baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                if (baseResult.getData().getCode() == 0) {
+                    mTvTotal.setText("¥"+baseResult.getData().getData().getItem3());
+                } else {
+                    MyUtils.showToast(mActivity, baseResult.getData().getMsg());
                 }
                 break;
         }

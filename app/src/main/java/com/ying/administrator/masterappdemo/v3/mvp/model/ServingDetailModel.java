@@ -7,6 +7,8 @@ import com.ying.administrator.masterappdemo.entity.GetBrandWithCategory;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.service.ApiRetrofit;
+import com.ying.administrator.masterappdemo.v3.bean.GetOrderMoneyDetailResult;
+import com.ying.administrator.masterappdemo.v3.bean.ProductTollResult;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.ServingDetailContract;
 
 import java.util.List;
@@ -60,6 +62,20 @@ public class ServingDetailModel implements ServingDetailContract.Model {
     @Override
     public Observable<BaseResult<UserInfo>> GetUserInfoList(String UserID, String limit) {
         return ApiRetrofit.getDefault().GetUserInfoList(UserID, limit)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<ProductTollResult> ProductToll(String OrderID, String UserId) {
+        return ApiRetrofit.getDefault().ProductToll(OrderID, UserId)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<GetOrderMoneyDetailResult> GetOrderMoneyDetail(String OrderID) {
+        return ApiRetrofit.getDefault().GetOrderMoneyDetail(OrderID)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

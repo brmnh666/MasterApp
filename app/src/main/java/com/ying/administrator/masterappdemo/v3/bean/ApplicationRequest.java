@@ -10,12 +10,14 @@ public class ApplicationRequest {
      * ImgUrls : ["788a91da78b34f9c85019af158c5ec27.jpg","b012e959b2b140dcbdafe079d4d1b5b1.jpg","4d4106018b084d229c9ac1f82808a8ee.jpg"]
      * LeaveMessage : 这是留言这是留言
      * AccessoryState : 0
+     * RecipientType : 1
      */
 
     private String OrderID;
     private String OrderProdID;
     private String Bak;
     private int AccessoryState;
+    private int RecipientType; //收件类型 1用户 2师傅
     private List<FAccessorysBean> Accessorys;
     private List<String> ImgUrls;
 
@@ -49,6 +51,14 @@ public class ApplicationRequest {
 
     public void setAccessoryState(int AccessoryState) {
         this.AccessoryState = AccessoryState;
+    }
+
+    public int getRecipientType() {
+        return RecipientType;
+    }
+
+    public void setRecipientType(int recipientType) {
+        RecipientType = recipientType;
     }
 
     public List<FAccessorysBean> getAccessorys() {

@@ -48,6 +48,8 @@ import com.ying.administrator.masterappdemo.v3.bean.ConfirmReturnResult;
 import com.ying.administrator.masterappdemo.v3.bean.DeleteAccessoryResult;
 import com.ying.administrator.masterappdemo.v3.bean.EndResult;
 import com.ying.administrator.masterappdemo.v3.bean.GetExpressInfoResult;
+import com.ying.administrator.masterappdemo.v3.bean.GetOrderMoneyDetailResult;
+import com.ying.administrator.masterappdemo.v3.bean.ProductTollResult;
 import com.ying.administrator.masterappdemo.v3.bean.UpdateAccessoryResult;
 
 import org.json.JSONArray;
@@ -1319,4 +1321,20 @@ public interface ApiService {
      */
     @POST("Master/AppOrder/End")
     Observable<EndResult> End(@Body RequestBody json);
+    /**
+     * 价格标准
+     * @param
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("Master/AppOrder/ProductToll")
+    Observable<ProductTollResult> ProductToll(@Field("OrderID") String OrderID, @Field("UserId") String UserId);
+    /**
+     * 价格明细
+     * @param
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("Platform/GetOrderMoneyDetail")
+    Observable<GetOrderMoneyDetailResult> GetOrderMoneyDetail(@Field("OrderID") String OrderID);
 }

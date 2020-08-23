@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -56,6 +57,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -85,10 +87,24 @@ public class ApplyAccActivity extends BaseActivity<ApplyAccPresenter, ApplyAccMo
     EditText mEtBak;
     @BindView(R.id.btn_submit)
     Button mBtnSubmit;
-    @BindView(R.id.ll_addr)
-    LinearLayout mLlAddr;
-    @BindView(R.id.tv_adddr)
-    TextView mTvAdddr;
+    @BindView(R.id.iv_me)
+    ImageView mIvMe;
+    @BindView(R.id.ll_me)
+    LinearLayout mLlMe;
+    @BindView(R.id.iv_user)
+    ImageView mIvUser;
+    @BindView(R.id.ll_user)
+    LinearLayout mLlUser;
+    @BindView(R.id.ll_receipttype)
+    LinearLayout mLlReceipttype;
+    @BindView(R.id.tv_adddr_me)
+    TextView mTvAdddrMe;
+    @BindView(R.id.ll_addr_me)
+    LinearLayout mLlAddrMe;
+    @BindView(R.id.tv_adddr_user)
+    TextView mTvAdddrUser;
+    @BindView(R.id.ll_addr_user)
+    LinearLayout mLlAddrUser;
     private String SubCategoryID;
     private List<String> piclist = new ArrayList<>();
     private List<String> selectpiclist = new ArrayList<>();
@@ -109,6 +125,8 @@ public class ApplyAccActivity extends BaseActivity<ApplyAccPresenter, ApplyAccMo
     private String sendAddr;
     private String prodName;
     private String prodID;
+    private WorkOrder.DataBean dataBean;
+    private int RecipientType = -1;
 
     @Override
     protected int setLayoutId() {
@@ -128,16 +146,18 @@ public class ApplyAccActivity extends BaseActivity<ApplyAccPresenter, ApplyAccMo
         ac_list_adapter = new Ac_List_Adapter(R.layout.item_accessory, list_accessory);
         mRvAcc.setAdapter(ac_list_adapter);
 
+        dataBean = (WorkOrder.DataBean) getIntent().getSerializableExtra("order");
+        mTvAdddrUser.setText("收件人信息："+dataBean.getAddress()+"（"+dataBean.getUserName()+" 收）"+dataBean.getPhone());
         cj_or_zg = getIntent().getStringExtra("cj_or_zg");
         prodName = getIntent().getStringExtra("prodName");
         prodID = getIntent().getStringExtra("prodID");
         if ("厂寄".equals(cj_or_zg)) {
-            mTvTitle.setText("厂家寄件申请("+prodName+")");
-            mLlAddr.setVisibility(View.VISIBLE);
+            mTvTitle.setText("厂家寄件申请(" + prodName + ")");
+            mLlReceipttype.setVisibility(View.VISIBLE);
             mPresenter.GetAccountAddress(UserID);
         } else {
-            mTvTitle.setText("师傅自购件申请("+prodName+")");
-            mLlAddr.setVisibility(View.GONE);
+            mTvTitle.setText("师傅自购件申请(" + prodName + ")");
+            mLlReceipttype.setVisibility(View.GONE);
         }
         OrderID = getIntent().getStringExtra("OrderID");
         SubCategoryID = getIntent().getStringExtra("SubCategoryID");
@@ -177,9 +197,9 @@ public class ApplyAccActivity extends BaseActivity<ApplyAccPresenter, ApplyAccMo
                 addressList = baseResult.getData();
                 if (addressList.size() != 0) {
                     sendAddr = addressList.get(0).getProvince() + addressList.get(0).getCity() + addressList.get(0).getArea() + addressList.get(0).getDistrict() + addressList.get(0).getAddress() + "(" + addressList.get(0).getUserName() + "收)" + addressList.get(0).getPhone();
-                    mTvAdddr.setText("收件人信息："+sendAddr);
+                    mTvAdddrMe.setText("收件人信息：" + sendAddr);
                 } else {
-                    mTvAdddr.setText("请添加收件人信息");
+                    mTvAdddrMe.setText("请添加收件人信息");
                 }
                 break;
             default:
@@ -219,7 +239,7 @@ public class ApplyAccActivity extends BaseActivity<ApplyAccPresenter, ApplyAccMo
         for (int i = 0; i < paths.size(); i++) {
             selectpiclist.add(ImageCompress.compressImage(paths.get(i), Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy/" + System.currentTimeMillis() + ".jpg", 80));
         }
-        if (piclist.size() != list_accessory.size()*3) {
+        if (piclist.size() != list_accessory.size() * 3) {
             piclist.add("add");
         }
         System.out.println(selectpiclist);
@@ -232,7 +252,7 @@ public class ApplyAccActivity extends BaseActivity<ApplyAccPresenter, ApplyAccMo
         long maxSize = 188743680L;//long long long
         intent.putExtra(PickerConfig.MAX_SELECT_SIZE, maxSize); //default 180MB (Optional)
         //旧件照片数量最多为配件数量+5
-        intent.putExtra(PickerConfig.MAX_SELECT_COUNT, list_accessory.size()*3 - piclist.size() + 1);  //default 40 (Optional)
+        intent.putExtra(PickerConfig.MAX_SELECT_COUNT, list_accessory.size() * 3 - piclist.size() + 1);  //default 40 (Optional)
 //        intent.putExtra(PickerConfig.DEFAULT_SELECTED_LIST,select); // (Optional)
         startActivityForResult(intent, 200);
     }
@@ -249,22 +269,38 @@ public class ApplyAccActivity extends BaseActivity<ApplyAccPresenter, ApplyAccMo
         mIvBack.setOnClickListener(this);
         mLlAddAcc.setOnClickListener(this);
         mBtnSubmit.setOnClickListener(this);
-        mLlAddr.setOnClickListener(this);
+        mLlAddrMe.setOnClickListener(this);
+        mLlMe.setOnClickListener(this);
+        mLlUser.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ll_addr:
+            case R.id.ll_me://师傅收件
+                RecipientType = 2;   //1用户 2师傅
+                mIvMe.setSelected(true);
+                mIvUser.setSelected(false);
+                mLlAddrMe.setVisibility(View.VISIBLE);
+                mLlAddrUser.setVisibility(View.GONE);
+                break;
+            case R.id.ll_user://用户收件
+                RecipientType = 1;   //1用户 2师傅
+                mIvMe.setSelected(false);
+                mIvUser.setSelected(true);
+                mLlAddrMe.setVisibility(View.GONE);
+                mLlAddrUser.setVisibility(View.VISIBLE);
+                break;
+            case R.id.ll_addr_me:
                 try {
                     if (addressList.size() == 0) {
-                        startActivityForResult(new Intent(mActivity, AddAddressActivity.class),500);
+                        startActivityForResult(new Intent(mActivity, AddAddressActivity.class), 500);
                     } else {
                         Intent intent = new Intent(mActivity, AddAddressActivity.class);
                         intent.putExtra("address", addressList.get(0));
-                        startActivityForResult(intent,500);
+                        startActivityForResult(intent, 500);
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
                     return;
                 }
                 break;
@@ -279,9 +315,15 @@ public class ApplyAccActivity extends BaseActivity<ApplyAccPresenter, ApplyAccMo
                 break;
             case R.id.btn_submit:
                 if ("厂寄".equals(cj_or_zg)) {
-                    if (addressList.size()==0){
-                        MyUtils.showToast(mActivity, "请添加收件人信息");
+                    if (RecipientType == -1) {
+                        MyUtils.showToast(mActivity, "请选择师傅收件还是用户收件");
                         return;
+                    }
+                    if (RecipientType==2){
+                        if (addressList.size() == 0) {
+                            MyUtils.showToast(mActivity, "请添加收件人信息");
+                            return;
+                        }
                     }
                 }
                 if (list_accessory.size() == 0) {
@@ -347,6 +389,7 @@ public class ApplyAccActivity extends BaseActivity<ApplyAccPresenter, ApplyAccMo
                             ApplicationRequest data = new ApplicationRequest();
                             data.setAccessoryState("厂寄".equals(cj_or_zg) ? 0 : 1);
                             data.setAccessorys(FAccessorys);
+                            data.setRecipientType(RecipientType);
                             data.setImgUrls(successpiclist);
                             data.setOrderID(OrderID);
                             data.setOrderProdID(prodID);
@@ -448,12 +491,20 @@ public class ApplyAccActivity extends BaseActivity<ApplyAccPresenter, ApplyAccMo
             ac_list_adapter.setNewData(list_accessory);
         }
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(String message) {
         if (!"address".equals(message)) {
             return;
         }
         mPresenter.GetAccountAddress(UserID);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }
 

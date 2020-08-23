@@ -9,6 +9,8 @@ import com.ying.administrator.masterappdemo.entity.GetBrandWithCategory;
 import com.ying.administrator.masterappdemo.entity.SubUserInfo;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
+import com.ying.administrator.masterappdemo.v3.bean.GetOrderMoneyDetailResult;
+import com.ying.administrator.masterappdemo.v3.bean.ProductTollResult;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.AppointmentDetailsContract;
 
 import java.util.List;
@@ -121,6 +123,27 @@ public class AppointmentDetailsPresenter extends AppointmentDetailsContract.Pers
                     @Override
                     protected void onHandleSuccess(AddOrderSignInRecrodResult value) {
                         mView.AddOrderSignInRecrod(value);
+                    }
+                });
+    }
+    @Override
+    public void ProductToll(String OrderID, String UserId) {
+        mModel.ProductToll(OrderID, UserId)
+                .subscribe(new BaseObserver2<ProductTollResult>() {
+                    @Override
+                    protected void onHandleSuccess(ProductTollResult value) {
+                        mView.ProductToll(value);
+                    }
+                });
+    }
+
+    @Override
+    public void GetOrderMoneyDetail(String OrderID) {
+        mModel.GetOrderMoneyDetail(OrderID)
+                .subscribe(new BaseObserver2<GetOrderMoneyDetailResult>() {
+                    @Override
+                    protected void onHandleSuccess(GetOrderMoneyDetailResult value) {
+                        mView.GetOrderMoneyDetail(value);
                     }
                 });
     }

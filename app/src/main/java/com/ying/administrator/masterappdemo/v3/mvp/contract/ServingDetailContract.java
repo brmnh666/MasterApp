@@ -9,6 +9,8 @@ import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.GetBrandWithCategory;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
+import com.ying.administrator.masterappdemo.v3.bean.GetOrderMoneyDetailResult;
+import com.ying.administrator.masterappdemo.v3.bean.ProductTollResult;
 
 import java.util.List;
 
@@ -27,6 +29,8 @@ public interface ServingDetailContract {
         Observable<BaseResult<Data<List<GetBrandWithCategory>>>> GetBrandWithCategory2(String UserID, String BrandID, String CategoryID, String SubCategoryID, String ProductTypeID, String page, String limit);
         Observable<AddOrderSignInRecrodResult> AddOrderSignInRecrod(String userId, String signInType, String orderId);
         Observable<BaseResult<UserInfo>> GetUserInfoList(String UserID, String limit);
+        Observable<ProductTollResult> ProductToll(String OrderID, String UserId);
+        Observable<GetOrderMoneyDetailResult> GetOrderMoneyDetail(String OrderID);
     }
 
     interface View extends BaseView{
@@ -40,6 +44,8 @@ public interface ServingDetailContract {
         void GetBrandWithCategory2(BaseResult<Data<List<GetBrandWithCategory>>> baseResult);
         void AddOrderSignInRecrod(AddOrderSignInRecrodResult baseResult);
         void GetUserInfoList(BaseResult<UserInfo> baseResult);
+        void ProductToll(ProductTollResult baseResult);
+        void GetOrderMoneyDetail(GetOrderMoneyDetailResult baseResult);
     }
 
     abstract class Presenter extends BasePresenter<View,Model>{
@@ -52,5 +58,7 @@ public interface ServingDetailContract {
         public abstract void AddOrderSignInRecrod(String userId, String signInType, String orderId);
         public abstract void GetBrandWithCategory2(String UserID, String BrandID, String CategoryID, String SubCategoryID, String ProductTypeID, String page, String limit);
         public abstract void GetUserInfoList(String UserID, String limit);
+        public abstract void ProductToll(String OrderID, String UserId);
+        public abstract void GetOrderMoneyDetail(String OrderID);
     }
 }

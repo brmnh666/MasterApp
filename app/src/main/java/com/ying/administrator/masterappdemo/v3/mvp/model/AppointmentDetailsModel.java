@@ -8,6 +8,8 @@ import com.ying.administrator.masterappdemo.entity.SubUserInfo;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.service.ApiRetrofit;
+import com.ying.administrator.masterappdemo.v3.bean.GetOrderMoneyDetailResult;
+import com.ying.administrator.masterappdemo.v3.bean.ProductTollResult;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.AppointmentDetailsContract;
 
 import java.util.List;
@@ -85,6 +87,19 @@ public class AppointmentDetailsModel implements AppointmentDetailsContract.Model
     @Override
     public Observable<AddOrderSignInRecrodResult> AddOrderSignInRecrod(String userId, String signInType, String orderId) {
         return ApiRetrofit.getDefault().AddOrderSignInRecrod(userId, signInType, orderId)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+    @Override
+    public Observable<ProductTollResult> ProductToll(String OrderID, String UserId) {
+        return ApiRetrofit.getDefault().ProductToll(OrderID, UserId)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<GetOrderMoneyDetailResult> GetOrderMoneyDetail(String OrderID) {
+        return ApiRetrofit.getDefault().GetOrderMoneyDetail(OrderID)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

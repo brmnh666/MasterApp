@@ -69,6 +69,9 @@ import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.util.calendarutil.CalendarEvent;
 import com.ying.administrator.masterappdemo.util.calendarutil.CalendarProviderManager;
 import com.ying.administrator.masterappdemo.v3.adapter.ProdAdapter;
+import com.ying.administrator.masterappdemo.v3.adapter.ProductTollAdapter;
+import com.ying.administrator.masterappdemo.v3.bean.GetOrderMoneyDetailResult;
+import com.ying.administrator.masterappdemo.v3.bean.ProductTollResult;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.AppointmentDetailsPresenter;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.AppointmentDetailsContract;
 import com.ying.administrator.masterappdemo.v3.mvp.model.AppointmentDetailsModel;
@@ -93,6 +96,7 @@ import cn.jpush.android.api.JPushInterface;
 import io.reactivex.functions.Consumer;
 
 import static android.widget.Toast.LENGTH_SHORT;
+import static com.ying.administrator.masterappdemo.util.MyUtils.showToast;
 
 /**
  * 工单详情
@@ -157,6 +161,12 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
     TextView mTvMoney;
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout mRefreshLayout;
+    @BindView(R.id.tv_price_standard)
+    TextView mTvPriceStandard;
+    @BindView(R.id.tv_total)
+    TextView mTvTotal;
+    @BindView(R.id.ll_total)
+    LinearLayout mLlTotal;
     private View under_review;
     private AlertDialog underReviewDialog;
     private long recommendedtime;
@@ -195,6 +205,7 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
     private ProdAdapter prodAdapter;
     private GAccessory remote;
     private Intent intent;
+    private View popupWindow_view;
 
     @Override
     protected int setLayoutId() {
@@ -288,11 +299,19 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
         mLlNotAvailable.setOnClickListener(this);
         mTvTransfer.setOnClickListener(this);
         mLlApplyForRemoteFee.setOnClickListener(this);
+        mTvPriceStandard.setOnClickListener(this);
+        mLlTotal.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.ll_total://费用明细
+                MyUtils.showToast(mActivity,"工单尚未完工，费用未生成");
+                break;
+            case R.id.tv_price_standard://价格标准
+                mPresenter.ProductToll(orderId,userID);
+                break;
             case R.id.iv_back:
                 EventBus.getDefault().post(20);//刷新选项卡数量全局搜case 20:
                 finish();
@@ -615,7 +634,31 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
         // TODO: add setContentView(...) invocation
 //        ButterKnife.bind(this);
     }
-
+    /**
+     * 价格标准弹框
+     */
+    public void showPopupWindowOfPriceStandard(List<ProductTollResult.DataBeanX.DataBean> list) {
+        popupWindow_view = LayoutInflater.from(mActivity).inflate(R.layout.price_dialog, null);
+        RecyclerView rv_list = popupWindow_view.findViewById(R.id.rv_list);
+        rv_list.setLayoutManager(new LinearLayoutManager(mActivity));
+        ProductTollAdapter adapter=new ProductTollAdapter(R.layout.price_item,list);
+        rv_list.setAdapter(adapter);
+        mPopupWindow = new PopupWindow(popupWindow_view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        mPopupWindow.setAnimationStyle(R.style.popwindow_anim_style);
+        mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+        mPopupWindow.setFocusable(true);
+        mPopupWindow.setOutsideTouchable(true);
+        mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                MyUtils.setWindowAlpa(mActivity, false);
+            }
+        });
+        if (mPopupWindow != null && !mPopupWindow.isShowing()) {
+            mPopupWindow.showAtLocation(popupWindow_view, Gravity.BOTTOM, 0, 0);
+        }
+        MyUtils.setWindowAlpa(mActivity, true);
+    }
     /**
      * 选择上门时间
      */
@@ -998,6 +1041,23 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                 }
                 break;
         }
+    }
+    @Override
+    public void ProductToll(ProductTollResult baseResult) {
+        switch (baseResult.getStatusCode()) {
+            case 200:
+                if (baseResult.getData().getCode()==0) {
+                    showPopupWindowOfPriceStandard(baseResult.getData().getData());
+                } else {
+                    showToast(mActivity, baseResult.getData().getMsg());
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void GetOrderMoneyDetail(GetOrderMoneyDetailResult baseResult) {
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

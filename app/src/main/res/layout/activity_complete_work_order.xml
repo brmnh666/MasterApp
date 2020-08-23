@@ -509,7 +509,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/edit_shape"
                     android:gravity="top"
-                    android:hint="备注"
+                    android:hint="安装需清晰描述安装服务结果和试机结果；维修需清晰描述故障现象，具体维修措施以及试机结果"
                     android:padding="@dimen/dp_10"
                     android:textColor="#6A6A6A"
                     android:textColorHint="#898989"

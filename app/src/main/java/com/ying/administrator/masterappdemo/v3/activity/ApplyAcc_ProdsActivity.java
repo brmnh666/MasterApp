@@ -106,6 +106,7 @@ public class ApplyAcc_ProdsActivity extends BaseActivity<ApplyAccPresenter, Appl
                 intent.putExtra("prodName", list_prod.get(position).getSubCategoryName()+"(编号："+list_prod.get(position).getOrderProdcutID()+")");
                 intent.putExtra("SubCategoryID", list_prod.get(position).getProductTypeID()+"");
                 intent.putExtra("cj_or_zg", cj_or_zg);
+                intent.putExtra("order", data);
                 startActivity(intent);
             }
         });

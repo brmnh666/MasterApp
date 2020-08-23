@@ -833,6 +833,12 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <!--费用详情-->
+        <activity android:name=".v3.activity.FeeDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar1"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
         <!--远程费申请-->
         <activity android:name=".v3.activity.ApplyFeeActivity"
             android:theme="@style/AppTheme.NoActionBar1"
