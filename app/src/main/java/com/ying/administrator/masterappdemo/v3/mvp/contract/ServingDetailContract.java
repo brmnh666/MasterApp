@@ -7,6 +7,7 @@ import com.ying.administrator.masterappdemo.base.BaseView;
 import com.ying.administrator.masterappdemo.entity.AddOrderSignInRecrodResult;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.GetBrandWithCategory;
+import com.ying.administrator.masterappdemo.entity.SubUserInfo;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.v3.bean.GetOrderMoneyDetailResult;
@@ -31,6 +32,17 @@ public interface ServingDetailContract {
         Observable<BaseResult<UserInfo>> GetUserInfoList(String UserID, String limit);
         Observable<ProductTollResult> ProductToll(String OrderID, String UserId);
         Observable<GetOrderMoneyDetailResult> GetOrderMoneyDetail(String OrderID);
+
+        //是否拨打电话
+        Observable<BaseResult<Data<String>>> OrderIsCall(String OrderID, String IsCall);
+        //主账号派单操作
+        Observable<BaseResult<Data>> ChangeSendOrder(String OrderID,String UserID);
+        //获取子账号
+        Observable<BaseResult<List<SubUserInfo.SubUserInfoDean>>> GetChildAccountByParentUserID(String ParentUserID);
+        //取消订单
+        Observable<BaseResult<Data>> UpdateSendOrderState(String OrderID,String State,String Reason);//State为-1取消订单
+        //预约成功
+        Observable<BaseResult<Data>> AddOrderSuccess(String OrderID, String AppointmentState, String AppointmentMessage);
     }
 
     interface View extends BaseView{
@@ -46,6 +58,17 @@ public interface ServingDetailContract {
         void GetUserInfoList(BaseResult<UserInfo> baseResult);
         void ProductToll(ProductTollResult baseResult);
         void GetOrderMoneyDetail(GetOrderMoneyDetailResult baseResult);
+
+        void OrderIsCall(BaseResult<Data<String>> baseResult);
+        //获取子账号
+        void GetChildAccountByParentUserID(BaseResult<List<SubUserInfo.SubUserInfoDean>> baseResult);
+        //主账号派单操作
+        void ChangeSendOrder(BaseResult<Data> baseResult);
+        //取消订单
+        void UpdateSendOrderState(BaseResult<Data> baseResult);
+        //预约成功
+
+        void AddOrderSuccess(BaseResult<Data> baseResult);
     }
 
     abstract class Presenter extends BasePresenter<View,Model>{
@@ -60,5 +83,15 @@ public interface ServingDetailContract {
         public abstract void GetUserInfoList(String UserID, String limit);
         public abstract void ProductToll(String OrderID, String UserId);
         public abstract void GetOrderMoneyDetail(String OrderID);
+
+        public abstract void OrderIsCall(String OrderID,String IsCall);
+        //获取子账号
+        public abstract void GetChildAccountByParentUserID(String ParentUserID);
+        //主账号派单操作
+        public abstract void ChangeSendOrder(String OrderID,String UserID);
+        //取消订单
+        public abstract void UpdateSendOrderState(String OrderID,String State,String Reason);
+        //预约成功
+        public abstract void AddOrderSuccess(String OrderID,String AppointmentState,String AppointmentMessage);
     }
 }

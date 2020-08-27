@@ -15,7 +15,6 @@ import com.blankj.utilcode.util.SPUtils;
 import com.flyco.tablayout.SlidingTabLayout;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseResult;
-import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.NavigationBarNumber;
 import com.ying.administrator.masterappdemo.entity.NavigationBarNumberSon;
@@ -211,7 +210,6 @@ public class OrderFragment extends BaseLazyFragment<OrderPresenter, OrderModel> 
     //任意写一个方法，给这个方法一个@Subscribe注解，参数类型可以自定义，但是一定要与你发出的类型相同
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(Integer num) {
-//        mFragments.clear();
         switch (num) {
             case 1:
                 mReceivingViewpager.setCurrentItem(1); //待预约 state 1
@@ -240,11 +238,6 @@ public class OrderFragment extends BaseLazyFragment<OrderPresenter, OrderModel> 
             case 20:
                 mPresenter.NavigationBarNumber(userId, "1", "10");
                 break;
-
-            case Config.ORDER_READ:
-
-//                mPresenter.WorkerGetOrderRed(userid);
-
             default:
                 break;
         }

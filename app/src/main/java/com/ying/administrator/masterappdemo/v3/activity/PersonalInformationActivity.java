@@ -41,6 +41,7 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.yalantis.ucrop.UCrop;
 import com.yalantis.ucrop.UCropActivity;
+import com.ying.administrator.masterappdemo.BuildConfig;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
@@ -48,7 +49,6 @@ import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.AddressList;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
-import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.AddAddressActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.VerifiedActivity2;
 import com.ying.administrator.masterappdemo.util.Glide4Engine;
@@ -347,7 +347,7 @@ public class PersonalInformationActivity extends BaseActivity<PersonalInformatio
                     File file = new File(FilePath);
                     Uri fileUri;
                     if (Build.VERSION.SDK_INT >= 24) {
-                        fileUri = FileProvider.getUriForFile(mActivity, "com.ying.administrator.masterappdemo.fileProvider", file);
+                        fileUri = FileProvider.getUriForFile(mActivity, BuildConfig.APPLICATION_ID + ".fileprovider", file);
                     } else {
                         fileUri = Uri.fromFile(file);
                     }

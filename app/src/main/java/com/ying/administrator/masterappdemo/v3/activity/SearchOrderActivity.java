@@ -110,20 +110,9 @@ public class SearchOrderActivity extends BaseActivity<SearchOrderPresenter, Sear
                 adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                        String state=baseResult.getData().getData().get(position).getState();
-                        if ("1".equals(state)||"2".equals(state)||"9".equals(state)){
-                            Intent intent=new Intent(mActivity, AppointmentDetailsActivity.class);
-                            intent.putExtra("id",baseResult.getData().getData().get(position).getOrderID());
-                            startActivity(intent);
-                        }else {
-                            Intent intent=new Intent(mActivity, ServingDetailActivity.class);
-                            intent.putExtra("id",baseResult.getData().getData().get(position).getOrderID());
-                            if ("11".equals(state)){//未到货
-                                intent.putExtra("type","pedding");
-                            }
-                            startActivity(intent);
-                        }
-
+                        Intent intent=new Intent(mActivity, ServingDetailActivity.class);
+                        intent.putExtra("id",baseResult.getData().getData().get(position).getOrderID());
+                        startActivity(intent);
                     }
                 });
                 break;

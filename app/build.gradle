@@ -40,8 +40,6 @@ android {
         versionCode verCode()
         versionName verName()
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
-        applicationId "com.ying.administrator.masterappdemo"
         //
         multiDexEnabled true
         ndk {
@@ -55,10 +53,10 @@ android {
                 XG_ACCESS_ID:"2100325419",
                 XG_ACCESS_KEY : "AWE3F3FU888D",
                 HW_APPID: "100604229",
-                PACKAGE_NAME:"com.ying.administrator.masterappdemo",
+                PACKAGE_NAME:"${applicationId}",
 
 
-                JPUSH_PKGNAME : "com.ying.administrator.masterappdemo",
+                JPUSH_PKGNAME : "${applicationId}",
                 JPUSH_APPKEY : "8f19ec931fdccf757dec794f", //JPush 上注册的包名对应的 Appkey.
                 JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
         ]
@@ -78,10 +76,12 @@ android {
                 keyAlias "key0"
                 keyPassword"xiao123456"
         }
-
-//        debug {
-//            storeFile file("./keystore/debug.keystore")
-//        }
+        debug{
+            storeFile file("../mykeystore.jks")
+            storePassword "xiao123456"
+            keyAlias "key0"
+            keyPassword"xiao123456"
+        }
     }
 
     buildTypes {
@@ -92,7 +92,6 @@ android {
         }
         debug {
             crunchPngs false //关闭crunchPng优化, 以加快构建
-            //其他代码省略 ...
         }
     }
 

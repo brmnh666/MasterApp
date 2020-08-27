@@ -45,6 +45,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
+import com.ying.administrator.masterappdemo.BuildConfig;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
@@ -1554,7 +1555,7 @@ public class Order_Add_Accessories_Activity extends BaseActivity<PendingOrderPre
                     File file = new File(FilePath);
                     Uri fileUri;
                     if (Build.VERSION.SDK_INT >= 24) {
-                        fileUri = FileProvider.getUriForFile(mActivity, "com.ying.administrator.masterappdemo.fileProvider", file);
+                        fileUri = FileProvider.getUriForFile(mActivity, BuildConfig.APPLICATION_ID + ".fileprovider", file);
                     } else {
                         fileUri = Uri.fromFile(file);
                     }

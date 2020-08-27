@@ -23,7 +23,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,23 +48,17 @@ import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.google.gson.Gson;
-import com.lxj.xpopup.XPopup;
+import com.ying.administrator.masterappdemo.BuildConfig;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.Accessory;
 import com.ying.administrator.masterappdemo.entity.AddressList;
-import com.ying.administrator.masterappdemo.entity.Area;
-import com.ying.administrator.masterappdemo.entity.City;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.Data2;
-import com.ying.administrator.masterappdemo.entity.District;
 import com.ying.administrator.masterappdemo.entity.FAccessory;
 import com.ying.administrator.masterappdemo.entity.GetFactoryData;
-import com.ying.administrator.masterappdemo.entity.Province;
-import com.ying.administrator.masterappdemo.entity.SAccessory;
 import com.ying.administrator.masterappdemo.mvp.contract.NewAddAccessoriesContract;
 import com.ying.administrator.masterappdemo.mvp.model.NewAddAccessoriesModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.NewAddAccessoriesPresenter;
@@ -74,7 +67,6 @@ import com.ying.administrator.masterappdemo.mvp.ui.adapter.NewAddAccessoriesAdap
 import com.ying.administrator.masterappdemo.util.Glide4Engine;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.util.imageutil.CompressHelper;
-import com.ying.administrator.masterappdemo.widget.MyPackagePopup;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zyao89.view.zloading.ZLoadingDialog;
@@ -879,7 +871,7 @@ public class NewAddAccessoriesActivity extends BaseActivity<NewAddAccessoriesPre
                     File file = new File(FilePath);
                     Uri fileUri;
                     if (Build.VERSION.SDK_INT >= 24) {
-                        fileUri = FileProvider.getUriForFile(mActivity, "com.ying.administrator.masterappdemo.fileProvider", file);
+                        fileUri = FileProvider.getUriForFile(mActivity, BuildConfig.APPLICATION_ID + ".fileprovider", file);
                     } else {
                         fileUri = Uri.fromFile(file);
                     }

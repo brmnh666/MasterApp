@@ -16,7 +16,6 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,7 +29,7 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.moor.imkf.eventbus.EventBus;
+import com.ying.administrator.masterappdemo.BuildConfig;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
@@ -57,9 +56,7 @@ import com.zhihu.matisse.MimeType;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -257,7 +254,7 @@ public class AccessoriesPictureActivity extends BaseActivity<NewAddAccessoriesPr
                     File file = new File(FilePath);
                     Uri fileUri;
                     if (Build.VERSION.SDK_INT >= 24) {
-                        fileUri = FileProvider.getUriForFile(mActivity, "com.ying.administrator.masterappdemo.fileProvider", file);
+                        fileUri = FileProvider.getUriForFile(mActivity, BuildConfig.APPLICATION_ID + ".fileprovider", file);
                     } else {
                         fileUri = Uri.fromFile(file);
                     }

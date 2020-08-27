@@ -4,6 +4,7 @@ import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.AddOrderSignInRecrodResult;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.GetBrandWithCategory;
+import com.ying.administrator.masterappdemo.entity.SubUserInfo;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.service.ApiRetrofit;
@@ -76,6 +77,39 @@ public class ServingDetailModel implements ServingDetailContract.Model {
     @Override
     public Observable<GetOrderMoneyDetailResult> GetOrderMoneyDetail(String OrderID) {
         return ApiRetrofit.getDefault().GetOrderMoneyDetail(OrderID)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+    @Override
+    public Observable<BaseResult<Data<String>>> OrderIsCall(String OrderID, String IsCall) {
+        return ApiRetrofit.getDefault().OrderIsCall(OrderID, IsCall)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+    /*得到 子账户*/
+    @Override
+    public Observable<BaseResult<List<SubUserInfo.SubUserInfoDean>>> GetChildAccountByParentUserID(String ParentUserID) {
+        return ApiRetrofit.getDefault().GetChildAccountByParentUserID(ParentUserID)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+
+    }
+
+    @Override
+    public Observable<BaseResult<Data>> ChangeSendOrder(String OrderID, String UserID) {
+        return ApiRetrofit.getDefault().ChangeSendOrder(OrderID,UserID)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+    @Override
+    public Observable<BaseResult<Data>> UpdateSendOrderState(String OrderID, String State,String Reason) {
+        return ApiRetrofit.getDefault().UpdateSendOrderState(OrderID,State,Reason)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+    @Override
+    public Observable<BaseResult<Data>> AddOrderSuccess(String OrderID, String AppointmentState, String AppointmentMessage) {
+        return ApiRetrofit.getDefault().AddOrderSuccess(OrderID, AppointmentState, AppointmentMessage)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

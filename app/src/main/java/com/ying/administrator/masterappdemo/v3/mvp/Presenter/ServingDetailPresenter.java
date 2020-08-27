@@ -6,6 +6,7 @@ import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.AddOrderSignInRecrodResult;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.GetBrandWithCategory;
+import com.ying.administrator.masterappdemo.entity.SubUserInfo;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.v3.bean.GetOrderMoneyDetailResult;
@@ -110,6 +111,58 @@ public class ServingDetailPresenter extends ServingDetailContract.Presenter {
                     @Override
                     protected void onHandleSuccess(GetOrderMoneyDetailResult value) {
                         mView.GetOrderMoneyDetail(value);
+                    }
+                });
+    }
+    @Override
+    public void OrderIsCall(String OrderID, String IsCall) {
+        mModel.OrderIsCall(OrderID, IsCall)
+                .subscribe(new BaseObserver<Data<String>>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<Data<String>> value) {
+                        mView.OrderIsCall(value);
+                    }
+                });
+    }
+    @Override
+    public void GetChildAccountByParentUserID(String ParentUserID) {
+
+        mModel.GetChildAccountByParentUserID(ParentUserID)
+                .subscribe(new BaseObserver<List<SubUserInfo.SubUserInfoDean>>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<List<SubUserInfo.SubUserInfoDean>> value) {
+                        mView.GetChildAccountByParentUserID(value);
+                    }
+                });
+    }
+
+    @Override
+    public void ChangeSendOrder(String OrderID, String UserID) {
+        mModel.ChangeSendOrder(OrderID,UserID)
+                .subscribe(new BaseObserver<Data>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<Data> value) {
+                        mView.ChangeSendOrder(value);
+                    }
+                });
+    }
+    @Override
+    public void UpdateSendOrderState(String OrderID, String State,String Reason) {
+        mModel.UpdateSendOrderState(OrderID,State,Reason)
+                .subscribe(new BaseObserver<Data>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<Data> value) {
+                        mView.UpdateSendOrderState(value);
+                    }
+                });
+    }
+    @Override
+    public void AddOrderSuccess(String OrderID, String AppointmentState, String AppointmentMessage) {
+        mModel.AddOrderSuccess(OrderID, AppointmentState, AppointmentMessage)
+                .subscribe(new BaseObserver<Data>() {
+                    @Override
+                    protected void onHandleSuccess(BaseResult<Data> value) {
+                        mView.AddOrderSuccess(value);
                     }
                 });
     }

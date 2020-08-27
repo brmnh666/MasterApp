@@ -26,7 +26,6 @@ import com.ying.administrator.masterappdemo.entity.NavigationBarNumber;
 import com.ying.administrator.masterappdemo.entity.NavigationBarNumberSon;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
-import com.ying.administrator.masterappdemo.v3.activity.AppointmentDetailsActivity;
 import com.ying.administrator.masterappdemo.v3.activity.ServingDetailActivity;
 import com.ying.administrator.masterappdemo.v3.adapter.PendingAdapter;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.OrderPresenter;
@@ -144,15 +143,9 @@ public class PendingFragment extends BaseLazyFragment<OrderPresenter, OrderModel
         pendingAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if ("2".equals(list.get(position).getState())){
-                    Intent intent=new Intent(mActivity, AppointmentDetailsActivity.class);
-                    intent.putExtra("id",list.get(position).getOrderID());
-                    startActivity(intent);
-                }else {
-                    Intent intent=new Intent(mActivity, ServingDetailActivity.class);
-                    intent.putExtra("id",list.get(position).getOrderID());
-                    startActivity(intent);
-                }
+                Intent intent=new Intent(mActivity, ServingDetailActivity.class);
+                intent.putExtra("id",list.get(position).getOrderID());
+                startActivity(intent);
             }
         });
 

@@ -317,7 +317,277 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                 finish();
                 break;
             case R.id.tv_reservation:
-                if (data.getIsCall() == null) {
+                reservation();
+                break;
+            case R.id.ll_telephone:
+                call("tel:" + data.getPhone());
+                if (data.getOrderAccessroyDetail().size() > 0) {
+                    mPresenter.OrderIsCall(orderId, "2");
+                } else {
+                    mPresenter.OrderIsCall(orderId, "Y");
+                }
+                break;
+            case R.id.tv_cancel:
+                cancelOrder();
+                break;
+            case R.id.ll_call:
+                call();
+                break;
+            case R.id.tv_copy:
+                copy();
+                break;
+            case R.id.ll_not_available:
+                Intent intent = new Intent(mActivity, LogisticsActivity.class);
+                intent.putExtra("number", data.getExpressNo() + "");
+                startActivity(intent);
+                break;
+            case R.id.tv_transfer:
+                transfer();
+                break;
+            case R.id.ll_apply_for_remote_fee:
+                applybeyond();
+                break;
+        }
+    }
+    //申请远程费
+    private void applybeyond() {
+        // FIXME: 2020-08-03 远程费
+        if (data.getOrderRemoteFeeDetail().size() > 0) {
+            remote = data.getOrderRemoteFeeDetail().get(0);
+            if ("0".equals(remote.getState())) {
+                MyUtils.showToast(mActivity, "远程费审核中，请耐心等待。");
+                return;
+            }
+            if ("8".equals(remote.getState())) {
+                MyUtils.showToast(mActivity, "远程费已通过");
+                return;
+            }
+        }
+        Intent intent1 = new Intent(mActivity, ApplyFeeActivity.class);
+        intent1.putExtra("beyond", data.getDistance());
+//                intent1.putExtra("position", position);
+        intent1.putExtra("orderId", data.getOrderID());
+        intent1.putExtra("address_my", userInfo.getAddress());//师傅店铺地址
+        intent1.putExtra("address", data.getAddress());//用户地址
+        startActivity(intent1);
+    }
+    //转派
+    private void transfer() {
+        customDialog_redeploy = new CustomDialog_Redeploy(mActivity);
+        customDialog_redeploy.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        customDialog_redeploy.show();
+        Window window = customDialog_redeploy.getWindow();
+        WindowManager.LayoutParams wlp = window.getAttributes();
+        Display d = window.getWindowManager().getDefaultDisplay();
+        wlp.height = (d.getHeight());
+        wlp.width = (d.getWidth());
+        wlp.gravity = Gravity.CENTER;
+        window.setAttributes(wlp);
+
+
+        recyclerView_custom_redeploy = customDialog_redeploy.findViewById(R.id.recyclerView_custom_redeploy);
+        recyclerView_custom_redeploy.setLayoutManager(new LinearLayoutManager(mActivity));
+        redeploy_adapter = new Redeploy_Adapter(R.layout.item_redeploy, subuserlist, mActivity);
+        recyclerView_custom_redeploy.setAdapter(redeploy_adapter);
+
+
+
+        /*选择子账号进行转派*/
+        redeploy_adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+
+                switch (view.getId()) {
+                    case R.id.rl_item_redeploy:
+                        // case R.id.img_redeploy_unselect:
+                        // case R.id.img_redeploy_select:
+                        if (((SubUserInfo.SubUserInfoDean) adapter.getData().get(position)).isIscheck() == false) {//当前选中选中
+
+                            for (int i = 0; i < subuserlist.size(); i++) {
+                                subuserlist.get(i).setIscheck(false);
+                            }
+                            subuserlist.get(position).setIscheck(true); //点击的为选中状态
+                            SubUserID = subuserlist.get(position).getUserID();
+                            Log.d("====>", SubUserID);
+                            redeploy_adapter.notifyDataSetChanged();
+
+                        } else { //点击的为已选中
+
+                            for (int i = 0; i < subuserlist.size(); i++) {
+                                subuserlist.get(i).setIscheck(false);
+                            }
+                            SubUserID = null;
+                            redeploy_adapter.notifyDataSetChanged();
+                        }
+
+
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+
+        customDialog_redeploy.setYesOnclickListener("转派订单", new CustomDialog_Redeploy.onYesOnclickListener() {
+            @Override
+            public void onYesClick() {
+                if (SubUserID == null) {
+                    Toast.makeText(mActivity, "您还没选择子账号进行转派", LENGTH_SHORT).show();
+                    //  customDialog_redeploy.dismiss(); //没选择人进行选派
+                } else {
+                    //转派成功状态恢复原状
+
+                    for (int i = 0; i < subuserlist.size(); i++) {
+                        subuserlist.get(i).setIscheck(false);
+                    }
+                    //转派成功 刷新当前页面
+//                            redeployposition = position;
+                    mPresenter.ChangeSendOrder(orderId, SubUserID);
+                    customDialog_redeploy.dismiss();
+                    // mRefreshLayout.autoRefresh(0,0,1);
+                    SubUserID = null;
+                }
+
+            }
+        });
+
+        customDialog_redeploy.setNoOnclickListener("取消转派", new CustomDialog_Redeploy.onNoOnclickListener() {
+            @Override
+            public void onNoOnclick() {
+                //点击了取消所谓状态恢复原状
+                SubUserID = null;
+                for (int i = 0; i < subuserlist.size(); i++) {
+                    subuserlist.get(i).setIscheck(false);
+                }
+                customDialog_redeploy.dismiss();
+            }
+        });
+    }
+    //复制
+    private void copy() {
+        myClip = ClipData.newPlainText("", "下单厂家：" + data.getInvoiceName() + "\n"
+                + "工单号：" + data.getOrderID() + "\n"
+                + "下单时间：" + data.getCreateDate() + "\n"
+                + "用户信息：" + data.getUserName() + " " + data.getPhone() + "\n"
+                + "用户地址：" + data.getAddress() + "\n"
+                + "产品信息：" + data.getProductType() + "\n"
+                + "售后类型：" + data.getGuaranteeText() + "\n"
+                + "服务类型：" + data.getTypeName()
+        );
+        myClipboard.setPrimaryClip(myClip);
+        ToastUtils.showShort("复制成功");
+    }
+    //拨打电话
+    private void call() {
+        callPhoneView = LayoutInflater.from(mActivity).inflate(R.layout.dialog_call, null);
+        LinearLayout ll_customer_service = callPhoneView.findViewById(R.id.ll_customer_service);
+        LinearLayout ll_technology = callPhoneView.findViewById(R.id.ll_technology);
+        TextView tv_cancel = callPhoneView.findViewById(R.id.tv_cancel);
+        tv_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPopupWindow.dismiss();
+            }
+        });
+        ll_customer_service.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                call("tel:" + "4006262365");
+                mPopupWindow.dismiss();
+            }
+        });
+
+        ll_technology.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (technologyPhone == null) {
+                    ToastUtils.showShort("暂无技术电话");
+                } else {
+                    call("tel:" + technologyPhone);
+                }
+                mPopupWindow.dismiss();
+            }
+        });
+
+        mPopupWindow = new PopupWindow(callPhoneView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        mPopupWindow.setAnimationStyle(R.style.popwindow_anim_style);
+        mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+        mPopupWindow.setFocusable(true);
+        mPopupWindow.setOutsideTouchable(true);
+        mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                MyUtils.setWindowAlpa(mActivity, false);
+            }
+        });
+        if (mPopupWindow != null && !mPopupWindow.isShowing()) {
+            mPopupWindow.showAtLocation(callPhoneView, Gravity.BOTTOM, 0, 0);
+        }
+        MyUtils.setWindowAlpa(mActivity, true);
+    }
+    //取消工单
+    private void cancelOrder() {
+        View Cancelview = LayoutInflater.from(mActivity).inflate(R.layout.dialog_cancel, null);
+        et_message = Cancelview.findViewById(R.id.et_message);
+        negtive = Cancelview.findViewById(R.id.negtive);
+        positive = Cancelview.findViewById(R.id.positive);
+        title = Cancelview.findViewById(R.id.title);
+        title.setText("是否取消工单");
+        negtive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancelDialog.dismiss();
+            }
+        });
+
+        positive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String message = et_message.getText().toString();
+                if (message == null || "".equals(message)) {
+                    ToastUtils.showShort("请输入取消工单理由");
+                } else {
+//                                    mPresenter.UpdateOrderState(OrderId, "-1",message);
+                    mPresenter.UpdateSendOrderState(orderId, "-1", message);
+                    cancelDialog.dismiss();
+                }
+
+            }
+        });
+
+        cancelDialog = new AlertDialog.Builder(mActivity).setView(Cancelview).create();
+        cancelDialog.show();
+        Window window1 = cancelDialog.getWindow();
+        WindowManager.LayoutParams layoutParams = window1.getAttributes();
+        window1.setAttributes(layoutParams);
+        window1.setBackgroundDrawable(new ColorDrawable());
+    }
+    //预约成功
+    private void reservation() {
+        if (data.getIsCall() == null) {
+            under_review = LayoutInflater.from(mActivity).inflate(R.layout.v3_dialog_reservation, null);
+            TextView tv_cancel = under_review.findViewById(R.id.tv_cancel);
+            TextView tv_reservation = under_review.findViewById(R.id.tv_reservation);
+            tv_cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    underReviewDialog.dismiss();
+                }
+            });
+
+            tv_reservation.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    call("tel:" + data.getPhone());
+                    mPresenter.OrderIsCall(orderId, "Y");
+                    underReviewDialog.dismiss();
+                }
+            });
+            underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review).create();
+            underReviewDialog.show();
+        } else {
+            if (data.getOrderAccessroyDetail().size() > 0) {
+                if ("Y".equals(data.getIsCall())) {
                     under_review = LayoutInflater.from(mActivity).inflate(R.layout.v3_dialog_reservation, null);
                     TextView tv_cancel = under_review.findViewById(R.id.tv_cancel);
                     TextView tv_reservation = under_review.findViewById(R.id.tv_reservation);
@@ -332,299 +602,50 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                         @Override
                         public void onClick(View v) {
                             call("tel:" + data.getPhone());
-                            mPresenter.OrderIsCall(orderId, "Y");
+                            mPresenter.OrderIsCall(orderId, "2");
                             underReviewDialog.dismiss();
                         }
                     });
                     underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review).create();
                     underReviewDialog.show();
                 } else {
-                    if (data.getOrderAccessroyDetail().size() > 0) {
-                        if ("Y".equals(data.getIsCall())) {
-                            under_review = LayoutInflater.from(mActivity).inflate(R.layout.v3_dialog_reservation, null);
-                            TextView tv_cancel = under_review.findViewById(R.id.tv_cancel);
-                            TextView tv_reservation = under_review.findViewById(R.id.tv_reservation);
-                            tv_cancel.setOnClickListener(new View.OnClickListener() {
+                    RxPermissions rxPermissions = new RxPermissions(this);
+                    rxPermissions.request(Manifest.permission.WRITE_CALENDAR, Manifest.permission.READ_CALENDAR)
+                            .subscribe(new Consumer<Boolean>() {
                                 @Override
-                                public void onClick(View v) {
-                                    underReviewDialog.dismiss();
+                                public void accept(Boolean aBoolean) throws Exception {
+                                    if (aBoolean) {
+                                        // 获取全部权限成功
+
+                                        chooseTime("请选择上门时间");
+                                    } else {
+                                        // 获取全部权限失败
+//                                                Log.d("=====>", "权限获取失败");
+                                        ToastUtils.showShort("权限获取失败");
+                                    }
                                 }
                             });
+                }
+            } else {
+                RxPermissions rxPermissions = new RxPermissions(this);
+                rxPermissions.request(Manifest.permission.WRITE_CALENDAR, Manifest.permission.READ_CALENDAR)
+                        .subscribe(new Consumer<Boolean>() {
+                            @Override
+                            public void accept(Boolean aBoolean) throws Exception {
+                                if (aBoolean) {
+                                    // 获取全部权限成功
 
-                            tv_reservation.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    call("tel:" + data.getPhone());
-                                    mPresenter.OrderIsCall(orderId, "2");
-                                    underReviewDialog.dismiss();
-                                }
-                            });
-                            underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review).create();
-                            underReviewDialog.show();
-                        } else {
-                            RxPermissions rxPermissions = new RxPermissions(this);
-                            rxPermissions.request(Manifest.permission.WRITE_CALENDAR, Manifest.permission.READ_CALENDAR)
-                                    .subscribe(new Consumer<Boolean>() {
-                                        @Override
-                                        public void accept(Boolean aBoolean) throws Exception {
-                                            if (aBoolean) {
-                                                // 获取全部权限成功
-
-                                                chooseTime("请选择上门时间");
-                                            } else {
-                                                // 获取全部权限失败
+                                    chooseTime("请选择上门时间");
+                                } else {
+                                    // 获取全部权限失败
 //                                                Log.d("=====>", "权限获取失败");
-                                                ToastUtils.showShort("权限获取失败");
-                                            }
-                                        }
-                                    });
-                        }
-                    } else {
-                        RxPermissions rxPermissions = new RxPermissions(this);
-                        rxPermissions.request(Manifest.permission.WRITE_CALENDAR, Manifest.permission.READ_CALENDAR)
-                                .subscribe(new Consumer<Boolean>() {
-                                    @Override
-                                    public void accept(Boolean aBoolean) throws Exception {
-                                        if (aBoolean) {
-                                            // 获取全部权限成功
-
-                                            chooseTime("请选择上门时间");
-                                        } else {
-                                            // 获取全部权限失败
-//                                                Log.d("=====>", "权限获取失败");
-                                            ToastUtils.showShort("权限获取失败");
-                                        }
-                                    }
-                                });
-                    }
-
-
-                }
-                break;
-            case R.id.ll_telephone:
-                call("tel:" + data.getPhone());
-                if (data.getOrderAccessroyDetail().size() > 0) {
-                    mPresenter.OrderIsCall(orderId, "2");
-                } else {
-                    mPresenter.OrderIsCall(orderId, "Y");
-                }
-
-                break;
-            case R.id.tv_cancel:
-
-                View Cancelview = LayoutInflater.from(mActivity).inflate(R.layout.dialog_cancel, null);
-                et_message = Cancelview.findViewById(R.id.et_message);
-                negtive = Cancelview.findViewById(R.id.negtive);
-                positive = Cancelview.findViewById(R.id.positive);
-                title = Cancelview.findViewById(R.id.title);
-                title.setText("是否取消工单");
-                negtive.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        cancelDialog.dismiss();
-                    }
-                });
-
-                positive.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String message = et_message.getText().toString();
-                        if (message == null || "".equals(message)) {
-                            ToastUtils.showShort("请输入取消工单理由");
-                        } else {
-//                                    mPresenter.UpdateOrderState(OrderId, "-1",message);
-                            mPresenter.UpdateSendOrderState(orderId, "-1", message);
-                            cancelDialog.dismiss();
-                        }
-
-                    }
-                });
-
-                cancelDialog = new AlertDialog.Builder(mActivity).setView(Cancelview).create();
-                cancelDialog.show();
-                Window window1 = cancelDialog.getWindow();
-                WindowManager.LayoutParams layoutParams = window1.getAttributes();
-                window1.setAttributes(layoutParams);
-                window1.setBackgroundDrawable(new ColorDrawable());
-                break;
-            case R.id.ll_call:
-//                call("tel:" + "4006262365");
-                callPhoneView = LayoutInflater.from(mActivity).inflate(R.layout.dialog_call, null);
-                LinearLayout ll_customer_service = callPhoneView.findViewById(R.id.ll_customer_service);
-                LinearLayout ll_technology = callPhoneView.findViewById(R.id.ll_technology);
-                TextView tv_cancel = callPhoneView.findViewById(R.id.tv_cancel);
-                tv_cancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mPopupWindow.dismiss();
-                    }
-                });
-                ll_customer_service.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        call("tel:" + "4006262365");
-                        mPopupWindow.dismiss();
-                    }
-                });
-
-                ll_technology.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (technologyPhone == null) {
-                            ToastUtils.showShort("暂无技术电话");
-                        } else {
-                            call("tel:" + technologyPhone);
-                        }
-                        mPopupWindow.dismiss();
-                    }
-                });
-
-                mPopupWindow = new PopupWindow(callPhoneView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                mPopupWindow.setAnimationStyle(R.style.popwindow_anim_style);
-                mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
-                mPopupWindow.setFocusable(true);
-                mPopupWindow.setOutsideTouchable(true);
-                mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-                    @Override
-                    public void onDismiss() {
-                        MyUtils.setWindowAlpa(mActivity, false);
-                    }
-                });
-                if (mPopupWindow != null && !mPopupWindow.isShowing()) {
-                    mPopupWindow.showAtLocation(callPhoneView, Gravity.BOTTOM, 0, 0);
-                }
-                MyUtils.setWindowAlpa(mActivity, true);
-                break;
-            case R.id.tv_copy:
-                myClip = ClipData.newPlainText("", "下单厂家：" + data.getInvoiceName() + "\n"
-                        + "工单号：" + data.getOrderID() + "\n"
-                        + "下单时间：" + data.getCreateDate() + "\n"
-                        + "用户信息：" + data.getUserName() + " " + data.getPhone() + "\n"
-                        + "用户地址：" + data.getAddress() + "\n"
-                        + "产品信息：" + data.getProductType() + "\n"
-                        + "售后类型：" + data.getGuaranteeText() + "\n"
-                        + "服务类型：" + data.getTypeName()
-                );
-                myClipboard.setPrimaryClip(myClip);
-                ToastUtils.showShort("复制成功");
-                break;
-            case R.id.ll_not_available:
-                Intent intent = new Intent(mActivity, LogisticsActivity.class);
-                intent.putExtra("number", data.getExpressNo() + "");
-                startActivity(intent);
-                break;
-            case R.id.tv_transfer:
-                customDialog_redeploy = new CustomDialog_Redeploy(mActivity);
-                customDialog_redeploy.getWindow().setBackgroundDrawableResource(R.color.transparent);
-                customDialog_redeploy.show();
-                Window window = customDialog_redeploy.getWindow();
-                WindowManager.LayoutParams wlp = window.getAttributes();
-                Display d = window.getWindowManager().getDefaultDisplay();
-                wlp.height = (d.getHeight());
-                wlp.width = (d.getWidth());
-                wlp.gravity = Gravity.CENTER;
-                window.setAttributes(wlp);
-
-
-                recyclerView_custom_redeploy = customDialog_redeploy.findViewById(R.id.recyclerView_custom_redeploy);
-                recyclerView_custom_redeploy.setLayoutManager(new LinearLayoutManager(mActivity));
-                redeploy_adapter = new Redeploy_Adapter(R.layout.item_redeploy, subuserlist, mActivity);
-                recyclerView_custom_redeploy.setAdapter(redeploy_adapter);
-
-
-
-                /*选择子账号进行转派*/
-                redeploy_adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-                    @Override
-                    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-
-                        switch (view.getId()) {
-                            case R.id.rl_item_redeploy:
-                                // case R.id.img_redeploy_unselect:
-                                // case R.id.img_redeploy_select:
-                                if (((SubUserInfo.SubUserInfoDean) adapter.getData().get(position)).isIscheck() == false) {//当前选中选中
-
-                                    for (int i = 0; i < subuserlist.size(); i++) {
-                                        subuserlist.get(i).setIscheck(false);
-                                    }
-                                    subuserlist.get(position).setIscheck(true); //点击的为选中状态
-                                    SubUserID = subuserlist.get(position).getUserID();
-                                    Log.d("====>", SubUserID);
-                                    redeploy_adapter.notifyDataSetChanged();
-
-                                } else { //点击的为已选中
-
-                                    for (int i = 0; i < subuserlist.size(); i++) {
-                                        subuserlist.get(i).setIscheck(false);
-                                    }
-                                    SubUserID = null;
-                                    redeploy_adapter.notifyDataSetChanged();
+                                    ToastUtils.showShort("权限获取失败");
                                 }
-
-
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                });
-
-                customDialog_redeploy.setYesOnclickListener("转派订单", new CustomDialog_Redeploy.onYesOnclickListener() {
-                    @Override
-                    public void onYesClick() {
-                        if (SubUserID == null) {
-                            Toast.makeText(mActivity, "您还没选择子账号进行转派", LENGTH_SHORT).show();
-                            //  customDialog_redeploy.dismiss(); //没选择人进行选派
-                        } else {
-                            //转派成功状态恢复原状
-
-                            for (int i = 0; i < subuserlist.size(); i++) {
-                                subuserlist.get(i).setIscheck(false);
                             }
-                            //转派成功 刷新当前页面
-//                            redeployposition = position;
-                            mPresenter.ChangeSendOrder(orderId, SubUserID);
-                            customDialog_redeploy.dismiss();
-                            // mRefreshLayout.autoRefresh(0,0,1);
-                            SubUserID = null;
-                        }
+                        });
+            }
 
-                    }
-                });
 
-                customDialog_redeploy.setNoOnclickListener("取消转派", new CustomDialog_Redeploy.onNoOnclickListener() {
-                    @Override
-                    public void onNoOnclick() {
-                        //点击了取消所谓状态恢复原状
-                        SubUserID = null;
-                        for (int i = 0; i < subuserlist.size(); i++) {
-                            subuserlist.get(i).setIscheck(false);
-                        }
-                        customDialog_redeploy.dismiss();
-                    }
-                });
-                break;
-            case R.id.ll_apply_for_remote_fee:
-                // FIXME: 2020-08-03 远程费
-                if (data.getOrderRemoteFeeDetail().size() > 0) {
-                    remote = data.getOrderRemoteFeeDetail().get(0);
-                    if ("0".equals(remote.getState())) {
-                        MyUtils.showToast(mActivity, "远程费审核中，请耐心等待。");
-                        return;
-                    }
-                    if ("8".equals(remote.getState())) {
-                        MyUtils.showToast(mActivity, "远程费已通过");
-                        return;
-                    }
-                }
-                Intent intent1 = new Intent(mActivity, ApplyFeeActivity.class);
-                intent1.putExtra("beyond", data.getDistance());
-//                intent1.putExtra("position", position);
-                intent1.putExtra("orderId", data.getOrderID());
-                intent1.putExtra("address_my", userInfo.getAddress());//师傅店铺地址
-                intent1.putExtra("address", data.getAddress());//用户地址
-                startActivity(intent1);
-                break;
         }
     }
 
@@ -1008,10 +1029,8 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
             case 200:
                 if (baseResult.getData().isItem1()) {
                     Toast.makeText(mActivity, "转派成功", LENGTH_SHORT).show();
-//                    pending_appointment_adapter.remove(redeployposition);
                     finish();
                 } else {
-
                     Toast.makeText(mActivity, "转派失败", LENGTH_SHORT).show();
                 }
 

@@ -14,7 +14,6 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.FileProvider;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -34,6 +33,7 @@ import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.ying.administrator.masterappdemo.BuildConfig;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
@@ -44,7 +44,6 @@ import com.ying.administrator.masterappdemo.mvp.contract.MessageContract;
 import com.ying.administrator.masterappdemo.mvp.model.MessageModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.MessagePresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.LeaveMessageAdapter;
-import com.ying.administrator.masterappdemo.mvp.ui.adapter.LeaveMessageImgAdapter;
 import com.ying.administrator.masterappdemo.util.Glide4Engine;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.util.SingleClick;
@@ -58,7 +57,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -415,7 +413,7 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
                 File file = new File(FilePath);
                 Uri fileUri;
                 if (Build.VERSION.SDK_INT >= 24) {
-                    fileUri = FileProvider.getUriForFile(mActivity, "com.ying.administrator.masterappdemo.fileProvider", file);
+                    fileUri = FileProvider.getUriForFile(mActivity, BuildConfig.APPLICATION_ID + ".fileprovider", file);
                 } else {
                     fileUri = Uri.fromFile(file);
                 }

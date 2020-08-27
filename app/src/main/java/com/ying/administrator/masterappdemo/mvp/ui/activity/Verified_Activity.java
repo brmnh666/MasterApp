@@ -40,6 +40,7 @@ import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.dmcbig.mediapicker.entity.Media;
+import com.ying.administrator.masterappdemo.BuildConfig;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
@@ -491,7 +492,7 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                 File file = new File(FilePath);
                 Uri fileUri;
                 if (Build.VERSION.SDK_INT >= 24) {
-                    fileUri = FileProvider.getUriForFile(mActivity, "com.ying.administrator.masterappdemo.fileProvider", file);
+                    fileUri = FileProvider.getUriForFile(mActivity, BuildConfig.APPLICATION_ID + ".fileprovider", file);
                 } else {
                     fileUri = Uri.fromFile(file);
                 }

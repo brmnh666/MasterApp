@@ -27,7 +27,6 @@ import com.ying.administrator.masterappdemo.entity.NavigationBarNumber;
 import com.ying.administrator.masterappdemo.entity.NavigationBarNumberSon;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
-import com.ying.administrator.masterappdemo.v3.activity.AppointmentDetailsActivity;
 import com.ying.administrator.masterappdemo.v3.activity.ServingDetailActivity;
 import com.ying.administrator.masterappdemo.v3.adapter.PendingAdapter;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.OrderPresenter;
@@ -141,22 +140,9 @@ public class PendingAppointmentFragment extends BaseLazyFragment<OrderPresenter,
         pendingAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if ("1".equals(state)){
-//                    if (list.get(position).getOrderAccessroyDetail().size()>0){
-//                        Intent intent=new Intent(mActivity, ServingDetailActivity.class);
-//                        intent.putExtra("id",list.get(position).getOrderID());
-//                        startActivity(intent);
-//                    }else {
-                        Intent intent=new Intent(mActivity, AppointmentDetailsActivity.class);
-                        intent.putExtra("id",list.get(position).getOrderID());
-                        startActivity(intent);
-//                    }
-                }else {
-                    Intent intent=new Intent(mActivity, ServingDetailActivity.class);
-                    intent.putExtra("id",list.get(position).getOrderID());
-                    intent.putExtra("type","pedding");
-                    startActivity(intent);
-                }
+                Intent intent=new Intent(mActivity, ServingDetailActivity.class);
+                intent.putExtra("id",list.get(position).getOrderID());
+                startActivity(intent);
             }
         });
         pendingAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
@@ -266,16 +252,10 @@ public class PendingAppointmentFragment extends BaseLazyFragment<OrderPresenter,
     public void Event(Integer num) {
         switch (num) {
             case 1:
-                list.clear();
-                page = 1;
-                mPresenter.NavigationBarNumberSon(userId,"1","999");
-//                mPresenter.WorkerGetOrderList(userId, state, page + "", "10");
-                break;
             case 2:
                 list.clear();
                 page = 1;
                 mPresenter.NavigationBarNumberSon(userId,"1","999");
-//                mPresenter.WorkerGetOrderList(userId, state, page + "", "10");
                 break;
             case 22:
                 mTvUrgentlyNeeded.setSelected(true);
@@ -284,11 +264,8 @@ public class PendingAppointmentFragment extends BaseLazyFragment<OrderPresenter,
                 list.clear();
                 page = 1;
                 mPresenter.NavigationBarNumberSon(userId,"1","999");
-//                mPresenter.WorkerGetOrderList(userId, state, page + "", "10");
                 break;
             case Config.ORDER_READ:
-
-//                mPresenter.WorkerGetOrderRed(userid);
 
             default:
                 break;

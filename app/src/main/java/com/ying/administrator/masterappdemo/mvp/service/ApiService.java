@@ -45,6 +45,7 @@ import com.ying.administrator.masterappdemo.entity.WxRegister;
 import com.ying.administrator.masterappdemo.v3.bean.ApplicationResult;
 import com.ying.administrator.masterappdemo.v3.bean.ConfirmReceiptResult;
 import com.ying.administrator.masterappdemo.v3.bean.ConfirmReturnResult;
+import com.ying.administrator.masterappdemo.v3.bean.CourseResult;
 import com.ying.administrator.masterappdemo.v3.bean.DeleteAccessoryResult;
 import com.ying.administrator.masterappdemo.v3.bean.EndResult;
 import com.ying.administrator.masterappdemo.v3.bean.GetExpressInfoResult;
@@ -1337,4 +1338,12 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("Platform/GetOrderMoneyDetail")
     Observable<GetOrderMoneyDetailResult> GetOrderMoneyDetail(@Field("OrderID") String OrderID);
+    /**
+     * 维修资料
+     * @param
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("Master/AppProductData/List")
+    Observable<CourseResult> GetCourse(@Field("SubCategoryID") String SubCategoryID, @Field("ProductTypeID") String ProductTypeID, @Field("BrandID") String BrandID, @Field("TypeID") String TypeID,@Field("ProdModelID") String ProdModelID, @Field("UserID") String UserID);
 }
