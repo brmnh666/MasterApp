@@ -419,7 +419,7 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
             public void onClick(View v) {
                 IntentIntegrator integrator = new IntentIntegrator(AccessoriesDetailsActivity.this);
                 // 设置要扫描的条码类型，ONE_D_CODE_TYPES：一维码，QR_CODE_TYPES-二维码
-                integrator.setDesiredBarcodeFormats(IntentIntegrator.ONE_D_CODE_TYPES);
+                integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
                 integrator.setCaptureActivity(ScanActivity.class); //设置打开摄像头的Activity
                 integrator.setPrompt("请扫描快递码"); //底部的提示文字，设为""可以置空
                 integrator.setCameraId(0); //前置或者后置摄像头

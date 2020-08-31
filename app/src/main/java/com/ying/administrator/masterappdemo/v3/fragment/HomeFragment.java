@@ -5,13 +5,17 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -35,6 +39,7 @@ import com.ying.administrator.masterappdemo.mvp.ui.activity.WebActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
 import com.ying.administrator.masterappdemo.util.SingleClick;
 import com.ying.administrator.masterappdemo.v3.activity.MessageActivity;
+import com.ying.administrator.masterappdemo.v3.activity.ServingDetailActivity;
 import com.ying.administrator.masterappdemo.v3.adapter.HomeAdapter;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.HomePresenter;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.HomeContract;
@@ -77,12 +82,22 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
     private String userId;
     private int page = 1;
     private WorkOrder workOrder;
-    private int grabposition;
     private View customdialog_home_view;
     private AlertDialog customdialog_home_dialog;
     private CodeMoney codeList;
     private ClipboardManager myClipboard;
     private ClipData myClip;
+    private EditText et_message;
+    private Button negtive;
+    private Button positive;
+    private TextView title;
+    private AlertDialog cancelDialog;
+    private boolean yn=true; //true 接单 false 拒接
+    private Button btn_reason1;
+    private Button btn_reason2;
+    private Button btn_reason3;
+    private Button btn_reason4;
+
     public static HomeFragment newInstance(String param1) {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
@@ -117,70 +132,27 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, final int position) {
                 switch (view.getId()) {
-                    case R.id.tv_orders:
-                        grabposition = position;
-                        if ("保外".equals(list.get(position).getGuaranteeText())) {
-//                            Intent intent=new Intent(mActivity,QuoteDetailsActivity.class);
-//                            intent.putExtra("id",list.get(position).getOrderID());
-//                            startActivity(intent);
-//                            mPresenter.UpdateSendOrderState(list.get(position).getOrderID(), "1", "");
-                            customdialog_home_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_home, null);
-                            customdialog_home_dialog = new AlertDialog.Builder(mActivity)
-                                    .setView(customdialog_home_view)
-                                    .create();
-                            customdialog_home_dialog.show();
-                            TextView title = customdialog_home_view.findViewById(R.id.title);
-                            TextView message = customdialog_home_view.findViewById(R.id.message);
-                            Button negtive = customdialog_home_view.findViewById(R.id.negtive);
-                            Button positive = customdialog_home_view.findViewById(R.id.positive);
-                            title.setText("温馨提示");
-                            message.setText("敬爱的师傅：您接到的是保外服务单，费用由用户支付，平台仅收取" + codeList.getCodeValue() + "元派单费，工单完结后，请充值。谢谢！");
-                            negtive.setText("取消");
-                            positive.setText("接单");
-                            negtive.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    customdialog_home_dialog.dismiss();
-                                }
-                            });
-                            positive.setOnClickListener(new View.OnClickListener() {
-                                @SingleClick
-                                @Override
-                                public void onClick(View v) {
-                                    showProgress();
-                                    mPresenter.UpdateSendOrderState(list.get(position).getOrderID(), "1", "");
-                                    customdialog_home_dialog.dismiss();
-                                }
-                            });
-                        } else {
-//                            if ("true".equals(list.get(position).getDistanceTureOrFalse())) {
-//                                Intent intent = new Intent(mActivity, ApplyFeeActivity.class);
-//                                intent.putExtra("position", position);
-//                                intent.putExtra("orderId", list.get(position).getOrderID());
-//                                startActivity(intent);
-//                            } else {
-                            // FIXME: 2020-07-15 重复同意接单问题
-                            showProgress();
-                            mPresenter.UpdateSendOrderState(list.get(position).getOrderID(), "1", "");
-//                            }
-
-                        }
-
+                    case R.id.tv_orders://接单
+                        yn=true;
+                        orders(position);
+                        break;
+                    case R.id.tv_cancel://拒接
+                        yn=false;
+                        cancelOrder(position);
                         break;
                     case R.id.iv_copy:
-                        myClip = ClipData.newPlainText("", "下单厂家："+list.get(position).getInvoiceName() + "\n"
-                                +"工单号："+list.get(position).getOrderID() + "\n"
-                                +"下单时间："+list.get(position).getCreateDate() + "\n"
-                                +"用户信息："+list.get(position).getUserName()+" "+list.get(position).getPhone() + "\n"
-                                +"用户地址："+list.get(position).getAddress() + "\n"
-                                +"产品信息："+list.get(position).getProductType() + "\n"
-                                +"售后类型："+list.get(position).getGuaranteeText() + "\n"
-                                +"服务类型："+list.get(position).getTypeName()
-                        );
-                        myClipboard.setPrimaryClip(myClip);
-                        ToastUtils.showShort("复制成功");
+                        copy(position);
                         break;
                 }
+            }
+        });
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Intent intent = new Intent(mActivity, ServingDetailActivity.class);
+                intent.putExtra("codeValue", codeList.getCodeValue());//保外单需收的费用
+                intent.putExtra("id", list.get(position).getOrderID());
+                startActivity(intent);
             }
         });
         /*下拉刷新*/
@@ -211,6 +183,112 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
             }
         });
 
+    }
+    //复制
+    private void copy(int position) {
+        myClip = ClipData.newPlainText("", "下单厂家："+list.get(position).getInvoiceName() + "\n"
+                +"工单号："+list.get(position).getOrderID() + "\n"
+                +"下单时间："+list.get(position).getCreateDate() + "\n"
+                +"用户信息："+list.get(position).getUserName()+" "+list.get(position).getPhone() + "\n"
+                +"用户地址："+list.get(position).getAddress() + "\n"
+                +"产品信息："+list.get(position).getProductType() + "\n"
+                +"售后类型："+list.get(position).getGuaranteeText() + "\n"
+                +"服务类型："+list.get(position).getTypeName()
+        );
+        myClipboard.setPrimaryClip(myClip);
+        ToastUtils.showShort("复制成功");
+    }
+
+    //接单
+    private void orders(final int position) {
+        if ("保外".equals(list.get(position).getGuaranteeText())) {
+            customdialog_home_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_home, null);
+            customdialog_home_dialog = new AlertDialog.Builder(mActivity)
+                    .setView(customdialog_home_view)
+                    .create();
+            customdialog_home_dialog.show();
+            TextView title = customdialog_home_view.findViewById(R.id.title);
+            TextView message = customdialog_home_view.findViewById(R.id.message);
+            Button negtive = customdialog_home_view.findViewById(R.id.negtive);
+            Button positive = customdialog_home_view.findViewById(R.id.positive);
+            title.setText("温馨提示");
+            message.setText("敬爱的师傅：您接到的是保外服务单，费用由用户支付，平台仅收取" + codeList.getCodeValue() + "元派单费，工单完结后，请充值。谢谢！");
+            negtive.setText("取消");
+            positive.setText("接单");
+            negtive.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    customdialog_home_dialog.dismiss();
+                }
+            });
+            positive.setOnClickListener(new View.OnClickListener() {
+                @SingleClick
+                @Override
+                public void onClick(View v) {
+                    showProgress();
+                    mPresenter.UpdateSendOrderState(list.get(position).getOrderID(), "1", "");
+                    customdialog_home_dialog.dismiss();
+                }
+            });
+        } else {
+            // FIXME: 2020-07-15 重复同意接单问题
+            showProgress();
+            mPresenter.UpdateSendOrderState(list.get(position).getOrderID(), "1", "");
+        }
+    }
+
+    //拒接
+    private void cancelOrder(final int position) {
+        View Cancelview = LayoutInflater.from(mActivity).inflate(R.layout.dialog_cancel, null);
+        et_message = Cancelview.findViewById(R.id.et_message);
+        negtive = Cancelview.findViewById(R.id.negtive);
+        positive = Cancelview.findViewById(R.id.positive);
+        btn_reason1 = Cancelview.findViewById(R.id.btn_reason1);
+        btn_reason2 = Cancelview.findViewById(R.id.btn_reason2);
+        btn_reason3 = Cancelview.findViewById(R.id.btn_reason3);
+        btn_reason4 = Cancelview.findViewById(R.id.btn_reason4);
+        setReason(btn_reason1);
+        setReason(btn_reason2);
+        setReason(btn_reason3);
+        setReason(btn_reason4);
+
+        title = Cancelview.findViewById(R.id.title);
+        title.setText("是否拒接工单");
+        negtive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancelDialog.dismiss();
+            }
+        });
+
+        positive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String message = et_message.getText().toString();
+                if (message == null || "".equals(message)) {
+                    ToastUtils.showShort("请输入拒接工单理由");
+                } else {
+                    mPresenter.UpdateSendOrderState(list.get(position).getOrderID(), "-1", message);
+                    cancelDialog.dismiss();
+                }
+
+            }
+        });
+        cancelDialog = new AlertDialog.Builder(mActivity).setView(Cancelview).create();
+        cancelDialog.show();
+        Window window1 = cancelDialog.getWindow();
+        WindowManager.LayoutParams layoutParams = window1.getAttributes();
+        window1.setAttributes(layoutParams);
+        window1.setBackgroundDrawable(new ColorDrawable());
+    }
+
+    private void setReason(final Button btn) {
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                et_message.setText(btn.getText());
+            }
+        });
     }
 
     private void getOrderList() {
@@ -322,11 +400,14 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
         switch (baseResult.getStatusCode()) {
             case 200://200
                 if (data.isItem1()) {//接单成功
-
-                    Toast.makeText(getActivity(), "接单成功", LENGTH_SHORT).show();
-                    EventBus.getDefault().post(10);
-                    EventBus.getDefault().post(1);
-                    EventBus.getDefault().post("工单");
+                    if (yn){
+                        Toast.makeText(getActivity(), "接单成功", LENGTH_SHORT).show();
+                        EventBus.getDefault().post(1);
+                        EventBus.getDefault().post(10);
+                    }else{
+                        Toast.makeText(getActivity(), "已拒绝接单", LENGTH_SHORT).show();
+                        EventBus.getDefault().post(0);
+                    }
                 } else {
                     Toast.makeText(getActivity(), (CharSequence) data.getItem2(), LENGTH_SHORT).show();
                 }

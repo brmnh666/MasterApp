@@ -54,6 +54,7 @@ public class FeeDetailActivity extends BaseActivity<ServingDetailPresenter, Serv
     TextView mTvTotal;
     private String userId;
     private String orderId;
+    private List<GetOrderMoneyDetailResult.DataBeanX.DataBean.Item1Bean> list;
 
     @Override
     protected int setLayoutId() {
@@ -138,7 +139,13 @@ public class FeeDetailActivity extends BaseActivity<ServingDetailPresenter, Serv
             case 200:
                 if (baseResult.getData().getCode() == 0) {
                     mRvList.setLayoutManager(new LinearLayoutManager(mActivity));
-                    PriceBeanAdapter adapter = new PriceBeanAdapter(R.layout.price_type_item, baseResult.getData().getData().getItem1());
+                    list =baseResult.getData().getData().getItem1();
+                    for (int i = 0; i <list.size() ; i++) {
+                        if (list.get(i).getTypeName().contains("平台费")){
+                            list.remove(i);
+                        }
+                    }
+                    PriceBeanAdapter adapter = new PriceBeanAdapter(R.layout.price_master_item, list);
                     mRvList.setAdapter(adapter);
                     mTvTotal.setText("¥"+baseResult.getData().getData().getItem3());
                 } else {

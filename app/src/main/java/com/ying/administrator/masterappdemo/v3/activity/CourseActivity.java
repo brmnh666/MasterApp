@@ -46,6 +46,7 @@ public class CourseActivity extends BaseActivity<CoursePresenter, CourseModel> i
     private Intent intent;
     private CourseResult.DataBeanX.DataBean data;
     private WorkOrder.DataBean order;
+    private WorkOrder.OrderProductModelsBean prod;
 
     @Override
     protected int setLayoutId() {
@@ -61,8 +62,9 @@ public class CourseActivity extends BaseActivity<CoursePresenter, CourseModel> i
     protected void initView() {
         mTvTitle.setText("资料");
         order = (WorkOrder.DataBean) getIntent().getSerializableExtra("data");
+        prod = (WorkOrder.OrderProductModelsBean) getIntent().getSerializableExtra("prod");
 
-        mPresenter.GetCourse(order.getSubCategoryID(),order.getProductTypeID(),order.getBrandID(),order.getTypeID(),order.getProductTypeID(),order.getUserID());
+        mPresenter.GetCourse(prod.getSubCategoryID()+"",prod.getProductTypeID()+"",prod.getBrandID()+"",order.getTypeID(),prod.getProdModelID()+"",order.getUserID());
         adapter = new CourseAdapter(R.layout.v3_item_course, list);
         mRvList.setLayoutManager(new LinearLayoutManager(mActivity));
         mRvList.setAdapter(adapter);

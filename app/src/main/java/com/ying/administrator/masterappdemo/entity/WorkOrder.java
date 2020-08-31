@@ -239,6 +239,7 @@ public class WorkOrder implements Serializable {
         private String picture;
         private String ArtisanPhone;
         private boolean IsApplicationAccessory;
+        private boolean MasterIsLookFee;
 
         public List<GAccessory> getOrderRemoteFeeDetail() {
             return OrderRemoteFeeDetail;
@@ -262,6 +263,14 @@ public class WorkOrder implements Serializable {
 
         public void setAccessoryImgUrls(List<String> accessoryImgUrls) {
             AccessoryImgUrls = accessoryImgUrls;
+        }
+
+        public boolean isMasterIsLookFee() {
+            return MasterIsLookFee;
+        }
+
+        public void setMasterIsLookFee(boolean masterIsLookFee) {
+            MasterIsLookFee = masterIsLookFee;
         }
 
         public boolean isApplicationAccessory() {

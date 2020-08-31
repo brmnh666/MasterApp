@@ -2,7 +2,6 @@ package com.ying.administrator.masterappdemo.v3.activity;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,31 +11,26 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.blankj.utilcode.util.SPUtils;
-import com.blankj.utilcode.util.ToastUtils;
 import com.google.gson.Gson;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.common.Config;
-
+import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.GetMessagePag;
 import com.ying.administrator.masterappdemo.entity.Phone;
-import com.ying.administrator.masterappdemo.entity.Phone2;
 import com.ying.administrator.masterappdemo.entity.Phone3;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Login_New_Activity;
@@ -45,13 +39,10 @@ import com.ying.administrator.masterappdemo.util.DesktopCornerUtil;
 import com.ying.administrator.masterappdemo.v3.fragment.HomeFragment;
 import com.ying.administrator.masterappdemo.v3.fragment.MineFragment;
 import com.ying.administrator.masterappdemo.v3.fragment.OrderFragment;
-import com.ying.administrator.masterappdemo.v3.fragment.ShopFragment;
-import com.ying.administrator.masterappdemo.v3.fragment.StudyFragment;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.MainPresenter;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.MainContract;
 import com.ying.administrator.masterappdemo.v3.mvp.model.MainModel;
 import com.ying.administrator.masterappdemo.widget.CustomViewPager;
-import com.ying.administrator.masterappdemo.entity.Data;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -115,8 +106,8 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
         fragmentList = new ArrayList<>();
         fragmentList.add(HomeFragment.newInstance(""));
         fragmentList.add(OrderFragment.newInstance(""));
-        fragmentList.add(StudyFragment.newInstance(""));
-        fragmentList.add(ShopFragment.newInstance(""));
+//        fragmentList.add(StudyFragment.newInstance(""));
+//        fragmentList.add(ShopFragment.newInstance(""));
         fragmentList.add(MineFragment.newInstance(""));
         mViewPager.setAdapter(new MyAdapter(getSupportFragmentManager()));
         mViewPager.setOffscreenPageLimit(fragmentList.size());
@@ -444,18 +435,18 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
                 mViewPager.setCurrentItem(1);
                 tabSelected(mLlOrder);
                 break;
-            case R.id.ll_study:
-                mViewPager.setCurrentItem(2);
-                tabSelected(mLlStudy);
-                break;
+//            case R.id.ll_study:
+//                mViewPager.setCurrentItem(2);
+//                tabSelected(mLlStudy);
+//                break;
             case R.id.ll_mine:
-                mViewPager.setCurrentItem(4);
+                mViewPager.setCurrentItem(2);
                 tabSelected(mLlMine);
                 break;
-            case R.id.ll_shop:
-                mViewPager.setCurrentItem(3);
-                tabSelected(mLlShop);
-                break;
+//            case R.id.ll_shop:
+//                mViewPager.setCurrentItem(3);
+//                tabSelected(mLlShop);
+//                break;
         }
     }
 

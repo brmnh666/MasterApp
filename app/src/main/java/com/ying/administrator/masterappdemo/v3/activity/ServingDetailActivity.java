@@ -191,8 +191,6 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
     TextView mTvTotal;
     @BindView(R.id.ll_total)
     LinearLayout mLlTotal;
-    @BindView(R.id.tv_cancel)
-    TextView mTvCancel;
     @BindView(R.id.tv_transfer)
     TextView mTvTransfer;
     @BindView(R.id.tv_reservation)
@@ -201,6 +199,14 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
     TextView mTvMoney;
     @BindView(R.id.ll_apply_for_remote_fee)
     LinearLayout mLlApplyForRemoteFee;
+    @BindView(R.id.tv_cancel_order)
+    TextView mTvCancelOrder;
+    @BindView(R.id.tv_orders)
+    TextView mTvOrders;
+    @BindView(R.id.ll_djd)
+    LinearLayout mLlDjd;
+    @BindView(R.id.tv_cancel)
+    TextView mTvCancel;
 
     private String orderId;
     private WorkOrder.DataBean data;
@@ -229,13 +235,21 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
     private CustomDialog_Redeploy customDialog_redeploy;
     private RecyclerView recyclerView_custom_redeploy;
     private Redeploy_Adapter redeploy_adapter;
-    private List<SubUserInfo.SubUserInfoDean> subuserlist=new ArrayList<>();
+    private List<SubUserInfo.SubUserInfoDean> subuserlist = new ArrayList<>();
     private String SubUserID;
     private EditText et_message;
     private Button negtive;
     private Button positive;
     private TextView title;
     private AlertDialog cancelDialog;
+    private boolean yn;
+    private View customdialog_home_view;
+    private AlertDialog customdialog_home_dialog;
+    private String codeValue;
+    private Button btn_reason1;
+    private Button btn_reason2;
+    private Button btn_reason3;
+    private Button btn_reason4;
 
     @Override
     protected int setLayoutId() {
@@ -286,6 +300,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
         } else {
             orderId = getIntent().getStringExtra("id");
         }
+        codeValue = getIntent().getStringExtra("codeValue");
 
         prodAdapter = new ProdAdapter(R.layout.prod_item, prodList);
         mRvProds.setLayoutManager(new LinearLayoutManager(mActivity));
@@ -296,6 +311,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                 switch (view.getId()) {
                     case R.id.ll_course:
                         intent = new Intent(mActivity, CourseActivity.class);
+                        intent.putExtra("prod", prodList.get(position));
                         intent.putExtra("data", data);
                         startActivity(intent);
                         break;
@@ -332,12 +348,25 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
         mTvReservation.setOnClickListener(this);//预约成功
         mTvTransfer.setOnClickListener(this);//转派
         mLlApplyForRemoteFee.setOnClickListener(this);//申请远程费
+
+        mTvCancel.setOnClickListener(this);//拒接工单
+        mTvCancelOrder.setOnClickListener(this);//拒接工单
+        mTvOrders.setOnClickListener(this);//接单
     }
 
     @SingleClick
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.tv_cancel://拒接工单
+            case R.id.tv_cancel_order://拒接工单
+                yn = false;
+                cancelOrder();
+                break;
+            case R.id.tv_orders://接单
+                yn = true;
+                orders();
+                break;
             case R.id.tv_reservation://预约成功
                 reservation();
                 break;
@@ -348,12 +377,12 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                 applybeyond();
                 break;
             case R.id.ll_total://费用明细
-                if ("5".equals(data.getState()) || "7".equals(data.getState())) {
+                if (data.isMasterIsLookFee()) {
                     intent = new Intent(mActivity, FeeDetailActivity.class);
                     intent.putExtra("orderid", orderId);
                     startActivity(intent);
                 } else {
-                    showToast(mActivity, "工单尚未完工，费用未生成");
+                    showToast(mActivity, "工单尚未完工或者客服审核中，费用未生成");
                 }
                 break;
             case R.id.tv_price_standard://价格标准
@@ -624,14 +653,61 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
         });
     }
 
-    //取消工单
+    //接单
+    private void orders() {
+        if ("保外".equals(data.getGuaranteeText())) {
+            customdialog_home_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_home, null);
+            customdialog_home_dialog = new AlertDialog.Builder(mActivity)
+                    .setView(customdialog_home_view)
+                    .create();
+            customdialog_home_dialog.show();
+            TextView title = customdialog_home_view.findViewById(R.id.title);
+            TextView message = customdialog_home_view.findViewById(R.id.message);
+            Button negtive = customdialog_home_view.findViewById(R.id.negtive);
+            Button positive = customdialog_home_view.findViewById(R.id.positive);
+            title.setText("温馨提示");
+            message.setText("敬爱的师傅：您接到的是保外服务单，费用由用户支付，平台仅收取" + codeValue + "元派单费，工单完结后，请充值。谢谢！");
+            negtive.setText("取消");
+            positive.setText("接单");
+            negtive.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    customdialog_home_dialog.dismiss();
+                }
+            });
+            positive.setOnClickListener(new View.OnClickListener() {
+                @SingleClick
+                @Override
+                public void onClick(View v) {
+                    showProgress();
+                    mPresenter.UpdateSendOrderState(orderId, "1", "");
+                    customdialog_home_dialog.dismiss();
+                }
+            });
+        } else {
+            // FIXME: 2020-07-15 重复同意接单问题
+            showProgress();
+            mPresenter.UpdateSendOrderState(orderId, "1", "");
+        }
+    }
+
+    //拒接工单
     private void cancelOrder() {
         View Cancelview = LayoutInflater.from(mActivity).inflate(R.layout.dialog_cancel, null);
         et_message = Cancelview.findViewById(R.id.et_message);
         negtive = Cancelview.findViewById(R.id.negtive);
         positive = Cancelview.findViewById(R.id.positive);
+        btn_reason1 = Cancelview.findViewById(R.id.btn_reason1);
+        btn_reason2 = Cancelview.findViewById(R.id.btn_reason2);
+        btn_reason3 = Cancelview.findViewById(R.id.btn_reason3);
+        btn_reason4 = Cancelview.findViewById(R.id.btn_reason4);
+        setReason(btn_reason1);
+        setReason(btn_reason2);
+        setReason(btn_reason3);
+        setReason(btn_reason4);
         title = Cancelview.findViewById(R.id.title);
-        title.setText("是否取消工单");
+        title.setText("是否拒接工单");
+        et_message.setHint("请输入拒接工单理由");
         negtive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -644,9 +720,8 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
             public void onClick(View v) {
                 String message = et_message.getText().toString();
                 if (message == null || "".equals(message)) {
-                    ToastUtils.showShort("请输入取消工单理由");
+                    ToastUtils.showShort("请输入拒接工单理由");
                 } else {
-//                                    mPresenter.UpdateOrderState(OrderId, "-1",message);
                     mPresenter.UpdateSendOrderState(orderId, "-1", message);
                     cancelDialog.dismiss();
                 }
@@ -660,6 +735,15 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
         WindowManager.LayoutParams layoutParams = window1.getAttributes();
         window1.setAttributes(layoutParams);
         window1.setBackgroundDrawable(new ColorDrawable());
+    }
+
+    private void setReason(final Button btn) {
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                et_message.setText(btn.getText());
+            }
+        });
     }
 
     //预约成功
@@ -1081,7 +1165,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                     } else {
                         mLlReservationTime.setVisibility(View.VISIBLE);
                         for (int i = 0; i < data.getSendOrderList().size(); i++) {
-                            if (userId.equals(data.getSendOrderList().get(i).getUserID())&&"1".equals(data.getSendOrderList().get(i).getState())){
+                            if (userId.equals(data.getSendOrderList().get(i).getUserID()) && "1".equals(data.getSendOrderList().get(i).getState())) {
                                 mTvAppointment.setText(data.getSendOrderList().get(i).getServiceDate());
                             }
                         }
@@ -1111,15 +1195,18 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                     }
 
                     if ("2".equals(data.getState())) {//待预约
-                        mTvCancel.setVisibility(View.VISIBLE);//取消工单按钮
                         mLlReservation.setVisibility(View.VISIBLE);//预约成功按钮
                         mLlApplyForRemoteFee.setVisibility(View.VISIBLE);//远程费
-                        mPresenter.GetUserInfoList(userId,"1");
+                        mPresenter.GetUserInfoList(userId, "1");
                     } else {
-                        mTvCancel.setVisibility(View.GONE);
                         mLlReservation.setVisibility(View.GONE);
                         mLlApplyForRemoteFee.setVisibility(View.GONE);
                         mTvTransfer.setVisibility(View.GONE);
+                    }
+                    if ("1".equals(data.getState())) {//待接单
+                        mLlDjd.setVisibility(View.VISIBLE);
+                    } else {
+                        mLlDjd.setVisibility(View.GONE);
                     }
 
                     if ("安装".equals(data.getTypeName())) {
@@ -1129,7 +1216,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                             mLlNotAvailable.setVisibility(View.VISIBLE);
                         }
                     }
-                    if ("5".equals(data.getState()) || "7".equals(data.getState())) {
+                    if (data.isMasterIsLookFee()) {
                         mPresenter.GetOrderMoneyDetail(orderId);
                     } else {
                         mTvTotal.setText("¥--");
@@ -1184,9 +1271,9 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                     // 添加事件
                     int result = CalendarProviderManager.addCalendarEvent(mActivity, calendarEvent);
                     if (result == 0) {
-                        if ("2".equals(data.getState())){
+                        if ("2".equals(data.getState())) {
                             mPresenter.AddOrderSuccess(orderId, "1", "预约成功");
-                        }else{
+                        } else {
                             mPresenter.GetOrderInfo(orderId);
                         }
                         Toast.makeText(mActivity, "已为您添加行程至日历,将提前一小时提醒您！！", LENGTH_SHORT).show();
@@ -1201,6 +1288,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                 }
         }
     }
+
     @Override
     public void AddOrderSuccess(BaseResult<Data> baseResult) {
         switch (baseResult.getStatusCode()) {
@@ -1213,7 +1301,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                     EventBus.getDefault().post("待服务");
                     finish();
                 } else {
-                    MyUtils.showToast(mActivity, (String) baseResult.getData().getItem2());
+                    showToast(mActivity, (String) baseResult.getData().getItem2());
                 }
                 break;
             default:
@@ -1222,6 +1310,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
         }
 
     }
+
     @Override
     public void GetBrandWithCategory2(BaseResult<Data<List<GetBrandWithCategory>>> baseResult) {
     }
@@ -1285,7 +1374,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
     public void GetChildAccountByParentUserID(BaseResult<List<SubUserInfo.SubUserInfoDean>> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-                subuserlist=baseResult.getData();
+                subuserlist = baseResult.getData();
                 if (subuserlist.size() != 0) { //有子账号
                     mTvTransfer.setVisibility(View.VISIBLE);
                 } else {//没有子账号
@@ -1313,16 +1402,44 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                 break;
         }
     }
+
+    //    @Override
+//    public void UpdateSendOrderState(BaseResult<Data> baseResult) {
+//        switch (baseResult.getStatusCode()) {
+//            case 200:
+//                if (baseResult.getData().isItem1()) {
+//                    finish();
+//                } else {
+//                    Toast.makeText(mActivity, "取消失败", Toast.LENGTH_LONG).show();
+//                }
+//                break;
+//            default:
+//                break;
+//        }
+//    }
     @Override
     public void UpdateSendOrderState(BaseResult<Data> baseResult) {
+        Data data = baseResult.getData();
         switch (baseResult.getStatusCode()) {
-            case 200:
-                if (baseResult.getData().isItem1()) {
-                    finish();
+            case 200://200
+                if (data.isItem1()) {//接单成功
+                    if (yn) {
+                        Toast.makeText(mActivity, "接单成功", LENGTH_SHORT).show();
+                        EventBus.getDefault().post(1);
+                        EventBus.getDefault().post(10);
+                        EventBus.getDefault().post(21);
+                    } else {
+                        Toast.makeText(mActivity, "已拒绝接单", LENGTH_SHORT).show();
+                        EventBus.getDefault().post(0);
+                        EventBus.getDefault().post(22);//待预约列表
+                        finish();
+                    }
                 } else {
-                    Toast.makeText(mActivity, "取消失败", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mActivity, (CharSequence) data.getItem2(), LENGTH_SHORT).show();
                 }
+                hideProgress();
                 break;
+
             default:
                 break;
         }

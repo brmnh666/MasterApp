@@ -16,10 +16,49 @@
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
         android:gravity="center"
-        tools:text="是否取消工单"
+        tools:text="是否拒接工单"
         android:visibility="visible"
         android:textColor="#333333"
         android:textSize="18sp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_dialog"
+        android:orientation="vertical">
+        <Button
+            android:id="@+id/btn_reason1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/dp_10"
+            android:gravity="center_vertical"
+            android:background="@null"
+            android:text="1.用户电话无法接通"/>
+        <Button
+            android:id="@+id/btn_reason2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/dp_10"
+            android:gravity="center_vertical"
+            android:background="@null"
+            android:text="2.用户不需要安装/维修"/>
+        <Button
+            android:id="@+id/btn_reason3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/dp_10"
+            android:gravity="center_vertical"
+            android:background="@null"
+            android:text="3.机器正常无需维修"/>
+        <Button
+            android:id="@+id/btn_reason4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/dp_10"
+            android:gravity="center_vertical"
+            android:background="@null"
+            android:text="4.用户退机"/>
+    </LinearLayout>
+
     <EditText
         android:id="@+id/et_message"
         android:layout_width="match_parent"
@@ -31,7 +70,7 @@
         android:background="@drawable/gray_shape"
         android:textSize="14sp"
         android:textColor="@color/black"
-        android:hint="若要取消工单，请输入理由"
+        android:hint="若要拒接工单，请输入理由"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"/>
 
@@ -78,7 +117,7 @@
             android:background="@null"
             android:gravity="center"
             android:singleLine="true"
-            android:text="是的"
+            android:text="确定"
             android:textColor="@color/color_custom_01"
             android:textSize="16sp" />
     </LinearLayout>

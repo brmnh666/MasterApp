@@ -1,9 +1,6 @@
 package com.ying.administrator.masterappdemo.v3.adapter;
 
-import android.graphics.Color;
 import android.support.annotation.Nullable;
-import android.view.View;
-import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -38,9 +35,13 @@ public class PendingAdapter extends BaseQuickAdapter<WorkOrder.DataBean, BaseVie
         }
         helper.addOnClickListener(R.id.tv_orders)
                 .addOnClickListener(R.id.iv_copy);
-        TextView tv_sub_account_maintenance = helper.getView(R.id.tv_sub_account_maintenance);
-        TextView tv_orders = helper.getView(R.id.tv_orders);
-        tv_orders.setVisibility(View.GONE);
+
+        helper.setText(R.id.tv_type, item.getGuaranteeText() + "/" + item.getTypeName());
+
+        helper.setGone(R.id.ll_btn,false);
+        helper.setGone(R.id.iv_location,false);
+        helper.setGone(R.id.tv_location,false);
+
         helper.setText(R.id.tv_time, MyUtils.getTimebefore(item.getCreateDate()))
                 .setText(R.id.tv_name, name)
                 .setText(R.id.tv_location, "距离:" + item.getDistance() + "Km")
@@ -49,39 +50,10 @@ public class PendingAdapter extends BaseQuickAdapter<WorkOrder.DataBean, BaseVie
                 .setText(R.id.tv_order,"工单号:"+item.getOrderID());
 
 
-        if ("1".equals(item.getPartyNo())) {
-            tv_orders.setText("报价");
-            tv_orders.setBackgroundResource(R.drawable.v3_yellow_shape);
-            tv_orders.setTextColor(Color.parseColor("#000000"));
-            helper.setText(R.id.tv_type, "用户发单/" + item.getTypeName());
-            helper.setBackgroundRes(R.id.tv_type, R.drawable.v3_yellow_shape);
-            helper.setTextColor(R.id.tv_type, Color.parseColor("#000000"));
-        } else {
-            if ("0".equals(item.getPartyNo())){
-                helper.setGone(R.id.iv_location,false);
-                helper.setGone(R.id.tv_location,false);
-            }else {
-                helper.setVisible(R.id.iv_location,false);
-                helper.setVisible(R.id.tv_location,false);
-            }
-            tv_orders.setText("接单");
-            tv_orders.setBackgroundResource(R.drawable.v3_orders_shape);
-            tv_orders.setTextColor(Color.parseColor("#ffffff"));
-            if ("Y".equals(item.getExtra()) && !"0".equals(item.getExtraTime())) {
-                helper.setText(R.id.tv_type, item.getGuaranteeText() + "/" + item.getTypeName() + "/加急");
-            } else {
-                helper.setText(R.id.tv_type, item.getGuaranteeText() + "/" + item.getTypeName());
-            }
-            helper.setBackgroundRes(R.id.tv_type, R.drawable.v3_home_bg);
-            helper.setTextColor(R.id.tv_type, Color.parseColor("#01B1D2"));
-        }
-
         if (userId.equals(item.getSendUser())){
-            tv_sub_account_maintenance.setVisibility(View.GONE);
-//            helper.setGone(R.id.tv_sub_account_maintenance,false);
+            helper.setGone(R.id.tv_sub_account_maintenance,false);
         }else {
-            tv_sub_account_maintenance.setVisibility(View.VISIBLE);
-//            helper.setVisible(R.id.tv_sub_account_maintenance,true);
+            helper.setGone(R.id.tv_sub_account_maintenance,true);
         }
     }
 }
