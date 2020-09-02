@@ -12,7 +12,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.SPUtils;
-import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
@@ -28,6 +27,7 @@ import com.ying.administrator.masterappdemo.mvp.model.WithDrawModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.WithDrawPresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.CardList_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.VerifiedPhotoActivity;
+import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.util.SingleClick;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 import com.ying.administrator.masterappdemo.widget.TradeTextWatcher;
@@ -223,12 +223,15 @@ public class WithdrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
             case R.id.btn_price_shoukuan:
                 money= mEtWithdrawalAmount.getText().toString();
                 if (ifTrue == true) {
+                    if ("0".equals(money)){
+                        MyUtils.showToast(mActivity,"提现金额必须大于0");
+                    }
                     if (bankNo==null||"".equals(bankNo)){
-                        ToastUtils.showShort("请选择银行卡");
+                        MyUtils.showToast(mActivity,"请选择银行卡");
                     } else if (money==null||"".equals(money)) {
-                        ToastUtils.showShort("请输入提现金额");
+                        MyUtils.showToast(mActivity,"请输入提现金额");
                     }else if (Double.parseDouble(money)>Double.parseDouble(withDrawMoney.getKtx())){
-                        ToastUtils.showShort("超出可提现金额");
+                        MyUtils.showToast(mActivity,"超出可提现金额");
                     } else {
                         mPresenter.WithDraw(money, bankNo, userId, payName);
                     }
@@ -476,6 +479,8 @@ public class WithdrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
                             finish();
                         }
                     }).show();
+                }else{
+                    MyUtils.showToast(mActivity,baseResult.getData().getItem2());
                 }
 
                     break;
