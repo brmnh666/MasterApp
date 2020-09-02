@@ -20,6 +20,11 @@ public class PicAdapter extends BaseQuickAdapter<String, LayoutParamsViewHolder>
 
         GlideUtil.loadImageViewLoding(mContext, item, (MyImageView) helper.getView(R.id.img), R.mipmap.upload,R.mipmap.upload);
         helper.addOnClickListener(R.id.img);
-
+        helper.addOnClickListener(R.id.ll_delete);
+        if ("add".equals(item)){
+            helper.setGone(R.id.ll_delete,false);
+        }else{
+            helper.setGone(R.id.ll_delete,true);
+        }
     }
 }

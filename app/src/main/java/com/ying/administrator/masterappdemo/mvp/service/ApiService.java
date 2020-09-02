@@ -1199,14 +1199,10 @@ public interface ApiService {
 
     /**
      * 开始返件
-     * @param AccessoryId
      * @return
      */
-    @FormUrlEncoded
-    @POST("Master/AppOrder/ConfirmReturn")
-    Observable<ConfirmReturnResult> ConfirmReturn(@Field("AccessoryId") String AccessoryId,
-                                                  @Field("ReturnExpressNo") String ReturnExpressNo,
-                                                  @Field("PostMoney") String PostMoney);
+    @POST("OrderNew/ConfirmReturn")
+    Observable<ConfirmReturnResult> ConfirmReturn(@Body RequestBody json);
 
     /**
      * 签到

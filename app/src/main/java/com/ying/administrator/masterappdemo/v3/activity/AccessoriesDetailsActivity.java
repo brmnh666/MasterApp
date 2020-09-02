@@ -1,11 +1,15 @@
 package com.ying.administrator.masterappdemo.v3.activity;
 
+import android.Manifest;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -13,6 +17,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +34,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.dmcbig.mediapicker.PickerActivity;
+import com.dmcbig.mediapicker.PickerConfig;
+import com.dmcbig.mediapicker.PreviewActivity;
+import com.dmcbig.mediapicker.entity.Media;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.vondear.rxui.view.dialog.RxDialogScaleView;
 import com.ying.administrator.masterappdemo.R;
@@ -37,7 +46,10 @@ import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.entity.accessoryDataBean;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.ScanActivity;
+import com.ying.administrator.masterappdemo.mvp.ui.adapter.PicAdapter;
 import com.ying.administrator.masterappdemo.util.MyUtils;
+import com.ying.administrator.masterappdemo.util.imageutil.FileSizeUtil;
+import com.ying.administrator.masterappdemo.util.imageutil.ImageCompress;
 import com.ying.administrator.masterappdemo.v3.adapter.AccessoriesPictureAdapter;
 import com.ying.administrator.masterappdemo.v3.adapter.V4_AccessoriesAdapter;
 import com.ying.administrator.masterappdemo.v3.bean.ConfirmReceiptResult;
@@ -53,16 +65,21 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.iwf.photopicker.PhotoPreview;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 import static com.ying.administrator.masterappdemo.util.MyUtils.showToast;
 
 public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsPresenter, AccessoriesDetailsModel> implements View.OnClickListener, AccessoriesDetailsContract.View {
+    private static final String TAG = "AccessoriesDetailsActiv";
     @BindView(R.id.iv_back)
     ImageView mIvBack;
     @BindView(R.id.tv_title)
@@ -145,6 +162,15 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
     private AlertDialog push_dialog;
     private String expressno;
     private String post_money;
+    private ArrayList<String> permissions;
+    private int size;
+    private RecyclerView rv_icons;
+    private ArrayList<String> piclist = new ArrayList<>();
+    private ArrayList<String> selectpiclist = new ArrayList<>();
+    private ArrayList<Media> select = new ArrayList<>();
+    private PicAdapter picAdapter;
+    private String targetPath;
+    private String compressImage;
 
     @Override
     protected int setLayoutId() {
@@ -395,6 +421,44 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
         et_expressno = puchsh_view.findViewById(R.id.et_expressno);
         et_post_money = puchsh_view.findViewById(R.id.et_post_money);
         ll_post_money = puchsh_view.findViewById(R.id.ll_post_money);
+        rv_icons = puchsh_view.findViewById(R.id.rv_icons);
+        piclist.clear();
+        selectpiclist.clear();
+        select.clear();
+        piclist.add("add");
+        picAdapter = new PicAdapter(R.layout.item_picture, piclist);
+        rv_icons.setLayoutManager(new GridLayoutManager(mActivity, 5));
+        rv_icons.setAdapter(picAdapter);
+        picAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                switch (view.getId()) {
+                    case R.id.img:
+                        if ("add".equals(adapter.getItem(position))) {
+                            if (requestPermissions()) {
+                                goImage();
+                            } else {
+                                requestPermissions(permissions.toArray(new String[permissions.size()]), 10001);
+                            }
+                        } else {
+                            goPreviewActivity();
+                        }
+                        break;
+                    case R.id.ll_delete:
+                        select.remove(position);
+                        ArrayList<String> list = new ArrayList<>();
+                        Log.i("select", "select.size" + select.size());
+                        for (Media media : select) {
+                            list.add(media.path);
+                            Log.i("media", media.path);
+                            Log.e("media", "s:" + media.size);
+                        }
+                        loadAdpater(list);
+                        break;
+                }
+            }
+        });
         ll_scan = puchsh_view.findViewById(R.id.ll_scan);
         tv_remind = puchsh_view.findViewById(R.id.tv_remind);
         tv_remind.setText(Html.fromHtml(mActivity.getResources().getString(R.string.gray_white, "为避免产生不必要的纠纷，请在返件的快递单中填写所完成的", "工单号、用户姓名及电话号码", "，并在下面的输入框中填写正确的快递单号")));
@@ -445,18 +509,64 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
                         hideProgress();
                         return;
                     } else {
-                        mPresenter.ConfirmReturn(data.getAccessoryID() + "", expressno, post_money);
+                        reqReturn();
                     }
                 } else {
                     post_money = "0";
-                    mPresenter.ConfirmReturn(data.getAccessoryID() + "", expressno, post_money);
+                    reqReturn();
                 }
-
-
             }
         });
     }
+    //开始返件
+    public void reqReturn() {
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        for (int i = 0; i < selectpiclist.size(); i++) {
+            File img=new File(selectpiclist.get(i));
+            builder.addFormDataPart("img"+i, img.getName(), RequestBody.create(MediaType.parse("img/png"), img));
+        }
+        builder.addFormDataPart("AccessoryID", Integer.toString(data.getAccessoryID()));
+        builder.addFormDataPart("ReturnExpressNo", expressno);
+        builder.addFormDataPart("PostMoney", post_money);
+        MultipartBody requestBody = builder.build();
+        mPresenter.ConfirmReturn(requestBody);
 
+    }
+
+    private void loadAdpater(ArrayList<String> paths) {
+        piclist.clear();
+        piclist.addAll(paths);
+        selectpiclist.clear();
+        for (int i = 0; i < paths.size(); i++) {
+            targetPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy/" + System.currentTimeMillis() + ".jpg";
+            compressImage = ImageCompress.compressImage(paths.get(i), targetPath, 80);
+            Log.i(TAG, "原大小"+FileSizeUtil.getFileOrFilesSize(paths.get(i),FileSizeUtil.SIZETYPE_MB)+"Mb");
+            Log.i(TAG, "压缩后大小"+FileSizeUtil.getFileOrFilesSize(compressImage,FileSizeUtil.SIZETYPE_MB)+"Mb");
+            selectpiclist.add(compressImage);
+        }
+        if (piclist.size() != 5) {
+            piclist.add("add");
+        }
+        System.out.println(selectpiclist);
+        picAdapter.setNewData(piclist);
+    }
+
+    void goImage() {
+        Intent intent = new Intent(mActivity, PickerActivity.class);
+        intent.putExtra(PickerConfig.SELECT_MODE, PickerConfig.PICKER_IMAGE);//default image and video (Optional)
+        long maxSize = 188743680L;//long long long
+        intent.putExtra(PickerConfig.MAX_SELECT_SIZE, maxSize); //default 180MB (Optional)
+        intent.putExtra(PickerConfig.MAX_SELECT_COUNT, 5 - piclist.size() + 1);  //default 40 (Optional)
+//        intent.putExtra(PickerConfig.DEFAULT_SELECTED_LIST,select); // (Optional)
+        startActivityForResult(intent, 200);
+    }
+
+    void goPreviewActivity() {
+        Intent intent = new Intent(mActivity, PreviewActivity.class);
+        intent.putExtra(PickerConfig.PRE_RAW_LIST, select);//default image and video (Optional)
+        intent.putExtra(PickerConfig.MAX_SELECT_COUNT, select.size());//default image and video (Optional)
+        startActivityForResult(intent, 300);
+    }
     /**
      * 弹出Popupwindow,选择厂家寄件还是自购件
      */
@@ -589,11 +699,11 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
                 if (baseResult.getData().getCode() == 0) {
                     showToast(mActivity, "操作成功");
                     EventBus.getDefault().post(21);
+                    push_dialog.dismiss();
                 } else {
                     showToast(mActivity, baseResult.getData().getMsg());
                 }
                 hideProgress();
-                push_dialog.dismiss();
                 break;
         }
     }
@@ -613,6 +723,107 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
                 .asBitmap()
                 .load(url)
                 .into(simpleTarget);
+    }
+
+    //请求权限
+    private boolean requestPermissions() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            permissions = new ArrayList<>();
+            if (mActivity.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+            }
+            if (mActivity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            }
+            if (mActivity.checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                permissions.add(Manifest.permission.CAMERA);
+            }
+            if (permissions.size() == 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    //申请相关权限:返回监听
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        size = 0;
+        for (int i = 0; i < grantResults.length; i++) {
+            if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                size++;
+            }
+        }
+        switch (requestCode) {
+            case 10001:
+                if (size == grantResults.length) {//允许
+                    goImage();
+                } else {//拒绝
+                    toSetting();
+                }
+                break;
+            default:
+                break;
+
+        }
+    }
+    //设置权限
+    private void toSetting() {
+
+        new AlertDialog.Builder(this).setTitle("相机和存储权限未授权")
+                .setMessage("是否前往设置权限？")
+                //  取消选项
+                .setNegativeButton("取消",new DialogInterface.OnClickListener(){
+
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                //  确认选项
+                .setPositiveButton("设置", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //跳转到手机原生设置页面
+                        MyUtils.toSelfSetting(mActivity);
+                    }
+                })
+                .setCancelable(false)
+                .show();
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        File file = null;
+        if (requestCode == 200 && resultCode == PickerConfig.RESULT_CODE) {
+            select.addAll((ArrayList) data.getParcelableArrayListExtra(PickerConfig.EXTRA_RESULT));
+            ArrayList<String> list = new ArrayList<>();
+            Log.i("select", "select.size" + select.size());
+            for (Media media : select) {
+                list.add(media.path);
+                Log.i("media", media.path);
+                Log.e("media", "s:" + media.size);
+            }
+            loadAdpater(list);
+        }
+        if (requestCode == 300) {
+            select = data.getParcelableArrayListExtra(PickerConfig.EXTRA_RESULT);
+            ArrayList<String> list = new ArrayList<>();
+            Log.i("select", "select.size" + select.size());
+            for (Media media : select) {
+                list.add(media.path);
+                Log.i("media", media.path);
+                Log.e("media", "s:" + media.size);
+            }
+            loadAdpater(list);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

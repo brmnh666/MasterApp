@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -348,6 +349,20 @@ public class MyUtils {
         ToastUtils.setMsgColor(Color.WHITE);
         ToastUtils.setGravity(Gravity.CENTER,0,0);
         ToastUtils.showShort(text);
+    }
+    //应用权限设置
+    public static void toSelfSetting(Context context) {
+        Intent mIntent = new Intent();
+        mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (Build.VERSION.SDK_INT >= 9) {
+            mIntent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
+            mIntent.setData(Uri.fromParts("package", context.getPackageName(), null));
+        } else if (Build.VERSION.SDK_INT <= 8) {
+            mIntent.setAction(Intent.ACTION_VIEW);
+            mIntent.setClassName("com.android.settings", "com.android.setting.InstalledAppDetails");
+            mIntent.putExtra("com.android.settings.ApplicationPkgName", context.getPackageName());
+        }
+        context.startActivity(mIntent);
     }
     public static String md5(String string) {
         if (TextUtils.isEmpty(string)) {

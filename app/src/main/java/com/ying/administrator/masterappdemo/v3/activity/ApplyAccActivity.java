@@ -447,6 +447,7 @@ public class ApplyAccActivity extends BaseActivity<ApplyAccPresenter, ApplyAccMo
                     goImage();
                 } else {//拒绝
                     MyUtils.showToast(mActivity, "相关权限未开启");
+                    MyUtils.toSelfSetting(mActivity);
                 }
                 break;
             default:

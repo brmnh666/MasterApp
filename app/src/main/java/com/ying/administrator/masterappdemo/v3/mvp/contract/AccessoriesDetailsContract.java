@@ -21,7 +21,7 @@ public interface AccessoriesDetailsContract {
         Observable<UpdateAccessoryResult> UpdateAccessory(RequestBody json);
 
         Observable<ConfirmReceiptResult> ConfirmReceipt(String AccessoryID);
-        Observable<ConfirmReturnResult> ConfirmReturn(String AccessoryID,String ReturnExpressNo,String PostMoney);
+        Observable<ConfirmReturnResult> ConfirmReturn(RequestBody json);
     }
 
     interface View extends BaseView{
@@ -41,6 +41,6 @@ public interface AccessoriesDetailsContract {
         public abstract void UpdateAccessory(RequestBody json);
 
         public abstract void ConfirmReceipt(String AccessoryID);
-        public abstract void ConfirmReturn(String AccessoryID,String ReturnExpressNo,String PostMoney);
+        public abstract void ConfirmReturn(RequestBody json);
     }
 }

@@ -548,6 +548,7 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
                     showPopupWindow(101, 102);
                 } else {//拒绝
                     MyUtils.showToast(mActivity, "相关权限未开启");
+                    MyUtils.toSelfSetting(mActivity);
                 }
                 break;
             case 10002:
@@ -555,6 +556,7 @@ public class Personal_Information_Activity extends BaseActivity<InfoManagePresen
                     showPopupWindow(201, 202);
                 } else {//拒绝
                     MyUtils.showToast(mActivity, "相关权限未开启");
+                    MyUtils.toSelfSetting(mActivity);
                 }
                 break;
 

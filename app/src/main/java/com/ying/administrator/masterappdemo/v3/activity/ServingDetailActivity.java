@@ -22,12 +22,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -246,10 +248,9 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
     private View customdialog_home_view;
     private AlertDialog customdialog_home_dialog;
     private String codeValue;
-    private Button btn_reason1;
-    private Button btn_reason2;
-    private Button btn_reason3;
-    private Button btn_reason4;
+    private Spinner mSpinnerObject;
+    private boolean hurry=true;
+    private LinearLayout ll_close;
 
     @Override
     protected int setLayoutId() {
@@ -697,14 +698,35 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
         et_message = Cancelview.findViewById(R.id.et_message);
         negtive = Cancelview.findViewById(R.id.negtive);
         positive = Cancelview.findViewById(R.id.positive);
-        btn_reason1 = Cancelview.findViewById(R.id.btn_reason1);
-        btn_reason2 = Cancelview.findViewById(R.id.btn_reason2);
-        btn_reason3 = Cancelview.findViewById(R.id.btn_reason3);
-        btn_reason4 = Cancelview.findViewById(R.id.btn_reason4);
-        setReason(btn_reason1);
-        setReason(btn_reason2);
-        setReason(btn_reason3);
-        setReason(btn_reason4);
+
+        mSpinnerObject = Cancelview.findViewById(R.id.spinner_object);
+
+        mSpinnerObject.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                switch (pos) {
+                    case 0:
+                        et_message.setText("");
+                        break;
+                    case 1:
+                        et_message.setText("用户电话无法接通");
+                        break;
+                    case 2:
+                        et_message.setText("用户不需要安装/维修");
+                        break;
+                    case 3:
+                        et_message.setText("机器正常无需维修");
+                        break;
+                    case 4:
+                        et_message.setText("用户退机");
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
         title = Cancelview.findViewById(R.id.title);
         title.setText("是否拒接工单");
         et_message.setHint("请输入拒接工单理由");
@@ -772,6 +794,37 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
         } else {
             reservation_again();
         }
+    }
+    //是否立即预约
+    private void hurry() {
+        hurry=false;
+        under_review = LayoutInflater.from(mActivity).inflate(R.layout.v3_dialog_hurry, null);
+        TextView tv_cancel = under_review.findViewById(R.id.tv_cancel);
+        TextView tv_reservation = under_review.findViewById(R.id.tv_reservation);
+        ll_close = under_review.findViewById(R.id.ll_close);
+        ll_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                underReviewDialog.dismiss();
+            }
+        });
+        tv_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                underReviewDialog.dismiss();
+            }
+        });
+
+        tv_reservation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                underReviewDialog.dismiss();
+                mPresenter.OrderIsCall(orderId, "Y");
+                call("tel:" + data.getPhone());
+            }
+        });
+        underReviewDialog = new AlertDialog.Builder(mActivity).setView(under_review).create();
+        underReviewDialog.show();
     }
 
     /**
@@ -1088,6 +1141,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                     Location();
                 } else {//拒绝
                     showToast(mActivity, "相关权限未开启");
+                    MyUtils.toSelfSetting(mActivity);
                 }
                 break;
             default:
@@ -1195,6 +1249,9 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                     }
 
                     if ("2".equals(data.getState())) {//待预约
+                        if (hurry){
+                            hurry();
+                        }
                         mLlReservation.setVisibility(View.VISIBLE);//预约成功按钮
                         mLlApplyForRemoteFee.setVisibility(View.VISIBLE);//远程费
                         mPresenter.GetUserInfoList(userId, "1");
@@ -1364,6 +1421,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
         switch (baseResult.getStatusCode()) {
             case 200:
                 if (baseResult.getData().isItem1()) {
+                    reservation();
                     mPresenter.GetOrderInfo(orderId);
                 }
                 break;
@@ -1431,7 +1489,8 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                     } else {
                         Toast.makeText(mActivity, "已拒绝接单", LENGTH_SHORT).show();
                         EventBus.getDefault().post(0);
-                        EventBus.getDefault().post(22);//待预约列表
+                        EventBus.getDefault().post(22);//子选项卡数量
+                        EventBus.getDefault().post(20);//父选项卡数量
                         finish();
                     }
                 } else {

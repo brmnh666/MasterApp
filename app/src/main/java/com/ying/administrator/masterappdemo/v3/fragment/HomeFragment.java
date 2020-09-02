@@ -14,10 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -93,10 +95,8 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
     private TextView title;
     private AlertDialog cancelDialog;
     private boolean yn=true; //true 接单 false 拒接
-    private Button btn_reason1;
-    private Button btn_reason2;
-    private Button btn_reason3;
-    private Button btn_reason4;
+    private Spinner mSpinnerObject;
+    private String orderid;
 
     public static HomeFragment newInstance(String param1) {
         HomeFragment fragment = new HomeFragment();
@@ -134,6 +134,7 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
                 switch (view.getId()) {
                     case R.id.tv_orders://接单
                         yn=true;
+                        orderid =list.get(position).getOrderID();
                         orders(position);
                         break;
                     case R.id.tv_cancel://拒接
@@ -243,15 +244,34 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
         et_message = Cancelview.findViewById(R.id.et_message);
         negtive = Cancelview.findViewById(R.id.negtive);
         positive = Cancelview.findViewById(R.id.positive);
-        btn_reason1 = Cancelview.findViewById(R.id.btn_reason1);
-        btn_reason2 = Cancelview.findViewById(R.id.btn_reason2);
-        btn_reason3 = Cancelview.findViewById(R.id.btn_reason3);
-        btn_reason4 = Cancelview.findViewById(R.id.btn_reason4);
-        setReason(btn_reason1);
-        setReason(btn_reason2);
-        setReason(btn_reason3);
-        setReason(btn_reason4);
+        mSpinnerObject = Cancelview.findViewById(R.id.spinner_object);
 
+        mSpinnerObject.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                switch (pos) {
+                    case 0:
+                        et_message.setText("");
+                        break;
+                    case 1:
+                        et_message.setText("用户电话无法接通");
+                        break;
+                    case 2:
+                        et_message.setText("用户不需要安装/维修");
+                        break;
+                    case 3:
+                        et_message.setText("机器正常无需维修");
+                        break;
+                    case 4:
+                        et_message.setText("用户退机");
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
         title = Cancelview.findViewById(R.id.title);
         title.setText("是否拒接工单");
         negtive.setOnClickListener(new View.OnClickListener() {
@@ -403,7 +423,12 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
                     if (yn){
                         Toast.makeText(getActivity(), "接单成功", LENGTH_SHORT).show();
                         EventBus.getDefault().post(1);
+                        EventBus.getDefault().post(2);
                         EventBus.getDefault().post(10);
+                        Intent intent = new Intent(mActivity, ServingDetailActivity.class);
+                        intent.putExtra("codeValue", codeList.getCodeValue());//保外单需收的费用
+                        intent.putExtra("id", orderid);
+                        startActivity(intent);
                     }else{
                         Toast.makeText(getActivity(), "已拒绝接单", LENGTH_SHORT).show();
                         EventBus.getDefault().post(0);

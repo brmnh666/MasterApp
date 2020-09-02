@@ -23,54 +23,54 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_dialog"
-        android:orientation="vertical">
-        <Button
-            android:id="@+id/btn_reason1"
+        android:layout_marginTop="1dp"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:paddingLeft="12dp"
+        android:paddingTop="7dp"
+        android:paddingBottom="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginRight="@dimen/dp_10"
+            android:text="拒接理由"
+            android:textColor="#333333"
+            android:textColorHint="#333333"
+            android:textSize="15sp" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/dp_10"
-            android:gravity="center_vertical"
-            android:background="@null"
-            android:text="1.用户电话无法接通"/>
-        <Button
-            android:id="@+id/btn_reason2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/dp_10"
-            android:gravity="center_vertical"
-            android:background="@null"
-            android:text="2.用户不需要安装/维修"/>
-        <Button
-            android:id="@+id/btn_reason3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/dp_10"
-            android:gravity="center_vertical"
-            android:background="@null"
-            android:text="3.机器正常无需维修"/>
-        <Button
-            android:id="@+id/btn_reason4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/dp_10"
-            android:gravity="center_vertical"
-            android:background="@null"
-            android:text="4.用户退机"/>
+            android:layout_marginRight="@dimen/dp_10"
+            android:background="@drawable/gray_shape2">
+
+            <Spinner
+                android:id="@+id/spinner_object"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:entries="@array/reason"
+                android:gravity="center"
+                android:spinnerMode="dropdown"
+                android:textSize="15sp"/>
+        </LinearLayout>
     </LinearLayout>
 
     <EditText
         android:id="@+id/et_message"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="top"
         android:lineSpacingExtra="3dp"
         android:lineSpacingMultiplier="1.2"
-        android:background="@drawable/gray_shape"
+        android:background="@drawable/gray_shape2"
         android:textSize="14sp"
         android:textColor="@color/black"
         android:hint="若要拒接工单，请输入理由"
+        android:paddingTop="10dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"/>
 

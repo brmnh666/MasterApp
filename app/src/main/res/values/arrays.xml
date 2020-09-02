@@ -11,5 +11,11 @@
         <item>手机号</item>
         <item>工号</item>
     </string-array>
-
+    <string-array name="reason">
+        <item>请选择</item>
+        <item>1.用户电话无法接通</item>
+        <item>2.用户不需要安装/维修</item>
+        <item>3.机器正常无需维修</item>
+        <item>4.用户退机</item>
+    </string-array>
 </resources>

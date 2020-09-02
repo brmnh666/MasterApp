@@ -285,6 +285,7 @@ public class ComplaintActivity extends BaseActivity<ComplaintPresenter, Complain
                     showPopupWindow(101, 102);
                 } else {//拒绝
                     MyUtils.showToast(mActivity, "相关权限未开启");
+                    MyUtils.toSelfSetting(mActivity);
                 }
                 break;
             case 10002:
@@ -292,6 +293,7 @@ public class ComplaintActivity extends BaseActivity<ComplaintPresenter, Complain
                     showPopupWindow(201, 202);
                 } else {//拒绝
                     MyUtils.showToast(mActivity, "相关权限未开启");
+                    MyUtils.toSelfSetting(mActivity);
                 }
                 break;
             case 10003:
@@ -299,6 +301,7 @@ public class ComplaintActivity extends BaseActivity<ComplaintPresenter, Complain
                     showPopupWindow(301, 302);
                 } else {//拒绝
                     MyUtils.showToast(mActivity, "相关权限未开启");
+                    MyUtils.toSelfSetting(mActivity);
                 }
                 break;
             default:

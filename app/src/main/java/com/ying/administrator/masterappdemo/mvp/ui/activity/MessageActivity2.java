@@ -162,6 +162,18 @@ public class MessageActivity2 extends BaseActivity<MessagePresenter, MessageMode
                         } else {
                             goPreviewActivity();
                         }
+                        break;
+                    case R.id.ll_delete:
+                        select.remove(position);
+                        ArrayList<String> list = new ArrayList<>();
+                        Log.i("select", "select.size" + select.size());
+                        for (Media media : select) {
+                            list.add(media.path);
+                            Log.i("media", media.path);
+                            Log.e("media", "s:" + media.size);
+                        }
+                        loadAdpater(list);
+                        break;
                 }
             }
         });
@@ -171,7 +183,6 @@ public class MessageActivity2 extends BaseActivity<MessagePresenter, MessageMode
         piclist.clear();
         piclist.addAll(paths);
         selectpiclist.clear();
-//        selectpiclist.addAll(paths);
         for (int i = 0; i < paths.size(); i++) {
             selectpiclist.add(ImageCompress.compressImage(paths.get(i), Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy/" + System.currentTimeMillis() + ".jpg", 80));
         }
@@ -377,6 +388,7 @@ public class MessageActivity2 extends BaseActivity<MessagePresenter, MessageMode
                     goImage();
                 } else {//拒绝
                     MyUtils.showToast(mActivity, "相关权限未开启");
+                    MyUtils.toSelfSetting(mActivity);
                 }
                 break;
             default:

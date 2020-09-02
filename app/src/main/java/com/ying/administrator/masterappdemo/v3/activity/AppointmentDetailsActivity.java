@@ -829,6 +829,7 @@ public class AppointmentDetailsActivity extends BaseActivity<AppointmentDetailsP
                     Location();
                 } else {//拒绝
                     MyUtils.showToast(mActivity, "相关权限未开启");
+                    MyUtils.toSelfSetting(mActivity);
                 }
                 break;
             default:

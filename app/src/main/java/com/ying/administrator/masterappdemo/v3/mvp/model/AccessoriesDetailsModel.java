@@ -44,8 +44,8 @@ public class AccessoriesDetailsModel implements AccessoriesDetailsContract.Model
     }
 
     @Override
-    public Observable<ConfirmReturnResult> ConfirmReturn(String AccessoryID,String ReturnExpressNo,String PostMoney) {
-        return ApiRetrofit.getDefault().ConfirmReturn(AccessoryID,ReturnExpressNo,PostMoney)
+    public Observable<ConfirmReturnResult> ConfirmReturn(RequestBody json) {
+        return ApiRetrofit.getDefault().ConfirmReturn(json)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

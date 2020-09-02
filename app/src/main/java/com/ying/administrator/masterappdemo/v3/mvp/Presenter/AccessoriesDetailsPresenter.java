@@ -58,8 +58,8 @@ public class AccessoriesDetailsPresenter extends AccessoriesDetailsContract.Pres
     }
 
     @Override
-    public void ConfirmReturn(String AccessoryID,String ReturnExpressNo,String PostMoney) {
-        mModel.ConfirmReturn(AccessoryID,ReturnExpressNo,PostMoney)
+    public void ConfirmReturn(RequestBody json) {
+        mModel.ConfirmReturn(json)
                 .subscribe(new BaseObserver2<ConfirmReturnResult>() {
                     @Override
                     protected void onHandleSuccess(ConfirmReturnResult value) {
