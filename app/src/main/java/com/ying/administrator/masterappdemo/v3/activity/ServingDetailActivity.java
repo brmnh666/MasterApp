@@ -251,6 +251,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
     private Spinner mSpinnerObject;
     private boolean hurry=true;
     private LinearLayout ll_close;
+    private WorkOrder.OrderProductModelsBean orderProductModelsBean;
 
     @Override
     protected int setLayoutId() {
@@ -475,12 +476,20 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
 
     //复制
     private void copy() {
+        String prod="";
+        for (int i = 0; i < data.getOrderProductModels().size(); i++) {
+            orderProductModelsBean = data.getOrderProductModels().get(i);
+            prod+= orderProductModelsBean.getBrandName()+" "+orderProductModelsBean.getProductType()+"-"+orderProductModelsBean.getSubCategoryName()+"*"+orderProductModelsBean.getNum()+",";
+        }
+        if (prod.contains(",")){
+            prod = prod.substring(0, prod.lastIndexOf(","));
+        }
         myClip = ClipData.newPlainText("", "下单厂家：" + data.getInvoiceName() + "\n"
                 + "工单号：" + data.getOrderID() + "\n"
                 + "下单时间：" + data.getCreateDate() + "\n"
                 + "用户信息：" + data.getUserName() + " " + data.getPhone() + "\n"
                 + "用户地址：" + data.getAddress() + "\n"
-                + "产品信息：" + data.getProductType() + "\n"
+                + "产品信息：" + prod + "\n"
                 + "售后类型：" + data.getGuaranteeText() + "\n"
                 + "服务类型：" + data.getTypeName()
         );

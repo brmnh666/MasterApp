@@ -288,6 +288,7 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
                 if (message == null || "".equals(message)) {
                     ToastUtils.showShort("请输入拒接工单理由");
                 } else {
+                    showProgress();
                     mPresenter.UpdateSendOrderState(list.get(position).getOrderID(), "-1", message);
                     cancelDialog.dismiss();
                 }
