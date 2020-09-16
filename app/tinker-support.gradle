@@ -37,7 +37,8 @@ def bakPath = file("${buildDir}/bakApk/")
 /**
  * 此处填写每次构建生成的基准包目录
  */
-def baseApkDir = "app-0825-11-15-38"
+def baseApkDir = "app-0901-18-00-43"
+//def baseApkDir = "app-0908-09-53-25"
 
 /**
  * 对于插件各参数的详细解析请参考
@@ -80,7 +81,7 @@ tinkerSupport {
 
     // 是否支持新增非export的Activity（注意：设置为true才能修改AndroidManifest文件）
     supportHotplugComponent = true
-
+    ignoreWarning = true
 }
 
 /**
@@ -90,7 +91,7 @@ tinkerSupport {
  */
 tinkerPatch {
     //oldApk ="${bakPath}/${appName}/app-release.apk"
-    ignoreWarning = false
+    ignoreWarning = true
     useSign = true
     dex {
         dexMode = "jar"

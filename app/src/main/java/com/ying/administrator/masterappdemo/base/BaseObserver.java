@@ -41,6 +41,7 @@ public abstract class BaseObserver<T> implements Observer<BaseResult<T>> {
 
     @Override
     public void onError(Throwable e) {
+        Log.e(TAG, "error:" + this.toString());
         Log.e(TAG, "error:" + e.toString());
         if (!NetworkUtils.isConnected()) {
             errMsg = "网络连接出错";
@@ -72,6 +73,7 @@ public abstract class BaseObserver<T> implements Observer<BaseResult<T>> {
 
     protected void onHandleError(String msg) {
         ToastUtils.showShort(msg);
+        Log.d(TAG, "error"+msg);
     }
 }
 

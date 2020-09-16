@@ -317,6 +317,9 @@ public abstract class BaseLazyFragment<P extends BasePresenter, M extends BaseMo
 
     @Override
     public void showProgress() {
+        if (mActivity==null){
+            return;
+        }
         dialog =new ZLoadingDialog(mActivity);
         dialog.setLoadingBuilder(Z_TYPE.ROTATE_CIRCLE)//设置类型
                 .setLoadingColor(Color.BLACK)//颜色

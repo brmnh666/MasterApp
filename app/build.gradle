@@ -252,8 +252,8 @@ dependencies {
 
     //其中latest.release指代最新版本号，也可以指定明确的版本号，例如2.2.0
 
-    //扫描条形码
-    implementation 'com.journeyapps:zxing-android-embedded:3.5.0'
+//    //扫描条形码
+//    implementation 'com.journeyapps:zxing-android-embedded:3.5.0'
 
     //通信
     implementation 'org.greenrobot:eventbus:3.0.0'
@@ -320,6 +320,8 @@ dependencies {
 
     implementation 'cn.jiguang.sdk:jpush:3.5.6'  // 此处以JPush 3.5.6 版本为例。
     implementation 'cn.jiguang.sdk:jcore:2.2.8'  // 此处以JCore 2.2.8 版本为例。
+    /*扫描*/
+    implementation 'com.github.yuzhiqiang1993:zxing:2.0.0'
 
 
 }

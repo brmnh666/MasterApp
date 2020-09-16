@@ -17,10 +17,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.google.gson.Gson;
@@ -86,6 +88,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
     private String displayName;
     private List<Phone> list = new ArrayList<>();
     private String time = "1";
+    private long mExittime;
 
     @Override
     protected int setLayoutId() {
@@ -503,5 +506,30 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
             }
         }
 
+    }
+        @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        /*  两秒之内再按一下退出*/
+        //判断用户是否点击了返回键
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            //与上次点击返回键作差
+            if ((System.currentTimeMillis() - mExittime) > 2000) {
+                //大于2秒认为是误操作
+                Toast.makeText(this, "再按一次返回桌面", Toast.LENGTH_SHORT).show();
+                //并记录记录下本次点击返回键的时刻
+                mExittime = System.currentTimeMillis();
+            } else {
+                //小于2秒 则用户希望退出
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+            return true;
+
+        }
+
+        return super.onKeyDown(keyCode, event);
     }
 }

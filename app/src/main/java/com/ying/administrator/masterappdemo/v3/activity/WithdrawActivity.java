@@ -1,14 +1,14 @@
 package com.ying.administrator.masterappdemo.v3.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.SPUtils;
@@ -30,7 +30,6 @@ import com.ying.administrator.masterappdemo.mvp.ui.activity.VerifiedPhotoActivit
 import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.util.SingleClick;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
-import com.ying.administrator.masterappdemo.widget.TradeTextWatcher;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -66,44 +65,22 @@ public class WithdrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
     LinearLayout mLlBankCard;
     @BindView(R.id.et_withdrawal_amount)
     EditText mEtWithdrawalAmount;
-    @BindView(R.id.tv_withdrawal_amount)
-    TextView mTvWithdrawalAmount;
     @BindView(R.id.tv_available_balance)
     TextView mTvAvailableBalance;
     @BindView(R.id.btn_confirm_withdrawal)
     Button mBtnConfirmWithdrawal;
-    @BindView(R.id.btn_price_1)
-    TextView mBtnPrice1;
-    @BindView(R.id.btn_price_2)
-    TextView mBtnPrice2;
-    @BindView(R.id.btn_price_3)
-    TextView mBtnPrice3;
-    @BindView(R.id.btn_price_4)
-    TextView mBtnPrice4;
-    @BindView(R.id.btn_price_5)
-    TextView mBtnPrice5;
-    @BindView(R.id.btn_price_6)
-    TextView mBtnPrice6;
-    @BindView(R.id.btn_price_7)
-    TextView mBtnPrice7;
-    @BindView(R.id.btn_price_8)
-    TextView mBtnPrice8;
-    @BindView(R.id.btn_price_9)
-    TextView mBtnPrice9;
-    @BindView(R.id.btn_price_point)
-    TextView mBtnPricePoint;
-    @BindView(R.id.btn_price_0)
-    TextView mBtnPrice0;
-    @BindView(R.id.ll_hide)
-    LinearLayout mLlHide;
-    @BindView(R.id.btn_price_del)
-    LinearLayout mBtnPriceDel;
-    @BindView(R.id.btn_price_shoukuan)
-    TextView mBtnPriceShoukuan;
-    @BindView(R.id.linearlayout)
-    LinearLayout mLinearlayout;
-    @BindView(R.id.rl_keyboard)
-    RelativeLayout mRlKeyboard;
+    @BindView(R.id.iv_bank)
+    ImageView mIvBank;
+    @BindView(R.id.ll_bank_choose)
+    LinearLayout mLlBankChoose;
+    @BindView(R.id.iv_alipay)
+    ImageView mIvAlipay;
+    @BindView(R.id.ll_alipay_choose)
+    LinearLayout mLlAlipayChoose;
+    @BindView(R.id.ll_alipay)
+    LinearLayout mLlAlipay;
+    @BindView(R.id.ll_bank_info)
+    LinearLayout mLlBankInfo;
     private String userId;
     private boolean ifTrue;
     private List<BankCard> brankList;
@@ -112,6 +89,7 @@ public class WithdrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
     private String bankNo;
     private String payName;
     private String endNum;
+    private int digits = 2;//两位小数
 
     @Override
     protected int setLayoutId() {
@@ -135,107 +113,117 @@ public class WithdrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
 
     @Override
     protected void setListener() {
+        mIvBank.setSelected(true);
+        mIvAlipay.setSelected(false);
+        mLlBankInfo.setVisibility(View.VISIBLE);
+        mLlAlipay.setVisibility(View.GONE);
+
         mIvBack.setOnClickListener(this);
-        mEtWithdrawalAmount.setEnabled(false);
-        mEtWithdrawalAmount.addTextChangedListener(new TradeTextWatcher(mEtWithdrawalAmount, null));
-        TextView[] mBtnkey_digits = new TextView[10];
-        for (int i = 0; i < 10; i++) {
-            String strid = String.format("btn_price_%d", i);
-            mBtnkey_digits[i] = (TextView) findViewById(this
-                    .getResources().getIdentifier(strid, "id",
-                            this.getPackageName()));
-            mBtnkey_digits[i].setOnClickListener(mClickListener);
-        }
-        mLlHide.setOnClickListener(mClickListener);
-        mBtnPricePoint.setOnClickListener(mClickListener);
-        mBtnPriceDel.setOnClickListener(mClickListener);
-        mBtnPriceShoukuan.setOnClickListener(this);
-
-
-        mEtWithdrawalAmount.setOnClickListener(this);
-        mTvWithdrawalAmount.setOnClickListener(this);
         mBtnConfirmWithdrawal.setOnClickListener(this);
         mLlBankCard.setOnClickListener(this);
+        mLlBankChoose.setOnClickListener(this);
+        mLlAlipayChoose.setOnClickListener(this);
         mLlBankCardOne.setOnClickListener(this);
+        mEtWithdrawalAmount.addTextChangedListener(new TextWatcher() {
+
+            private String str;
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                str = s.toString();
+                //只能输入一个小数点
+                if (str.contains(".")) {
+                    if (str.lastIndexOf(".") != str.indexOf(".")) {
+                        s = str.subSequence(0,
+                                str.lastIndexOf("."));
+                        mEtWithdrawalAmount.setText(s);
+                        mEtWithdrawalAmount.setSelection(s.length()); //光标移到最后
+                    }
+                }
+                //删除“.”后面超过2位后的数据
+                if (str.contains(".")) {
+                    if (s.length() - 1 - str.indexOf(".") > digits) {
+                        s = str.subSequence(0,
+                                str.indexOf(".") + digits + 1);
+                        mEtWithdrawalAmount.setText(s);
+                        mEtWithdrawalAmount.setSelection(s.length()); //光标移到最后
+                    }
+                }
+                //如果"."在起始位置,则起始位置自动补0
+                if (str.trim().equals(".")) {
+                    s = "0" + s;
+                    mEtWithdrawalAmount.setText(s);
+                    mEtWithdrawalAmount.setSelection(2);
+                }
+
+                //如果起始位置为0,且第二位跟的不是".",则无法后续输入
+                if (str.startsWith("0")
+                        && str.trim().length() > 1) {
+                    if (!str.substring(1, 2).equals(".")) {
+                        mEtWithdrawalAmount.setText(s.subSequence(0, 1));
+                        mEtWithdrawalAmount.setSelection(1);
+                        return;
+                    }
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
-    private View.OnClickListener mClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            int id = view.getId();
-            if (id == R.id.btn_price_1
-                    || id == R.id.btn_price_2
-                    || id == R.id.btn_price_3
-                    || id == R.id.btn_price_4
-                    || id == R.id.btn_price_5
-                    || id == R.id.btn_price_6
-                    || id == R.id.btn_price_7
-                    || id == R.id.btn_price_8
-                    || id == R.id.btn_price_9
-                    || id == R.id.btn_price_0) {
-                String input = ((TextView) view).getText().toString();
-                if (input == null) {
-                    mEtWithdrawalAmount.setText(input);
-                } else if (input != null) {
-                    String strTmp = mEtWithdrawalAmount.getText().toString();
-                    strTmp += input;
-                    mEtWithdrawalAmount.setText(strTmp);
-                }
-                mEtWithdrawalAmount.setTextSize(30);
-                mEtWithdrawalAmount.setTextColor(Color.BLACK);
-            } else if (id == R.id.btn_price_point)//点
-            {
-                String inputa = ((TextView) view).getText().toString();
-                if (inputa == null) {
-                    mEtWithdrawalAmount.setText(inputa);
-                } else if (inputa != null) {
-                    String strTmp = mEtWithdrawalAmount.getText().toString();
-                    strTmp += inputa;
-                    mEtWithdrawalAmount.setText(strTmp);
-                }
-                mEtWithdrawalAmount.setTextSize(30);
-                mEtWithdrawalAmount.setTextColor(Color.BLACK);
-            } else if (id == R.id.btn_price_del) {//清除
-                if (mEtWithdrawalAmount.getText().length() > 0) {
-                    String strTmp = mEtWithdrawalAmount.getText().toString();
-                    strTmp = strTmp.substring(0, strTmp.length() - 1);
-                    mEtWithdrawalAmount.setText(strTmp);
-                } else {
-                    mEtWithdrawalAmount.setText("");
-                }
-                mEtWithdrawalAmount.setTextSize(30);
-                mEtWithdrawalAmount.setTextColor(Color.BLACK);
-            } else if (id == R.id.ll_hide) {
-                mRlKeyboard.setVisibility(View.GONE);
-            }
-        }
-    };
     @SingleClick
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.iv_back:
                 finish();
                 break;
-            case R.id.et_withdrawal_amount:
+            case R.id.ll_bank_choose:
+                mIvBank.setSelected(true);
+                mIvAlipay.setSelected(false);
+                mLlBankInfo.setVisibility(View.VISIBLE);
+                mLlAlipay.setVisibility(View.GONE);
+                break;
+            case R.id.ll_alipay_choose:
+                mIvBank.setSelected(false);
+                mIvAlipay.setSelected(true);
+                mLlBankInfo.setVisibility(View.GONE);
+                mLlAlipay.setVisibility(View.VISIBLE);
                 break;
             case R.id.btn_confirm_withdrawal:
-            case R.id.btn_price_shoukuan:
-                money= mEtWithdrawalAmount.getText().toString();
+                money = mEtWithdrawalAmount.getText().toString();
                 if (ifTrue == true) {
-                    if ("0".equals(money)){
-                        MyUtils.showToast(mActivity,"提现金额必须大于0");
+                    if (mIvBank.isSelected()){
+                        if (bankNo == null || "".equals(bankNo)) {
+                            MyUtils.showToast(mActivity, "请选择银行卡");
+                            return;
+                        }
+                    }else{
+
                     }
-                    if (bankNo==null||"".equals(bankNo)){
-                        MyUtils.showToast(mActivity,"请选择银行卡");
-                    } else if (money==null||"".equals(money)) {
-                        MyUtils.showToast(mActivity,"请输入提现金额");
-                    }else if (Double.parseDouble(money)>Double.parseDouble(withDrawMoney.getKtx())){
-                        MyUtils.showToast(mActivity,"超出可提现金额");
-                    } else {
-                        mPresenter.WithDraw(money, bankNo, userId, payName);
+                    if ("0".equals(money)) {
+                        MyUtils.showToast(mActivity, "提现金额必须大于0");
+                        return;
                     }
-                }else {
+                    if (money == null || "".equals(money)) {
+                        MyUtils.showToast(mActivity, "请输入提现金额");
+                        return;
+                    }
+                    if (Double.parseDouble(money) > Double.parseDouble(withDrawMoney.getKtx())) {
+                        MyUtils.showToast(mActivity, "超出可提现金额");
+                        return;
+                    }
+                    mPresenter.WithDraw(money, bankNo, userId, payName);
+                } else {
                     final CommonDialog_Home dialog = new CommonDialog_Home(mActivity);
                     dialog.setMessage("您实名认证不完善，不能提现，是否去完善并提现")
                             //.setImageResId(R.mipmap.ic_launcher)
@@ -257,9 +245,6 @@ public class WithdrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
                     }).show();
                 }
                 break;
-            case R.id.tv_withdrawal_amount:
-                mRlKeyboard.setVisibility(View.VISIBLE);
-                break;
             case R.id.ll_bank_card_one:
             case R.id.ll_bank_card:
                 startActivityForResult(new Intent(mActivity, CardList_Activity.class), 2000);
@@ -277,13 +262,13 @@ public class WithdrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
 
     @Override
     public void GetDepositMoneyDisplay(BaseResult<WithDrawMoney> baseResult) {
-        switch (baseResult.getStatusCode()){
+        switch (baseResult.getStatusCode()) {
             case 200:
                 if (baseResult.getData() == null) {
                     return;
                 } else {
                     withDrawMoney = baseResult.getData();
-                    mTvAvailableBalance.setText("可提现余额"+withDrawMoney.getKtx()+"元");
+                    mTvAvailableBalance.setText("可提现余额" + withDrawMoney.getKtx() + "元");
                 }
                 break;
         }
@@ -299,10 +284,10 @@ public class WithdrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
                     return;
                 } else {
                     brankList = baseResult.getData();
-                    if (brankList.size()>0){
+                    if (brankList.size() > 0) {
                         mLlBankCard.setVisibility(View.VISIBLE);
                         mLlBankCardOne.setVisibility(View.GONE);
-                        bankNo=baseResult.getData().get(0).getPayNo();
+                        bankNo = baseResult.getData().get(0).getPayNo();
                         payName = baseResult.getData().get(0).getPayName();
                         mTvBankName.setText(baseResult.getData().get(0).getPayInfoName());
                         int length = baseResult.getData().get(0).getPayNo().length();
@@ -443,7 +428,7 @@ public class WithdrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
                                 break;
 
                         }
-                    }else {
+                    } else {
                         mLlBankCardOne.setVisibility(View.VISIBLE);
                         mLlBankCard.setVisibility(View.GONE);
                     }
@@ -479,11 +464,11 @@ public class WithdrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
                             finish();
                         }
                     }).show();
-                }else{
-                    MyUtils.showToast(mActivity,baseResult.getData().getItem2());
+                } else {
+                    MyUtils.showToast(mActivity, baseResult.getData().getItem2());
                 }
 
-                    break;
+                break;
             default:
                 break;
         }
@@ -508,7 +493,7 @@ public class WithdrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case 2000:
-                if(data==null){
+                if (data == null) {
                     return;
                 }
                 String bankName = data.getStringExtra("bankName");
@@ -658,6 +643,7 @@ public class WithdrawActivity extends BaseActivity<WithDrawPresenter, WithDrawMo
                 }
         }
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(String message) {
         if ("verified".equals(message)) {

@@ -167,16 +167,7 @@
              android:launchMode="singleTask" />
 
 
-        <!--登录-->
 
-        <!--工单详情-->
-        <activity android:name=".mvp.ui.activity.Order_details_Activity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden|adjustPan"
-             android:launchMode="singleTask"
-            android:screenOrientation="portrait">
-
-        </activity>
         <!--申请配件-->
         <activity android:name=".v3.activity.ApplyAccActivity"
             android:theme="@style/AppTheme.NoActionBar1"

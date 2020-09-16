@@ -1272,7 +1272,7 @@ public class WorkOrder implements Serializable {
         private String UserName;
 
         public String getUserName() {
-            return UserName;
+            return "2".equals(Type)?"厂商":UserName;
         }
 
         public void setUserName(String userName) {
@@ -1562,6 +1562,7 @@ public class WorkOrder implements Serializable {
         private double FrozenMoney;
         private String IsUse;
         private String EndRemark;
+        private String RepairExplain;
         private String BarCode;
         private int Num;
         private int Version;
@@ -1569,6 +1570,13 @@ public class WorkOrder implements Serializable {
         private List<?> accessorys;
         private List<accessoryDataBean> accessoryData;
 
+        public String getRepairExplain() {
+            return RepairExplain==null?"":RepairExplain;
+        }
+
+        public void setRepairExplain(String repairExplain) {
+            RepairExplain = repairExplain;
+        }
 
         public String getExplains() {
             return Explains==null?"":Explains;

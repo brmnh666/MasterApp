@@ -149,11 +149,19 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
+                android:id="@+id/tv_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="鉴定结果:--"
+                android:textColor="@color/black"
+                android:textSize="12sp"/>
+            <TextView
                 android:id="@+id/tv_bak"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="备注:--"
+                android:text="服务说明:--"
                 android:textColor="@color/black"
                 android:textSize="12sp"/>
             <TextView

@@ -2,6 +2,8 @@ package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -29,10 +31,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
 import com.ying.administrator.masterappdemo.BuildConfig;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
@@ -47,6 +46,8 @@ import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.util.imageutil.CompressHelper;
 import com.ying.administrator.masterappdemo.v3.bean.EndResult;
 import com.ying.administrator.masterappdemo.widget.ViewExampleDialog;
+import com.yzq.zxinglibrary.android.CaptureActivity;
+import com.yzq.zxinglibrary.common.Constant;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zyao89.view.zloading.ZLoadingDialog;
@@ -140,6 +141,10 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
     EditText mEtMemo;
     @BindView(R.id.btn_complete_submit)
     Button mBtnCompleteSubmit;
+    @BindView(R.id.et_result)
+    EditText mEtResult;
+    @BindView(R.id.ll_result)
+    LinearLayout mLlResult;
 
     private View popupWindow_view;
     private String FilePath;
@@ -159,6 +164,9 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
     private String TypeID;
     private String BarCodeIsNo;
     private WorkOrder.OrderProductModelsBean data;
+    private String RepairExplain;
+    private int REQUEST_CODE_SCAN=100;
+    private int size;
 
     @Override
     protected int setLayoutId() {
@@ -181,22 +189,21 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
         BarCodeIsNo = getIntent().getStringExtra("BarCodeIsNo");
         //产品
         data = (WorkOrder.OrderProductModelsBean) getIntent().getSerializableExtra("data");
-        mTvId.setText("产品编号："+data.getOrderProdcutID());
-        mTvCate.setText("类别："+data.getSubCategoryName());
-        mTvBrand.setText("品牌："+data.getBrandName());
-        mTvProductType.setText("型号："+data.getProdModelName());
-        mTvGg.setText("规格："+data.getProductType());
-        mTvMemo.setText("服务要求："+data.getMemo());
+        mTvId.setText("产品编号：" + data.getOrderProdcutID());
+        mTvCate.setText("类别：" + data.getSubCategoryName());
+        mTvBrand.setText("品牌：" + data.getBrandName());
+        mTvProductType.setText("型号：" + data.getProdModelName());
+        mTvGg.setText("规格：" + data.getProductType());
+        mTvMemo.setText("服务要求：" + data.getMemo());
 
-        if ("1".equals(TypeID)) {//维修
-            mLlReturnInformation.setVisibility(View.VISIBLE);
-            mLlServiceProcess.setVisibility(View.GONE);
-        } else if ("2".equals(TypeID)) {
+        if ("2".equals(TypeID)) {//安装
             mLlReturnInformation.setVisibility(View.GONE);
             mLlServiceProcess.setVisibility(View.VISIBLE);
+            mLlResult.setVisibility(View.GONE);
         } else {
             mLlReturnInformation.setVisibility(View.VISIBLE);
             mLlServiceProcess.setVisibility(View.GONE);
+            mLlResult.setVisibility(View.VISIBLE);
         }
         if ("1".equals(BarCodeIsNo)) {
             mLlCode.setVisibility(View.VISIBLE);
@@ -336,15 +343,11 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                 break;
             case R.id.ll_scan1:
             case R.id.ll_scan:
-                IntentIntegrator integrator = new IntentIntegrator(CompleteWorkOrderActivity.this);
-                // 设置要扫描的条码类型，ONE_D_CODE_TYPES：一维码，QR_CODE_TYPES-二维码
-                integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
-                integrator.setCaptureActivity(ScanActivity.class); //设置打开摄像头的Activity
-                integrator.setPrompt("请扫描条形码"); //底部的提示文字，设为""可以置空
-                integrator.setCameraId(0); //前置或者后置摄像头
-                integrator.setBeepEnabled(true); //扫描成功的「哔哔」声，默认开启
-                integrator.setBarcodeImageEnabled(true);
-                integrator.initiateScan();
+                if (requestPermissions()) {
+                    scan();
+                } else {
+                    requestPermissions(permissions.toArray(new String[permissions.size()]), 10003);
+                }
                 break;
 
             case R.id.btn_complete_submit:
@@ -352,7 +355,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                     barCode = mEtSingleNumber1.getText().toString();
                     if ("1".equals(BarCodeIsNo)) {
                         if (barCode.isEmpty()) {
-                            ToastUtils.showShort("请填写条形码");
+                            MyUtils.showToast(mActivity,"请填写条形码");
                             return;
                         }
                     }
@@ -367,7 +370,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                     barCode = mEtSingleNumber.getText().toString();
                     if ("1".equals(BarCodeIsNo)) {
                         if (barCode.isEmpty()) {
-                            ToastUtils.showShort("请填写条形码");
+                            MyUtils.showToast(mActivity,"请填写条形码");
                             return;
                         }
                     }
@@ -376,11 +379,39 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                         return;
                     } else {
                         String EndRemark = mEtMemo.getText().toString();
+                        RepairExplain = mEtResult.getText().toString();
                         ReuturnAccessoryPicUpload(return_img_map, EndRemark);
                     }
                 }
                 break;
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void scan() {
+//        IntentIntegrator integrator = new IntentIntegrator(CompleteWorkOrderActivity.this);
+//        // 设置要扫描的条码类型，ONE_D_CODE_TYPES：一维码，QR_CODE_TYPES-二维码
+//        integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+//        integrator.setCaptureActivity(ScanActivity.class); //设置打开摄像头的Activity
+//        integrator.setPrompt("请扫描条形码"); //底部的提示文字，设为""可以置空
+//        integrator.setCameraId(0); //前置或者后置摄像头
+//        integrator.setBeepEnabled(true); //扫描成功的「哔哔」声，默认开启
+//        integrator.setBarcodeImageEnabled(true);
+//        integrator.initiateScan();
+            Intent intent = new Intent(mActivity, CaptureActivity.class);
+            /*ZxingConfig是配置类  可以设置是否显示底部布局，闪光灯，相册，是否播放提示音  震动等动能
+             * 也可以不传这个参数
+             * 不传的话  默认都为默认不震动  其他都为true
+             * */
+
+            //ZxingConfig config = new ZxingConfig();
+            //config.setShowbottomLayout(true);//底部布局（包括闪光灯和相册）
+            //config.setPlayBeep(true);//是否播放提示音
+            //config.setShake(true);//是否震动
+            //config.setShowAlbum(true);//是否显示相册
+            //config.setShowFlashLight(true);//是否显示闪光灯
+            //intent.putExtra(Constant.INTENT_ZXING_CONFIG, config);
+            startActivityForResult(intent, REQUEST_CODE_SCAN);
     }
 
 
@@ -496,23 +527,81 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
         }
         return true;
     }
+    //申请相关权限:返回监听
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        size = 0;
+        for (int i = 0; i < grantResults.length; i++) {
+            if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                size++;
+            }
+        }
+        switch (requestCode) {
+            case 10003:
+                if (size == grantResults.length) {//允许
+                    scan();
+                } else {//拒绝
+                    toSetting();
+                }
+                break;
+            default:
+                break;
 
+        }
+    }
+    //设置权限
+    private void toSetting() {
+
+        new AlertDialog.Builder(this).setTitle("相机和存储权限未授权")
+                .setMessage("是否前往设置权限？")
+                //  取消选项
+                .setNegativeButton("取消",new DialogInterface.OnClickListener(){
+
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                //  确认选项
+                .setPositiveButton("设置", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //跳转到手机原生设置页面
+                        MyUtils.toSelfSetting(mActivity);
+                    }
+                })
+                .setCancelable(false)
+                .show();
+    }
     //返回图片处理
     @SuppressLint("NewApi")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if (scanResult != null) {
-            String result = scanResult.getContents();
-            if (result == null) {
-                return;
-            } else {
+//        IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+//        if (scanResult != null) {
+//            String result = scanResult.getContents();
+//            if (result == null) {
+//                return;
+//            } else {
+//                mEtSingleNumber.setText(result);
+//                mEtSingleNumber1.setText(result);
+//            }
+//
+//        }
+        mEtSingleNumber.setEnabled(true);
+        mEtSingleNumber1.setEnabled(true);
+        // 扫描二维码/条码回传
+        if (requestCode == REQUEST_CODE_SCAN && resultCode == RESULT_OK) {
+
+            if (data != null) {
+                String result = data.getStringExtra(Constant.CODED_CONTENT);
                 mEtSingleNumber.setText(result);
                 mEtSingleNumber1.setText(result);
             }
-
         }
+
         File file = null;
         switch (requestCode) {
             //拍照
@@ -767,6 +856,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
             builder.addFormDataPart("img4", map.get(3).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(3)));
         }
         builder.addFormDataPart("OrderID", orderID);
+        builder.addFormDataPart("RepairExplain", RepairExplain);
         builder.addFormDataPart("EndRemark", EndRemark);
         builder.addFormDataPart("ProductID", ProductID);
         builder.addFormDataPart("BarCode", barCode);

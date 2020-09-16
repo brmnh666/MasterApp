@@ -38,14 +38,12 @@ import com.dmcbig.mediapicker.PickerActivity;
 import com.dmcbig.mediapicker.PickerConfig;
 import com.dmcbig.mediapicker.PreviewActivity;
 import com.dmcbig.mediapicker.entity.Media;
-import com.google.zxing.integration.android.IntentIntegrator;
 import com.vondear.rxui.view.dialog.RxDialogScaleView;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.entity.accessoryDataBean;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.ScanActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.PicAdapter;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.util.imageutil.FileSizeUtil;
@@ -60,6 +58,8 @@ import com.ying.administrator.masterappdemo.v3.mvp.Presenter.AccessoriesDetailsP
 import com.ying.administrator.masterappdemo.v3.mvp.contract.AccessoriesDetailsContract;
 import com.ying.administrator.masterappdemo.v3.mvp.model.AccessoriesDetailsModel;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
+import com.yzq.zxinglibrary.android.CaptureActivity;
+import com.yzq.zxinglibrary.common.Constant;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -171,6 +171,7 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
     private PicAdapter picAdapter;
     private String targetPath;
     private String compressImage;
+    private int REQUEST_CODE_SCAN=100;
 
     @Override
     protected int setLayoutId() {
@@ -479,17 +480,14 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
             }
         });
         ll_scan.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
-                IntentIntegrator integrator = new IntentIntegrator(AccessoriesDetailsActivity.this);
-                // 设置要扫描的条码类型，ONE_D_CODE_TYPES：一维码，QR_CODE_TYPES-二维码
-                integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
-                integrator.setCaptureActivity(ScanActivity.class); //设置打开摄像头的Activity
-                integrator.setPrompt("请扫描快递码"); //底部的提示文字，设为""可以置空
-                integrator.setCameraId(0); //前置或者后置摄像头
-                integrator.setBeepEnabled(true); //扫描成功的「哔哔」声，默认开启
-                integrator.setBarcodeImageEnabled(true);
-                integrator.initiateScan();
+                if (requestPermissions()) {
+                    scan();
+                } else {
+                    requestPermissions(permissions.toArray(new String[permissions.size()]), 10002);
+                }
             }
         });
         btn_positive.setOnClickListener(new View.OnClickListener() {
@@ -518,6 +516,33 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
             }
         });
     }
+
+    private void scan() {
+//        IntentIntegrator integrator = new IntentIntegrator(AccessoriesDetailsActivity.this);
+//        // 设置要扫描的条码类型，ONE_D_CODE_TYPES：一维码，QR_CODE_TYPES-二维码
+//        integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+//        integrator.setCaptureActivity(ScanActivity.class); //设置打开摄像头的Activity
+//        integrator.setPrompt("请扫描快递码"); //底部的提示文字，设为""可以置空
+//        integrator.setCameraId(0); //前置或者后置摄像头
+//        integrator.setBeepEnabled(true); //扫描成功的「哔哔」声，默认开启
+//        integrator.setBarcodeImageEnabled(true);
+//        integrator.initiateScan();
+        Intent intent = new Intent(mActivity, CaptureActivity.class);
+        /*ZxingConfig是配置类  可以设置是否显示底部布局，闪光灯，相册，是否播放提示音  震动等动能
+         * 也可以不传这个参数
+         * 不传的话  默认都为默认不震动  其他都为true
+         * */
+
+        //ZxingConfig config = new ZxingConfig();
+        //config.setShowbottomLayout(true);//底部布局（包括闪光灯和相册）
+        //config.setPlayBeep(true);//是否播放提示音
+        //config.setShake(true);//是否震动
+        //config.setShowAlbum(true);//是否显示相册
+        //config.setShowFlashLight(true);//是否显示闪光灯
+        //intent.putExtra(Constant.INTENT_ZXING_CONFIG, config);
+        startActivityForResult(intent, REQUEST_CODE_SCAN);
+    }
+
     //开始返件
     public void reqReturn() {
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
@@ -765,6 +790,14 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
                 } else {//拒绝
                     toSetting();
                 }
+
+                break;
+            case 10002:
+                if (size == grantResults.length) {//允许
+                    scan();
+                } else {//拒绝
+                    toSetting();
+                }
                 break;
             default:
                 break;
@@ -801,6 +834,13 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        // 扫描二维码/条码回传
+        if (requestCode == REQUEST_CODE_SCAN && resultCode == RESULT_OK) {
+            if (data != null) {
+                String result = data.getStringExtra(Constant.CODED_CONTENT);
+                et_expressno.setText(result);
+            }
+        }
         File file = null;
         if (requestCode == 200 && resultCode == PickerConfig.RESULT_CODE) {
             select.addAll((ArrayList) data.getParcelableArrayListExtra(PickerConfig.EXTRA_RESULT));

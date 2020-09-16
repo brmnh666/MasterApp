@@ -100,7 +100,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:maxLines="1"
+                        android:inputType="text"
                         android:background="@null"
+                        android:enabled="false"
                         android:hint="条形码"
                         android:textColor="#ABABAB"
                         android:textSize="12dp" />
@@ -349,7 +352,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:maxLines="1"
+                        android:inputType="text"
                         android:background="@null"
+                        android:enabled="false"
                         android:hint="条形码"
                         android:textColor="#ABABAB"
                         android:textSize="12dp" />
@@ -493,6 +499,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_result"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -501,7 +508,36 @@
                 android:layout_marginRight="10dp"
                 android:background="@color/white"
                 android:padding="10dp">
-
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="鉴定结果："/>
+                <EditText
+                    android:id="@+id/et_result"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/edit_shape"
+                    android:gravity="top"
+                    android:hint="请清晰描述故障现象"
+                    android:padding="@dimen/dp_10"
+                    android:textColor="#6A6A6A"
+                    android:textColorHint="#898989"
+                    android:textSize="16sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/white"
+                android:padding="10dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="服务说明："/>
                 <EditText
                     android:id="@+id/et_memo"
                     android:layout_width="match_parent"
@@ -509,13 +545,12 @@
                     android:layout_weight="1"
                     android:background="@drawable/edit_shape"
                     android:gravity="top"
-                    android:hint="安装需清晰描述安装服务结果和试机结果；维修需清晰描述故障现象，具体维修措施以及试机结果"
+                    android:hint="安装需清晰描述安装服务结果和试机结果；维修需清晰描述具体维修措施以及试机结果"
                     android:padding="@dimen/dp_10"
                     android:textColor="#6A6A6A"
                     android:textColorHint="#898989"
                     android:textSize="16sp" />
             </LinearLayout>
-
             <Button
                 android:id="@+id/btn_complete_submit"
                 android:layout_width="match_parent"

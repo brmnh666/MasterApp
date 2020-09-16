@@ -50,8 +50,14 @@ public class ProdAdapter extends BaseQuickAdapter<WorkOrder.OrderProductModelsBe
         if (item.getProductState()==5){
             helper.setGone(R.id.iv_complete,true);
             helper.setGone(R.id.ll_complete,true);
-            helper.setText(R.id.tv_bak,"备注："+item.getEndRemark());
+            helper.setText(R.id.tv_result,"鉴定结果："+item.getRepairExplain());
+            helper.setText(R.id.tv_bak,"服务说明："+item.getEndRemark());
             helper.setText(R.id.tv_barcode,"条形码："+item.getBarCode());
+            if (item.getRepairExplain().isEmpty()){
+                helper.setGone(R.id.tv_result,false);
+            }else{
+                helper.setGone(R.id.tv_result,true);
+            }
             if (item.getEndRemark().isEmpty()){
                 helper.setGone(R.id.tv_bak,false);
             }else{
