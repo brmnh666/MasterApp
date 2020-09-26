@@ -61,6 +61,7 @@ import com.ying.administrator.masterappdemo.v3.mvp.contract.MineContract;
 import com.ying.administrator.masterappdemo.v3.mvp.model.MineModel;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 import com.ying.administrator.masterappdemo.widget.GlideCircleWithBorder2;
+import com.ying.administrator.masterappdemo.widget.sign.SignActivity;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -122,6 +123,8 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
     LinearLayout mLlName;
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout mRefreshLayout;
+    @BindView(R.id.ll_sign)
+    LinearLayout mLlSign;
     private String mContentText;
     private String userID;
     //    private UserInfo.UserInfoDean userInfo;
@@ -240,11 +243,15 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
         mLlAboutUs.setOnClickListener(this);
         mLlMasterCode.setOnClickListener(this);
         mLlSubAccount.setOnClickListener(this);
+        mLlSign.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.ll_sign:
+                startActivity(new Intent(mActivity, SignActivity.class));
+                break;
             case R.id.ll_wallet:
                 startActivity(new Intent(mActivity, WalletActivity.class));
                 break;
@@ -514,7 +521,7 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
                 .add("limit", "1")
                 .build();
         //接口
-        String path = Config.BASE_URL+"Account/GetUserInfoList";
+        String path = Config.BASE_URL + "Account/GetUserInfoList";
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(5, TimeUnit.MINUTES)
@@ -523,7 +530,7 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
         final Request request = new Request.Builder()
                 .url(path)
                 .addHeader("userName", userID)
-                .addHeader("adminToken",token)
+                .addHeader("adminToken", token)
                 .post(formboby)
                 .build();
         Call call = okHttpClient.newCall(request);
@@ -659,12 +666,12 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
             mTvPhone.setText(userInfo.getUserID() + "");
         }
 
-        if (userInfo.getParentUserID() == null|| "".equals(userInfo.getParentUserID())) {
+        if (userInfo.getParentUserID() == null || "".equals(userInfo.getParentUserID())) {
             mLlSubAccount.setVisibility(View.VISIBLE);
             mLlWallet.setVisibility(View.VISIBLE);
         } else {
             mLlSubAccount.setVisibility(View.GONE);
-            mLlWallet.setVisibility(View.GONE );
+            mLlWallet.setVisibility(View.GONE);
         }
     }
 

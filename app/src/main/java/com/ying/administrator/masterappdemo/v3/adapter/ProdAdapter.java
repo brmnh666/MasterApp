@@ -107,6 +107,7 @@ public class ProdAdapter extends BaseQuickAdapter<WorkOrder.OrderProductModelsBe
             helper.setGone(R.id.ll_acc,false);
         }
         helper.addOnClickListener(R.id.ll_course);
+        helper.addOnClickListener(R.id.fl_video);
 
     }
 }

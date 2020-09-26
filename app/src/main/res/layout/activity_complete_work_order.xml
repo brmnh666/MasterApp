@@ -90,21 +90,19 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginRight="10dp"
                     android:background="@drawable/gray_shape"
-                    android:orientation="horizontal"
-                    android:paddingLeft="7dp"
-                    android:paddingTop="13dp"
-                    android:paddingBottom="13dp">
+                    android:orientation="horizontal">
 
                     <EditText
                         android:id="@+id/et_single_number"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="@dimen/dp_5"
                         android:layout_weight="1"
                         android:maxLines="1"
                         android:inputType="text"
                         android:background="@null"
                         android:enabled="false"
-                        android:hint="条形码"
+                        android:hint="请先扫描条形码，无法识别返回手动填写"
                         android:textColor="#ABABAB"
                         android:textSize="12dp" />
 
@@ -128,7 +126,6 @@
                     <View
                         android:layout_width="1dp"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="20dp"
                         android:background="#B5B5B5" />
 
                     <LinearLayout
@@ -145,7 +142,8 @@
 
                         <TextView
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="@dimen/dp_10"
                             android:text="扫描条码"
@@ -342,21 +340,19 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginRight="10dp"
                     android:background="@drawable/gray_shape"
-                    android:orientation="horizontal"
-                    android:paddingLeft="7dp"
-                    android:paddingTop="13dp"
-                    android:paddingBottom="13dp">
+                    android:orientation="horizontal">
 
                     <EditText
                         android:id="@+id/et_single_number1"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="@dimen/dp_5"
                         android:layout_weight="1"
                         android:maxLines="1"
                         android:inputType="text"
                         android:background="@null"
                         android:enabled="false"
-                        android:hint="条形码"
+                        android:hint="请先扫描条形码，无法识别返回手动填写"
                         android:textColor="#ABABAB"
                         android:textSize="12dp" />
 
@@ -380,7 +376,6 @@
                     <View
                         android:layout_width="1dp"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="20dp"
                         android:background="#B5B5B5" />
 
                     <LinearLayout
@@ -398,6 +393,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="@dimen/dp_10"
                             android:text="扫描条码"
@@ -498,6 +494,55 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/ll_video"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/white"
+                android:padding="10dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7.5dp"
+                    android:text="试机视频："/>
+                <FrameLayout
+                    android:layout_width="76.5dp"
+                    android:layout_height="76.5dp">
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7.5dp">
+                        <ImageView
+                            android:id="@+id/iv_video"
+                            android:layout_width="69dp"
+                            android:layout_height="69dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/add_video"/>
+                        <ImageView
+                            android:id="@+id/iv_shipin"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/shipin"
+                            android:visibility="gone"/>
+                    </FrameLayout>
+                    <ImageView
+                        android:id="@+id/iv_delete"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_marginLeft="@dimen/dp_30"
+                        android:layout_gravity="top|right"
+                        android:scaleType="fitCenter"
+                        android:visibility="gone"
+                        android:src="@drawable/remove"/>
+                </FrameLayout>
+
+            </LinearLayout>
             <LinearLayout
                 android:id="@+id/ll_result"
                 android:layout_width="match_parent"

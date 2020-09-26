@@ -37,4 +37,11 @@
         <attr name="bgCorner" format="dimension"/>
     </declare-styleable>
 
+    <declare-styleable name="SignatureView">
+        <attr name="minWidth" format="dimension" />
+        <attr name="maxWidth" format="dimension" />
+        <attr name="penColor" format="color" />
+        <attr name="velocityFilterWeight" format="float" />
+    </declare-styleable>
+
 </resources>

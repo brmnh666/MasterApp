@@ -311,6 +311,26 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/rv_accessories_picture"></android.support.v7.widget.RecyclerView>
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_address_back"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:paddingLeft="13dp"
+                android:paddingTop="15dp"
+                android:paddingRight="13dp"
+                android:paddingBottom="10dp">
+
+                <TextView
+                    android:id="@+id/tv_addressback"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="返件地址："
+                    android:textColor="@color/black"
+                    android:textSize="17dp" />
+                </LinearLayout>
             <Button
                 android:id="@+id/btn_cancel"
                 android:layout_width="match_parent"

@@ -115,6 +115,7 @@ public class PersonalInformationActivity extends BaseActivity<PersonalInformatio
     private Button positive;
     private TextView title;
     private AlertDialog cancelDialog;
+    private LinearLayout ll_spinner;
 
     @Override
     protected int setLayoutId() {
@@ -186,6 +187,8 @@ public class PersonalInformationActivity extends BaseActivity<PersonalInformatio
             case R.id.ll_emergency_telephone_number:
                 View Cancelview = LayoutInflater.from(mActivity).inflate(R.layout.dialog_cancel, null);
                 et_message = Cancelview.findViewById(R.id.et_message);
+                ll_spinner = Cancelview.findViewById(R.id.ll_spinner);
+                ll_spinner.setVisibility(View.GONE);
                 negtive = Cancelview.findViewById(R.id.negtive);
                 positive = Cancelview.findViewById(R.id.positive);
                 title = Cancelview.findViewById(R.id.title);

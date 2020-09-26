@@ -21,7 +21,7 @@ import com.ying.administrator.masterappdemo.widget.MyProgress;
 import com.ying.administrator.masterappdemo.widget.SaleProgressView;
 
 public class UpgradeActivity  extends Activity {
-    private static final String TAG = "UpgradeActivity";
+    private static final String TAG = "MyOSSAuthCredentialsProvider";
     //    private TextView tv;
     private TextView title;
     private TextView version;

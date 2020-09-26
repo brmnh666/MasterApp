@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
@@ -34,7 +35,12 @@ import android.widget.ListAdapter;
 
 import com.blankj.utilcode.util.ToastUtils;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -704,7 +710,42 @@ public class MyUtils {
     }
 
 
+    //在这里抽取了一个方法   可以封装到自己的工具类中...
+    public static File getFile(Bitmap bitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
+        File file = new File(Environment.getExternalStorageDirectory() + "/temp.jpg");
+        try {
+            file.createNewFile();
+            FileOutputStream fos = new FileOutputStream(file);
+            InputStream is = new ByteArrayInputStream(baos.toByteArray());
+            int x = 0;
+            byte[] b = new byte[1024 * 100];
+            while ((x = is.read(b)) != -1) {
+                fos.write(b, 0, x);
+            }
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return file;
+    }
 
+    public static Bitmap dealBackground(Bitmap bm) {
+        for (int i = 0; i < bm.getWidth(); i++) {
+            for (int j = 0; j < bm.getHeight(); j++) {
+                int color = bm.getPixel(i, j);
+                int R = Color.red(color);
+                int G = Color.green(color);
+                int B = Color.blue(color);
+                if (R > 240 && G > 240 && B > 240) {
+                    int newColor = Color.rgb(255, 255, 255);
+                    bm.setPixel(i, j, newColor);
+                }
+            }
+        }
+        return bm;
+    }
 
 
 

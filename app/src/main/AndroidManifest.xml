@@ -91,7 +91,8 @@
         android:roundIcon="@drawable/icon"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        tools:replace="android:icon, android:theme"
+        tools:replace="android:icon, android:theme,android:appComponentFactory"
+        android:appComponentFactory="任意字符"
         >
 
         <uses-library android:name="org.apache.http.legacy" android:required="false" />
@@ -278,7 +279,7 @@
 
 
         </activity>
-        <activity android:name=".mvp.ui.activity.ScanActivity"  android:launchMode="singleTask"
+        <activity android:name=".widget.sign.SignActivity"  android:theme="@style/AppTheme.NoActionBar1" android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
         <!--我的技能-->
         <activity android:name=".mvp.ui.activity.MySkillsActivity" android:theme="@style/AppTheme.NoActionBar"  android:launchMode="singleTask"

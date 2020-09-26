@@ -185,6 +185,18 @@ public class ApplyAccActivity extends BaseActivity<ApplyAccPresenter, ApplyAccMo
                         } else {
                             goPreviewActivity();
                         }
+                        break;
+                    case R.id.ll_delete:
+                        select.remove(position);
+                        ArrayList<String> list = new ArrayList<>();
+                        Log.i("select", "select.size" + select.size());
+                        for (Media media : select) {
+                            list.add(media.path);
+                            Log.i("media", media.path);
+                            Log.e("media", "s:" + media.size);
+                        }
+                        loadAdpater(list);
+                        break;
                 }
             }
         });

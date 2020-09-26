@@ -443,6 +443,38 @@
                     android:src="@mipmap/v3_youjiantou"
                     android:layout_gravity="center"/>
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_sign"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="1dp"
+                android:paddingTop="21dp"
+                android:paddingBottom="21dp"
+                android:paddingLeft="13dp"
+                android:paddingRight="29dp"
+                android:background="@color/white"
+                android:visibility="visible">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/v3_yijian"
+                    android:layout_gravity="center"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:text="电子合同"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:layout_marginLeft="14sp"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/v3_youjiantou"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

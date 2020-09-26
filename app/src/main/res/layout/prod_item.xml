@@ -189,5 +189,37 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_video"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7.5dp"
+                android:text="试机视频："
+                android:textSize="12sp"
+                android:textColor="@color/black"/>
+            <FrameLayout
+                android:id="@+id/fl_video"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7.5dp">
+                <ImageView
+                    android:id="@+id/iv_video"
+                    android:layout_width="69dp"
+                    android:layout_height="69dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/add_video"/>
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/shipin"/>
+            </FrameLayout>
+
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

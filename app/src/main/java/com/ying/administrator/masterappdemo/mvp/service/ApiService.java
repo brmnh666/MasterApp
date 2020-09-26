@@ -48,10 +48,14 @@ import com.ying.administrator.masterappdemo.v3.bean.ConfirmReturnResult;
 import com.ying.administrator.masterappdemo.v3.bean.CourseResult;
 import com.ying.administrator.masterappdemo.v3.bean.DeleteAccessoryResult;
 import com.ying.administrator.masterappdemo.v3.bean.EndResult;
+import com.ying.administrator.masterappdemo.v3.bean.GetContractSigningDepositMoneyResult;
 import com.ying.administrator.masterappdemo.v3.bean.GetExpressInfoResult;
 import com.ying.administrator.masterappdemo.v3.bean.GetOrderMoneyDetailResult;
+import com.ying.administrator.masterappdemo.v3.bean.GetSignContractManageResult;
 import com.ying.administrator.masterappdemo.v3.bean.ProductTollResult;
+import com.ying.administrator.masterappdemo.v3.bean.SaveAutographResult;
 import com.ying.administrator.masterappdemo.v3.bean.UpdateAccessoryResult;
+import com.ying.administrator.masterappdemo.v3.bean.UploadAutographPicUrlResult;
 
 import org.json.JSONArray;
 
@@ -1342,4 +1346,44 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("Master/AppProductData/List")
     Observable<CourseResult> GetCourse(@Field("SubCategoryID") String SubCategoryID, @Field("ProductTypeID") String ProductTypeID, @Field("BrandID") String BrandID, @Field("TypeID") String TypeID,@Field("ProdModelID") String ProdModelID, @Field("UserID") String UserID);
+
+    /**
+     * 获取签约合同
+     * @param
+     * @return
+     */
+    @POST("Account/GetSignContractManage")
+    Observable<GetSignContractManageResult> GetSignContractManage();
+    /**
+     * 获取合同签署资金
+     * @param
+     * @return
+     */
+    @POST("Account/GetContractSigningDepositMoney")
+    Observable<GetContractSigningDepositMoneyResult> GetContractSigningDepositMoney();
+    /**
+     * 获取签约成功合同
+     * @param
+     * @return
+     */
+    @POST("Account/GetSigningSuccessContract")
+    Observable<GetSignContractManageResult> GetSigningSuccessContract();
+
+    /**
+     * 上传签名照片
+     * @param
+     * @return
+     */
+    @POST("Upload/UploadAutographPicUrl")
+    Observable<UploadAutographPicUrlResult> UploadAutographPicUrl(@Body RequestBody json);
+
+    /**
+     * 保存签名
+     * @param
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("Account/SaveAutograph")
+    Observable<SaveAutographResult> SaveAutograph(@Field("AutographPicUrl") String AutographPicUrl);
+
 }

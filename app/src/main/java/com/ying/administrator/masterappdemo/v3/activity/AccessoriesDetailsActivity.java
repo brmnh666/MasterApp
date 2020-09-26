@@ -142,6 +142,10 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
     Button mBtnConfirmReturn;
     @BindView(R.id.btn_cancel)
     Button mBtnCancel;
+    @BindView(R.id.tv_addressback)
+    TextView mTvAddressback;
+    @BindView(R.id.ll_address_back)
+    LinearLayout mLlAddressBack;
     private List<String> list = new ArrayList<>();
     private AccessoriesPictureAdapter accessoriesPictureAdapter;
     private Intent intent;
@@ -171,7 +175,7 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
     private PicAdapter picAdapter;
     private String targetPath;
     private String compressImage;
-    private int REQUEST_CODE_SCAN=100;
+    private int REQUEST_CODE_SCAN = 100;
 
     @Override
     protected int setLayoutId() {
@@ -342,13 +346,19 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
         } else {
             mBtnConfirmReturn.setVisibility(View.GONE);
         }
-        if ("0".equals(data.getState())){
+        if ("0".equals(data.getState())) {
             mBtnCancel.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             mBtnCancel.setVisibility(View.GONE);
         }
         mTvOutboundLogistics.setText("快递单号（" + data.getExpressNo() + "）");
         mTvReturnLogistics.setText("快递单号（" + data.getReturnExpressNo() + "）");
+        if (data.getAddressBack()==null||"".equals(data.getAddressBack())){
+            mLlAddressBack.setVisibility(View.GONE);
+        }else{
+            mLlAddressBack.setVisibility(View.VISIBLE);
+            mTvAddressback.setText("返件地址："+data.getAddressBack());
+        }
     }
 
     @Override
@@ -547,8 +557,8 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
     public void reqReturn() {
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         for (int i = 0; i < selectpiclist.size(); i++) {
-            File img=new File(selectpiclist.get(i));
-            builder.addFormDataPart("img"+i, img.getName(), RequestBody.create(MediaType.parse("img/png"), img));
+            File img = new File(selectpiclist.get(i));
+            builder.addFormDataPart("img" + i, img.getName(), RequestBody.create(MediaType.parse("img/png"), img));
         }
         builder.addFormDataPart("AccessoryID", Integer.toString(data.getAccessoryID()));
         builder.addFormDataPart("ReturnExpressNo", expressno);
@@ -565,8 +575,8 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
         for (int i = 0; i < paths.size(); i++) {
             targetPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy/" + System.currentTimeMillis() + ".jpg";
             compressImage = ImageCompress.compressImage(paths.get(i), targetPath, 80);
-            Log.i(TAG, "原大小"+FileSizeUtil.getFileOrFilesSize(paths.get(i),FileSizeUtil.SIZETYPE_MB)+"Mb");
-            Log.i(TAG, "压缩后大小"+FileSizeUtil.getFileOrFilesSize(compressImage,FileSizeUtil.SIZETYPE_MB)+"Mb");
+            Log.i(TAG, "原大小" + FileSizeUtil.getFileOrFilesSize(paths.get(i), FileSizeUtil.SIZETYPE_MB) + "Mb");
+            Log.i(TAG, "压缩后大小" + FileSizeUtil.getFileOrFilesSize(compressImage, FileSizeUtil.SIZETYPE_MB) + "Mb");
             selectpiclist.add(compressImage);
         }
         if (piclist.size() != 5) {
@@ -592,6 +602,7 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
         intent.putExtra(PickerConfig.MAX_SELECT_COUNT, select.size());//default image and video (Optional)
         startActivityForResult(intent, 300);
     }
+
     /**
      * 弹出Popupwindow,选择厂家寄件还是自购件
      */
@@ -804,13 +815,14 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
 
         }
     }
+
     //设置权限
     private void toSetting() {
 
         new AlertDialog.Builder(this).setTitle("相机和存储权限未授权")
                 .setMessage("是否前往设置权限？")
                 //  取消选项
-                .setNegativeButton("取消",new DialogInterface.OnClickListener(){
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

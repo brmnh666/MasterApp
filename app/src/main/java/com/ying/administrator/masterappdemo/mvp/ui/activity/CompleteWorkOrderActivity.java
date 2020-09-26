@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -31,11 +30,17 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.bumptech.glide.Glide;
+import com.dmcbig.mediapicker.PickerActivity;
+import com.dmcbig.mediapicker.PickerConfig;
+import com.dmcbig.mediapicker.entity.Media;
+import com.google.gson.Gson;
 import com.ying.administrator.masterappdemo.BuildConfig;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
+import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.CompleteWorkOrderContract;
@@ -45,26 +50,33 @@ import com.ying.administrator.masterappdemo.util.Glide4Engine;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.util.imageutil.CompressHelper;
 import com.ying.administrator.masterappdemo.v3.bean.EndResult;
+import com.ying.administrator.masterappdemo.v3.bean.PolicyToken;
 import com.ying.administrator.masterappdemo.widget.ViewExampleDialog;
 import com.yzq.zxinglibrary.android.CaptureActivity;
 import com.yzq.zxinglibrary.common.Constant;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zyao89.view.zloading.ZLoadingDialog;
-import com.zyao89.view.zloading.Z_TYPE;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPresenter, CompleteWorkOrderModel> implements CompleteWorkOrderContract.View, View.OnClickListener {
 
@@ -145,6 +157,14 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
     EditText mEtResult;
     @BindView(R.id.ll_result)
     LinearLayout mLlResult;
+    @BindView(R.id.iv_video)
+    ImageView mIvVideo;
+    @BindView(R.id.ll_video)
+    LinearLayout mLlVideo;
+    @BindView(R.id.iv_shipin)
+    ImageView mIvShipin;
+    @BindView(R.id.iv_delete)
+    ImageView mIvDelete;
 
     private View popupWindow_view;
     private String FilePath;
@@ -164,9 +184,13 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
     private String TypeID;
     private String BarCodeIsNo;
     private WorkOrder.OrderProductModelsBean data;
-    private String RepairExplain;
-    private int REQUEST_CODE_SCAN=100;
+    private String RepairExplain = "";
+    private int REQUEST_CODE_SCAN = 100;
     private int size;
+    private String videopath;
+    private ArrayList<Media> select;
+    private SPUtils spUtils;
+    private String EndVideo="";
 
     @Override
     protected int setLayoutId() {
@@ -181,6 +205,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
     @Override
     protected void initView() {
         mTvTitle.setText("提交完结信息");
+        spUtils = SPUtils.getInstance("token");
         //接收传进来的工单id
         orderID = getIntent().getStringExtra("OrderID");
         ProductID = getIntent().getStringExtra("prodID");
@@ -230,6 +255,8 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
         mIvFour.setOnClickListener(this);
         mBtnCompleteSubmit.setOnClickListener(this);
         mLlViewExampleTwo.setOnClickListener(this);
+        mIvVideo.setOnClickListener(this);
+        mIvDelete.setOnClickListener(this);
     }
 
     @Override
@@ -265,7 +292,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                 MyUtils.showToast(mActivity, baseResult.getData().getMsg());
                 break;
         }
-        cancleLoading();
+        hideProgress();
     }
 
     @Override
@@ -290,10 +317,33 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
     public void AddbarCode(BaseResult<Data<String>> baseResult) {
 
     }
-
+    void goPreviewActivity() {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(Uri.parse(videopath), "video/*");
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        startActivity(intent);
+    }
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.iv_delete:
+                Glide.with(mActivity).load(R.mipmap.add).into(mIvVideo);
+                videopath="";
+                mIvShipin.setVisibility(View.GONE);
+                mIvDelete.setVisibility(View.GONE);
+                break;
+            case R.id.iv_video:
+                if (mIvShipin.getVisibility()==View.VISIBLE){
+                    goPreviewActivity();
+                }else{
+                    if (requestPermissions()) {
+                        showVideoPopupWindow(901, 909);
+                    } else {
+                        requestPermissions(permissions.toArray(new String[permissions.size()]), 10009);
+                    }
+                }
+                break;
             case R.id.iv_back:
                 CompleteWorkOrderActivity.this.finish();
                 break;
@@ -351,40 +401,59 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                 break;
 
             case R.id.btn_complete_submit:
-                if ("2".equals(TypeID)) {//安装
-                    barCode = mEtSingleNumber1.getText().toString();
-                    if ("1".equals(BarCodeIsNo)) {
-                        if (barCode.isEmpty()) {
-                            MyUtils.showToast(mActivity,"请填写条形码");
-                            return;
-                        }
-                    }
-                    if (service_img_map.get(0) == null || service_img_map.get(1) == null) {
-                        MyUtils.showToast(mActivity, "请上传安装前照片以及安装后一张照片");
-                    } else {
-                        String EndRemark = mEtMemo.getText().toString();
-                        ReuturnAccessoryPicUpload(service_img_map, EndRemark);
-                    }
-
-                } else {//维修
-                    barCode = mEtSingleNumber.getText().toString();
-                    if ("1".equals(BarCodeIsNo)) {
-                        if (barCode.isEmpty()) {
-                            MyUtils.showToast(mActivity,"请填写条形码");
-                            return;
-                        }
-                    }
-                    if (return_img_map.get(0) == null) {
-                        MyUtils.showToast(mActivity, "整机图片必传！");
-                        return;
-                    } else {
-                        String EndRemark = mEtMemo.getText().toString();
-                        RepairExplain = mEtResult.getText().toString();
-                        ReuturnAccessoryPicUpload(return_img_map, EndRemark);
-                    }
-                }
+                showProgress();
+                getHost(videopath);
                 break;
         }
+    }
+
+    private void submit() {
+        if ("2".equals(TypeID)) {//安装
+            barCode = mEtSingleNumber1.getText().toString();
+            if ("1".equals(BarCodeIsNo)) {
+                if (barCode.isEmpty()) {
+                    MyUtils.showToast(mActivity, "请填写条形码");
+                    hideProgress();
+                    return;
+                }
+            }
+            if (service_img_map.get(0) == null || service_img_map.get(1) == null) {
+                MyUtils.showToast(mActivity, "请上传安装前照片以及安装后一张照片");
+                hideProgress();
+            } else {
+                String EndRemark = mEtMemo.getText().toString();
+                ReuturnAccessoryPicUpload(service_img_map, EndRemark);
+            }
+
+        } else {//维修
+            barCode = mEtSingleNumber.getText().toString();
+            if ("1".equals(BarCodeIsNo)) {
+                if (barCode.isEmpty()) {
+                    MyUtils.showToast(mActivity, "请填写条形码");
+                    hideProgress();
+                    return;
+                }
+            }
+            if (return_img_map.get(0) == null) {
+                MyUtils.showToast(mActivity, "整机图片必传！");
+                hideProgress();
+                return;
+            } else {
+                String EndRemark = mEtMemo.getText().toString();
+                RepairExplain = mEtResult.getText().toString();
+                ReuturnAccessoryPicUpload(return_img_map, EndRemark);
+            }
+        }
+    }
+
+    void pickerVideo(int code) {
+        Intent intent = new Intent(mActivity, PickerActivity.class);
+        intent.putExtra(PickerConfig.SELECT_MODE, PickerConfig.PICKER_VIDEO);//default image and video (Optional)
+        long maxSize = 188743680L;//long long long
+        intent.putExtra(PickerConfig.MAX_SELECT_SIZE, maxSize); //default 180MB (Optional)
+        intent.putExtra(PickerConfig.MAX_SELECT_COUNT, 1);  //default 40 (Optional)
+//        intent.putExtra(PickerConfig.DEFAULT_SELECTED_LIST,select); // (Optional)
+        startActivityForResult(intent, code);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -398,20 +467,91 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 //        integrator.setBeepEnabled(true); //扫描成功的「哔哔」声，默认开启
 //        integrator.setBarcodeImageEnabled(true);
 //        integrator.initiateScan();
-            Intent intent = new Intent(mActivity, CaptureActivity.class);
-            /*ZxingConfig是配置类  可以设置是否显示底部布局，闪光灯，相册，是否播放提示音  震动等动能
-             * 也可以不传这个参数
-             * 不传的话  默认都为默认不震动  其他都为true
-             * */
+        Intent intent = new Intent(mActivity, CaptureActivity.class);
+        /*ZxingConfig是配置类  可以设置是否显示底部布局，闪光灯，相册，是否播放提示音  震动等动能
+         * 也可以不传这个参数
+         * 不传的话  默认都为默认不震动  其他都为true
+         * */
 
-            //ZxingConfig config = new ZxingConfig();
-            //config.setShowbottomLayout(true);//底部布局（包括闪光灯和相册）
-            //config.setPlayBeep(true);//是否播放提示音
-            //config.setShake(true);//是否震动
-            //config.setShowAlbum(true);//是否显示相册
-            //config.setShowFlashLight(true);//是否显示闪光灯
-            //intent.putExtra(Constant.INTENT_ZXING_CONFIG, config);
-            startActivityForResult(intent, REQUEST_CODE_SCAN);
+        //ZxingConfig config = new ZxingConfig();
+        //config.setShowbottomLayout(true);//底部布局（包括闪光灯和相册）
+        //config.setPlayBeep(true);//是否播放提示音
+        //config.setShake(true);//是否震动
+        //config.setShowAlbum(true);//是否显示相册
+        //config.setShowFlashLight(true);//是否显示闪光灯
+        //intent.putExtra(Constant.INTENT_ZXING_CONFIG, config);
+        startActivityForResult(intent, REQUEST_CODE_SCAN);
+    }
+
+    /**
+     * 拍摄视频或选视频
+     */
+    public void showVideoPopupWindow(final int code1, final int code2) {
+        popupWindow_view = LayoutInflater.from(mActivity).inflate(R.layout.camera_layout, null);
+        Button camera_btn = popupWindow_view.findViewById(R.id.camera_btn);
+        Button photo_btn = popupWindow_view.findViewById(R.id.photo_btn);
+        Button cancel_btn = popupWindow_view.findViewById(R.id.cancel_btn);
+        camera_btn.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onClick(View view) {
+                openVideo(code1);
+                mPopupWindow.dismiss();
+            }
+        });
+        photo_btn.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onClick(View view) {
+                pickerVideo(code2);
+                mPopupWindow.dismiss();
+            }
+        });
+        cancel_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPopupWindow.dismiss();
+            }
+        });
+        mPopupWindow = new PopupWindow(popupWindow_view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        mPopupWindow.setAnimationStyle(R.style.popwindow_anim_style);
+        mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+        mPopupWindow.setFocusable(true);
+        mPopupWindow.setOutsideTouchable(true);
+        mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                MyUtils.setWindowAlpa(mActivity, false);
+            }
+        });
+        if (mPopupWindow != null && !mPopupWindow.isShowing()) {
+//            popupWindow.showAsDropDown(tv, 0, 10);
+            mPopupWindow.showAtLocation(popupWindow_view, Gravity.BOTTOM, 0, 0);
+//            MyUtils.backgroundAlpha(mActivity,0.5f);
+        }
+        MyUtils.setWindowAlpa(mActivity, true);
+    }
+
+    public void openVideo(int code) {
+        Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+        String f = System.currentTimeMillis() + ".mp4";
+        String fileDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy";
+        videopath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy/" + f;
+        File dirfile = new File(fileDir);
+        if (!dirfile.exists()) {
+            dirfile.mkdirs();
+        }
+        File file = new File(videopath);
+        Uri fileUri;
+        if (Build.VERSION.SDK_INT >= 24) {
+            fileUri = FileProvider.getUriForFile(mActivity, BuildConfig.APPLICATION_ID + ".fileprovider", file);
+        } else {
+            fileUri = Uri.fromFile(file);
+        }
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+        intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
+
+        startActivityForResult(intent, code);
     }
 
 
@@ -519,6 +659,9 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
             if (mActivity.checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 permissions.add(Manifest.permission.CAMERA);
             }
+            if (mActivity.checkSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+                permissions.add(Manifest.permission.RECORD_AUDIO);
+            }
             if (permissions.size() == 0) {
                 return true;
             } else {
@@ -527,7 +670,9 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
         }
         return true;
     }
+
     //申请相关权限:返回监听
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -545,18 +690,33 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                     toSetting();
                 }
                 break;
+            case 10004:
+                if (size == grantResults.length) {//允许
+                    pickerVideo(909);
+                } else {//拒绝
+                    toSetting();
+                }
+                break;
+            case 10009:
+                if (size == grantResults.length) {//允许
+                    showVideoPopupWindow(901, 909);
+                } else {//拒绝
+                    toSetting();
+                }
+                break;
             default:
                 break;
 
         }
     }
+
     //设置权限
     private void toSetting() {
 
         new AlertDialog.Builder(this).setTitle("相机和存储权限未授权")
                 .setMessage("是否前往设置权限？")
                 //  取消选项
-                .setNegativeButton("取消",new DialogInterface.OnClickListener(){
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -574,6 +734,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                 .setCancelable(false)
                 .show();
     }
+
     //返回图片处理
     @SuppressLint("NewApi")
     @Override
@@ -590,8 +751,12 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 //            }
 //
 //        }
-        mEtSingleNumber.setEnabled(true);
-        mEtSingleNumber1.setEnabled(true);
+        if (mLlCode.getVisibility() == View.VISIBLE) {
+            mEtSingleNumber.setEnabled(true);
+        }
+        if (mLlCode1.getVisibility() == View.VISIBLE) {
+            mEtSingleNumber1.setEnabled(true);
+        }
         // 扫描二维码/条码回传
         if (requestCode == REQUEST_CODE_SCAN && resultCode == RESULT_OK) {
 
@@ -834,6 +999,37 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                     service_img_map.put(3, newFile);
                 }
                 break;
+            //拍摄视频
+            case 901:
+                if (resultCode == -1) {
+                    if (data != null) {
+                        Glide.with(mActivity).load(videopath).into(mIvVideo);
+                        file = new File(videopath);
+                        mIvShipin.setVisibility(View.VISIBLE);
+                        mIvDelete.setVisibility(View.VISIBLE);
+                    }
+                }
+                if (file != null) {
+                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+                    service_img_map.put(3, newFile);
+                }
+                break;
+            //选择视频
+            case 909:
+                if (resultCode == PickerConfig.RESULT_CODE) {
+                    select =((ArrayList) data.getParcelableArrayListExtra(PickerConfig.EXTRA_RESULT));
+                    ArrayList<String> list = new ArrayList<>();
+                    Log.i("select", "select.size" + select.size());
+                    for (Media media : select) {
+                        list.add(media.path);
+                        Glide.with(mActivity).load(media.path).into(mIvVideo);
+                        videopath=media.path;
+                        file = new File(videopath);
+                        mIvShipin.setVisibility(View.VISIBLE);
+                        mIvDelete.setVisibility(View.VISIBLE);
+                    }
+                }
+                break;
 
 
         }
@@ -841,7 +1037,6 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
     }
 
     public void ReuturnAccessoryPicUpload(HashMap<Integer, File> map, String EndRemark) {
-        showLoading();
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         if (map.get(0) != null) {
             builder.addFormDataPart("img1", map.get(0).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(0)));
@@ -858,6 +1053,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
         builder.addFormDataPart("OrderID", orderID);
         builder.addFormDataPart("RepairExplain", RepairExplain);
         builder.addFormDataPart("EndRemark", EndRemark);
+        builder.addFormDataPart("EndVideo", EndVideo);
         builder.addFormDataPart("ProductID", ProductID);
         builder.addFormDataPart("BarCode", barCode);
         Log.d(TAG, builder.toString());
@@ -868,7 +1064,6 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 
     /*安装服务图片*/
     public void ServiceOrderPicUpload(HashMap<Integer, File> map, String EndRemark) {
-        showLoading();
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         if (map.get(0) != null) {
             builder.addFormDataPart("img1", map.get(0).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(0)));
@@ -889,19 +1084,79 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
         mPresenter.ReuturnAccessoryPicUpload(requestBody);
     }
 
-    public void showLoading() {
-        dialog.setLoadingBuilder(Z_TYPE.SINGLE_CIRCLE)//设置类型
-                .setLoadingColor(Color.BLACK)//颜色
-                .setHintText("提交中请稍后...")
-                .setHintTextSize(14) // 设置字体大小 dp
-                .setHintTextColor(Color.BLACK)  // 设置字体颜色
-                .setDurationTime(1) // 设置动画时间百分比 - 0.5倍
-                .setCanceledOnTouchOutside(false)//点击外部无法取消
-                .show();
+    private void getHost(String filePath) {
+        if (videopath==null){
+            submit();
+            return;
+        }
+        //接口
+        String path = Config.BASE_URL + "Oss/GetPolicyToken";
+
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .connectTimeout(5, TimeUnit.MINUTES)
+                .readTimeout(5, TimeUnit.MINUTES)
+                .build();
+        final Request request = new Request.Builder()
+                .addHeader("adminToken", spUtils.getString("adminToken"))
+                .addHeader("userName", spUtils.getString("userName"))
+                .url(path)
+                .get()
+                .build();
+        Call call = okHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                hideProgress();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String str = response.body().string();
+                Gson gson=new Gson();
+                PolicyToken policyToken=gson.fromJson(str.replaceAll(" ",""),PolicyToken.class);
+                uploadVideo(policyToken.getData(),filePath);
+            }
+        });
+
     }
 
-    public void cancleLoading() {
-        dialog.dismiss();
+    private void uploadVideo(PolicyToken.DataBean policyToken,String filePath) {
+        File file=new File(filePath);
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        builder.addFormDataPart("OSSAccessKeyId", policyToken.getAccessid());
+        builder.addFormDataPart("policy", policyToken.getPolicy());
+        builder.addFormDataPart("Signature", policyToken.getSignature());
+        builder.addFormDataPart("name", policyToken.getFileName());
+        builder.addFormDataPart("key", "Video/OrderEnd/${filename}");
+        builder.addFormDataPart("success_action_status", "201");
+        builder.addFormDataPart("file", policyToken.getFileName(), RequestBody.create(MediaType.parse("application/octet-stream"), file));
+        MultipartBody requestBody = builder.build();
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .connectTimeout(5, TimeUnit.MINUTES)
+                .readTimeout(5, TimeUnit.MINUTES)
+                .build();
+        final Request request = new Request.Builder()
+                .url(policyToken.getHost())
+                .post(requestBody)
+                .build();
+        Call call = okHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                hideProgress();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String str = response.body().string();
+                System.out.println("上传结果："+str);
+                if (response.code()==201){
+                    EndVideo=policyToken.getFileName()+filePath.substring(filePath.lastIndexOf("."));
+                    submit();
+//                    ReuturnAccessoryPicUpload(return_img_map, EndRemark,EndVideo);
+                }
+            }
+        });
 
     }
 

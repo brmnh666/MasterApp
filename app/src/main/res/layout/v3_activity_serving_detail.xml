@@ -599,6 +599,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_fee"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
@@ -773,18 +774,6 @@
                     android:textColor="@color/black"
                     android:textSize="14sp"/>
 
-                <TextView
-                    android:id="@+id/tv_transfer"
-                    android:layout_width="80dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/v3_blue_white_shape"
-                    android:gravity="center"
-                    android:text="转   派"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/tv_reservation"
@@ -831,7 +820,29 @@
                     android:textSize="14sp" />
 
             </LinearLayout>
-
+            <TextView
+                android:id="@+id/tv_close"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/v3_blue_white_shape"
+                android:gravity="center"
+                android:text="取消工单"
+                android:textColor="@color/black"
+                android:textSize="14sp"/>
+            <TextView
+                android:id="@+id/tv_transfer"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/v3_blue_white_shape"
+                android:gravity="center"
+                android:text="转   派"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:visibility="gone" />
             <TextView
                 android:id="@+id/tv_upload"
                 android:layout_width="100dp"

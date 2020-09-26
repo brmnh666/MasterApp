@@ -133,6 +133,8 @@ public class OrderSettingActivity extends BaseActivity<OrderSettingPresenter, Or
             case R.id.tv_team_size:
                 View Cancelview = LayoutInflater.from(mActivity).inflate(R.layout.dialog_cancel, null);
                 et_message = Cancelview.findViewById(R.id.et_message);
+                LinearLayout ll_spinner = Cancelview.findViewById(R.id.ll_spinner);
+                ll_spinner.setVisibility(View.GONE);
                 Button negtive = Cancelview.findViewById(R.id.negtive);
                 Button positive = Cancelview.findViewById(R.id.positive);
                 TextView title = Cancelview.findViewById(R.id.title);

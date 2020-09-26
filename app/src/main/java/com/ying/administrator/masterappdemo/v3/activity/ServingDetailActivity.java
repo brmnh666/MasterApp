@@ -99,6 +99,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import cn.jpush.android.api.JPushInterface;
+import cn.jzvd.JzvdStd;
 import io.reactivex.functions.Consumer;
 
 import static android.widget.Toast.LENGTH_SHORT;
@@ -209,6 +210,10 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
     LinearLayout mLlDjd;
     @BindView(R.id.tv_cancel)
     TextView mTvCancel;
+    @BindView(R.id.tv_close)
+    TextView mTvClose;
+    @BindView(R.id.ll_fee)
+    LinearLayout mLlFee;
 
     private String orderId;
     private WorkOrder.DataBean data;
@@ -249,7 +254,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
     private AlertDialog customdialog_home_dialog;
     private String codeValue;
     private Spinner mSpinnerObject;
-    private boolean hurry=true;
+    private boolean hurry = true;
     private LinearLayout ll_close;
     private WorkOrder.OrderProductModelsBean orderProductModelsBean;
 
@@ -317,11 +322,13 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                         intent.putExtra("data", data);
                         startActivity(intent);
                         break;
+                    case R.id.fl_video:
+                        JzvdStd.startFullscreenDirectly(mActivity, JzvdStd.class,"http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/gear2/prog_index.m3u8","haha");
+                        break;
                 }
             }
         });
         mPresenter.GetOrderInfo(orderId);
-        mPresenter.GetUserInfoList(userId, "1");
         myClipboard = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -352,6 +359,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
         mLlApplyForRemoteFee.setOnClickListener(this);//申请远程费
 
         mTvCancel.setOnClickListener(this);//拒接工单
+        mTvClose.setOnClickListener(this);//拒接工单
         mTvCancelOrder.setOnClickListener(this);//拒接工单
         mTvOrders.setOnClickListener(this);//接单
     }
@@ -360,6 +368,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.tv_close://拒接工单
             case R.id.tv_cancel://拒接工单
             case R.id.tv_cancel_order://拒接工单
                 yn = false;
@@ -476,12 +485,12 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
 
     //复制
     private void copy() {
-        String prod="";
+        String prod = "";
         for (int i = 0; i < data.getOrderProductModels().size(); i++) {
             orderProductModelsBean = data.getOrderProductModels().get(i);
-            prod+= orderProductModelsBean.getBrandName()+" "+orderProductModelsBean.getProductType()+"-"+orderProductModelsBean.getSubCategoryName()+"*"+orderProductModelsBean.getNum()+",";
+            prod += orderProductModelsBean.getBrandName() + " " + orderProductModelsBean.getProductType() + "-" + orderProductModelsBean.getSubCategoryName() + "*" + orderProductModelsBean.getNum() + ",";
         }
-        if (prod.contains(",")){
+        if (prod.contains(",")) {
             prod = prod.substring(0, prod.lastIndexOf(","));
         }
         myClip = ClipData.newPlainText("", "下单厂家：" + data.getInvoiceName() + "\n"
@@ -804,9 +813,10 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
             reservation_again();
         }
     }
+
     //是否立即预约
     private void hurry() {
-        hurry=false;
+        hurry = false;
         under_review = LayoutInflater.from(mActivity).inflate(R.layout.v3_dialog_hurry, null);
         TextView tv_cancel = under_review.findViewById(R.id.tv_cancel);
         TextView tv_reservation = under_review.findViewById(R.id.tv_reservation);
@@ -1172,10 +1182,19 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
             case 200:
                 userInfo = baseResult.getData().getData().get(0);
                 if (userInfo.getParentUserID() == null || "".equals(userInfo.getParentUserID())) {//如果没有父账号说明自己是父账号 显示 转派
-                    mPresenter.GetChildAccountByParentUserID(userId);
+                    if ("2".equals(data.getState()) || "4".equals(data.getState())) {//待预约或服务中
+                        mPresenter.GetChildAccountByParentUserID(userId);
+                        // FIXME: 2020-09-18 子账号屏蔽费用明细
+                        mTvTransfer.setVisibility(View.VISIBLE);
+                    } else {
+                        mTvTransfer.setVisibility(View.GONE);
+                    }
+                    mLlFee.setVisibility(View.VISIBLE);
                 } else {
+                    mLlFee.setVisibility(View.GONE);
                     mTvTransfer.setVisibility(View.GONE);
                 }
+
                 break;
         }
     }
@@ -1252,23 +1271,25 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                             }
                         }
                         mTvReservationAgain.setVisibility(View.VISIBLE);
+                        mTvClose.setVisibility(View.VISIBLE);
                     } else {
                         mTvUpload.setVisibility(View.GONE);
                         mTvReservationAgain.setVisibility(View.GONE);
+                        mTvClose.setVisibility(View.GONE);
                     }
 
                     if ("2".equals(data.getState())) {//待预约
-                        if (hurry){
+                        if (hurry) {
                             hurry();
                         }
                         mLlReservation.setVisibility(View.VISIBLE);//预约成功按钮
                         mLlApplyForRemoteFee.setVisibility(View.VISIBLE);//远程费
-                        mPresenter.GetUserInfoList(userId, "1");
                     } else {
                         mLlReservation.setVisibility(View.GONE);
                         mLlApplyForRemoteFee.setVisibility(View.GONE);
-                        mTvTransfer.setVisibility(View.GONE);
                     }
+                    mPresenter.GetUserInfoList(userId, "1");
+
                     if ("1".equals(data.getState())) {//待接单
                         mLlDjd.setVisibility(View.VISIBLE);
                     } else {

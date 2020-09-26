@@ -18,6 +18,7 @@ public class ImgPicAdapter extends BaseQuickAdapter<String, LayoutParamsViewHold
 
     @Override
     protected void convert(LayoutParamsViewHolder helper, String item) {
+        helper.setGone(R.id.ll_delete,false);
         GlideUtil.loadImageViewLoding(mContext, Config.Leave_Message_URL +item, (ImageView) helper.getView(R.id.img), R.drawable.image_loading,R.drawable.image_loading);
     }
 }

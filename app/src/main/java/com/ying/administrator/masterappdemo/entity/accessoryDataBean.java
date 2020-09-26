@@ -87,7 +87,7 @@ public class accessoryDataBean implements Serializable {
     private String PostPayType;
     private Object RecipientType;
     private Object OldReturnRequest;
-    private Object AddressBack;
+    private String AddressBack;
     private int QApplyNum;
     private Object Order;
     private int limit;
@@ -383,11 +383,11 @@ public class accessoryDataBean implements Serializable {
         this.OldReturnRequest = OldReturnRequest;
     }
 
-    public Object getAddressBack() {
+    public String getAddressBack() {
         return AddressBack;
     }
 
-    public void setAddressBack(Object AddressBack) {
+    public void setAddressBack(String AddressBack) {
         this.AddressBack = AddressBack;
     }
 

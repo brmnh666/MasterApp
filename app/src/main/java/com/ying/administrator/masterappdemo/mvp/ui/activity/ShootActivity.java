@@ -1,23 +1,19 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
-import com.baidu.ocr.ui.camera.CameraActivity;
 import com.cjt2325.cameralibrary.JCameraView;
 import com.cjt2325.cameralibrary.listener.ClickListener;
 import com.cjt2325.cameralibrary.listener.ErrorListener;
 import com.cjt2325.cameralibrary.listener.JCameraListener;
-import com.m7.imkfsdk.utils.ToastUtils;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 
@@ -27,6 +23,8 @@ import butterknife.ButterKnife;
 public class ShootActivity extends BaseActivity {
     @BindView(R.id.jcameraview)
     JCameraView mJcameraview;
+    private String video_url;
+    private Bitmap firstFrame;
     private Bitmap bit;
 
     @Override
@@ -40,10 +38,12 @@ public class ShootActivity extends BaseActivity {
         mJcameraview.setSaveVideoPath(Environment.getExternalStorageDirectory().getPath() + File.separator + "JCamera");
 
 //设置只能录像或只能拍照或两种都可以（默认两种都可以）
-        mJcameraview.setFeatures(JCameraView.BUTTON_STATE_BOTH);
+        mJcameraview.setFeatures(JCameraView.BUTTON_STATE_ONLY_RECORDER);
 
 //设置视频质量
         mJcameraview.setMediaQuality(JCameraView.MEDIA_QUALITY_MIDDLE);
+
+        mJcameraview.setTip("长按拍摄视频");
 
         //JCameraView监听
         mJcameraview.setErrorLisenter(new ErrorListener() {
@@ -63,39 +63,32 @@ public class ShootActivity extends BaseActivity {
         mJcameraview.setJCameraLisenter(new JCameraListener() {
             @Override
             public void captureSuccess(Bitmap bitmap) {
-                //获取图片bitmap
-                Log.i("JCameraView", "bitmap = " + bitmap.getWidth());
-                bit = bitmap;
-//                ToastUtils.showShort(bitmap+"");
-                EventBus.getDefault().post(bit);
-                ShootActivity.this.finish();
+                finish();
             }
 
             @Override
             public void recordSuccess(String url, Bitmap firstFrame) {
-                //获取视频路径
-                Log.i("CJT", "url = " + url);
-//                ToastUtils.showShort(url);
-                bit=firstFrame;
-                EventBus.getDefault().post(bit);
-                ShootActivity.this.finish();
+                Intent intent=new Intent();
+                intent.putExtra("video_url",url);
+                intent.putExtra("firstFrame",firstFrame);
+                setResult(200,intent);
+                finish();
             }
         });
 
-//左边按钮点击事件
+        //左边按钮点击事件
         mJcameraview.setLeftClickListener(new ClickListener() {
             @Override
             public void onClick() {
-                ShootActivity.this.finish();
+                finish();
             }
         });
         //右边按钮点击事件
         mJcameraview.setRightClickListener(new ClickListener() {
             @Override
             public void onClick() {
-//                Toast.makeText(ShootActivity.this,"Right",Toast.LENGTH_SHORT).show();
-//                EventBus.getDefault().post(bit);
-                ShootActivity.this.finish();
+
+                finish();
             }
         });
 

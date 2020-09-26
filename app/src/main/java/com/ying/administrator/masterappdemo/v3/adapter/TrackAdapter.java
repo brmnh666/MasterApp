@@ -24,7 +24,7 @@ public class TrackAdapter extends BaseQuickAdapter<Track, LayoutParamsViewHolder
             String type = item.getUserID().substring(0, item.getUserID().indexOf(":"));
             String name = item.getUserID().substring(item.getUserID().lastIndexOf(":") + 1);
             if ("工厂".equals(type)) {
-                helper.setText(R.id.tv_time, name);
+                helper.setText(R.id.tv_time, type);
             } else if ("师傅".equals(type)) {
                 helper.setText(R.id.tv_time, name);
             } else {
