@@ -461,6 +461,7 @@
                     android:src="@mipmap/v3_yijian"
                     android:layout_gravity="center"/>
                 <TextView
+                    android:id="@+id/tv_sign"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

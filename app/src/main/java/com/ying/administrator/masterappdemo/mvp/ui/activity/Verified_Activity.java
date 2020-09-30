@@ -55,8 +55,6 @@ import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.util.imageutil.CompressHelper;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
-import com.zyao89.view.zloading.ZLoadingDialog;
-import com.zyao89.view.zloading.Z_TYPE;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -142,7 +140,6 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
 
     private UserInfo parentUserInfo;
     ArrayList<Media> select = new ArrayList<>();
-    ZLoadingDialog dialog = new ZLoadingDialog(this); //loading
     //声明AMapLocationClient类对象
     public AMapLocationClient mLocationClient = null;
     //声明AMapLocationClientOption对象
@@ -386,7 +383,7 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
 //                        return;
 //                    }
 
-                    showLoading();
+                    showProgress();
                     UserInfo.UserInfoDean parentuserInfoDean = parentUserInfo.getData().get(0);
                     String districtCode = parentuserInfoDean.getDistrictCode();
                     String provinceCode = parentuserInfoDean.getProvinceCode();
@@ -448,11 +445,11 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                         return;
                     }
                     if ("Y".equals(Guarantee)) {
-                        showLoading();
+                        showProgress();
                         mPresenter.ApplyAuthInfo(UserID, mActualName, Sex, mIdNumber, mAddress, NodeIds, mProvince, mCity, mDistrict, mStreet, Double.toString(mLongitude), Double.toString(mLatitude), codestr,"1");
 
                     } else {
-                        showLoading();
+                        showProgress();
                         mPresenter.ApplyAuthInfo(UserID, mActualName, Sex, mIdNumber, mAddress, NodeIds, mProvince, mCity, mDistrict, mStreet, "", "", codestr,"1");
                     }
 
@@ -864,7 +861,7 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
                 }
                 break;
             default:
-                cancleLoading();
+                hideProgress();
                 ToastUtils.showShort("提交失败");
                 break;
         }
@@ -896,22 +893,6 @@ public class Verified_Activity extends BaseActivity<VerifiedPresenter, VerifiedM
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
-    }
-
-
-    public void showLoading() {
-        dialog.setLoadingBuilder(Z_TYPE.SINGLE_CIRCLE)//设置类型
-                .setLoadingColor(Color.BLACK)//颜色
-                .setHintText("提交中请稍后...")
-                .setHintTextSize(14) // 设置字体大小 dp
-                .setHintTextColor(Color.BLACK)  // 设置字体颜色
-                .setDurationTime(1) // 设置动画时间百分比 - 0.5倍
-                .setCanceledOnTouchOutside(false)//点击外部无法取消
-                .show();
-    }
-
-    public void cancleLoading() {
-        dialog.dismiss();
     }
 
 

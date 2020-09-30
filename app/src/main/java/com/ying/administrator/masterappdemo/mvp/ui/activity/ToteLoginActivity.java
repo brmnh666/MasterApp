@@ -2,7 +2,6 @@ package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -26,8 +25,6 @@ import com.ying.administrator.masterappdemo.mvp.contract.LoginContract;
 import com.ying.administrator.masterappdemo.mvp.model.LoginModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.LoginPresenter;
 import com.ying.administrator.masterappdemo.v3.activity.MainActivity;
-import com.zyao89.view.zloading.ZLoadingDialog;
-import com.zyao89.view.zloading.Z_TYPE;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,7 +56,6 @@ public class ToteLoginActivity extends BaseActivity<LoginPresenter, LoginModel> 
 
     private String Phone;
     private SPUtils spUtils;
-    ZLoadingDialog dialog = new ZLoadingDialog(this); //loading
     private Intent intent;
 
 
@@ -127,7 +123,7 @@ public class ToteLoginActivity extends BaseActivity<LoginPresenter, LoginModel> 
                     ToastUtils.showShort("请阅读并同意服务协议与隐私政策");
                     return;
                 }
-                showLoading();
+                showProgress();
                 mPresenter.LoginOnMessage(Phone, mEtLoginCode.getText().toString());
 
                 break;
@@ -219,7 +215,7 @@ public class ToteLoginActivity extends BaseActivity<LoginPresenter, LoginModel> 
         switch (baseResult.getStatusCode()) {
             case 200:
                 if (baseResult.getData().isItem1()) {
-                    cancleLoading();
+                    hideProgress();
                     Log.d("=====>", "登陆成功");
 
                     spUtils.put("adminToken", baseResult.getData().getItem2());
@@ -237,7 +233,7 @@ public class ToteLoginActivity extends BaseActivity<LoginPresenter, LoginModel> 
                 Toast.makeText(ToteLoginActivity.this, "请输入正确的验证码", Toast.LENGTH_SHORT).show();
                 break;
             default:
-                cancleLoading();
+                hideProgress();
                 break;
         }
     }
@@ -286,19 +282,4 @@ public class ToteLoginActivity extends BaseActivity<LoginPresenter, LoginModel> 
         }
     }
 
-
-    public void showLoading() {
-        dialog.setLoadingBuilder(Z_TYPE.SINGLE_CIRCLE)//设置类型
-                .setLoadingColor(Color.BLACK)//颜色
-                .setHintText("登陆中请稍后...")
-                .setHintTextSize(14) // 设置字体大小 dp
-                .setHintTextColor(Color.BLACK)  // 设置字体颜色
-                .setDurationTime(0.5) // 设置动画时间百分比 - 0.5倍
-                .setCanceledOnTouchOutside(false)//点击外部无法取消
-                .show();
-    }
-
-    public void cancleLoading() {
-        dialog.dismiss();
-    }
 }

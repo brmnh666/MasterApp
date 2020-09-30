@@ -6,6 +6,7 @@ import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.base.BaseView;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
+import com.ying.administrator.masterappdemo.v3.bean.GetSignContractManageResult;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
@@ -15,17 +16,20 @@ public interface MineContract {
         Observable<BaseResult<UserInfo>> GetUserInfoList(String UserID, String limit);
         /*个人头像修改*/
         Observable<BaseResult<Data<String>>> UploadAvator(RequestBody json);
+        Observable<GetSignContractManageResult> GetSignContractManage ();
     }
 
     interface View extends BaseView{
         void GetUserInfoList(BaseResult<UserInfo> baseResult);
         /*个人头像修改*/
         void UploadAvator(BaseResult<Data<String>> baseResult);
+        void GetSignContractManage(GetSignContractManageResult baseResult);
     }
 
     abstract class Presenter extends BasePresenter<View,Model>{
         public abstract void GetUserInfoList(String UserID,String limit);
         /*个人头像修改*/
         public abstract void UploadAvator(RequestBody json);
+        public abstract void GetSignContractManage();
     }
 }

@@ -1,7 +1,6 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -22,8 +21,6 @@ import com.ying.administrator.masterappdemo.mvp.contract.AddSkillsContract;
 import com.ying.administrator.masterappdemo.mvp.model.AddSkillsModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.AddSkillsPresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.CarCircuitAdapter;
-import com.zyao89.view.zloading.ZLoadingDialog;
-import com.zyao89.view.zloading.Z_TYPE;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +46,6 @@ public class MySkillActivity2 extends BaseActivity<AddSkillsPresenter, AddSkills
 
     private List<MySkills> mySkillsList = new ArrayList<>();
     private List<Category> popularList;
-    ZLoadingDialog dialog = new ZLoadingDialog(this); //loading
     private CarCircuitAdapter circuitAdapter;
     private int position;
     private String skills;
@@ -68,7 +64,7 @@ public class MySkillActivity2 extends BaseActivity<AddSkillsPresenter, AddSkills
     @Override
     protected void initView() {
         mTvTitle.setText("我的技能");
-        showLoading();
+        showProgress();
         mPresenter.GetFactoryCategory("999");
     }
 
@@ -191,7 +187,7 @@ public class MySkillActivity2 extends BaseActivity<AddSkillsPresenter, AddSkills
                 } else {
                     ToastUtils.showShort("获取分类失败！");
                 }
-                cancleLoading();
+                hideProgress();
                 break;
             case 401:
 //                ToastUtils.showShort(baseResult.getData());
@@ -214,7 +210,7 @@ public class MySkillActivity2 extends BaseActivity<AddSkillsPresenter, AddSkills
                 } else {
                     ToastUtils.showShort("获取分类失败！");
                 }
-                cancleLoading();
+                hideProgress();
                 break;
             case 401:
 //                ToastUtils.showShort(baseResult.getData());
@@ -232,18 +228,4 @@ public class MySkillActivity2 extends BaseActivity<AddSkillsPresenter, AddSkills
 
     }
 
-    public void showLoading() {
-        dialog.setLoadingBuilder(Z_TYPE.SINGLE_CIRCLE)//设置类型
-                .setLoadingColor(Color.BLACK)//颜色
-                .setHintText("正在加载...")
-                .setHintTextSize(14) // 设置字体大小 dp
-                .setHintTextColor(Color.BLACK)  // 设置字体颜色
-                .setDurationTime(0.5) // 设置动画时间百分比 - 0.5倍
-                .setCanceledOnTouchOutside(false)//点击外部无法取消
-                .show();
-    }
-
-    public void cancleLoading() {
-        dialog.dismiss();
-    }
 }

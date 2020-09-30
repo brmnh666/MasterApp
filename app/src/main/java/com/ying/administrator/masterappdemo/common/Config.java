@@ -19,11 +19,14 @@ public class Config {
     public static final String Img_URL="https://img.xigyu.com/Pics/";//base
 //    public static final String BASE_URL = "http://192.168.101.11:8810/api/";//服务端地址
 //    public static final String BASE_URL = "http://42.51.69.35:8080/api/";//MARK:工厂师傅测试服
-//    public static final String BASE_URL = "http://192.168.1.203:8810/api/";//MARK:工厂师傅测试服2
-    public static final String BASE_URL = "https://api.xigyu.com/api/";//服务端地址  正式服
+    public static final String BASE_URL = "http://192.168.1.203:8810/api/";//MARK:工厂师傅测试服2
+//    public static final String BASE_URL = "https://api.xigyu.com/api/";//服务端地址  正式服
 //    public static final String BASE_URL = "http://fapi.xigyu.com/api/";//测试服
 //    public static final String BASE_URL = "http://47.96.126.145:8090/api/";//测试服
 //    public static final String BASE_URL = "http://admin.xigyu.com/api/";//服务端地址
+
+    public static final String VIDEO_URL="http://xigyubuckettest.oss-cn-hangzhou.aliyuncs.com";//视频
+
     public static final String HEAD_URL=Img_URL+"Avator/";//头像地址
     public static final String Leave_Message_URL=Img_URL+"LeaveMessageImg/";//留言地址
     public static final String Leave_product_URL=Img_URL+"productImg/";//产品地址

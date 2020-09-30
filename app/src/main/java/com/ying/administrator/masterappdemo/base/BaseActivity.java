@@ -30,6 +30,8 @@ import com.zyao89.view.zloading.ZLoadingDialog;
 import com.zyao89.view.zloading.Z_TYPE;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -244,11 +246,12 @@ public abstract class BaseActivity<P extends BasePresenter, M extends BaseModel>
         dialog=new ZLoadingDialog(mActivity);
         dialog.setLoadingBuilder(Z_TYPE.ROTATE_CIRCLE)//设置类型
                 .setLoadingColor(Color.BLACK)//颜色
-                .setHintText("...")
+                .setHintText("请稍后...")
                 .setHintTextSize(14) // 设置字体大小 dp
                 .setHintTextColor(Color.BLACK)  // 设置字体颜色
                 .setDurationTime(1) // 设置动画时间百分比 - 0.5倍
                 .setCanceledOnTouchOutside(false)//点击外部无法取消
+//                .setCancelable(false)//返回键无法取消
                 .show();
     }
 
@@ -305,29 +308,11 @@ public abstract class BaseActivity<P extends BasePresenter, M extends BaseModel>
             startActivity(intent);
         }
     }
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    public void Event(String message) {
-//        if ("账号在别处登录".equals(message)){
-//            final CommonDialog_Home dialog = new CommonDialog_Home(mActivity);
-//            dialog.setMessage("账号在别处登录是否重新登录")
-//                    //.setImageResId(R.mipmap.ic_launcher)
-//                    .setTitle("提示")
-//                    .setSingle(true).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
-//                @Override
-//                public void onPositiveClick() {//重新登录
-//                    ActivityUtils.finishAllActivities();
-//                    startActivity(new Intent(mActivity, LoginActivity.class));
-////                    finish();
-//                }
-//
-//                @Override
-//                public void onNegtiveClick() {//取消
-//                    dialog.dismiss();
-//                    // Toast.makeText(MainActivity.this,"ssss",Toast.LENGTH_SHORT).show();
-//                }
-//            }).show();
-//        }
-//    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(Throwable e) {
+        hideProgress();
+    }
+
 
     @NonNull
     @Override

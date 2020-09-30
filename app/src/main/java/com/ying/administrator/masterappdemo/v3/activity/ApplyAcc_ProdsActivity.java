@@ -16,7 +16,6 @@ import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.AddressList;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.CompleteWorkOrderActivity;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.WebActivity;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.v3.adapter.ProdAdapter;
 import com.ying.administrator.masterappdemo.v3.bean.ApplicationResult;
@@ -115,10 +114,20 @@ public class ApplyAcc_ProdsActivity extends BaseActivity<ApplyAccPresenter, Appl
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 switch (view.getId()){
                     case R.id.ll_course:
-                        intent = new Intent(mActivity, WebActivity.class);
-                        intent.putExtra("Url", list_prod.get(position).getExplains());
-                        intent.putExtra("Title", "产品资料");
+                        intent = new Intent(mActivity, CourseActivity.class);
+                        intent.putExtra("prod", list_prod.get(position));
+                        intent.putExtra("data", data);
                         startActivity(intent);
+                        break;
+                    case R.id.fl_video:
+                        String url= list_prod.get(position).getEndvideo().get(0);
+                        intent=new Intent(mActivity,VideoActivity.class);
+                        intent.putExtra("url", url);
+                        startActivity(intent);
+//                        String url= Config.VIDEO_URL+list_prod.get(position).getEndvideo().get(0);
+////                        String url="http://jzvd.nathen.cn/342a5f7ef6124a4a8faf00e738b8bee4/cf6d9db0bd4d41f59d09ea0a81e918fd-5287d2089db37e62345123a1be272f8b.mp4";
+//                        JzvdStd.startFullscreenDirectly(mActivity, JzvdStd.class,
+//                                url,"");
                         break;
                 }
             }

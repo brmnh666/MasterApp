@@ -6,7 +6,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -53,8 +52,6 @@ import com.ying.administrator.masterappdemo.util.Glide4Engine;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
-import com.zyao89.view.zloading.ZLoadingDialog;
-import com.zyao89.view.zloading.Z_TYPE;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -149,7 +146,6 @@ public class VerifiedUpdateActivity extends BaseActivity<VerifiedPresenter, Veri
     private int mGpsAccuracyStatus;
     private String mTime;
     private ObjectAnimator animator; //刷新图片属性动画
-    ZLoadingDialog dialog = new ZLoadingDialog(this);
     //声明定位回调监听器
     public AMapLocationListener mLocationListener = new AMapLocationListener() {
         @Override
@@ -365,10 +361,10 @@ public class VerifiedUpdateActivity extends BaseActivity<VerifiedPresenter, Veri
                     return;
                 }
                 if ("Y".equals(Guarantee)) {
-                    showLoading();
+                    showProgress();
                     mPresenter.ApplyAuthInfo(UserID, mActualName, Sex, mIdNumber, mAddress, NodeIds, mProvince, mCity, mDistrict, mStreet, Double.toString(mLongitude), Double.toString(mLatitude), codestr,"2");
                 }else{
-                    showLoading();
+                    showProgress();
                     mPresenter.ApplyAuthInfo(UserID, mActualName, Sex, mIdNumber, mAddress, NodeIds, mProvince, mCity, mDistrict, mStreet, "", "", codestr,"2");
                 }
                 break;
@@ -745,7 +741,7 @@ public class VerifiedUpdateActivity extends BaseActivity<VerifiedPresenter, Veri
                 }
                 break;
             default:
-                cancleLoading();
+                hideProgress();
                 ToastUtils.showShort("提交失败");
                 break;
         }
@@ -768,18 +764,4 @@ public class VerifiedUpdateActivity extends BaseActivity<VerifiedPresenter, Veri
         ButterKnife.bind(this);
     }
 
-    public void showLoading(){
-        dialog.setLoadingBuilder(Z_TYPE.ROTATE_CIRCLE)//设置类型
-        .setLoadingColor(Color.BLACK)//颜色
-        .setHintText("提交中请稍后...")
-        .setHintTextSize(14) // 设置字体大小 dp
-        .setHintTextColor(Color.BLACK)  // 设置字体颜色
-        .setDurationTime(1) // 设置动画时间百分比 - 0.5倍
-        .setCanceledOnTouchOutside(false)//点击外部无法取消
-        .show();
-    }
-
-    public void cancleLoading(){
-        dialog.dismiss();
-    }
 }

@@ -99,7 +99,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import cn.jpush.android.api.JPushInterface;
-import cn.jzvd.JzvdStd;
+import cn.jzvd.Jzvd;
 import io.reactivex.functions.Consumer;
 
 import static android.widget.Toast.LENGTH_SHORT;
@@ -323,7 +323,14 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                         startActivity(intent);
                         break;
                     case R.id.fl_video:
-                        JzvdStd.startFullscreenDirectly(mActivity, JzvdStd.class,"http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/gear2/prog_index.m3u8","haha");
+                        String url= prodList.get(position).getEndvideo().get(0);
+                        intent=new Intent(mActivity,VideoActivity.class);
+                        intent.putExtra("url", url);
+                        startActivity(intent);
+//                        String url= Config.VIDEO_URL+prodList.get(position).getEndvideo().get(0);
+////                        String url="http://jzvd.nathen.cn/342a5f7ef6124a4a8faf00e738b8bee4/cf6d9db0bd4d41f59d09ea0a81e918fd-5287d2089db37e62345123a1be272f8b.mp4";
+//                        JzvdStd.startFullscreenDirectly(mActivity, JzvdStd.class,
+//                                url,"");
                         break;
                 }
             }
@@ -1000,6 +1007,12 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
 //        ButterKnife.bind(this);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Jzvd.releaseAllVideos();
+    }
+
     /**
      * 选择上门时间
      */
@@ -1545,6 +1558,9 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
 
     @Override
     public void onBackPressed() {
+        if (Jzvd.backPress()) {
+            return;
+        }
         super.onBackPressed();
         EventBus.getDefault().post(20);//刷新选项卡数量全局搜case 20:
     }

@@ -798,6 +798,14 @@
             android:theme="@style/AppTheme.NoActionBar1"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <!--服务中详情-->
+        <activity android:name=".v3.activity.VideoActivity"
+            android:theme="@style/AppTheme.NoActionBar1"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
         <!--费用详情-->
         <activity android:name=".v3.activity.FeeDetailActivity"

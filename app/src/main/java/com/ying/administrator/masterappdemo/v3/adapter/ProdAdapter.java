@@ -6,7 +6,9 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.ying.administrator.masterappdemo.R;
@@ -105,6 +107,12 @@ public class ProdAdapter extends BaseQuickAdapter<WorkOrder.OrderProductModelsBe
             }
         }else{
             helper.setGone(R.id.ll_acc,false);
+        }
+        if (item.getEndvideo().size()>0){
+            helper.setGone(R.id.ll_video,true);
+            Glide.with(mContext).load(item.getEndvideo().get(0)).into((ImageView) helper.getView(R.id.iv_video));
+        }else{
+            helper.setGone(R.id.ll_video,false);
         }
         helper.addOnClickListener(R.id.ll_course);
         helper.addOnClickListener(R.id.fl_video);

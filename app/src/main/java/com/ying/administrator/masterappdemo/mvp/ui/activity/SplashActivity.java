@@ -193,36 +193,6 @@ public class SplashActivity extends BaseActivity<LoginPresenter, LoginModel> imp
     }
 
     @Override
-    public void contentLoading() {
-
-    }
-
-    @Override
-    public void contentLoadingComplete() {
-
-    }
-
-    @Override
-    public void contentLoadingError() {
-
-    }
-
-    @Override
-    public void contentLoadingEmpty() {
-
-    }
-
-    @Override
-    public void showProgress() {
-
-    }
-
-    @Override
-    public void hideProgress() {
-
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation

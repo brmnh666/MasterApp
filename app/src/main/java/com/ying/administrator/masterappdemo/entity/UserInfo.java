@@ -134,6 +134,24 @@ public class UserInfo implements Serializable {
         private String emergencyContact;
         private String teamNumber;
         private String IsOrNoTruck;
+        private int IsStartSignContract;//是否开启签约合同，0：不允许，1：允许
+        private int IsAutographSuccess;//是否签名成功：0：未签名，1：签名成功，-1：签名失败
+
+        public int getIsStartSignContract() {
+            return IsStartSignContract;
+        }
+
+        public void setIsStartSignContract(int isStartSignContract) {
+            IsStartSignContract = isStartSignContract;
+        }
+
+        public int getIsAutographSuccess() {
+            return IsAutographSuccess;
+        }
+
+        public void setIsAutographSuccess(int isAutographSuccess) {
+            IsAutographSuccess = isAutographSuccess;
+        }
 
         public String getTeamNumber() {
             return teamNumber;

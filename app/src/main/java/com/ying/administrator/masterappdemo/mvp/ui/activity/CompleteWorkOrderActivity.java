@@ -8,10 +8,13 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.FileProvider;
@@ -36,6 +39,8 @@ import com.dmcbig.mediapicker.PickerActivity;
 import com.dmcbig.mediapicker.PickerConfig;
 import com.dmcbig.mediapicker.entity.Media;
 import com.google.gson.Gson;
+import com.hw.videoprocessor.VideoProcessor;
+import com.hw.videoprocessor.util.VideoProgressListener;
 import com.ying.administrator.masterappdemo.BuildConfig;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
@@ -49,6 +54,7 @@ import com.ying.administrator.masterappdemo.mvp.presenter.CompleteWorkOrderPrese
 import com.ying.administrator.masterappdemo.util.Glide4Engine;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.util.imageutil.CompressHelper;
+import com.ying.administrator.masterappdemo.util.imageutil.FileSizeUtil;
 import com.ying.administrator.masterappdemo.v3.bean.EndResult;
 import com.ying.administrator.masterappdemo.v3.bean.PolicyToken;
 import com.ying.administrator.masterappdemo.widget.ViewExampleDialog;
@@ -56,7 +62,6 @@ import com.yzq.zxinglibrary.android.CaptureActivity;
 import com.yzq.zxinglibrary.common.Constant;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
-import com.zyao89.view.zloading.ZLoadingDialog;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -175,7 +180,6 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
     private HashMap<Integer, File> service_img_map = new HashMap<>();//上传安装图片
 
 
-    ZLoadingDialog dialog = new ZLoadingDialog(this);
     private List<Uri> mSelected;
     private Uri uri;
     private String barCode;
@@ -187,10 +191,12 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
     private String RepairExplain = "";
     private int REQUEST_CODE_SCAN = 100;
     private int size;
-    private String videopath;
+    private String videopath="";
     private ArrayList<Media> select;
     private SPUtils spUtils;
     private String EndVideo="";
+    private String filename;
+    private String endRemark="";
 
     @Override
     protected int setLayoutId() {
@@ -402,7 +408,8 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 
             case R.id.btn_complete_submit:
                 showProgress();
-                getHost(videopath);
+//                compressVideo(videopath);
+                submit();
                 break;
         }
     }
@@ -421,8 +428,16 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                 MyUtils.showToast(mActivity, "请上传安装前照片以及安装后一张照片");
                 hideProgress();
             } else {
-                String EndRemark = mEtMemo.getText().toString();
-                ReuturnAccessoryPicUpload(service_img_map, EndRemark);
+                endRemark = mEtMemo.getText().toString();
+                if ("".equals(videopath)){
+                    ReuturnAccessoryPicUpload(service_img_map);
+                }else{
+                    if ("".equals(EndVideo)){
+                        compressVideo(videopath);
+                    }else{
+                        ReuturnAccessoryPicUpload(service_img_map);
+                    }
+                }
             }
 
         } else {//维修
@@ -439,9 +454,17 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                 hideProgress();
                 return;
             } else {
-                String EndRemark = mEtMemo.getText().toString();
+                endRemark = mEtMemo.getText().toString();
                 RepairExplain = mEtResult.getText().toString();
-                ReuturnAccessoryPicUpload(return_img_map, EndRemark);
+                if ("".equals(videopath)){
+                    ReuturnAccessoryPicUpload(return_img_map);
+                }else{
+                    if ("".equals(EndVideo)){
+                        compressVideo(videopath);
+                    }else{
+                        ReuturnAccessoryPicUpload(return_img_map);
+                    }
+                }
             }
         }
     }
@@ -449,7 +472,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
     void pickerVideo(int code) {
         Intent intent = new Intent(mActivity, PickerActivity.class);
         intent.putExtra(PickerConfig.SELECT_MODE, PickerConfig.PICKER_VIDEO);//default image and video (Optional)
-        long maxSize = 188743680L;//long long long
+        long maxSize = 60*1024*1024L;//long long long
         intent.putExtra(PickerConfig.MAX_SELECT_SIZE, maxSize); //default 180MB (Optional)
         intent.putExtra(PickerConfig.MAX_SELECT_COUNT, 1);  //default 40 (Optional)
 //        intent.putExtra(PickerConfig.DEFAULT_SELECTED_LIST,select); // (Optional)
@@ -550,6 +573,9 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
         }
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
         intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
+        intent.putExtra(MediaStore.EXTRA_SIZE_LIMIT, 60*1024*1024L);//限制录制大小(10M=10 * 1024 * 1024L)
+        intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 30);//限制录制时间(10秒=10)
+
 
         startActivityForResult(intent, code);
     }
@@ -1009,10 +1035,10 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                         mIvDelete.setVisibility(View.VISIBLE);
                     }
                 }
-                if (file != null) {
-                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
-                    service_img_map.put(3, newFile);
-                }
+//                if (file != null) {
+//                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+//                    videopath=newFile.getPath();
+//                }
                 break;
             //选择视频
             case 909:
@@ -1024,7 +1050,11 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                         list.add(media.path);
                         Glide.with(mActivity).load(media.path).into(mIvVideo);
                         videopath=media.path;
-                        file = new File(videopath);
+//                        file = new File(videopath);
+//                        if (file != null) {
+//                            File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+//                            videopath=newFile.getPath();
+//                        }
                         mIvShipin.setVisibility(View.VISIBLE);
                         mIvDelete.setVisibility(View.VISIBLE);
                     }
@@ -1036,7 +1066,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 
     }
 
-    public void ReuturnAccessoryPicUpload(HashMap<Integer, File> map, String EndRemark) {
+    public void ReuturnAccessoryPicUpload(HashMap<Integer, File> map) {
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         if (map.get(0) != null) {
             builder.addFormDataPart("img1", map.get(0).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(0)));
@@ -1052,7 +1082,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
         }
         builder.addFormDataPart("OrderID", orderID);
         builder.addFormDataPart("RepairExplain", RepairExplain);
-        builder.addFormDataPart("EndRemark", EndRemark);
+        builder.addFormDataPart("EndRemark", endRemark);
         builder.addFormDataPart("EndVideo", EndVideo);
         builder.addFormDataPart("ProductID", ProductID);
         builder.addFormDataPart("BarCode", barCode);
@@ -1085,10 +1115,6 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
     }
 
     private void getHost(String filePath) {
-        if (videopath==null){
-            submit();
-            return;
-        }
         //接口
         String path = Config.BASE_URL + "Oss/GetPolicyToken";
 
@@ -1119,17 +1145,27 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
         });
 
     }
-
+    public String getVideoOutCompressPath(){
+        String f = System.currentTimeMillis() + ".mp4";
+        String fileDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy";
+        String videoCompressPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy/" + f;
+        File dirfile = new File(fileDir);
+        if (!dirfile.exists()) {
+            dirfile.mkdirs();
+        }
+        return videoCompressPath;
+    }
     private void uploadVideo(PolicyToken.DataBean policyToken,String filePath) {
         File file=new File(filePath);
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("OSSAccessKeyId", policyToken.getAccessid());
         builder.addFormDataPart("policy", policyToken.getPolicy());
         builder.addFormDataPart("Signature", policyToken.getSignature());
-        builder.addFormDataPart("name", policyToken.getFileName());
+        filename = policyToken.getFileName() + filePath.substring(filePath.lastIndexOf("."));
+        builder.addFormDataPart("name", filename);
         builder.addFormDataPart("key", "Video/OrderEnd/${filename}");
         builder.addFormDataPart("success_action_status", "201");
-        builder.addFormDataPart("file", policyToken.getFileName(), RequestBody.create(MediaType.parse("application/octet-stream"), file));
+        builder.addFormDataPart("file", filename, RequestBody.create(MediaType.parse("application/octet-stream"), file));
         MultipartBody requestBody = builder.build();
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(5, TimeUnit.MINUTES)
@@ -1151,14 +1187,80 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                 String str = response.body().string();
                 System.out.println("上传结果："+str);
                 if (response.code()==201){
-                    EndVideo=policyToken.getFileName()+filePath.substring(filePath.lastIndexOf("."));
-                    submit();
-//                    ReuturnAccessoryPicUpload(return_img_map, EndRemark,EndVideo);
+                    EndVideo=filename;
+                    if ("2".equals(TypeID)) {//安装
+                        ReuturnAccessoryPicUpload(service_img_map);
+                    }else{
+                        ReuturnAccessoryPicUpload(return_img_map);
+                    }
+
                 }
             }
         });
 
     }
+//    压缩视频
+    private void compressVideo(String videoPath){
+//        mBinding.progressBar.setVisibility(View.VISIBLE);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+                    retriever.setDataSource(videoPath);
+                    Log.e("压缩前大小==", FileSizeUtil.getAutoFileOrFilesSize(videoPath));
+                    int originWidth = Integer.parseInt(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH));
+                    int originHeight = Integer.parseInt(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT));
+                    int bitrate = Integer.parseInt(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_BITRATE));
+                    Log.e("video","originWidth="+originWidth+" originHeight=="+originHeight+" bitrate=="+bitrate);
+                    String videoOutCompressPath = getVideoOutCompressPath();
+                    VideoProcessor.processor(mActivity)
+                            .input(videoPath)
+                            .bitrate(bitrate / 8)
+                            .output(videoOutCompressPath)
+                            .progressListener(new VideoProgressListener() {
+                                @Override
+                                public void onProgress(float progress) {
+                                    int intProgress = (int) (progress * 100);
+                                    Message message = mHandler.obtainMessage();
+                                    message.what=0;
+                                    message.arg1 = intProgress;
+                                    mHandler.sendMessage(message);
+                                    if (intProgress==100){
+                                        message.what=1;
+                                        message.obj = videoOutCompressPath;
+                                        mHandler.sendMessage(message);
+                                    }
+
+                                }
+                            })
+                            .process();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    hideProgress();
+                }
+            }
+        }).start();
+    }
+    private Handler mHandler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            switch (msg.what) {
+                case 0:
+//                    mBinding.progressBar.setProgress(msg.arg1);
+                    break;
+                case 1:
+//                    mBinding.progressBar.setVisibility(View.INVISIBLE);
+//                    ToastUtil.showLong("压缩完成！");
+                    String videoOutCompressPath  = (String) msg.obj;
+                    getHost(videoOutCompressPath);
+                    Log.e("压缩后大小==", FileSizeUtil.getAutoFileOrFilesSize(videoOutCompressPath));
+                    hideProgress();
+                    break;
+            }
+            return false;
+        }
+    });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

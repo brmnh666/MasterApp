@@ -52,10 +52,12 @@ import com.ying.administrator.masterappdemo.mvp.ui.activity.Opinion_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.SubAccountManagementActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.VerifiedActivity2;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
+import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.util.ZXingUtils;
 import com.ying.administrator.masterappdemo.v3.activity.PersonalInformationActivity;
 import com.ying.administrator.masterappdemo.v3.activity.SettingActivity;
 import com.ying.administrator.masterappdemo.v3.activity.WalletActivity;
+import com.ying.administrator.masterappdemo.v3.bean.GetSignContractManageResult;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.MinePresenter;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.MineContract;
 import com.ying.administrator.masterappdemo.v3.mvp.model.MineModel;
@@ -125,6 +127,8 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
     SmartRefreshLayout mRefreshLayout;
     @BindView(R.id.ll_sign)
     LinearLayout mLlSign;
+    @BindView(R.id.tv_sign)
+    TextView mTvSign;
     private String mContentText;
     private String userID;
     //    private UserInfo.UserInfoDean userInfo;
@@ -135,6 +139,7 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
     private CustomShareListener mShareListener;
     private SPUtils spUtils;
     private String token;
+    private String value;
 
     public static MineFragment newInstance(String param1) {
         MineFragment fragment = new MineFragment();
@@ -228,7 +233,7 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
         token = spUtils.getString("adminToken");
 //        mPresenter.GetUserInfoList(userID, "1");
         accountInfo();
-
+        mPresenter.GetSignContractManage();
     }
 
     @Override
@@ -250,7 +255,13 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ll_sign:
-                startActivity(new Intent(mActivity, SignActivity.class));
+                if (userInfo != null) {
+                    if (!"1".equals(userInfo.getIfAuth())) {
+                        MyUtils.showToast(mActivity, "您还未实名！");
+                        return;
+                    }
+                    startActivity(new Intent(mActivity, SignActivity.class));
+                }
                 break;
             case R.id.ll_wallet:
                 startActivity(new Intent(mActivity, WalletActivity.class));
@@ -422,11 +433,6 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
 //                    mActivity.finish();
 //                }
                 break;
-            case 400:
-                ActivityUtils.finishAllActivities();
-                startActivity(new Intent(mActivity, Login_New_Activity.class));
-                mActivity.finish();
-                break;
             default:
                 ActivityUtils.finishAllActivities();
                 startActivity(new Intent(mActivity, Login_New_Activity.class));
@@ -438,6 +444,42 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
     @Override
     public void UploadAvator(BaseResult<Data<String>> baseResult) {
 
+    }
+
+    @Override
+    public void GetSignContractManage(GetSignContractManageResult baseResult) {
+        if (baseResult.getStatusCode() == 200) {
+            if (baseResult.getData().isStatus()) {
+                int state = baseResult.getData().getData().getState();
+                value = Double.toString(baseResult.getData().getData().getSincerityMoney());
+//                State: -1--审核失败,0--未签约,1--待审核，2--审核通过待支付，3--支付诚意金中,4--签约完成
+                switch (state) {
+                    case -1:
+                        mTvSign.setText("电子合同(审核不通过)");
+                        break;
+                    case 0:
+                        mTvSign.setText("电子合同(待签名)");
+                        break;
+                    case 1:
+                        mTvSign.setText("电子合同(签名审核中)");
+                        break;
+                    case 2:
+                        mTvSign.setText("电子合同(审核通过)");
+                        break;
+                    case 3:
+                        mTvSign.setText("电子合同(待缴纳诚意金)");
+                        break;
+                    case 4:
+                        mTvSign.setText("电子合同(签约成功)");
+                        break;
+                     default:
+                         mTvSign.setText("电子合同");
+                         break;
+                }
+            } else {
+                MyUtils.showToast(mActivity, baseResult.getData().getMsg());
+            }
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -672,6 +714,11 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
         } else {
             mLlSubAccount.setVisibility(View.GONE);
             mLlWallet.setVisibility(View.GONE);
+        }
+        if (userInfo.getIsStartSignContract() == 1) {
+            mLlSign.setVisibility(View.VISIBLE);
+        } else {
+            mLlSign.setVisibility(View.GONE);
         }
     }
 

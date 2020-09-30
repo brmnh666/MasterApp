@@ -1567,6 +1567,7 @@ public class WorkOrder implements Serializable {
         private int Num;
         private int Version;
         private List<String> EndImgUrls;
+        private List<String> Endvideo;
         private List<?> accessorys;
         private List<accessoryDataBean> accessoryData;
 
@@ -1584,6 +1585,14 @@ public class WorkOrder implements Serializable {
 
         public void setExplains(String explains) {
             Explains = explains;
+        }
+
+        public List<String> getEndvideo() {
+            return Endvideo==null?new ArrayList<String>() :Endvideo;
+        }
+
+        public void setEndvideo(List<String> endvideo) {
+            Endvideo = endvideo;
         }
 
         public List<String> getEndImgUrls() {

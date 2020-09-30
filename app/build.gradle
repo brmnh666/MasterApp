@@ -35,7 +35,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.ying.administrator.masterappdemo"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 28
         versionCode verCode()
         versionName verName()
@@ -333,5 +333,9 @@ dependencies {
     implementation project(path: ':JZVideolibrary')
     //    https://github.com/Jzvd/JZVideo
 //    implementation 'cn.jzvd:jiaozivideoplayer:7.5.0'
+    implementation 'tv.danmaku.ijk.media:ijkplayer-java:0.8.8'
+    implementation 'tv.danmaku.ijk.media:ijkplayer-armv7a:0.8.4'
+    //视频压缩
+    implementation 'com.github.yellowcath:VideoProcessor:2.4.0'
 
 }

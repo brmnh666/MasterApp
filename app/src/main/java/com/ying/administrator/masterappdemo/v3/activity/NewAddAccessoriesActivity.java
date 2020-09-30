@@ -7,7 +7,6 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -71,8 +70,6 @@ import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.util.imageutil.CompressHelper;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
-import com.zyao89.view.zloading.ZLoadingDialog;
-import com.zyao89.view.zloading.Z_TYPE;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -156,7 +153,6 @@ public class NewAddAccessoriesActivity extends BaseActivity<NewAddAccessoriesPre
     private List<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean> fAcList = new ArrayList<>();// 用于存放预接单页面显示的数据
 
 
-    private ZLoadingDialog dialog = new ZLoadingDialog(this); //loading
     private AlertDialog underReviewDialog;
     private View popupWindow_view;
     private String FilePath;
@@ -211,7 +207,7 @@ public class NewAddAccessoriesActivity extends BaseActivity<NewAddAccessoriesPre
 //            mTvModify.setVisibility(View.GONE);
             mLlAddress.setVisibility(View.GONE);
         }
-        showLoading();
+        showProgress();
         mPresenter.GetFactoryAccessory(subCategoryID);
 
         mRv.setLayoutManager(new LinearLayoutManager(mActivity));
@@ -369,7 +365,7 @@ public class NewAddAccessoriesActivity extends BaseActivity<NewAddAccessoriesPre
     public void GetFactoryAccessory(BaseResult<GetFactoryData<Accessory>> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-                cancelLoading();
+                hideProgress();
                 if (baseResult.getData().getData() != null) {
                     list_accessory.addAll(baseResult.getData().getData());
                     list_search.addAll(list_accessory);
@@ -517,22 +513,6 @@ public class NewAddAccessoriesActivity extends BaseActivity<NewAddAccessoriesPre
         return results;
     }
 
-    public void showLoading() {
-        dialog.setLoadingBuilder(Z_TYPE.SINGLE_CIRCLE)//设置类型
-                .setLoadingColor(Color.BLACK)//颜色
-                .setHintText("获取配件中请稍等...")
-                .setHintTextSize(14) // 设置字体大小 dp
-                .setHintTextColor(Color.BLACK)  // 设置字体颜色
-                .setDurationTime(1) // 设置动画时间百分比 - 0.5倍
-                .setCanceledOnTouchOutside(false)//点击外部无法取消
-                .show();
-    }
-
-    public void cancelLoading() {
-        if (dialog != null) {
-            dialog.dismiss();
-        }
-    }
 
 
     /**

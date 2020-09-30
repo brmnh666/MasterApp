@@ -316,7 +316,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
                         TextView tv_reservation = under_review.findViewById(R.id.tv_reservation);
                         tv_content = under_review.findViewById(R.id.tv_content);
                         tv_reservation.setText("去实名");
-                        tv_content.setText("请还未实名认证，请先实名认证");
+                        tv_content.setText("您还未实名认证，请先实名认证");
                         tv_cancel.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {

@@ -1,7 +1,6 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,8 +31,6 @@ import com.ying.administrator.masterappdemo.mvp.model.AddServiceModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.AddServicePresenter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.ServiceAddressAdapter;
 import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
-import com.zyao89.view.zloading.ZLoadingDialog;
-import com.zyao89.view.zloading.Z_TYPE;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +64,6 @@ public class AddServiceAreaInfoActivity2 extends BaseActivity<AddServicePresente
     private ServiceAddressAdapter serviceAddressAdapter;
     private String codestr = "";
     private String userId;
-    private ZLoadingDialog dialog;
 
     @Override
     protected int setLayoutId() {
@@ -83,8 +79,7 @@ public class AddServiceAreaInfoActivity2 extends BaseActivity<AddServicePresente
 
     @Override
     public void initView() {
-        dialog = new ZLoadingDialog(mActivity);
-        showLoading("loading");
+        showProgress();
         mTvTitle.setText("修改服务区域");
 
 
@@ -165,7 +160,7 @@ public class AddServiceAreaInfoActivity2 extends BaseActivity<AddServicePresente
                     return;
                 }
                 Log.d("===============>codestr", codestr);
-                showLoading("summit");
+                showProgress();
                 mPresenter.AddorUpdateServiceArea(userId, codestr);
 
                 break;
@@ -201,9 +196,9 @@ public class AddServiceAreaInfoActivity2 extends BaseActivity<AddServicePresente
         switch (baseResult.getStatusCode()) {
             case 200:
                 if (baseResult.getData() == null) {
-                    cancleLoading();
+                    hideProgress();
                 } else {
-                    cancleLoading();
+                    hideProgress();
                     getserviceaddresslist.addAll(baseResult.getData().getItem1());
 
                     for (int i = 0; i < getserviceaddresslist.size(); i++) {
@@ -248,39 +243,19 @@ public class AddServiceAreaInfoActivity2 extends BaseActivity<AddServicePresente
         switch (baseResult.getStatusCode()) {
             case 200:
                 if (baseResult.getData().isItem1()) {
-                    cancleLoading();
+                    hideProgress();
                     AddServiceAreaInfoActivity2.this.finish();
 
                 } else {
-                    cancleLoading();
+                    hideProgress();
                 }
                 break;
             default:
-                cancleLoading();
+                hideProgress();
                 break;
         }
     }
-    public void showLoading(String s) {
-        String text = "加载中";
-        if (s.equals("loading")) {
-            text = "全力加载中...";
-        } else if (s.equals("summit")) {
-            text = "地址提交中...";
-        }
-        dialog.setLoadingBuilder(Z_TYPE.ROTATE_CIRCLE)//设置类型
-                .setLoadingColor(Color.BLACK)//颜色
-                .setHintText(text)
-                .setHintTextSize(14) // 设置字体大小 dp
-                .setHintTextColor(Color.BLACK)  // 设置字体颜色
-                .setDurationTime(1) // 设置动画时间百分比 - 0.5倍
-                .setCanceledOnTouchOutside(false)//点击外部无法取消
-                .show();
-    }
 
-    public void cancleLoading() {
-        dialog.dismiss();
-
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

@@ -4,6 +4,7 @@ import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.mvp.service.ApiRetrofit;
+import com.ying.administrator.masterappdemo.v3.bean.GetSignContractManageResult;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.MineContract;
 
 import io.reactivex.Observable;
@@ -23,6 +24,13 @@ public class MineModel implements MineContract.Model {
     @Override
     public Observable<BaseResult<Data<String>>> UploadAvator(RequestBody json) {
         return ApiRetrofit.getDefault().UploadAvator(json)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<GetSignContractManageResult> GetSignContractManage() {
+        return ApiRetrofit.getDefault().GetSignContractManage()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

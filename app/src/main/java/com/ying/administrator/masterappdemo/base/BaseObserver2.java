@@ -6,6 +6,8 @@ import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.google.gson.JsonSyntaxException;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.IOException;
 
 import io.reactivex.Observer;
@@ -36,6 +38,7 @@ public abstract class BaseObserver2<T> implements Observer<T> {
 
     @Override
     public void onError(Throwable e) {
+        EventBus.getDefault().post(e);
         Log.e(TAG, "error:" + e.toString());
         if (!NetworkUtils.isConnected()) {
             errMsg = "网络连接出错";

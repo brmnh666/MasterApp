@@ -1,7 +1,6 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,8 +26,6 @@ import com.ying.administrator.masterappdemo.mvp.contract.LoginContract;
 import com.ying.administrator.masterappdemo.mvp.model.LoginModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.LoginPresenter;
 import com.ying.administrator.masterappdemo.v3.activity.MainActivity;
-import com.zyao89.view.zloading.ZLoadingDialog;
-import com.zyao89.view.zloading.Z_TYPE;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -84,7 +81,6 @@ public class Login_New_Activity extends BaseActivity<LoginPresenter, LoginModel>
     private String userName;
     private String passWord;
     private SPUtils spUtils;
-    ZLoadingDialog dialog = new ZLoadingDialog(this); //loading
     private String code;
     private WXUserInfoBean result;
 
@@ -167,27 +163,27 @@ public class Login_New_Activity extends BaseActivity<LoginPresenter, LoginModel>
                 startActivity(new Intent(mActivity, Register_New_Activity.class));
                 break;
             case R.id.tv_login:
-                showLoading();
+                showProgress();
                 userName = mEtLoginUsername.getText().toString();
                 passWord = mEtLoginPassword.getText().toString();
 
                 if ("".equals(userName)) {
-                    cancleLoading();
+                    hideProgress();
                     ToastUtils.showShort("请输入手机号！");
                     return;
                 }
                 if (!RegexUtils.isMobileSimple(userName)) {
-                    cancleLoading();
+                    hideProgress();
                     ToastUtils.showShort("手机号格式不正确！");
                     return;
                 }
                 if ("".equals(passWord)) {
-                    cancleLoading();
+                    hideProgress();
                     ToastUtils.showShort("请输入密码！");
                     return;
                 }
                 if (!mImgAgreement.isSelected()) {
-                    cancleLoading();
+                    hideProgress();
                     ToastUtils.showShort("请阅读并同意服务协议与隐私政策");
                     return;
 
@@ -244,7 +240,7 @@ public class Login_New_Activity extends BaseActivity<LoginPresenter, LoginModel>
                     finish();
                 } else {
                     ToastUtils.showShort(data.getItem2());
-                    cancleLoading();
+                    hideProgress();
                 }
                 break;
         }
@@ -301,7 +297,7 @@ public class Login_New_Activity extends BaseActivity<LoginPresenter, LoginModel>
 //                        ToastUtils.showShort();
 //                    }
                 }
-                cancleLoading();
+                hideProgress();
                 break;
         }
     }
@@ -313,25 +309,10 @@ public class Login_New_Activity extends BaseActivity<LoginPresenter, LoginModel>
         ButterKnife.bind(this);
     }
 
-    public void showLoading() {
-        dialog.setLoadingBuilder(Z_TYPE.SINGLE_CIRCLE)//设置类型
-                .setLoadingColor(Color.BLACK)//颜色
-                .setHintText("登录中请稍后...")
-                .setHintTextSize(14) // 设置字体大小 dp
-                .setHintTextColor(Color.BLACK)  // 设置字体颜色
-                .setDurationTime(0.5) // 设置动画时间百分比 - 0.5倍
-                .setCanceledOnTouchOutside(false)//点击外部无法取消
-                .show();
-    }
-
-    public void cancleLoading() {
-        dialog.dismiss();
-    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(String name) {
         code = name;
-        showLoading();
+        showProgress();
         getAccessToken(code);
     }
 
