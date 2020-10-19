@@ -212,6 +212,7 @@ public class WorkOrder implements Serializable {
         private List<OrderImg> OrderImg;//返回服务图片
         private List<String> AccessoryImgUrls;//返回配件图片
         private List<SendOrderBean> SendOrderList;
+        private List<SignsBean> Signs=new ArrayList<>();
         private List<OrderProductModelsBean> OrderProductModels;
         private String Distance;//返回距离
         private String ProductTypeID;
@@ -529,6 +530,14 @@ public class WorkOrder implements Serializable {
 
         public void setSendOrderList(List<SendOrderBean> sendOrderList) {
             SendOrderList = sendOrderList;
+        }
+
+        public List<SignsBean> getSigns() {
+            return Signs;
+        }
+
+        public void setSigns(List<SignsBean> signs) {
+            Signs = signs;
         }
 
         public String getAccessorySearchState() {

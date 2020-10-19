@@ -39,7 +39,14 @@ public class OrderAdapter extends BaseQuickAdapter<WorkOrder.DataBean, BaseViewH
                 .addOnClickListener(R.id.iv_copy);
         helper.setText(R.id.tv_type, item.getGuaranteeText() + "/" + item.getTypeName());
 
-        helper.setGone(R.id.tv_review,false);
+        boolean flag=false;
+        for (int i = 0; i < item.getSigns().size(); i++) {
+            if ("10".equals(item.getSigns().get(i).getType())){
+                flag=true;
+            }
+        }
+        helper.setGone(R.id.tv_review,flag);
+
         helper.setGone(R.id.ll_btn,false);
         helper.setGone(R.id.iv_location,false);
         helper.setGone(R.id.tv_location,false);
@@ -49,7 +56,8 @@ public class OrderAdapter extends BaseQuickAdapter<WorkOrder.DataBean, BaseViewH
                 .setText(R.id.tv_location, "距离:" + item.getDistance() + "Km")
                 .setText(R.id.tv_malfunction, "故障:" + item.getMemo())
                 .setText(R.id.tv_address, "地址:" + item.getAddress())
-                .setText(R.id.tv_order,"工单号:"+item.getOrderID());
+                .setText(R.id.tv_order,"工单号:"+item.getOrderID())
+                .setText(R.id.tv_review,"催单");
 
         if (userId.equals(item.getSendUser())){
             helper.setGone(R.id.tv_sub_account_maintenance,false);
