@@ -42,7 +42,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="请输入手机号码、姓名及工单号查询"
+                android:text="请输入手机号码或者工单号查询"
                 android:textSize="12sp"
                 android:textColor="#C4C4C4"
                 android:gravity="center_vertical"

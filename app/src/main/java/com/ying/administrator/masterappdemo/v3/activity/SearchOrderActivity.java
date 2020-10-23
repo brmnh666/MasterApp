@@ -11,16 +11,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.SPUtils;
-import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
+import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.v3.adapter.OrderAdapter;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.SearchOrderPresenter;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.SearchOrderContract;
 import com.ying.administrator.masterappdemo.v3.mvp.model.SearchOrderModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,6 +47,7 @@ public class SearchOrderActivity extends BaseActivity<SearchOrderPresenter, Sear
     @BindView(R.id.et_search)
     EditText mEtSearch;
     private String userId;
+    private List<WorkOrder.DataBean> list=new ArrayList<>();
     private OrderAdapter adapter;
 
     @Override
@@ -61,6 +65,18 @@ public class SearchOrderActivity extends BaseActivity<SearchOrderPresenter, Sear
         mTvTitle.setText("工单搜索");
         SPUtils spUtils = SPUtils.getInstance("token");
         userId = spUtils.getString("userName");
+        adapter = new OrderAdapter(R.layout.v3_item_home, list,"search",userId);
+        mRvOrder.setLayoutManager(new LinearLayoutManager(mActivity));
+        adapter.setEmptyView(getHomeEmptyView());
+        mRvOrder.setAdapter(adapter);
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Intent intent=new Intent(mActivity, ServingDetailActivity.class);
+                intent.putExtra("id",list.get(position).getOrderID());
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -78,8 +94,9 @@ public class SearchOrderActivity extends BaseActivity<SearchOrderPresenter, Sear
             case R.id.tv_search:
                 String searchname = mEtSearch.getText().toString();
                 if (searchname == null || "".equals(searchname)) {
-                    ToastUtils.showShort("请输入用户手机号或者工单号");
+                    MyUtils.showToast(mActivity,"请输入用户手机号或者工单号");
                 } else {
+                    showProgress();
                     StringBuilder stringBuilder = new StringBuilder(searchname);
                     String name = stringBuilder.substring(0, 1);
                     if ("1".equals(name)) {
@@ -104,17 +121,9 @@ public class SearchOrderActivity extends BaseActivity<SearchOrderPresenter, Sear
     public void GetOrderInfoList(final BaseResult<WorkOrder> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-                adapter = new OrderAdapter(R.layout.v3_item_home, baseResult.getData().getData(),"search",userId);
-                mRvOrder.setLayoutManager(new LinearLayoutManager(mActivity));
-                mRvOrder.setAdapter(adapter);
-                adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                        Intent intent=new Intent(mActivity, ServingDetailActivity.class);
-                        intent.putExtra("id",baseResult.getData().getData().get(position).getOrderID());
-                        startActivity(intent);
-                    }
-                });
+                hideProgress();
+                list=baseResult.getData().getData();
+                adapter.setNewData(list);
                 break;
         }
     }

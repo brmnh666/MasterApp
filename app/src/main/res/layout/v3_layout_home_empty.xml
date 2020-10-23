@@ -19,7 +19,7 @@
     android:layout_height="wrap_content"
     android:textSize="12sp"
     android:textColor="#CECECE"
-    android:text="暂无新工单"
+    android:text="暂无工单"
     android:layout_marginTop="13dp"
     />
 </LinearLayout>

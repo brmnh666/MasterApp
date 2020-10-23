@@ -39,7 +39,7 @@
                 android:maxLines="1"
                 android:inputType="text"
                 android:gravity="center_vertical"
-                android:hint="请输入手机号码、姓名及工单号查询"
+                android:hint="请输入手机号码或者工单号查询"
                 android:textColor="#333"
                 android:textSize="12sp" />
 

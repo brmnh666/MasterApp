@@ -9,6 +9,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -140,6 +142,13 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
     private SPUtils spUtils;
     private String token;
     private String value;
+    private Handler handler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            getInfo();
+        }
+    };
 
     public static MineFragment newInstance(String param1) {
         MineFragment fragment = new MineFragment();
@@ -218,11 +227,11 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
             }
         });
 
-        if (userInfo != null) {
-            getInfo();
-        } else {
-            return;
-        }
+//        if (userInfo != null) {
+//            getInfo();
+//        } else {
+//            return;
+//        }
 
     }
 
@@ -233,7 +242,7 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
         token = spUtils.getString("adminToken");
 //        mPresenter.GetUserInfoList(userID, "1");
         accountInfo();
-        mPresenter.GetSignContractManage();
+
     }
 
     @Override
@@ -596,6 +605,7 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
                         UserInfo2 result = gson.fromJson(str.replaceAll(" ", ""), UserInfo2.class);
                         if (result.getData().getData().size() > 0) {
                             userInfo = result.getData().getData().get(0);
+                            handler.sendEmptyMessage(0);
                         } else {
                             startActivity(new Intent(mActivity, Login_New_Activity.class));
                             spUtils.put("isLogin", false);
@@ -717,6 +727,7 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
         }
         if (userInfo.getIsStartSignContract() == 1) {
             mLlSign.setVisibility(View.VISIBLE);
+            mPresenter.GetSignContractManage();
         } else {
             mLlSign.setVisibility(View.GONE);
         }

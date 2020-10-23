@@ -533,7 +533,7 @@ public class WorkOrder implements Serializable {
         }
 
         public List<SignsBean> getSigns() {
-            return Signs;
+            return Signs==null?new ArrayList<>():Signs;
         }
 
         public void setSigns(List<SignsBean> signs) {
