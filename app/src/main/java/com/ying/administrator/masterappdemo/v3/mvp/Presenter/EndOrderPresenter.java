@@ -1,18 +1,17 @@
 package com.ying.administrator.masterappdemo.v3.mvp.Presenter;
 
-import com.ying.administrator.masterappdemo.base.BaseObserver;
-import com.ying.administrator.masterappdemo.base.BaseResult;
-import com.ying.administrator.masterappdemo.entity.WorkOrder;
+import com.ying.administrator.masterappdemo.base.BaseObserver2;
+import com.ying.administrator.masterappdemo.v3.bean.OrderListResult;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.EndOrderContract;
 
 public class EndOrderPresenter extends EndOrderContract.Presenter {
     @Override
-    public void WorkerGetOrderList(String UserID, String State, String page, String limit) {
-        mModel.WorkerGetOrderList(UserID, State, page, limit)
-                .subscribe(new BaseObserver<WorkOrder>() {
+    public void GetOrderList(String Search, String State, String page, String limit) {
+        mModel.GetOrderList(Search, State, page, limit)
+                .subscribe(new BaseObserver2<OrderListResult>() {
                     @Override
-                    protected void onHandleSuccess(BaseResult<WorkOrder> value) {
-                        mView.WorkerGetOrderList(value);
+                    protected void onHandleSuccess(OrderListResult value) {
+                        mView.GetOrderList(value);
                     }
                 });
     }

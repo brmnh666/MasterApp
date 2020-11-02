@@ -52,7 +52,7 @@ import com.ying.administrator.masterappdemo.mvp.ui.activity.AboutUsActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Login_New_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Opinion_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.SubAccountManagementActivity;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.VerifiedActivity2;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.VerifiedActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.util.ZXingUtils;
@@ -309,7 +309,7 @@ public class MineFragment extends BaseLazyFragment<MinePresenter, MineModel> imp
             case R.id.ll_person:
                 try {
                     if (userInfo.getTrueName() == null) { //如果为空说明未认证
-                        startActivity(new Intent(mActivity, VerifiedActivity2.class));
+                        startActivity(new Intent(mActivity, VerifiedActivity.class));
                     } else {
                         startActivity(new Intent(mActivity, PersonalInformationActivity.class));
                     }

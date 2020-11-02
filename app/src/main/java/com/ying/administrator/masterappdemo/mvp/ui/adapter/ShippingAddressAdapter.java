@@ -3,7 +3,6 @@ package com.ying.administrator.masterappdemo.mvp.ui.adapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.ying.administrator.masterappdemo.R;
-import com.ying.administrator.masterappdemo.entity.Address;
 import com.ying.administrator.masterappdemo.entity.AddressList;
 
 import java.util.List;

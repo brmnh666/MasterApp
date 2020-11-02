@@ -55,6 +55,7 @@ import com.ying.administrator.masterappdemo.v3.bean.UploadAutographPicUrlResult;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.SignPresenter;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.SignContract;
 import com.ying.administrator.masterappdemo.v3.mvp.model.SignModel;
+import com.ying.administrator.masterappdemo.widget.CustomWebView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -83,7 +84,7 @@ public class SignActivity extends BaseActivity<SignPresenter, SignModel> impleme
     @BindView(R.id.ll_customer_service)
     LinearLayout mLlCustomerService;
     @BindView(R.id.webview)
-    WebView mWebview;
+    CustomWebView mWebview;
     @BindView(R.id.signature_pad)
     SignatureView mSignaturePad;
     @BindView(R.id.clear_button)

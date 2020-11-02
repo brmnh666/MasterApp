@@ -7,11 +7,9 @@ import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.IDCard;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.mvp.contract.InfoManageContract;
-import com.ying.administrator.masterappdemo.mvp.contract.MainContract;
 
 import java.util.List;
 
-import okhttp3.Cache;
 import okhttp3.RequestBody;
 
 public class InfoManagePresenter extends InfoManageContract.Presenter {

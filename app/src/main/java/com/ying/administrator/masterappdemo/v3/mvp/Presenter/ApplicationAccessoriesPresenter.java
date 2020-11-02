@@ -11,8 +11,6 @@ import com.ying.administrator.masterappdemo.v3.mvp.contract.ApplicationAccessori
 
 import java.util.List;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 import okhttp3.RequestBody;
 
 public class ApplicationAccessoriesPresenter extends ApplicationAccessoriesContract.Presenter {

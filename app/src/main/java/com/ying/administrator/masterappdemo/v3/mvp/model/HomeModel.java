@@ -1,12 +1,12 @@
 package com.ying.administrator.masterappdemo.v3.mvp.model;
 
-import com.huawei.hms.api.Api;
+import com.ying.administrator.masterappdemo.api.ApiRetrofit;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Article;
 import com.ying.administrator.masterappdemo.entity.CodeMoney;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
-import com.ying.administrator.masterappdemo.mvp.service.ApiRetrofit;
+import com.ying.administrator.masterappdemo.v3.bean.OrderListResult;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.HomeContract;
 
 import java.util.List;
@@ -19,6 +19,12 @@ public class HomeModel implements HomeContract.Model {
     @Override
     public Observable<BaseResult<WorkOrder>> WorkerGetOrderList(String UserID, String State, String page, String limit,int page2) {
         return ApiRetrofit.getDefault().NewWorkerGetOrderList2(UserID, State, page, limit,page2)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+    @Override
+    public Observable<OrderListResult> GetOrderList(String Search, String State, String page, String limit) {
+        return ApiRetrofit.getDefault().GetOrderList(Search, State, page, limit)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

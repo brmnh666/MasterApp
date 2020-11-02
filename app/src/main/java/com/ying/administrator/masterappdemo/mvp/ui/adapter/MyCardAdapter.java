@@ -1,7 +1,6 @@
 package com.ying.administrator.masterappdemo.mvp.ui.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.widget.ImageView;
@@ -12,7 +11,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.ying.administrator.masterappdemo.R;
-import com.ying.administrator.masterappdemo.common.Config;
 import com.ying.administrator.masterappdemo.entity.BankCard;
 
 import java.util.List;

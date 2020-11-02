@@ -3,7 +3,6 @@ package com.ying.administrator.masterappdemo.widget;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
 
 import com.ying.administrator.masterappdemo.R;

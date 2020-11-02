@@ -10,7 +10,6 @@ import com.ying.administrator.masterappdemo.entity.GetMessagePag;
 import com.ying.administrator.masterappdemo.entity.LeaveMessage;
 import com.ying.administrator.masterappdemo.entity.Message;
 import com.ying.administrator.masterappdemo.entity.MessageData;
-import com.ying.administrator.masterappdemo.mvp.contract.ArticleContract;
 
 import java.util.List;
 

@@ -1,7 +1,6 @@
 package com.m7.imkfsdk.chat.chatrow;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;

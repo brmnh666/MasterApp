@@ -195,25 +195,12 @@ public class WorkOrder implements Serializable {
         private String IsRecevieGoods;
         private String AppointmentMessage;
         private String AppointmentState;
-        private String  IsPressFactory ;
+        private String IsPressFactory ;
         private String IsLate;
-
-        private String  IsReturn ;
-        private String  AddressBack ;
-        private String  PostPayType ;
-
+        private String IsReturn ;
+        private String AddressBack ;
+        private String PostPayType ;
         private String MallID;
-
-        private List<GAccessory> OrderRemoteFeeDetail; //远程费信息
-        private List<GAccessory> OrderAccessroyDetail; //所选配件详情
-        private List<GService> OrderServiceDetail;  //所选配件详情
-        private List<ReturnaccessoryImg> ReturnaccessoryImg;//返件图片
-        private List<OrderBeyondImg> OrderBeyondImg;//远程费图片
-        private List<OrderImg> OrderImg;//返回服务图片
-        private List<String> AccessoryImgUrls;//返回配件图片
-        private List<SendOrderBean> SendOrderList;
-        private List<SignsBean> Signs=new ArrayList<>();
-        private List<OrderProductModelsBean> OrderProductModels;
         private String Distance;//返回距离
         private String ProductTypeID;
         private String ServiceApplyState;
@@ -223,8 +210,6 @@ public class WorkOrder implements Serializable {
         private String IsSignIn;
         private Double NewMoney;
         private Double QuaMoney;
-        private List<LeavemessageListBean> LeavemessageList;
-        private List<LeavemessageimgListBean> LeavemessageimgList;
         private String AccessoryAndServiceApplyState;
         private String DistanceTureOrFalse;
         private Double terraceMoney;
@@ -242,6 +227,11 @@ public class WorkOrder implements Serializable {
         private boolean IsApplicationAccessory;
         private boolean MasterIsLookFee;
 
+        private List<GAccessory> OrderRemoteFeeDetail; //远程费信息
+        private List<SendOrderBean> SendOrderList;//sendorder表 取预约时间。
+        private List<SignsBean> Signs=new ArrayList<>(); //标识集合
+        private List<OrderProductModelsBean> OrderProductModels; //产品集合
+
         public List<GAccessory> getOrderRemoteFeeDetail() {
             return OrderRemoteFeeDetail;
         }
@@ -256,14 +246,6 @@ public class WorkOrder implements Serializable {
 
         public void setOrderProductModels(List<OrderProductModelsBean> orderProductModels) {
             OrderProductModels = orderProductModels;
-        }
-
-        public List<String> getAccessoryImgUrls() {
-            return AccessoryImgUrls;
-        }
-
-        public void setAccessoryImgUrls(List<String> accessoryImgUrls) {
-            AccessoryImgUrls = accessoryImgUrls;
         }
 
         public boolean isMasterIsLookFee() {
@@ -467,22 +449,6 @@ public class WorkOrder implements Serializable {
             AccessoryAndServiceApplyState = accessoryAndServiceApplyState;
         }
 
-        public List<LeavemessageimgListBean> getLeavemessageimgList() {
-            return LeavemessageimgList;
-        }
-
-        public void setLeavemessageimgList(List<LeavemessageimgListBean> leavemessageimgList) {
-            LeavemessageimgList = leavemessageimgList;
-        }
-
-        public List<LeavemessageListBean> getLeavemessageList() {
-            return LeavemessageList;
-        }
-
-        public void setLeavemessageList(List<LeavemessageListBean> leavemessageList) {
-            LeavemessageList = leavemessageList;
-        }
-
         public String getMallID() {
             return MallID;
         }
@@ -556,14 +522,6 @@ public class WorkOrder implements Serializable {
             AccessoryMemo = accessoryMemo;
         }
 
-        public List<com.ying.administrator.masterappdemo.entity.OrderBeyondImg> getOrderBeyondImg() {
-            return OrderBeyondImg;
-        }
-
-        public void setOrderBeyondImg(List<com.ying.administrator.masterappdemo.entity.OrderBeyondImg> orderBeyondImg) {
-            OrderBeyondImg = orderBeyondImg;
-        }
-
         public String getServiceApplyState() {
             return ServiceApplyState==null?"":ServiceApplyState;
         }
@@ -585,37 +543,6 @@ public class WorkOrder implements Serializable {
 
         public void setIsPressFactory(String isPressFactory) {
             IsPressFactory = isPressFactory;
-        }
-        public List<com.ying.administrator.masterappdemo.entity.OrderImg> getOrderImg() {
-            return OrderImg;
-        }
-
-        public void setOrderImg(List<com.ying.administrator.masterappdemo.entity.OrderImg> orderImg) {
-            OrderImg = orderImg;
-        }
-
-        public List<com.ying.administrator.masterappdemo.entity.ReturnaccessoryImg> getReturnaccessoryImg() {
-            return ReturnaccessoryImg;
-        }
-
-        public void setReturnaccessoryImg(List<com.ying.administrator.masterappdemo.entity.ReturnaccessoryImg> returnaccessoryImg) {
-            ReturnaccessoryImg = returnaccessoryImg;
-        }
-
-        public List<GAccessory> getOrderAccessroyDetail() {
-            return OrderAccessroyDetail;
-        }
-
-        public void setOrderAccessroyDetail(List<GAccessory> orderAccessroyDetail) {
-            OrderAccessroyDetail = orderAccessroyDetail;
-        }
-
-        public List<GService> getOrderServiceDetail() {
-            return OrderServiceDetail;
-        }
-
-        public void setOrderServiceDetail(List<GService> orderServiceDetail) {
-            OrderServiceDetail = orderServiceDetail;
         }
 
         public String getId() {

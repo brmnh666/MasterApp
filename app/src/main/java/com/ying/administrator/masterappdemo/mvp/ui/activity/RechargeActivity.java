@@ -424,26 +424,30 @@ public class RechargeActivity extends BaseActivity<RechargePresenter, RechargeMo
 
     @Override
     public void GetUserInfoList(BaseResult<UserInfo> baseResult) {
-        switch (baseResult.getStatusCode()) {
-            case 200:
-                if (baseResult.getData() == null) {
-                    return;
-                } else {
-                    userInfo = baseResult.getData().getData().get(0);
-                    String format = String.format("%.2f", userInfo.getTotalMoney() - userInfo.getFrozenMoney());
-                    mTvCanWithdraw.setText(format);
-                    String TotalMoney = String.format("%.2f", userInfo.getTotalMoney());
-                    mTvTotalMoney.setText(TotalMoney);
-                    String FrozenMoney = String.format("%.2f", userInfo.getFrozenMoney());
-                    mTvUnfinished.setText(FrozenMoney);
-                    //赠送金额暂无
-                    String Con = String.format("%.2f", userInfo.getCon());
-                    mTvMargin.setText(Con);
+        try {
+            switch (baseResult.getStatusCode()) {
+                case 200:
+                    if (baseResult.getData() == null) {
+                        return;
+                    } else {
+                        userInfo = baseResult.getData().getData().get(0);
+                        String format = String.format("%.2f", userInfo.getTotalMoney() - userInfo.getFrozenMoney());
+                        mTvCanWithdraw.setText(format);
+                        String TotalMoney = String.format("%.2f", userInfo.getTotalMoney());
+                        mTvTotalMoney.setText(TotalMoney);
+                        String FrozenMoney = String.format("%.2f", userInfo.getFrozenMoney());
+                        mTvUnfinished.setText(FrozenMoney);
+                        //赠送金额暂无
+                        String Con = String.format("%.2f", userInfo.getCon());
+                        mTvMargin.setText(Con);
 
-                }
-                break;
-            default:
-                break;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

@@ -1,7 +1,6 @@
 package com.ying.administrator.masterappdemo.v3.mvp.contract;
 
 import com.ying.administrator.masterappdemo.base.BaseModel;
-import com.ying.administrator.masterappdemo.base.BaseObserver;
 import com.ying.administrator.masterappdemo.base.BasePresenter;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.base.BaseView;

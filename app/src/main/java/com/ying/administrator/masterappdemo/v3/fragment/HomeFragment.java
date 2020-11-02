@@ -43,6 +43,7 @@ import com.ying.administrator.masterappdemo.util.SingleClick;
 import com.ying.administrator.masterappdemo.v3.activity.MessageActivity;
 import com.ying.administrator.masterappdemo.v3.activity.ServingDetailActivity;
 import com.ying.administrator.masterappdemo.v3.adapter.HomeAdapter;
+import com.ying.administrator.masterappdemo.v3.bean.OrderListResult;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.HomePresenter;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.HomeContract;
 import com.ying.administrator.masterappdemo.v3.mvp.model.HomeModel;
@@ -79,11 +80,11 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
     private String mContentText;
     private int i = 0;
     private List<Article.DataBean> datalist = new ArrayList<>();
-    private List<WorkOrder.DataBean> list = new ArrayList<>();
+    private List<OrderListResult.DataBeanX.DataBean> list = new ArrayList<>();
     private HomeAdapter adapter;
     private String userId;
     private int page = 1;
-    private WorkOrder workOrder;
+    private OrderListResult.DataBeanX workOrder;
     private View customdialog_home_view;
     private AlertDialog customdialog_home_dialog;
     private CodeMoney codeList;
@@ -97,6 +98,9 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
     private boolean yn=true; //true 接单 false 拒接
     private Spinner mSpinnerObject;
     private String orderid;
+    private OrderListResult.DataBeanX.DataBean dataBean;
+    private List<OrderListResult.DataBeanX.DataBean.OrderProductModelsBean> models;
+    private OrderListResult.DataBeanX.DataBean.OrderProductModelsBean model;
 
     public static HomeFragment newInstance(String param1) {
         HomeFragment fragment = new HomeFragment();
@@ -131,29 +135,39 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
             @SingleClick
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, final int position) {
-                switch (view.getId()) {
-                    case R.id.tv_orders://接单
-                        yn=true;
-                        orderid =list.get(position).getOrderID();
-                        orders(position);
-                        break;
-                    case R.id.tv_cancel://拒接
-                        yn=false;
-                        cancelOrder(position);
-                        break;
-                    case R.id.iv_copy:
-                        copy(position);
-                        break;
+                try {
+                    dataBean=list.get(position);
+                    switch (view.getId()) {
+                        case R.id.tv_orders://接单
+                            yn=true;
+                            orderid = dataBean.getOrderID();
+                            orders();
+                            break;
+                        case R.id.tv_cancel://拒接
+                            yn=false;
+                            cancelOrder();
+                            break;
+                        case R.id.iv_copy:
+                            copy();
+                            break;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Intent intent = new Intent(mActivity, ServingDetailActivity.class);
-                intent.putExtra("codeValue", codeList.getCodeValue());//保外单需收的费用
-                intent.putExtra("id", list.get(position).getOrderID());
-                startActivity(intent);
+                try {
+                    dataBean=list.get(position);
+                    Intent intent = new Intent(mActivity, ServingDetailActivity.class);
+                    intent.putExtra("codeValue", codeList.getCodeValue());//保外单需收的费用
+                    intent.putExtra("id", dataBean.getOrderID());
+                    startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
         /*下拉刷新*/
@@ -186,23 +200,34 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
 
     }
     //复制
-    private void copy(int position) {
-        myClip = ClipData.newPlainText("", "下单厂家："+list.get(position).getInvoiceName() + "\n"
-                +"工单号："+list.get(position).getOrderID() + "\n"
-                +"下单时间："+list.get(position).getCreateDate() + "\n"
-                +"用户信息："+list.get(position).getUserName()+" "+list.get(position).getPhone() + "\n"
-                +"用户地址："+list.get(position).getAddress() + "\n"
-                +"产品信息："+list.get(position).getProductType() + "\n"
-                +"售后类型："+list.get(position).getGuaranteeText() + "\n"
-                +"服务类型："+list.get(position).getTypeName()
+    private void copy() {
+        models =dataBean.getOrderProductModels();
+        String name="";
+        if (models !=null){
+            for (int i = 0; i < models.size(); i++) {
+                model =models.get(i);
+                name+= model.getBrandName()+"("+ model.getSubCategoryName()+")"+ model.getProdModelName()+"、";
+            }
+        }
+        if (name.contains("、")){
+            name=name.substring(0,name.lastIndexOf("、"));
+        }
+        myClip = ClipData.newPlainText("", "下单厂家："+ dataBean.getCompanyName() + "\n"
+                +"工单号："+ dataBean.getOrderID() + "\n"
+                +"下单时间："+ dataBean.getCreateDate() + "\n"
+                +"用户信息："+ dataBean.getUserName()+" "+ dataBean.getPhone() + "\n"
+                +"用户地址："+ dataBean.getAddress() + "\n"
+                +"产品信息："+ name + "\n"
+                +"售后类型："+ dataBean.getGuaranteeText() + "\n"
+                +"服务类型："+ dataBean.getTypeName()
         );
         myClipboard.setPrimaryClip(myClip);
         ToastUtils.showShort("复制成功");
     }
 
     //接单
-    private void orders(final int position) {
-        if ("保外".equals(list.get(position).getGuaranteeText())) {
+    private void orders() {
+        if ("保外".equals(dataBean.getGuaranteeText())) {
             customdialog_home_view = LayoutInflater.from(mActivity).inflate(R.layout.customdialog_home, null);
             customdialog_home_dialog = new AlertDialog.Builder(mActivity)
                     .setView(customdialog_home_view)
@@ -227,19 +252,19 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
                 @Override
                 public void onClick(View v) {
                     showProgress();
-                    mPresenter.UpdateSendOrderState(list.get(position).getOrderID(), "1", "");
+                    mPresenter.UpdateSendOrderState(dataBean.getOrderID(), "1", "");
                     customdialog_home_dialog.dismiss();
                 }
             });
         } else {
             // FIXME: 2020-07-15 重复同意接单问题
             showProgress();
-            mPresenter.UpdateSendOrderState(list.get(position).getOrderID(), "1", "");
+            mPresenter.UpdateSendOrderState(dataBean.getOrderID(), "1", "");
         }
     }
 
     //拒接
-    private void cancelOrder(final int position) {
+    private void cancelOrder() {
         View Cancelview = LayoutInflater.from(mActivity).inflate(R.layout.dialog_cancel, null);
         et_message = Cancelview.findViewById(R.id.et_message);
         negtive = Cancelview.findViewById(R.id.negtive);
@@ -289,7 +314,7 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
                     ToastUtils.showShort("请输入拒接工单理由");
                 } else {
                     showProgress();
-                    mPresenter.UpdateSendOrderState(list.get(position).getOrderID(), "-1", message);
+                    mPresenter.UpdateSendOrderState(dataBean.getOrderID(), "-1", message);
                     cancelDialog.dismiss();
                 }
 
@@ -313,11 +338,7 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
     }
 
     private void getOrderList() {
-        // 通过Math的random()函数返回一个double类型随机数，范围[0.0, 1.0)
-        final double d = Math.random();
-        // 通过d获取一个[0, 100)之间的整数
-        final int i = (int) (d * 100);
-        mPresenter.WorkerGetOrderList(userId, "0", page + "", "10",i);
+        mPresenter.GetOrderList("", "0", page + "", "10");
     }
 
     @Override
@@ -361,20 +382,28 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
 
     @Override
     public void WorkerGetOrderList(BaseResult<WorkOrder> baseResult) {
-        mRefreshLayout.finishRefresh();
-        mRefreshLayout.finishLoadmore();
-        switch (baseResult.getStatusCode()) {
-            case 200:
-                if (page!=1&&baseResult.getData().getData().size()==0){
-                    mRefreshLayout.finishLoadmoreWithNoMoreData();
-                }
-                if (page == 1) {
-                    list.clear();
-                }
-                workOrder = baseResult.getData();
-                list.addAll(workOrder.getData());
-                adapter.setNewData(list);
-                break;
+    }
+
+    @Override
+    public void GetOrderList(OrderListResult baseResult) {
+        try {
+            mRefreshLayout.finishRefresh();
+            mRefreshLayout.finishLoadmore();
+            switch (baseResult.getStatusCode()) {
+                case 200:
+                    if (page!=1&&baseResult.getData().getData().size()==0){
+                        mRefreshLayout.finishLoadmoreWithNoMoreData();
+                    }
+                    if (page == 1) {
+                        list.clear();
+                    }
+                    workOrder = baseResult.getData();
+                    list.addAll(workOrder.getData());
+                    adapter.setNewData(list);
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -422,14 +451,16 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
             case 200://200
                 if (data.isItem1()) {//接单成功
                     if (yn){
-                        Toast.makeText(getActivity(), "接单成功", LENGTH_SHORT).show();
-                        EventBus.getDefault().post(1);
-                        EventBus.getDefault().post(2);
-                        EventBus.getDefault().post(10);
-                        Intent intent = new Intent(mActivity, ServingDetailActivity.class);
-                        intent.putExtra("codeValue", codeList.getCodeValue());//保外单需收的费用
-                        intent.putExtra("id", orderid);
-                        startActivity(intent);
+                        if (codeList!=null) {
+                            Toast.makeText(getActivity(), "接单成功", LENGTH_SHORT).show();
+                            EventBus.getDefault().post(1);
+                            EventBus.getDefault().post(2);
+                            EventBus.getDefault().post(10);
+                            Intent intent = new Intent(mActivity, ServingDetailActivity.class);
+                            intent.putExtra("codeValue", codeList.getCodeValue());//保外单需收的费用
+                            intent.putExtra("id", orderid);
+                            startActivity(intent);
+                        }
                     }else{
                         Toast.makeText(getActivity(), "已拒绝接单", LENGTH_SHORT).show();
                         EventBus.getDefault().post(0);
@@ -447,14 +478,18 @@ public class HomeFragment extends BaseLazyFragment<HomePresenter, HomeModel> imp
 
     @Override
     public void messgIsOrNo(BaseResult<Data<String>> baseResult) {
-        switch (baseResult.getStatusCode()) {
-            case 200:
-                if (baseResult.getData().isItem1()) {
-                    mIvRed.setVisibility(View.VISIBLE);
-                } else {
-                    mIvRed.setVisibility(View.GONE);
-                }
-                break;
+        try {
+            switch (baseResult.getStatusCode()) {
+                case 200:
+                    if (baseResult.getData().isItem1()) {
+                        mIvRed.setVisibility(View.VISIBLE);
+                    } else {
+                        mIvRed.setVisibility(View.GONE);
+                    }
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

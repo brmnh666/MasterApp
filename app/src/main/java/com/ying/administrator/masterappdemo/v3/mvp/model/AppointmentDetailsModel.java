@@ -1,5 +1,6 @@
 package com.ying.administrator.masterappdemo.v3.mvp.model;
 
+import com.ying.administrator.masterappdemo.api.ApiRetrofit;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.AddOrderSignInRecrodResult;
 import com.ying.administrator.masterappdemo.entity.Data;
@@ -7,7 +8,6 @@ import com.ying.administrator.masterappdemo.entity.GetBrandWithCategory;
 import com.ying.administrator.masterappdemo.entity.SubUserInfo;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
-import com.ying.administrator.masterappdemo.mvp.service.ApiRetrofit;
 import com.ying.administrator.masterappdemo.v3.bean.GetOrderMoneyDetailResult;
 import com.ying.administrator.masterappdemo.v3.bean.ProductTollResult;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.AppointmentDetailsContract;

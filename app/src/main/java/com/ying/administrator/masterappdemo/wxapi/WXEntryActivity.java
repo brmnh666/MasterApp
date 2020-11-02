@@ -5,29 +5,21 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.baidu.ocr.sdk.utils.HttpUtil;
 import com.blankj.utilcode.util.ToastUtils;
 import com.google.gson.Gson;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
-import com.umeng.socialize.weixin.view.WXCallbackActivity;
 import com.ying.administrator.masterappdemo.app.MyApplication;
-import com.ying.administrator.masterappdemo.entity.IsCardNo;
 import com.ying.administrator.masterappdemo.entity.WXAccessTokenBean;
-import com.ying.administrator.masterappdemo.mvp.service.ApiRetrofit;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.Nullable;
-import io.reactivex.schedulers.Schedulers;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;

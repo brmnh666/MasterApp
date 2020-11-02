@@ -1,5 +1,6 @@
 package com.ying.administrator.masterappdemo.mvp.model;
 
+import com.ying.administrator.masterappdemo.api.ApiRetrofit;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Area;
 import com.ying.administrator.masterappdemo.entity.City;
@@ -8,7 +9,6 @@ import com.ying.administrator.masterappdemo.entity.District;
 import com.ying.administrator.masterappdemo.entity.MyServiceArea;
 import com.ying.administrator.masterappdemo.entity.Province;
 import com.ying.administrator.masterappdemo.mvp.contract.AddServiceContract;
-import com.ying.administrator.masterappdemo.mvp.service.ApiRetrofit;
 
 import java.util.List;
 

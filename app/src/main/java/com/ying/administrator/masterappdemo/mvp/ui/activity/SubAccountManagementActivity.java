@@ -230,24 +230,28 @@ public class SubAccountManagementActivity extends BaseActivity<SubAccountPresent
     @Override
     public void GetChildAccountByParentUserID(BaseResult<List<SubUserInfo.SubUserInfoDean>> baseResult) {
 
-        switch (baseResult.getStatusCode()) {
-            case 200:
+        try {
+            switch (baseResult.getStatusCode()) {
+                case 200:
 
-                if (baseResult.getData().size() == 0) {
-                    mLlWu.setVisibility(View.VISIBLE);
-                    mLlSub.setVisibility(View.GONE);
-                } else {
-                    mLlWu.setVisibility(View.GONE);
-                    mLlSub.setVisibility(View.VISIBLE);
-                    subUserInfolist.clear();
-                    subUserInfolist.addAll(baseResult.getData());
-                    subAccountAdapter.notifyDataSetChanged();
-                }
+                    if (baseResult.getData().size() == 0) {
+                        mLlWu.setVisibility(View.VISIBLE);
+                        mLlSub.setVisibility(View.GONE);
+                    } else {
+                        mLlWu.setVisibility(View.GONE);
+                        mLlSub.setVisibility(View.VISIBLE);
+                        subUserInfolist.clear();
+                        subUserInfolist.addAll(baseResult.getData());
+                        subAccountAdapter.notifyDataSetChanged();
+                    }
 
-                break;
-            default:
-                break;
+                    break;
+                default:
+                    break;
 
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
 

@@ -4,12 +4,7 @@ import com.ying.administrator.masterappdemo.base.BaseModel;
 import com.ying.administrator.masterappdemo.base.BasePresenter;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.base.BaseView;
-import com.ying.administrator.masterappdemo.entity.BankCard;
-import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.RedPointData;
-import com.ying.administrator.masterappdemo.entity.UserInfo;
-
-import java.util.List;
 
 import io.reactivex.Observable;
 

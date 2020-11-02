@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.SPUtils;
@@ -127,6 +128,9 @@ public class ApplyAccActivity extends BaseActivity<ApplyAccPresenter, ApplyAccMo
     private String prodID;
     private WorkOrder.DataBean dataBean;
     private int RecipientType = -1;
+    private View popupWindow_view;
+    private String FilePath;
+    private PopupWindow mPopupWindow;
 
     @Override
     protected int setLayoutId() {
@@ -204,19 +208,23 @@ public class ApplyAccActivity extends BaseActivity<ApplyAccPresenter, ApplyAccMo
 
     @Override
     public void GetAccountAddress(BaseResult<List<AddressList>> baseResult) {
-        switch (baseResult.getStatusCode()) {
-            case 200:
-                addressList = baseResult.getData();
-                if (addressList.size() != 0) {
-                    sendAddr = addressList.get(0).getProvince() + addressList.get(0).getCity() + addressList.get(0).getArea() + addressList.get(0).getDistrict() + addressList.get(0).getAddress() + "(" + addressList.get(0).getUserName() + "收)" + addressList.get(0).getPhone();
-                    mTvAdddrMe.setText("收件人信息：" + sendAddr);
-                } else {
-                    mTvAdddrMe.setText("请添加收件人信息");
-                }
-                break;
-            default:
-                ToastUtils.showShort("获取失败");
-                break;
+        try {
+            switch (baseResult.getStatusCode()) {
+                case 200:
+                    addressList = baseResult.getData();
+                    if (addressList.size() != 0) {
+                        sendAddr = addressList.get(0).getProvince() + addressList.get(0).getCity() + addressList.get(0).getArea() + addressList.get(0).getDistrict() + addressList.get(0).getAddress() + "(" + addressList.get(0).getUserName() + "收)" + addressList.get(0).getPhone();
+                        mTvAdddrMe.setText("收件人信息：" + sendAddr);
+                    } else {
+                        mTvAdddrMe.setText("请添加收件人信息");
+                    }
+                    break;
+                default:
+                    ToastUtils.showShort("获取失败");
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

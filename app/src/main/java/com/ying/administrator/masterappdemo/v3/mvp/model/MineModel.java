@@ -1,9 +1,9 @@
 package com.ying.administrator.masterappdemo.v3.mvp.model;
 
+import com.ying.administrator.masterappdemo.api.ApiRetrofit;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
-import com.ying.administrator.masterappdemo.mvp.service.ApiRetrofit;
 import com.ying.administrator.masterappdemo.v3.bean.GetSignContractManageResult;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.MineContract;
 

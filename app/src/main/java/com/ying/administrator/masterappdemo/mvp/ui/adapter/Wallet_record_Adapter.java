@@ -1,7 +1,6 @@
 package com.ying.administrator.masterappdemo.mvp.ui.adapter;
 
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;

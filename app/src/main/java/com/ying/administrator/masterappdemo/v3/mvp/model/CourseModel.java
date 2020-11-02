@@ -1,6 +1,6 @@
 package com.ying.administrator.masterappdemo.v3.mvp.model;
 
-import com.ying.administrator.masterappdemo.mvp.service.ApiRetrofit;
+import com.ying.administrator.masterappdemo.api.ApiRetrofit;
 import com.ying.administrator.masterappdemo.v3.bean.CourseResult;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.CourseContract;
 

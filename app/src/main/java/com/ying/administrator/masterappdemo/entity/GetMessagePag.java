@@ -27,6 +27,7 @@ public class GetMessagePag implements Serializable {
     private Data4Bean Data4;
     private Data5Bean Data5;
     private int Count4;
+    private int Count7;
 
     public Data6Bean getData6() {
         return Data6;
@@ -106,6 +107,14 @@ public class GetMessagePag implements Serializable {
 
     public void setCount4(int Count4) {
         this.Count4 = Count4;
+    }
+
+    public int getCount7() {
+        return Count7;
+    }
+
+    public void setCount7(int count7) {
+        Count7 = count7;
     }
 
     public static class Data6Bean {

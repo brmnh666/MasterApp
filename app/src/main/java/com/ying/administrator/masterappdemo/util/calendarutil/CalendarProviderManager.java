@@ -1,6 +1,5 @@
 package com.ying.administrator.masterappdemo.util.calendarutil;
 
-import android.annotation.TargetApi;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
@@ -13,7 +12,6 @@ import android.os.Build;
 import android.provider.CalendarContract;
 import android.support.annotation.RequiresApi;
 
-import com.ying.administrator.masterappdemo.util.calendarutil.Util;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;

@@ -3,15 +3,10 @@ package com.ying.administrator.masterappdemo.widget;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
 import com.ying.administrator.masterappdemo.R;
-import com.ying.administrator.masterappdemo.entity.Accessory;
-import com.ying.administrator.masterappdemo.mvp.ui.adapter.Add_Ac_Adapter;
-
-import java.util.List;
 
 /*添加配件dialog*/
 public class CustomDialog_Add_Service extends AlertDialog {

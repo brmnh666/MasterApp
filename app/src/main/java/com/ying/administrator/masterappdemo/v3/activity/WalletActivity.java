@@ -18,7 +18,7 @@ import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.CardList_Activity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.DetailRecordActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.RechargeActivity;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.VerifiedActivity2;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.VerifiedActivity;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.WalletPresenter;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.WalletContract;
 import com.ying.administrator.masterappdemo.v3.mvp.model.WalletModel;
@@ -97,47 +97,49 @@ public class WalletActivity extends BaseActivity<WalletPresenter, WalletModel> i
                 finish();
                 break;
             case R.id.iv_setting:
-                if (userInfo.getIfAuth() == null) {
-//                    return;
-                    final VerifiedDialog dialog = new VerifiedDialog(mActivity);
-                    dialog.setMessage("未实名认证不能绑定银行卡")
-                            //.setImageResId(R.mipmap.ic_launcher)
-                            .setTitle("提示")
-                            .setSingle(false).setOnClickBottomListener(new VerifiedDialog.OnClickBottomListener() {
-                        @Override
-                        public void onPositiveClick() {//去实名认证
-                            startActivity(new Intent(mActivity, VerifiedActivity2.class));
-                            dialog.dismiss();
-                        }
+                if (userInfo!=null) {
+                    if (userInfo.getIfAuth() == null) {
+    //                    return;
+                        final VerifiedDialog dialog = new VerifiedDialog(mActivity);
+                        dialog.setMessage("未实名认证不能绑定银行卡")
+                                //.setImageResId(R.mipmap.ic_launcher)
+                                .setTitle("提示")
+                                .setSingle(false).setOnClickBottomListener(new VerifiedDialog.OnClickBottomListener() {
+                            @Override
+                            public void onPositiveClick() {//去实名认证
+                                startActivity(new Intent(mActivity, VerifiedActivity.class));
+                                dialog.dismiss();
+                            }
 
-                        @Override
-                        public void onNegtiveClick() {//取消
-                            dialog.dismiss();
-                            // Toast.makeText(MainActivity.this,"ssss",Toast.LENGTH_SHORT).show();
-                        }
-                    }).show();
-                } else if (userInfo.getIfAuth().equals("1")) {
-                    startActivity(new Intent(this, CardList_Activity.class));
+                            @Override
+                            public void onNegtiveClick() {//取消
+                                dialog.dismiss();
+                                // Toast.makeText(MainActivity.this,"ssss",Toast.LENGTH_SHORT).show();
+                            }
+                        }).show();
+                    } else if (userInfo.getIfAuth().equals("1")) {
+                        startActivity(new Intent(this, CardList_Activity.class));
 
-                } else {
-                    final CommonDialog_Home dialog = new CommonDialog_Home(mActivity);
-                    dialog.setMessage("未实名认证不能绑定银行卡")
-                            //.setImageResId(R.mipmap.ic_launcher)
-                            .setTitle("提示")
-                            .setSingle(false).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
-                        @Override
-                        public void onPositiveClick() {//去实名认证
-                            dialog.dismiss();
-                        }
+                    } else {
+                        final CommonDialog_Home dialog = new CommonDialog_Home(mActivity);
+                        dialog.setMessage("未实名认证不能绑定银行卡")
+                                //.setImageResId(R.mipmap.ic_launcher)
+                                .setTitle("提示")
+                                .setSingle(false).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
+                            @Override
+                            public void onPositiveClick() {//去实名认证
+                                dialog.dismiss();
+                            }
 
-                        @Override
-                        public void onNegtiveClick() {//取消
-                            dialog.dismiss();
-                            // Toast.makeText(MainActivity.this,"ssss",Toast.LENGTH_SHORT).show();
-                        }
-                    }).show();
+                            @Override
+                            public void onNegtiveClick() {//取消
+                                dialog.dismiss();
+                                // Toast.makeText(MainActivity.this,"ssss",Toast.LENGTH_SHORT).show();
+                            }
+                        }).show();
 
 
+                    }
                 }
 
                 break;
@@ -164,21 +166,25 @@ public class WalletActivity extends BaseActivity<WalletPresenter, WalletModel> i
 
     @Override
     public void GetUserInfoList(BaseResult<UserInfo> baseResult) {
-        switch (baseResult.getStatusCode()) {
-            case 200:
-                if (baseResult.getData() != null) {
-                    userInfo = baseResult.getData().getData().get(0);
-                    String CanWithdraw = String.format("%.2f", userInfo.getTotalMoney() - userInfo.getFrozenMoney());
-                    mTvMoney.setText(CanWithdraw);
-                    String Unfinished = String.format("%.2f", userInfo.getUnfinishedAmount());
-                    mTvConfirmed.setText("¥"+Unfinished );
-                    mTvCumulativeIncome.setText("¥"+String.format("%.2f",userInfo.getServiceTotalMoney()));
-                    mTvWarranty.setText("¥"+String.format("%.2f",userInfo.getDepositMoney()));
-                }
+        try {
+            switch (baseResult.getStatusCode()) {
+                case 200:
+                    if (baseResult.getData() != null) {
+                        userInfo = baseResult.getData().getData().get(0);
+                        String CanWithdraw = String.format("%.2f", userInfo.getTotalMoney() - userInfo.getFrozenMoney());
+                        mTvMoney.setText(CanWithdraw);
+                        String Unfinished = String.format("%.2f", userInfo.getUnfinishedAmount());
+                        mTvConfirmed.setText("¥"+Unfinished );
+                        mTvCumulativeIncome.setText("¥"+String.format("%.2f",userInfo.getServiceTotalMoney()));
+                        mTvWarranty.setText("¥"+String.format("%.2f",userInfo.getDepositMoney()));
+                    }
 
-                break;
-            case 401:
-                break;
+                    break;
+                case 401:
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -194,12 +200,16 @@ public class WalletActivity extends BaseActivity<WalletPresenter, WalletModel> i
 
     @Override
     public void ToBepresent(BaseResult<Data<ToBepresent>> baseResult) {
-        switch (baseResult.getStatusCode()){
-            case 200:
-                if (baseResult.getData().isItem1()){
-                    mTvWithdrawing.setText("¥"+String.format("%.2f",baseResult.getData().getItem2().getData()));
-                }
-                break;
+        try {
+            switch (baseResult.getStatusCode()){
+                case 200:
+                    if (baseResult.getData().isItem1()){
+                        mTvWithdrawing.setText("¥"+String.format("%.2f",baseResult.getData().getItem2().getData()));
+                    }
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

@@ -6,11 +6,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.ying.administrator.masterappdemo.R;
@@ -26,11 +24,7 @@ import com.ying.administrator.masterappdemo.mvp.ui.adapter.Wallet_record_Adapter
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseFragment;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class RecordFragment extends BaseFragment<WalletPresenter, WalletModel>implements WalletContract.View {
     private View view;
@@ -72,14 +66,16 @@ public class RecordFragment extends BaseFragment<WalletPresenter, WalletModel>im
         SPUtils spUtils = SPUtils.getInstance("token");
         userId = spUtils.getString("userName");
 
-        if (title.equals("收支")){
-            mPresenter.AccountBill(userId, "2,5","1","999");
-        }
-        if (title.equals("提现")){
-            mPresenter.AccountBill(userId, "3","1","999");//提现
-        }
-        if (title.equals("充值")){
-            mPresenter.AccountBill(userId, "1","1","999");//充值
+        if (title!=null) {
+            if (title.equals("收支")){
+                mPresenter.AccountBill(userId, "2,5","1","999");
+            }
+            if (title.equals("提现")){
+                mPresenter.AccountBill(userId, "3","1","999");//提现
+            }
+            if (title.equals("充值")){
+                mPresenter.AccountBill(userId, "1","1","999");//充值
+            }
         }
 
 

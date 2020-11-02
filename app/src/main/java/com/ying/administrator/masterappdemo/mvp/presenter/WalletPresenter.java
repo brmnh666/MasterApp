@@ -2,7 +2,6 @@ package com.ying.administrator.masterappdemo.mvp.presenter;
 
 import com.ying.administrator.masterappdemo.base.BaseObserver;
 import com.ying.administrator.masterappdemo.base.BaseResult;
-import com.ying.administrator.masterappdemo.entity.Bank;
 import com.ying.administrator.masterappdemo.entity.BankCard;
 import com.ying.administrator.masterappdemo.entity.Bill;
 import com.ying.administrator.masterappdemo.entity.Data;

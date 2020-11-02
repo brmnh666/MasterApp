@@ -1,11 +1,11 @@
 package com.ying.administrator.masterappdemo.mvp.model;
 
+import com.ying.administrator.masterappdemo.api.ApiRetrofit;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.QuestBean;
 import com.ying.administrator.masterappdemo.entity.QuestResult;
 import com.ying.administrator.masterappdemo.mvp.contract.QuestContract;
-import com.ying.administrator.masterappdemo.mvp.service.ApiRetrofit;
 
 import java.util.List;
 

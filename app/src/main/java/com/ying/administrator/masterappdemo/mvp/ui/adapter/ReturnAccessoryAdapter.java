@@ -3,7 +3,6 @@ package com.ying.administrator.masterappdemo.mvp.ui.adapter;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;

@@ -21,13 +21,10 @@ import com.ying.administrator.masterappdemo.entity.NavigationBarNumberSon;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
 import com.ying.administrator.masterappdemo.v3.activity.SearchOrderActivity;
-import com.ying.administrator.masterappdemo.v3.fragment.order.CompletedFragment;
+import com.ying.administrator.masterappdemo.v3.bean.OrderListResult;
+import com.ying.administrator.masterappdemo.v3.fragment.order.OrderStateFragment;
 import com.ying.administrator.masterappdemo.v3.fragment.order.PendingAppointmentFragment;
 import com.ying.administrator.masterappdemo.v3.fragment.order.PendingFragment;
-import com.ying.administrator.masterappdemo.v3.fragment.order.ReturnedFragment;
-import com.ying.administrator.masterappdemo.v3.fragment.order.ServiceFragment;
-import com.ying.administrator.masterappdemo.v3.fragment.order.SettlementFragment;
-import com.ying.administrator.masterappdemo.v3.fragment.order.ShippingFragment;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.OrderPresenter;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.OrderContract;
 import com.ying.administrator.masterappdemo.v3.mvp.model.OrderModel;
@@ -58,11 +55,6 @@ public class OrderFragment extends BaseLazyFragment<OrderPresenter, OrderModel> 
     private MyPagerAdapter mAdapter;
     private PendingFragment pendingFragment;
     private PendingAppointmentFragment pendingAppointmentFragment;
-    private ServiceFragment serviceFragment;
-    private ShippingFragment shippingFragment;
-    private ReturnedFragment returnedFragment;
-    private SettlementFragment settlementFragment;
-    private String userId;
     private String[] mTitles;
     private int one;
     private int two;
@@ -70,8 +62,9 @@ public class OrderFragment extends BaseLazyFragment<OrderPresenter, OrderModel> 
     private int four;
     private int five;
     private int six;
-    private CompletedFragment completedFragment;
+
     private int senven;
+    private String userId;
 
     public static OrderFragment newInstance(String param1) {
         OrderFragment fragment = new OrderFragment();
@@ -110,18 +103,13 @@ public class OrderFragment extends BaseLazyFragment<OrderPresenter, OrderModel> 
         };
         pendingFragment = PendingFragment.newInstance();
         pendingAppointmentFragment = PendingAppointmentFragment.newInstance();
-        serviceFragment = ServiceFragment.newInstance();
-        shippingFragment = ShippingFragment.newInstance();
-        returnedFragment = ReturnedFragment.newInstance();
-        settlementFragment = SettlementFragment.newInstance();
-        completedFragment = CompletedFragment.newInstance();
-        mFragments.add(pendingFragment);
-        mFragments.add(pendingAppointmentFragment);
-        mFragments.add(serviceFragment);
-        mFragments.add(shippingFragment);
-        mFragments.add(returnedFragment);
-        mFragments.add(settlementFragment);
-        mFragments.add(completedFragment);
+        mFragments.add(pendingFragment);//待处理
+        mFragments.add(pendingAppointmentFragment);//待预约
+        mFragments.add(OrderStateFragment.newInstance("2"));//服务中
+        mFragments.add(OrderStateFragment.newInstance("11"));//待审核
+        mFragments.add(OrderStateFragment.newInstance("8"));//待返件
+        mFragments.add(OrderStateFragment.newInstance("12"));//待结算
+        mFragments.add(OrderStateFragment.newInstance("6"));//已完结
         mAdapter = new MyPagerAdapter(getChildFragmentManager());
         mReceivingViewpager.setAdapter(mAdapter);
         mReceivingViewpager.setOffscreenPageLimit(mFragments.size());
@@ -141,23 +129,27 @@ public class OrderFragment extends BaseLazyFragment<OrderPresenter, OrderModel> 
 
     @Override
     public void NavigationBarNumber(BaseResult<Data<NavigationBarNumber>> baseResult) {
-        switch (baseResult.getStatusCode()) {
-            case 200:
-                if (baseResult.getData().isItem1()) {
-                    one = baseResult.getData().getItem2().getCount1();
-                    two = baseResult.getData().getItem2().getCount2();
-                    three = baseResult.getData().getItem2().getCount3();
-                    four = baseResult.getData().getItem2().getCount4();
-                    five = baseResult.getData().getItem2().getCount5();
-                    six = baseResult.getData().getItem2().getCount6();
-                    senven = baseResult.getData().getItem2().getCount7();
-                }
-                mTitles = new String[]{
-                        "待处理(" + one + ")", "待预约(" + two + ")", "待服务(" + three + ")", "待审核(" + four + ")"
-                        , "待返件(" + five + ")", "待结算(" + six + ")", "已完结(" + senven + ")"
-                };
-                mTabReceivingLayout.notifyDataSetChanged();
-                break;
+        try {
+            switch (baseResult.getStatusCode()) {
+                case 200:
+                    if (baseResult.getData().isItem1()) {
+                        one = baseResult.getData().getItem2().getCount1();
+                        two = baseResult.getData().getItem2().getCount2();
+                        three = baseResult.getData().getItem2().getCount3();
+                        four = baseResult.getData().getItem2().getCount4();
+                        five = baseResult.getData().getItem2().getCount5();
+                        six = baseResult.getData().getItem2().getCount6();
+                        senven = baseResult.getData().getItem2().getCount7();
+                    }
+                    mTitles = new String[]{
+                            "待处理(" + one + ")", "待预约(" + two + ")", "待服务(" + three + ")", "待审核(" + four + ")"
+                            , "待返件(" + five + ")", "待结算(" + six + ")", "已完结(" + senven + ")"
+                    };
+                    mTabReceivingLayout.notifyDataSetChanged();
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -168,6 +160,11 @@ public class OrderFragment extends BaseLazyFragment<OrderPresenter, OrderModel> 
 
     @Override
     public void WorkerGetOrderList(BaseResult<WorkOrder> baseResult) {
+
+    }
+
+    @Override
+    public void GetOrderList(OrderListResult baseResult) {
 
     }
 

@@ -63,7 +63,7 @@ public class AddServiceAreaActivity extends BaseActivity<AddServicePresenter, Ad
 
     @Override
     protected int setLayoutId() {
-        return R.layout.activity_add_service_area_info2;
+        return R.layout.activity_add_service_area_info;
     }
 
     @Override

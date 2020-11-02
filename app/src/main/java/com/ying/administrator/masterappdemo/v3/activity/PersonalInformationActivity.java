@@ -50,7 +50,7 @@ import com.ying.administrator.masterappdemo.entity.AddressList;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.AddAddressActivity;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.VerifiedActivity2;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.VerifiedActivity;
 import com.ying.administrator.masterappdemo.util.Glide4Engine;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.util.imageutil.CompressHelper;
@@ -162,7 +162,7 @@ public class PersonalInformationActivity extends BaseActivity<PersonalInformatio
             case R.id.tv_master_name:
                 try {
                     if (userInfo.getTrueName() == null) { //如果为空说明未认证
-                        startActivity(new Intent(mActivity, VerifiedActivity2.class));
+                        startActivity(new Intent(mActivity, VerifiedActivity.class));
                     } else {
                         return;
                     }
@@ -236,48 +236,52 @@ public class PersonalInformationActivity extends BaseActivity<PersonalInformatio
 
     @Override
     public void GetUserInfoList(BaseResult<UserInfo> baseResult) {
-        switch (baseResult.getStatusCode()) {
-            case 200:
-                userInfo = baseResult.getData().getData().get(0);
-                /*设置头像*/
-                if (userInfo.getAvator() == null) {//显示默认头像
-                    return;
-                } else {
-                    Glide.with(mActivity)
-                            .load(Config.HEAD_URL + userInfo.getAvator())
-                            .apply(RequestOptions.bitmapTransform(new CircleCrop()))
-                            .into(mIvAvatar);
-                }
-//                /*真实姓名*/
-//                if (userInfo.getTrueName() == null) { //如果为空说明未认证
-//                    mTvMasterName.setText("未认证");
-//                } else {
-//                    mTvMasterName.setText(userInfo.getTrueName());
-//                }
+        try {
+            switch (baseResult.getStatusCode()) {
+                case 200:
+                    userInfo = baseResult.getData().getData().get(0);
+                    /*设置头像*/
+                    if (userInfo.getAvator() == null) {//显示默认头像
+                        return;
+                    } else {
+                        Glide.with(mActivity)
+                                .load(Config.HEAD_URL + userInfo.getAvator())
+                                .apply(RequestOptions.bitmapTransform(new CircleCrop()))
+                                .into(mIvAvatar);
+                    }
+    //                /*真实姓名*/
+    //                if (userInfo.getTrueName() == null) { //如果为空说明未认证
+    //                    mTvMasterName.setText("未认证");
+    //                } else {
+    //                    mTvMasterName.setText(userInfo.getTrueName());
+    //                }
 
-                /*真实姓名*/
-                if (userInfo.getIfAuth() == null || "".equals(userInfo.getIfAuth())) {
-                    mTvMasterName.setText("未认证");
-                } else if ("0".equals(userInfo.getIfAuth())) {
-                    mTvMasterName.setText("认证中");
-                } else if ("-1".equals(userInfo.getIfAuth())) {
-                    mTvMasterName.setText("未认证");
-                } else if ("1".equals(userInfo.getIfAuth())) {
-                    mTvMasterName.setText(userInfo.getTrueName());
-                }
+                    /*真实姓名*/
+                    if (userInfo.getIfAuth() == null || "".equals(userInfo.getIfAuth())) {
+                        mTvMasterName.setText("未认证");
+                    } else if ("0".equals(userInfo.getIfAuth())) {
+                        mTvMasterName.setText("认证中");
+                    } else if ("-1".equals(userInfo.getIfAuth())) {
+                        mTvMasterName.setText("未认证");
+                    } else if ("1".equals(userInfo.getIfAuth())) {
+                        mTvMasterName.setText(userInfo.getTrueName());
+                    }
 
-                /*手机号*/
-//                if (userInfo.getPhone() == null) {
-//                    mTvPhone.setText("");
-//                } else {
+                    /*手机号*/
+    //                if (userInfo.getPhone() == null) {
+    //                    mTvPhone.setText("");
+    //                } else {
                     mTvPhone.setText(userInfo.getUserID());
-//                }
-                if (userInfo.getEmergencyContact()==null){
-                    mTvEmergencyTelephoneNumber.setText("暂未设置紧急联系人");
-                }else {
-                    mTvEmergencyTelephoneNumber.setText(userInfo.getEmergencyContact());
-                }
-                break;
+    //                }
+                    if (userInfo.getEmergencyContact()==null){
+                        mTvEmergencyTelephoneNumber.setText("暂未设置紧急联系人");
+                    }else {
+                        mTvEmergencyTelephoneNumber.setText(userInfo.getEmergencyContact());
+                    }
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -481,6 +485,9 @@ public class PersonalInformationActivity extends BaseActivity<PersonalInformatio
                 if (resultCode == -1) {
                     Glide.with(mActivity).load(FilePath).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(mIvAvatar);
                     file = new File(FilePath);
+
+                    MyUtils.sendBroadcastToImg(mActivity,file);
+
                     startCrop(Uri.fromFile(file));
                 }
 
@@ -538,6 +545,8 @@ public class PersonalInformationActivity extends BaseActivity<PersonalInformatio
         }
 
     }
+
+
 
     //处理剪切失败的返回值
     private void handleCropError(Throwable cropError) {

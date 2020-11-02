@@ -1,14 +1,11 @@
 package com.ying.administrator.masterappdemo.mvp.model;
 
-import com.alipay.sdk.auth.APAuthInfo;
+import com.ying.administrator.masterappdemo.api.ApiRetrofit;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.MessageContract;
-import com.ying.administrator.masterappdemo.mvp.contract.MyMessageContract;
-import com.ying.administrator.masterappdemo.mvp.service.ApiRetrofit;
-
-import java.util.List;
+import com.ying.administrator.masterappdemo.v3.bean.GetLeaveMsgListResult;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -26,6 +23,13 @@ public class MessageModel implements MessageContract.Model {
     @Override
     public Observable<BaseResult<WorkOrder.DataBean>> GetOrderInfo(String OrderID) {
         return ApiRetrofit.getDefault().GetOrderInfo(OrderID,"2")
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<GetLeaveMsgListResult> GetLeaveMsgList(String OrderID) {
+        return ApiRetrofit.getDefault().GetLeaveMsgList(OrderID)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

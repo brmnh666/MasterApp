@@ -1,6 +1,5 @@
 package com.ying.administrator.masterappdemo.v3.mvp.contract;
 
-import com.tencent.tinker.android.dex.Code;
 import com.ying.administrator.masterappdemo.base.BaseModel;
 import com.ying.administrator.masterappdemo.base.BasePresenter;
 import com.ying.administrator.masterappdemo.base.BaseResult;

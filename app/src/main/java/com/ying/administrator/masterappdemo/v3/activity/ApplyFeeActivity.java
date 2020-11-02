@@ -461,6 +461,7 @@ public class ApplyFeeActivity extends BaseActivity<AllWorkOrdersPresenter, AllWo
                 if (resultCode == -1) {
                     Glide.with(mActivity).load(FilePath).into(mIvMap1);
                     file = new File(FilePath);
+                    MyUtils.sendBroadcastToImg(mActivity,file);
                 }
                 if (file != null) {
                     File newFile = CompressHelper.getDefault(mActivity).compressToFile(file);

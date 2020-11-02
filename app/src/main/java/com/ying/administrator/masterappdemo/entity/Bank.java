@@ -1,8 +1,6 @@
 package com.ying.administrator.masterappdemo.entity;
 
 
-import android.widget.ImageView;
-
 public class Bank {
 private String bankname;
 private int imageView;

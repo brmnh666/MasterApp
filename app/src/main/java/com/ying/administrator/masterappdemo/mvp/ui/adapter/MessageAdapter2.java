@@ -6,7 +6,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.entity.LeaveMessage;
-import com.ying.administrator.masterappdemo.entity.Message;
 
 import java.util.List;
 

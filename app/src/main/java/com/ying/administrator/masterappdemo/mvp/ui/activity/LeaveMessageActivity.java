@@ -122,7 +122,7 @@ public class LeaveMessageActivity extends BaseActivity<LeaveMeaasgePreaenter, Le
                     case R.id.ll_order_message:
                         mPresenter.LeaveMessageWhetherLook(list.get(position).getOrderId());
                         if (!"0".equals(list.get(position).getOrderId())) {
-                            Intent intent = new Intent(mActivity, MessageActivity2.class);
+                            Intent intent = new Intent(mActivity, LeaveMsgActivity.class);
                             intent.putExtra("orderId", list.get(position).getOrderId());
                             startActivity(intent);
                         }
@@ -165,7 +165,6 @@ public class LeaveMessageActivity extends BaseActivity<LeaveMeaasgePreaenter, Le
                 if (baseResult.getData().isItem1()) {
                     list.get(pos).setWorkerIslook("2");
                     messageAdapter.setNewData(list);
-                    EventBus.getDefault().post("orderempty");
                     EventBus.getDefault().post("LeaveMessage");
                     mRefreshLayout.autoRefresh();
                 }

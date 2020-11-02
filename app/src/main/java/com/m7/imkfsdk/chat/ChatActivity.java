@@ -55,7 +55,6 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.m7.imkfsdk.chat.adapter.ChatAdapter;
 import com.m7.imkfsdk.constant.Constants;
 import com.m7.imkfsdk.recordbutton.AudioRecorderButton;
@@ -2384,7 +2383,7 @@ public class ChatActivity extends MyBaseActivity implements OnClickListener,
         LogUtils.aTag("chatActivity", "走到OnResume了" + TcpManager.getInstance(IMChatManager.getInstance().getAppContext()).getTcpStatus());
         if (MoorUtils.isNetWorkConnected(IMChatManager.getInstance().getAppContext())) {
             LogUtils.aTag("onresume", "监测到网络ok");
-            if (isServiceRunning(this, "com.moor.imkf.tcpservice.service.IMService")) {
+            if (isServiceRunning(this, "com.moor.imkf.tcpservice.api.IMService")) {
                 if (TcpManager.TcpStatus.BREAK.equals(TcpManager.getInstance(IMChatManager.getInstance().getAppContext()).getTcpStatus())) {
                     EventBus.getDefault().post(new TcpBreakEvent());//重连
                 }

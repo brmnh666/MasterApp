@@ -10,7 +10,6 @@ import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.entity.FAccessory;
 
 import java.util.List;
-import java.util.Map;
 
 /*预接单的添加配置*/
 public class Pre_order_Add_Ac_Adapter extends BaseQuickAdapter<FAccessory.OrderAccessoryStrBean.OrderAccessoryBean, BaseViewHolder>  {

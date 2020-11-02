@@ -5,7 +5,6 @@ import com.ying.administrator.masterappdemo.base.BaseObserver;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.mvp.contract.ForgetPasswordContract;
-import com.ying.administrator.masterappdemo.mvp.contract.LoginContract;
 
 public class ForgetPasswordPresenter extends ForgetPasswordContract.Presenter {
 

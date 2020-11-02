@@ -1,16 +1,15 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
-import android.graphics.drawable.BitmapDrawable;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.SPUtils;
@@ -30,12 +29,8 @@ import com.ying.administrator.masterappdemo.entity.ServiceAddress;
 import com.ying.administrator.masterappdemo.mvp.contract.AddServiceContract;
 import com.ying.administrator.masterappdemo.mvp.model.AddServiceModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.AddServicePresenter;
-import com.ying.administrator.masterappdemo.mvp.ui.adapter.AreaAdapter;
-import com.ying.administrator.masterappdemo.mvp.ui.adapter.CityAdapter;
-import com.ying.administrator.masterappdemo.mvp.ui.adapter.DistrictAdapter;
-import com.ying.administrator.masterappdemo.mvp.ui.adapter.ProvinceAdapter;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.ServiceAddressAdapter;
-import com.ying.administrator.masterappdemo.util.MyUtils;
+import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,48 +49,20 @@ public class AddServiceAreaInfoActivity extends BaseActivity<AddServicePresenter
     TextView mTvSave;
     @BindView(R.id.ll_customer_service)
     LinearLayout mLlCustomerService;
-    @BindView(R.id.tv_province)
-    TextView mTvProvince;
-    @BindView(R.id.ll_province)
-    LinearLayout mLlProvince;
-    @BindView(R.id.tv_city)
-    TextView mTvCity;
-    @BindView(R.id.ll_city)
-    LinearLayout mLlCity;
-    @BindView(R.id.tv_area)
-    TextView mTvArea;
-    @BindView(R.id.ll_area)
-    LinearLayout mLlArea;
-    @BindView(R.id.tv_district)
-    TextView mTvDistrict;
-    @BindView(R.id.ll_town)
-    LinearLayout mLlTown;
-    @BindView(R.id.iv_add)
-    ImageView mIvAdd;
+    @BindView(R.id.btn_add)
+    Button mBtnAdd;
+    @BindView(R.id.btn_clear)
+    Button mBtnClear;
     @BindView(R.id.rv_region)
     RecyclerView mRvRegion;
     @BindView(R.id.btn_save)
     Button mBtnSave;
-    private Province mProvince;
-    private City mCity;
-    private Area mArea;
-    private District mDistrict;
     private List<Province> provinceList;
-    private List<City> cityList;
-    private List<Area> areaList;
-    private List<District> districtList;
 
     private List<Address> getserviceaddresslist = new ArrayList<>(); //得到已选的地址
     private List<ServiceAddress> serviceAddressList = new ArrayList<>();
-    private List<ServiceAddress> tempServiceAddressList = new ArrayList<>();
     private ServiceAddressAdapter serviceAddressAdapter;
-    private ProvinceAdapter provinceAdapter;
-    private CityAdapter cityAdapter;
-    private AreaAdapter areaAdapter;
-    private DistrictAdapter districtAdapter;
-    private PopupWindow popupWindow;
     private String codestr = "";
-    private String name;
     private String userId;
 
     @Override
@@ -114,10 +81,6 @@ public class AddServiceAreaInfoActivity extends BaseActivity<AddServicePresenter
     public void initView() {
         showProgress();
         mTvTitle.setText("修改服务区域");
-        mTvProvince.setText("省");
-        mTvCity.setText("市");
-        mTvArea.setText("区");
-        mTvDistrict.setText("街道");
 
 
         serviceAddressAdapter = new ServiceAddressAdapter(R.layout.item_region, serviceAddressList);
@@ -141,11 +104,8 @@ public class AddServiceAreaInfoActivity extends BaseActivity<AddServicePresenter
     @Override
     protected void setListener() {
         mIvBack.setOnClickListener(this);
-        mLlProvince.setOnClickListener(this);
-        mLlCity.setOnClickListener(this);
-        mLlArea.setOnClickListener(this);
-        mLlTown.setOnClickListener(this);
-        mIvAdd.setOnClickListener(this);
+        mBtnAdd.setOnClickListener(this);
+        mBtnClear.setOnClickListener(this);
         mBtnSave.setOnClickListener(this);
     }
 
@@ -162,67 +122,31 @@ public class AddServiceAreaInfoActivity extends BaseActivity<AddServicePresenter
             case R.id.iv_back:
                 finish();
                 break;
-            case R.id.ll_province:
-                mPresenter.GetProvince();
-                break;
-            case R.id.ll_city:
-                if (mProvince == null) {
-                    ToastUtils.showShort("请选择省！");
+            case R.id.btn_clear:
+                if (serviceAddressList.size()==0){
                     return;
                 }
-                mPresenter.GetCity(mProvince.getCode());
-                break;
-            case R.id.ll_area:
-                if (mCity == null) {
-                    ToastUtils.showShort("请选择市！");
-                    return;
-                }
-                mPresenter.GetArea(mCity.getCode());
-                break;
-            case R.id.ll_town:
-                if (mArea == null) {
-                    ToastUtils.showShort("请选择区！");
-                    return;
-                }
-                mPresenter.GetDistrict(mArea.getCode(), 0);
-                break;
-            case R.id.iv_add:
-                if (mProvince == null) {
-                    ToastUtils.showShort("请选择省！");
-                    return;
-                }
-//                if (mCity == null) {
-//                    ToastUtils.showShort("请选择市！");
-//                    return;
-//                }
-//                if (mArea == null) {
-//                    ToastUtils.showShort("请选择区！");
-//                    return;
-//                }
-//                if (mDistrict == null) {
-//                    mPresenter.GetDistrict(mArea.getCode(), 1);
-//                } else {
-                    ServiceAddress addr=new ServiceAddress(mProvince, mCity, mArea, mDistrict);
-                    if (serviceAddressList.size() > 0) {
-                        for (int i = 0; i < serviceAddressList.size(); i++) {
-                            if (addr.getCodestr().equals(serviceAddressList.get(i).getCodestr())) {
-                                serviceAddressList.remove(i);
-                            }
-                        }
-                        serviceAddressList.add(0,addr);
-                    } else {
-                        serviceAddressList.add(0,addr);
+                final CommonDialog_Home dialog = new CommonDialog_Home(mActivity);
+                dialog.setMessage("是否确认清空")
+                        //.setImageResId(R.mipmap.ic_launcher)
+                        .setTitle("提示")
+                        .setSingle(false).setOnClickBottomListener(new CommonDialog_Home.OnClickBottomListener() {
+                    @Override
+                    public void onPositiveClick() {
+                        serviceAddressList.clear();
+                        serviceAddressAdapter.notifyDataSetChanged();
+                        dialog.dismiss();
                     }
-                    serviceAddressAdapter.notifyDataSetChanged();
-                    mProvince = null;
-                    mCity = null;
-                    mArea = null;
-                    mDistrict = null;
-                    mTvProvince.setText("省");
-                    mTvCity.setText("市");
-                    mTvArea.setText("区");
-                    mTvDistrict.setText("街道");
-//                }
+
+                    @Override
+                    public void onNegtiveClick() {//取消
+                        dialog.dismiss();
+                        // Toast.makeText(MainActivity.this,"ssss",Toast.LENGTH_SHORT).show();
+                    }
+                }).show();
+                break;
+            case R.id.btn_add:
+                startActivityForResult(new Intent(mActivity, ServiceAreaProvinceActivity.class), 100);
                 break;
             case R.id.btn_save:
                 for (int i = 0; i < serviceAddressList.size(); i++) {
@@ -235,13 +159,6 @@ public class AddServiceAreaInfoActivity extends BaseActivity<AddServicePresenter
                     ToastUtils.showShort("请添加至少一个服务区域");
                     return;
                 }
-                //Intent intent=new Intent();
-                //intent.putExtra("codestr",codestr);
-                //Log.d("===============>codestr",codestr);
-                //setResult(317,intent);
-                // finish();
-
-
                 Log.d("===============>codestr", codestr);
                 showProgress();
                 mPresenter.AddorUpdateServiceArea(userId, codestr);
@@ -253,113 +170,21 @@ public class AddServiceAreaInfoActivity extends BaseActivity<AddServicePresenter
 
     @Override
     public void GetProvince(BaseResult<List<Province>> baseResult) {
-        switch (baseResult.getStatusCode()) {
-            case 200:
-                provinceList = baseResult.getData();
-                provinceAdapter = new ProvinceAdapter(R.layout.category_item, provinceList);
-                showPopWindow(mTvProvince, provinceAdapter, provinceList);
-                break;
-            case 401:
-//                ToastUtils.showShort(baseResult.getData());
-                break;
-        }
+
     }
 
     @Override
     public void GetCity(BaseResult<Data<List<City>>> baseResult) {
-        switch (baseResult.getStatusCode()) {
-            case 200:
-                Data<List<City>> data = baseResult.getData();
-                if (data.isItem1()) {
-                    cityList = data.getItem2();
-                    cityAdapter = new CityAdapter(R.layout.category_item, cityList);
-                    showPopWindow(mTvCity, cityAdapter, cityList);
-                } else {
-                    ToastUtils.showShort("获取市失败！");
-                }
-                break;
-            case 401:
-//                ToastUtils.showShort(baseResult.getData());
-                break;
-        }
+
     }
 
     @Override
     public void GetArea(BaseResult<Data<List<Area>>> baseResult) {
-        switch (baseResult.getStatusCode()) {
-            case 200:
-                Data<List<Area>> data = baseResult.getData();
-                if (data.isItem1()) {
-                    areaList = data.getItem2();
-                    areaAdapter = new AreaAdapter(R.layout.category_item, areaList);
-                    showPopWindow(mTvArea, areaAdapter, areaList);
-                } else {
-                    ToastUtils.showShort("获取区失败！");
-                }
-                break;
-            case 401:
-//                ToastUtils.showShort(baseResult.getData());
-                break;
-        }
+
     }
 
     @Override
     public void GetDistrict(BaseResult<Data<List<District>>> baseResult, int code) {
-        switch (code) {
-            case 0:  // 不选街道添加全部街道
-                switch (baseResult.getStatusCode()) {
-                    case 200:
-                        Data<List<District>> data = baseResult.getData();
-                        if (data.isItem1()) {
-                            districtList = data.getItem2();
-                            districtAdapter = new DistrictAdapter(R.layout.category_item, districtList);
-                            showPopWindow(mTvDistrict, districtAdapter, districtList);
-                        } else {
-                            ToastUtils.showShort("获取街道失败！");
-                        }
-                        break;
-                    case 401:
-//                ToastUtils.showShort(baseResult.getData());
-                        break;
-                }
-                break;
-            case 1:
-                switch (baseResult.getStatusCode()) {
-                    case 200:
-                        Data<List<District>> data = baseResult.getData();
-                        if (data.isItem1()) {
-                            districtList = data.getItem2();
-                            if (serviceAddressList.size() > 0) {
-                                for (int i = 0; i < serviceAddressList.size(); i++) {
-                                    for (int j = 0; j < districtList.size(); j++) {
-                                        if (serviceAddressList.get(i).getDistrict().getCode().equals(districtList.get(j).getCode())) {
-                                            serviceAddressList.remove(i);
-                                        }
-                                    }
-                                }
-                            }
-                            for (int j = 0; j < districtList.size(); j++) {
-                                serviceAddressList.add(new ServiceAddress(mProvince, mCity, mArea, districtList.get(j)));
-                            }
-                            serviceAddressAdapter.notifyDataSetChanged();
-                            mProvince = null;
-                            mCity = null;
-                            mArea = null;
-                            mDistrict = null;
-                            mTvProvince.setText("省");
-                            mTvCity.setText("市");
-                            mTvArea.setText("区");
-                            mTvDistrict.setText("街道");
-                        } else {
-                            ToastUtils.showShort("获取街道失败！");
-                        }
-                        break;
-                    case 401:
-//                ToastUtils.showShort(baseResult.getData());
-                        break;
-                }
-                break;
-        }
 
     }
 
@@ -431,68 +256,64 @@ public class AddServiceAreaInfoActivity extends BaseActivity<AddServicePresenter
         }
     }
 
-    public void showPopWindow(final TextView tv, BaseQuickAdapter adapter, final List list) {
 
-        View contentView = LayoutInflater.from(mActivity).inflate(R.layout.category_pop, null);
-        final RecyclerView rv = contentView.findViewById(R.id.rv);
-        rv.setLayoutManager(new LinearLayoutManager(mActivity));
-        rv.setAdapter(adapter);
-        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                popupWindow.dismiss();
-                if (list.get(position) instanceof Province) {
-                    mProvince = ((Province) list.get(position));
-                    tv.setText(mProvince.getName());
-                    mCity = null;
-                    mArea = null;
-                    mDistrict = null;
-                    mTvCity.setText("市");
-                    mTvArea.setText("区");
-                    mTvDistrict.setText("街道");
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case 100:
+                if (resultCode == 100) {
+                    provinceList = (List<Province>) data.getSerializableExtra("list");
+                    for (int i = 0; i < provinceList.size(); i++) {
+                        if (provinceList.get(i).isSelect()) {
+                            ServiceAddress addr = new ServiceAddress(provinceList.get(i), null, null, null);
+                            if (serviceAddressList.size() > 0) {
+                                for (int j = 0; j < serviceAddressList.size(); j++) {
+                                    if (addr.getCodestr().equals(serviceAddressList.get(j).getCodestr())) {
+                                        serviceAddressList.remove(j);
+                                    }
+                                }
+                                serviceAddressList.add(0, addr);
+                            } else {
+                                serviceAddressList.add(0, addr);
+                            }
+                        } else {
+                            for (int j = 0; j < provinceList.get(i).getCities().size(); j++) {
+                                if (provinceList.get(i).getCities().get(j).isSelect()) {
+                                    ServiceAddress addr = new ServiceAddress(provinceList.get(i), provinceList.get(i).getCities().get(j), null, null);
+                                    if (serviceAddressList.size() > 0) {
+                                        for (int k = 0; k < serviceAddressList.size(); k++) {
+                                            if (addr.getCodestr().equals(serviceAddressList.get(k).getCodestr())) {
+                                                serviceAddressList.remove(k);
+                                            }
+                                        }
+                                        serviceAddressList.add(0, addr);
+                                    } else {
+                                        serviceAddressList.add(0, addr);
+                                    }
+                                } else {
+                                    for (int k = 0; k < provinceList.get(i).getCities().get(j).getCounties().size(); k++) {
+                                        if (provinceList.get(i).getCities().get(j).getCounties().get(k).isSelect()) {
+                                            ServiceAddress addr = new ServiceAddress(provinceList.get(i), provinceList.get(i).getCities().get(j), provinceList.get(i).getCities().get(j).getCounties().get(k), null);
+                                            if (serviceAddressList.size() > 0) {
+                                                for (int l = 0; l < serviceAddressList.size(); l++) {
+                                                    if (addr.getCodestr().equals(serviceAddressList.get(l).getCodestr())) {
+                                                        serviceAddressList.remove(l);
+                                                    }
+                                                }
+                                                serviceAddressList.add(0, addr);
+                                            } else {
+                                                serviceAddressList.add(0, addr);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    serviceAddressAdapter.notifyDataSetChanged();
                 }
-                if (list.get(position) instanceof City) {
-                    mCity = ((City) list.get(position));
-                    tv.setText(mCity.getName());
-                    mArea = null;
-                    mDistrict = null;
-                    mTvArea.setText("区");
-                    mTvDistrict.setText("街道");
-                }
-                if (list.get(position) instanceof Area) {
-                    mArea = ((Area) list.get(position));
-                    tv.setText(mArea.getName());
-                    mDistrict = null;
-                    mTvDistrict.setText("街道");
-                }
-                if (list.get(position) instanceof District) {
-                    mDistrict = ((District) list.get(position));
-                    tv.setText(mDistrict.getName());
-                }
-            }
-        });
-        popupWindow = new PopupWindow(contentView);
-        popupWindow.setWidth(600);
-        if (list.size() > 5) {
-            popupWindow.setHeight(600);
-        } else {
-            popupWindow.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
+                break;
         }
-//        popupWindow.setAnimationStyle(R.style.popwindow_anim_style);
-        popupWindow.setBackgroundDrawable(new BitmapDrawable());
-        popupWindow.setFocusable(true);
-        popupWindow.setOutsideTouchable(true);
-        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                MyUtils.setWindowAlpa(mActivity, false);
-            }
-        });
-        if (popupWindow != null && !popupWindow.isShowing()) {
-            popupWindow.showAsDropDown(tv, 0, 10);
-//            popupWindow.showAtLocation(view, Gravity.BOTTOM, 0, 0);
-        }
-        MyUtils.setWindowAlpa(mActivity, true);
     }
-
 }

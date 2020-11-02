@@ -67,7 +67,7 @@ import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.ComplaintActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.CompleteWorkOrderActivity;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.MessageActivity2;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.LeaveMsgActivity;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Redeploy_Adapter;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.util.SingleClick;
@@ -453,7 +453,7 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
                 copy();
                 break;
             case R.id.tv_tickets:
-                intent = new Intent(mActivity, MessageActivity2.class);
+                intent = new Intent(mActivity, LeaveMsgActivity.class);
                 intent.putExtra("orderId", data.getOrderID());
                 startActivity(intent);
                 break;
@@ -565,25 +565,27 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
 
     //申请远程费
     private void applybeyond() {
-        // FIXME: 2020-08-03 远程费
-        if (data.getOrderRemoteFeeDetail().size() > 0) {
-            remote = data.getOrderRemoteFeeDetail().get(0);
-            if ("0".equals(remote.getState())) {
-                showToast(mActivity, "远程费审核中，请耐心等待。");
-                return;
+        if (userInfo!=null&&data!=null) {
+            // FIXME: 2020-08-03 远程费
+            if (data.getOrderRemoteFeeDetail().size() > 0) {
+                remote = data.getOrderRemoteFeeDetail().get(0);
+                if ("0".equals(remote.getState())) {
+                    showToast(mActivity, "远程费审核中，请耐心等待。");
+                    return;
+                }
+                if ("8".equals(remote.getState())) {
+                    showToast(mActivity, "远程费已通过");
+                    return;
+                }
             }
-            if ("8".equals(remote.getState())) {
-                showToast(mActivity, "远程费已通过");
-                return;
-            }
-        }
-        Intent intent1 = new Intent(mActivity, ApplyFeeActivity.class);
-        intent1.putExtra("beyond", data.getDistance());
+            Intent intent1 = new Intent(mActivity, ApplyFeeActivity.class);
+            intent1.putExtra("beyond", data.getDistance());
 //                intent1.putExtra("position", position);
-        intent1.putExtra("orderId", data.getOrderID());
-        intent1.putExtra("address_my", userInfo.getAddress());//师傅店铺地址
-        intent1.putExtra("address", data.getAddress());//用户地址
-        startActivity(intent1);
+            intent1.putExtra("orderId", data.getOrderID());
+            intent1.putExtra("address_my", userInfo.getAddress());//师傅店铺地址
+            intent1.putExtra("address", data.getAddress());//用户地址
+            startActivity(intent1);
+        }
     }
 
     //转派
@@ -977,7 +979,11 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
             }
         });
         if (mPopupWindow != null && !mPopupWindow.isShowing()) {
-            mPopupWindow.showAtLocation(popupWindow_view, Gravity.BOTTOM, 0, 0);
+            try {
+                mPopupWindow.showAtLocation(popupWindow_view, Gravity.BOTTOM, 0, 0);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         MyUtils.setWindowAlpa(mActivity, true);
     }
@@ -1193,19 +1199,23 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
     public void GetUserInfoList(BaseResult<UserInfo> baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
-                userInfo = baseResult.getData().getData().get(0);
-                if (userInfo.getParentUserID() == null || "".equals(userInfo.getParentUserID())) {//如果没有父账号说明自己是父账号 显示 转派
-                    if ("2".equals(data.getState()) || "4".equals(data.getState())) {//待预约或服务中
-                        mPresenter.GetChildAccountByParentUserID(userId);
-                        // FIXME: 2020-09-18 子账号屏蔽费用明细
-                        mTvTransfer.setVisibility(View.VISIBLE);
+                try {
+                    userInfo = baseResult.getData().getData().get(0);
+                    if (userInfo.getParentUserID() == null || "".equals(userInfo.getParentUserID())) {//如果没有父账号说明自己是父账号 显示 转派
+                        if ("2".equals(data.getState()) || "4".equals(data.getState())) {//待预约或服务中
+                            mPresenter.GetChildAccountByParentUserID(userId);
+                            // FIXME: 2020-09-18 子账号屏蔽费用明细
+                            mTvTransfer.setVisibility(View.VISIBLE);
+                        } else {
+                            mTvTransfer.setVisibility(View.GONE);
+                        }
+                        mLlFee.setVisibility(View.VISIBLE);
                     } else {
+                        mLlFee.setVisibility(View.GONE);
                         mTvTransfer.setVisibility(View.GONE);
                     }
-                    mLlFee.setVisibility(View.VISIBLE);
-                } else {
-                    mLlFee.setVisibility(View.GONE);
-                    mTvTransfer.setVisibility(View.GONE);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
 
                 break;
@@ -1214,128 +1224,134 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
 
     @Override
     public void GetOrderInfo(BaseResult<WorkOrder.DataBean> baseResult) {
-        switch (baseResult.getStatusCode()) {
-            case 200:
-                if (baseResult.getData() != null) {
-                    data = baseResult.getData();
-                    if (data.getOrderProductModels() != null) {
-                        prodList = data.getOrderProductModels();
-                        prodAdapter.setNewData(prodList);
-                    }
-                    if ("0".equals(data.getIsSignIn())) {//未签到
-                        mTvSave.setVisibility(View.VISIBLE);
-                        mTvSave.setText("签到");
-                        signType = "1";
-                        addressChangeLat(data.getAddress());
-                    } else {
-                        mTvSave.setVisibility(View.GONE);
-                    }
-                    technologyPhone = data.getArtisanPhone();
-                    if ("Y".equals(data.getExtra()) && !"0".equals(data.getExtraTime())) {
-                        mTvState.setText(data.getGuaranteeText() + "/" + data.getTypeName() + "/加急");
-                    } else {
-                        mTvState.setText(data.getGuaranteeText() + "/" + data.getTypeName());
-                    }
-
-                    if ("1".equals(data.getPartyNo())) {
-                        mTvType.setText("用户发单/" + data.getTypeName());
-                    } else {
-                        if ("Y".equals(data.getExtra()) && !"0".equals(data.getExtraTime())) {
-                            mTvType.setText(data.getGuaranteeText() + "/" + data.getTypeName() + "/加急");
-                        } else {
-                            mTvType.setText(data.getGuaranteeText() + "/" + data.getTypeName());
+        try {
+            switch (baseResult.getStatusCode()) {
+                case 200:
+                    if (baseResult.getData() != null) {
+                        data = baseResult.getData();
+                        if (data.getOrderProductModels() != null) {
+                            prodList = data.getOrderProductModels();
+                            prodAdapter.setNewData(prodList);
                         }
-                    }
+                        if ("0".equals(data.getIsSignIn())) {//未签到
+                            mTvSave.setVisibility(View.VISIBLE);
+                            mTvSave.setText("签到");
+                            signType = "1";
+                            addressChangeLat(data.getAddress());
+                        } else {
+                            mTvSave.setVisibility(View.GONE);
+                        }
+                        technologyPhone = data.getArtisanPhone();
+                        if ("Y".equals(data.getExtra()) && !"0".equals(data.getExtraTime())) {
+                            mTvState.setText(data.getGuaranteeText() + "/" + data.getTypeName() + "/加急");
+                        } else {
+                            mTvState.setText(data.getGuaranteeText() + "/" + data.getTypeName());
+                        }
 
-                    mTvStatus.setText(data.getStateStr());
-                    mTvNumbering.setText(data.getOrderID());
-                    if (("Y").equals(data.getGuarantee())) {
-                        mTvPayment.setText("平台代付");
-
-                    } else {
-                        mTvPayment.setText("客户付款");
-                    }
-                    if ("2".equals(data.getState())) {
-                        mLlReservationTime.setVisibility(View.GONE);
-                    } else {
-                        mLlReservationTime.setVisibility(View.VISIBLE);
-                        for (int i = 0; i < data.getSendOrderList().size(); i++) {
-                            if (userId.equals(data.getSendOrderList().get(i).getUserID()) && "1".equals(data.getSendOrderList().get(i).getState())) {
-                                mTvAppointment.setText(data.getSendOrderList().get(i).getServiceDate());
+                        if ("1".equals(data.getPartyNo())) {
+                            mTvType.setText("用户发单/" + data.getTypeName());
+                        } else {
+                            if ("Y".equals(data.getExtra()) && !"0".equals(data.getExtraTime())) {
+                                mTvType.setText(data.getGuaranteeText() + "/" + data.getTypeName() + "/加急");
+                            } else {
+                                mTvType.setText(data.getGuaranteeText() + "/" + data.getTypeName());
                             }
                         }
-                    }
 
-                    mTvBillingTime.setText(data.getCreateDate().replace("T", " "));
-                    mTvName.setText(data.getUserName() + "    " + data.getPhone());
-                    mTvAddress.setText(data.getAddress());
-                    mTvDistance.setText("线路里程 " + data.getDistance() + "公里");
+                        mTvStatus.setText(data.getStateStr());
+                        mTvNumbering.setText(data.getOrderID());
+                        if (("Y").equals(data.getGuarantee())) {
+                            mTvPayment.setText("平台代付");
 
-
-                    if ("4".equals(data.getState())) {//服务中
-                        mTvUpload.setVisibility(View.VISIBLE);
-                        if ("安装".equals(data.getTypeName()) || "保外".equals(data.getGuaranteeText())) {
-                            mTvUpload.setText("提交完结信息");
                         } else {
-                            if (!data.isApplicationAccessory()) {
+                            mTvPayment.setText("客户付款");
+                        }
+                        if ("2".equals(data.getState())) {
+                            mLlReservationTime.setVisibility(View.GONE);
+                        } else {
+                            mLlReservationTime.setVisibility(View.VISIBLE);
+                            for (int i = 0; i < data.getSendOrderList().size(); i++) {
+                                if (userId.equals(data.getSendOrderList().get(i).getUserID()) && "1".equals(data.getSendOrderList().get(i).getState())) {
+                                    mTvAppointment.setText(data.getSendOrderList().get(i).getServiceDate());
+                                }
+                            }
+                        }
+
+                        mTvBillingTime.setText(data.getCreateDate().replace("T", " "));
+                        mTvName.setText(data.getUserName() + "    " + data.getPhone());
+                        mTvAddress.setText(data.getAddress());
+                        mTvDistance.setText("线路里程 " + data.getDistance() + "公里");
+
+
+                        if ("4".equals(data.getState())) {//服务中
+                            mTvUpload.setVisibility(View.VISIBLE);
+                            if ("安装".equals(data.getTypeName()) || "保外".equals(data.getGuaranteeText())) {
                                 mTvUpload.setText("提交完结信息");
                             } else {
-                                mTvUpload.setText("操作");
+                                if (!data.isApplicationAccessory()) {
+                                    mTvUpload.setText("提交完结信息");
+                                } else {
+                                    mTvUpload.setText("操作");
+                                }
+                            }
+                            mTvReservationAgain.setVisibility(View.VISIBLE);
+                            mTvClose.setVisibility(View.VISIBLE);
+                        } else {
+                            mTvUpload.setVisibility(View.GONE);
+                            mTvReservationAgain.setVisibility(View.GONE);
+                            mTvClose.setVisibility(View.GONE);
+                        }
+
+                        if ("2".equals(data.getState())) {//待预约
+                            if (hurry) {
+                                hurry();
+                            }
+                            mLlReservation.setVisibility(View.VISIBLE);//预约成功按钮
+                            mLlApplyForRemoteFee.setVisibility(View.VISIBLE);//远程费
+                        } else {
+                            mLlReservation.setVisibility(View.GONE);
+                            mLlApplyForRemoteFee.setVisibility(View.GONE);
+                        }
+                        mPresenter.GetUserInfoList(userId, "1");
+
+                        if ("1".equals(data.getState())) {//待接单
+                            mLlDjd.setVisibility(View.VISIBLE);
+                        } else {
+                            mLlDjd.setVisibility(View.GONE);
+                        }
+
+                        if ("安装".equals(data.getTypeName())) {
+                            if ("Y".equals(data.getIsRecevieGoods())) {
+                                mLlNotAvailable.setVisibility(View.GONE);
+                            } else {
+                                mLlNotAvailable.setVisibility(View.VISIBLE);
                             }
                         }
-                        mTvReservationAgain.setVisibility(View.VISIBLE);
-                        mTvClose.setVisibility(View.VISIBLE);
-                    } else {
-                        mTvUpload.setVisibility(View.GONE);
-                        mTvReservationAgain.setVisibility(View.GONE);
-                        mTvClose.setVisibility(View.GONE);
-                    }
-
-                    if ("2".equals(data.getState())) {//待预约
-                        if (hurry) {
-                            hurry();
-                        }
-                        mLlReservation.setVisibility(View.VISIBLE);//预约成功按钮
-                        mLlApplyForRemoteFee.setVisibility(View.VISIBLE);//远程费
-                    } else {
-                        mLlReservation.setVisibility(View.GONE);
-                        mLlApplyForRemoteFee.setVisibility(View.GONE);
-                    }
-                    mPresenter.GetUserInfoList(userId, "1");
-
-                    if ("1".equals(data.getState())) {//待接单
-                        mLlDjd.setVisibility(View.VISIBLE);
-                    } else {
-                        mLlDjd.setVisibility(View.GONE);
-                    }
-
-                    if ("安装".equals(data.getTypeName())) {
-                        if ("Y".equals(data.getIsRecevieGoods())) {
-                            mLlNotAvailable.setVisibility(View.GONE);
+                        if (data.isMasterIsLookFee()) {
+                            mPresenter.GetOrderMoneyDetail(orderId);
                         } else {
-                            mLlNotAvailable.setVisibility(View.VISIBLE);
+                            mTvTotal.setText("¥--");
                         }
-                    }
-                    if (data.isMasterIsLookFee()) {
-                        mPresenter.GetOrderMoneyDetail(orderId);
-                    } else {
-                        mTvTotal.setText("¥--");
-                    }
 
-                    // FIXME: 2020-08-03 远程费
-                    if (data.getOrderRemoteFeeDetail().size() > 0) {
-                        remote = data.getOrderRemoteFeeDetail().get(0);
-                        if ("0".equals(remote.getState())) {
-                            mTvMoney.setText(remote.getPrice() + "（待审核）");
-                        } else if ("8".equals(remote.getState())) {
-                            mTvMoney.setText(remote.getPrice() + "（已通过）");
-                        } else if ("-1".equals(remote.getState())) {
-                            mTvMoney.setText(remote.getPrice() + "（已拒绝）");
+                        // FIXME: 2020-08-03 远程费
+                        if (data.getOrderRemoteFeeDetail()!=null) {
+                            if (data.getOrderRemoteFeeDetail().size() > 0) {
+                                remote = data.getOrderRemoteFeeDetail().get(0);
+                                if ("0".equals(remote.getState())) {
+                                    mTvMoney.setText(remote.getPrice() + "（待审核）");
+                                } else if ("8".equals(remote.getState())) {
+                                    mTvMoney.setText(remote.getPrice() + "（已通过）");
+                                } else if ("-1".equals(remote.getState())) {
+                                    mTvMoney.setText(remote.getPrice() + "（已拒绝）");
+                                }
+                            }
                         }
+                        skeletonScreen.hide();
                     }
-                    skeletonScreen.hide();
-                }
-                break;
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -1351,41 +1367,45 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
 
     @Override
     public void UpdateSendOrderUpdateTime(BaseResult<Data> baseResult) {
-        switch (baseResult.getStatusCode()) {
-            case 200:
+        try {
+            switch (baseResult.getStatusCode()) {
+                case 200:
 
-                if (baseResult.getData().isItem1()) {
-                    if (data.getAddress() == null) {
-                        Log.d("=====>", "地址为空");
-                    } else {
-                        Log.d("=====>", data.getAddress());
-                    }
-                    CalendarEvent calendarEvent = new CalendarEvent(
-                            data.getTypeName() + "工单号：" + data.getOrderID(),
-                            "客户名:" + data.getUserName() + " 客户手机号:" + data.getPhone() + "故障原因" + data.getMemo(),
-                            data.getAddress(),
-                            recommendedtime,
-                            recommendedtime,
-                            60, null    //提前一个小时提醒  单位分钟
-                    );
-                    // 添加事件
-                    int result = CalendarProviderManager.addCalendarEvent(mActivity, calendarEvent);
-                    if (result == 0) {
-                        if ("2".equals(data.getState())) {
-                            mPresenter.AddOrderSuccess(orderId, "1", "预约成功");
+                    if (baseResult.getData().isItem1()) {
+                        if (data.getAddress() == null) {
+                            Log.d("=====>", "地址为空");
                         } else {
-                            mPresenter.GetOrderInfo(orderId);
+                            Log.d("=====>", data.getAddress());
                         }
-                        Toast.makeText(mActivity, "已为您添加行程至日历,将提前一小时提醒您！！", LENGTH_SHORT).show();
-                    } else if (result == -1) {
-                        Toast.makeText(mActivity, "插入失败", LENGTH_SHORT).show();
-                    } else if (result == -2) {
-                        Toast.makeText(mActivity, "没有权限", LENGTH_SHORT).show();
-                    }
+                        CalendarEvent calendarEvent = new CalendarEvent(
+                                data.getTypeName() + "工单号：" + data.getOrderID(),
+                                "客户名:" + data.getUserName() + " 客户手机号:" + data.getPhone() + "故障原因" + data.getMemo(),
+                                data.getAddress(),
+                                recommendedtime,
+                                recommendedtime,
+                                60, null    //提前一个小时提醒  单位分钟
+                        );
+                        // 添加事件
+                        int result = CalendarProviderManager.addCalendarEvent(mActivity, calendarEvent);
+                        if (result == 0) {
+                            if ("2".equals(data.getState())) {
+                                mPresenter.AddOrderSuccess(orderId, "1", "预约成功");
+                            } else {
+                                mPresenter.GetOrderInfo(orderId);
+                            }
+                            Toast.makeText(mActivity, "已为您添加行程至日历,将提前一小时提醒您！！", LENGTH_SHORT).show();
+                        } else if (result == -1) {
+                            Toast.makeText(mActivity, "插入失败", LENGTH_SHORT).show();
+                        } else if (result == -2) {
+                            Toast.makeText(mActivity, "没有权限", LENGTH_SHORT).show();
+                        }
 
-                } else {
-                    showToast(mActivity, (String) baseResult.getData().getItem2());
-                }
+                    } else {
+                        showToast(mActivity, (String) baseResult.getData().getItem2());
+                    }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -1448,14 +1468,18 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
 
     @Override
     public void GetOrderMoneyDetail(GetOrderMoneyDetailResult baseResult) {
-        switch (baseResult.getStatusCode()) {
-            case 200:
-                if (baseResult.getData().getCode() == 0) {
-                    mTvTotal.setText("¥" + baseResult.getData().getData().getItem3());
-                } else {
-                    showToast(mActivity, baseResult.getData().getMsg());
-                }
-                break;
+        try {
+            switch (baseResult.getStatusCode()) {
+                case 200:
+                    if (baseResult.getData().getCode() == 0) {
+                        mTvTotal.setText("¥" + baseResult.getData().getData().getItem3());
+                    } else {
+                        showToast(mActivity, baseResult.getData().getMsg());
+                    }
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -1473,15 +1497,19 @@ public class ServingDetailActivity extends BaseActivity<ServingDetailPresenter, 
 
     @Override
     public void GetChildAccountByParentUserID(BaseResult<List<SubUserInfo.SubUserInfoDean>> baseResult) {
-        switch (baseResult.getStatusCode()) {
-            case 200:
-                subuserlist = baseResult.getData();
-                if (subuserlist.size() != 0) { //有子账号
-                    mTvTransfer.setVisibility(View.VISIBLE);
-                } else {//没有子账号
-                    mTvTransfer.setVisibility(View.GONE);
-                }
-                break;
+        try {
+            switch (baseResult.getStatusCode()) {
+                case 200:
+                    subuserlist = baseResult.getData();
+                    if (subuserlist.size() != 0) { //有子账号
+                        mTvTransfer.setVisibility(View.VISIBLE);
+                    } else {//没有子账号
+                        mTvTransfer.setVisibility(View.GONE);
+                    }
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

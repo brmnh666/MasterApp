@@ -1,9 +1,7 @@
 package com.ying.administrator.masterappdemo.mvp.ui.adapter;
 
-import android.content.Context;
 import android.support.annotation.Nullable;
 import android.widget.ImageView;
-
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -12,7 +10,6 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.entity.Refund;
 import com.ying.administrator.masterappdemo.widget.GlideRoundCropTransform;
-
 
 import java.util.List;
 

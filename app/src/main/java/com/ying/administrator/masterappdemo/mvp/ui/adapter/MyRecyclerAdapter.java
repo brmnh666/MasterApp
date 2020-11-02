@@ -2,8 +2,6 @@ package com.ying.administrator.masterappdemo.mvp.ui.adapter;
 
 import android.support.annotation.Nullable;
 
-import android.widget.Toast;
-
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.ying.administrator.masterappdemo.R;

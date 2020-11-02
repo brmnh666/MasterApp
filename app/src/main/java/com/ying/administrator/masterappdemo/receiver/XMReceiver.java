@@ -4,17 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
-import android.os.Bundle;
-import android.os.Environment;
 
-import com.huawei.hms.support.api.push.PushReceiver;
 import com.tencent.android.mipush.XMPushMessageReceiver;
 import com.xiaomi.mipush.sdk.MiPushCommandMessage;
 import com.xiaomi.mipush.sdk.MiPushMessage;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.io.FileWriter;
 import java.io.IOException;
 
 public class XMReceiver extends XMPushMessageReceiver {

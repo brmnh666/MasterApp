@@ -670,18 +670,22 @@ public class AccessoriesDetailsActivity extends BaseActivity<AccessoriesDetailsP
 
     @Override
     public void GetOrderInfo(BaseResult<WorkOrder.DataBean> baseResult) {
-        switch (baseResult.getStatusCode()) {
-            case 200:
-                for (int i = 0; i < baseResult.getData().getOrderProductModels().size(); i++) {
-                    for (int j = 0; j < baseResult.getData().getOrderProductModels().get(i).getAccessoryData().size(); j++) {
-                        if (baseResult.getData().getOrderProductModels().get(i).getAccessoryData().get(j).getAccessoryID() == data.getAccessoryID()) {
-                            data = baseResult.getData().getOrderProductModels().get(i).getAccessoryData().get(j);
-                            accessoriesAdapter.setNewData(data.getAccessoryDetailModels());
-                            refreshData();
+        try {
+            switch (baseResult.getStatusCode()) {
+                case 200:
+                    for (int i = 0; i < baseResult.getData().getOrderProductModels().size(); i++) {
+                        for (int j = 0; j < baseResult.getData().getOrderProductModels().get(i).getAccessoryData().size(); j++) {
+                            if (baseResult.getData().getOrderProductModels().get(i).getAccessoryData().get(j).getAccessoryID() == data.getAccessoryID()) {
+                                data = baseResult.getData().getOrderProductModels().get(i).getAccessoryData().get(j);
+                                accessoriesAdapter.setNewData(data.getAccessoryDetailModels());
+                                refreshData();
+                            }
                         }
                     }
-                }
-                break;
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

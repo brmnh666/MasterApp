@@ -419,6 +419,7 @@ public class ComplaintActivity extends BaseActivity<ComplaintPresenter, Complain
                     Glide.with(mActivity).load(FilePath).into(mIvPicture);
 //                    mLlDel.setVisibility(View.VISIBLE);
                     file = new File(FilePath);
+                    MyUtils.sendBroadcastToImg(mActivity,file);
 //                    mAnnexIv.setClickable(false);
                 }
                 if (file != null) {

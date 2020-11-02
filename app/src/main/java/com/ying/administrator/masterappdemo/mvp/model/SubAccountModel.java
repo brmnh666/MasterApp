@@ -1,11 +1,11 @@
 package com.ying.administrator.masterappdemo.mvp.model;
 
+import com.ying.administrator.masterappdemo.api.ApiRetrofit;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.SubUserInfo;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.mvp.contract.SubAccountContract;
-import com.ying.administrator.masterappdemo.mvp.service.ApiRetrofit;
 
 import java.util.List;
 

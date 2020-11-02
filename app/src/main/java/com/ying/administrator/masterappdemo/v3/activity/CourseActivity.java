@@ -94,12 +94,18 @@ public class CourseActivity extends BaseActivity<CoursePresenter, CourseModel> i
                 finish();
                 break;
             case R.id.ll_factory:
+                if (data==null){
+                    return;
+                }
                 mLineFactory.setVisibility(View.VISIBLE);
                 mLineReference.setVisibility(View.INVISIBLE);
                 list=data.getFactoryData();
                 adapter.setNewData(list);
                 break;
             case R.id.ll_reference:
+                if (data==null){
+                    return;
+                }
                 mLineFactory.setVisibility(View.INVISIBLE);
                 mLineReference.setVisibility(View.VISIBLE);
                 list=data.getReferenceData();

@@ -3,9 +3,7 @@ package com.ying.administrator.masterappdemo.mvp.presenter;
 
 import com.ying.administrator.masterappdemo.base.BaseObserver;
 import com.ying.administrator.masterappdemo.base.BaseResult;
-import com.ying.administrator.masterappdemo.entity.Category;
 import com.ying.administrator.masterappdemo.entity.CategoryData;
-import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.Skill;
 import com.ying.administrator.masterappdemo.mvp.contract.AddSkillsContract;
 

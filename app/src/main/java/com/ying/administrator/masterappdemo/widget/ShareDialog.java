@@ -2,15 +2,12 @@ package com.ying.administrator.masterappdemo.widget;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ying.administrator.masterappdemo.R;
-import com.ying.administrator.masterappdemo.util.imageutil.BitmapUtil;
 
 public class ShareDialog extends Dialog {
     private TextView btn_share_one;

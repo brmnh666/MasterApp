@@ -10,56 +10,40 @@ import android.widget.RelativeLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ying.administrator.masterappdemo.R;
-import com.ying.administrator.masterappdemo.common.Config;
-import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.PhotoViewActivity;
 import com.ying.administrator.masterappdemo.util.DensityUtil;
+import com.ying.administrator.masterappdemo.v3.bean.GetLeaveMsgListResult;
 import com.ying.administrator.masterappdemo.viewholder.LayoutParamsViewHolder;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class LeaveMessageAdapter extends BaseQuickAdapter<WorkOrder.LeavemessageListBean, LayoutParamsViewHolder> {
+public class LeaveMessageAdapter extends BaseQuickAdapter<GetLeaveMsgListResult.DataBeanX.DataBean, LayoutParamsViewHolder> {
 
     private RecyclerView rv_img;
     private String photo;
 
     private ImgPicAdapter picAdapter;
 
-    public LeaveMessageAdapter(int layoutResId, @Nullable List<WorkOrder.LeavemessageListBean> data) {
+    public LeaveMessageAdapter(int layoutResId, @Nullable List<GetLeaveMsgListResult.DataBeanX.DataBean> data) {
         super(layoutResId, data);
     }
 
     @Override
-    protected void convert(LayoutParamsViewHolder helper, WorkOrder.LeavemessageListBean item) {
+    protected void convert(LayoutParamsViewHolder helper, GetLeaveMsgListResult.DataBeanX.DataBean item) {
         StringBuilder stringBuilder = new StringBuilder(item.getCreateDate());
         String time = "" + stringBuilder.replace(10, 11, " "); //去掉T
         helper.setText(R.id.tv_status,item.getContent())
                 .setText(R.id.tv_date,time)
                 .setText(R.id.tv_time,item.getUserName());
         rv_img =helper.getView(R.id.rv_img);
-        ArrayList<String> imglist=new ArrayList<>();
-        if(item.getPhoto()==null||"".equals(item.getPhoto())){
-            rv_img.setVisibility(View.GONE);
-        }else{
-            rv_img.setVisibility(View.VISIBLE);
-            photo=item.getPhoto();
-            if (photo.contains(",")){
-                String[] s=photo.split(",");
-                imglist.addAll(Arrays.asList(s));
-            }else{
-                imglist.add(photo);
-            }
-        }
-        picAdapter = new ImgPicAdapter(R.layout.item_picture, imglist);
+        picAdapter = new ImgPicAdapter(R.layout.item_picture, item.getImgUrls());
         rv_img.setLayoutManager(new GridLayoutManager(mContext,5));
         rv_img.setAdapter(picAdapter);
         picAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Intent intent = new Intent(mContext, PhotoViewActivity.class);
-                intent.putExtra("PhotoUrl", Config.Leave_Message_URL+adapter.getData().get(position));
+                intent.putExtra("PhotoUrl", item.getImgUrls().get(position));
                 mContext.startActivity(intent);
             }
         });

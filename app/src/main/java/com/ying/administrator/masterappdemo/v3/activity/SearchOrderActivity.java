@@ -14,13 +14,12 @@ import com.blankj.utilcode.util.SPUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
-import com.ying.administrator.masterappdemo.base.BaseResult;
-import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.v3.adapter.OrderAdapter;
-import com.ying.administrator.masterappdemo.v3.mvp.Presenter.SearchOrderPresenter;
-import com.ying.administrator.masterappdemo.v3.mvp.contract.SearchOrderContract;
-import com.ying.administrator.masterappdemo.v3.mvp.model.SearchOrderModel;
+import com.ying.administrator.masterappdemo.v3.bean.OrderListResult;
+import com.ying.administrator.masterappdemo.v3.mvp.Presenter.EndOrderPresenter;
+import com.ying.administrator.masterappdemo.v3.mvp.contract.EndOrderContract;
+import com.ying.administrator.masterappdemo.v3.mvp.model.EndOrderModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +27,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SearchOrderActivity extends BaseActivity<SearchOrderPresenter, SearchOrderModel> implements View.OnClickListener, SearchOrderContract.View {
+public class SearchOrderActivity extends BaseActivity<EndOrderPresenter, EndOrderModel> implements View.OnClickListener, EndOrderContract.View {
 
     @BindView(R.id.iv_back)
     ImageView mIvBack;
@@ -47,7 +46,7 @@ public class SearchOrderActivity extends BaseActivity<SearchOrderPresenter, Sear
     @BindView(R.id.et_search)
     EditText mEtSearch;
     private String userId;
-    private List<WorkOrder.DataBean> list=new ArrayList<>();
+    private List<OrderListResult.DataBeanX.DataBean> list=new ArrayList<>();
     private OrderAdapter adapter;
 
     @Override
@@ -99,11 +98,7 @@ public class SearchOrderActivity extends BaseActivity<SearchOrderPresenter, Sear
                     showProgress();
                     StringBuilder stringBuilder = new StringBuilder(searchname);
                     String name = stringBuilder.substring(0, 1);
-                    if ("1".equals(name)) {
-                        mPresenter.GetOrderInfoList(searchname, "", userId, "999", "1");
-                    } else {
-                        mPresenter.GetOrderInfoList("", searchname, userId, "999", "1");
-                    }
+                    mPresenter.GetOrderList(searchname, "", "1", "10");
                 }
 
                 break;
@@ -117,8 +112,9 @@ public class SearchOrderActivity extends BaseActivity<SearchOrderPresenter, Sear
         ButterKnife.bind(this);
     }
 
+
     @Override
-    public void GetOrderInfoList(final BaseResult<WorkOrder> baseResult) {
+    public void GetOrderList(OrderListResult baseResult) {
         switch (baseResult.getStatusCode()) {
             case 200:
                 hideProgress();

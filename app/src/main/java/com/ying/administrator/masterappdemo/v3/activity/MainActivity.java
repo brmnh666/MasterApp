@@ -36,8 +36,7 @@ import com.ying.administrator.masterappdemo.entity.Phone;
 import com.ying.administrator.masterappdemo.entity.Phone3;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.Login_New_Activity;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.VerifiedActivity2;
-import com.ying.administrator.masterappdemo.util.DesktopCornerUtil;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.VerifiedActivity;
 import com.ying.administrator.masterappdemo.v3.fragment.HomeFragment;
 import com.ying.administrator.masterappdemo.v3.fragment.MineFragment;
 import com.ying.administrator.masterappdemo.v3.fragment.OrderFragment;
@@ -105,7 +104,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
         spUtils = SPUtils.getInstance("token");
         userID = spUtils.getString("userName");
         mPresenter.GetUserInfoList(userID, "1");
-        mPresenter.GetmessagePag(userID);
+//        mPresenter.GetmessagePag(userID);
         fragmentList = new ArrayList<>();
         fragmentList.add(HomeFragment.newInstance(""));
         fragmentList.add(OrderFragment.newInstance(""));
@@ -118,12 +117,13 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
         mViewPager.setCurrentItem(0);
         tabSelected(mLlHome);
         //判断是否开启读取通讯录的权限
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager
-                .PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS}, 1);
-        } else {
-            readContacts();
-        }
+        // FIXME: 2020-10-31 关闭获取通讯录
+//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager
+//                .PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS}, 1);
+//        } else {
+//            readContacts();
+//        }
     }
 
 
@@ -327,7 +327,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
                         tv_reservation.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                startActivity(new Intent(mActivity, VerifiedActivity2.class));
+                                startActivity(new Intent(mActivity, VerifiedActivity.class));
                                 underReviewDialog.dismiss();
                             }
                         });
@@ -350,7 +350,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
                         tv_reservation.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                startActivity(new Intent(mActivity, VerifiedActivity2.class));
+                                startActivity(new Intent(mActivity, VerifiedActivity.class));
                                 underReviewDialog.dismiss();
                             }
                         });
@@ -371,13 +371,13 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
 
     @Override
     public void GetmessagePag(BaseResult<Data<GetMessagePag>> baseResult) {
-        switch (baseResult.getStatusCode()) {
-            case 200:
-                data = baseResult.getData().getItem2();
-                int num = data.getCount5() + data.getCount2() + data.getCount3() + data.getCount4() + data.getCount6();
-                DesktopCornerUtil.setBadgeNumber(num);
-                break;
-        }
+//        switch (baseResult.getStatusCode()) {
+//            case 200:
+//                data = baseResult.getData().getItem2();
+//                int num = data.getCount5() + data.getCount2() + data.getCount3() + data.getCount4() + data.getCount6();
+//                DesktopCornerUtil.setBadgeNumber(num);
+//                break;
+//        }
     }
 
     @Override
@@ -480,19 +480,11 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
                 break;
             case Config.ORDER_READ:
 
-//                mPresenter.WorkerGetOrderRed(userid);
-
             default:
                 break;
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void Event(String name) {
-        if ("transaction_num".equals(name)) {
-            mPresenter.GetmessagePag(userID);
-        }
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

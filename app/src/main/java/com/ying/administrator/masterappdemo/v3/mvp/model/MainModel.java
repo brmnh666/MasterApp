@@ -1,11 +1,10 @@
 package com.ying.administrator.masterappdemo.v3.mvp.model;
 
-import com.huawei.hms.api.Api;
+import com.ying.administrator.masterappdemo.api.ApiRetrofit;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.GetMessagePag;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
-import com.ying.administrator.masterappdemo.mvp.service.ApiRetrofit;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.MainContract;
 
 import io.reactivex.Observable;

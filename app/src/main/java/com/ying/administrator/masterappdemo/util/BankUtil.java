@@ -1,7 +1,5 @@
 package com.ying.administrator.masterappdemo.util;
 
-import android.graphics.drawable.Drawable;
-
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.entity.Bank;
 

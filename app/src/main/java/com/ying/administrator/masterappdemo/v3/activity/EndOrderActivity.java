@@ -16,9 +16,8 @@ import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
-import com.ying.administrator.masterappdemo.base.BaseResult;
-import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.v3.adapter.OrderAdapter;
+import com.ying.administrator.masterappdemo.v3.bean.OrderListResult;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.EndOrderPresenter;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.EndOrderContract;
 import com.ying.administrator.masterappdemo.v3.mvp.model.EndOrderModel;
@@ -46,9 +45,9 @@ public class EndOrderActivity extends BaseActivity<EndOrderPresenter, EndOrderMo
     SmartRefreshLayout mRefreshLayout;
     private String id;
     private int page = 1;
-    private List<WorkOrder.DataBean> list = new ArrayList<>();
+    private List<OrderListResult.DataBeanX.DataBean> list = new ArrayList<>();
     private OrderAdapter adapter;
-    private WorkOrder workOrder;
+    private OrderListResult.DataBeanX workOrder;
 
     @Override
     protected int setLayoutId() {
@@ -63,7 +62,7 @@ public class EndOrderActivity extends BaseActivity<EndOrderPresenter, EndOrderMo
             public void onRefresh(RefreshLayout refreshlayout) {
                 list.clear();
                 page=1;
-                mPresenter.WorkerGetOrderList(id, "8", page + "", "10");
+                mPresenter.GetOrderList("", "8", page + "", "10");
                 EventBus.getDefault().post(20);
                 refreshlayout.resetNoMoreData();
             }
@@ -77,7 +76,7 @@ public class EndOrderActivity extends BaseActivity<EndOrderPresenter, EndOrderMo
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++; //页数加1
-                mPresenter.WorkerGetOrderList(id, "8", page + "", "10");
+                mPresenter.GetOrderList("", "8", page + "", "10");
 
             }
         });
@@ -87,7 +86,7 @@ public class EndOrderActivity extends BaseActivity<EndOrderPresenter, EndOrderMo
     protected void initView() {
         mTvTitle.setText("完结工单");
         id = getIntent().getStringExtra("id");
-        mPresenter.WorkerGetOrderList(id, "6", page + "", "10");
+        mPresenter.GetOrderList("", "6", page + "", "10");
 
         adapter = new OrderAdapter(R.layout.v3_item_home, list, "return",id);
         mRvOrder.setLayoutManager(new LinearLayoutManager(mActivity));
@@ -125,7 +124,7 @@ public class EndOrderActivity extends BaseActivity<EndOrderPresenter, EndOrderMo
     }
 
     @Override
-    public void WorkerGetOrderList(BaseResult<WorkOrder> baseResult) {
+    public void GetOrderList(OrderListResult baseResult) {
         mRefreshLayout.finishRefresh();
         mRefreshLayout.finishLoadmore();
         switch (baseResult.getStatusCode()){

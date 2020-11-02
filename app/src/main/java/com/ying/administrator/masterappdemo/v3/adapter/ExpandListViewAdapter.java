@@ -14,7 +14,6 @@ import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.entity.Area2;
 import com.ying.administrator.masterappdemo.entity.City2;
 import com.ying.administrator.masterappdemo.entity.Province2;
-import com.ying.administrator.masterappdemo.widget.CommonDialog_Home;
 
 import java.util.List;
 

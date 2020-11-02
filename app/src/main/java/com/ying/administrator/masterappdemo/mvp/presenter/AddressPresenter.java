@@ -3,7 +3,6 @@ package com.ying.administrator.masterappdemo.mvp.presenter;
 
 import com.ying.administrator.masterappdemo.base.BaseObserver;
 import com.ying.administrator.masterappdemo.base.BaseResult;
-import com.ying.administrator.masterappdemo.entity.Address;
 import com.ying.administrator.masterappdemo.entity.AddressList;
 import com.ying.administrator.masterappdemo.entity.Area;
 import com.ying.administrator.masterappdemo.entity.City;

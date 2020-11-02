@@ -8,9 +8,7 @@ import com.ying.administrator.masterappdemo.base.BaseView;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.WxRegister;
 
-
 import io.reactivex.Observable;
-import okhttp3.RequestBody;
 
 
 public interface LoginContract {

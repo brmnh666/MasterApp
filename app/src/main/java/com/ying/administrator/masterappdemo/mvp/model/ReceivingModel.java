@@ -1,15 +1,9 @@
 package com.ying.administrator.masterappdemo.mvp.model;
 
+import com.ying.administrator.masterappdemo.api.ApiRetrofit;
 import com.ying.administrator.masterappdemo.base.BaseResult;
-import com.ying.administrator.masterappdemo.entity.BankCard;
-import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.RedPointData;
-import com.ying.administrator.masterappdemo.entity.UserInfo;
-import com.ying.administrator.masterappdemo.mvp.contract.CardContract;
 import com.ying.administrator.masterappdemo.mvp.contract.ReceivingContract;
-import com.ying.administrator.masterappdemo.mvp.service.ApiRetrofit;
-
-import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;

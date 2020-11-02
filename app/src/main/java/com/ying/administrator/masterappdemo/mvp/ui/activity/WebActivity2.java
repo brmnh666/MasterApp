@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
+import com.ying.administrator.masterappdemo.widget.CustomWebView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,7 +30,7 @@ public class WebActivity2 extends BaseActivity implements View.OnClickListener {
     @BindView(R.id.ll_customer_service)
     LinearLayout mLlCustomerService;
     @BindView(R.id.webview)
-    WebView mWebview;
+    CustomWebView mWebview;
     private String url = "";
 
     @Override

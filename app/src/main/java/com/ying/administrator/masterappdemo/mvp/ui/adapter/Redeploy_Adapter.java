@@ -12,7 +12,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.common.Config;
-import com.ying.administrator.masterappdemo.entity.Bank;
 import com.ying.administrator.masterappdemo.entity.SubUserInfo;
 
 import java.util.List;

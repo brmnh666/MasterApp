@@ -1,10 +1,7 @@
 package com.ying.administrator.masterappdemo.mvp.ui.activity;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Build;
-import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -27,17 +24,13 @@ import com.ying.administrator.masterappdemo.entity.QuestResult;
 import com.ying.administrator.masterappdemo.mvp.contract.QuestContract;
 import com.ying.administrator.masterappdemo.mvp.model.QuestModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.QuestPresenter;
-import com.ying.administrator.masterappdemo.mvp.ui.fragment.AnswerFragment;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.ViewTheAnswerFragment;
 import com.ying.administrator.masterappdemo.widget.CustomViewPager;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import cn.iwgang.countdownview.CountdownView;
 
 public class ViewTheAnswerActivity extends BaseActivity<QuestPresenter, QuestModel> implements View.OnClickListener, QuestContract.View {
 

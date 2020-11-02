@@ -800,6 +800,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                 if (resultCode == -1) {
                     Glide.with(mActivity).load(FilePath).into(mIvBarCode);
                     file = new File(FilePath);
+                    MyUtils.sendBroadcastToImg(mActivity,file);
                 }
                 if (file != null) {
                     File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
@@ -828,6 +829,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                 if (resultCode == -1) {
                     Glide.with(mActivity).load(FilePath).into(mIvMachine);
                     file = new File(FilePath);
+                    MyUtils.sendBroadcastToImg(mActivity,file);
                 }
                 if (file != null) {
 
@@ -857,6 +859,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                 if (resultCode == -1) {
                     Glide.with(mActivity).load(FilePath).into(mIvFaultLocation);
                     file = new File(FilePath);
+                    MyUtils.sendBroadcastToImg(mActivity,file);
                 }
                 if (file != null) {
 
@@ -886,6 +889,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                 if (resultCode == -1) {
                     Glide.with(mActivity).load(FilePath).into(mIvNewAndOldAccessories);
                     file = new File(FilePath);
+                    MyUtils.sendBroadcastToImg(mActivity,file);
                 }
                 if (file != null) {
                     File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
@@ -915,6 +919,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                 if (resultCode == -1) {
                     Glide.with(mActivity).load(FilePath).into(mIvOne);
                     file = new File(FilePath);
+                    MyUtils.sendBroadcastToImg(mActivity,file);
                 }
                 if (file != null) {
                     File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
@@ -949,6 +954,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                 if (resultCode == -1) {
                     Glide.with(mActivity).load(FilePath).into(mIvTwo);
                     file = new File(FilePath);
+                    MyUtils.sendBroadcastToImg(mActivity,file);
                 }
                 if (file != null) {
                     File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
@@ -976,6 +982,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                 if (resultCode == -1) {
                     Glide.with(mActivity).load(FilePath).into(mIvThree);
                     file = new File(FilePath);
+                    MyUtils.sendBroadcastToImg(mActivity,file);
                 }
                 if (file != null) {
                     File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
@@ -1003,6 +1010,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                 if (resultCode == -1) {
                     Glide.with(mActivity).load(FilePath).into(mIvFour);
                     file = new File(FilePath);
+                    MyUtils.sendBroadcastToImg(mActivity,file);
                 }
                 if (file != null) {
                     File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);

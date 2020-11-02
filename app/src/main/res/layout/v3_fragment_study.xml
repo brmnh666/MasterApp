@@ -6,10 +6,9 @@
     <include
         android:id="@+id/setting_new_i_title"
         layout="@layout/titlebar"/>
-    <WebView
+    <com.ying.administrator.masterappdemo.widget.CustomWebView
         android:id="@+id/webView1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </WebView>
+        android:layout_height="match_parent"/>
 
 </LinearLayout>

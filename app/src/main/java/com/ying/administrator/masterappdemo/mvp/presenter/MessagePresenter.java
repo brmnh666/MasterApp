@@ -1,12 +1,12 @@
 package com.ying.administrator.masterappdemo.mvp.presenter;
 
 import com.ying.administrator.masterappdemo.base.BaseObserver;
+import com.ying.administrator.masterappdemo.base.BaseObserver2;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.MessageContract;
-
-import java.util.List;
+import com.ying.administrator.masterappdemo.v3.bean.GetLeaveMsgListResult;
 
 import okhttp3.RequestBody;
 
@@ -29,6 +29,17 @@ public class MessagePresenter extends MessageContract.Presenter {
                     @Override
                     protected void onHandleSuccess(BaseResult<WorkOrder.DataBean> value) {
                         mView.GetOrderInfo(value);
+                    }
+                });
+    }
+
+    @Override
+    public void GetLeaveMsgList(String OrderID) {
+        mModel.GetLeaveMsgList(OrderID)
+                .subscribe(new BaseObserver2<GetLeaveMsgListResult>() {
+                    @Override
+                    protected void onHandleSuccess(GetLeaveMsgListResult value) {
+                        mView.GetLeaveMsgList(value);
                     }
                 });
     }

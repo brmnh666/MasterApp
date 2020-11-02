@@ -1,7 +1,6 @@
 package com.ying.administrator.masterappdemo.v3.activity;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,8 +18,7 @@ import com.ying.administrator.masterappdemo.entity.LeaveMessage;
 import com.ying.administrator.masterappdemo.entity.Message;
 import com.ying.administrator.masterappdemo.entity.MessageData;
 import com.ying.administrator.masterappdemo.mvp.ui.activity.LeaveMessageActivity;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.OrderMessageActivity2;
-import com.ying.administrator.masterappdemo.util.DesktopCornerUtil;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.OrderMessageActivity;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.MessagePresenter;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.MessageContract;
 import com.ying.administrator.masterappdemo.v3.mvp.model.MessageModel;
@@ -113,17 +111,9 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
     protected void initView() {
 
         mTvTitle.setText("消息通知");
-        mTvSave.setVisibility(View.GONE);
-        mTvSave.setText("全部已读");
         spUtils = SPUtils.getInstance("token");
         userId = spUtils.getString("userName");
         showProgress();
-//        mPresenter.GetOrderMessageList(userId, "0", "1", "1");//工单消息
-//        mPresenter.GetTransactionMessageList(userId, "0", "1", "1");
-        mPresenter.GetNewsLeaveMessage(userId, "1", "1");
-//        mPresenter.GetTicketMessageList(userId, "10", "1", "1");//配件消息
-//        mPresenter.GetReviewMessageList(userId, "11", "1", "1");
-//        mPresenter.GetComplaintMessageList(userId, "12", "1", "1");
         mPresenter.GetmessagePag(userId);
     }
 
@@ -149,13 +139,13 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
                 startActivity(new Intent(mActivity, SystemNotificationActivity.class));
                 break;
             case R.id.ll_order_message:
-                intent = new Intent(mActivity, OrderMessageActivity2.class);
+                intent = new Intent(mActivity, OrderMessageActivity.class);
                 intent.putExtra("type", 2);
                 intent.putExtra("subType", 0);
                 startActivity(intent);
                 break;
             case R.id.ll_transaction_notification:
-                intent = new Intent(mActivity, OrderMessageActivity2.class);
+                intent = new Intent(mActivity, OrderMessageActivity.class);
                 intent.putExtra("type", 1);
                 intent.putExtra("subType", 0);
                 startActivity(intent);
@@ -164,19 +154,19 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
                 startActivity(new Intent(mActivity, LeaveMessageActivity.class));
                 break;
             case R.id.ll_accessories_news:
-                intent = new Intent(mActivity, OrderMessageActivity2.class);
+                intent = new Intent(mActivity, OrderMessageActivity.class);
                 intent.putExtra("type", 2);
                 intent.putExtra("subType", 10);
                 startActivity(intent);
                 break;
             case R.id.ll_review_notice:
-                intent = new Intent(mActivity, OrderMessageActivity2.class);
+                intent = new Intent(mActivity, OrderMessageActivity.class);
                 intent.putExtra("type", 2);
                 intent.putExtra("subType", 11);
                 startActivity(intent);
                 break;
             case R.id.ll_complaint_message:
-                intent = new Intent(mActivity, OrderMessageActivity2.class);
+                intent = new Intent(mActivity, OrderMessageActivity.class);
                 intent.putExtra("type", 2);
                 intent.putExtra("subType", 12);
                 startActivity(intent);
@@ -200,289 +190,157 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
     /*获取工单消息数*/
     @Override
     public void GetOrderMessageList(BaseResult<MessageData<List<Message>>> baseResult) {
-        switch (baseResult.getStatusCode()) {
-            case 200:
-                hideProgress();
-                if (baseResult.getData().getCount() == 0) {
-                    mTvOrderMessageNumber.setVisibility(View.GONE);
-                    mTvOrderMessage.setText("暂无新的订单消息");
-                    mTvOrderMessageTime.setVisibility(View.GONE);
-                    return;
-                } else if (baseResult.getData().getCount() >= 99) {
-                    mTvOrderMessageNumber.setVisibility(View.VISIBLE);
-                    mTvOrderMessageNumber.setText("99");
-                    mTvOrderMessageTime.setVisibility(View.VISIBLE);
-                    mTvOrderMessage.setText(baseResult.getData().getData().get(0).getContent());
-                    mTvOrderMessageTime.setText(baseResult.getData().getData().get(0).getNowtime().substring(0,10));
-                } else {
-                    mTvOrderMessageNumber.setVisibility(View.VISIBLE);
-                    mTvOrderMessageNumber.setText(baseResult.getData().getCount()+"");
-                    mTvOrderMessageTime.setVisibility(View.VISIBLE);
-                    mTvOrderMessage.setText(baseResult.getData().getData().get(0).getContent());
-                    mTvOrderMessageTime.setText(baseResult.getData().getData().get(0).getNowtime().substring(0,10));
-                }
 
-                break;
-
-            default:
-                break;
-        }
     }
 
     @Override
     public void GetTicketMessageList(BaseResult<MessageData<List<Message>>> baseResult) {
-        switch (baseResult.getStatusCode()) {
-            case 200:
-                hideProgress();
-                if (baseResult.getData().getCount() == 0) {
-                    mTvAccessoriesNewsNumber.setVisibility(View.GONE);
-                    mTvAccessoriesNews.setText("暂无新的配件消息");
-                    mTvAccessoriesNewsTime.setVisibility(View.GONE);
-                    return;
-                } else if (baseResult.getData().getCount() >= 99) {
-                    mTvAccessoriesNewsNumber.setVisibility(View.VISIBLE);
-                    mTvAccessoriesNewsNumber.setText("99");
-                    mTvAccessoriesNewsTime.setVisibility(View.VISIBLE);
-                    mTvAccessoriesNews.setText(baseResult.getData().getData().get(0).getContent());
-                    mTvAccessoriesNewsTime.setText(baseResult.getData().getData().get(0).getNowtime().substring(0,10));
-                } else {
-                    mTvAccessoriesNewsNumber.setVisibility(View.VISIBLE);
-                    mTvAccessoriesNewsNumber.setText(baseResult.getData().getCount()+"");
-                    mTvAccessoriesNewsTime.setVisibility(View.VISIBLE);
-                    mTvAccessoriesNews.setText(baseResult.getData().getData().get(0).getContent());
-                    mTvAccessoriesNewsTime.setText(baseResult.getData().getData().get(0).getNowtime().substring(0,10));
-                }
-                hideProgress();
-                break;
 
-            default:
-                break;
-        }
     }
 
     @Override
     public void GetReviewMessageList(BaseResult<MessageData<List<Message>>> baseResult) {
-        switch (baseResult.getStatusCode()) {
-            case 200:
-                if (baseResult.getData().getCount() == 0) {
-                    mTvReviewNoticeNumber.setVisibility(View.GONE);
-                    mTvReviewNotice.setText("暂无新的审核消息");
-                    mTvReviewNoticeTime.setVisibility(View.GONE);
-                    return;
-                } else if (baseResult.getData().getCount() >= 99) {
-                    mTvReviewNoticeNumber.setVisibility(View.VISIBLE);
-                    mTvReviewNoticeNumber.setText("99");
-                    mTvReviewNoticeTime.setVisibility(View.VISIBLE);
-                    mTvReviewNotice.setText(baseResult.getData().getData().get(0).getContent());
-                    mTvReviewNoticeTime.setText(baseResult.getData().getData().get(0).getNowtime().substring(0,10));
-                } else {
-                    mTvReviewNoticeNumber.setVisibility(View.VISIBLE);
-                    mTvReviewNoticeNumber.setText(baseResult.getData().getCount()+"");
-                    mTvReviewNoticeTime.setVisibility(View.VISIBLE);
-                    mTvReviewNotice.setText(baseResult.getData().getData().get(0).getContent());
-                    mTvReviewNoticeTime.setText(baseResult.getData().getData().get(0).getNowtime().substring(0,10));
-                }
-                hideProgress();
-                break;
 
-            default:
-                break;
-        }
     }
 
     @Override
     public void GetComplaintMessageList(BaseResult<MessageData<List<Message>>> baseResult) {
-        switch (baseResult.getStatusCode()) {
-            case 200:
-                if (baseResult.getData().getCount() == 0) {
-                    mTvComplaintMessageNumber.setVisibility(View.GONE);
-                    mTvComplaintMessage.setText("暂无新的审核消息");
-                    mTvComplaintMessageTime.setVisibility(View.GONE);
-                    return;
-                } else if (baseResult.getData().getCount() >= 99) {
-                    mTvComplaintMessageNumber.setVisibility(View.VISIBLE);
-                    mTvComplaintMessageNumber.setText("99");
-                    mTvComplaintMessageTime.setVisibility(View.VISIBLE);
-                    mTvComplaintMessage.setText(baseResult.getData().getData().get(0).getContent());
-                    mTvComplaintMessageTime.setText(baseResult.getData().getData().get(0).getNowtime().substring(0,10));
-                } else {
-                    mTvComplaintMessageNumber.setVisibility(View.VISIBLE);
-                    mTvComplaintMessageNumber.setText(baseResult.getData().getCount()+"");
-                    mTvComplaintMessageTime.setVisibility(View.VISIBLE);
-                    mTvComplaintMessage.setText(baseResult.getData().getData().get(0).getContent());
-                    mTvComplaintMessageTime.setText(baseResult.getData().getData().get(0).getNowtime().substring(0,10));
-                }
-                hideProgress();
-                break;
 
-            default:
-                break;
-        }
     }
 
     /*获取交易消息数*/
     @Override
     public void GetTransactionMessageList(BaseResult<MessageData<List<Message>>> baseResult) {
-        switch (baseResult.getStatusCode()) {
-            case 200:
-                if (baseResult.getData().getCount() == 0) {
-                    mTvTransactionNotificationNumber.setVisibility(View.INVISIBLE);
-                    mTvTransactionNotification.setText("暂无新的交易消息");
-                    mTvTransactionNotificationTime.setVisibility(View.GONE);
-                    return;
-                } else if (baseResult.getData().getCount() >= 99) {
-                    mTvTransactionNotificationNumber.setVisibility(View.VISIBLE);
-                    mTvTransactionNotificationNumber.setText("99");
-                    mTvTransactionNotification.setText(baseResult.getData().getData().get(0).getContent());
-                    mTvTransactionNotificationTime.setText(baseResult.getData().getData().get(0).getNowtime().substring(0,10));
-                    mTvTransactionNotificationTime.setVisibility(View.VISIBLE);
-                } else {
-                    mTvTransactionNotificationNumber.setVisibility(View.VISIBLE);
-                    mTvTransactionNotificationNumber.setText(baseResult.getData().getCount()+"");
-                    mTvTransactionNotification.setText(baseResult.getData().getData().get(0).getContent());
-                    mTvTransactionNotificationTime.setText(baseResult.getData().getData().get(0).getNowtime().substring(0,10));
-                    mTvTransactionNotificationTime.setVisibility(View.VISIBLE);
-                }
-                hideProgress();
-                break;
-            default:
-                break;
-        }
+
     }
 
     @Override
     public void GetNewsLeaveMessage(BaseResult<Data<LeaveMessage>> baseResult) {
-        switch (baseResult.getStatusCode()){
-            case 200:
-                if (baseResult.getData().getItem2().getNoLeaveMessage()==0) {
-                    mTvMessage.setVisibility(View.INVISIBLE);
-                    return;
-                } else if (baseResult.getData().getItem2().getNoLeaveMessage() >= 99) {
-                    mTvMessage.setVisibility(View.VISIBLE);
-                    mTvMessage.setText("99");
-                } else {
-                    mTvMessage.setVisibility(View.VISIBLE);
-                    mTvMessage.setText(baseResult.getData().getItem2().getNoLeaveMessage()+"");
-                }
-                hideProgress();
-                break;
-        }
+
     }
 
     @Override
     public void GetmessagePag(BaseResult<Data<GetMessagePag>> baseResult) {
-        switch (baseResult.getStatusCode()) {
-            case 200:
-                hideProgress();
-                data = baseResult.getData().getItem2();
-                if (baseResult.getData().isItem1()){
-                    if (data.getCount2() == 0) {
-                        mTvOrderMessageNumber.setVisibility(View.GONE);
-                        mTvOrderMessage.setText("暂无新的订单消息");
-                        mTvOrderMessageTime.setVisibility(View.GONE);
-                    } else if (data.getCount2() >= 99) {
-                        mTvOrderMessageNumber.setVisibility(View.VISIBLE);
-                        mTvOrderMessageNumber.setText("99");
-                        mTvOrderMessageTime.setVisibility(View.VISIBLE);
-                        mTvOrderMessage.setText(data.getData2().getContent());
-                        mTvOrderMessageTime.setText(data.getData2().getNowtime().substring(0,10));
-                    } else {
-                        mTvOrderMessageNumber.setVisibility(View.VISIBLE);
-                        mTvOrderMessageNumber.setText(data.getCount2()+"");
-                        mTvOrderMessageTime.setVisibility(View.VISIBLE);
-                        mTvOrderMessage.setText(data.getData2().getContent());
-                        mTvOrderMessageTime.setText(data.getData2().getNowtime().substring(0,10));
+        try {
+            switch (baseResult.getStatusCode()) {
+                case 200:
+                    hideProgress();
+                    data = baseResult.getData().getItem2();
+                    if (baseResult.getData().isItem1()){
+                        if (data.getCount2() == 0) {
+                            mTvOrderMessageNumber.setVisibility(View.GONE);
+                            mTvOrderMessage.setText("暂无新的订单消息");
+                            mTvOrderMessageTime.setVisibility(View.GONE);
+                        } else if (data.getCount2() >= 99) {
+                            mTvOrderMessageNumber.setVisibility(View.VISIBLE);
+                            mTvOrderMessageNumber.setText("99");
+                            mTvOrderMessageTime.setVisibility(View.VISIBLE);
+                            mTvOrderMessage.setText(data.getData2().getContent());
+                            mTvOrderMessageTime.setText(data.getData2().getNowtime().substring(0,10));
+                        } else {
+                            mTvOrderMessageNumber.setVisibility(View.VISIBLE);
+                            mTvOrderMessageNumber.setText(data.getCount2()+"");
+                            mTvOrderMessageTime.setVisibility(View.VISIBLE);
+                            mTvOrderMessage.setText(data.getData2().getContent());
+                            mTvOrderMessageTime.setText(data.getData2().getNowtime().substring(0,10));
+                        }
+
+                        if (data.getCount3() == 0) {
+                            mTvAccessoriesNewsNumber.setVisibility(View.GONE);
+                            mTvAccessoriesNews.setText("暂无新的配件消息");
+                            mTvAccessoriesNewsTime.setVisibility(View.GONE);
+                        } else if (data.getCount3() >= 99) {
+                            mTvAccessoriesNewsNumber.setVisibility(View.VISIBLE);
+                            mTvAccessoriesNewsNumber.setText("99");
+                            mTvAccessoriesNewsTime.setVisibility(View.VISIBLE);
+                            mTvAccessoriesNews.setText(data.getData3().getContent());
+                            mTvAccessoriesNewsTime.setText(data.getData3().getNowtime().substring(0,10));
+                        } else {
+                            mTvAccessoriesNewsNumber.setVisibility(View.VISIBLE);
+                            mTvAccessoriesNewsNumber.setText(data.getCount3()+"");
+                            mTvAccessoriesNewsTime.setVisibility(View.VISIBLE);
+                            mTvAccessoriesNews.setText(data.getData3().getContent());
+                            mTvAccessoriesNewsTime.setText(data.getData3().getNowtime().substring(0,10));
+                        }
+
+                        if (data.getCount4() == 0) {
+                            mTvReviewNoticeNumber.setVisibility(View.GONE);
+                            mTvReviewNotice.setText("暂无新的审核消息");
+                            mTvReviewNoticeTime.setVisibility(View.GONE);
+                        } else if (data.getCount4() >= 99) {
+                            mTvReviewNoticeNumber.setVisibility(View.VISIBLE);
+                            mTvReviewNoticeNumber.setText("99");
+                            mTvReviewNoticeTime.setVisibility(View.VISIBLE);
+                            mTvReviewNotice.setText(data.getData4().getContent());
+                            mTvReviewNoticeTime.setText(data.getData4().getNowtime().substring(0,10));
+                        } else {
+                            mTvReviewNoticeNumber.setVisibility(View.VISIBLE);
+                            mTvReviewNoticeNumber.setText(data.getCount4()+"");
+                            mTvReviewNoticeTime.setVisibility(View.VISIBLE);
+                            mTvReviewNotice.setText(data.getData4().getContent());
+                            mTvReviewNoticeTime.setText(data.getData4().getNowtime().substring(0,10));
+                        }
+
+
+                        if (data.getCount5() == 0) {
+                            mTvTransactionNotificationNumber.setVisibility(View.INVISIBLE);
+                            mTvTransactionNotification.setText("暂无新的交易消息");
+                            mTvTransactionNotificationTime.setVisibility(View.GONE);
+                        } else if (data.getCount5() >= 99) {
+                            mTvTransactionNotificationNumber.setVisibility(View.VISIBLE);
+                            mTvTransactionNotificationNumber.setText("99");
+                            mTvTransactionNotification.setText(data.getData5().getContent());
+                            mTvTransactionNotificationTime.setText(data.getData5().getNowtime().substring(0,10));
+                            mTvTransactionNotificationTime.setVisibility(View.VISIBLE);
+                        } else {
+                            mTvTransactionNotificationNumber.setVisibility(View.VISIBLE);
+                            mTvTransactionNotificationNumber.setText(data.getCount5()+"");
+                            mTvTransactionNotification.setText(data.getData5().getContent());
+                            mTvTransactionNotificationTime.setText(data.getData5().getNowtime().substring(0,10));
+                            mTvTransactionNotificationTime.setVisibility(View.VISIBLE);
+                        }
+
+                        if (data.getCount6() == 0) {
+                            mTvComplaintMessageNumber.setVisibility(View.GONE);
+                            mTvComplaintMessage.setText("暂无新的投诉消息");
+                            mTvComplaintMessageTime.setVisibility(View.GONE);
+                        } else if (data.getCount6() >= 99) {
+                            mTvComplaintMessageNumber.setVisibility(View.VISIBLE);
+                            mTvComplaintMessageNumber.setText("99");
+                            mTvComplaintMessageTime.setVisibility(View.VISIBLE);
+                            mTvComplaintMessage.setText(data.getData6().getContent());
+                            mTvComplaintMessageTime.setText(data.getData6().getNowtime().substring(0,10));
+                        } else {
+                            mTvComplaintMessageNumber.setVisibility(View.VISIBLE);
+                            mTvComplaintMessageNumber.setText(data.getCount6()+"");
+                            mTvComplaintMessageTime.setVisibility(View.VISIBLE);
+                            mTvComplaintMessage.setText(data.getData6().getContent());
+                            mTvComplaintMessageTime.setText(data.getData6().getNowtime().substring(0,10));
+                        }
+                        if (data.getCount7()==0) {
+                            mTvMessage.setVisibility(View.INVISIBLE);
+                            return;
+                        } else if (data.getCount7() >= 99) {
+                            mTvMessage.setVisibility(View.VISIBLE);
+                            mTvMessage.setText("99");
+                        } else {
+                            mTvMessage.setVisibility(View.VISIBLE);
+                            mTvMessage.setText(data.getCount7()+"");
+                        }
                     }
+                    break;
 
-                    if (data.getCount3() == 0) {
-                        mTvAccessoriesNewsNumber.setVisibility(View.GONE);
-                        mTvAccessoriesNews.setText("暂无新的配件消息");
-                        mTvAccessoriesNewsTime.setVisibility(View.GONE);
-                    } else if (data.getCount3() >= 99) {
-                        mTvAccessoriesNewsNumber.setVisibility(View.VISIBLE);
-                        mTvAccessoriesNewsNumber.setText("99");
-                        mTvAccessoriesNewsTime.setVisibility(View.VISIBLE);
-                        mTvAccessoriesNews.setText(data.getData3().getContent());
-                        mTvAccessoriesNewsTime.setText(data.getData3().getNowtime().substring(0,10));
-                    } else {
-                        mTvAccessoriesNewsNumber.setVisibility(View.VISIBLE);
-                        mTvAccessoriesNewsNumber.setText(data.getCount3()+"");
-                        mTvAccessoriesNewsTime.setVisibility(View.VISIBLE);
-                        mTvAccessoriesNews.setText(data.getData3().getContent());
-                        mTvAccessoriesNewsTime.setText(data.getData3().getNowtime().substring(0,10));
-                    }
-
-                    if (data.getCount4() == 0) {
-                        mTvReviewNoticeNumber.setVisibility(View.GONE);
-                        mTvReviewNotice.setText("暂无新的审核消息");
-                        mTvReviewNoticeTime.setVisibility(View.GONE);
-                    } else if (data.getCount4() >= 99) {
-                        mTvReviewNoticeNumber.setVisibility(View.VISIBLE);
-                        mTvReviewNoticeNumber.setText("99");
-                        mTvReviewNoticeTime.setVisibility(View.VISIBLE);
-                        mTvReviewNotice.setText(data.getData4().getContent());
-                        mTvReviewNoticeTime.setText(data.getData4().getNowtime().substring(0,10));
-                    } else {
-                        mTvReviewNoticeNumber.setVisibility(View.VISIBLE);
-                        mTvReviewNoticeNumber.setText(data.getCount4()+"");
-                        mTvReviewNoticeTime.setVisibility(View.VISIBLE);
-                        mTvReviewNotice.setText(data.getData4().getContent());
-                        mTvReviewNoticeTime.setText(data.getData4().getNowtime().substring(0,10));
-                    }
-
-
-                    if (data.getCount5() == 0) {
-                        mTvTransactionNotificationNumber.setVisibility(View.INVISIBLE);
-                        mTvTransactionNotification.setText("暂无新的交易消息");
-                        mTvTransactionNotificationTime.setVisibility(View.GONE);
-                    } else if (data.getCount5() >= 99) {
-                        mTvTransactionNotificationNumber.setVisibility(View.VISIBLE);
-                        mTvTransactionNotificationNumber.setText("99");
-                        mTvTransactionNotification.setText(data.getData5().getContent());
-                        mTvTransactionNotificationTime.setText(data.getData5().getNowtime().substring(0,10));
-                        mTvTransactionNotificationTime.setVisibility(View.VISIBLE);
-                    } else {
-                        mTvTransactionNotificationNumber.setVisibility(View.VISIBLE);
-                        mTvTransactionNotificationNumber.setText(data.getCount5()+"");
-                        mTvTransactionNotification.setText(data.getData5().getContent());
-                        mTvTransactionNotificationTime.setText(data.getData5().getNowtime().substring(0,10));
-                        mTvTransactionNotificationTime.setVisibility(View.VISIBLE);
-                    }
-
-                    if (data.getCount6() == 0) {
-                        mTvComplaintMessageNumber.setVisibility(View.GONE);
-                        mTvComplaintMessage.setText("暂无新的投诉消息");
-                        mTvComplaintMessageTime.setVisibility(View.GONE);
-                    } else if (data.getCount6() >= 99) {
-                        mTvComplaintMessageNumber.setVisibility(View.VISIBLE);
-                        mTvComplaintMessageNumber.setText("99");
-                        mTvComplaintMessageTime.setVisibility(View.VISIBLE);
-                        mTvComplaintMessage.setText(data.getData6().getContent());
-                        mTvComplaintMessageTime.setText(data.getData6().getNowtime().substring(0,10));
-                    } else {
-                        mTvComplaintMessageNumber.setVisibility(View.VISIBLE);
-                        mTvComplaintMessageNumber.setText(data.getCount6()+"");
-                        mTvComplaintMessageTime.setVisibility(View.VISIBLE);
-                        mTvComplaintMessage.setText(data.getData6().getContent());
-                        mTvComplaintMessageTime.setText(data.getData6().getNowtime().substring(0,10));
-                    }
-                }
-                break;
-
-            default:
-                break;
+                default:
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(String name) {
         if ("transaction_num".equals(name)) {
-//            mPresenter.GetOrderMessageList(userId, "0", "1", "1");//工单消息
-//            mPresenter.GetTransactionMessageList(userId, "0", "1", "1");
-            mPresenter.GetNewsLeaveMessage(userId, "1", "1");
-//            mPresenter.GetTicketMessageList(userId, "10", "1", "1");//配件消息
-//            mPresenter.GetReviewMessageList(userId, "11", "1", "1");
-//            mPresenter.GetComplaintMessageList(userId, "12", "1", "1");
             mPresenter.GetmessagePag(userId);
         }
     }

@@ -1,20 +1,15 @@
 package com.ying.administrator.masterappdemo.widget;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.entity.Accessory;
 import com.ying.administrator.masterappdemo.mvp.ui.adapter.Add_Ac_Adapter;
-import com.ying.administrator.masterappdemo.mvp.ui.adapter.MyRecyclerAdapter;
 
 import java.util.List;
 

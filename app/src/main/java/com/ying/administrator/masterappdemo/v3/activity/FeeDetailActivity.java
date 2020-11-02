@@ -135,24 +135,28 @@ public class FeeDetailActivity extends BaseActivity<ServingDetailPresenter, Serv
 
     @Override
     public void GetOrderMoneyDetail(GetOrderMoneyDetailResult baseResult) {
-        switch (baseResult.getStatusCode()) {
-            case 200:
-                if (baseResult.getData().getCode() == 0) {
-                    mRvList.setLayoutManager(new LinearLayoutManager(mActivity));
-                    list =baseResult.getData().getData().getItem1();
-                    for (int i = 0; i <list.size() ; i++) {
-                        if (list.get(i).getTypeName().contains("平台费")){
-                            list.remove(i);
+        try {
+            switch (baseResult.getStatusCode()) {
+                case 200:
+                    if (baseResult.getData().getCode() == 0) {
+                        mRvList.setLayoutManager(new LinearLayoutManager(mActivity));
+                        list =baseResult.getData().getData().getItem1();
+                        for (int i = 0; i <list.size() ; i++) {
+                            if (list.get(i).getTypeName().contains("平台费")){
+                                list.remove(i);
+                            }
                         }
+                        PriceBeanAdapter adapter = new PriceBeanAdapter(R.layout.price_master_item, list);
+                        mRvList.setAdapter(adapter);
+                        mTvTotal.setText("¥"+baseResult.getData().getData().getItem3());
+                    } else {
+                        MyUtils.showToast(mActivity, baseResult.getData().getMsg());
                     }
-                    PriceBeanAdapter adapter = new PriceBeanAdapter(R.layout.price_master_item, list);
-                    mRvList.setAdapter(adapter);
-                    mTvTotal.setText("¥"+baseResult.getData().getData().getItem3());
-                } else {
-                    MyUtils.showToast(mActivity, baseResult.getData().getMsg());
-                }
-                mRefreshLayout.finishRefresh();
-                break;
+                    mRefreshLayout.finishRefresh();
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

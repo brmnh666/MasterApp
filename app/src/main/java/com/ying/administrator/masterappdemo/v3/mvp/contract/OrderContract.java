@@ -8,6 +8,7 @@ import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.NavigationBarNumber;
 import com.ying.administrator.masterappdemo.entity.NavigationBarNumberSon;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
+import com.ying.administrator.masterappdemo.v3.bean.OrderListResult;
 
 import io.reactivex.Observable;
 
@@ -16,6 +17,7 @@ public interface OrderContract {
         Observable<BaseResult<Data<NavigationBarNumber>>> NavigationBarNumber(String UserID, String page, String limit);
         Observable<BaseResult<Data<NavigationBarNumberSon>>> NavigationBarNumberSon(String UserID, String page, String limit);
         Observable<BaseResult<WorkOrder>> WorkerGetOrderList(String UserID, String State, String page, String limit);
+        Observable<OrderListResult> GetOrderList(String Search, String State, String page, String limit);
 
     }
 
@@ -23,6 +25,7 @@ public interface OrderContract {
         void NavigationBarNumber(BaseResult<Data<NavigationBarNumber>> baseResult);
         void NavigationBarNumberSon(BaseResult<Data<NavigationBarNumberSon>> baseResult);
         void WorkerGetOrderList(BaseResult<WorkOrder> baseResult);
+        void GetOrderList(OrderListResult baseResult);
 
     }
 
@@ -30,6 +33,7 @@ public interface OrderContract {
         public abstract void NavigationBarNumber(String UserID, String page, String limit);
         public abstract void NavigationBarNumberSon(String UserID, String page, String limit);
         public abstract void WorkerGetOrderList(String UserID, String State, String page,String limit);
+        public abstract void GetOrderList(String Search, String State, String page,String limit);
 
     }
 }

@@ -393,6 +393,7 @@ public class VerifiedPhotoActivity extends BaseActivity<VerifiedPresenter, Verif
                 if (resultCode == -1) {
                     Glide.with(mActivity).load(FilePath).into(mIvPositive);
                     file = new File(FilePath);
+                    MyUtils.sendBroadcastToImg(mActivity,file);
                 }
                 if (file != null) {
 
@@ -423,6 +424,7 @@ public class VerifiedPhotoActivity extends BaseActivity<VerifiedPresenter, Verif
                 if (resultCode == -1) {
                     Glide.with(mActivity).load(FilePath).into(mIvNegative);
                     file = new File(FilePath);
+                    MyUtils.sendBroadcastToImg(mActivity,file);
                 }
                 if (file != null) {
                     File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
@@ -450,6 +452,7 @@ public class VerifiedPhotoActivity extends BaseActivity<VerifiedPresenter, Verif
                 if (resultCode == -1) {
                     Glide.with(mActivity).load(FilePath).into(mIvSelfie);
                     file = new File(FilePath);
+                    MyUtils.sendBroadcastToImg(mActivity,file);
                 }
                 if (file != null) {
                     File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);

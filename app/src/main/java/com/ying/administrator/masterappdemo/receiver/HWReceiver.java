@@ -8,8 +8,6 @@ import android.os.Environment;
 
 import com.huawei.hms.support.api.push.PushReceiver;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.io.FileWriter;
 import java.io.IOException;
 

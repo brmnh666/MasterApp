@@ -2,9 +2,7 @@ package com.ying.administrator.masterappdemo.mvp.ui.adapter;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.Nullable;
-import android.view.Window;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;

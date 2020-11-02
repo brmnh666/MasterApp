@@ -38,6 +38,7 @@ import com.blankj.utilcode.util.ToastUtils;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -343,12 +344,18 @@ public class MyUtils {
     }
     public static void showToast(Context context, String text) {
 //        Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
-        new AlertDialog.Builder(context).setMessage(text).setPositiveButton("我知道了", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
+        if (context instanceof Activity) {
+            if (((Activity) context).isFinishing()) {
+                return ;
+            } else {
+                new AlertDialog.Builder(context).setMessage(text).setPositiveButton("我知道了", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).create().show();
             }
-        }).create().show();
+        }
     }
     public static void showToast(String text) {
         ToastUtils.setBgColor(Color.BLACK);
@@ -747,7 +754,14 @@ public class MyUtils {
         return bm;
     }
 
-
+    public static void sendBroadcastToImg(Context context,File file) {
+        try {
+            MediaStore.Images.Media.insertImage(context.getContentResolver(), file.getAbsolutePath(), file.getName(), null);//图片插入到系统图库
+        }catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + file.getAbsolutePath())));//通知图库刷新
+    }
 
 
 }

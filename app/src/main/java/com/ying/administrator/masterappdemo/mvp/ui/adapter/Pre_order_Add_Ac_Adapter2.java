@@ -6,17 +6,13 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 
-import com.baidu.ocr.sdk.utils.LogUtil;
-import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.entity.FAccessory;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /*预接单的添加配置*/

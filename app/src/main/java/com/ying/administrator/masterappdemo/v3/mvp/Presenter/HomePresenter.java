@@ -1,11 +1,13 @@
 package com.ying.administrator.masterappdemo.v3.mvp.Presenter;
 
 import com.ying.administrator.masterappdemo.base.BaseObserver;
+import com.ying.administrator.masterappdemo.base.BaseObserver2;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Article;
 import com.ying.administrator.masterappdemo.entity.CodeMoney;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
+import com.ying.administrator.masterappdemo.v3.bean.OrderListResult;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.HomeContract;
 
 import java.util.List;
@@ -18,6 +20,17 @@ public class HomePresenter extends HomeContract.Presenter {
                     @Override
                     protected void onHandleSuccess(BaseResult<WorkOrder> value) {
                         mView.WorkerGetOrderList(value);
+                    }
+                });
+    }
+
+    @Override
+    public void GetOrderList(String Search, String State, String page, String limit) {
+        mModel.GetOrderList(Search, State, page, limit)
+                .subscribe(new BaseObserver2<OrderListResult>() {
+                    @Override
+                    protected void onHandleSuccess(OrderListResult value) {
+                        mView.GetOrderList(value);
                     }
                 });
     }

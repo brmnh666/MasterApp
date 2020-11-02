@@ -1,8 +1,5 @@
 package com.ying.administrator.masterappdemo.entity;
 
-import com.chad.library.adapter.base.entity.AbstractExpandableItem;
-import com.chad.library.adapter.base.entity.MultiItemEntity;
-
 import java.io.Serializable;
 import java.util.List;
 

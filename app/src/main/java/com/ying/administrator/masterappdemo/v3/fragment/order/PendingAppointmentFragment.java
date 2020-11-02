@@ -28,7 +28,8 @@ import com.ying.administrator.masterappdemo.entity.NavigationBarNumberSon;
 import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
 import com.ying.administrator.masterappdemo.v3.activity.ServingDetailActivity;
-import com.ying.administrator.masterappdemo.v3.adapter.PendingAdapter;
+import com.ying.administrator.masterappdemo.v3.adapter.OrderAdapter;
+import com.ying.administrator.masterappdemo.v3.bean.OrderListResult;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.OrderPresenter;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.OrderContract;
 import com.ying.administrator.masterappdemo.v3.mvp.model.OrderModel;
@@ -57,14 +58,18 @@ public class PendingAppointmentFragment extends BaseLazyFragment<OrderPresenter,
     SmartRefreshLayout mRefreshLayout;
     Unbinder unbinder;
     private String mContentText;
-    private List<WorkOrder.DataBean> list = new ArrayList<>();
-    private PendingAdapter pendingAdapter;
+    private List<OrderListResult.DataBeanX.DataBean> list = new ArrayList<>();
+    private OrderAdapter adapter;
     private String state;
     private String userId;
     private int page = 1;
-    private WorkOrder workOrder;
+    private OrderListResult.DataBeanX workOrder;
     private ClipboardManager myClipboard;
     private ClipData myClip;
+    private OrderListResult.DataBeanX.DataBean dataBean;
+    private List<OrderListResult.DataBeanX.DataBean.OrderProductModelsBean> models;
+    private OrderListResult.DataBeanX.DataBean.OrderProductModelsBean model;
+
     public PendingAppointmentFragment() {
         // Required empty public constructor
     }
@@ -96,7 +101,6 @@ public class PendingAppointmentFragment extends BaseLazyFragment<OrderPresenter,
             public void onRefresh(RefreshLayout refreshlayout) {
                 list.clear();
                 page = 1;
-//                mPresenter.WorkerGetOrderList(userId, state, page + "", "10");
                 mPresenter.NavigationBarNumberSon(userId,"1","999");
                 EventBus.getDefault().post(20);
                 refreshlayout.resetNoMoreData();
@@ -112,7 +116,7 @@ public class PendingAppointmentFragment extends BaseLazyFragment<OrderPresenter,
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++; //页数加1
-                mPresenter.WorkerGetOrderList(userId, state, page + "", "10");
+                mPresenter.GetOrderList("", state, page + "", "10");
                 mRefreshLayout.finishLoadmore();
             }
         });
@@ -129,35 +133,51 @@ public class PendingAppointmentFragment extends BaseLazyFragment<OrderPresenter,
         myClipboard = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
         mRefreshLayout.autoRefresh(0, 0, 1);
         mPresenter.NavigationBarNumberSon(userId,"1","999");
-//        mPresenter.WorkerGetOrderList(userId, state, page + "", "10");
+//        mPresenter.GetOrderList(", state, page + "", "10");
 //        for (int i = 0; i < 10; i++) {
 //            list.add(new WorkOrder.DataBean());
 //        }
-        pendingAdapter = new PendingAdapter(R.layout.v3_item_home, list,userId);
+        adapter = new OrderAdapter(R.layout.v3_item_home, list,"",userId);
         mRvPending.setLayoutManager(new LinearLayoutManager(mActivity));
-        mRvPending.setAdapter(pendingAdapter);
-        pendingAdapter.setEmptyView(getHomeEmptyView());
-        pendingAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+        mRvPending.setAdapter(adapter);
+        adapter.setEmptyView(getHomeEmptyView());
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Intent intent=new Intent(mActivity, ServingDetailActivity.class);
-                intent.putExtra("id",list.get(position).getOrderID());
-                startActivity(intent);
+                try {
+                    Intent intent=new Intent(mActivity, ServingDetailActivity.class);
+                    intent.putExtra("id",list.get(position).getOrderID());
+                    startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
-        pendingAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+        adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 switch (view.getId()){
                     case R.id.iv_copy:
-                        myClip = ClipData.newPlainText("", "下单厂家："+list.get(position).getInvoiceName() + "\n"
-                                +"工单号："+list.get(position).getOrderID() + "\n"
-                                +"下单时间："+list.get(position).getCreateDate() + "\n"
-                                +"用户信息："+list.get(position).getUserName()+" "+list.get(position).getPhone() + "\n"
-                                +"用户地址："+list.get(position).getAddress() + "\n"
-                                +"产品信息："+list.get(position).getProductType() + "\n"
-                                +"售后类型："+list.get(position).getGuaranteeText() + "\n"
-                                +"服务类型："+list.get(position).getTypeName()
+                        dataBean =list.get(position);
+                        models = dataBean.getOrderProductModels();
+                        String name="";
+                        if (models !=null){
+                            for (int i = 0; i < models.size(); i++) {
+                                model =models.get(i);
+                                name+= model.getBrandName()+"("+ model.getSubCategoryName()+")"+ model.getProdModelName()+"、";
+                            }
+                        }
+                        if (name.contains("、")){
+                            name=name.substring(0,name.lastIndexOf("、"));
+                        }
+                        myClip = ClipData.newPlainText("", "下单厂家："+dataBean.getCompanyName() + "\n"
+                                +"工单号："+dataBean.getOrderID() + "\n"
+                                +"下单时间："+dataBean.getCreateDate() + "\n"
+                                +"用户信息："+dataBean.getUserName()+" "+dataBean.getPhone() + "\n"
+                                +"用户地址："+dataBean.getAddress() + "\n"
+                                +"产品信息："+name + "\n"
+                                +"售后类型："+dataBean.getGuaranteeText() + "\n"
+                                +"服务类型："+dataBean.getTypeName()
                         );
                         myClipboard.setPrimaryClip(myClip);
                         ToastUtils.showShort("复制成功");
@@ -196,7 +216,7 @@ public class PendingAppointmentFragment extends BaseLazyFragment<OrderPresenter,
                 state = "1";
                 page=1;
                 list.clear();
-                mPresenter.WorkerGetOrderList(userId, state, page + "", "10");
+                mPresenter.GetOrderList("", state, page + "", "10");
                 break;
             case R.id.tv_timed_out:
                 mTvUrgentlyNeeded.setSelected(false);
@@ -204,7 +224,7 @@ public class PendingAppointmentFragment extends BaseLazyFragment<OrderPresenter,
                 state = "16";
                 page=1;
                 list.clear();
-                mPresenter.WorkerGetOrderList(userId, state, page + "", "10");
+                mPresenter.GetOrderList("", state, page + "", "10");
                 break;
         }
     }
@@ -216,34 +236,47 @@ public class PendingAppointmentFragment extends BaseLazyFragment<OrderPresenter,
 
     @Override
     public void NavigationBarNumberSon(BaseResult<Data<NavigationBarNumberSon>> baseResult) {
-        mTvUrgentlyNeeded.setText("待预约("+baseResult.getData().getItem2().getCount5()+")");
-        mTvTimedOut.setText("未到货("+baseResult.getData().getItem2().getCount4()+")");
-        mPresenter.WorkerGetOrderList(userId, state, page + "", "10");
+        try {
+            mTvUrgentlyNeeded.setText("待预约("+baseResult.getData().getItem2().getCount5()+")");
+            mTvTimedOut.setText("未到货("+baseResult.getData().getItem2().getCount4()+")");
+            mPresenter.GetOrderList("", state, page + "", "10");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void WorkerGetOrderList(BaseResult<WorkOrder> baseResult) {
-        mRefreshLayout.finishRefresh();
-        mRefreshLayout.finishLoadmore();
-        switch (baseResult.getStatusCode()){
-            case 200:
-                if (page!=1&&baseResult.getData().getData().size()==0){
-                    mRefreshLayout.finishLoadmoreWithNoMoreData();
-                }
-                workOrder = baseResult.getData();
 
-                if (workOrder.getData()!=null){
-                    if (page==1){
-                        list.clear();
+    }
+
+    @Override
+    public void GetOrderList(OrderListResult baseResult) {
+        try {
+            mRefreshLayout.finishRefresh();
+            mRefreshLayout.finishLoadmore();
+            switch (baseResult.getStatusCode()){
+                case 200:
+                    if (page!=1&&baseResult.getData().getData().size()==0){
+                        mRefreshLayout.finishLoadmoreWithNoMoreData();
                     }
-                    list.addAll(workOrder.getData());
-                    pendingAdapter.setNewData(list);
+                    workOrder = baseResult.getData();
 
-                }else {
-                    pendingAdapter.setEmptyView(getHomeEmptyView());
-                }
-                hideProgress();
-                break;
+                    if (workOrder.getData()!=null){
+                        if (page==1){
+                            list.clear();
+                        }
+                        list.addAll(workOrder.getData());
+                        adapter.setNewData(list);
+
+                    }else {
+                        adapter.setEmptyView(getHomeEmptyView());
+                    }
+                    hideProgress();
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -277,9 +310,8 @@ public class PendingAppointmentFragment extends BaseLazyFragment<OrderPresenter,
         super.onVisible();
         showProgress();
         list.clear();
-        pendingAdapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
         page=1;
-//        mPresenter.WorkerGetOrderList(userId, state, page + "", "10");
         mPresenter.NavigationBarNumberSon(userId,"1","999");
     }
 }

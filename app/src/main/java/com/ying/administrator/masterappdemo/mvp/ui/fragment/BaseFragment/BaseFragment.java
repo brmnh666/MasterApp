@@ -14,7 +14,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.ying.administrator.masterappdemo.R;
@@ -25,9 +24,6 @@ import com.ying.administrator.masterappdemo.base.RxManager;
 import com.ying.administrator.masterappdemo.util.TUtil;
 
 import org.greenrobot.eventbus.EventBus;
-
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 public abstract class BaseFragment<P extends BasePresenter, M extends BaseModel> extends Fragment implements BaseView{
     public P mPresenter;

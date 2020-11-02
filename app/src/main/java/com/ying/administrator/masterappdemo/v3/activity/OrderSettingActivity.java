@@ -28,15 +28,15 @@ import com.ying.administrator.masterappdemo.base.BaseActivity;
 import com.ying.administrator.masterappdemo.base.BaseResult;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.UserInfo;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.AddServiceAreaInfoActivity2;
-import com.ying.administrator.masterappdemo.mvp.ui.activity.MyInfoSkillActivity2;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.AddServiceAreaInfoActivity;
+import com.ying.administrator.masterappdemo.mvp.ui.activity.MyInfoSkillActivity;
 import com.ying.administrator.masterappdemo.util.MyUtils;
 import com.ying.administrator.masterappdemo.v3.adapter.OrderSettingAdapter;
 import com.ying.administrator.masterappdemo.v3.bean.OrderSettingBean;
 import com.ying.administrator.masterappdemo.v3.mvp.Presenter.OrderSettingPresenter;
 import com.ying.administrator.masterappdemo.v3.mvp.contract.OrderSettingContract;
 import com.ying.administrator.masterappdemo.v3.mvp.model.OrderSettingModel;
-import com.ying.administrator.masterappdemo.v3.weight.AutoLineFeedLayoutManager;
+import com.ying.administrator.masterappdemo.widget.AutoLineFeedLayoutManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -120,14 +120,14 @@ public class OrderSettingActivity extends BaseActivity<OrderSettingPresenter, Or
                 finish();
                 break;
             case R.id.ll_service_area:
-                startActivity(new Intent(mActivity, AddServiceAreaInfoActivity2.class));
+                startActivity(new Intent(mActivity, AddServiceAreaInfoActivity.class));
                 break;
             case R.id.ll_service_product:
 //                if (userInfo.getIfAuth() == null) {//未实名认证
 //                    ToastUtils.showShort("您暂未实名");
 //                    return;
 //                } else {
-                startActivity(new Intent(this, MyInfoSkillActivity2.class));
+                startActivity(new Intent(this, MyInfoSkillActivity.class));
 //                }
                 break;
             case R.id.tv_team_size:
@@ -244,24 +244,28 @@ public class OrderSettingActivity extends BaseActivity<OrderSettingPresenter, Or
 
     @Override
     public void GetUserInfoList(BaseResult<UserInfo> baseResult) {
-        switch (baseResult.getStatusCode()) {
-            case 200:
-                userInfo = baseResult.getData().getData().get(0);
-                if ("0".equals(userInfo.getTeamNumber())) {
-                    mTvPerson.setText("请填写团队人数");
-                } else {
-                    mTvPerson.setText(userInfo.getTeamNumber());
-                }
+        try {
+            switch (baseResult.getStatusCode()) {
+                case 200:
+                    userInfo = baseResult.getData().getData().get(0);
+                    if ("0".equals(userInfo.getTeamNumber())) {
+                        mTvPerson.setText("请填写团队人数");
+                    } else {
+                        mTvPerson.setText(userInfo.getTeamNumber());
+                    }
 
-                if (userInfo.getIsOrNoTruck() == null) {
-                    mTvTruck.setText("请填写有无货车");
-                } else if ("Y".equals(userInfo.getIsOrNoTruck())) {
-                    mTvTruck.setText("有");
-                } else {
-                    mTvTruck.setText("无");
+                    if (userInfo.getIsOrNoTruck() == null) {
+                        mTvTruck.setText("请填写有无货车");
+                    } else if ("Y".equals(userInfo.getIsOrNoTruck())) {
+                        mTvTruck.setText("有");
+                    } else {
+                        mTvTruck.setText("无");
 
-                }
-                break;
+                    }
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

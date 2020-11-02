@@ -345,6 +345,7 @@ public class AccessoriesPictureActivity extends BaseActivity<NewAddAccessoriesPr
             case 801:
                 if (resultCode == -1) {
                     file = new File(FilePath);
+                    MyUtils.sendBroadcastToImg(mActivity,file);
                 }
                 if (file != null) {
                     File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);

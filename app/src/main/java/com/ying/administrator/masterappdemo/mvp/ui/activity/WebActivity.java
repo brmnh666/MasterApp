@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.ying.administrator.masterappdemo.R;
 import com.ying.administrator.masterappdemo.base.BaseActivity;
+import com.ying.administrator.masterappdemo.widget.CustomWebView;
 
 import java.util.ArrayList;
 
@@ -35,7 +36,7 @@ public class WebActivity extends BaseActivity {
     @BindView(R.id.ll_customer_service)
     LinearLayout mLlCustomerService;
     @BindView(R.id.webview)
-    WebView mWebview;
+    CustomWebView mWebview;
     private String url = "";
     private String Title;
 

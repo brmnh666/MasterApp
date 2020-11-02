@@ -6,8 +6,6 @@ import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.LeaveMessage;
 import com.ying.administrator.masterappdemo.mvp.contract.LeaveMeaasgeContract;
 
-import java.util.List;
-
 public class LeaveMeaasgePreaenter extends LeaveMeaasgeContract.Presenter {
     @Override
     public void GetNewsLeaveMessage(String UserID, String limit, String page) {

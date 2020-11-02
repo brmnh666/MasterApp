@@ -1,11 +1,7 @@
 package com.ying.administrator.masterappdemo.mvp.ui.fragment;
 
 import android.os.Bundle;
-import android.support.annotation.IdRes;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.ying.administrator.masterappdemo.R;
@@ -13,7 +9,6 @@ import com.ying.administrator.masterappdemo.entity.QuestBean;
 import com.ying.administrator.masterappdemo.mvp.ui.fragment.BaseFragment.BaseLazyFragment;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public class ViewTheAnswerFragment extends BaseLazyFragment {

@@ -7,8 +7,6 @@ import com.ying.administrator.masterappdemo.base.BaseView;
 import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.LeaveMessage;
 
-import java.util.List;
-
 import io.reactivex.Observable;
 
 

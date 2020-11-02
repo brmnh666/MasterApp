@@ -7,8 +7,6 @@ import com.ying.administrator.masterappdemo.entity.Data;
 import com.ying.administrator.masterappdemo.entity.WxRegister;
 import com.ying.administrator.masterappdemo.mvp.contract.LoginContract;
 
-import okhttp3.RequestBody;
-
 public class LoginPresenter extends LoginContract.Presenter {
     @Override
     public void Login(String userName, String passWord) {
