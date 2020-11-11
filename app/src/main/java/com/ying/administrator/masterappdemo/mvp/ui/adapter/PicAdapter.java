@@ -18,7 +18,7 @@ public class PicAdapter extends BaseQuickAdapter<String, LayoutParamsViewHolder>
     @Override
     protected void convert(LayoutParamsViewHolder helper, String item) {
 
-        GlideUtil.loadImageViewLoding(mContext, item, (MyImageView) helper.getView(R.id.img), R.mipmap.upload,R.mipmap.upload);
+        GlideUtil.loadImageViewLoding(mContext, item, (MyImageView) helper.getView(R.id.img), R.mipmap.add,R.mipmap.add);
         helper.addOnClickListener(R.id.img);
         helper.addOnClickListener(R.id.ll_delete);
         if ("add".equals(item)){

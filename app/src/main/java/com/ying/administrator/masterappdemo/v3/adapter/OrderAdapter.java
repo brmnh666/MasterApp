@@ -61,7 +61,8 @@ public class OrderAdapter extends BaseQuickAdapter<OrderListResult.DataBeanX.Dat
         if (userId.equals(item.getSendUser())){
             helper.setGone(R.id.tv_sub_account_maintenance,false);
         }else {
-            helper.setVisible(R.id.tv_sub_account_maintenance,true);
+            helper.setGone(R.id.tv_sub_account_maintenance,true);
+            helper.setText(R.id.tv_sub_account_maintenance,"子账号工单（"+item.getUserName()+")");
         }
     }
 }

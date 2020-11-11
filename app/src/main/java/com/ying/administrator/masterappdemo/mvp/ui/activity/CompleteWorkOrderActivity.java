@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaMetadataRetriever;
@@ -18,14 +17,13 @@ import android.os.Message;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.FileProvider;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -33,10 +31,25 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.alibaba.sdk.android.oss.ClientConfiguration;
+import com.alibaba.sdk.android.oss.ClientException;
+import com.alibaba.sdk.android.oss.OSS;
+import com.alibaba.sdk.android.oss.OSSClient;
+import com.alibaba.sdk.android.oss.ServiceException;
+import com.alibaba.sdk.android.oss.callback.OSSCompletedCallback;
+import com.alibaba.sdk.android.oss.callback.OSSProgressCallback;
+import com.alibaba.sdk.android.oss.common.OSSLog;
+import com.alibaba.sdk.android.oss.common.auth.OSSPlainTextAKSKCredentialProvider;
+import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
+import com.alibaba.sdk.android.oss.model.PutObjectRequest;
+import com.alibaba.sdk.android.oss.model.PutObjectResult;
 import com.blankj.utilcode.util.SPUtils;
 import com.bumptech.glide.Glide;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.dmcbig.mediapicker.PickerActivity;
 import com.dmcbig.mediapicker.PickerConfig;
+import com.dmcbig.mediapicker.PreviewActivity;
+import com.dmcbig.mediapicker.TakePhotoActivity;
 import com.dmcbig.mediapicker.entity.Media;
 import com.google.gson.Gson;
 import com.hw.videoprocessor.VideoProcessor;
@@ -51,22 +64,21 @@ import com.ying.administrator.masterappdemo.entity.WorkOrder;
 import com.ying.administrator.masterappdemo.mvp.contract.CompleteWorkOrderContract;
 import com.ying.administrator.masterappdemo.mvp.model.CompleteWorkOrderModel;
 import com.ying.administrator.masterappdemo.mvp.presenter.CompleteWorkOrderPresenter;
-import com.ying.administrator.masterappdemo.util.Glide4Engine;
+import com.ying.administrator.masterappdemo.mvp.ui.adapter.PicAdapter;
 import com.ying.administrator.masterappdemo.util.MyUtils;
-import com.ying.administrator.masterappdemo.util.imageutil.CompressHelper;
 import com.ying.administrator.masterappdemo.util.imageutil.FileSizeUtil;
+import com.ying.administrator.masterappdemo.util.imageutil.ImageCompress;
+import com.ying.administrator.masterappdemo.v3.bean.EndConfig;
 import com.ying.administrator.masterappdemo.v3.bean.EndResult;
 import com.ying.administrator.masterappdemo.v3.bean.PolicyToken;
-import com.ying.administrator.masterappdemo.widget.ViewExampleDialog;
 import com.yzq.zxinglibrary.android.CaptureActivity;
 import com.yzq.zxinglibrary.common.Constant;
-import com.zhihu.matisse.Matisse;
-import com.zhihu.matisse.MimeType;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -108,68 +120,33 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
     TextView mTvMemo;
     @BindView(R.id.et_single_number)
     EditText mEtSingleNumber;
-    @BindView(R.id.et_express_name)
-    EditText mEtExpressName;
     @BindView(R.id.ll_scan)
     LinearLayout mLlScan;
     @BindView(R.id.ll_code)
     LinearLayout mLlCode;
-    @BindView(R.id.ll_view_example)
-    LinearLayout mLlViewExample;
-    @BindView(R.id.iv_machine)
-    ImageView mIvMachine;
-    @BindView(R.id.ll_machine)
-    LinearLayout mLlMachine;
-    @BindView(R.id.iv_bar_code)
-    ImageView mIvBarCode;
-    @BindView(R.id.ll_bar_code)
-    LinearLayout mLlBarCode;
-    @BindView(R.id.iv_fault_location)
-    ImageView mIvFaultLocation;
-    @BindView(R.id.ll_fault_location)
-    LinearLayout mLlFaultLocation;
-    @BindView(R.id.iv_new_and_old_accessories)
-    ImageView mIvNewAndOldAccessories;
-    @BindView(R.id.ll_new_and_old_accessories)
-    LinearLayout mLlNewAndOldAccessories;
-    @BindView(R.id.ll_return_information)
-    LinearLayout mLlReturnInformation;
-    @BindView(R.id.ll_view_example_two)
-    LinearLayout mLlViewExampleTwo;
-    @BindView(R.id.et_single_number1)
-    EditText mEtSingleNumber1;
-    @BindView(R.id.et_express_name1)
-    EditText mEtExpressName1;
-    @BindView(R.id.ll_scan1)
-    LinearLayout mLlScan1;
-    @BindView(R.id.ll_code1)
-    LinearLayout mLlCode1;
-    @BindView(R.id.iv_one)
-    ImageView mIvOne;
-    @BindView(R.id.iv_two)
-    ImageView mIvTwo;
-    @BindView(R.id.iv_three)
-    ImageView mIvThree;
-    @BindView(R.id.iv_four)
-    ImageView mIvFour;
-    @BindView(R.id.ll_service_process)
-    LinearLayout mLlServiceProcess;
-    @BindView(R.id.et_memo)
-    EditText mEtMemo;
-    @BindView(R.id.btn_complete_submit)
-    Button mBtnCompleteSubmit;
-    @BindView(R.id.et_result)
-    EditText mEtResult;
-    @BindView(R.id.ll_result)
-    LinearLayout mLlResult;
+    @BindView(R.id.rv_icons)
+    RecyclerView mRvIcons;
+    @BindView(R.id.ll_img)
+    LinearLayout mLlImg;
     @BindView(R.id.iv_video)
     ImageView mIvVideo;
-    @BindView(R.id.ll_video)
-    LinearLayout mLlVideo;
     @BindView(R.id.iv_shipin)
     ImageView mIvShipin;
     @BindView(R.id.iv_delete)
     ImageView mIvDelete;
+    @BindView(R.id.ll_video)
+    LinearLayout mLlVideo;
+    @BindView(R.id.et_result)
+    EditText mEtResult;
+    @BindView(R.id.ll_result)
+    LinearLayout mLlResult;
+    @BindView(R.id.et_memo)
+    EditText mEtMemo;
+    @BindView(R.id.btn_complete_submit)
+    Button mBtnCompleteSubmit;
+    @BindView(R.id.ll_parent)
+    LinearLayout mLlParent;
+
 
     private View popupWindow_view;
     private String FilePath;
@@ -191,12 +168,16 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
     private String RepairExplain = "";
     private int REQUEST_CODE_SCAN = 100;
     private int size;
-    private String videopath="";
-    private ArrayList<Media> select;
+    private String videopath = "";
+    private ArrayList<Media> select = new ArrayList<>();
     private SPUtils spUtils;
-    private String EndVideo="";
+    private String EndVideo = "";
     private String filename;
-    private String endRemark="";
+    private String endRemark = "";
+    private List<String> piclist = new ArrayList<>();
+    private List<String> selectpiclist = new ArrayList<>();
+    private PicAdapter picAdapter;
+    private OSSPlainTextAKSKCredentialProvider credentialProvider;
 
     @Override
     protected int setLayoutId() {
@@ -211,6 +192,43 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
     @Override
     protected void initView() {
         mTvTitle.setText("提交完结信息");
+
+        EndConfig config1=new EndConfig("条形码",true,true,false);
+        EndConfig config2=new EndConfig("整机",true,false,false);
+        EndConfig config3=new EndConfig("故障位置",true,false,false);
+        EndConfig config4=new EndConfig("购机凭证",true,false,false);
+        EndConfig config5=new EndConfig("新旧配件",true,false,false);
+        EndConfig config6=new EndConfig("试机视频",false,false,true);
+        List<EndConfig> list=new ArrayList<>();
+        list.add(config1);
+        list.add(config2);
+        list.add(config3);
+        list.add(config4);
+        list.add(config5);
+        list.add(config6);
+        for (int i = 0; i < list.size(); i++) {
+            EndConfig config=list.get(i);
+            View view_img=LayoutInflater.from(mActivity).inflate(R.layout.layout_img,null);
+            View view_text=LayoutInflater.from(mActivity).inflate(R.layout.layout_text,null);
+            View view_video=LayoutInflater.from(mActivity).inflate(R.layout.layout_video,null);
+            TextView imgName=view_img.findViewById(R.id.tv_name);
+            TextView textName=view_img.findViewById(R.id.tv_name);
+            TextView videoName=view_img.findViewById(R.id.tv_name);
+            imgName.setText(config.getName());
+            textName.setText(config.getName());
+            videoName.setText(config.getName());
+            if (config.isImgOn()) {
+                mLlParent.addView(view_img);
+            }
+            if (config.isTextOn()) {
+                mLlParent.addView(view_text);
+            }
+            if (config.isVideoOn()) {
+                mLlParent.addView(view_video);
+            }
+        }
+
+
         spUtils = SPUtils.getInstance("token");
         //接收传进来的工单id
         orderID = getIntent().getStringExtra("OrderID");
@@ -228,39 +246,92 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
         mTvMemo.setText("服务要求：" + data.getMemo());
 
         if ("2".equals(TypeID)) {//安装
-            mLlReturnInformation.setVisibility(View.GONE);
-            mLlServiceProcess.setVisibility(View.VISIBLE);
             mLlResult.setVisibility(View.GONE);
         } else {
-            mLlReturnInformation.setVisibility(View.VISIBLE);
-            mLlServiceProcess.setVisibility(View.GONE);
             mLlResult.setVisibility(View.VISIBLE);
         }
         if ("1".equals(BarCodeIsNo)) {
             mLlCode.setVisibility(View.VISIBLE);
-            mLlCode1.setVisibility(View.VISIBLE);
         } else {
             mLlCode.setVisibility(View.GONE);
-            mLlCode1.setVisibility(View.GONE);
         }
+
+        piclist.add("add");
+        picAdapter = new PicAdapter(R.layout.item_picture, piclist);
+        mRvIcons.setLayoutManager(new GridLayoutManager(mActivity, 5));
+        mRvIcons.setAdapter(picAdapter);
+        picAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                switch (view.getId()) {
+                    case R.id.img:
+                        if ("add".equals(adapter.getItem(position))) {
+                            if (requestPermissions()) {
+                                showPopupWindow();
+                            } else {
+                                requestPermissions(permissions.toArray(new String[permissions.size()]), 10001);
+                            }
+                        } else {
+                            goPreviewActivity_img();
+                        }
+                        break;
+                    case R.id.ll_delete:
+                        select.remove(position);
+                        ArrayList<String> list = new ArrayList<>();
+                        Log.i("select", "select.size" + select.size());
+                        for (Media media : select) {
+                            list.add(media.path);
+                            Log.i("media", media.path);
+                            Log.e("media", "s:" + media.size);
+                        }
+                        loadAdpater(list);
+                        break;
+                }
+            }
+        });
+    }
+
+    private void loadAdpater(ArrayList<String> paths) {
+        piclist.clear();
+        piclist.addAll(paths);
+        selectpiclist.clear();
+        for (int i = 0; i < paths.size(); i++) {
+            selectpiclist.add(ImageCompress.compressImage(paths.get(i), Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy/" + System.currentTimeMillis() + ".jpg", 80));
+        }
+        if (piclist.size() != 9) {
+            piclist.add("add");
+        }
+        System.out.println(selectpiclist);
+        picAdapter.setNewData(piclist);
+    }
+
+    void goImage() {
+        Intent intent = new Intent(mActivity, PickerActivity.class);
+        intent.putExtra(PickerConfig.SELECT_MODE, PickerConfig.PICKER_IMAGE);//default image and video (Optional)
+        long maxSize = 188743680L;//long long long
+        intent.putExtra(PickerConfig.MAX_SELECT_SIZE, maxSize); //default 180MB (Optional)
+        //旧件照片数量最多为配件数量+5
+        intent.putExtra(PickerConfig.MAX_SELECT_COUNT, 9 - piclist.size() + 1);  //default 40 (Optional)
+//        intent.putExtra(PickerConfig.DEFAULT_SELECTED_LIST,select); // (Optional)
+        startActivityForResult(intent, 200);
+    }
+
+    void goPreviewActivity_img() {
+        Intent intent = new Intent(mActivity, PreviewActivity.class);
+        intent.putExtra(PickerConfig.PRE_RAW_LIST, select);//default image and video (Optional)
+        intent.putExtra(PickerConfig.MAX_SELECT_COUNT, select.size());//default image and video (Optional)
+        startActivityForResult(intent, 200);
     }
 
     @Override
     protected void setListener() {
         mIvBack.setOnClickListener(this);
-        mLlViewExample.setOnClickListener(this);
-        mIvBarCode.setOnClickListener(this);
-        mIvMachine.setOnClickListener(this);
-        mIvFaultLocation.setOnClickListener(this);
-        mIvNewAndOldAccessories.setOnClickListener(this);
+
         mLlScan.setOnClickListener(this);
-        mLlScan1.setOnClickListener(this);
-        mIvOne.setOnClickListener(this);
-        mIvTwo.setOnClickListener(this);
-        mIvThree.setOnClickListener(this);
-        mIvFour.setOnClickListener(this);
+
         mBtnCompleteSubmit.setOnClickListener(this);
-        mLlViewExampleTwo.setOnClickListener(this);
+
         mIvVideo.setOnClickListener(this);
         mIvDelete.setOnClickListener(this);
     }
@@ -275,7 +346,6 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 
     }
 
-    /*提交返件图片*/
     @Override
     public void ReuturnAccessoryPicUpload(BaseResult<Data<String>> baseResult) {
 
@@ -306,8 +376,6 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 
     }
 
-    /*上传维修图片*/
-
 
     @Override
     public void UpdateOrderState(BaseResult<Data<String>> baseResult) {
@@ -323,26 +391,28 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
     public void AddbarCode(BaseResult<Data<String>> baseResult) {
 
     }
-    void goPreviewActivity() {
+
+    void goPreviewActivity_video() {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(Uri.parse(videopath), "video/*");
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         startActivity(intent);
     }
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_delete:
                 Glide.with(mActivity).load(R.mipmap.add).into(mIvVideo);
-                videopath="";
+                videopath = "";
                 mIvShipin.setVisibility(View.GONE);
                 mIvDelete.setVisibility(View.GONE);
                 break;
             case R.id.iv_video:
-                if (mIvShipin.getVisibility()==View.VISIBLE){
-                    goPreviewActivity();
-                }else{
+                if (mIvShipin.getVisibility() == View.VISIBLE) {
+                    goPreviewActivity_video();
+                } else {
                     if (requestPermissions()) {
                         showVideoPopupWindow(901, 909);
                     } else {
@@ -353,51 +423,6 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
             case R.id.iv_back:
                 CompleteWorkOrderActivity.this.finish();
                 break;
-            case R.id.ll_view_example_two:
-            case R.id.ll_view_example:
-                final ViewExampleDialog viewExampleDialog = new ViewExampleDialog(mActivity);
-                viewExampleDialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
-
-                viewExampleDialog.setNoOnclickListener("取消", new ViewExampleDialog.onNoOnclickListener() {
-                    @Override
-                    public void onNoClick() {
-                        viewExampleDialog.dismiss();
-                    }
-                });
-                viewExampleDialog.show();
-                Window window = viewExampleDialog.getWindow();
-                WindowManager.LayoutParams wlp = window.getAttributes();
-                Display d = window.getWindowManager().getDefaultDisplay();
-                wlp.height = d.getHeight();
-                wlp.width = d.getWidth();
-                wlp.gravity = Gravity.CENTER;
-                window.setAttributes(wlp);
-                break;
-            case R.id.iv_bar_code:
-                showPopupWindow(101, 102);
-                break;
-            case R.id.iv_machine:
-                showPopupWindow(201, 202);
-                break;
-            case R.id.iv_fault_location:
-                showPopupWindow(301, 303);
-                break;
-            case R.id.iv_new_and_old_accessories:
-                showPopupWindow(401, 404);
-                break;
-            case R.id.iv_one:
-                showPopupWindow(501, 505);
-                break;
-            case R.id.iv_two:
-                showPopupWindow(601, 606);
-                break;
-            case R.id.iv_three:
-                showPopupWindow(701, 707);
-                break;
-            case R.id.iv_four:
-                showPopupWindow(801, 808);
-                break;
-            case R.id.ll_scan1:
             case R.id.ll_scan:
                 if (requestPermissions()) {
                     scan();
@@ -414,9 +439,69 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
         }
     }
 
+    private void uploadToOSS(String filePath) {
+        String bucketName = "xigyubuckettest";
+        String AK = "LTAI4G4kcRFjMF4xARFULpSD";
+        String SK = "QxW3J8hn4VfpSLmDATeN2XF1J0oRtk";
+        // 获取文件的后缀名
+        String suffixName = filePath.substring(filePath.lastIndexOf("."));
+        // 生成上传文件名
+        String finalFileName = System.currentTimeMillis() + "" + new SecureRandom().nextInt(0x0400) + suffixName;
+        String objectName = "APP/EndPic/" + orderID + "/" + finalFileName;
+
+        credentialProvider = new OSSPlainTextAKSKCredentialProvider(AK, SK);
+
+        ClientConfiguration conf = new ClientConfiguration();
+        conf.setConnectionTimeout(15 * 1000); // 连接超时，默认15秒
+        conf.setSocketTimeout(15 * 1000); // socket超时，默认15秒
+        conf.setMaxConcurrentRequest(5); // 最大并发请求书，默认5个
+        conf.setMaxErrorRetry(2); // 失败后最大重试次数，默认2次
+        OSS oss = new OSSClient(getApplicationContext(), "https://oss-cn-hangzhou.aliyuncs.com", credentialProvider, conf);
+        OSSLog.enableLog();
+        // 构造上传请求。
+        PutObjectRequest put = new PutObjectRequest(bucketName, objectName, filePath);
+
+// 异步上传时可以设置进度回调。
+        put.setProgressCallback(new OSSProgressCallback<PutObjectRequest>() {
+            @Override
+            public void onProgress(PutObjectRequest request, long currentSize, long totalSize) {
+                Log.d("PutObject", "currentSize: " + currentSize + " totalSize: " + totalSize);
+            }
+        });
+
+        OSSAsyncTask task = oss.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
+            @Override
+            public void onSuccess(PutObjectRequest request, PutObjectResult result) {
+                String url = oss.presignPublicObjectURL(bucketName, objectName);
+                Log.d("访问地址：", url);
+                Log.d("PutObject", "UploadSuccess");
+                Log.d("ETag", result.getETag());
+                Log.d("RequestId", result.getRequestId());
+            }
+
+            @Override
+            public void onFailure(PutObjectRequest request, ClientException clientExcepion, ServiceException serviceException) {
+                // 请求异常。
+                if (clientExcepion != null) {
+                    // 本地异常，如网络异常等。
+                    clientExcepion.printStackTrace();
+                }
+                if (serviceException != null) {
+                    // 服务异常。
+                    Log.e("ErrorCode", serviceException.getErrorCode());
+                    Log.e("RequestId", serviceException.getRequestId());
+                    Log.e("HostId", serviceException.getHostId());
+                    Log.e("RawMessage", serviceException.getRawMessage());
+                }
+            }
+        });
+// task.cancel(); // 可以取消任务。
+// task.waitUntilFinished(); // 等待任务完成。
+    }
+
     private void submit() {
         if ("2".equals(TypeID)) {//安装
-            barCode = mEtSingleNumber1.getText().toString();
+            barCode = mEtSingleNumber.getText().toString();
             if ("1".equals(BarCodeIsNo)) {
                 if (barCode.isEmpty()) {
                     MyUtils.showToast(mActivity, "请填写条形码");
@@ -429,12 +514,12 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                 hideProgress();
             } else {
                 endRemark = mEtMemo.getText().toString();
-                if ("".equals(videopath)){
+                if ("".equals(videopath)) {
                     ReuturnAccessoryPicUpload(service_img_map);
-                }else{
-                    if ("".equals(EndVideo)){
+                } else {
+                    if ("".equals(EndVideo)) {
                         compressVideo(videopath);
-                    }else{
+                    } else {
                         ReuturnAccessoryPicUpload(service_img_map);
                     }
                 }
@@ -456,12 +541,12 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
             } else {
                 endRemark = mEtMemo.getText().toString();
                 RepairExplain = mEtResult.getText().toString();
-                if ("".equals(videopath)){
+                if ("".equals(videopath)) {
                     ReuturnAccessoryPicUpload(return_img_map);
-                }else{
-                    if ("".equals(EndVideo)){
+                } else {
+                    if ("".equals(EndVideo)) {
                         compressVideo(videopath);
-                    }else{
+                    } else {
                         ReuturnAccessoryPicUpload(return_img_map);
                     }
                 }
@@ -472,7 +557,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
     void pickerVideo(int code) {
         Intent intent = new Intent(mActivity, PickerActivity.class);
         intent.putExtra(PickerConfig.SELECT_MODE, PickerConfig.PICKER_VIDEO);//default image and video (Optional)
-        long maxSize = 60*1024*1024L;//long long long
+        long maxSize = 60 * 1024 * 1024L;//long long long
         intent.putExtra(PickerConfig.MAX_SELECT_SIZE, maxSize); //default 180MB (Optional)
         intent.putExtra(PickerConfig.MAX_SELECT_COUNT, 1);  //default 40 (Optional)
 //        intent.putExtra(PickerConfig.DEFAULT_SELECTED_LIST,select); // (Optional)
@@ -573,7 +658,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
         }
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
         intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
-        intent.putExtra(MediaStore.EXTRA_SIZE_LIMIT, 60*1024*1024L);//限制录制大小(10M=10 * 1024 * 1024L)
+        intent.putExtra(MediaStore.EXTRA_SIZE_LIMIT, 60 * 1024 * 1024L);//限制录制大小(10M=10 * 1024 * 1024L)
         intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 30);//限制录制时间(10秒=10)
 
 
@@ -584,7 +669,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
     /**
      * 弹出Popupwindow
      */
-    public void showPopupWindow(final int code1, final int code2) {
+    public void showPopupWindow() {
         popupWindow_view = LayoutInflater.from(mActivity).inflate(R.layout.camera_layout, null);
         Button camera_btn = popupWindow_view.findViewById(R.id.camera_btn);
         Button photo_btn = popupWindow_view.findViewById(R.id.photo_btn);
@@ -593,31 +678,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View view) {
-                if (requestPermissions()) {
-                    Intent intent = new Intent();
-                    // 指定开启系统相机的Action
-                    intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-                    intent.addCategory(Intent.CATEGORY_DEFAULT);
-                    String f = System.currentTimeMillis() + ".jpg";
-                    String fileDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy";
-                    FilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy/" + f;
-                    File dirfile = new File(fileDir);
-                    if (!dirfile.exists()) {
-                        dirfile.mkdirs();
-                    }
-                    File file = new File(FilePath);
-                    Uri fileUri;
-                    if (Build.VERSION.SDK_INT >= 24) {
-                        fileUri = FileProvider.getUriForFile(mActivity, BuildConfig.APPLICATION_ID + ".fileprovider", file);
-                    } else {
-                        fileUri = Uri.fromFile(file);
-                    }
-
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-                    startActivityForResult(intent, code1);
-                } else {
-                    requestPermissions(permissions.toArray(new String[permissions.size()]), 10001);
-                }
+                startActivityForResult(new Intent(mActivity, TakePhotoActivity.class), 200);
                 mPopupWindow.dismiss();
             }
         });
@@ -625,26 +686,8 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View view) {
-                if (requestPermissions()) {
-//                    Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-//                    i.addCategory(Intent.CATEGORY_OPENABLE);
-//                    i.setType("image/*");
-//                    startActivityForResult(Intent.createChooser(i, "test"), code2);
-                    Matisse.from(CompleteWorkOrderActivity.this)
-                            .choose(MimeType.ofImage())
-                            .countable(true)
-                            .maxSelectable(1)
-//                            .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
-//                            .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
-                            .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
-                            .thumbnailScale(0.85f)
-                            .imageEngine(new Glide4Engine())
-                            .forResult(code2);
-                    mPopupWindow.dismiss();
-                } else {
-                    requestPermissions(permissions.toArray(new String[permissions.size()]), 10002);
-                }
-
+                goImage();
+                mPopupWindow.dismiss();
             }
         });
         cancel_btn.setOnClickListener(new View.OnClickListener() {
@@ -716,9 +759,9 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                     toSetting();
                 }
                 break;
-            case 10004:
+            case 10001:
                 if (size == grantResults.length) {//允许
-                    pickerVideo(909);
+                    showPopupWindow();
                 } else {//拒绝
                     toSetting();
                 }
@@ -766,22 +809,8 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-//        IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-//        if (scanResult != null) {
-//            String result = scanResult.getContents();
-//            if (result == null) {
-//                return;
-//            } else {
-//                mEtSingleNumber.setText(result);
-//                mEtSingleNumber1.setText(result);
-//            }
-//
-//        }
         if (mLlCode.getVisibility() == View.VISIBLE) {
             mEtSingleNumber.setEnabled(true);
-        }
-        if (mLlCode1.getVisibility() == View.VISIBLE) {
-            mEtSingleNumber1.setEnabled(true);
         }
         // 扫描二维码/条码回传
         if (requestCode == REQUEST_CODE_SCAN && resultCode == RESULT_OK) {
@@ -789,250 +818,11 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
             if (data != null) {
                 String result = data.getStringExtra(Constant.CODED_CONTENT);
                 mEtSingleNumber.setText(result);
-                mEtSingleNumber1.setText(result);
             }
         }
 
         File file = null;
         switch (requestCode) {
-            //拍照
-            case 101:
-                if (resultCode == -1) {
-                    Glide.with(mActivity).load(FilePath).into(mIvBarCode);
-                    file = new File(FilePath);
-                    MyUtils.sendBroadcastToImg(mActivity,file);
-                }
-                if (file != null) {
-                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
-                    return_img_map.put(1, newFile);
-                }
-
-                break;
-            //相册
-            case 102:
-                if (data != null) {
-                    mSelected = Matisse.obtainResult(data);
-                    if (mSelected.size() == 1) {
-                        uri = mSelected.get(0);
-                    }
-//                    Uri uri = data.getData();
-                    Glide.with(mActivity).load(uri).into(mIvBarCode);
-                    file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
-                }
-                if (file != null) {
-                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
-                    return_img_map.put(1, newFile);
-                }
-                break;
-            //拍照
-            case 201:
-                if (resultCode == -1) {
-                    Glide.with(mActivity).load(FilePath).into(mIvMachine);
-                    file = new File(FilePath);
-                    MyUtils.sendBroadcastToImg(mActivity,file);
-                }
-                if (file != null) {
-
-                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
-                    return_img_map.put(0, newFile);
-                }
-                break;
-            //相册
-            case 202:
-                if (data != null) {
-                    mSelected = Matisse.obtainResult(data);
-                    if (mSelected.size() == 1) {
-                        uri = mSelected.get(0);
-                    }
-//                    Uri uri = data.getData();
-                    Glide.with(mActivity).load(uri).into(mIvMachine);
-                    file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
-                }
-                if (file != null) {
-
-                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
-                    return_img_map.put(0, newFile);
-                }
-                break;
-            //拍照
-            case 301:
-                if (resultCode == -1) {
-                    Glide.with(mActivity).load(FilePath).into(mIvFaultLocation);
-                    file = new File(FilePath);
-                    MyUtils.sendBroadcastToImg(mActivity,file);
-                }
-                if (file != null) {
-
-                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
-                    return_img_map.put(2, newFile);
-                }
-                break;
-            //相册
-            case 303:
-                if (data != null) {
-                    mSelected = Matisse.obtainResult(data);
-                    if (mSelected.size() == 1) {
-                        uri = mSelected.get(0);
-                    }
-//                    Uri uri = data.getData();
-                    Glide.with(mActivity).load(uri).into(mIvFaultLocation);
-                    file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
-                }
-                if (file != null) {
-
-                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
-                    return_img_map.put(2, newFile);
-                }
-                break;
-            //拍照
-            case 401:
-                if (resultCode == -1) {
-                    Glide.with(mActivity).load(FilePath).into(mIvNewAndOldAccessories);
-                    file = new File(FilePath);
-                    MyUtils.sendBroadcastToImg(mActivity,file);
-                }
-                if (file != null) {
-                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
-                    return_img_map.put(3, newFile);
-                }
-                break;
-            //相册
-            case 404:
-                if (data != null) {
-                    mSelected = Matisse.obtainResult(data);
-                    if (mSelected.size() == 1) {
-                        uri = mSelected.get(0);
-                    }
-//                    Uri uri = data.getData();
-                    Glide.with(mActivity).load(uri).into(mIvNewAndOldAccessories);
-                    file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
-                }
-                if (file != null) {
-                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
-                    return_img_map.put(3, newFile);
-                }
-                break;
-
-            /*服务过程图片*/
-            //拍照
-            case 501:
-                if (resultCode == -1) {
-                    Glide.with(mActivity).load(FilePath).into(mIvOne);
-                    file = new File(FilePath);
-                    MyUtils.sendBroadcastToImg(mActivity,file);
-                }
-                if (file != null) {
-                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
-                    service_img_map.put(0, newFile);
-                }
-                break;
-            //相册
-            case 505:
-                if (data != null) {
-                    mSelected = Matisse.obtainResult(data);
-                    if (mSelected.size() == 1) {
-                        uri = mSelected.get(0);
-                    }
-//                    Uri uri = data.getData();
-                    Glide.with(mActivity).load(uri).into(mIvOne);
-                    file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
-                }
-                if (file != null) {
-
-
-                    Log.d("未压缩图片的大小", String.valueOf(file.length()));
-
-                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
-                    service_img_map.put(0, newFile);
-                    Log.d("已压缩图片的大小", String.valueOf(newFile.length()));
-
-
-                }
-                break;
-            //拍照
-            case 601:
-                if (resultCode == -1) {
-                    Glide.with(mActivity).load(FilePath).into(mIvTwo);
-                    file = new File(FilePath);
-                    MyUtils.sendBroadcastToImg(mActivity,file);
-                }
-                if (file != null) {
-                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
-                    service_img_map.put(1, newFile);
-                }
-                break;
-            //相册
-            case 606:
-                if (data != null) {
-                    mSelected = Matisse.obtainResult(data);
-                    if (mSelected.size() == 1) {
-                        uri = mSelected.get(0);
-                    }
-//                    Uri uri = data.getData();
-                    Glide.with(mActivity).load(uri).into(mIvTwo);
-                    file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
-                }
-                if (file != null) {
-                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
-                    service_img_map.put(1, newFile);
-                }
-                break;
-            //拍照
-            case 701:
-                if (resultCode == -1) {
-                    Glide.with(mActivity).load(FilePath).into(mIvThree);
-                    file = new File(FilePath);
-                    MyUtils.sendBroadcastToImg(mActivity,file);
-                }
-                if (file != null) {
-                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
-                    service_img_map.put(2, newFile);
-                }
-                break;
-            //相册
-            case 707:
-                if (data != null) {
-                    mSelected = Matisse.obtainResult(data);
-                    if (mSelected.size() == 1) {
-                        uri = mSelected.get(0);
-                    }
-//                    Uri uri = data.getData();
-                    Glide.with(mActivity).load(uri).into(mIvThree);
-                    file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
-                }
-                if (file != null) {
-                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
-                    service_img_map.put(2, newFile);
-                }
-                break;
-            //拍照
-            case 801:
-                if (resultCode == -1) {
-                    Glide.with(mActivity).load(FilePath).into(mIvFour);
-                    file = new File(FilePath);
-                    MyUtils.sendBroadcastToImg(mActivity,file);
-                }
-                if (file != null) {
-                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
-                    service_img_map.put(3, newFile);
-                }
-                break;
-            //相册
-            case 808:
-                if (data != null) {
-                    mSelected = Matisse.obtainResult(data);
-                    if (mSelected.size() == 1) {
-                        uri = mSelected.get(0);
-                    }
-//                    Uri uri = data.getData();
-                    Glide.with(mActivity).load(uri).into(mIvFour);
-                    file = new File(MyUtils.getRealPathFromUri(mActivity, uri));
-                }
-                if (file != null) {
-                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
-                    service_img_map.put(3, newFile);
-                }
-                break;
             //拍摄视频
             case 901:
                 if (resultCode == -1) {
@@ -1043,21 +833,18 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                         mIvDelete.setVisibility(View.VISIBLE);
                     }
                 }
-//                if (file != null) {
-//                    File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
-//                    videopath=newFile.getPath();
-//                }
                 break;
             //选择视频
             case 909:
                 if (resultCode == PickerConfig.RESULT_CODE) {
-                    select =((ArrayList) data.getParcelableArrayListExtra(PickerConfig.EXTRA_RESULT));
+                    select = data.getParcelableArrayListExtra(PickerConfig.EXTRA_RESULT);
                     ArrayList<String> list = new ArrayList<>();
                     Log.i("select", "select.size" + select.size());
                     for (Media media : select) {
                         list.add(media.path);
                         Glide.with(mActivity).load(media.path).into(mIvVideo);
-                        videopath=media.path;
+                        videopath = media.path;
+                        uploadToOSS(videopath);
 //                        file = new File(videopath);
 //                        if (file != null) {
 //                            File newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
@@ -1068,10 +855,23 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                     }
                 }
                 break;
-
-
         }
-
+        if (requestCode == 200 && data != null) {
+            select.addAll(data.getParcelableArrayListExtra(PickerConfig.EXTRA_RESULT));
+            ArrayList<String> list = new ArrayList<>();
+            Log.i("select", "select.size" + select.size());
+            for (Media media : select) {
+                if (media.size != 0) {
+                    uploadToOSS(media.path);
+                    list.add(media.path);
+                    Log.i("media", media.path);
+                    Log.e("media", "s:" + media.size);
+                } else {
+                    select.remove(media);
+                }
+            }
+            loadAdpater(list);
+        }
     }
 
     public void ReuturnAccessoryPicUpload(HashMap<Integer, File> map) {
@@ -1100,28 +900,6 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
 
     }
 
-    /*安装服务图片*/
-    public void ServiceOrderPicUpload(HashMap<Integer, File> map, String EndRemark) {
-        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
-        if (map.get(0) != null) {
-            builder.addFormDataPart("img1", map.get(0).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(0)));
-        }
-        if (map.get(1) != null) {
-            builder.addFormDataPart("img2", map.get(1).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(1)));
-        }
-        if (map.get(2) != null) {
-            builder.addFormDataPart("img3", map.get(2).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(2)));
-        }
-        if (map.get(3) != null) {
-            builder.addFormDataPart("img4", map.get(3).getName(), RequestBody.create(MediaType.parse("img/png"), map.get(3)));
-        }
-        builder.addFormDataPart("OrderID", orderID);
-        builder.addFormDataPart("EndRemark", EndRemark);
-        MultipartBody requestBody = builder.build();
-//        mPresenter.ServiceOrderPicUpload(requestBody);
-        mPresenter.ReuturnAccessoryPicUpload(requestBody);
-    }
-
     private void getHost(String filePath) {
         //接口
         String path = Config.BASE_URL + "Oss/GetPolicyToken";
@@ -1146,14 +924,15 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String str = response.body().string();
-                Gson gson=new Gson();
-                PolicyToken policyToken=gson.fromJson(str.replaceAll(" ",""),PolicyToken.class);
-                uploadVideo(policyToken.getData(),filePath);
+                Gson gson = new Gson();
+                PolicyToken policyToken = gson.fromJson(str.replaceAll(" ", ""), PolicyToken.class);
+                uploadVideo(policyToken.getData(), filePath);
             }
         });
 
     }
-    public String getVideoOutCompressPath(){
+
+    public String getVideoOutCompressPath() {
         String f = System.currentTimeMillis() + ".mp4";
         String fileDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy";
         String videoCompressPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xgy/" + f;
@@ -1163,8 +942,9 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
         }
         return videoCompressPath;
     }
-    private void uploadVideo(PolicyToken.DataBean policyToken,String filePath) {
-        File file=new File(filePath);
+
+    private void uploadVideo(PolicyToken.DataBean policyToken, String filePath) {
+        File file = new File(filePath);
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("OSSAccessKeyId", policyToken.getAccessid());
         builder.addFormDataPart("policy", policyToken.getPolicy());
@@ -1193,12 +973,12 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String str = response.body().string();
-                System.out.println("上传结果："+str);
-                if (response.code()==201){
-                    EndVideo=filename;
+                System.out.println("上传结果：" + str);
+                if (response.code() == 201) {
+                    EndVideo = filename;
                     if ("2".equals(TypeID)) {//安装
                         ReuturnAccessoryPicUpload(service_img_map);
-                    }else{
+                    } else {
                         ReuturnAccessoryPicUpload(return_img_map);
                     }
 
@@ -1207,8 +987,9 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
         });
 
     }
-//    压缩视频
-    private void compressVideo(String videoPath){
+
+    //    压缩视频
+    private void compressVideo(String videoPath) {
 //        mBinding.progressBar.setVisibility(View.VISIBLE);
         new Thread(new Runnable() {
             @Override
@@ -1220,7 +1001,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                     int originWidth = Integer.parseInt(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH));
                     int originHeight = Integer.parseInt(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT));
                     int bitrate = Integer.parseInt(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_BITRATE));
-                    Log.e("video","originWidth="+originWidth+" originHeight=="+originHeight+" bitrate=="+bitrate);
+                    Log.e("video", "originWidth=" + originWidth + " originHeight==" + originHeight + " bitrate==" + bitrate);
                     String videoOutCompressPath = getVideoOutCompressPath();
                     VideoProcessor.processor(mActivity)
                             .input(videoPath)
@@ -1231,11 +1012,11 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                                 public void onProgress(float progress) {
                                     int intProgress = (int) (progress * 100);
                                     Message message = mHandler.obtainMessage();
-                                    message.what=0;
+                                    message.what = 0;
                                     message.arg1 = intProgress;
                                     mHandler.sendMessage(message);
-                                    if (intProgress==100){
-                                        message.what=1;
+                                    if (intProgress == 100) {
+                                        message.what = 1;
                                         message.obj = videoOutCompressPath;
                                         mHandler.sendMessage(message);
                                     }
@@ -1250,6 +1031,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
             }
         }).start();
     }
+
     private Handler mHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
@@ -1260,7 +1042,7 @@ public class CompleteWorkOrderActivity extends BaseActivity<CompleteWorkOrderPre
                 case 1:
 //                    mBinding.progressBar.setVisibility(View.INVISIBLE);
 //                    ToastUtil.showLong("压缩完成！");
-                    String videoOutCompressPath  = (String) msg.obj;
+                    String videoOutCompressPath = (String) msg.obj;
                     getHost(videoOutCompressPath);
                     Log.e("压缩后大小==", FileSizeUtil.getAutoFileOrFilesSize(videoOutCompressPath));
                     hideProgress();
